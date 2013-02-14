@@ -1,0 +1,204 @@
+@import('lib')
+
+
+// colors
+color-darkest    = #3e3429  // nearly-black background
+color-darker     = #473522  // text and foreground glyphes
+color-dark       = #625648	// slightly lighter text and foreground glyphes
+color-medium     = #9d9e9e  // text in blurred input fields or less important
+
+color-lightish   = #c9c4bf  // darker than highlighted background
+color-light      = #ded8d3  // highlighted background
+color-lighter    = #f0f0f0  // standard background
+
+color-btn-light  = #e09d55  // default button background
+color-btn-dark   = #b87d3e  // typically when pushed
+color-btn-border = #d48f46  // default button border
+
+color-bg-focus   = #f7e8d8  // background in focused input fields
+
+// fonts
+font-serif = 'Bree Serif', serif
+font-sans = 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif
+
+// global stuff
+selection(#fff, #0a4889)
+
+body
+	background-image url('../img/bg.png')
+	font-family font-sans
+
+
+// background gradient
+.boxglow
+	margin 60px auto
+	width 600px
+	height 600px
+	background-image url('../img/gradient.png')
+	background-repeat no-repeat
+
+// the login box
+.singlebox
+	width 300px
+	margin 0 auto
+	position relative
+	background color-lighter
+	border 1px solid #fff
+	border-radius 5px
+	box-shadow 0 1px 3px rgba(0,0,0,0.5)
+
+	.header 
+		padding 70px 30px 30px 30px
+		background url('../img/swords.png') no-repeat 30px 30px
+		background-size 65px 40px
+
+		h1
+			font-family font-serif
+			font-weight 300
+			font-size 28px
+			line-height 34px
+			color color-darker
+			text-shadow 1px 1px 0 white
+			margin-top 20px
+			margin-bottom 10px
+
+		span
+			font-size 11px
+			line-height 16px
+			color color-dark
+			text-shadow 1px 1px 0 white
+
+	.content
+		padding 0 30px 25px 30px
+
+		.input
+			width 188px
+			padding 10px 15px 8px
+			font-family font-sans
+			font-weight 400
+			font-size 14px
+			text-shadow 1px 1px 0 white
+			color color-medium
+			background #fff
+			border 1px solid #fff
+			border-radius 5px
+			box-shadow inset 0 1px 3px rgba(0,0,0,0.50)
+			&:hover 
+				background color-bg-focus 
+				color color-darker
+			&:focus
+				background color-bg-focus 
+				color color-darker
+				box-shadow inset 0 1px 2px rgba(0,0,0,0.25)
+		
+		.password, .pass-icon
+			margin-top 25px
+
+		input:focus + div
+			left: -46px;
+
+	.footer
+		padding 30px
+		overflow auto
+		background color-light
+		border-top 1px solid #fff
+		box-shadow inset 0 1px 0 rgba(0,0,0,0.15)
+
+		.button
+			float right
+			padding 11px 25px
+			font-family 'Bree Serif', serif
+			font-weight 300
+			font-size 18px
+			color #fff
+			text-shadow 0px 1px 0 rgba(0,0,0,0.25)
+			background color-btn-light
+			border 1px solid color-btn-border
+			border-radius 5px
+			cursor pointer
+			box-shadow inset 0 0 2px rgba(256,256,256,0.75)
+
+			&:hover
+				background color-btn-dark
+				border 1px solid rgba(256,256,256,0.75)
+				box-shadow inset 0 1px 3px rgba(0,0,0,0.5)
+			
+			&:focus
+				position relative
+				bottom -1px
+				background color-btn-light
+				box-shadow inset 0 1px 6px rgba(256,256,256,0.75)
+
+		.fatlink 
+			padding 12px 0px 8px
+			
+	.bottom
+		padding 15px 30px
+		background color-lightish
+		border-top 1px solid #fff
+		box-shadow inset 0 1px 0 rgba(0,0,0,0.15)
+		border-radius-bottomleft 4px
+		border-radius-bottomright 4px
+
+		label, input[type='checkbox']
+			float right
+			margin-left 10px
+
+	// animation
+	.input, .user-icon, .pass-icon, .button, .register
+		transition: all 0.4s ease
+		
+// icons		
+.user-icon, .pass-icon
+	width 46px
+	height 47px
+	display block
+	position absolute
+	left 0px
+	padding-right 2px
+	z-index: -1
+	border-radius-topleft 5px
+	border-radius-bottomleft 5px
+
+.user-icon
+	top 195px
+	background color-darkest url('../img/user-icon.png') no-repeat center
+
+.pass-icon
+	top 242px
+	background color-darkest url('../img/pass-icon.png') no-repeat center
+
+.fatlink
+	display block
+	margin-right 20px
+	cursor pointer
+	background none
+	font-family 'Bree Serif', serif
+	font-weight 300
+	font-size 18px
+	color color-darker
+	text-shadow 0px 1px 0 rgba(256,256,256,0.5)
+	transition: all 0.4s ease
+
+	&:hover
+		color color-btn-dark
+		text-decoration none
+	&:focus
+		position relative
+		bottom -1px
+
+.slimlink
+	display block
+	font-weight 400
+	font-size 11px
+	color color-dark
+	cursor pointer
+	text-shadow 0px 1px 0 rgba(256,256,256,0.5)
+	transition: all 0.4s ease
+
+	&:hover
+		color color-btn-dark
+		text-decoration none
+	&:focus
+		position relative
+		bottom -1px

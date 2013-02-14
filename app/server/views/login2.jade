@@ -1,0 +1,21 @@
+extends layout
+
+block content
+	.boxglow
+		form(method="post", name="login-form").singlebox
+			.header
+				h1 Login here.
+				span If you don't have an account, press the register button to sign up for a new account.
+			.content
+				input(name="user", type="text", id="user-tf", placeholder="Username").input.username
+				.user-icon
+				input(type="password", name="pass", id="pass-tf", placeholder="Password").input.password
+				.pass-icon
+			.footer
+				input(name="submit", type="submit", value="Login").button
+				a(href='/signup')#create-account.fatlink Register
+
+			.bottom
+				input(type="checkbox", checked='checked')#remember-me-checkbox
+				label(for="remember-me-checkbox")#remember-me.checkbox.slimlink Remember Me
+				a(href='#')#forgot-password.slimlink Password forgotten?

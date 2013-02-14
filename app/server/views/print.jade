@@ -1,0 +1,18 @@
+extends layout
+
+block content
+	div.container(style='margin:20px')
+		table.table.table-bordered.table-striped
+			thead
+				tr
+					th(style='width:40px') #
+					th(style='width:180px') User
+					th(style='width:180px') Name
+					th Account Created
+			tbody
+			- for (var i = 0; i < accts.length; i++)
+				tr
+					td= i+1
+					td= accts[i].user
+					td= accts[i].name
+					td= accts[i].added
