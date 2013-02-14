@@ -22,10 +22,9 @@ $(document).ready(function() {
 
 	// customize the account signup form //
 	$('#account-form h1').text('Signup');
-	$('#account-form #sub1').text('Get playing. With balls.');
-	$('#account-form #sub2').text('Choose your username & password');
+	$('#account-form #sub1').text('Get playing. With balls. For amusement only.');
 	$('#account-form-btn1').html('Cancel');
-	$('#account-form-btn2').html('Submit');
+	$('#account-form-btn2').html('Go!');
 	$('#account-form-btn2').addClass('btn-primary');
 
 	// setup the alert that displays when an account is successfully created //

@@ -1,36 +1,34 @@
 // preset form values if we receive a userdata object //
 - user = typeof(udata) != 'undefined' ? udata : { }
 
-#account-form-container
-	form( method="post")#account-form.form-horizontal.well.span6
-		h1
-		p#sub1.subheading
-		hr
-		fieldset
-			if user.name != null
-				#name-cg.control-group
-					label.control-label(for='name-tf') Name
-					.controls
-						input#name-tf.input-xlarge(type='text', name='name', value= user.name)
-				#email-cg.control-group
-					label.control-label(for='email-tf') Email
-					.controls
-						input#email-tf.input-xlarge(type='text', name='email', value= user.email)
-				hr
-				p#sub2.subheading
-			#user-cg.control-group
-				label.control-label(for='user-tf') Username
-				.controls
-					input#user-tf.input-xlarge.disabled(type='text', name='user', value= user.user)
-					label Your three-letter acronym. Case doesn't matter.
-			#pass-cg.control-group
-				label.control-label(for='pass-tf') Password
-				.controls
-					input#pass-tf.input-xlarge(type='password', name='pass', value='')
-					label At least six chars.
-			.form-actions
-				button(type='button')#account-form-btn1.btn
-				button(type='submit')#account-form-btn2.btn
+.boxglow
+	#account-form-container.singlebox.register
+		form( method="post")#account-form
+			.header
+				h1
+				p#sub1.subheading
+			fieldset
+				.content	
+					if user.name != null
+						#name-cg.control-group
+							.controls
+								input#name-tf(type='text', name='name', placeholder='Real Name', value=user.name).input-large
+						#email-cg.control-group
+							.controls
+								input#email-tf(type='text', name='email', placeholder='Email Address', value=user.email).input-large
+						hr
+						p#sub2.subheading
+					#user-cg.control-group
+						.controls
+							input#user-tf(type='text', name='user', placeholder='Username', value=user.user).input-large.disabled
+							span.help-block Your three-letter acronym. Case doesn't matter.
+					#pass-cg.control-group
+						.controls
+							input#pass-tf(type='password', name='pass', , placeholder='Password', value='').input-large
+							span.help-block At least six chars.
+				.footer.lastfooter
+					button(type='submit')#account-form-btn2.btn
+					button(type='button')#account-form-btn1.btn.fatlink
 
 // display form errors in a custom modal window //
 
