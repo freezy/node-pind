@@ -65,6 +65,7 @@ form {
 form input[type='text'],
 form input[type='password'] {
   padding: 10px 15px 8px;
+  height: initial;
   font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -127,17 +128,26 @@ form button[type="submit"]:focus {
   padding: 90px 30px 0px 30px;
   background: url("../img/swords.svg") no-repeat 30px 30px;
 }
-.modal-header h1 {
+.modal-header h1,
+.modal-header h2,
+.modal-header h3,
+.modal-header h4,
+.modal-header h5 {
   font-family: 'Bree Serif', serif;
   font-weight: 300;
+  text-shadow: 1px 1px 0 #fff;
+  color: #473522;
+}
+.modal-header h1 {
   font-size: 28px;
   line-height: 34px;
-  color: #473522;
-  text-shadow: 1px 1px 0 #fff;
   margin-bottom: 10px;
 }
 .modal-body {
   padding: 30px 30px 20px 30px;
+}
+.modal-body .alert {
+  margin: 10px 0 0 0;
 }
 .modal-body input:focus + div {
   left: -46px;
@@ -270,4 +280,14 @@ button.close {
 .singlebox.login form section.subfooter input[type='checkbox'] {
   float: right;
   margin-left: 10px;
+}
+.alert {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.alert-danger,
+.alert-error {
+  color: #9e441d;
+  background-color: #e0cac0;
+  border-color: #c99780;
 }

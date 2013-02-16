@@ -18,7 +18,7 @@ $(document).ready(function() {
 			if (status == 'success') window.location.href = '/home';
 		},
 		error : function(e) {
-			lv.showLoginError('Login Failure', 'Please check your username and/or password');
+			lv.showLoginError('Login Failure', 'Please check your username and/or password.');
 		}
 	});
 	$('input[name="user"]').focus();
@@ -34,7 +34,7 @@ $(document).ready(function() {
 				ev.hideEmailAlert();
 				return true;
 			} else {
-				ev.showEmailAlert("<b> Error!</b> Please enter a valid email address");
+				ev.showEmailAlert("<b> Error!</b> Please enter a valid email address.");
 				return false;
 			}
 		},

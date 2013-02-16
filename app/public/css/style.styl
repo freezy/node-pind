@@ -75,6 +75,7 @@ form
 	// text boxes
 	input[type='text'], input[type='password']
 		padding 10px 15px 8px
+		height initial
 		font-family font-sans
 		font-weight 400
 		font-size 14px
@@ -124,17 +125,20 @@ form
 	padding 90px 30px 0px 30px
 	background url('../img/swords.svg') no-repeat 30px 30px
 
-	h1
+	h1, h2, h3, h4, h5
 		font-family font-serif
 		font-weight 300
+		text-shadow 1px 1px 0 white
+		color color-darker
+	h1
 		font-size 28px
 		line-height 34px
-		color color-darker
-		text-shadow 1px 1px 0 white
 		margin-bottom 10px
 
 .modal-body
 	padding 30px 30px 20px 30px
+	.alert
+		margin: 10px 0 0 0
 
 	input:focus + div
 		left -46px;
@@ -244,4 +248,15 @@ button.close
 		section.subfooter
 			label, input[type='checkbox']
 				float right
-				margin-left 10px		
+				margin-left 10px
+
+
+// general bootstrap overloads
+
+.alert
+	border-radius 5px
+
+.alert-danger, .alert-error
+	color #9e441d
+	background-color #e0cac0
+	border-color #c99780
