@@ -2,20 +2,29 @@ extends layout
 
 block content
 	.boxglow
-		form(method="post", name="login-form").singlebox.login
-			.header
-				h1 Login here.
-				p.subheading If you don't have an account, press the register button to sign up for a new account.
-			.content
-				input(name="user", type="text", id="user-tf", placeholder="Username").input-large.username
-				.user-icon
-				input(type="password", name="pass", id="pass-tf", placeholder="Password").input-large.password
-				.pass-icon
-			.footer
-				button(name="submit", type="submit") Login
-				a(href='/signup')#create-account.fatlink Register
+		form(method="post")#login-form.singlebox.login
+				.modal-header
+					h1 Login here.
+					p.subheading If you don't have an account, press the register button to sign up for a new account.
+				.modal-body
+					input(name="user", type="text", placeholder="Username").input-large
+					.user-icon
+					input(name="pass", type="password", placeholder="Password").input-large
+					.pass-icon
+				.modal-footer
+					button(name="submit", type="submit") Login
+					a(href='/signup')#create-account.fatlink Register
 
-			.bottom.lastfooter
-				input(type="checkbox", checked='checked')#remember-me-checkbox
-				label(for="remember-me-checkbox")#remember-me.checkbox.slimlink Remember Me
-				a(href='#')#forgot-password.slimlink Forgot password?
+				.modal-subfooter.lastfooter
+					input(type="checkbox", checked='checked')#remember-me-checkbox
+					label(for="remember-me-checkbox")#remember-me.checkbox.slimlink Remember Me
+					a(href='#')#forgot-password.slimlink Forgot password?
+
+	include modals/alert
+	include modals/lost-password
+
+block append scripts
+	script(src='/js/views/login.js')
+	script(src='/js/controllers/loginController.js')
+	script(src='/js/form-validators/loginValidator.js')
+	script(src='/js/form-validators/emailValidator.js')

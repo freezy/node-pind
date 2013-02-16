@@ -10,7 +10,7 @@ $(document).ready(function() {
 				return false;
 			} else {
 				// append 'remember-me' option to formData to write local cookie //
-				formData.push({name : 'remember-me', value : $("input:checkbox:checked").length == 1})
+				formData.push({name : 'remember-me', value : $('#remember-me-checkbox').length == 1})
 				return true;
 			}
 		},
@@ -21,7 +21,7 @@ $(document).ready(function() {
 			lv.showLoginError('Login Failure', 'Please check your username and/or password');
 		}
 	});
-	$('#user-tf').focus();
+	$('input[name="user"]').focus();
 
 
 	// login retrieval form via email

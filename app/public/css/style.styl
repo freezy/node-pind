@@ -37,71 +37,22 @@ body
 	background-image url('../img/gradient.png')
 	background-repeat no-repeat
 
-// the box
-.singlebox
-	width 300px
-	margin 0 auto
-	position relative
+// box styling
+.singlebox, .modal
 	background color-lighter
 	border 1px solid #fff
 	border-radius 5px
 	box-shadow 0 1px 3px rgba(0,0,0,0.5)
 
-	.header 
-		padding 70px 30px 30px 30px
-		background url('../img/swords.png') no-repeat 30px 30px
-		background-size 65px 40px
-
-		h1
-			font-family font-serif
-			font-weight 300
-			font-size 28px
-			line-height 34px
-			color color-darker
-			text-shadow 1px 1px 0 white
-			margin-top 20px
-			margin-bottom 10px
-
-	.content
-		padding 0 30px 25px 30px
-
-
-		
-		.password, .pass-icon
-			margin-top 25px
-
-		input:focus + div
-			left: -46px;
-
-	.footer
-		padding 30px
-		overflow auto
-		background color-light
-		border-top 1px solid #fff
-		box-shadow inset 0 1px 0 rgba(0,0,0,0.15)
-
-		.fatlink 
-			padding 12px 0px 8px
-			
-	.bottom
-		padding 15px 30px
-		background color-lightish
-		border-top 1px solid #fff
-		box-shadow inset 0 1px 0 rgba(0,0,0,0.15)
-
-		label, input[type='checkbox']
-			float right
-			margin-left 10px
-
-	.lastfooter
-		border-radius-bottomleft 4px
-		border-radius-bottomright 4px
-
+// box dimensions / position
+.singlebox
+	width 300px
+	margin 0 auto
+	position relative
 
 	// animation
-	.input, .user-icon, .pass-icon, .button, .register
-		transition: all 0.4s ease
-
+	input, button, a, .user-icon, .pass-icon, .button, .register
+		transition all 0.4s ease !important
 
 // typography
 .subheading
@@ -120,6 +71,8 @@ body
 // forms
 form
 	margin 0
+
+	// text boxes
 	input[type='text'], input[type='password']
 		padding 10px 15px 8px
 		font-family font-sans
@@ -140,6 +93,7 @@ form
 			color color-darker
 			box-shadow inset 0 1px 2px rgba(0,0,0,0.25)
 
+	// submit button
 	button[type="submit"]
 			float right
 			padding 11px 25px
@@ -165,7 +119,49 @@ form
 				background color-btn-light
 				box-shadow inset 0 1px 6px rgba(256,256,256,0.75)		
 
+// sections
+.modal-header 
+	padding 90px 30px 0px 30px
+	background url('../img/swords.svg') no-repeat 30px 30px
 
+	h1
+		font-family font-serif
+		font-weight 300
+		font-size 28px
+		line-height 34px
+		color color-darker
+		text-shadow 1px 1px 0 white
+		margin-bottom 10px
+
+.modal-body
+	padding 30px 30px 20px 30px
+
+	input:focus + div
+		left -46px;
+
+.modal-footer
+	padding 30px
+	overflow auto
+	background color-light
+	border-top 1px solid #fff
+	box-shadow inset 0 1px 0 rgba(0,0,0,0.15)
+
+	.fatlink 
+		padding 12px 0px 8px
+		
+.modal-subfooter
+	padding 15px 30px
+	background color-lightish
+	border-top 1px solid #fff
+	box-shadow inset 0 1px 0 rgba(0,0,0,0.15)
+
+	label, input[type='checkbox']
+		float right
+		margin-left 10px
+
+.lastfooter
+	border-radius-bottomleft 4px
+	border-radius-bottomright 4px
 
 // icons		
 .user-icon, .pass-icon
@@ -175,7 +171,7 @@ form
 	position absolute
 	left 0px
 	padding-right 2px
-	z-index: -1
+	z-index -1
 	border-radius-topleft 5px
 	border-radius-bottomleft 5px
 
@@ -186,6 +182,9 @@ form
 .pass-icon
 	top 242px
 	background color-darkest url('../img/pass-icon.png') no-repeat center
+
+button.close
+	margin 15px
 
 // links
 .fatlink
@@ -198,6 +197,7 @@ form
 	font-size 18px
 	color color-darker
 	text-shadow 0px 1px 0 rgba(256,256,256,0.5)
+	text-align left
 	transition all 0.4s ease
 	border none
 	box-shadow none
@@ -221,7 +221,7 @@ form
 	color color-dark
 	cursor pointer
 	text-shadow 0px 1px 0 rgba(256,256,256,0.5)
-	transition: all 0.4s ease
+	transition all 0.4s ease
 
 	&:hover
 		color color-btn-dark
@@ -231,7 +231,17 @@ form
 		bottom -1px
 
 
-// login && register sizes
+// small boxes
 .singlebox.login, .singlebox.register
 	width 305px	
 
+// login box
+.singlebox.login 
+	form 
+		section.body input:focus + div
+			left -46px;
+
+		section.subfooter
+			label, input[type='checkbox']
+				float right
+				margin-left 10px		

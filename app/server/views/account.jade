@@ -3,12 +3,12 @@
 
 .boxglow
 	#account-form-container.singlebox.register
-		form( method="post")#account-form
-			.header
+		form(method="post")#account-form
+			.modal-header
 				h1
 				p#sub1.subheading
 			fieldset
-				.content	
+				.modal-body
 					if user.name != null
 						#name-cg.control-group
 							.controls
@@ -26,7 +26,7 @@
 						.controls
 							input#pass-tf(type='password', name='pass', , placeholder='Password', value='').input-large
 							span.help-block At least six chars.
-				.footer.lastfooter
+				.modal-footer.lastfooter
 					button(type='submit')#account-form-btn2.btn
 					button(type='button')#account-form-btn1.btn.fatlink
 
