@@ -9,14 +9,13 @@
 				p#sub1.subheading
 			fieldset
 				.modal-body
-					if user.name != null
+					if user.user != null
 						#name-cg.control-group
 							.controls
 								input#name-tf(type='text', name='name', placeholder='Real Name', value=user.name).input-large
 						#email-cg.control-group
 							.controls
 								input#email-tf(type='text', name='email', placeholder='Email Address', value=user.email).input-large
-						hr
 						p#sub2.subheading
 					#user-cg.control-group
 						.controls
@@ -31,5 +30,4 @@
 					button(type='button')#account-form-btn1.btn.fatlink
 
 // display form errors in a custom modal window //
-
 include modals/form-errors
