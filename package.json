@@ -3,8 +3,8 @@
 	"version": "0.0.1",
 	"description": "Pinball backend server",
 	"author": {
-		"name": "neh",
-		"email": "neh@hosts.ch"
+		"name": "freezy",
+		"email": "freezy@xbmc.org"
 	},
 	"repository": {
 		"type": "git",

@@ -9,7 +9,7 @@ var stylus = require('stylus');
 var app = express();
 var nib = require('nib');
 
-var httpPort = 8080;
+var httpPort = 80;
 var publicPath = '/app/public';
 
 function compile(str, path) {

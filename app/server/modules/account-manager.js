@@ -12,7 +12,7 @@ var db2 = new sqlite3.Database(dbName + '.db', sqlite3.OPEN_READWRITE | sqlite3.
 		console.log('Connected to sqlite :: ' + dbName + '.db');
 		db2.serialize(function() {
 //            db2.run('DROP TABLE IF EXISTS users;');
-			db2.run('CREATE TABLE IF NOT EXISTS users (user VARCHAR PRIMARY KEY NOT NULL UNIQUE, pass TEXT NOT NULL, name VARCHAR, email VARCHAR, added DATETIME);');
+			db2.run('CREATE TABLE IF NOT EXISTS users (user VARCHAR PRIMARY KEY NOT NULL UNIQUE, pass TEXT NOT NULL, name VARCHAR, email VARCHAR, added DATETIME, credits INTEGER DEFAULT 30);');
 		});
 	}
 });

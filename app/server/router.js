@@ -1,5 +1,6 @@
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
+var API = require('./modules/api');
 
 module.exports = function(app) {
 
@@ -174,6 +175,10 @@ module.exports = function(app) {
 		AM.delAllRecords(function() {
 			res.redirect('/print');
 		});
+	});
+
+	app.post('/api', API.checkCredentials, function(req, res) {
+		API.handle(req, res);
 	});
 
 	app.get('*', function(req, res) {
