@@ -9,7 +9,7 @@
   text-shadow: none;
 }
 body {
-  background-image: url("../img/bg.png");
+  background-image: url("../img/bg_black_noise.png");
   font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
   text-shadow: 1px 1px 0 #fff;
 }
@@ -22,7 +22,7 @@ body {
 }
 .singlebox,
 .modal {
-  background: #f0f0f0;
+  background: url("../img/bg_redox_01.png");
   border: 1px solid #fff;
   -webkit-border-radius: 5px;
   border-radius: 5px;
@@ -96,14 +96,14 @@ input[type='password']:focus {
 }
 input[type='text'][disabled],
 input[type='password'][disabled] {
-  background: #f0f0f0;
+  background: url("../img/bg_redox_01.png");
   -webkit-box-shadow: none;
   box-shadow: none;
   border: 1px solid #ded8d3;
 }
 input[type='text'][disabled]:hover,
 input[type='password'][disabled]:hover {
-  background: #f0f0f0;
+  background: url("../img/bg_redox_01.png");
   color: #9d9e9e;
 }
 button[type="submit"],
@@ -142,6 +142,7 @@ button[type="submit"]:focus,
 .modal-header {
   padding: 90px 30px 0px 30px;
   background: url("../img/swords.svg") no-repeat 30px 30px;
+  border: none;
 }
 .modal-header h1,
 .modal-header h2,
@@ -192,7 +193,17 @@ button[type="submit"]:focus,
   float: right;
   margin-left: 10px;
 }
-.lastfooter {
+.modal-body,
+.modal-subfooter,
+.modal-footer,
+.modal-header {
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+.modal-body.lastfooter,
+.modal-subfooter.lastfooter,
+.modal-footer.lastfooter,
+.modal-header.lastfooter {
   -moz-border-radius-bottomleft: 4px;
   -webkit-border-bottom-left-radius: 4px;
   border-bottom-left-radius: 4px;

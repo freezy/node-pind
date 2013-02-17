@@ -1,6 +1,8 @@
 var am = require('./account-manager');
 var njrpc = require('./njrpc');
 var express = require('express');
+var sys = require('sys');
+var exec = require('child_process').exec;
 
 // API namespace "Control"
 var Control = function() {
@@ -12,13 +14,19 @@ var Control = function() {
 		 * @param req Request object
 		 * @param params Parameter object containing "slot".
 		 */
-		InsertCoin : function(req, params) {
+		InsertCoin : function(req, params, callback) {
 			if ('slot' in params) {
 				var slot = params.slot;
-				return {
-					message : 'Coin inserted successfully!',
-					balance : req.user.credits
-				};
+				exec('D:/dev/node-pind/bin/Keysender.exe', function (error, stdout, stderr) {
+					if (error !== null) {
+						console.log(error);
+					} else {
+						callback({
+							message : 'Coin inserted successfully! - ' + stdout,
+							balance : req.user.credits
+						});
+					}
+				});
 			} else {
 				throw new Error('Parameter "slot" is missing.');
 			}
