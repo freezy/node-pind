@@ -41,11 +41,11 @@ body {
 .singlebox .pass-icon,
 .singlebox .button,
 .singlebox .register {
-  -webkit-transition: all 0.4s ease !important;
-  -moz-transition: all 0.4s ease !important;
-  -o-transition: all 0.4s ease !important;
-  -ms-transition: all 0.4s ease !important;
-  transition: all 0.4s ease !important;
+  -webkit-transition: all 0.3s ease !important;
+  -moz-transition: all 0.3s ease !important;
+  -o-transition: all 0.3s ease !important;
+  -ms-transition: all 0.3s ease !important;
+  transition: all 0.3s ease !important;
 }
 .subheading {
   font-size: 11px;
@@ -72,24 +72,24 @@ input[type='password'] {
   color: #9d9e9e;
   background: #fff;
   border: 1px solid #fff;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
   -webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  -o-transition: all 0.4s ease;
-  -ms-transition: all 0.4s ease;
-  transition: all 0.4s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 input[type='text']:hover,
 input[type='password']:hover {
-  background: #f7e8d8;
+  background: #f1ede8;
   color: #473522;
 }
 input[type='text']:focus,
 input[type='password']:focus {
-  background: #f7e8d8;
+  background: #f1ede8;
   color: #473522;
   -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
@@ -110,15 +110,15 @@ button[type="submit"],
 .btn.fat {
   float: right;
   padding: 11px 25px;
-  font-family: 'Bree Serif', serif;
-  font-weight: 300;
+  font-family: 'Arvo', serif;
+  font-weight: 700;
   font-size: 18px;
   color: #fff;
   text-shadow: 0px 1px 0 rgba(0,0,0,0.25);
   background: #e09d55;
   border: 1px solid #d48f46;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
   cursor: pointer;
   -webkit-box-shadow: inset 0 0 2px rgba(255,255,255,0.75);
   box-shadow: inset 0 0 2px rgba(255,255,255,0.75);
@@ -140,10 +140,9 @@ button[type="submit"]:focus,
   box-shadow: inset 0 1px 6px rgba(255,255,255,0.75);
 }
 .modal-header {
-  padding: 70px 30px 0px 30px;
+  padding: 30px 30px 0px 30px;
   background-repeat: no-repeat;
   background-position: right top;
-  background-image: url("../img/blood01.png");
   border: none;
 }
 .modal-header h1,
@@ -151,20 +150,32 @@ button[type="submit"]:focus,
 .modal-header h3,
 .modal-header h4,
 .modal-header h5 {
-  font-family: 'Bree Serif', serif;
-  font-weight: 300;
+  font-family: 'Arvo', serif;
   color: #473522;
 }
-.modal-header h1 {
+.modal-header h1font-weight 700 {
   font-size: 28px;
   line-height: 34px;
   margin-top: 20px;
   margin-bottom: 10px;
 }
-.modal-header .icon-swords {
+.modal-header .icon {
+  padding-bottom: 30px;
+}
+.modal-header .icon.swords {
   width: 65px;
   height: 42px;
   background: url("../img/swords.svg") no-repeat;
+}
+.modal-header .icon.keys {
+  width: 51px;
+  height: 87px;
+  background: url("../img/keys.svg") no-repeat;
+}
+.modal-header .icon.key {
+  width: 192px;
+  height: 74px;
+  background: url("../img/key.svg") no-repeat;
 }
 .modal-body {
   padding: 30px 30px 20px 30px;
@@ -236,11 +247,11 @@ button[type="submit"]:focus,
   border-bottom-left-radius: 5px;
 }
 .user-icon {
-  top: 195px;
+  top: 235px;
   background: #3e3429 url("../img/user-icon.png") no-repeat center;
 }
 .pass-icon {
-  top: 242px;
+  top: 284px;
   background: #3e3429 url("../img/pass-icon.png") no-repeat center;
 }
 button.close {
@@ -251,17 +262,17 @@ button.close {
   margin-right: 20px;
   cursor: pointer;
   background: none;
-  font-family: 'Bree Serif', serif;
-  font-weight: 300;
+  font-family: 'Arvo', serif;
+  font-weight: 400;
   font-size: 18px;
   color: #473522;
   text-shadow: 0px 1px 0 rgba(255,255,255,0.5);
   text-align: left;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  -o-transition: all 0.4s ease;
-  -ms-transition: all 0.4s ease;
-  transition: all 0.4s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
   border: none;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -292,11 +303,11 @@ button.close {
   color: #625648;
   cursor: pointer;
   text-shadow: 0px 1px 0 rgba(255,255,255,0.5);
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  -o-transition: all 0.4s ease;
-  -ms-transition: all 0.4s ease;
-  transition: all 0.4s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 .slimlink:hover {
   color: #b87d3e;
@@ -385,9 +396,9 @@ textarea {
   padding: 5px 0 0 10px;
 }
 .navbar .nav li a {
-  -webkit-transition: all 0.2s ease !important;
-  -moz-transition: all 0.2s ease !important;
-  -o-transition: all 0.2s ease !important;
-  -ms-transition: all 0.2s ease !important;
-  transition: all 0.2s ease !important;
+  -webkit-transition: all 0.3s ease !important;
+  -moz-transition: all 0.3s ease !important;
+  -o-transition: all 0.3s ease !important;
+  -ms-transition: all 0.3s ease !important;
+  transition: all 0.3s ease !important;
 }
