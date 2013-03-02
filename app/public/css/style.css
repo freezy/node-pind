@@ -9,7 +9,7 @@
   text-shadow: none;
 }
 body {
-  background-image: url("../img/bg_black_noise.png");
+  background-image: url("../img/bg_striped.png");
   font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
   text-shadow: 1px 1px 0 #fff;
 }
@@ -176,6 +176,11 @@ button[type="submit"]:focus,
   width: 192px;
   height: 74px;
   background: url("../img/key.svg") no-repeat;
+}
+.modal-header .icon.pen {
+  width: 188px;
+  height: 153px;
+  background: url("../img/pen.svg") no-repeat;
 }
 .modal-body {
   padding: 30px 30px 20px 30px;
