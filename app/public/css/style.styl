@@ -7,8 +7,8 @@ color-darker     = #473522  // text and foreground glyphes
 color-dark       = #625648	// slightly lighter text and foreground glyphes
 color-medium     = #9d9e9e  // text in blurred input fields or less important
 
-color-lightish   = #c9c4bf  // darker than highlighted background
-color-light      = #ded8d3  // highlighted background
+color-lightish   = rgba(81,67,54,0.30)    // darker than highlighted background
+color-light      = rgba(81,67,54,0.15) //rgba(126,111,99,0.28)  // highlighted background
 color-lighter    = url('../img/bg_redox_01.png') //#f0f0f0  // standard background
 
 color-btn-light  = #e09d55  // default button background
@@ -222,8 +222,8 @@ button[type="submit"], .btn.fat
 	left 0px
 	padding-right 2px
 	z-index -1
-	border-radius-topleft 5px
-	border-radius-bottomleft 5px
+	border-radius-topleft corner-size
+	border-radius-bottomleft corner-size
 
 .user-icon
 	top key-height + 148px
@@ -255,7 +255,7 @@ button.close
 	&:hover
 		color color-btn-dark
 		text-decoration none
-		background-color inherit
+		background-color rgba(0,0,0,0)
 		background-position inherit
 		border none
 		transition inherit
