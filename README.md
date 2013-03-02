@@ -8,10 +8,15 @@ stuff.
 Installation
 ============
 
-1. Get and install Node.js.
-2. Clone the repository to somewhere
-3. npm install -d
-4. node app.js
+1. Get and install [Node.js](http://nodejs.org/).
+2. Get and install [Python 2.7](http://www.python.org/download/releases/2.7.3/)
+3. Get and install the [Visual Studio 2010 Express](http://go.microsoft.com/?linkid=9709949)
+4. Clone the repository to somewhere
+5. npm install -d
+6. node app.js
+
+Visual Studio is needed for compiling the dependenices, notably sqlite3, the 
+database engine.
 
 Status
 ======
