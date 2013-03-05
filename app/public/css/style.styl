@@ -1,15 +1,17 @@
 @import('lib')
 
 
-// colors
+// :variables
+// ----------------------------------------------------------------------------
+
 color-darkest    = #3e3429  // nearly-black background
 color-darker     = #473522  // text and foreground glyphes
 color-dark       = #625648	// slightly lighter text and foreground glyphes
 color-medium     = #9d9e9e  // text in blurred input fields or less important
 
-color-lightish   = rgba(81,67,54,0.30)    // darker than highlighted background
-color-light      = rgba(81,67,54,0.15) //rgba(126,111,99,0.28)  // highlighted background
-color-lighter    = url('../img/bg_redox_01.png') //#f0f0f0  // standard background
+color-lightish   = rgba(81,67,54,0.30)           // darker than highlighted background
+color-light      = rgba(81,67,54,0.15)           // highlighted background, or rgba(126,111,99,0.28)
+color-lighter    = url('../img/bg_redox_01.png') // standard background (#f0f0f0)
 
 color-btn-light  = #e09d55  // default button background
 color-btn-dark   = #b87d3e  // typically when pushed
@@ -24,18 +26,23 @@ key-height = 87px
 animation-fast = 0.3s
 animation-slow = 0.5s
 
-// fonts
+
+// :fonts
+// ----------------------------------------------------------------------------
+
 font-serif = 'Arvo', serif
 font-sans = 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif
 
-// global stuff
+
+// :global stuff
+// ----------------------------------------------------------------------------
+
 selection(#fff, #0a4889)
 
 body
 	background-image url('../img/bg_striped.png')
 	font-family font-sans
 	text-shadow 1px 1px 0 white
-
 
 // background gradient
 .boxglow
@@ -59,15 +66,17 @@ body
 	position relative
 
 	// animation
-	input, button, a, .user-icon, .pass-icon, .button, .register
+	input, button, a, .button, .register
 		transition all animation-fast ease !important
 
-// typography
+
+// :typography
+// ----------------------------------------------------------------------------
+
 .subheading
 	font-size 11px
 	line-height 16px
 	color color-dark
-
 
 .help-block
 	font-size 11px
@@ -76,7 +85,10 @@ body
 	
 	margin-bottom 20px
 
-// forms
+
+// :forms
+// ----------------------------------------------------------------------------
+
 form
 	margin 0	
 
@@ -138,7 +150,9 @@ button[type="submit"], .btn.fat
 			background color-btn-light
 			box-shadow inset 0 1px 6px rgba(256,256,256,0.75)		
 
-// sections
+// :sections
+// ----------------------------------------------------------------------------
+
 .modal-header 
 	padding 30px 30px 0px 30px
 	background-repeat no-repeat;
@@ -147,32 +161,12 @@ button[type="submit"], .btn.fat
 
 	h1, h2, h3, h4, h5
 		font-family font-serif
-		
 		color color-darker
 	h1font-weight 700
 		font-size 28px
 		line-height 34px
 		margin-top 20px
 		margin-bottom 10px
-
-	.icon
-		padding-bottom 30px
-		&.swords
-			width 65px
-			height 42px
-			background url('../img/swords.svg') no-repeat
-		&.keys
-			width 51px
-			height key-height
-			background url('../img/keys.svg') no-repeat
-		&.key
-			width 192px
-			height 74px
-			background url('../img/key.svg') no-repeat
-		&.pen
-			width 188px
-			height 153px
-			background url('../img/pen.svg') no-repeat
 
 .modal-body
 	padding 30px 30px 20px 30px
@@ -213,30 +207,77 @@ button[type="submit"], .btn.fat
 		border-radius-bottomleft 4px
 		border-radius-bottomright 4px
 
-// icons		
-.user-icon, .pass-icon
-	width 46px
-	height 47px
-	display block
-	position absolute
-	left 0px
-	padding-right 2px
-	z-index -1
-	border-radius-topleft corner-size
-	border-radius-bottomleft corner-size
 
-.user-icon
-	top key-height + 148px
-	background color-darkest url('../img/user-icon.png') no-repeat center
+// :icons		
+// ----------------------------------------------------------------------------
 
-.pass-icon
-	top key-height + 197px
-	background color-darkest url('../img/pass-icon.png') no-repeat center
+.icon
+
+	font-family 'pind-symbols'
+	speak none
+	font-style normal
+	font-weight normal
+	font-variant normal
+	text-transform none
+	line-height 1
+	-webkit-font-smoothing antialiased
+	
+
+	&.swords:before
+		content "\61"
+
+	&.rope:before
+		content "\62"
+
+	&.pen:before
+		content "\63"
+		font-size 153px
+
+	&.key:before
+		content "\64"
+		font-size 74px
+
+
+	&.user:before
+		content "\21"
+
+	&.locked:before
+		content "\22"
+	
+
+	&.inputhint
+		width 46px
+		height 35px
+		display block
+		position absolute
+		left 0px
+		padding-top 12px
+		padding-left 15px
+		z-index -1
+		border-radius-topleft corner-size
+		border-radius-bottomleft corner-size
+		font-size 21px
+		color white
+		text-shadow none
+		background color-darkest
+		transition all animation-fast ease !important
+
+		&.user
+			top key-height + 148px
+		&.locked
+			top key-height + 197px
+
+.modal-header .icon
+	padding-bottom 30px
+	color color-darker
 
 button.close
 	margin 15px
 
-// links
+
+// :links
+// ----------------------------------------------------------------------------
+
 .fatlink
 	display block
 	margin-right 20px
@@ -261,6 +302,7 @@ button.close
 		transition inherit
 		box-shadow none
 		text-shadow inherit
+		
 	&:focus
 		position relative
 		bottom -1px
@@ -282,6 +324,9 @@ button.close
 		bottom -1px
 
 
+// :dialogs
+// ----------------------------------------------------------------------------
+
 // small boxes
 .singlebox.login, .singlebox.register
 	width 305px	
@@ -298,7 +343,8 @@ button.close
 				margin-left 10px
 
 
-// general bootstrap overloads
+// :bootstrap overloads
+// ----------------------------------------------------------------------------
 
 .alert
 	border-radius 5px
@@ -356,6 +402,11 @@ button, select, textarea
 		margin-top 1px
 		padding 5px 0 0 10px
 
-// animation
+
+// :animation
+// ----------------------------------------------------------------------------
+
 .navbar .nav li a
 	transition all animation-fast ease !important
+
+

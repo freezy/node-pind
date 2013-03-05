@@ -37,8 +37,6 @@ body {
 .singlebox input,
 .singlebox button,
 .singlebox a,
-.singlebox .user-icon,
-.singlebox .pass-icon,
 .singlebox .button,
 .singlebox .register {
   -webkit-transition: all 0.3s ease !important;
@@ -159,29 +157,6 @@ button[type="submit"]:focus,
   margin-top: 20px;
   margin-bottom: 10px;
 }
-.modal-header .icon {
-  padding-bottom: 30px;
-}
-.modal-header .icon.swords {
-  width: 65px;
-  height: 42px;
-  background: url("../img/swords.svg") no-repeat;
-}
-.modal-header .icon.keys {
-  width: 51px;
-  height: 87px;
-  background: url("../img/keys.svg") no-repeat;
-}
-.modal-header .icon.key {
-  width: 192px;
-  height: 74px;
-  background: url("../img/key.svg") no-repeat;
-}
-.modal-header .icon.pen {
-  width: 188px;
-  height: 153px;
-  background: url("../img/pen.svg") no-repeat;
-}
 .modal-body {
   padding: 30px 30px 20px 30px;
 }
@@ -235,14 +210,44 @@ button[type="submit"]:focus,
   -webkit-border-bottom-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
-.user-icon,
-.pass-icon {
+.icon {
+  font-family: 'pind-symbols';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+.icon.swords:before {
+  content: "\61";
+}
+.icon.rope:before {
+  content: "\62";
+}
+.icon.pen:before {
+  content: "\63";
+  font-size: 153px;
+}
+.icon.key:before {
+  content: "\64";
+  font-size: 74px;
+}
+.icon.user:before {
+  content: "\21";
+}
+.icon.locked:before {
+  content: "\22";
+}
+.icon.inputhint {
   width: 46px;
-  height: 47px;
+  height: 35px;
   display: block;
   position: absolute;
   left: 0px;
-  padding-right: 2px;
+  padding-top: 12px;
+  padding-left: 15px;
   z-index: -1;
   -moz-border-radius-topleft: 20px;
   -webkit-border-top-left-radius: 20px;
@@ -250,14 +255,25 @@ button[type="submit"]:focus,
   -moz-border-radius-bottomleft: 20px;
   -webkit-border-bottom-left-radius: 20px;
   border-bottom-left-radius: 20px;
+  font-size: 21px;
+  color: #fff;
+  text-shadow: none;
+  background: #3e3429;
+  -webkit-transition: all 0.3s ease !important;
+  -moz-transition: all 0.3s ease !important;
+  -o-transition: all 0.3s ease !important;
+  -ms-transition: all 0.3s ease !important;
+  transition: all 0.3s ease !important;
 }
-.user-icon {
+.icon.inputhint.user {
   top: 235px;
-  background: #3e3429 url("../img/user-icon.png") no-repeat center;
 }
-.pass-icon {
+.icon.inputhint.locked {
   top: 284px;
-  background: #3e3429 url("../img/pass-icon.png") no-repeat center;
+}
+.modal-header .icon {
+  padding-bottom: 30px;
+  color: #473522;
 }
 button.close {
   margin: 15px;
