@@ -22,7 +22,6 @@ exports.syncTables = function(callback) {
 			log.error('[ipdb] ' + err);
 			return;
 		}
-		log.info('[ipdb] Fetched' + games.length);
 
 		// 2. Fetch data from ipdb.org
 		async.eachLimit(games, 3, exports.enrich, function(err) {

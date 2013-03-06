@@ -76,7 +76,7 @@ exports.updateTables = function(games, now, callback) {
 			if (row) {
 				game.id = row.id;
 				db.prepare('UPDATE tables SET name = (?), manufacturer = (?), year = (?), filename = (?), type = (?), updated = (?), enabled = (?) WHERE id = (?);')
-					.run([ game.name, game.manufacturer, game.year, game.filename, game.type, now, true, row.id ], callback);
+					.run([ game.name, game.manufacturer, game.year, game.filename, game.type, now, game.enabled, row.id ], callback);
 			} else {
 				generateKey(db, 'tables', 3, function(err, key) {
 					game.id = key;
@@ -85,7 +85,7 @@ exports.updateTables = function(games, now, callback) {
 						return;
 					}
 					db.prepare('INSERT INTO tables (id, hpid, platform, name, manufacturer, year, filename, type, added, updated, enabled) VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?));')
-						.run([ key, game.hpid, game.platform, game.name, game.manufacturer, game.year, game.filename, game.type, now, now, true  ], callback);
+						.run([ key, game.hpid, game.platform, game.name, game.manufacturer, game.year, game.filename, game.type, now, now, game.enabled ], callback);
 				});
 			}
 		});
@@ -126,7 +126,7 @@ exports.updateTable = function(game, callback) {
 
 		// if nothing additional provided, return.
 		if (!dirty) {
-			log.debug('[tm] Game "' + row.name + '" is clean, not updating.');
+			log.debug('[tm] Game "' + row.name + '" (' + row.platform + ') is clean, not updating.');
 			callback(null, game);
 			return;
 		}

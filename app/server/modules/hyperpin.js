@@ -108,6 +108,7 @@ exports.syncTables = function(callback) {
 					game.type = g.type[0];
 					game.filename = g.$.name;
 					game.platform = platform;
+					game.enabled = g.enabled === undefined || (g.enabled[0].toLowerCase() == 'true' || g.enabled[0].toLowerCase() == 'yes');
 					games.push(game);
 				}
 				log.info('[hyperpin] [' + platform + '] Finished parsing ' + games.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
