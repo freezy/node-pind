@@ -21,7 +21,8 @@
 		"insanehash": "0.0.1",
 		"nib": "0.9.1",
 		"xml2js" : "0.2.6",
-		"konphyg" : "1.2.0"
+		"konphyg" : "1.2.0",
+		"gm" : "1.8.1"
 	},
 	"engines": {
 		"node": "0.8.14",

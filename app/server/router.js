@@ -182,8 +182,24 @@ module.exports = function(app) {
 		API.handle(req, res);
 	});
 
-	app.get('/asset/hp/table/:name.png', function(req, res) {
-		HP.asset(res, 'Table Images/' + req.params.name + '.png');
+	app.get('/asset/hp/banner/fp/:name.png', function(req, res) {
+		HP.asset_banner(res, '/Media/Future Pinball/Table Images/' + req.params.name + '.png');
+	});
+
+	app.get('/asset/hp/banner/vp/:name.png', function(req, res) {
+		HP.asset_banner(res, '/Media/Visual Pinball/Table Images/' + req.params.name + '.png');
+	});
+
+	app.get('/asset/hp/table/vp/:name.small.png', function(req, res) {
+		HP.asset_table(res, '/Media/Visual Pinball/Table Images/' + req.params.name + '.png', 250);
+	});
+
+	app.get('/asset/hp/table/vp/:name.medium.png', function(req, res) {
+		HP.asset_table(res, '/Media/Visual Pinball/Table Images/' + req.params.name + '.png', 512);
+	});
+
+	app.get('/asset/hp/table/vp/:name.png', function(req, res) {
+		HP.asset_table(res, '/Media/Visual Pinball/Table Images/' + req.params.name + '.png');
 	});
 
 	app.get('*', function(req, res) {

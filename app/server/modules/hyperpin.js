@@ -3,25 +3,41 @@ var path = require('path');
 var xml2js = require('xml2js');
 var config =  require('konphyg')(__dirname + '../../../config');
 var settings = config('settings');
+var gm = require('gm');
 
-
-exports.asset = function(res, p) {
-
-	var filePath = settings.hyperpin.path + '/Media/Future Pinball/' + p;
-	path.exists(filePath, function(exists) {
+asset = function(res, p, process) {
+	var filePath = settings.hyperpin.path + p;
+	fs.exists(filePath, function(exists) {
 		if (exists) {
-			fs.readFile(filePath, function(err, content) {
-				if (err) {
-					res.send(err, 500);
-					return;
-				}
+			var now = new Date().getTime();
+			process(gm(filePath)).stream(function (err, stdout, stderr) {
+				if (err) next(err);
 				res.writeHead(200, { 'Content-Type': 'image/png' });
-				res.end(content);
+				stdout.pipe(res);
+				console.log("image processed in %d ms.", new Date().getTime() - now);
 			});
 		} else {
 			res.writeHead(404);
 			res.end('Sorry, ' + filePath + ' not found.');
 		}
+	});
+};
+
+exports.asset_banner = function(res, p) {
+	asset(res, p, function(gm) {
+		return gm
+			.rotate('black', -45)
+			.crop(800, 150, 400, 1250);
+	});
+}
+
+exports.asset_table = function(res, p, size) {
+	asset(res, p, function(gm) {
+		gm.rotate('black', -90);
+		if (size != null) {
+			gm.resize(size, size);
+		}
+		return gm;
 	});
 }
 
