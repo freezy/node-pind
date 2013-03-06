@@ -1,7 +1,29 @@
 var fs = require('fs');
+var path = require('path');
 var xml2js = require('xml2js');
 var config =  require('konphyg')(__dirname + '../../../config');
 var settings = config('settings');
+
+
+exports.asset = function(res, p) {
+
+	var filePath = settings.hyperpin.path + '/Media/Future Pinball/' + p;
+	path.exists(filePath, function(exists) {
+		if (exists) {
+			fs.readFile(filePath, function(err, content) {
+				if (err) {
+					res.send(err, 500);
+					return;
+				}
+				res.writeHead(200, { 'Content-Type': 'image/png' });
+				res.end(content);
+			});
+		} else {
+			res.writeHead(404);
+			res.end('Sorry, ' + filePath + ' not found.');
+		}
+	});
+}
 
 /**
  * Reads XML from Hyperpin config and returns list of found games.

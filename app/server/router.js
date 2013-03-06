@@ -1,6 +1,7 @@
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
 var API = require('./modules/api');
+var HP = require('./modules/hyperpin');
 
 module.exports = function(app) {
 
@@ -179,6 +180,10 @@ module.exports = function(app) {
 
 	app.post('/api', API.checkCredentials, function(req, res) {
 		API.handle(req, res);
+	});
+
+	app.get('/asset/hp/table/:name.png', function(req, res) {
+		HP.asset(res, 'Table Images/' + req.params.name + '.png');
 	});
 
 	app.get('*', function(req, res) {
