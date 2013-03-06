@@ -1,12 +1,78 @@
 var request = require('request');
+var async = require('async');
 var natural = require('natural');
-var xregexp = require('xregexp').XRegExp;
+var log = require('winston');
 var tm = require('./table-manager');
+var hp = require('./hyperpin');
 
+/**
+ * Performs a complete update from HyperPin and ipdb.org:
+ *  <ol><li>Sync DB with HyperPin's XML "database"</li>
+ * 		<li>Fetch additional metadata from ipdb.org for each table</li>
+ * 		<li>Fetch top 300 list and update table rankings</li></ol>
+ *
+ * @param callback Function to execute after completion, invoked with one argumens:
+ * 	<ol><li>{String} Error message on error</li></ol>
+ */
+exports.syncTables = function(callback) {
+
+	// 1. Sync with local database (aka HyperPin)
+	hp.syncTables(function(err, games) {
+		if (err) {
+			log.error('[ipdb] ' + err);
+			return;
+		}
+		log.info('[ipdb] Fetched' + games.length);
+
+		// 2. Fetch data from ipdb.org
+		async.eachLimit(games, 3, exports.enrich, function(err) {
+
+			// 3. Update db
+			async.eachSeries(games, tm.updateTable, function(err) {
+				if (err) {
+					log.error('[ipdb] ' + err);
+				} else {
+					log.info('[ipdb] ' + games.length + ' games updated.');
+
+					// 4. Update ranking from top 300 list
+					exports.syncTop300(function(err, games) {
+						if (err) {
+							log.error('[ipdb] ' + err);
+						} else {
+							log.info('[ipdb] Top 300 synced (' + games.length + ' games).');
+							callback();
+						}
+					});
+				}
+			});
+		});
+	});
+}
+
+/**
+ * Tries to find the pinball table on ipdb.org and adds additional metadata to
+ * the given object if found (no database updates).
+ *
+ * Currently, we're pulling:
+ * 	<ul><li>name - Name</li>
+ * 	    <li>ipdbno - ipdb.org number</li>
+ * 	    <li>ipdbmfg - ipdb.org manufacturer ID</li>
+ * 	    <li>modelno - Model number</li>
+ * 	    <li>rating - Rating</li>
+ * 	    <li>short - Abbreviation</li></ul>
+ *
+ * Note that games of type OG (original) are skipped directly, since ipdb.org
+ * only contains real world machines.
+ *
+ * @param game Game from database. Must contain at least name.
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Object} Updated table object</li></ol>
+ */
 exports.enrich = function(game, callback) {
 
 	if (!game.name) {
-		callback('Cannot search without name!');
+		callback('First parameter must contain at least "name".');
 		return;
 	}
 
@@ -15,9 +81,12 @@ exports.enrich = function(game, callback) {
 		return;
 	}
 
-	console.log("enriching " + game.name);
-	var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&yr=' + game.year + '&searchtype=advanced';
-	console.log("requesting " + url);
+	log.info('[ipdb] Fetching data for ' + game.name);
+	var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
+	if (game.year) {
+		url += '&yr=' + game.year;
+	}
+	log.debug('[ipdb] Requesting ' + url);
 	request(url, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
 
@@ -30,19 +99,30 @@ exports.enrich = function(game, callback) {
 				game.rating = body.match(/<b>Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i)[1];
 				game.short = body.match(/Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i)[1];
 
-				console.log("%d found title %s (distance %s)", m[1], game.name, natural.LevenshteinDistance(game.name, m[2]));
+				var distance = natural.LevenshteinDistance(game.name, m[2]);
+				log.debug('[ipdb] Found title "' + game.name + '" as #' + m[1] + ' (distance ' + distance + ')');
+				callback(null, game);
 
-				callback();
 			} else {
-				console.log('nothing found in http body.');
+				log.warn('[ipdb] Nothing found in HTTP body.');
 				callback('nothing found in http body.');
 			}
 		}
 	});
 }
 
+/**
+ * Fetches the Top 300 page from ipdb.org and updates the database with the
+ * ranking.
+ *
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Array} List of found tables</li></ol>
+ */
 exports.syncTop300 = function(callback) {
+
 	var url = 'http://www.ipdb.org/lists.cgi?anonymously=true&list=top300&submit=No+Thanks+-+Let+me+access+anonymously';
+	log.info('[ipdb] Fetching top 300 list from ipdb.org');
 	request(url, function (error, response, body) {
 		var regex = /<td align=right nowrap>(\d+)[^<]*<\/td>\s*<td[^>]*>[^<]*<font[^>]*>[^<]*<\/font>\s*<img[^>]*>[^<]*<\/td>\s*<td><font[^>]*>(\d+)<\/font>\s*<B>([^<]+)<\/B>/gi;
 		var match;
@@ -61,13 +141,17 @@ exports.syncTop300 = function(callback) {
 			}
 			var foundGames = 0;
 			var updatedGames = [];
-			tm.find(game, function(err, row, game) {
+
+			// try to find a match in db
+			tm.find(game, function(err, rows, game) {
 				if (err) {
-					console.log("ERROR: " + err);
+					log.error('[ipdb] ' + err);
 					callback(err);
 					return;
-				} else {
-					if (row !== undefined) {
+				} else if (rows.length > 0) {
+					for (var i = 0; i < rows.length; i++) {
+						var row = rows[i];
+						log.debug('[ipdb] Matched ' + game.name + ' (' + row.platform + ')');
 						foundGames++;
 						var updatedGame = {
 							id: row.id,
@@ -76,6 +160,7 @@ exports.syncTop300 = function(callback) {
 						tm.updateTable(updatedGame, function(err, game) {
 							updatedGames.push(game);
 							if (updatedGames.length == foundGames) {
+								log.error('[ipdb] Done, returning found games.');
 								callback(null, updatedGames);
 							}
 						});
@@ -84,6 +169,5 @@ exports.syncTop300 = function(callback) {
 			});
 			idx++;
 		}
-		console.log("looped through regex matches.");
 	});
 }

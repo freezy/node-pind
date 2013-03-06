@@ -1,5 +1,6 @@
 var sqlite3 = require('sqlite3').verbose();
 var async = require('async');
+var log = require('winston');
 
 var dbName = 'pind';
 var db = new sqlite3.Database(dbName + '.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, function(e) {
@@ -15,6 +16,7 @@ var db = new sqlite3.Database(dbName + '.db', sqlite3.OPEN_READWRITE | sqlite3.O
 				'manufacturer VARCHAR, ' +
 				'year INTEGER, ' +
 				'type VARCHAR(2), ' +
+				'platform VARCHAR, ' +
 				'filename VARCHAR, ' +
 				'hpid VARCHAR, ' +
 				'ipdbno INTEGER, ' +
@@ -30,6 +32,12 @@ var db = new sqlite3.Database(dbName + '.db', sqlite3.OPEN_READWRITE | sqlite3.O
 	}
 });
 
+exports.findAll = function(callback) {
+	db.all("SELECT * FROM tables;", [], function(err, rows) {
+		log.debug('[tm] Returned all ' + rows.length + ' games.');
+		callback(err, rows);
+	});
+}
 
 exports.find = function(params, callback) {
 	if (Object.keys(params).length == 0) {
@@ -53,17 +61,18 @@ exports.find = function(params, callback) {
 		return;
 	}
 	query = query.substr(0, query.length - 5) + ';'
-	db.get(query, paramValues, function(err, row) {
-		callback(err, row, params);
+	db.all(query, paramValues, function(err, rows) {
+		callback(err, rows, params);
 	});
 };
 
-exports.updateTables = function(games, callback) {
+exports.updateTables = function(games, now, callback) {
 
-	var now = new Date().getTime();
 	var updateTable = function(game, callback) {
-
-		db.get('SELECT * FROM tables WHERE hpid = (?)', [ game.hpid ], function(err, row) {
+		if (!game.hpid || !game.platform) {
+			callback('Provided object must contain at least name and platform.');
+		}
+		db.get('SELECT * FROM tables WHERE hpid = (?) AND platform = (?)', [ game.hpid, game.platform ], function(err, row) {
 			if (row) {
 				game.id = row.id;
 				db.prepare('UPDATE tables SET name = (?), manufacturer = (?), year = (?), filename = (?), type = (?), updated = (?), enabled = (?) WHERE id = (?);')
@@ -75,15 +84,15 @@ exports.updateTables = function(games, callback) {
 						callback(err);
 						return;
 					}
-					db.prepare('INSERT INTO tables (id, hpid, name, manufacturer, year, filename, type, added, updated, enabled) VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?));')
-						.run([ key, game.hpid, game.name, game.manufacturer, game.year, game.filename, game.type, now, now, true  ], callback);
+					db.prepare('INSERT INTO tables (id, hpid, platform, name, manufacturer, year, filename, type, added, updated, enabled) VALUES ((?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?));')
+						.run([ key, game.hpid, game.platform, game.name, game.manufacturer, game.year, game.filename, game.type, now, now, true  ], callback);
 				});
 			}
 		});
 	};
 
 	async.eachSeries(games, updateTable, function(err) {
-		console.log("db updated, deactivating dirty records.");
+		log.debug("[tn] Database is now updated, deactivating dirty records.");
 		db.prepare('UPDATE tables SET enabled = (?) WHERE updated < (?);').run([ false, now ], function(err) {
 			callback(err, games);
 		});
@@ -92,10 +101,10 @@ exports.updateTables = function(games, callback) {
 
 exports.updateTable = function(game, callback) {
 	if (!game.id) {
-		callback("id must of game must be set.");
+		callback('id must of game must be set.');
 	}
 
-	console.log("updating game %j", game);
+	log.debug('[tm] Updating game: ', game);
 
 	db.get('SELECT * FROM tables WHERE id = (?)', [ game.id ], function(err, row) {
 		if (!row) {
@@ -117,12 +126,11 @@ exports.updateTable = function(game, callback) {
 
 		// if nothing additional provided, return.
 		if (!dirty) {
-			console.log("table is clean, not updating.");
+			log.debug('[tm] Game "' + row.name + '" is clean, not updating.');
 			callback(null, game);
 			return;
 		}
 		query += 'updated = (?) WHERE id = (?);';
-		console.log(query);
 		params.push(new Date().getTime());
 		params.push(game.id);
 

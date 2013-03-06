@@ -101,7 +101,7 @@ exports.getAllRecords = function(callback) {
 	db.all('SELECT * FROM users', [], callback);
 };
 exports.delAllRecords = function(callback) {
-	db.get('SELECT * FROM users;', [ ], callback);
+	db.get('SELECT * FROM users;', [], callback);
 };
 
 /* private encryption & validation methods */
