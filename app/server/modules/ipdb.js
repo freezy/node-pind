@@ -26,6 +26,11 @@ exports.syncTables = function(callback) {
 		// 2. Fetch data from ipdb.org
 		async.eachLimit(games, 3, exports.enrich, function(err) {
 
+			if (err) {
+				log.error('[ipdb] ' + err);
+				return;
+			}
+
 			// 3. Update db
 			async.eachSeries(games, tm.updateTable, function(err) {
 				if (err) {
@@ -76,7 +81,7 @@ exports.enrich = function(game, callback) {
 	}
 
 	if (game.type == 'OG') { // ignore original games
-		callback();
+		callback(null, game);
 		return;
 	}
 
@@ -110,7 +115,7 @@ exports.enrich = function(game, callback) {
 
 			} else {
 				log.warn('[ipdb] Nothing found in HTTP body.');
-				callback('nothing found in http body.');
+				callback(null, game);
 			}
 		}
 	});
