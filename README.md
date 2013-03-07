@@ -17,15 +17,25 @@ Installation
 7. `npm install -d`
 8. `node app.js`
 
-Visual Studio is needed for compiling the dependenices, notably sqlite3, the 
-database engine.
+Visual Studio is needed for compiling the dependencies, notably sqlite3, the
+database engine. This concerns only Windows, but then all the pinball stuff
+doesn't run on other platforms.
 
 Status
 ======
 
-Still under heavy development.
+Features
+--------
 
-Contact
+* Register user via web
+* Trigger coin drop via API
+* Parse HyperPin "database" and store locally
+* Scrape ipdb.org for additional meta data
+* Rudimentary access to HyperPin media via API
+
+More to come. Still under heavy development.
+
+License
 =======
 
-Use freezy@xbmc.org until this becomes official.
+Licensed under GPLv2. See LICENSE.txt.
