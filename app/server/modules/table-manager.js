@@ -32,8 +32,12 @@ var db = new sqlite3.Database(dbName + '.db', sqlite3.OPEN_READWRITE | sqlite3.O
 	}
 });
 
+exports.get = function(id, callback) {
+	db.get('SELECT * FROM tables WHERE id = (?);', id, callback);
+}
+
 exports.findAll = function(callback) {
-	db.all("SELECT * FROM tables;", [], function(err, rows) {
+	db.all('SELECT * FROM tables;', [], function(err, rows) {
 		log.debug('[tm] Returned all ' + rows.length + ' games.');
 		callback(err, rows);
 	});

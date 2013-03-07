@@ -81,9 +81,15 @@ exports.enrich = function(game, callback) {
 	}
 
 	log.info('[ipdb] Fetching data for ' + game.name);
-	var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
-	if (game.year) {
-		url += '&yr=' + game.year;
+//	var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
+	var url;
+	if (game.ipdbno) {
+		url = 'http://www.ipdb.org/machine.cgi?id=' + game.ipdbno;
+	} else {
+		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(game.name) + '&searchtype=quick';
+//		if (game.year) {
+//			url += '&yr=' + game.year;
+//		}
 	}
 	log.debug('[ipdb] Requesting ' + url);
 	request(url, function (error, response, body) {
@@ -93,10 +99,10 @@ exports.enrich = function(game, callback) {
 			if (m) {
 				game.name = m[2];
 				game.ipdbno = m[1];
-				game.modelno = body.match(/Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i)[1];
-				game.ipdbmfg = body.match(/Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i)[1];
-				game.rating = body.match(/<b>Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i)[1];
-				game.short = body.match(/Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i)[1];
+				game.modelno = match(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
+				game.ipdbmfg = match(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
+				game.rating = match(body, /<b>Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
+				game.short = match(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i);
 
 				var distance = natural.LevenshteinDistance(game.name, m[2]);
 				log.debug('[ipdb] Found title "' + game.name + '" as #' + m[1] + ' (distance ' + distance + ')');
@@ -108,6 +114,11 @@ exports.enrich = function(game, callback) {
 			}
 		}
 	});
+
+	var match = function(str, regex) {
+		var m = str.match(regex);
+		return m ? m[1] : null;
+	}
 }
 
 /**
