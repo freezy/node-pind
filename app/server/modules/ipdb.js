@@ -75,6 +75,8 @@ exports.syncTables = function(callback) {
  */
 exports.enrich = function(game, callback) {
 
+	var forceSearch = false;
+
 	if (!game.name) {
 		callback('First parameter must contain at least "name".');
 		return;
@@ -86,44 +88,66 @@ exports.enrich = function(game, callback) {
 	}
 
 	log.info('[ipdb] Fetching data for ' + game.name);
-//	var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
 	var url;
-	if (game.ipdbno) {
+	if (game.ipdbno && !forceSearch) {
 		url = 'http://www.ipdb.org/machine.cgi?id=' + game.ipdbno;
 	} else {
-		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(game.name) + '&searchtype=quick';
-//		if (game.year) {
-//			url += '&yr=' + game.year;
-//		}
+		// advanced search: var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
+		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(game.name.replace(/[^0-9a-z]+/ig, ' ')) + '&searchtype=quick';
 	}
 	log.debug('[ipdb] Requesting ' + url);
 	request(url, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
 
-			var m = body.match(/<a name="(\d+)">([^<]+)/i);
+			var m;
+
+			// check if multiple matches
+			m = body.match(/(\d+) records match/i);
+			if (m && m[1] > 1) {
+				log.debug('[ipdb] Found ' + m[1] + ' hits for "' + game.name + '".');
+
+				// parse the matches
+				var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"\s+href="#(\d+)">([^<]+)/ig;
+				var matches = [];
+				while (m = regex.exec(body)) {
+					matches.push({ name: m[4], year: m[2], ipdbid: m[3], distance: natural.LevenshteinDistance(game.name.toLowerCase(), m[4].toLowerCase()) });
+				}
+
+				// figure out best match
+				var match = findBestMatch(matches, game);
+				log.info('[ipdb] Figured best match is "' + match.name + '" (' + match.ipdbid + ')');
+
+				// strip off non-matches from body
+				regex =  new RegExp('<table border=0 width="100%"><tr><td><font[^>]*><B><a name="' + match.ipdbid + '">[.\\s\\S]*?<hr width="80', 'gi');
+				m = body.match(regex);
+				if (!m) {
+					callback('Cannot find matched game "' + match.name + '" in body.');
+					return;
+				}
+				body = m[0];
+			}
+
+			m = body.match(/<a name="(\d+)">([^<]+)/i);
 			if (m) {
 				game.name = m[2];
 				game.ipdbno = m[1];
-				game.modelno = match(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
-				game.ipdbmfg = match(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
-				game.rating = match(body, /<b>Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
-				game.short = match(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i);
+				game.modelno = firstMatch(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
+				game.ipdbmfg = firstMatch(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
+				game.rating = firstMatch(body, /<b>Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
+				game.short = firstMatch(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i);
 
 				var distance = natural.LevenshteinDistance(game.name, m[2]);
 				log.debug('[ipdb] Found title "' + game.name + '" as #' + m[1] + ' (distance ' + distance + ')');
 				callback(null, game);
 
 			} else {
-				log.warn('[ipdb] Nothing found in HTTP body.');
+				log.warn('[ipdb] Game "' + game.name + '" not found in HTTP body.');
 				callback(null, game);
 			}
 		}
 	});
 
-	var match = function(str, regex) {
-		var m = str.match(regex);
-		return m ? m[1] : null;
-	}
+
 }
 
 /**
@@ -185,4 +209,51 @@ exports.syncTop300 = function(callback) {
 			idx++;
 		}
 	});
+}
+
+var firstMatch = function(str, regex) {
+	var m = str.match(regex);
+	return m ? m[1] : null;
+}
+
+var findBestMatch = function(matches, game) {
+
+	// sort by distance
+	matches.sort(function(a, b) {
+		if (a.distance < b.distance) {
+			return -1;
+		}
+		if (a.distance > b.distance) {
+			return 1;
+		}
+		return 0;
+	});
+
+	// check for ties
+	var best = matches[0].distance;
+	var bestMatches = [];
+	for (var i = 0; i < matches.length; i++) {
+		if (matches[i].distance == best) {
+			bestMatches.push(matches[i]);
+		} else {
+			break;
+		}
+	}
+	if (bestMatches.length == 1) {
+		return bestMatches[0];
+	}
+
+	// on tie, return nearest year
+	bestMatches.sort(function(a, b) {
+		if (Math.abs(a.year - game.year) < Math.abs(b.year - game.year)) {
+			return -1;
+		}
+		if (Math.abs(a.year - game.year) > Math.abs(b.year - game.year)) {
+			return 1;
+		}
+		return 0;
+	})
+	console.log('matches are now sorted: %j', bestMatches);
+
+	return bestMatches[0];
 }
