@@ -84,7 +84,7 @@ exports.getScriptFromTable = function(tablePath, callback) {
 	var now = new Date().getTime();
 	fs.open(tablePath, 'r', function(err, fd) {
 		var stat = fs.fstatSync(fd);
-		var buf = new Buffer(8)
+		var buf = new Buffer(8);
 		log.debug('[vp] [script] Found ' + tablePath + ' at ' + stat.size + ' bytes.');
 		var scriptStart, scriptEnd;
 		for (var i = stat.size; i > 0; i--) {

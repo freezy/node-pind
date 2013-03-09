@@ -24,14 +24,22 @@ doesn't run on other platforms.
 Status
 ======
 
-Features
---------
+Working
+-------
 
 * Register user via web
 * Trigger coin drop via API
 * Parse HyperPin "database" and store locally
 * Scrape ipdb.org for additional meta data
 * Rudimentary access to HyperPin media via API
+
+TODO
+----
+
+* Retrieve high scores from ROMs
+* Link users to highscores
+* Web table browser
+* Score stats for registered users
 
 More to come. Still under heavy development.
 
