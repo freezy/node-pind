@@ -1,8 +1,99 @@
 var fs = require('fs');
 var log = require('winston');
 var ocd = require('ole-doc').OleCompoundDoc;
+var async = require('async');
+var util = require('util');
 var config =  require('konphyg')(__dirname + '../../../config');
 var settings = config('settings');
+
+
+exports.scanDirectory = function(path, callback) {
+
+	fs.readdir(path, function(err, files) {
+		var tables = [];
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			if (file.substr(file.length - 3, file.length).toLowerCase() == 'vpt') {
+				tables.push({ path: path + file, filename: file });
+			}
+		}
+//		console.log("%j", tables);
+		async.eachLimit(tables, 1, identify, function (err) {
+			console.log(util.inspect(tables));
+		});
+	})
+};
+
+var identify = function(table, callback) {
+
+	// those are applied multiple times as long as stuff gets stripped
+	var prestrip = [
+		/^fs[\._\-\s]/i,
+		/^vp9\d*[\._\-\s]/i,
+		/^jp[\._\-\s]/i
+	];
+
+	// those are applied once, in that order.
+	var stripme = [
+		/\(.*/,
+		/\[[^\[]+\]/,
+		/[\._\-\s]fs[\._\-].*/i,
+		/[\._\-\s]uw[\._\-\s]/gi,
+		/[\._\-\s]vp9.*/i,
+		/[\._\-\s]v\s*\d[\._\-\s].*/i,
+		/[\._\-\s]hr\.vpt/i,
+		/megapin|stern|bally|chrome|gi8|bmpr/gi,
+		/night[\._\-\s]?mod|[\._\-\s]mod[\._\-\s]/i
+	];
+
+	// like prestrip, those are also executed as long as they manipulate the string.
+	var postprocess = [
+		// make two words out of camel cases
+		function(str) { return str.replace(/([a-z])([A-Z][a-z])/, '$1 $2'); },
+		// make two words out of trailing number
+		function(str) { return (str + (' ')).replace(/([a-z])(\d+[\._\-\s])/, '$1 $2 ').trim(); },
+		// other crap
+		function(str) { return (str + (' ')).replace(/[\._\-\s](ur|nf)[\._\-\s]/ig, ' '); },
+		// game-specfic regexes
+		function(str) { return str.replace(/hs2/i, 'High Speed II'); },
+		function(str) { return str.replace(/^tom$/i, 'Theatre of Magic'); },
+		function(str) { return str.replace(/^taf$/i, 'The Addams Family'); },
+		function(str) { return str.replace(/^t2$/i, 'Terminator 2 Judgment Day'); }
+	];
+
+	var name = table.filename, before, i;
+
+	do {
+		before = name;
+		for (var i = 0; i < prestrip.length; i++) {
+			name = name.replace(prestrip[i], '');
+		}
+	} while (name != before);
+	for (i = 0; i < stripme.length; i++) {
+		name = name.replace(stripme[i], '');
+	}
+	do {
+		before = name;
+		for (var i = 0; i < postprocess.length; i++) {
+			name = postprocess[i](name);
+		}
+	} while (name != before);
+
+	// replace special chars by spaces
+	name = name.replace(/[^a-z0-9]/ig, ' ');
+	name = name.replace(/\s+/ig, ' ');
+	table.name = name.trim();
+	callback()
+/*	exports.getGameRomName(table.path, function(err, romname) {
+		if (err) {
+			console.log('Error getting ROM: ' + err);
+		} else {
+			console.log("got rom: %s", romname);
+			table.rom = romname;
+		}
+		callback();
+	})*/
+};
 
 /**
  * Returns the ROM name for a given table.
@@ -25,7 +116,12 @@ exports.getGameRomName = function(tablePath, callback) {
 				var m = script.match(regex);
 				return m ? m[1] : null;
 			}
-			var gameName = getVariableValue(m[1]);
+			var gameName;
+			if (m[1].match(/\W/)) {
+				gameName = m[1];
+			} else {
+				gameName = getVariableValue(m[1]);
+			}
 
 			// direct hit, all good.
 			if (gameName.indexOf('"') == 0) {
