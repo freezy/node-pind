@@ -26,7 +26,8 @@
 		"async" : "0.2.6",
 		"request" : "2.14.0",
 		"natural" : "0.1.19",
-		"winston" : "0.6.2"
+		"winston" : "0.6.2",
+		"ole-doc" : "0.1.0"
 	},
 	"engines": {
 		"node": "0.8.14",

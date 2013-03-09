@@ -1,5 +1,8 @@
 {
 	"hyperpin" : {
 		"path": "E:/Pinball/HyperPin"
+	},
+	"visualpinball" : {
+		"path": "E:/Pinball/Visual Pinball-103"
 	}
 }

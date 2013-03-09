@@ -1,4 +1,7 @@
 var fs = require('fs');
+var ocd = require('ole-doc').OleCompoundDoc;
+var config =  require('konphyg')(__dirname + '../../../config');
+var settings = config('settings');
 
 /**
  * scripts start after 04 00 00 00 43 4F 44	45 (0x04 0 0 0 "CODE")
@@ -15,6 +18,22 @@ exports.getGameRomName = function(tablePath, callback) {
 			console.log('not found.');
 		}
 	})
+}
+
+exports.getTableSetting = function(storageKey, streamKey, callback) {
+	var doc = new ocd(settings.visualpinball.path + '/User/VPReg.stg');
+	doc.on('err', function(err) {
+		callback(err);
+	});
+	doc.on('ready', function() {
+		var stream = doc.storage(storageKey).stream(streamKey);
+		stream.on('data', function(buf) {
+			var data = buf.toString();
+			console.log('got buffer at %d bytes length: %s', buf.length, data);
+			callback(null, parseInt(data.replace(/\0+/g, '')));
+		});
+	});
+	doc.read();
 }
 
 exports.getScriptFromTable = function(tablePath, callback) {
