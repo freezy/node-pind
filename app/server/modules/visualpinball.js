@@ -7,11 +7,13 @@ var settings = config('settings');
 /**
  * Returns the ROM name for a given table.
  *
- * Tries to determine which ROM is used for a table. It does by looking
- * at the table script and intelligently guessing the lastly used ROM.
+ * Tries to determine which ROM is used for a table. It does it by looking
+ * at the table script and intelligently guessing most recently used ROM.
  *
  * @param tablePath Path to the .vpt file
- * @param callback
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{String} Name of the game ROM</li></ol>
  */
 exports.getGameRomName = function(tablePath, callback) {
 	exports.getScriptFromTable(tablePath, function(err, script) {
@@ -53,7 +55,9 @@ exports.getGameRomName = function(tablePath, callback) {
  *
  * @param storageKey The name of the storage
  * @param streamKey The name of the "file" in the storage
- * @param callback
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Integer} Table setting</li></ol>
  */
 exports.getTableSetting = function(storageKey, streamKey, callback) {
 	var doc = new ocd(settings.visualpinball.path + '/User/VPReg.stg');
@@ -77,8 +81,10 @@ exports.getTableSetting = function(storageKey, streamKey, callback) {
  * Table scripts are at the end of the .vpt file. The header of the chunk equals
  * 04 00 00 00 43 4F 44	45 (0x04 0 0 0 "CODE") and ends with 04 00 00 00.
  *
- * @param tablePath
- * @param callback
+ * @param tablePath Path to the .vpt file
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{String} Table script</li></ol>
  */
 exports.getScriptFromTable = function(tablePath, callback) {
 	var now = new Date().getTime();
