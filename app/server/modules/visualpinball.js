@@ -19,7 +19,9 @@ exports.scanDirectory = function(path, callback) {
 		}
 //		console.log("%j", tables);
 		async.eachLimit(tables, 1, identify, function (err) {
-			console.log(util.inspect(tables));
+			for (var i = 0; i < tables.length; i++) {
+				console.log(tables[i].name);// + ' (' + tables[i].filename + ')');
+			}
 		});
 	})
 };
@@ -28,22 +30,23 @@ var identify = function(table, callback) {
 
 	// those are applied multiple times as long as stuff gets stripped
 	var prestrip = [
-		/^fs[\._\-\s]/i,
-		/^vp9\d*[\._\-\s]/i,
-		/^jp[\._\-\s]/i
+		/^fs\s/i,
+		/^vp9\d*\s/i,
+		/^jp\s/i
 	];
 
 	// those are applied once, in that order.
 	var stripme = [
 		/\(.*/,
 		/\[[^\[]+\]/,
-		/[\._\-\s]fs[\._\-].*/i,
-		/[\._\-\s]uw[\._\-\s]/gi,
-		/[\._\-\s]vp9.*/i,
-		/[\._\-\s]v\s*\d[\._\-\s].*/i,
-		/[\._\-\s]hr\.vpt/i,
+		/\sfs\s.*/i,
+		/\svp9.*/i,
+		/\sv\s*\d\s.*/i,
+		/\shr\svpt/i,
 		/megapin|stern|bally|chrome|gi8|bmpr/gi,
-		/night[\._\-\s]?mod|[\._\-\s]mod[\._\-\s]/i
+		/night\s?mod/i,
+		/ce\stipoto.*/i,
+		/\stpw\slh/i
 	];
 
 	// like prestrip, those are also executed as long as they manipulate the string.
@@ -51,36 +54,40 @@ var identify = function(table, callback) {
 		// make two words out of camel cases
 		function(str) { return str.replace(/([a-z])([A-Z][a-z])/, '$1 $2'); },
 		// make two words out of trailing number
-		function(str) { return (str + (' ')).replace(/([a-z])(\d+[\._\-\s])/, '$1 $2 ').trim(); },
-		// other crap
-		function(str) { return (str + (' ')).replace(/[\._\-\s](ur|nf)[\._\-\s]/ig, ' '); },
+		function(str) { return (str + (' ')).replace(/([a-z])(\d+\s)/, '$1 $2 ').trim(); },
+		// strip other crap
+		function(str) { return (str + (' ')).replace(/\s(ur|nf|uw|mod)\s/ig, ' '); },
 		// game-specfic regexes
 		function(str) { return str.replace(/hs2/i, 'High Speed II'); },
 		function(str) { return str.replace(/^tom$/i, 'Theatre of Magic'); },
 		function(str) { return str.replace(/^taf$/i, 'The Addams Family'); },
-		function(str) { return str.replace(/^t2$/i, 'Terminator 2 Judgment Day'); }
+		function(str) { return str.replace(/^t2$/i, 'Terminator 2 Judgment Day'); },
+		function(str) { return str.replace(/^afm$/i, 'Attack from Mars'); },
+		function(str) { return str.replace(/^arfm$/i, 'Revenge from Mars'); }
 	];
 
 	var name = table.filename, before, i;
 
+	// replace special chars by spaces
+	name = name.replace(/[\.\-_]/ig, ' ');
 	do {
 		before = name;
-		for (var i = 0; i < prestrip.length; i++) {
+		for (i = 0; i < prestrip.length; i++) {
 			name = name.replace(prestrip[i], '');
 		}
 	} while (name != before);
 	for (i = 0; i < stripme.length; i++) {
 		name = name.replace(stripme[i], '');
 	}
+	name = name.replace(/[^a-z0-9]/ig, ' ');
 	do {
 		before = name;
-		for (var i = 0; i < postprocess.length; i++) {
-			name = postprocess[i](name);
+		for (i = 0; i < postprocess.length; i++) {
+			name = postprocess[i](name.trim());
 		}
 	} while (name != before);
 
-	// replace special chars by spaces
-	name = name.replace(/[^a-z0-9]/ig, ' ');
+
 	name = name.replace(/\s+/ig, ' ');
 	table.name = name.trim();
 	callback()
