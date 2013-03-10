@@ -3,30 +3,93 @@ var log = require('winston');
 var ocd = require('ole-doc').OleCompoundDoc;
 var async = require('async');
 var util = require('util');
+var exec = require('child_process').exec;
 var config =  require('konphyg')(__dirname + '../../../config');
 var settings = config('settings');
 
+/**
+ * Returns highscores for a given ROM.
+ * @param romname Name of the ROM
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Object} Parsed high scores.</li></ol>
+ */
+exports.getHighscore = function(romname, callback) {
+	exec('D:/dev/node-pind/bin/PINemHi.exe ' + romname + ".nv", { cwd: 'D:/dev/node-pind/bin/' }, function (error, stdout, stderr) {
+		if (error !== null) {
+			console.log(error);
+		} else {
+			var m, regex, titles, blocks = stdout;
+			var scores = {};
 
-exports.scanDirectory = function(path, callback) {
-
-	fs.readdir(path, function(err, files) {
-		var tables = [];
-		for (var i = 0; i < files.length; i++) {
-			var file = files[i];
-			if (file.substr(file.length - 3, file.length).toLowerCase() == 'vpt') {
-				tables.push({ path: path + file, filename: file });
+			// grand champ
+			titles = [ 'grand champion', 'champion', 'greatest vampire hunter', 'highest ball score', 'mvp',
+				'world record', 'highest arrests', 'dream master', 'ultimate gladiator', 'club champion',
+				'five star general', 'super hero', 'the master', 'tee.d off leader', 'world champion',
+				'master magician', 'psycho skier', 'river master' ];
+			regex = new RegExp('(' + titles.join('|') + ')\\s+(\d.?\s+)?(\\w+)\\s+([\\d\']+)', 'im');
+			if (m = regex.exec(blocks)) {
+				blocks = blocks.replace(m[0], '');
+				scores.grandChampion = { player: m[3], score: m[4].replace(/'/g, '') };
 			}
+
+			// highest scores
+			titles = [ 'high(est)? ?scores', 'standings', 'champion drinkers', 'all-stars', 'today.s hi-score',
+				'top fruit throwers', 'high hoppers', 'hall of fame', 'valedictorians', 'cue ball wizards', 'top cops',
+				'best hunters', 'dream warriors', 'top anglers', 'honorific gladiators', 'ace drivers', 'high rollers',
+				'oscar winners', 'leader board', 'highest game to date', 'hero', 'street fighters', 'all stars',
+				'silver sluggers', 'mario.s friends', 'explorers', 'best citizens', 'officer.s club', 'top water sliders',
+				'top marksmen', 'family members', 'top contenders', 'magicians', 'sultan.s court', 'high rollers',
+				'marines', 'hot dogs', 'best rafters'];
+			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
+			if (m = regex.exec("\n" + blocks + "\n\r")) {
+				scores.highest = [];
+				blocks = blocks.replace(m[0].trim(), '');
+				var block = m[0];
+				var regex = new RegExp(/(\d).?\s(\w+)\s+([\d']+)/gi);
+				while (m = regex.exec(block)) {
+					scores.highest.push({ rank: m[1], player: m[2], score: m[3].replace(/'/g, '') });
+				}
+			}
+
+			// buy-in scores
+			titles = [ 'buy\-in highest scores', 'buyin barflies' ];
+			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
+			if (m = regex.exec("\n" + blocks + "\n\r")) {
+				scores.buyin = [];
+				blocks = blocks.replace(m[0].trim(), '');
+				var block = m[0];
+				var regex = new RegExp(/(\d).?\s(\w+)\s+([\d']+)/gi);
+				while (m = regex.exec(block)) {
+					scores.buyin.push({ rank: m[1], player: m[2], score: m[3].replace(/'/g, '') });
+				}
+			}
+
+			// other titles
+			var b = blocks.trim().split(/\n\r/);
+			scores.other = [];
+			for (var i = 0; i < b.length; i++) {
+				var block = b[i];
+				var player = (' ' + block + ' ').match(/\s(\w{3})\s/);
+				scores.other.push({ title: block.trim().replace(/\s+/g, ' '), player: player ? player[1] : null });
+			}
+
+			scores.raw = stdout;
+
+			callback(null, scores);
 		}
-//		console.log("%j", tables);
-		async.eachLimit(tables, 1, identify, function (err) {
-			for (var i = 0; i < tables.length; i++) {
-				console.log(tables[i].name);// + ' (' + tables[i].filename + ')');
-			}
-		});
-	})
-};
+	});
 
-var identify = function(table, callback) {
+}
+
+/**
+ * Finds the table name for a given file name.
+ * @param table Object with filename set
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{String} Name of the game</li></ol>
+ */
+exports.identify = function(table, callback) {
 
 	// those are applied multiple times as long as stuff gets stripped
 	var prestrip = [
@@ -91,15 +154,6 @@ var identify = function(table, callback) {
 	name = name.replace(/\s+/ig, ' ');
 	table.name = name.trim();
 	callback()
-/*	exports.getGameRomName(table.path, function(err, romname) {
-		if (err) {
-			console.log('Error getting ROM: ' + err);
-		} else {
-			console.log("got rom: %s", romname);
-			table.rom = romname;
-		}
-		callback();
-	})*/
 };
 
 /**
@@ -213,3 +267,29 @@ exports.getScriptFromTable = function(tablePath, callback) {
 		callback(null, buf.toString());
 	});
 }
+
+/**
+ * Scans a folder for table files, parses the name and outputs the list.
+ *
+ * This is still more of a debug function.
+ *
+ * @param path
+ * @param callback
+ */
+exports.scanDirectory = function(path, callback) {
+
+	fs.readdir(path, function(err, files) {
+		var tables = [];
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			if (file.substr(file.length - 3, file.length).toLowerCase() == 'vpt') {
+				tables.push({ path: path + file, filename: file });
+			}
+		}
+		async.eachLimit(tables, 1, exports.identify, function (err) {
+			for (var i = 0; i < tables.length; i++) {
+				console.log(tables[i].name);// + ' (' + tables[i].filename + ')');
+			}
+		});
+	})
+};
