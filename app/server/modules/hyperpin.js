@@ -5,7 +5,7 @@ var path = require('path');
 var async = require('async');
 var xml2js = require('xml2js');
 var config =  require('konphyg')(__dirname + '../../../config');
-var settings = config('settings');
+var settings = config('settings-mine');
 
 var tm = require('./table-manager');
 

@@ -5,7 +5,7 @@ var async = require('async');
 var util = require('util');
 var exec = require('child_process').exec;
 var config =  require('konphyg')(__dirname + '../../../config');
-var settings = config('settings');
+var settings = config('settings-mine');
 
 /**
  * Returns highscores for a given ROM.

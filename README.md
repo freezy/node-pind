@@ -13,7 +13,7 @@ Installation
 3. Download and install the [Visual Studio 2010 Express](http://go.microsoft.com/?linkid=9709949).
 4. Download and install [GraphicsMagick](http://www.graphicsmagick.org/download.html) and verify that the installer adds the directory to your PATH.
 5. Clone the repository to somewhere.
-6. Update `config/settings.json`
+6. Copy `config/settings.json` to `config/settings-mine.json` and update it.
 7. `npm install -d`
 8. `node app.js`
 
