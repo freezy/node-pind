@@ -31,7 +31,7 @@ exports.getHighscore = function(romname, callback) {
 			regex = new RegExp('(' + titles.join('|') + ')\\s+(\\d.?\\s+)?([\\w\\s]{3,})\\s+([\\d\',]+)', 'im');
 			if (m = regex.exec(blocks)) {
 				blocks = blocks.replace(m[0], '');
-				scores.grandChampion = { player: m[3], score: m[4].replace(/[',]/g, '') };
+				scores.grandChampion = { player: m[3].trim(), score: m[4].replace(/[',]/g, '') };
 			}
 
 			// jurassic park need special treatment
@@ -86,32 +86,6 @@ exports.getHighscore = function(romname, callback) {
 				}
 				if (m = block.match(/martian champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
 					return { title: 'Martian Champion', player: m[1], info: tidy(m[2]) }
-				}
-
-				// MM
-				if (m = block.match(/king of the realm\s+1.\s+(\w+)\s+(\w+[\s\S]+)/i)) {
-					return { title: 'King of the Realm', player: m[1], info: tidy(m[2]) }
-				}
-				if (m = block.match(/castle champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
-					return { title: 'Castle Champion', player: m[1], info: tidy(m[2]) }
-				}
-				if (m = block.match(/joust champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
-					return { title: 'Joust Champion', player: m[1], info: tidy(m[2]) }
-				}
-				if (m = block.match(/catapult champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
-					return { title: 'Catapult Champion', player: m[1], info: tidy(m[2]) }
-				}
-				if (m = block.match(/peasant champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
-					return { title: 'Peasant Champion', player: m[1], info: tidy(m[2]) }
-				}
-				if (m = block.match(/damsel champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
-					return { title: 'Damsel Champion', player: m[1], info: tidy(m[2]) }
-				}
-				if (m = block.match(/troll champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
-					return { title: 'Troll Champion', player: m[1], info: tidy(m[2]) }
-				}
-				if (m = block.match(/madness champion\s+(\w+)\s+([\d',]+)/i)) {
-					return { title: 'Madness Champion', player: m[1], score: m[2].replace(/[',]/g, '') }
 				}
 
 				// andretti
@@ -244,9 +218,70 @@ exports.getHighscore = function(romname, callback) {
 					return { title: 'Casino Run Champ', player: m[1], score: m[2].replace(/[',]/g, '') }
 				}
 
+				// lca
+				if (m = block.match(/5 of a kind\s+(\w+)/i)) {
+					return { title: 'Five of a kind', player: m[1] }
+				}
 
+				// lotr
+				if (m = block.match(/destroy ring champion\s+(\w+)\s+-\s+([\d\:\.]+)/i)) {
+					return { title: 'Destroy Ring Champion', player: m[1], info: m[2] }
+				}
+
+				// mb
+				if (m = block.match(/monster bash champion\s+([\w\s]{3,})\s+([\d',]+)/i)) {
+					return { title: 'Monster Bash Champion', player: m[1].trim(), info: m[2].replace(/[',]/g, '') }
+				}
+				if (m = block.match(/monsters.rock champion\s+([\w\s]{3,})\s+([\d',]+)/i)) {
+					return { title: 'Monsters/Rock Champion', player: m[1].trim(), info: m[2].replace(/[',]/g, '') }
+				}
+				if (m = block.match(/mosh multiball champion\s+([\w\s]{3,})\s+([\d',]+)/i)) {
+					return { title: 'Mosh Multiball Champion', player: m[1].trim(), info: m[2].replace(/[',]/g, '') }
+				}
+
+				// mm
+				if (m = block.match(/king of the realm\s+1.\s+(\w+)\s+(\w+[\s\S]+)/i)) {
+					return { title: 'King of the Realm', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/castle champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Castle Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/joust champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Joust Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/catapult champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Catapult Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/peasant champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Peasant Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/damsel champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Damsel Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/troll champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Troll Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/madness champion\s+(\w+)\s+([\d',]+)/i)) {
+					return { title: 'Madness Champion', player: m[1], score: m[2].replace(/[',]/g, '') }
+				}
+
+				// nbaf_31
+				if (m = block.match(/current m\.v\.p\s+(\w+)\s+([^\s].+)/i)) {
+					return { title: 'Current M.V.P.', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/nba team champions([\s\S]+)/i)) {
+					blocks = blocks.replace(m[0].trim(), '');
+					var b = m[1];
+					var ret = [];
+					var regex = new RegExp(/(\w+)\s+(\w+)\s+(.+)/g);
+					while (m = regex.exec(b)) {
+						ret.push({ title: 'NBA Team Champion', player: m[2], info: tidy(m[1]), info2: tidy(m[3])});
+					}
+					return ret;
+				}
 
 				return null;
+
 			};
 			scores.other = [];
 			for (var i = 0; i < b.length; i++) {
