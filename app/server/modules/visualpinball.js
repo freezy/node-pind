@@ -15,7 +15,9 @@ var settings = config('settings');
  * 		<li>{Object} Parsed high scores.</li></ol>
  */
 exports.getHighscore = function(romname, callback) {
-	exec('D:/dev/node-pind/bin/PINemHi.exe ' + romname + ".nv", { cwd: 'D:/dev/node-pind/bin/' }, function (error, stdout, stderr) {
+	var binPath = fs.realpathSync(__dirname + '../../../../bin');
+	console.log('path: %s', binPath);
+	exec(binPath + '/PINemHi.exe' + ' ' + romname + ".nv", { cwd: binPath }, function (error, stdout, stderr) {
 		if (error !== null) {
 			console.log(error);
 		} else {
@@ -27,10 +29,10 @@ exports.getHighscore = function(romname, callback) {
 				'world record', 'highest arrests', 'dream master', 'ultimate gladiator', 'club champion',
 				'five star general', 'super hero', 'the master', 'tee.d off leader', 'world champion',
 				'master magician', 'psycho skier', 'river master' ];
-			regex = new RegExp('(' + titles.join('|') + ')\\s+(\d.?\s+)?(\\w+)\\s+([\\d\']+)', 'im');
+			regex = new RegExp('(' + titles.join('|') + ')\\s+(\\d.?\\s+)?(\\w+)\\s+([\\d\',]+)', 'im');
 			if (m = regex.exec(blocks)) {
 				blocks = blocks.replace(m[0], '');
-				scores.grandChampion = { player: m[3], score: m[4].replace(/'/g, '') };
+				scores.grandChampion = { player: m[3], score: m[4].replace(/[',]/g, '') };
 			}
 
 			// highest scores
@@ -46,32 +48,73 @@ exports.getHighscore = function(romname, callback) {
 				scores.highest = [];
 				blocks = blocks.replace(m[0].trim(), '');
 				var block = m[0];
-				var regex = new RegExp(/(\d).?\s(\w+)\s+([\d']+)/gi);
+				var regex = new RegExp(/(\d).?\s(\w+)\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
-					scores.highest.push({ rank: m[1], player: m[2], score: m[3].replace(/'/g, '') });
+					scores.highest.push({ rank: m[1], player: m[2], score: m[3].replace(/[',]/g, '') });
 				}
 			}
 
 			// buy-in scores
-			titles = [ 'buy\-in highest scores', 'buyin barflies' ];
+			titles = [ 'buy-in highest scores', 'buyin barflies', 'buy-in scores' ];
 			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.buyin = [];
 				blocks = blocks.replace(m[0].trim(), '');
 				var block = m[0];
-				var regex = new RegExp(/(\d).?\s(\w+)\s+([\d']+)/gi);
+				var regex = new RegExp(/(\d).?\s(\w+)\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
-					scores.buyin.push({ rank: m[1], player: m[2], score: m[3].replace(/'/g, '') });
+					scores.buyin.push({ rank: m[1], player: m[2], score: m[3].replace(/[',]/g, '') });
 				}
 			}
 
 			// other titles
 			var b = blocks.trim().split(/\n\r/);
+			var others = function(block) {
+				var m;
+				// AFM
+				if (m = block.match(/ruler of the universe\s+(\w+)\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Ruler of the Universe', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/martian champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Martian Champion', player: m[1], info: tidy(m[2]) }
+				}
+
+				// MM
+				if (m = block.match(/king of the realm\s+1.\s+(\w+)\s+(\w+[\s\S]+)/i)) {
+					return { title: 'King of the Realm', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/castle champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Castle Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/joust champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Joust Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/catapult champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Catapult Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/peasant champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Peasant Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/damsel champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Damsel Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/troll champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
+					return { title: 'Troll Champion', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/madness champion\s+(\w+)\s+([\d',]+)/i)) {
+					return { title: 'Madness Champion', player: m[1], score: m[2].replace(/[',]/g, '') }
+				}
+
+				return null;
+			};
 			scores.other = [];
 			for (var i = 0; i < b.length; i++) {
-				var block = b[i];
-				var player = (' ' + block + ' ').match(/\s(\w{3})\s/);
-				scores.other.push({ title: block.trim().replace(/\s+/g, ' '), player: player ? player[1] : null });
+				var other = others(b[i]);
+				if (other) {
+					scores.other.push(other);
+				} else {
+					console.log('Could not match "other" block: ' + b[i]);
+				}
 			}
 
 			scores.raw = stdout;
@@ -79,7 +122,6 @@ exports.getHighscore = function(romname, callback) {
 			callback(null, scores);
 		}
 	});
-
 }
 
 /**
@@ -293,3 +335,12 @@ exports.scanDirectory = function(path, callback) {
 		});
 	})
 };
+
+
+function tidy(str) {
+	return (' ' + str.trim().replace(/\s+/g, ' ').toLowerCase().replace(/(\.\s+\w|^\s*\w|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\S*/ig, function(txt){
+		return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+	}) + ' ').replace(/\W(am|pm)\W/i, function(txt) {
+			return txt.toUpperCase();
+	}).trim();
+}
