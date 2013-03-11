@@ -38,7 +38,7 @@ exports.getHighscore = function(romname, callback) {
 			titles = [ 'high(est)? ?scores', 'standings', 'champion drinkers', 'all-stars', 'today.s hi-score',
 				'top fruit throwers', 'high hoppers', 'hall of fame', 'valedictorians', 'cue ball wizards', 'top cops',
 				'best hunters', 'dream warriors', 'top anglers', 'honorific gladiators', 'ace drivers', 'high rollers',
-				'oscar winners', 'leader board', 'highest game to date', 'hero', 'street fighters', 'all stars',
+				'oscar winners', 'leader ?board', 'highest game to date', 'hero', 'street fighters', 'all stars',
 				'silver sluggers', 'mario.s friends', 'explorers', 'best citizens', 'honor roll', 'top water sliders',
 				'top marksmen', 'family members', 'top contenders', 'magicians', 'sultan.s court', 'high rollers',
 				'marines', 'hot dogs', 'best rafters'];
@@ -47,19 +47,18 @@ exports.getHighscore = function(romname, callback) {
 				scores.highest = [];
 				blocks = blocks.replace(m[0].trim(), '');
 				var block = m[0];
-				var regex = new RegExp(/(\d).?\s(\w+)\s+([\d',]+)/gi);
+				var regex = new RegExp(/(\d).?\s([\w\s]{3})\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
 					scores.highest.push({ rank: m[1], player: m[2], score: m[3].replace(/[',]/g, '') });
 				}
 			}
-			// jurassic park and starwars need special treatment (stwr_a14, jupk_513)
-			if (m = blocks.match(/([\w\s\-]+#\d\s+\w+\s+[\d',]+\s+){4,}/m)) {
+			// jurassic park and starwars need special treatment (stwr_a14, jupk_513, tftc_303)
+			if (m = blocks.match(/([\w\s\-]+#\d\s+[\w\s]{3}\s+[\d',]+\s+){4,}/m)) {
 				blocks = blocks.replace(m[0].trim(), '');
-				regex = new RegExp(/([\w\s\-]+)#(\d)\s+(\w+)\s+([\d',]+)/g);
+				regex = new RegExp(/([\w\s\-]+)#(\d)\s+([\w\s]{3})\s+([\d',]+)/g);
 				var block = m[0];
 				var n = 0;
 				while (m = regex.exec(block)) {
-					console.log("**** %j", m);
 					// first is grand champion
 					if (n == 0) {
 						scores.grandChampion = { player: m[3], score: m[4].replace(/[',]/g, ''), title: tidy(m[1]) }
@@ -72,7 +71,7 @@ exports.getHighscore = function(romname, callback) {
 			}
 
 			// buy-in scores
-			titles = [ 'buy-in highest scores', 'buyin barflies', 'buy-in scores', 'officer.s club' ];
+			titles = [ 'buy-in highest scores', 'buyin barflies', 'buy-in scores', 'buy-in highscores', 'officer.s club' ];
 			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.buyin = [];
@@ -356,6 +355,57 @@ exports.getHighscore = function(romname, callback) {
 				}
 				if (ret = rankNameScore(block, 'q continuum', 'Q Continuum')) {
 					return ret;
+				}
+
+				// surfnsaf
+				if (m = block.match(/rapids record\s+(\w+)\s+-\s+(\d+)/i)) {
+					return { title: 'Rapids Record', player: m[1], score: m[2] }
+				}
+
+				// teedoff
+				if (m = block.match(/the most holes in one\s+(\w+)\s+(\d+)/i)) {
+					return { title: 'The Most Holes-In-One', player: m[1], score: m[2] }
+				}
+
+				// tfight
+				if (m = block.match(/highest punches\s+(\w+)\s+-\s+(\d+)/i)) {
+					return { title: 'Highest punches', player: m[1], score: m[2] }
+				}
+
+				// tz_92
+				if (ret = rankNameScore(block, 'lost in the zone champion', 'Lost in the Zone Champion')) {
+					return ret;
+				}
+
+				// vegas
+				if (m = block.match(/slot king\s+(\w+)/i)) {
+					return { title: 'Slot King', player: m[1] }
+				}
+
+				// waterwld
+				if (m = block.match(/icthy freak\s+([\w\s]+)=\s+(\d+)\s+(\w+)/i)) {
+					return { title: 'Itchy Freak', player: m[3], score: m[2], info: tidy(m[1]) }
+				}
+
+				// wcsoccer
+				if (m = block.match(/world champ\s+(\w+)/i)) {
+					return { title: 'World Champ', player: m[1] }
+				}
+				if (m = block.match(/you have the most goals.\s+(\w+)\s+(\d+)/i)) {
+					return { title: 'Most Goals', player: m[1], score: m[2] }
+				}
+
+				// wd_12
+				if (m = block.match(/the roof champion\s+(\w+)/i)) {
+					return { title: 'The Roof Champion', player: m[1] }
+				}
+				if (m = block.match(/midnight champ\s+(\w+)/i)) {
+					return { title: 'Midnight Champ', player: m[1] }
+				}
+
+				// ww_l5
+				if (m = block.match(/insanity record\s+(\w+)\s+(.+)/i)) {
+					return { title: 'Insanity Record', player: m[1], info: tidy(m[2]) }
 				}
 
 				return null;
