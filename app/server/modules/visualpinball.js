@@ -16,7 +16,6 @@ var settings = config('settings');
  */
 exports.getHighscore = function(romname, callback) {
 	var binPath = fs.realpathSync(__dirname + '../../../../bin');
-	console.log('path: %s', binPath);
 	exec(binPath + '/PINemHi.exe' + ' ' + romname + ".nv", { cwd: binPath }, function (error, stdout, stderr) {
 		if (error !== null) {
 			console.log(error);
@@ -29,10 +28,20 @@ exports.getHighscore = function(romname, callback) {
 				'world record', 'highest arrests', 'dream master', 'ultimate gladiator', 'club champion',
 				'five star general', 'super hero', 'the master', 'tee.d off leader', 'world champion',
 				'master magician', 'psycho skier', 'river master' ];
-			regex = new RegExp('(' + titles.join('|') + ')\\s+(\\d.?\\s+)?(\\w+)\\s+([\\d\',]+)', 'im');
+			regex = new RegExp('(' + titles.join('|') + ')\\s+(\\d.?\\s+)?([\\w\\s]{3,})\\s+([\\d\',]+)', 'im');
 			if (m = regex.exec(blocks)) {
 				blocks = blocks.replace(m[0], '');
 				scores.grandChampion = { player: m[3], score: m[4].replace(/[',]/g, '') };
+			}
+
+			// jurassic park need special treatment
+			if (m = blocks.match(/t-rex\s+.1\s+(\w+)\s+([\d,']+)\s+raptor\s+.2\s+(\w+)\s+([\d,']+)\s+\w+\s+.3\s+(\w+)\s+([\d,']+)\s+\w+\s+.4\s+(\w+)\s+([\d,']+)\s+\w+\s+.5\s+(\w+)\s+([\d,']+)\s+\w+\s+.6\s+(\w+)\s+([\d,']+)/i)) {
+				scores.grandChampion = { player: m[1], score: m[2].replace(/[',]/g, '') }
+				scores.highest = [];
+				for (var i = 0; i < 10; i += 2) {
+					scores.highest.push( { player: m[i+3], rank: (i / 2) + 1, score: m[i+4].replace(/[',]/g, '') } )
+				}
+				blocks = blocks.replace(m[0], '');
 			}
 
 			// highest scores
@@ -105,15 +114,154 @@ exports.getHighscore = function(romname, callback) {
 					return { title: 'Madness Champion', player: m[1], score: m[2].replace(/[',]/g, '') }
 				}
 
+				// andretti
+				if (m = block.match(/lap time record\s+(\w+)\s+([\d',\.]+)/i)) {
+					return { title: 'Lap Time Record', player: m[1], score: m[2].replace(/[',\.]/g, '') }
+				}
+
+				// bbb
+				var titleOnly = function(block, str, title) {
+					if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
+						var players = m[1].trim().split(/\s+/);
+						var ret = [];
+						for (var i = 0; i < players.length; i++) {
+							ret.push({ title: title, player: players[i] });
+						}
+						return ret;
+					}
+					return false;
+				}
+				var titleScore = function(block, str, title) {
+					if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
+						var players = m[1].trim().split(/\s+/);
+						var ret = [];
+						for (var i = 0; i < players.length; i += 2) {
+							ret.push({ title: title, player: players[i], score: players[i+1].replace(/[',]/g, '') });
+						}
+						return ret;
+					}
+					return false;
+				}
+				var ret;
+				if (ret = titleOnly(block, 'big bang regulars', 'Big Bang Regular')) {
+					return ret;
+				}
+				if (ret = titleScore(block, 'underground elite', 'Underground Elite')) {
+					return ret;
+				}
+				if (ret = titleScore(block, 'weak kidney club', 'Weak Kidney Club Member')) {
+					return ret;
+				}
+
+				// bighurt
+				if (m = block.match(/sultan of swat\s+([\w\s]+)\s*=\s*(\d+)\s+(\w+)/i)) {
+					return { title: 'Sultan of Swat', player: m[3], info: tidy(m[1]), score: m[2] }
+				}
+				if (m = block.match(/mvp\s+([\w\s]+)\s*=\s*(\d+)\s+(\w+)/i)) {
+					return { title: 'MVP', player: m[3], info: tidy(m[1]), score: m[2] }
+				}
+				if (m = block.match(/gold glove\s+([\w\s]+)\s*=\s*(\d+)\s+(\w+)/i)) {
+					return { title: 'Gold Glove', player: m[3], info: tidy(m[1]), score: m[2] }
+				}
+				if (m = block.match(/stolen base king\s+([\w\s]+)\s*=\s*(\d+)\s+(\w+)/i)) {
+					return { title: 'Stolen Base King', player: m[3], info: tidy(m[1]), score: m[2] }
+				}
+
+				// bop
+				if (ret = titleScore(block, 'billionaire club members', 'Billionaire Club Member')) {
+					return ret;
+				}
+
+				// br
+				if (m = block.match(/most ships sunk\s+(\d+)\s+by\s+(\w+)/i)) {
+					return { title: 'Most ships sunk', player: m[2], score: m[1] }
+				}
+
+				// bttf
+				if (m = block.match(/loop back champ\s+(\w+)\s+(\d+)/i)) {
+					return { title: 'Most ships sunk', player: m[1], score: m[2] }
+				}
+
+				// carhop
+				if (m = block.match(/record heat wave\s+(\w+)/i)) {
+					return { title: 'Record Heat Wave', player: m[1] }
+				}
+
+				// congo
+				if (m = block.match(/diamond champion\s+(\w[^\d]+)\s+(.*)/i)) {
+					return { title: 'Diamond Champion', player: m[1].trim(), info: tidy(m[2]) }
+				}
+
+				// cv
+				if (m = block.match(/cannon ball champion\s+(\w+)\s+-\s+(\d+)/i)) {
+					return { title: 'Cannon Ball Champion', player: m[1].trim(), score: m[2] }
+				}
+				if (m = block.match(/party champion\s+(\w+)\s+([\d',]+)/i)) {
+					return { title: 'Party Champion', player: m[1].trim(), score: m[2].replace(/[,']/g, '') }
+				}
+
+				// deadweap
+				if (m = block.match(/highest arrests\s+(\w+)\s+-\s+(\d+)/i)) {
+					return { title: 'Highest Arrests', player: m[1].trim(), score: m[2] }
+				}
+
+				// drac
+				if (m = block.match(/loop champion\s+(\w+)\s+(\d+)/i)) {
+					return { title: 'Loop Champion', player: m[1].trim(), score: m[2] }
+				}
+
+				// freddy
+				if (m = block.match(/dream master\s+.(\d)\s+(\w+)\s+([\d,']+)/i)) {
+					return { title: 'Dream Master', player: m[2].trim(), rank: m[1], score: m[3].replace(/[',]/g, '') }
+				}
+				if (m = block.match(/most souls saved\s+(\w+)\s+-\s+(\d+)/i)) {
+					return { title: 'Most Souls Saved', player: m[1].trim(), score: m[2] }
+				}
+
+				// ft
+				if (m = block.match(/biggest liar\s+(\w+)\s+(.*)/i)) {
+					return { title: 'Biggest Liar', player: m[1], info: tidy(m[2]) }
+				}
+				if (m = block.match(/top boat rocker\s+(\w+)\s+(.*)/i)) {
+					return { title: 'Top Boat Rocker', player: m[1], info: tidy(m[2]) }
+				}
+
+				// gladiatr
+				if (m = block.match(/beast slayer\s+(\w+)/i)) {
+					return { title: 'Beast Slayer', player: m[1] }
+				}
+				if (m = block.match(/combo master\s+(\w+)/i)) {
+					return { title: 'Combo Master', player: m[1] }
+				}
+
+				// gw
+				if (m = block.match(/loop champion\s+(\w+)\s+-\s+(.+)/i)) {
+					return { title: 'Loop Champion', player: m[1], info: tidy(m[2]) }
+				}
+
+				// jb
+				if (m = block.match(/casino run champ\s+(\w+)\s+([\d,']+)/i)) {
+					return { title: 'Casino Run Champ', player: m[1], score: m[2].replace(/[',]/g, '') }
+				}
+
+
+
 				return null;
 			};
 			scores.other = [];
 			for (var i = 0; i < b.length; i++) {
 				var other = others(b[i]);
 				if (other) {
-					scores.other.push(other);
-				} else {
-					console.log('Could not match "other" block: ' + b[i]);
+					if (Array.isArray(other)) {
+						scores.other = scores.other.concat(other);
+					} else {
+						scores.other.push(other);
+					}
+				} else if (b[i].trim().length > 0) {
+
+					console.log(romname + ': Could not match "other" block: \n' + b[i]);
+					callback(b[i]);
+					return;
 				}
 			}
 
@@ -337,6 +485,9 @@ exports.scanDirectory = function(path, callback) {
 };
 
 
+/**
+ * Converts info text to the right case.
+ */
 function tidy(str) {
 	return (' ' + str.trim().replace(/\s+/g, ' ').toLowerCase().replace(/(\.\s+\w|^\s*\w|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\S*/ig, function(txt){
 		return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
