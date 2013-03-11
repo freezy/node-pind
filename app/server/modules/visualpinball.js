@@ -34,22 +34,12 @@ exports.getHighscore = function(romname, callback) {
 				scores.grandChampion = { player: m[3].trim(), score: m[4].replace(/[',]/g, '') };
 			}
 
-			// jurassic park need special treatment
-			if (m = blocks.match(/t-rex\s+.1\s+(\w+)\s+([\d,']+)\s+raptor\s+.2\s+(\w+)\s+([\d,']+)\s+\w+\s+.3\s+(\w+)\s+([\d,']+)\s+\w+\s+.4\s+(\w+)\s+([\d,']+)\s+\w+\s+.5\s+(\w+)\s+([\d,']+)\s+\w+\s+.6\s+(\w+)\s+([\d,']+)/i)) {
-				scores.grandChampion = { player: m[1], score: m[2].replace(/[',]/g, '') }
-				scores.highest = [];
-				for (var i = 0; i < 10; i += 2) {
-					scores.highest.push( { player: m[i+3], rank: (i / 2) + 1, score: m[i+4].replace(/[',]/g, '') } )
-				}
-				blocks = blocks.replace(m[0], '');
-			}
-
 			// highest scores
 			titles = [ 'high(est)? ?scores', 'standings', 'champion drinkers', 'all-stars', 'today.s hi-score',
 				'top fruit throwers', 'high hoppers', 'hall of fame', 'valedictorians', 'cue ball wizards', 'top cops',
 				'best hunters', 'dream warriors', 'top anglers', 'honorific gladiators', 'ace drivers', 'high rollers',
 				'oscar winners', 'leader board', 'highest game to date', 'hero', 'street fighters', 'all stars',
-				'silver sluggers', 'mario.s friends', 'explorers', 'best citizens', 'officer.s club', 'top water sliders',
+				'silver sluggers', 'mario.s friends', 'explorers', 'best citizens', 'honor roll', 'top water sliders',
 				'top marksmen', 'family members', 'top contenders', 'magicians', 'sultan.s court', 'high rollers',
 				'marines', 'hot dogs', 'best rafters'];
 			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
@@ -62,9 +52,27 @@ exports.getHighscore = function(romname, callback) {
 					scores.highest.push({ rank: m[1], player: m[2], score: m[3].replace(/[',]/g, '') });
 				}
 			}
+			// jurassic park and starwars need special treatment (stwr_a14, jupk_513)
+			if (m = blocks.match(/([\w\s\-]+#\d\s+\w+\s+[\d',]+\s+){4,}/m)) {
+				blocks = blocks.replace(m[0].trim(), '');
+				regex = new RegExp(/([\w\s\-]+)#(\d)\s+(\w+)\s+([\d',]+)/g);
+				var block = m[0];
+				var n = 0;
+				while (m = regex.exec(block)) {
+					console.log("**** %j", m);
+					// first is grand champion
+					if (n == 0) {
+						scores.grandChampion = { player: m[3], score: m[4].replace(/[',]/g, ''), title: tidy(m[1]) }
+						scores.highest = [];
+					} else {
+						scores.highest.push({ player: m[3], score: m[4].replace(/[',]/g, ''), title: tidy(m[1]), rank: m[2]-1 });
+					}
+					n++;
+				}
+			}
 
 			// buy-in scores
-			titles = [ 'buy-in highest scores', 'buyin barflies', 'buy-in scores' ];
+			titles = [ 'buy-in highest scores', 'buyin barflies', 'buy-in scores', 'officer.s club' ];
 			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.buyin = [];
@@ -277,6 +285,76 @@ exports.getHighscore = function(romname, callback) {
 					while (m = regex.exec(b)) {
 						ret.push({ title: 'NBA Team Champion', player: m[2], info: tidy(m[1]), info2: tidy(m[3])});
 					}
+					return ret;
+				}
+
+				// ngg
+				if (m = block.match(/today.s high score\s+(\w+)\s+([\d',]+)/i)) {
+					return { title: "Today's Highscore", player: m[1], score: m[2].replace(/[',]/g, '') }
+				}
+				if (m = block.match(/hole in one champion\s+(\w+)\s+([\d',]+)/i)) {
+					return { title: 'Hole-in-one Champion', player: m[1], score: m[2].replace(/[',]/g, '') }
+				}
+
+				// opthund
+				if (m = block.match(/five star general\s+(\w+)/i)) {
+					return { title: 'Five Star General', player: m[1] }
+				}
+
+				// rescu911
+				if (m = block.match(/most lives saved\s+(\w+)\s+([\d',]+)/i)) {
+					return { title: 'Most Lives Saved', player: m[1], score: m[2].replace(/[',]/g, '') }
+				}
+
+				// sfight2
+				if (m = block.match(/the master\s+(\w+)/i)) {
+					return { title: 'The Master', player: m[1] }
+				}
+
+				// shaqattq
+				if (m = block.match(/most basket points by\s+(\w+)\s+(\d+)/i)) {
+					return { title: 'Most Basket Points', player: m[1], score: m[2] }
+				}
+
+				// silvslug
+				if (m = block.match(/highest runs to date\s+(\w+)\s+-\s+(\d+)/i)) {
+					return { title: 'Highest Runs to Date', player: m[1], score: m[2] }
+				}
+
+				// smb
+				if (m = block.match(/super mario\s+(\w+)/i)) {
+					return { title: 'Super Mario', player: m[1] }
+				}
+
+				// ss_15
+				if (m = block.match(/spider champion\s+(\w+)\s+(.+)/i)) {
+					return { title: 'Spider Champion', player: m[1], info: tidy(m[2]) }
+				}
+
+				// stargate
+				if (m = block.match(/high combos by\s+(\w+)\s+(\d+)/i)) {
+					return { title: 'High Combos', player: m[1], score: m[2] }
+				}
+
+				// sttng_s7
+				// 		Grand Champion  0 or 1 Buy-Ins
+				// 		Honor Roll      0 or 1 Buy-Ins
+				// 		Officer's Club  More than 1 Buy-In
+				// 		Q Continuum     Score of 10 Billion or more (Any Number Of Buy-Ins)
+				var rankNameScore = function(block, str, title) {
+					if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
+						//blocks = blocks.replace(m[0].trim(), '');
+						var b = m[1];
+						var ret = [];
+						var regex = new RegExp(/(\d).\s+(\w+)\s+([\d',]+)/g);
+						while (m = regex.exec(b)) {
+							ret.push({ title: title, rank: m[1], player: m[2], score: m[3].replace(/[',]/g, '') });
+						}
+						return ret;
+					}
+					return false;
+				}
+				if (ret = rankNameScore(block, 'q continuum', 'Q Continuum')) {
 					return ret;
 				}
 
