@@ -43,6 +43,14 @@ TODO
 
 More to come. Still under heavy development.
 
+Credits
+=======
+
+Full credits for the highscore features go to Dna Disturber's [PINemHi](http://www.pinemhi.com/),
+along with a big thanks for the permission to redistribute the binary. Looking
+forward to even more features!
+
+
 License
 =======
 

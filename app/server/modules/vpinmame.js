@@ -429,8 +429,6 @@ exports.getHighscore = function(romname, callback) {
 	});
 }
 
-
-
 /**
  * Converts info text to the right case.
  */
