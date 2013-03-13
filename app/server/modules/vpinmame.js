@@ -1,5 +1,9 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
+var util = require('util');
+var async = require('async');
+var config =  require('konphyg')(__dirname + '../../../config');
+var settings = config('settings-mine');
 
 /**
  * Returns highscores for a given ROM.
@@ -11,6 +15,11 @@ var exec = require('child_process').exec;
 exports.getHighscore = function(romname, callback) {
 	var binPath = fs.realpathSync(__dirname + '../../../../bin');
 	exec(binPath + '/PINemHi.exe' + ' ' + romname + ".nv", { cwd: binPath }, function (error, stdout, stderr) {
+		if (stdout.match(/^not supported rom/i)) {
+			//callback('ROM is not supported by PINemHi.');
+			callback();
+			return;
+		}
 		if (error !== null) {
 			console.log(error);
 		} else {
@@ -25,7 +34,7 @@ exports.getHighscore = function(romname, callback) {
 			regex = new RegExp('(' + titles.join('|') + ')\\s+(\\d.?\\s+)?([\\w\\s]{3,})\\s+([\\d\',]+)', 'im');
 			if (m = regex.exec(blocks)) {
 				blocks = blocks.replace(m[0], '');
-				scores.grandChampion = { player: m[3].trim(), score: m[4].replace(/[',]/g, '') };
+				scores.grandChampion = { player: m[3].trim(), score: num(m[4]) };
 			}
 
 			// highest scores
@@ -35,7 +44,8 @@ exports.getHighscore = function(romname, callback) {
 				'oscar winners', 'leader ?board', 'highest game to date', 'hero', 'street fighters', 'all stars',
 				'silver sluggers', 'mario.s friends', 'explorers', 'best citizens', 'honor roll', 'top water sliders',
 				'top marksmen', 'family members', 'top contenders', 'magicians', 'sultan.s court', 'high rollers',
-				'marines', 'hot dogs', 'best rafters'];
+				'marines', 'hot dogs', 'best rafters', 'the champions', 'premier warriors', 'top eight players',
+				'bad girls . dudes', 'baddest cats', 'biggest guns', 'escape artists', 'greatest heroes'];
 			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.highest = [];
@@ -43,7 +53,9 @@ exports.getHighscore = function(romname, callback) {
 				var block = m[0];
 				var regex = new RegExp(/(\d).?\s([\w\s]{3})\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
-					scores.highest.push({ rank: m[1], player: m[2], score: m[3].replace(/[',]/g, '') });
+					if (m[2].trim().length > 0) {
+						scores.highest.push({ rank: m[1], player: m[2], score: num(m[3]) });
+					}
 				}
 			}
 			// jurassic park and starwars need special treatment (stwr_a14, jupk_513, tftc_303)
@@ -55,17 +67,18 @@ exports.getHighscore = function(romname, callback) {
 				while (m = regex.exec(block)) {
 					// first is grand champion
 					if (n == 0) {
-						scores.grandChampion = { player: m[3], score: m[4].replace(/[',]/g, ''), title: tidy(m[1]) }
+						scores.grandChampion = { player: m[3], score: num(m[4]), title: tidy(m[1]) }
 						scores.highest = [];
 					} else {
-						scores.highest.push({ player: m[3], score: m[4].replace(/[',]/g, ''), title: tidy(m[1]), rank: m[2]-1 });
+						scores.highest.push({ player: m[3], score: num(m[4]), title: tidy(m[1]), rank: m[2]-1 });
 					}
 					n++;
 				}
 			}
 
 			// buy-in scores
-			titles = [ 'buy-in highest scores', 'buyin barflies', 'buy-in scores', 'buy-in highscores', 'officer.s club' ];
+			titles = [ 'buy-in highest scores', 'buyin barflies', 'buy-in scores', 'buy-in highscores', 'officer.s club',
+				'buyin copilots'];
 			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.buyin = [];
@@ -73,15 +86,28 @@ exports.getHighscore = function(romname, callback) {
 				var block = m[0];
 				var regex = new RegExp(/(\d).?\s(\w+)\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
-					scores.buyin.push({ rank: m[1], player: m[2], score: m[3].replace(/[',]/g, '') });
+					scores.buyin.push({ rank: m[1], player: m[2], score: num(m[3]) });
 				}
 			}
 
 			// other titles
 			var b = blocks.trim().split(/\n\r/);
 			var others = function(block) {
+
 				var m;
-				// AFM
+				var checks = [];
+
+				function add(fct, regex, name) {
+					checks.push({ fct: fct, regex: regex, name: name });
+				}
+
+				// abv106
+				add(nameScore, 'Ace Winger');
+				add(listRankNameScore, 'mach kings', 'Mach King');
+				add(nameScore, 'Flyby King');
+				add(listNameScore, 'loopsters', 'Loopster');
+
+				// afm
 				if (m = block.match(/ruler of the universe\s+(\w+)\s+(\w+[\s\S]+)/i)) {
 					return { title: 'Ruler of the Universe', player: m[1], info: tidy(m[2]) }
 				}
@@ -89,44 +115,22 @@ exports.getHighscore = function(romname, callback) {
 					return { title: 'Martian Champion', player: m[1], info: tidy(m[2]) }
 				}
 
+				// agsocker
+				add(listRankNameScore, 'Most Valuable Player');
+
+				// apollo13
+				add(nameTitle, 'Played 13-ball Multiball');
+
+
 				// andretti
 				if (m = block.match(/lap time record\s+(\w+)\s+([\d',\.]+)/i)) {
 					return { title: 'Lap Time Record', player: m[1], score: m[2].replace(/[',\.]/g, '') }
 				}
 
 				// bbb
-				var titleOnly = function(block, str, title) {
-					if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
-						var players = m[1].trim().split(/\s+/);
-						var ret = [];
-						for (var i = 0; i < players.length; i++) {
-							ret.push({ title: title, player: players[i] });
-						}
-						return ret;
-					}
-					return false;
-				}
-				var titleScore = function(block, str, title) {
-					if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
-						var players = m[1].trim().split(/\s+/);
-						var ret = [];
-						for (var i = 0; i < players.length; i += 2) {
-							ret.push({ title: title, player: players[i], score: players[i+1].replace(/[',]/g, '') });
-						}
-						return ret;
-					}
-					return false;
-				}
-				var ret;
-				if (ret = titleOnly(block, 'big bang regulars', 'Big Bang Regular')) {
-					return ret;
-				}
-				if (ret = titleScore(block, 'underground elite', 'Underground Elite')) {
-					return ret;
-				}
-				if (ret = titleScore(block, 'weak kidney club', 'Weak Kidney Club Member')) {
-					return ret;
-				}
+				add(listName, 'big bang regulars', 'Big Bang Regular');
+				add(listNameScore, 'underground elite', 'Underground Elite');
+				add(listNameScore, 'weak kidney club', 'Weak Kidney Club Member');
 
 				// bighurt
 				if (m = block.match(/sultan of swat\s+([\w\s]+)\s*=\s*(\d+)\s+(\w+)/i)) {
@@ -143,7 +147,7 @@ exports.getHighscore = function(romname, callback) {
 				}
 
 				// bop
-				if (ret = titleScore(block, 'billionaire club members', 'Billionaire Club Member')) {
+				if (ret = listNameScore(block, 'billionaire club members', 'Billionaire Club Member')) {
 					return ret;
 				}
 
@@ -187,7 +191,7 @@ exports.getHighscore = function(romname, callback) {
 
 				// freddy
 				if (m = block.match(/dream master\s+.(\d)\s+(\w+)\s+([\d,']+)/i)) {
-					return { title: 'Dream Master', player: m[2].trim(), rank: m[1], score: m[3].replace(/[',]/g, '') }
+					return { title: 'Dream Master', player: m[2].trim(), rank: m[1], score: num(m[3]) }
 				}
 				if (m = block.match(/most souls saved\s+(\w+)\s+-\s+(\d+)/i)) {
 					return { title: 'Most Souls Saved', player: m[1].trim(), score: m[2] }
@@ -216,7 +220,7 @@ exports.getHighscore = function(romname, callback) {
 
 				// jb
 				if (m = block.match(/casino run champ\s+(\w+)\s+([\d,']+)/i)) {
-					return { title: 'Casino Run Champ', player: m[1], score: m[2].replace(/[',]/g, '') }
+					return { title: 'Casino Run Champ', player: m[1], score: num(m[2]) }
 				}
 
 				// lca
@@ -231,13 +235,13 @@ exports.getHighscore = function(romname, callback) {
 
 				// mb
 				if (m = block.match(/monster bash champion\s+([\w\s]{3,})\s+([\d',]+)/i)) {
-					return { title: 'Monster Bash Champion', player: m[1].trim(), info: m[2].replace(/[',]/g, '') }
+					return { title: 'Monster Bash Champion', player: m[1].trim(), info: num(m[2]) }
 				}
 				if (m = block.match(/monsters.rock champion\s+([\w\s]{3,})\s+([\d',]+)/i)) {
-					return { title: 'Monsters/Rock Champion', player: m[1].trim(), info: m[2].replace(/[',]/g, '') }
+					return { title: 'Monsters/Rock Champion', player: m[1].trim(), info: num(m[2]) }
 				}
 				if (m = block.match(/mosh multiball champion\s+([\w\s]{3,})\s+([\d',]+)/i)) {
-					return { title: 'Mosh Multiball Champion', player: m[1].trim(), info: m[2].replace(/[',]/g, '') }
+					return { title: 'Mosh Multiball Champion', player: m[1].trim(), info: num(m[2]) }
 				}
 
 				// mm
@@ -263,7 +267,7 @@ exports.getHighscore = function(romname, callback) {
 					return { title: 'Troll Champion', player: m[1], info: tidy(m[2]) }
 				}
 				if (m = block.match(/madness champion\s+(\w+)\s+([\d',]+)/i)) {
-					return { title: 'Madness Champion', player: m[1], score: m[2].replace(/[',]/g, '') }
+					return { title: 'Madness Champion', player: m[1], score: num(m[2]) }
 				}
 
 				// nbaf_31
@@ -283,10 +287,10 @@ exports.getHighscore = function(romname, callback) {
 
 				// ngg
 				if (m = block.match(/today.s high score\s+(\w+)\s+([\d',]+)/i)) {
-					return { title: "Today's Highscore", player: m[1], score: m[2].replace(/[',]/g, '') }
+					return { title: "Today's Highscore", player: m[1], score: num(m[2]) }
 				}
 				if (m = block.match(/hole in one champion\s+(\w+)\s+([\d',]+)/i)) {
-					return { title: 'Hole-in-one Champion', player: m[1], score: m[2].replace(/[',]/g, '') }
+					return { title: 'Hole-in-one Champion', player: m[1], score: num(m[2]) }
 				}
 
 				// opthund
@@ -296,7 +300,7 @@ exports.getHighscore = function(romname, callback) {
 
 				// rescu911
 				if (m = block.match(/most lives saved\s+(\w+)\s+([\d',]+)/i)) {
-					return { title: 'Most Lives Saved', player: m[1], score: m[2].replace(/[',]/g, '') }
+					return { title: 'Most Lives Saved', player: m[1], score: num(m[2]) }
 				}
 
 				// sfight2
@@ -334,20 +338,7 @@ exports.getHighscore = function(romname, callback) {
 				// 		Honor Roll      0 or 1 Buy-Ins
 				// 		Officer's Club  More than 1 Buy-In
 				// 		Q Continuum     Score of 10 Billion or more (Any Number Of Buy-Ins)
-				var rankNameScore = function(block, str, title) {
-					if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
-						//blocks = blocks.replace(m[0].trim(), '');
-						var b = m[1];
-						var ret = [];
-						var regex = new RegExp(/(\d).\s+(\w+)\s+([\d',]+)/g);
-						while (m = regex.exec(b)) {
-							ret.push({ title: title, rank: m[1], player: m[2], score: m[3].replace(/[',]/g, '') });
-						}
-						return ret;
-					}
-					return false;
-				}
-				if (ret = rankNameScore(block, 'q continuum', 'Q Continuum')) {
+				if (ret = listRankNameScore(block, 'q continuum', 'Q Continuum')) {
 					return ret;
 				}
 
@@ -367,7 +358,7 @@ exports.getHighscore = function(romname, callback) {
 				}
 
 				// tz_92
-				if (ret = rankNameScore(block, 'lost in the zone champion', 'Lost in the Zone Champion')) {
+				if (ret = listRankNameScore(block, 'lost in the zone champion', 'Lost in the Zone Champion')) {
 					return ret;
 				}
 
@@ -402,6 +393,13 @@ exports.getHighscore = function(romname, callback) {
 					return { title: 'Insanity Record', player: m[1], info: tidy(m[2]) }
 				}
 
+				for (var i = 0; i < checks.length; i++) {
+					var ret;
+					if (ret = checks[i].fct(block, checks[i].regex, checks[i].name)) {
+						return ret;
+					}
+				}
+
 				return null;
 
 			};
@@ -416,7 +414,7 @@ exports.getHighscore = function(romname, callback) {
 					}
 				} else if (b[i].trim().length > 0) {
 
-					console.log(romname + ': Could not match "other" block: \n' + b[i]);
+					console.log('\n' + romname + ': Unknown block: \n' + b[i] + '\n');
 					callback(b[i]);
 					return;
 				}
@@ -427,7 +425,37 @@ exports.getHighscore = function(romname, callback) {
 			callback(null, scores);
 		}
 	});
+};
+
+/**
+ * Goes through all nvrams and verifies that everything could be parsed.
+ */
+exports.assertAll = function() {
+	var skip = [ 'algar_l1', 'alienstr', 'alpok_b6', 'alpok_f6', 'alpok_l2', 'alpok_l6', 'amazonh', 'astannie',
+		'barra_l1', 'beatclck' ];
+	var files = fs.readdirSync(settings.vpinmame.path + '/nvram');
+	var nvrams = [];
+	for (var i = 0; i < files.length; i++) {
+		var file = files[i];
+		var nvram = file.substr(0, file.length - 3);
+		if (file.substr(file.length - 3, file.length) == '.nv' && skip.indexOf(nvram) == -1) {
+			nvrams.push(nvram);
+		}
+	}
+	async.eachSeries(nvrams, function(nvram, callback) {
+		exports.getHighscore(nvram, function(err, result) {
+			if (!err) {
+				if (result != null) {
+					delete result.raw;
+					console.log(util.inspect(result));
+				}
+			}
+			callback(err, result);
+		});
+	}, function() {});
 }
+
+
 
 /**
  * Converts info text to the right case.
@@ -438,4 +466,155 @@ function tidy(str) {
 	}) + ' ').replace(/\W(am|pm)\W/i, function(txt) {
 			return txt.toUpperCase();
 		}).trim();
+}
+
+/**
+ * Strips separation chars from number.
+ * @param str
+ * @returns {*|String}
+ */
+function num(str) {
+	return str.replace(/[',]/g, '');
+}
+
+
+/**
+ * Example:
+ *
+ *  FLYBY KING
+ *  PWM    15
+ *
+ * @param block
+ * @param str
+ * @param title
+ * @returns {*}
+ */
+var nameScore = function(block, str, title) {
+	var m;
+	if (!title) {
+		title = str;
+	}
+	if (m = block.match(new RegExp(str + '\\s+([\\w\\s]{3})\\s+([\\d\',]+)', 'i'))) {
+		return { title: title, player: m[1], score: num(m[2]) }
+	}
+	return false;
+}
+
+
+/**
+ * Example:
+ *
+ *  JEK
+ *  PLAYED 13-BALL MULTIBALL
+ *
+ * @param block
+ * @param str
+ * @param title
+ * @returns {*}
+ */
+var nameTitle = function(block, str, title) {
+	var m;
+	if (!title) {
+		title = str;
+	}
+	if (m = block.match(new RegExp('([\\w\\s]{3})\\s+' + str, 'i'))) {
+		return { title: title, player: m[1] }
+	}
+	return false;
+}
+
+
+/**
+ * Example:
+ *
+ *  BIG BANG REGULARS
+ *  SPK
+ *  PFZ
+ *  TON
+ *  MNY
+ *  BBB
+ *
+ * @param block
+ * @param str
+ * @param title
+ * @returns {*}
+ */
+var listName = function(block, str, title) {
+	var m;
+	if (!title) {
+		title = str;
+	}
+	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
+		var players = m[1].trim().split(/\s+/);
+		var ret = [];
+		for (var i = 0; i < players.length; i++) {
+			ret.push({ title: title, player: players[i] });
+		}
+		return ret;
+	}
+	return false;
+}
+
+/**
+ * Example:
+ *
+ *  UNDERGROUND ELITE
+ *  SPK    10
+ *  PFZ     9
+ *  TON     8
+ *  MNY     7
+ *  BBB     6
+ *
+ * @param block
+ * @param str
+ * @param title
+ * @returns {*}
+ */
+var listNameScore = function(block, str, title) {
+	var m;
+	if (!title) {
+		title = str;
+	}
+	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
+		var players = m[1].trim().split(/\s+/);
+		var ret = [];
+		for (var i = 0; i < players.length; i += 2) {
+			ret.push({ title: title, player: players[i], score: num(players[i+1]) });
+		}
+		return ret;
+	}
+	return false;
+}
+
+/**
+ * Example:
+ *
+ *   MACH KINGS
+ *   1) SAM    1,000,000,000
+ *   2) KAT      825,000,000
+ *   3) TND      650,000,000
+ *   4) FML      475,000,000
+ *   5) HUG      300,000,000
+ *
+ * @param block
+ * @param str
+ * @param title
+ * @returns {*}
+ */
+var listRankNameScore = function(block, str, title) {
+	var m;
+	if (!title) {
+		title = str;
+	}
+	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
+		//blocks = blocks.replace(m[0].trim(), '');
+		var b = m[1];
+		var ret = [];
+		var regex = new RegExp(/(\d).?\s+([\w\s]{3})\s+([\d',]+)/g);
+		while (m = regex.exec(b)) {
+			ret.push({ title: title, rank: m[1], player: m[2], score: num(m[3]) });
+		}
+		return ret;
+	}
+	return false;
 }
