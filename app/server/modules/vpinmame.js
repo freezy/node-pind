@@ -90,9 +90,9 @@ exports.getHighscore = function(romname, callback) {
 				}
 			}
 
-			// other titles
+			// special titles
 			var b = blocks.trim().split(/\n\r/);
-			var others = function(block) {
+			var blocks = function(block) {
 
 				var m;
 				var checks = [];
@@ -101,49 +101,39 @@ exports.getHighscore = function(romname, callback) {
 					checks.push({ fct: fct, regex: regex, name: name });
 				}
 
-				// abv106
-				add(nameScore, 'Ace Winger');
-				add(listRankNameScore, 'mach kings', 'Mach King');
-				add(nameScore, 'Flyby King');
-				add(listNameScore, 'loopsters', 'Loopster');
-
-				// afm
-				if (m = block.match(/ruler of the universe\s+(\w+)\s+(\w+[\s\S]+)/i)) {
-					return { title: 'Ruler of the Universe', player: m[1], info: tidy(m[2]) }
-				}
-				if (m = block.match(/martian champion\s+(\w+)\s+-\s+(\w+[\s\S]+)/i)) {
-					return { title: 'Martian Champion', player: m[1], info: tidy(m[2]) }
+				function is(prefix) {
+					return romname.substr(0, prefix.length).toLowerCase() == prefix.toLowerCase();
 				}
 
-				// agsocker
-				add(listRankNameScore, 'Most Valuable Player');
-
-				// apollo13
-				add(nameTitle, 'Played 13-ball Multiball');
-
-
-				// andretti
-				if (m = block.match(/lap time record\s+(\w+)\s+([\d',\.]+)/i)) {
-					return { title: 'Lap Time Record', player: m[1], score: m[2].replace(/[',\.]/g, '') }
+				if (is('abv')) { // abv106
+					add(nameScore, 'Ace Winger');
+					add(listRankNameScore, 'mach kings', 'Mach King');
+					add(nameScore, 'Flyby King');
+					add(listNameScore, 'loopsters', 'Loopster');
 				}
-
-				// bbb
-				add(listName, 'big bang regulars', 'Big Bang Regular');
-				add(listNameScore, 'underground elite', 'Underground Elite');
-				add(listNameScore, 'weak kidney club', 'Weak Kidney Club Member');
-
-				// bighurt
-				if (m = block.match(/sultan of swat\s+([\w\s]+)\s*=\s*(\d+)\s+(\w+)/i)) {
-					return { title: 'Sultan of Swat', player: m[3], info: tidy(m[1]), score: m[2] }
+				if (is('afm')) { // afm_113b
+					add(nameInfo, 'Ruler of the Universe');
+					add(nameDashInfo, 'Martian Champion');
 				}
-				if (m = block.match(/mvp\s+([\w\s]+)\s*=\s*(\d+)\s+(\w+)/i)) {
-					return { title: 'MVP', player: m[3], info: tidy(m[1]), score: m[2] }
+				if (is('agsocker')) { // agsocker
+					add(listRankNameScore, 'Most Valuable Player');
 				}
-				if (m = block.match(/gold glove\s+([\w\s]+)\s*=\s*(\d+)\s+(\w+)/i)) {
-					return { title: 'Gold Glove', player: m[3], info: tidy(m[1]), score: m[2] }
+				if (is('apollo13')) { // apollo13
+					add(nameTitle, 'Played 13-ball Multiball');
 				}
-				if (m = block.match(/stolen base king\s+([\w\s]+)\s*=\s*(\d+)\s+(\w+)/i)) {
-					return { title: 'Stolen Base King', player: m[3], info: tidy(m[1]), score: m[2] }
+				if (is('andretti')) { // andretti
+					add(nameInfo, 'Lap Time Record');
+				}
+				if (is('bbb')) { // bbb109
+					add(listName, 'big bang regulars', 'Big Bang Regular');
+					add(listNameScore, 'underground elite', 'Underground Elite');
+					add(listNameScore, 'weak kidney club', 'Weak Kidney Club Member');
+				}
+				if (is('bighurt')) { // bighurt
+					add(infoEqualsScoreName, 'Sultan of Swat');
+					add(infoEqualsScoreName, 'MVP');
+					add(infoEqualsScoreName, 'Gold Glove');
+					add(infoEqualsScoreName, 'Stolen Base King');
 				}
 
 				// bop
@@ -405,12 +395,12 @@ exports.getHighscore = function(romname, callback) {
 			};
 			scores.other = [];
 			for (var i = 0; i < b.length; i++) {
-				var other = others(b[i]);
-				if (other) {
-					if (Array.isArray(other)) {
-						scores.other = scores.other.concat(other);
+				var block = blocks(b[i]);
+				if (block) {
+					if (Array.isArray(block)) {
+						scores.other = scores.other.concat(block);
 					} else {
-						scores.other.push(other);
+						scores.other.push(block);
 					}
 				} else if (b[i].trim().length > 0) {
 
@@ -500,6 +490,73 @@ var nameScore = function(block, str, title) {
 	return false;
 }
 
+/**
+ * Example:
+ *  RULER OF THE UNIVERSE
+ *  TEX
+ *  INAUGURATED
+ *  6 APR, 2012 7:36 PM
+ *
+ * @param block
+ * @param str
+ * @param title
+ * @return {*}
+ */
+var nameInfo = function(block, str, title) {
+	var m;
+	if (!title) {
+		title = str;
+	}
+	if (m = block.match(new RegExp(str + '\\s+([\\w\\s]{3})\\s+(\\w+[\\s\\S]+)', 'i'))) {
+		return { title: title, player: m[1], info: tidy(m[2]) }
+	}
+	return false;
+}
+
+/**
+ * Example:
+ *
+ *  MARTIAN CHAMPION
+ *  LFS - 20
+ *  MARTIANS DESTROYED
+ *
+ * @param block
+ * @param str
+ * @param title
+ * @return {*}
+ */
+var nameDashInfo = function(block, str, title) {
+	var m;
+	if (!title) {
+		title = str;
+	}
+	if (m = block.match(new RegExp(str + '\\s+([\\w\\s]{3})\\s+-\\s+(\\w+[\\s\\S]+)', 'i'))) {
+		return { title: title, player: m[1], info: tidy(m[2]) }
+	}
+	return false;
+}
+/**
+ * Example:
+ *
+ *  SULTAN OF SWAT
+ *  HIGH GRAND SLAMS TO DATE = 7
+ *  HGD
+ *
+ * @param block
+ * @param str
+ * @param title
+ * @return {*}
+ */
+var infoEqualsScoreName = function(block, str, title) {
+	var m;
+	if (!title) {
+		title = str;
+	}
+	if (m = block.match(new RegExp(str + '\\s+([\\w\\s]+)\\s*=\\s*([\\d\',]+)\\s+([\\w\\s]{3})', 'i'))) {
+		return { title: title, player: m[3], info: tidy(m[1]), score: num(m[2]) }
+	}
+	return false;
+}
 
 /**
  * Example:
