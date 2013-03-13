@@ -31,7 +31,7 @@ exports.getHighscore = function(romname, callback) {
 				'world record', 'highest arrests', 'dream master', 'ultimate gladiator', 'club champion',
 				'five star general', 'super hero', 'the master', 'tee.d off leader', 'world champion',
 				'master magician', 'psycho skier', 'river master' ];
-			regex = new RegExp('(' + titles.join('|') + ')\\s+(\\d.?\\s+|#\\d\\s+)?([\\w\\s]{3,})\\s+([\\d\',]+)', 'im');
+			regex = new RegExp('^(' + titles.join('|') + ')\\s+(\\d.?\\s+|#\\d\\s+)?([\\w\\s]{3,})\\s+([\\d\',]+)', 'im');
 			if (m = regex.exec(blocks)) {
 				blocks = blocks.replace(m[0], '');
 				scores.grandChampion = { player: m[3].trim(), score: num(m[4]) };
@@ -45,7 +45,8 @@ exports.getHighscore = function(romname, callback) {
 				'silver sluggers', 'mario.s friends', 'explorers', 'best citizens', 'honor roll', 'top water sliders',
 				'top marksmen', 'family members', 'top contenders', 'magicians', 'sultan.s court', 'high rollers',
 				'marines', 'hot dogs', 'best rafters', 'the champions', 'premier warriors', 'top eight players',
-				'bad girls . dudes', 'baddest cats', 'biggest guns', 'escape artists', 'greatest heroes'];
+				'bad girls . dudes', 'baddest cats', 'biggest guns', 'escape artists', 'greatest heroes',
+				'groesste helden', 'bone busters', 'top guns', 'top hustlers'];
 			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.highest = [];
@@ -78,7 +79,7 @@ exports.getHighscore = function(romname, callback) {
 
 			// buy-in scores
 			titles = [ 'buy-in highest scores', 'buyin barflies', 'buy-in scores', 'buy-in highscores', 'officer.s club',
-				'buyin copilots'];
+				'buyin copilots', 'buy in sharks'];
 			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.buyin = [];
@@ -88,6 +89,18 @@ exports.getHighscore = function(romname, callback) {
 				while (m = regex.exec(block)) {
 					scores.buyin.push({ rank: m[1], player: m[2], score: num(m[3]) });
 				}
+			}
+
+			// non-player related
+			function global(score) {
+				if (!scores.global) {
+					scores.global = [];
+				}
+				scores.global.push(score);
+			}
+			if (m = blocks.match(/highest score\s+([\d',]+)/i)) {
+				global({ title: 'Highest Score', score: num(m[1]) });
+				blocks = blocks.replace(m[0].trim(), '');
 			}
 
 			// special titles
@@ -115,13 +128,13 @@ exports.getHighscore = function(romname, callback) {
 					add(nameInfo, 'Ruler of the Universe');
 					add(nameDashInfo, 'Martian Champion');
 				}
-				if (is('agsocker')) { // agsocker
+				if (is('agsoccer')) { // agsoccer
 					add(listRankNameScore, 'Most Valuable Player');
 				}
 				if (is('apollo13')) { // apollo13
 					add(nameTitle, 'Played 13-ball Multiball');
 				}
-				if (is('andretti')) { // andretti
+				if (is('andrett')) { // andretti
 					add(nameInfo, 'Lap Time Record');
 				}
 				if (is('bbb')) { // bbb109
@@ -134,6 +147,9 @@ exports.getHighscore = function(romname, callback) {
 					add(infoEqualsScoreName, 'MVP');
 					add(infoEqualsScoreName, 'Gold Glove');
 					add(infoEqualsScoreName, 'Stolen Base King');
+				}
+				if (is('bk2k')) { // bk2k_l4
+					add(nameInfo, 'Loop Champion');
 				}
 				if (is('bop')) { // bop_l8
 					add(listNameScore, 'billionaire club members', 'Billionaire Club Member');
@@ -314,8 +330,15 @@ exports.getHighscore = function(romname, callback) {
 					}
 				} else if (b[i].trim().length > 0) {
 
-					console.log('\n' + romname + ': Unknown block: \n' + b[i] + '\n');
-					callback(b[i]);
+					console.log('\n===================================================================');
+					console.log(romname);
+					console.log('===================================================================');
+					console.log(stdout);
+					console.log('-------------------------------------------------------------------');
+					console.log('Unknown block: \n' + b[i] + '\n');
+					console.log('===================================================================');
+					scores.raw = stdout;
+					callback(b[i], scores);
 					return;
 				}
 			}
