@@ -26,72 +26,116 @@ exports.getHighscore = function(romname, callback) {
 			var m, regex, titles, blocks = stdout;
 			var scores = {};
 
+			function is(prefix) {
+				return romname.substr(0, prefix.length).toLowerCase() == prefix.toLowerCase();
+			}
+
 			// grand champ
 			titles = [ 'grand champion', 'champion', 'greatest vampire hunter', 'highest ball score', 'mvp',
 				'world record', 'highest arrests', 'dream master', 'ultimate gladiator', 'club champion',
 				'five star general', 'super hero', 'the master', 'tee.d off leader', 'world champion',
-				'master magician', 'psycho skier', 'river master' ];
-			regex = new RegExp('^(' + titles.join('|') + ')\\s+(\\d.?\\s+|#\\d\\s+)?([\\w\\s]{3,})\\s+([\\d\',]+)', 'im');
+				'master magician', 'psycho skier', 'river master', 'welt rekord', 'greatest time lord',
+				'regular game\\s+grand champion', 'boss of bosses', 'high score', 'most scored',
+				'top cops\\s+commander', 'the best dude', 'top spy', 'hippest shooter' ];
+
+			regex = new RegExp('^(' + titles.join('|') + ')\\s+(\\d.?\\s+|#\\d\\s+)?([\\w\\s]{3})\\s+(\\$\\s+)?([\\d\',]+)', 'im');
 			if (m = regex.exec(blocks)) {
 				blocks = blocks.replace(m[0], '');
-				scores.grandChampion = { player: m[3].trim(), score: num(m[4]) };
+				scores.grandChampion = { player: m[3].trim(), score: num(m[5]) };
 			}
 
 			// highest scores
 			titles = [ 'high(est)? ?scores', 'standings', 'champion drinkers', 'all-stars', 'today.s hi-score',
-				'top fruit throwers', 'high hoppers', 'hall of fame', 'valedictorians', 'cue ball wizards', 'top cops',
-				'best hunters', 'dream warriors', 'top anglers', 'honorific gladiators', 'ace drivers', 'high rollers',
-				'oscar winners', 'leader ?board', 'highest game to date', 'hero', 'street fighters', 'all stars',
-				'silver sluggers', 'mario.s friends', 'explorers', 'best citizens', 'honor roll', 'top water sliders',
-				'top marksmen', 'family members', 'top contenders', 'magicians', 'sultan.s court', 'high rollers',
-				'marines', 'hot dogs', 'best rafters', 'the champions', 'premier warriors', 'top eight players',
-				'bad girls . dudes', 'baddest cats', 'biggest guns', 'escape artists', 'greatest heroes',
-				'groesste helden', 'bone busters', 'top guns', 'top hustlers'];
+				'top fruit throwers', 'high hoppers', '(creature feature\\s+)?hall of fame', 'valedictorians',
+				'cue ball wizards', 'top cops', 'best hunters', 'dream warriors', 'top anglers', 'honorific gladiators',
+				'ace drivers', 'high rollers', 'oscar winners', 'leader ?board', 'highest game to date', 'hero',
+				'street fighters', 'all stars', 'silver sluggers', 'mario.s friends', 'explorers', 'best citizens',
+				'top water sliders', 'top marksmen', 'family members', 'top contenders', 'magicians',
+				'sultan.s court', 'high rollers', 'marines', 'hot dogs', 'best rafters', 'the champions',
+				'premier warriors', 'top eight players', 'bad girls . dudes', 'baddest cats', 'biggest guns',
+				'escape artists', 'greatest heroes', 'groesste helden', 'bone busters', 'top guns', 'top hustlers',
+				'dark knight', 'card sharks', 'best time lords', 'movers and shakers', 'conquerors', 'super stars',
+				'mad scientists', 'squadron leaders', 'hollywood.s finest', 'premier shooters', 'hot shooters',
+				'top drivers', 'regular game\\s+high scores', 'other kingpins', 'best pilots', 'today.s top 3',
+				'hi ?scores', 'next highest', 'power magicians', '8 ball sharks', 'ships crew', 'top commandos',
+				'robo.warriors', 'hot rockers', 'top jetters', 'super raser', 'all time highest scores',
+				'under.achievers', 'party animals', 'spy masters', 'best jedi.s', 'top wrestlers', 'best drivers',
+				'top dudes', 'teleport crew', 'Gridiron Kings', 'the victors', 'best agents' ];
+			if (is('sttng')) {
+				titles.push('honor roll');
+			}
 			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.highest = [];
 				blocks = blocks.replace(m[0].trim(), '');
 				var block = m[0];
-				var regex = new RegExp(/(\d).?\s([\w\s]{3})\s+([\d',]+)/gi);
+				var regex = new RegExp(/#?(\d+).?\s([\w\s+]{3})\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
 					if (m[2].trim().length > 0) {
-						scores.highest.push({ rank: m[1], player: m[2], score: num(m[3]) });
+						scores.highest.push({ rank: m[1], player: player(m[2]), score: num(m[3]) });
 					}
 				}
 			}
-			// jurassic park and starwars need special treatment (stwr_a14, jupk_513, tftc_303)
-			if (m = blocks.match(/([\w\s\-]+#\d\s+[\w\s]{3}\s+[\d',]+\s+){4,}/m)) {
-				blocks = blocks.replace(m[0].trim(), '');
-				regex = new RegExp(/([\w\s\-]+)#(\d)\s+([\w\s]{3})\s+([\d',]+)/g);
-				var block = m[0];
-				var n = 0;
-				while (m = regex.exec(block)) {
-					// first is grand champion
-					if (n == 0) {
-						scores.grandChampion = { player: m[3], score: num(m[4]), title: tidy(m[1]) }
-						scores.highest = [];
-					} else {
-						scores.highest.push({ player: m[3], score: num(m[4]), title: tidy(m[1]), rank: m[2]-1 });
+			// jurassic park, starwars and others need special treatment
+			if (is('stwr') || is('jupk') || is('tftc') || is('robo') || is('tmnt') || is('trek') || is('wwfr')
+				|| is('gnr') || is('hook') || is('lah') || is('lw3') || is('rab') || is('torp')) {
+				if (m = blocks.match(/([\w\s\-\.']+(#\d|\d.)\s+[\w\s+]{3}\s+[\d',]+\s+){4,}/m)) {
+					blocks = blocks.replace(m[0].trim(), '');
+					regex = new RegExp(/([\w\s\-\.']+)#?(\d)\)?\s+([\w\s+]{3})\s+([\d',]+)/g);
+					var block = m[0];
+					var n = 0;
+					while (m = regex.exec(block)) {
+						// first is grand champion
+						if (n == 0) {
+							scores.grandChampion = { player: player(m[3]), score: num(m[4]), title: tidy(m[1]) }
+							scores.highest = [];
+						} else {
+							scores.highest.push({ player: player(m[3]), score: num(m[4]), title: tidy(m[1]), rank: m[2]-1 });
+						}
+						n++;
 					}
-					n++;
 				}
 			}
 
+			// wrldtou2 needs yet a different treatment
+			if (is('wrldto')) {
+				if (m = blocks.match(/([\w\s\-\.]+\s+[\w\s+]{3}\s+[\d',]+\s+){4,}/m)) {
+					blocks = blocks.replace(m[0].trim(), '');
+					regex = new RegExp(/([\w\s\-\.]+)\s{2,}([\w\s+]{3})\s{2,}([\d',]+)/g);
+					var block = m[0];
+					var n = 0;
+					while (m = regex.exec(block)) {
+						// first is grand champion
+						if (n == 0) {
+							scores.grandChampion = { player: player(m[2]), score: num(m[3]), title: tidy(m[1]) }
+							scores.highest = [];
+						} else {
+							scores.highest.push({ player: player(m[2]), score: num(m[3]), title: tidy(m[1]), rank: n+1 });
+						}
+						n++;
+					}
+				}
+			}
+
+
 			// buy-in scores
-			titles = [ 'buy-in highest scores', 'buyin barflies', 'buy-in scores', 'buy-in highscores', 'officer.s club',
-				'buyin copilots', 'buy in sharks'];
+			titles = [ 'buy-in highest scores', 'buyin barflies', 'buy-in scores', 'buyin scores', 'buy-in highscores',
+				'officer.s club', 'buyin copilots', 'buy in sharks', 'buyin super stars', 'super game\\s+high scores',
+				'buyin bosses', 'buy-in magicians', '9 ball sharks' ];
+
 			regex = new RegExp('\\n(' + titles.join('|') + ')[\\s\\S]+?\\n\\r', 'i');
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.buyin = [];
 				blocks = blocks.replace(m[0].trim(), '');
 				var block = m[0];
-				var regex = new RegExp(/(\d).?\s(\w+)\s+([\d',]+)/gi);
+				var regex = new RegExp(/(\d+).?\s(\w+)\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
-					scores.buyin.push({ rank: m[1], player: m[2], score: num(m[3]) });
+					scores.buyin.push({ rank: m[1], player: player(m[2]), score: num(m[3]) });
 				}
 			}
 
-			// non-player related
+
+			// global data (non-player related)
 			function global(score) {
 				if (!scores.global) {
 					scores.global = [];
@@ -102,6 +146,13 @@ exports.getHighscore = function(romname, callback) {
 				global({ title: 'Highest Score', score: num(m[1]) });
 				blocks = blocks.replace(m[0].trim(), '');
 			}
+			// pz_f4
+			if (m = blocks.match(/big bang\s+([\d',]+)/i)) {
+				global({ title: 'Big Bang', score: num(m[1]) });
+				blocks = blocks.replace(m[0].trim(), '');
+			}
+
+
 
 			// special titles
 			var b = blocks.trim().split(/\n\r/);
@@ -112,10 +163,6 @@ exports.getHighscore = function(romname, callback) {
 
 				function add(fct, regex, name) {
 					checks.push({ fct: fct, regex: regex, name: name });
-				}
-
-				function is(prefix) {
-					return romname.substr(0, prefix.length).toLowerCase() == prefix.toLowerCase();
 				}
 
 				if (is('abv')) { // abv106
@@ -158,18 +205,36 @@ exports.getHighscore = function(romname, callback) {
 					/* MOST SHIPS SUNK
 					 * 2 BY SLL
 					 */
-					if (m = block.match(/most ships sunk\s+(\d+)\s+by\s+([\w\s]{3})/i)) {
+					if (m = block.match(/most ships sunk\s+(\d+)\s+by\s+([\w\s+]{3})/i)) {
 						return { title: 'Most Ships Sunk', player: player(m[2]), score: num(m[1]) }
 					}
 				}
+				if (is('bsv')) { // bsv103
+					add(listRankNameScore, 'cutthroat champions', 'Cutthroat Champion');
+				}
 				if (is('bttf')) { // bttf_a27
 					add(nameScore, 'Loop Back Champ');
+					add(listRankNameScore, 'tages rekord', 'Tagesrekord');
 				}
 				if (is('carhop')) { // carhop
 					add(nameOnly, 'Record Heat Wave');
 				}
 				if (is('congo')) { // congo_21
 					add(nameInfo, 'Diamond Champion');
+				}
+				if (is('ckpt')) { // ckpt_a17
+					add(nameScore, 'Loop Record');
+					add(nameInfo, 'Speed Record');
+				}
+				if (is('corv')) { // corv_21
+					add(nameOnly, 'Future Car Champ');
+					add(nameInfo, 'World Speed Record');
+					add(nameInfo, 'Cornering Record');
+				}
+				if (is('cp')) { // cp_15
+					add(nameInfo, 'Pub Champion');
+					add(nameInfo, 'Jump Rope Champion');
+					add(nameInfo, 'Speed Bag Champion');
 				}
 				if (is('cv')) { // cv_14
 					add(nameDashScore, 'Cannon Ball Champion');
@@ -178,11 +243,24 @@ exports.getHighscore = function(romname, callback) {
 				if (is('deadweap')) { // deadweap
 					add(nameDashScore, 'Highest Arrests');
 				}
+				if (is('dh')) { // dh_lx2
+					add(nameOnly, 'Crime Wave Champ');
+				}
+				if (is('dm')) { // dm_h5
+					add(nameScore, 'Demolition Time Champion');
+				}
 				if (is('drac')) { // drac_l1
 					add(nameScore, 'Loop Champion');
 				}
+				if (is('dw')) { // dw_l1
+					add(nameScore, 'Loop Champion');
+					add(nameScore, 'Highest Davros Multiball Wave');
+				}
 				if (is('freddy')) { // freddy
 					add(nameDashScore, 'Most Souls Saved');
+				}
+				if (is('fs')) { // fs_lx2
+					add(nameScore, 'Top Bowler');
 				}
 				if (is('ft')) { // ft_p4
 					add(nameInfo, 'Biggest Liar');
@@ -192,14 +270,46 @@ exports.getHighscore = function(romname, callback) {
 					add(nameOnly, 'Beast Slayer');
 					add(nameOnly, 'Combo Master');
 				}
+				if (is('gldneye')) { // gldneye
+					add(nameOnly, 'Satellite Jackpot');
+				}
+				if (is('godzilla')) { // godzilla
+					add(listRankName, '5 multiballs champs', 'Multiball Champ');
+				}
 				if (is('gw')) { // gw_l5
 					add(nameDashInfo, 'Loop Champion');
+				}
+				if (is('hoops')) { // hoops
+					add(nameDashInfo, 'High Basket Points');
+				}
+				if (is('hurr')) { // hurr_l2
+					add(nameOnly, 'Clown Time Record');
+				}
+				if (is('i500')) { // i500_11b
+					add(nameInfo, 'Pit Stop Record');
+					add(nameScore, 'Buyin Champion');
+				}
+				if (is('id4')) { // id4
+					add(nameOnly, 'ID4 Super Jackpot');
 				}
 				if (is('jb')) { // jb_10r
 					add(nameScore, 'Casino Run Champ');
 				}
+				if (is('jd')) { // jd_l6
+					add(nameScore, 'super game\\s+grand champion', 'Super Game Grand Champion');
+				}
+				if (is('jm')) { // jm_12b
+					add(nameScore, 'Cyberpunk');
+					add(listRankNameScore, 'masters of powerdown', 'Master of Powerdown');
+				}
+				if (is('jp')) { // jplstw20
+					add(nameDashScore, 'Site-B Champ');
+				}
 				if (is('lca')) {
 					add(nameOnly, '5 of a kind', 'Five of a kind');
+				}
+				if (is('lostspc')) { // lostspc
+					add(nameOnly, '3 Multiballs in 1 Ball');
 				}
 				if (is('lotr')) { // lotr9
 					add(nameDashInfo, 'Destroy Ring Champion');
@@ -217,7 +327,12 @@ exports.getHighscore = function(romname, callback) {
 					add(nameDashInfo, 'Peasant Champion');
 					add(nameDashInfo, 'Damsel Champion');
 					add(nameDashInfo, 'Troll Champion');
+					add(nameDashInfo, 'Troll Avenger');
 					add(nameScore, 'Madness Champion');
+					add(nameScore, 'Master of Madness');
+				}
+				if (is('mnfb')) { // mnfb_c27
+					add(nameScore, 'Loop Record');
 				}
 				if (is('nbaf')) { // nbaf_31
 					add(nameInfo, 'Current M.V.P');
@@ -249,25 +364,55 @@ exports.getHighscore = function(romname, callback) {
 				if (is('opthund')) { // opthund
 					add(nameOnly, 'Five Star General');
 				}
+				if (is('play')) { // play203
+					add(nameOnly, 'Playboy Champion');
+				}
+				if (is('pmv')) { // pmv112
+					add(listName, 'members of the cabal', 'Member of the Cabal');
+				}
+				if (is('pop')) { // pop_lx5
+					add(nameInfo, 'Loop Champion');
+				}
 				if (is('rescu911')) { // rescu911
 					add(nameScore, 'Most Lives Saved');
+				}
+				if (is('robo')) { // robo_a34
+					add(nameInfo, 'Jump Master');
+				}
+				if (is('rs')) { // rs_l6
+					add(listRankNameScore, 'today.s highest scores', "Today's highest score");
+				}
+				if (is('sc')) { // sc_14
+					add(listRankNameScore, 'Assault Masters');
+					add(nameScore, 'Assault Champion');
 				}
 				if (is('sfight2')) { // sfight2
 					add(nameOnly, 'The Master');
 				}
-				if (is('shaqattq')) { // shaqattq
+				if (is('shaqatt')) { // shaqattq
 					add(nameScore, 'most basket points by', 'Most Basket Points');
+				}
+				if (is('shrky')) { // shrky207
+					add(nameOnly, 'Prize Money Millionaire');
 				}
 				if (is('silvslug')) { // silvslug
 					add(nameDashScore, 'Highest Runs to Date');
 				}
+				if (is('simp')) { // simp_a20
+					add(nameScore, 'Loop Back Champ');
+				}
 				if (is('smb')) { // smb3
 					add(nameOnly, 'Super Mario');
+					add(nameScore, 'Ticket Champion');
+				}
+				if (is('spacej')) { // spacejam
+					add(onlyName, '12 Baskets in a Row');
+					add(onlyName, '8 Baskets in a Row');
 				}
 				if (is('ss')) { // ss_15
 					add(nameInfo, 'Spider Champion');
 				}
-				if (is('stargate')) { // stargate
+				if (is('starga')) { // stargate
 					add(nameScore, 'high combos by', 'High Combos');
 				}
 				if (is('sttng')) { // sttng_s7
@@ -285,21 +430,46 @@ exports.getHighscore = function(romname, callback) {
 				if (is('teedoff')) { // teedoff
 					add(nameScore, 'the most holes in one', 'The Most Holes-In-One');
 				}
+				if (is('tmnt')) { // tmnt_103
+					add(nameScore, 'Loop Record');
+				}
 				if (is('tfight')) { // tfight
 					add(nameDashScore, 'Highest punches');
+				}
+				if (is('ts')) { // ts_la2
+					add(listName, 'final battle immortals', 'Final Battle Immortal');
+					add(nameScore, 'Buyin Champion');
+					add(nameInfo, 'Shadow Loop Champ');
+				}
+				if (is('twst')) { // twst_300
+					add(nameOnly, 'Triple Jackpot');
 				}
 				if (is('tz')) { // tz_92
 					add(listRankNameScore, 'Lost in the Zone Champion');
 				}
+				if (is('usafoot')) { // usafootb
+					add(listRankNameScore, 'Most Valuable Player');
+				}
 				if (is('vegas')) { // vegas
 					add(nameOnly, 'Slot King');
 				}
-				if (is('waterwld')) { // waterwld
+				if (is('viprsega')) { // viprsega
+					// ION   8,120 MILES
+					if (m = block.match(/([\w\s+]{3})\s+([\d',]+) miles/i)) {
+						return { title: 'Distance', player: player(m[1]), info: num(m[2]) + ' Miles' }
+					}
+				}
+				if (is('waterwl')) { // waterwld
 					add(infoEqualsScoreName, 'icthy freak', 'Itchy Freak');
 				}
-				if (is('wcsoccer')) { // wcsoccer
+				if (is('wcs')) { // wcs_l2
+					add(nameInfo, 'Final Match Goal Champ');
+					add(listRankNameScore, 'Honor Roll');
+				}
+				if (is('wcsocc')) { // wcsoccer
 					add(nameOnly, 'World Champ');
 					add(nameScore, 'you have the most goals.', 'Most Goals');
+					add(listRankNameScore, 'MVP');
 				}
 				if (is('wd')) { // wd_12
 					add(nameOnly, 'The Roof Champion');
@@ -353,13 +523,18 @@ exports.getHighscore = function(romname, callback) {
 /**
  * Goes through all nvrams and verifies that everything could be parsed.
  */
-exports.assertAll = function() {
-	var skip = [ 'algar_l1', 'alienstr', 'alpok_b6', 'alpok_f6', 'alpok_l2', 'alpok_l6', 'amazonh', 'astannie',
-		'barra_l1', 'beatclck' ];
+exports.assertAll = function(startWith) {
+	if (!startWith) {
+		startWith = '0';
+	}
+	var skip = [ 'mm_109c', 'punchy', 'rct600', 'trucksp2', 'trucksp3', 'wcsoccd2', 'wd_03r' ];
 	var files = fs.readdirSync(settings.vpinmame.path + '/nvram');
 	var nvrams = [];
 	for (var i = 0; i < files.length; i++) {
 		var file = files[i];
+		if (file[0] < startWith) {
+			continue;
+		}
 		var nvram = file.substr(0, file.length - 3);
 		if (file.substr(file.length - 3, file.length) == '.nv' && skip.indexOf(nvram) == -1) {
 			nvrams.push(nvram);
@@ -370,6 +545,7 @@ exports.assertAll = function() {
 			if (!err) {
 				if (result != null) {
 					delete result.raw;
+					console.log('\n' + nvram);
 					console.log(util.inspect(result));
 				}
 			}
@@ -426,6 +602,26 @@ var nameOnly = function(block, str, title) {
 	}
 	return false;
 }
+/**
+ * Example:
+ *  LON
+ *  12 BASKETS IN A ROW!
+ *
+ * @param block
+ * @param str
+ * @param title
+ * @returns {*}
+ */
+var onlyName = function(block, str, title) {
+	var m;
+	if (!title) {
+		title = str;
+	}
+	if (m = block.match(new RegExp('([\\w\\s]{3})\\s+' + str, 'i'))) {
+		return { title: title, player: player(m[1]) }
+	}
+	return false;
+}
 
 /**
  * Example:
@@ -443,8 +639,8 @@ var nameScore = function(block, str, title) {
 	if (!title) {
 		title = str;
 	}
-	if (m = block.match(new RegExp(str + '\\s+([\\w\\s]{3})\\s+([\\d\',]+)', 'i'))) {
-		return { title: title, player: player(m[1]), score: num(m[2]) }
+	if (m = block.match(new RegExp(str + '\\s+([\\w\\s]{3})\\s+(\\$\\s+)?([\\d\',]+)', 'i'))) {
+		return { title: title, player: player(m[1]), score: num(m[3]) }
 	}
 	return false;
 }
@@ -615,7 +811,7 @@ var listNameScore = function(block, str, title) {
 	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
 		var b = m[1];
 		var ret = [];
-		var regex = new RegExp(/([\w\s]{3})\s+([\d',]+)/g);
+		var regex = new RegExp(/([\w\s+]{3})\s+([\d',]+)/g);
 		while (m = regex.exec(b)) {
 			ret.push({ title: title, player: player(m[1]), score: num(m[2]) });
 		}
@@ -647,9 +843,41 @@ var listRankNameScore = function(block, str, title) {
 	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
 		var b = m[1];
 		var ret = [];
-		var regex = new RegExp(/(\d).?\s+([\w\s]{3})\s+([\d',]+)/g);
+		var regex = new RegExp(/#?(\d).?\s+([\w\s+]{3})\s+(\$\s+)?([\d',]+)/g);
 		while (m = regex.exec(b)) {
-			ret.push({ title: title, rank: m[1], player: player(m[2]), score: num(m[3]) });
+			ret.push({ title: title, rank: m[1], player: player(m[2]), score: num(m[4]) });
+		}
+		return ret;
+	}
+	return false;
+}
+
+/**
+ * Example:
+ *
+ *   5 MULTIBALLS CHAMPS
+ *   1) JEK
+ *   2) JEK
+ *   3) JEK
+ *   4) JEK
+ *   5) JEK
+ *
+ * @param block
+ * @param str
+ * @param title
+ * @returns {*}
+ */
+var listRankName = function(block, str, title) {
+	var m;
+	if (!title) {
+		title = str;
+	}
+	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
+		var b = m[1];
+		var ret = [];
+		var regex = new RegExp(/#?(\d).?\s+([\w\s+]{3})/g);
+		while (m = regex.exec(b)) {
+			ret.push({ title: title, rank: m[1], player: player(m[2]) });
 		}
 		return ret;
 	}
@@ -682,7 +910,7 @@ var listRankNameInfo2 = function(block, str, title) {
 	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
 		var b = m[1];
 		var ret = [];
-		var regex = new RegExp(/(\d).?\s+([\w\s]{3})\s+(.+[\n\r]+.+)/g);
+		var regex = new RegExp(/(\d).?\s+([\w\s+]{3})\s+(.+[\n\r]+.+)/g);
 		var i = 0;
 		while (m = regex.exec(b)) {
 			ret.push({ title: title, rank: m[1], player: player(m[2]), info: tidy(m[3]) });
