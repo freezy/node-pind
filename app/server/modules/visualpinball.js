@@ -94,7 +94,7 @@ exports.identify = function(table, callback) {
 exports.getGameRomName = function(fileName, callback) {
 	var tablePath = settings.visualpinball.path + '/tables/' + fileName;
 	exports.getScriptFromTable(tablePath, function(err, script) {
-		var m = script.match(/\.GameName\s+=\s+([^\s]+)/);
+		var m = script.match(/\.GameName\s*=\s*(.+)/);
 		if (m) {
 
 			var getVariableValue = function(name) {
@@ -118,8 +118,16 @@ exports.getGameRomName = function(fileName, callback) {
 			}
 			var getOptionsValue = function(varName, callback) {
 				var valueDef = getVariableValue(varName);
-				var m = valueDef.match(/LoadValue\("([^"]+)","([^"]+)"\)/);
-				exports.getTableSetting(m[1], m[2], callback);
+				var m;
+				if (m = valueDef.match(/LoadValue\("([^"]+)",\s*"([^"]+)"\)/i)) {
+					exports.getTableSetting(m[1], m[2], callback);
+
+				} else if (m = valueDef.match(/LoadValue\(([^"]+),\s*"([^"]+)"\)/i)) {
+					exports.getTableSetting(getStrValue(getVariableValue(m[1])), m[2], callback);
+
+				} else {
+					callback('Cannot parse options value.');
+				}
 			}
 			var gameName;
 			if (m[1].match(/\W/)) {
@@ -136,18 +144,25 @@ exports.getGameRomName = function(fileName, callback) {
 
 			console.log('value:' + gameName);
 
+
 			var m;
 			// Array(Romset1,Romset2,Romset3,Romset4,Romset5,Romset6,Romset7,Romset8)((tzOptions And (15*cOptRom))\cOptRom)
-			if (m = gameName.match(/Array\((\w+\d,?){2,}\)\(\((\w+) And \((\d+)\*(\w+)\)\)\\(\w+)\)/i)) {
+			if (m = gameName.match(/Array\((\w+\d,?\s*){2,}\)\s*\(\((\w+)\s*And\s*\((\d+)\s*\*\s*(\w+)\)\s*\)\s*\\\s*(\w+)\s*\)/i)) {
 				var optionsVar = m[2];     // tzOptions
 				var multiplicator = m[3];  // 15
 				var constantVar = m[4];    // cOptRom
 				var romVars = gameName.match(/Array\(([^\)]+)\)/i)[1].split(',');
 
 				getOptionsValue(optionsVar, function(err, optionsVal) {
-					var constantVal = getIntValue(getVariableValue(constantVar));
-					var arrayPos = Math.floor((optionsVal & (multiplicator * constantVal)) / constantVal);
-					var romVar = romVars[arrayPos];
+					var arrayPos;
+					if (err) {
+						// if nothing found (maybe game has never been run), return the first defined rom
+						arrayPos = 0;
+					} else {
+						var constantVal = getIntValue(getVariableValue(constantVar));
+						arrayPos = Math.floor((optionsVal & (multiplicator * constantVal)) / constantVal);
+					}
+					var romVar = romVars[arrayPos].trim();
 					var romName = getVariableValue(romVar);
 					callback(null, getStrValue(romName));
 				});
@@ -172,24 +187,33 @@ exports.getGameRomName = function(fileName, callback) {
  * See also http://en.wikipedia.org/wiki/Compound_File_Binary_Format.
  * Fortunately there's already a JS implementation that reads CFBF.
  *
- * @param storageKey The name of the storage
- * @param streamKey The name of the "file" in the storage
+ * @param storageName The name of the storage
+ * @param streamName The name of the "file" in the storage
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Integer} Table setting</li></ol>
  */
-exports.getTableSetting = function(storageKey, streamKey, callback) {
+exports.getTableSetting = function(storageName, streamName, callback) {
 	var doc = new ocd(settings.visualpinball.path + '/User/VPReg.stg');
 	doc.on('err', function(err) {
 		callback(err);
 	});
 	doc.on('ready', function() {
-		var stream = doc.storage(storageKey).stream(streamKey);
-		stream.on('data', function(buf) {
-			var data = buf.toString();
-			log.debug('[vp] [ole] Got buffer at ' + buf.length + ' bytes length: ' + data);
-			callback(null, parseInt(data.replace(/\0+/g, '')));
-		});
+		var storage = doc.storage(storageName);
+		if (storage) {
+			try {
+				var stream = storage.stream(streamName);
+				stream.on('data', function(buf) {
+					var data = buf.toString();
+					log.debug('[vp] [ole] Got buffer at ' + buf.length + ' bytes length: ' + data);
+					callback(null, parseInt(data.replace(/\0+/g, '')));
+				});
+			} catch(err) {
+				callback('Cannot find stream "' + streamName + '" in storage "' + storageName + '".');
+			}
+		} else {
+			callback('Cannot find storage "' + storageName + '".');
+		}
 	});
 	doc.read();
 }
