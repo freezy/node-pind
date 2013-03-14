@@ -5,6 +5,13 @@ Node Pinball Daemon
 A lightweight webserver that runs on a virtual cab, serving all kinds of neat
 stuff.
 
+Goals
+=====
+* Get up running with the least possible effort.
+* Be as lightweight as possible - it's for running on a cab.
+* Be responsive - nobody likes slow applications.
+* Be beautiful - less is more.
+
 Installation
 ============
 
@@ -32,11 +39,12 @@ Working
 * Parse HyperPin "database" and store locally
 * Scrape ipdb.org for additional meta data
 * Rudimentary access to HyperPin media via API
+* Parse game ROM name from .vpt
+* Get structured highscores (incl. additional achievements) for a .vpt
 
 TODO
 ----
 
-* Retrieve high scores from ROMs
 * Link users to highscores
 * Web table browser
 * Score stats for registered users
