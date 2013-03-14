@@ -86,20 +86,40 @@ exports.identify = function(table, callback) {
  * Tries to determine which ROM is used for a table. It does it by looking
  * at the table script and intelligently guessing most recently used ROM.
  *
- * @param tablePath Path to the .vpt file
+ * @param tablePath File name of the .vpt file
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Name of the game ROM</li></ol>
  */
-exports.getGameRomName = function(tablePath, callback) {
+exports.getGameRomName = function(fileName, callback) {
+	var tablePath = settings.visualpinball.path + '/tables/' + fileName;
 	exports.getScriptFromTable(tablePath, function(err, script) {
 		var m = script.match(/\.GameName\s+=\s+([^\s]+)/);
 		if (m) {
 
 			var getVariableValue = function(name) {
-				var regex = new RegExp(name + '\\s*=\\s*(.+)');
+				var regex = new RegExp(name + '\\s*=\\s*(.+)', 'i');
 				var m = script.match(regex);
 				return m ? m[1] : null;
+			}
+			var getIntValue = function(str) {
+				var m;
+				if (m = str.match(/&h(\d+)/i)) {
+					return parseInt(m[1], 16)
+				}
+				return parseInt(str);
+			}
+			var getStrValue = function(str) {
+				var m;
+				if (m = str.match(/"([^"]+)"/i)) {
+					return m[1];
+				}
+				return str;
+			}
+			var getOptionsValue = function(varName, callback) {
+				var valueDef = getVariableValue(varName);
+				var m = valueDef.match(/LoadValue\("([^"]+)","([^"]+)"\)/);
+				exports.getTableSetting(m[1], m[2], callback);
 			}
 			var gameName;
 			if (m[1].match(/\W/)) {
@@ -116,7 +136,25 @@ exports.getGameRomName = function(tablePath, callback) {
 
 			console.log('value:' + gameName);
 
-			callback('Could not find currently used ROM in script.');
+			var m;
+			// Array(Romset1,Romset2,Romset3,Romset4,Romset5,Romset6,Romset7,Romset8)((tzOptions And (15*cOptRom))\cOptRom)
+			if (m = gameName.match(/Array\((\w+\d,?){2,}\)\(\((\w+) And \((\d+)\*(\w+)\)\)\\(\w+)\)/i)) {
+				var optionsVar = m[2];     // tzOptions
+				var multiplicator = m[3];  // 15
+				var constantVar = m[4];    // cOptRom
+				var romVars = gameName.match(/Array\(([^\)]+)\)/i)[1].split(',');
+
+				getOptionsValue(optionsVar, function(err, optionsVal) {
+					var constantVal = getIntValue(getVariableValue(constantVar));
+					var arrayPos = Math.floor((optionsVal & (multiplicator * constantVal)) / constantVal);
+					var romVar = romVars[arrayPos];
+					var romName = getVariableValue(romVar);
+					callback(null, getStrValue(romName));
+				});
+
+			} else {
+				callback('Could not find currently used ROM in script.');
+			}
 
 		} else {
 			callback('Could not find ".GameName" in the script anywhere.');
@@ -193,27 +231,24 @@ exports.getScriptFromTable = function(tablePath, callback) {
 }
 
 /**
- * Scans a folder for table files, parses the name and outputs the list.
+ * Processes all tables.
  *
- * This is still more of a debug function.
- *
- * @param path
- * @param callback
+ * @param iterator To be exectued on every table, invoked with two arguments:
+ * 	<ol><li>{String} Full path to .vpt table file</li>
+ * 		<li>{Function} callback that has to be called in order to proceed. Only one parameter, indicating error.</li></ol>
+ * @param callback To be executed when all tables are processed, invoked with one argument, indicating error.
  */
-exports.scanDirectory = function(path, callback) {
+exports.scanDirectory = function(iterator, callback) {
 
+	var path = settings.visualpinball.path + '/tables';
 	fs.readdir(path, function(err, files) {
 		var tables = [];
 		for (var i = 0; i < files.length; i++) {
 			var file = files[i];
 			if (file.substr(file.length - 3, file.length).toLowerCase() == 'vpt') {
-				tables.push({ path: path + file, filename: file });
+				tables.push({ path: path + '/' + file, filename: file });
 			}
 		}
-		async.eachLimit(tables, 1, exports.identify, function (err) {
-			for (var i = 0; i < tables.length; i++) {
-				console.log(tables[i].name);// + ' (' + tables[i].filename + ')');
-			}
-		});
+		async.eachSeries(tables, iterator, callback);
 	})
 };

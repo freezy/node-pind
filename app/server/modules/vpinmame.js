@@ -60,7 +60,7 @@ exports.getHighscore = function(romname, callback) {
 				'hi ?scores', 'next highest', 'power magicians', '8 ball sharks', 'ships crew', 'top commandos',
 				'robo.warriors', 'hot rockers', 'top jetters', 'super raser', 'all time highest scores',
 				'under.achievers', 'party animals', 'spy masters', 'best jedi.s', 'top wrestlers', 'best drivers',
-				'top dudes', 'teleport crew', 'Gridiron Kings', 'the victors', 'best agents' ];
+				'top dudes', 'teleport crew', 'gridiron kings', 'the victors', 'best agents' ];
 			if (is('sttng')) {
 				titles.push('honor roll');
 			}
