@@ -1,3 +1,5 @@
+![pind](app/public/img/logo.png)
+
 ===================
 Node Pinball Daemon
 ===================
