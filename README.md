@@ -48,6 +48,7 @@ TODO
 * Link users to highscores
 * Web table browser
 * Score stats for registered users
+* Look for another DB engine (sqlite is major PITA to compile).s
 
 More to come. Still under heavy development.
 
