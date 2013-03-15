@@ -243,6 +243,10 @@ button[type="submit"], .btn.fat
 
 	&.locked:before
 		content "\22"
+
+
+	&.pind:before
+		content "\23"		
 	
 
 	&.inputhint
@@ -362,54 +366,70 @@ input[disabled]
 	border-bottom 1px color-darkest
 	box-shadow 0px 5px 5px color-darkest, inset 0px -5px 10px -5px white
 	
-	.brand
-		font-weight 800
-		margin-left 0px
-
 button, select, textarea
 	font-family font-sans
 
-.navbar .nav
-	font-family font-serif
-	font-weight 700
-	font-size 18px
-	text-shadow 0px 1px 0 rgba(0,0,0,0.25)
-	overflow hidden
+.navbar 
+	
 
-	li a
-		font-weight 700
-		padding-left 15px
-		padding-right 15px
-		padding-bottom 7px
-		margin-left 10px
-		margin-right 10px
-		margin-top 10px
-		margin-bottom -2px
-		background-color rgba(0,0,0,0.15)
-		text-shadow 0px 1px 0 rgba(255,255,255,0.5)
-		color color-dark
-		cursor pointer
-		border-radius-topleft corner-size
-		border-radius-topright corner-size
+	.icon.pind
+		font-size 42px
+		float left
+		margin-top 2px
+		margin-left 20px
+		margin-right 15px
+		text-shadow 0px 1px 0 white
+		color color-darker
+		transition all animation-slow ease
 
 		&:hover
-			text-shadow 0px 1px 0 black
-			background-color color-btn-dark
+			text-decoration none
+			color black
 
-	li.active a
+	.nav
+		font-family font-serif
+		
+		font-size 18px
 		text-shadow 0px 1px 0 rgba(0,0,0,0.25)
-		background color-btn-light
-		border 1px solid color-btn-border		
-		box-shadow inset 0 0 2px rgba(256,256,256,0.75)
-		color #fff
+		overflow hidden
+		font-weight 300
+		
 
-		&:hover
-			background-color color-btn-light
-			cursor default
+		li a
+			padding-left 15px
+			padding-right 15px
+			padding-bottom 7px
+			margin-left 10px
+			margin-right 10px
+			margin-top 10px
+			margin-bottom -2px
+			background-color rgba(0,0,0,0.15)
+			text-shadow 0px 1px 0 rgba(255,255,255,0.5)
+			color color-dark
+			cursor pointer
+			border-radius-topleft corner-size
+			border-radius-topright corner-size
 
-	li i.icon-black
-		margin-top 1px
-		padding 5px 0 0 10px
+			&:hover
+				color color-darkest
+				text-shadow 0px 1px 0 rgba(255,255,255,0.5)
+				background-color rgba(0,0,0,0.30)
+
+		li.active a
+			font-weight 700
+			text-shadow 0px 1px 0 rgba(0,0,0,0.25)
+			background color-btn-light
+			border 1px solid color-btn-border		
+			box-shadow inset 0 0 2px rgba(256,256,256,0.75)
+			color #fff
+
+			&:hover
+				background-color color-btn-light
+				cursor default
+
+		li i.icon-black
+			margin-top 1px
+			padding 5px 0 0 10px
 
 
 // :animation
@@ -418,9 +438,3 @@ button, select, textarea
 .navbar .nav li a
 	transition all animation-fast ease !important
 
-
-// :symbols
-// ----------------------------------------------------------------------------
-
-.pind:before
-	content "\23"

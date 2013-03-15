@@ -240,6 +240,9 @@ button[type="submit"]:focus,
 .icon.locked:before {
   content: "\22";
 }
+.icon.pind:before {
+  content: "\23";
+}
 .icon.inputhint {
   width: 46px;
   height: 35px;
@@ -369,24 +372,37 @@ input[disabled] {
   -webkit-box-shadow: 0px 5px 5px #3e3429, inset 0px -5px 10px -5px #fff;
   box-shadow: 0px 5px 5px #3e3429, inset 0px -5px 10px -5px #fff;
 }
-.navbar-inner .brand {
-  font-weight: 800;
-  margin-left: 0px;
-}
 button,
 select,
 textarea {
   font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
 }
+.navbar .icon.pind {
+  font-size: 42px;
+  float: left;
+  margin-top: 2px;
+  margin-left: 20px;
+  margin-right: 15px;
+  text-shadow: 0px 1px 0 #fff;
+  color: #473522;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+.navbar .icon.pind:hover {
+  text-decoration: none;
+  color: #000;
+}
 .navbar .nav {
   font-family: 'Arvo', serif;
-  font-weight: 700;
   font-size: 18px;
   text-shadow: 0px 1px 0 rgba(0,0,0,0.25);
   overflow: hidden;
+  font-weight: 300;
 }
 .navbar .nav li a {
-  font-weight: 700;
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 7px;
@@ -406,10 +422,12 @@ textarea {
   border-top-right-radius: 20px;
 }
 .navbar .nav li a:hover {
-  text-shadow: 0px 1px 0 #000;
-  background-color: #b87d3e;
+  color: #3e3429;
+  text-shadow: 0px 1px 0 rgba(255,255,255,0.5);
+  background-color: rgba(0,0,0,0.3);
 }
 .navbar .nav li.active a {
+  font-weight: 700;
   text-shadow: 0px 1px 0 rgba(0,0,0,0.25);
   background: #e09d55;
   border: 1px solid #d48f46;
