@@ -353,6 +353,30 @@ button.close {
   float: right;
   margin-left: 10px;
 }
+h1,
+h2 {
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+}
+h3,
+h4 {
+  font-family: 'Arvo', serif;
+  font-weight: 400;
+}
+a {
+  color: #473522;
+}
+a:hover {
+  color: #000;
+}
+input[disabled] {
+  cursor: default;
+}
+button,
+select,
+textarea {
+  font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+}
 .alert {
   -webkit-border-radius: 5px;
   border-radius: 5px;
@@ -363,21 +387,58 @@ button.close {
   background-color: #e0cac0;
   border-color: #c99780;
 }
-input[disabled] {
-  cursor: default;
+.content {
+  background: url("../img/bg_redox_01.png");
+  border: 1px solid #fff;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  padding: 10px;
 }
-.navbar-inner {
+.nav.nav-list {
+  background: url("../img/bg_redox_01.png");
+  border: 1px solid #fff;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+.nav.nav-list > li > a {
+  padding: 5px 15px;
+}
+.nav.nav-list > li:first-child > a {
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.nav.nav-list > li:last-child > a {
+  -moz-border-radius-bottomleft: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.nav.nav-list > .active > a,
+.nav.nav-list .active > a:hover {
+  background-color: #625648;
+}
+.nav.nav-list.sidenav.affix {
+  top: 63px;
+}
+.navbar .navbar-inner {
   background: url("../img/bg_redox_01.png");
   border-bottom: 1px #3e3429;
   -webkit-box-shadow: 0px 5px 5px #3e3429, inset 0px -5px 10px -5px #fff;
   box-shadow: 0px 5px 5px #3e3429, inset 0px -5px 10px -5px #fff;
+  -webkit-border-radius: 0;
+  border-radius: 0;
 }
-button,
-select,
-textarea {
-  font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-}
-.navbar .icon.pind {
+.navbar .navbar-inner .icon.pind {
   font-size: 42px;
   float: left;
   margin-top: 2px;
@@ -391,18 +452,18 @@ textarea {
   -ms-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
-.navbar .icon.pind:hover {
+.navbar .navbar-inner .icon.pind:hover {
   text-decoration: none;
   color: #000;
 }
-.navbar .nav {
+.navbar .navbar-inner .nav {
   font-family: 'Arvo', serif;
   font-size: 18px;
   text-shadow: 0px 1px 0 rgba(0,0,0,0.25);
   overflow: hidden;
   font-weight: 300;
 }
-.navbar .nav li a {
+.navbar .navbar-inner .nav li a {
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 7px;
@@ -421,12 +482,12 @@ textarea {
   -webkit-border-top-right-radius: 20px;
   border-top-right-radius: 20px;
 }
-.navbar .nav li a:hover {
+.navbar .navbar-inner .nav li a:hover {
   color: #3e3429;
   text-shadow: 0px 1px 0 rgba(255,255,255,0.5);
   background-color: rgba(0,0,0,0.3);
 }
-.navbar .nav li.active a {
+.navbar .navbar-inner .nav li.active a {
   font-weight: 700;
   text-shadow: 0px 1px 0 rgba(0,0,0,0.25);
   background: #e09d55;
@@ -435,11 +496,11 @@ textarea {
   box-shadow: inset 0 0 2px rgba(255,255,255,0.75);
   color: #fff;
 }
-.navbar .nav li.active a:hover {
+.navbar .navbar-inner .nav li.active a:hover {
   background-color: #e09d55;
   cursor: default;
 }
-.navbar .nav li i.icon-black {
+.navbar .navbar-inner .nav li i.icon-black {
   margin-top: 1px;
   padding: 5px 0 0 10px;
 }

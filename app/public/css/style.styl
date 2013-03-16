@@ -2,7 +2,7 @@
 
 
 // :variables
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 color-darkest    = #3e3429  // nearly-black background
 color-darker     = #473522  // text and foreground glyphes
@@ -28,14 +28,14 @@ animation-slow = 0.5s
 
 
 // :fonts
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 font-serif = 'Arvo', serif
 font-sans = 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif
 
 
 // :global stuff
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 selection(#fff, #0a4889)
 
@@ -71,7 +71,7 @@ body
 
 
 // :typography
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 .subheading
 	font-size 11px
@@ -87,7 +87,7 @@ body
 
 
 // :forms
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 form
 	margin 0	
@@ -151,7 +151,7 @@ button[type="submit"], .btn.fat
 			box-shadow inset 0 1px 6px rgba(256,256,256,0.75)		
 
 // :sections
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 .modal-header 
 	padding 30px 30px 0px 30px
@@ -209,7 +209,7 @@ button[type="submit"], .btn.fat
 
 
 // :icons		
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 .icon
 
@@ -280,7 +280,7 @@ button.close
 
 
 // :links
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 .fatlink
 	display block
@@ -329,7 +329,7 @@ button.close
 
 
 // :dialogs
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 // small boxes
 .singlebox.login, .singlebox.register
@@ -348,7 +348,25 @@ button.close
 
 
 // :bootstrap overloads
-// ----------------------------------------------------------------------------
+// ============================================================================
+
+h1, h2
+	font-family font-serif
+	font-weight 700
+h3, h4
+	font-family font-serif
+	font-weight 400
+
+a
+	color color-darker
+a:hover
+	color black
+
+input[disabled]
+	cursor default
+	
+button, select, textarea
+	font-family font-sans
 
 .alert
 	border-radius 5px
@@ -358,82 +376,115 @@ button.close
 	background-color #e0cac0
 	border-color #c99780
 
-input[disabled]
-	cursor default
+// : scaffolding
+// ----------------------------------------------------------------------------
 
-.navbar-inner
+.content
 	background color-lighter
-	border-bottom 1px color-darkest
-	box-shadow 0px 5px 5px color-darkest, inset 0px -5px 10px -5px white
-	
-button, select, textarea
-	font-family font-sans
+	border 1px solid #fff
+	border-radius 5px
+	box-shadow 0 1px 3px rgba(0,0,0,0.5)
+	padding 10px
 
+
+// : navigation list
+// ----------------------------------------------------------------------------
+.nav.nav-list
+	background color-lighter
+	border 1px solid #fff
+	border-radius 5px
+	box-shadow 0 1px 3px rgba(0,0,0,0.5)
+
+	& > li > a
+		padding 5px 15px
+
+	& > li:first-child > a
+		border-radius-topleft 4px
+		border-radius-topright 4px
+
+	& > li:last-child > a
+		border-radius-bottomleft 4px
+		border-radius-bottomright 4px
+
+	& > .active > a, & .active > a:hover
+		background-color color-dark
+
+
+	&.sidenav.affix
+		top 63px
+
+
+// : navigation bar
+// ----------------------------------------------------------------------------
 .navbar 
-	
+	.navbar-inner
+		background color-lighter
+		border-bottom 1px color-darkest
+		box-shadow 0px 5px 5px color-darkest, inset 0px -5px 10px -5px white
+		border-radius 0
 
-	.icon.pind
-		font-size 42px
-		float left
-		margin-top 2px
-		margin-left 20px
-		margin-right 15px
-		text-shadow 0px 1px 0 white
-		color color-darker
-		transition all animation-slow ease
-
-		&:hover
-			text-decoration none
-			color black
-
-	.nav
-		font-family font-serif
-		
-		font-size 18px
-		text-shadow 0px 1px 0 rgba(0,0,0,0.25)
-		overflow hidden
-		font-weight 300
-		
-
-		li a
-			padding-left 15px
-			padding-right 15px
-			padding-bottom 7px
-			margin-left 10px
-			margin-right 10px
-			margin-top 10px
-			margin-bottom -2px
-			background-color rgba(0,0,0,0.15)
-			text-shadow 0px 1px 0 rgba(255,255,255,0.5)
-			color color-dark
-			cursor pointer
-			border-radius-topleft corner-size
-			border-radius-topright corner-size
+		.icon.pind
+			font-size 42px
+			float left
+			margin-top 2px
+			margin-left 20px
+			margin-right 15px
+			text-shadow 0px 1px 0 white
+			color color-darker
+			transition all animation-slow ease
 
 			&:hover
-				color color-darkest
-				text-shadow 0px 1px 0 rgba(255,255,255,0.5)
-				background-color rgba(0,0,0,0.30)
+				text-decoration none
+				color black
 
-		li.active a
-			font-weight 700
+		.nav
+			font-family font-serif
+			
+			font-size 18px
 			text-shadow 0px 1px 0 rgba(0,0,0,0.25)
-			background color-btn-light
-			border 1px solid color-btn-border		
-			box-shadow inset 0 0 2px rgba(256,256,256,0.75)
-			color #fff
+			overflow hidden
+			font-weight 300
+			
 
-			&:hover
-				background-color color-btn-light
-				cursor default
+			li a
+				padding-left 15px
+				padding-right 15px
+				padding-bottom 7px
+				margin-left 10px
+				margin-right 10px
+				margin-top 10px
+				margin-bottom -2px
+				background-color rgba(0,0,0,0.15)
+				text-shadow 0px 1px 0 rgba(255,255,255,0.5)
+				color color-dark
+				cursor pointer
+				border-radius-topleft corner-size
+				border-radius-topright corner-size
 
-		li i.icon-black
-			margin-top 1px
-			padding 5px 0 0 10px
+				&:hover
+					color color-darkest
+					text-shadow 0px 1px 0 rgba(255,255,255,0.5)
+					background-color rgba(0,0,0,0.30)
+
+			li.active a
+				font-weight 700
+				text-shadow 0px 1px 0 rgba(0,0,0,0.25)
+				background color-btn-light
+				border 1px solid color-btn-border		
+				box-shadow inset 0 0 2px rgba(256,256,256,0.75)
+				color #fff
+
+				&:hover
+					background-color color-btn-light
+					cursor default
+
+			li i.icon-black
+				margin-top 1px
+				padding 5px 0 0 10px
 
 
 // :animation
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 .navbar .nav li a
 	transition all animation-fast ease !important
