@@ -170,6 +170,7 @@ button[type="submit"], .btn.fat
 
 .modal-body
 	padding 30px 30px 20px 30px
+	overflow hidden
 
 	li
 		color color-dark
@@ -376,6 +377,9 @@ button, select, textarea
 	background-color #e0cac0
 	border-color #c99780
 
+.row-fluid > div
+	margin-bottom 20px
+
 // : scaffolding
 // ----------------------------------------------------------------------------
 
@@ -411,12 +415,14 @@ button, select, textarea
 
 
 	&.sidenav.affix
-		top 63px
+		top 22px
 
 
 // : navigation bar
 // ----------------------------------------------------------------------------
 .navbar 
+	margin-bottom 20px
+
 	.navbar-inner
 		background color-lighter
 		border-bottom 1px color-darkest
@@ -489,3 +495,26 @@ button, select, textarea
 .navbar .nav li a
 	transition all animation-fast ease !important
 
+
+// :responsive 
+// ============================================================================
+
+// desktop
+@media(max-width: 980px) {
+
+}
+
+// tablet to desktop
+@media(min-width: 768px) and (max-width: 979px) {
+
+}
+
+// tablet
+@media(max-width: 767px) {
+
+}
+
+// landscape phones
+@media (max-width: 480px) {
+
+}

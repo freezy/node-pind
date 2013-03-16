@@ -159,6 +159,7 @@ button[type="submit"]:focus,
 }
 .modal-body {
   padding: 30px 30px 20px 30px;
+  overflow: hidden;
 }
 .modal-body li {
   color: #625648;
@@ -387,6 +388,9 @@ textarea {
   background-color: #e0cac0;
   border-color: #c99780;
 }
+.row-fluid > div {
+  margin-bottom: 20px;
+}
 .content {
   background: url("../img/bg_redox_01.png");
   border: 1px solid #fff;
@@ -428,7 +432,10 @@ textarea {
   background-color: #625648;
 }
 .nav.nav-list.sidenav.affix {
-  top: 63px;
+  top: 22px;
+}
+.navbar {
+  margin-bottom: 20px;
 }
 .navbar .navbar-inner {
   background: url("../img/bg_redox_01.png");
@@ -510,4 +517,12 @@ textarea {
   -o-transition: all 0.3s ease !important;
   -ms-transition: all 0.3s ease !important;
   transition: all 0.3s ease !important;
+}
+@media (max-width: 980px) {
+}
+@media (min-width: 768px) and (max-width: 979px) {
+}
+@media (max-width: 767px) {
+}
+@media (max-width: 480px) {
 }

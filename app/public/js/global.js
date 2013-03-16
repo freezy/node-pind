@@ -8,13 +8,13 @@ $(document).ready(function() {
 		var m = randNum > 9 ? randNum : '0' + randNum;
 		$(this).css('background-image', $(this).css('background-image').replace(/(\d)+/, m));
 	});
-*/
+
 
 	// side bar
 	$('.sidenav').affix({
 		offset: {
-			top: $('.navbar').height() + parseInt($('.navbar').css('margin-bottom'))
+			top: 63
 		}
-	});
+	});*/
 
 });
