@@ -7,6 +7,7 @@
 color-darkest    = #3e3429  // nearly-black background
 color-darker     = #473522  // text and foreground glyphes
 color-dark       = #625648	// slightly lighter text and foreground glyphes
+color-dark-noise = url('../img/bg_brown_noise.png')
 color-medium     = #9d9e9e  // text in blurred input fields or less important
 
 color-lightish   = rgba(81,67,54,0.30)           // darker than highlighted background
@@ -411,7 +412,7 @@ button, select, textarea
 		border-radius-bottomright 4px
 
 	& > .active > a, & .active > a:hover
-		background-color color-dark
+		background color-dark-noise
 
 
 	&.sidenav.affix

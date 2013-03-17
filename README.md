@@ -47,10 +47,11 @@ Working
 TODO
 ----
 
+* Integrate with an MVC framework (Sails? CompoundJS? Flatiron? Locomotive? anything else?)
 * Link users to highscores
 * Web table browser
 * Score stats for registered users
-* Look for another DB engine (sqlite is major PITA to compile).s
+* Look for another DB engine (sqlite is major PITA to compile).
 
 More to come. Still under heavy development.
 

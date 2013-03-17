@@ -429,7 +429,7 @@ textarea {
 }
 .nav.nav-list > .active > a,
 .nav.nav-list .active > a:hover {
-  background-color: #625648;
+  background: url("../img/bg_brown_noise.png");
 }
 .nav.nav-list.sidenav.affix {
   top: 22px;
