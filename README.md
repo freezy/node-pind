@@ -47,7 +47,7 @@ Working
 TODO
 ----
 
-* Integrate with an MVC framework (Sails? CompoundJS? Flatiron? Locomotive? anything else?)
+* Integrate with an MVC framework (CompoundJS looks good).
 * Link users to highscores
 * Web table browser
 * Score stats for registered users
