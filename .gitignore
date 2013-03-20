@@ -6,3 +6,4 @@ settings-mine.json
 test*.js
 gfx
 highscores.txt
+*.sqlite
