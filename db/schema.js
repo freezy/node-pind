@@ -35,11 +35,11 @@ describe('Table', function () {
 });
 
 describe('User', function () {
-	property('user', String);
+	property('user', String, { index: 'true' });
 	property('pass', String);
 	property('name', String);
 	property('email', String);
 	property('credits', Number);
-	property('added', Date);
+	property('added', Date, { default: Date });
 	property('updated', Date);
 });
