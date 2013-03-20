@@ -1,4 +1,4 @@
-![pind](app/public/img/logo.png)
+![pind](app/_public/img/logo.png)
 
 ===================
 Node Pinball Daemon
@@ -24,7 +24,8 @@ Installation
 5. Clone the repository to somewhere.
 6. Copy `config/settings.json` to `config/settings-mine.json` and update it.
 7. `npm install -d`
-8. `node app.js`
+8. `compound db migrate`
+9. `node app.js`
 
 Visual Studio is needed for compiling the dependencies, notably
 sqlite3, the database engine. This concerns only Windows, but then

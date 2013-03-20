@@ -26,11 +26,12 @@ action('signup', function () {
 
 	// check if data was posted.
 	if (context.req.method == 'POST') {
+		var now = new Date().getTime();
 		User.create({
 			user: req.body.user,
 			pass: req.body.pass,
-			created: new Date().getTime(),
-			updated: new Date().getTime()
+			created: now,
+			updated: now
 		}, function(err, user) {
 			if (err) {
 				if (user) {

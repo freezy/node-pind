@@ -10,24 +10,24 @@
 		"type": "git",
 		"url": "git://github.com/freezy/node-pind"
 	},
+	"engines" : ["node >= 0.8.0"],
+	"main" : "server.js",
 	"private": true,
 	"dependencies": {
-		"express": "~3.x",
-		"stylus": "latest",
 		"jade": "0.27.7",
 		"jade-ext" : "latest",
+		"express": "~3.x",
 		"compound" : ">= 1.1.0",
 		"jugglingdb" : ">= 0.1.0",
 		"jugglingdb-sqlite3" : "latest",
 		"coffee-script" : ">= 1.1.1",
+		"stylus": "latest",
 		"seedjs" : "latest",
 		"co-assets-compiler" : "*",
 		"co-nib" : "latest",
-		"sqlite3": "2.1.5",
 		"moment" : "1.7.2",
 		"emailjs": "0.3.3",
 		"insanehash": "0.0.1",
-		"nib": "0.9.1",
 		"xml2js" : "0.2.6",
 		"konphyg" : "1.2.0",
 		"gm" : "1.8.1",
@@ -43,8 +43,7 @@
 		"semicov" : "*",
 		"co-generators" : "*"
 	},
-	"engines": {
-		"node": "0.8.14",
-		"npm":  "1.1.65"
+		"scripts" : {
+		"test" : "nodeunit test/*/*"
 	}
 }
