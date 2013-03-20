@@ -2,7 +2,7 @@ extends ../layouts/users_layout
 
 block content
 	.boxglow
-		form(method="post")#login-form.singlebox.login
+		!= formTagBegin({ action: path_to.login, id: 'login-form', class: 'singlebox login' })
 			.modal-header
 				.icon.key
 				h1 Login here!
@@ -20,6 +20,7 @@ block content
 				input(type="checkbox", checked="checked")#remember-me-checkbox
 				label(for="remember-me-checkbox")#remember-me.checkbox.slimlink Remember Me
 				a(href="#")#forgot-password.slimlink Forgot password?
+		!= formTagEnd()
 
 	include modals/alert
 	include modals/lost-password

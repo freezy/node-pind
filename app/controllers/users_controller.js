@@ -8,13 +8,18 @@ action('login', function (context) {
 	if (context.req.method == 'POST') {
 		console.log('got a POST.')
 
-		// do auth stuff
-		if (false) {
-			redirect(context.req.session.redirectUrl);
-		} else {
-
-		}
-
+		User.findOne({where: {user: req.body.user}}, function(err, user) {
+			if (err) {
+				console.log("Error retrieving user: " + err);
+			} else {
+				if (User.verifyPassword(body.pass, user.pass)) {
+					context.req.session.user = user;
+					redirect(context.req.session.redirectUrl);
+				} else {
+					redirect(pathTo.login);
+				}
+			}
+		});
 	} else{
 		console.log('got a GET.')
 	}
