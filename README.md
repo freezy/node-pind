@@ -4,15 +4,15 @@
 Node Pinball Daemon
 ===================
 
-A lightweight webserver that runs on a virtual cab, serving all kinds of neat
-stuff.
+A lightweight web server that runs on a virtual cab, serving all
+kinds of neat stuff.
 
 Goals
 =====
 * Get up running with the least possible effort.
 * Be as lightweight as possible - it's for running on a cab.
 * Be responsive - nobody likes slow applications.
-* Be beautiful - less is more.
+* Be beautiful - minimal and elegant.
 
 Installation
 ============
@@ -26,9 +26,9 @@ Installation
 7. `npm install -d`
 8. `node app.js`
 
-Visual Studio is needed for compiling the dependencies, notably sqlite3, the
-database engine. This concerns only Windows, but then all the pinball stuff
-doesn't run on other platforms.
+Visual Studio is needed for compiling the dependencies, notably
+sqlite3, the database engine. This concerns only Windows, but then
+all the pinball stuff doesn't run on other platforms.
 
 Status
 ======
@@ -42,13 +42,13 @@ Working
 * Scrape ipdb.org for additional meta data
 * Rudimentary access to HyperPin media via API
 * Parse game ROM name from .vpt
-* Get structured highscores (incl. additional achievements) for a .vpt
+* Get structured high-scores (incl. additional achievements) for a .vpt
 
 TODO
 ----
 
 * Integrate with an MVC framework (CompoundJS looks good).
-* Link users to highscores
+* Link users to high-scores
 * Web table browser
 * Score stats for registered users
 * Look for another DB engine (sqlite is major PITA to compile).
@@ -58,7 +58,7 @@ More to come. Still under heavy development.
 Credits
 =======
 
-Full credits for the highscore features go to Dna Disturber's [PINemHi](http://www.pinemhi.com/),
+Full credits for the high-score features go to Dna Disturber's [PINemHi](http://www.pinemhi.com/),
 along with a big thanks for the permission to redistribute the binary. Looking
 forward to even more features!
 
