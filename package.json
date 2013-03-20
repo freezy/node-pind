@@ -37,6 +37,12 @@
 		"winston" : "0.6.2",
 		"ole-doc" : "0.1.0"
 	},
+	"devDependencies" : {
+		"nodeunit" : "*",
+		"sinon" : "*",
+		"semicov" : "*",
+		"co-generators" : "*"
+	},
 	"engines": {
 		"node": "0.8.14",
 		"npm":  "1.1.65"
