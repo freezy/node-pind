@@ -1,0 +1,18 @@
+!!! 5
+html
+	head
+		title= title
+		meta(name='viewport', content='width=device-width', initial-scale='1.0')
+		!= stylesheetLinkTag('vendor/bootstrap/bootstrap', 'symbols', 'application')
+		!= stylesheetLinkTag('http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Arvo:400,700')
+		!= csrfMetaTag()
+		- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.min'))
+		- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.form'))
+		- contentFor('javascripts', javascriptIncludeTag('vendor/bootstrap/bootstrap'))
+		- contentFor('javascripts', javascriptIncludeTag('application'))
+
+	body(data-spy='scroll', data-target='.sidebar')
+		block content
+		block scripts
+			!= contentFor('javascripts')
+		block modals

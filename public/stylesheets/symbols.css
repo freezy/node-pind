@@ -1,0 +1,10 @@
+@font-face {
+	font-family: 'pind-symbols';
+	src:url('../../app/assets/fonts/pind-symbols.eot');
+	src:url('../../app/assets/fonts/pind-symbols.eot') format('embedded-opentype'),
+		url('../../app/assets/fonts/pind-symbols.woff') format('woff'),
+		url('../../app/assets/fonts/pind-symbols.ttf') format('truetype'),
+		url('../fonts/pind-symbols.svg#pind-symbols') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}

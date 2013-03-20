@@ -1,0 +1,24 @@
+- errors = typeof(errors) != 'undefined' ? errors : null
+
+.modal-form-errors.modal.hide.fade
+	button.close(data-dismiss='modal') &times;
+	div.modal-header
+		h2 Whoops!
+	div.modal-body
+		p It looks like there was a problem.
+		ul
+		if errors != null
+			each msg, field in errors
+				- if (typeof msg != 'function')
+					li.error(data-field='#{field}') #{msg}
+	div.modal-footer
+		button(data-dismiss="modal").btn.fat.btn-warning OK
+
+if errors != null
+	script(type='text/javascript')
+		$(document).ready(function() {
+			$('li.error').each(function() {
+				$('input[name="' + $(this).data('field') + '"]').parents('.control-group').addClass('error');
+			});
+			$('.modal-form-errors').modal('show');
+		});

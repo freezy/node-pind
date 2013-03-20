@@ -1,0 +1,37 @@
+!= errorMessagesFor(table) 
+.control-group
+  != form.label("id", false, {class: "control-label"})
+  .controls
+    != form.input("id")
+.control-group
+  != form.label("name", false, {class: "control-label"})
+  .controls
+    != form.input("name")
+.control-group
+  != form.label("manufacturer", false, {class: "control-label"})
+  .controls
+    != form.input("manufacturer")
+.control-group
+  != form.label("year", false, {class: "control-label"})
+  .controls
+    != form.input("year")
+.control-group
+  != form.label("type", false, {class: "control-label"})
+  .controls
+    != form.input("type")
+.control-group
+  != form.label("platform", false, {class: "control-label"})
+  .controls
+    != form.input("platform")
+.control-group
+  != form.label("added", false, {class: "control-label"})
+  .controls
+    != form.input("added")
+.control-group
+  != form.label("updated", false, {class: "control-label"})
+  .controls
+    != form.input("updated")
+.control-group
+  != form.label("enabled", false, {class: "control-label"})
+  .controls
+    != form.checkbox("enabled")
