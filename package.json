@@ -1,6 +1,6 @@
 {
 	"name": "node-pind",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Pinball backend server",
 	"author": {
 		"name": "freezy",
@@ -8,13 +8,21 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/"
+		"url": "git://github.com/freezy/node-pind"
 	},
 	"private": true,
 	"dependencies": {
-		"express": "3.0.6",
-		"stylus": "0.31.0",
+		"express": "~3.x",
+		"stylus": "latest",
 		"jade": "0.27.7",
+		"jade-ext" : "latest",
+		"compound" : ">= 1.1.0",
+		"jugglingdb" : ">= 0.1.0",
+		"jugglingdb-sqlite3" : "latest",
+		"coffee-script" : ">= 1.1.1",
+		"seedjs" : "latest",
+		"co-assets-compiler" : "*",
+		"co-nib" : "latest",
 		"sqlite3": "2.1.5",
 		"moment" : "1.7.2",
 		"emailjs": "0.3.3",
