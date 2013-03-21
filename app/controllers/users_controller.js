@@ -29,9 +29,10 @@ action('login', function (context) {
 
 action('signup', function () {
 
+	this.title = 'Signup';
+
 	// check if data was posted.
 	if (context.req.method == 'POST') {
-		console.log('*** creating user...');
 		var now = new Date().getTime();
 		User.create({
 			user: req.body.user,
@@ -39,7 +40,6 @@ action('signup', function () {
 			created: now,
 			updated: now
 		}, function(err, user) {
-			console.log('*** done.');
 			if (err) {
 				if (user) {
 					this.errors = user.errors;
@@ -52,11 +52,10 @@ action('signup', function () {
 				console.log('all good, user created.');
 				this.errors = null;
 			}
-			render();
+			render({user : req.body});
 		});
 
 	} else {
-		this.title = 'Signup';
 		render();
 	}
 

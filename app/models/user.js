@@ -2,14 +2,15 @@ var ih = require('insanehash').crypto;
 
 module.exports = function (compound, User) {
 
-	User.validatesLengthOf('user', { is: 3, message: { is: 'Username must be three characters.' }});
-	User.validatesUniquenessOf('user', { message: 'This username is already taken ' });
+	User.validatesLengthOf('user', { is: 3, message: { is: 'Username must be three characters.' }, allowBlank: false });
+	User.validatesUniquenessOf('user', { message: 'This username is already taken.' });
 	User.validatesLengthOf('pass', { min: 6, message: { min: 'Password must be at least six characters.' }});
 
-	User.afterValidation = function(next) {
+	User.beforeSave = function(next) {
 		if (this.pass) {
 			this.pass = saltAndHash(this.pass);
 		}
+		next();
 	}
 
 	User.verifyPassword = function(plainPass, hashedPass) {

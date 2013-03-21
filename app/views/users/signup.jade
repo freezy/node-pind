@@ -1,12 +1,13 @@
 extends ../layouts/users_layout
 
+
+
 block content
 	// preset form values if we receive a userdata object //
 	- user = typeof(udata) != 'undefined' ? udata : { }
 	.boxglow
 		#account-form-container.singlebox.register
-			- var form = formFor(user, { action: path_to.signup, id: 'account-form' });
-			!= form.begin()
+			!= formTagBegin({ action: path_to.signup, id: 'account-form' })
 				.modal-header
 					.icon.pen
 					h1 Signup
@@ -32,7 +33,7 @@ block content
 					.modal-footer.lastfooter
 						button(type='submit')#account-form-btn2.btn Go!
 						a(href='/')#account-form-btn1.btn.fatlink Cancel
-			!= form.end()
+			!= formTagEnd()
 
 block modals
 	include modals/form-errors
