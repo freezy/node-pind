@@ -27,4 +27,4 @@ function requireLogin() {
 }
 
 
-before(requireLogin, { except: [ 'login', 'loginPost', 'signup', 'signupPost' ] });
+//before(requireLogin, { except: [ 'login', 'loginPost', 'signup', 'signupPost' ] });

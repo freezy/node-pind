@@ -22,16 +22,16 @@
 */
 
 describe('Table', function () {
-    property('id', String);
-    property('name', String);
-    property('manufacturer', String);
-    property('year', Number);
-    property('type', String);
-    property('platform', String);
-    property('added', Date);
-    property('updated', Date);
-    property('enabled', Boolean);
-    set('restPath', pathTo.tables);
+	property('id', String);
+	property('name', String);
+	property('manufacturer', String);
+	property('year', Number);
+	property('type', String);
+	property('platform', String);
+	property('added', Date);
+	property('updated', Date);
+	property('enabled', Boolean);
+	set('restPath', pathTo.tables);
 });
 
 describe('User', function () {
