@@ -37,8 +37,10 @@ describe('Table', function () {
 describe('User', function () {
 	property('user', String, { index: 'true' });
 	property('pass', String);
+	property('authtoken', String);
 	property('name', String);
 	property('email', String);
+	property('admin', Boolean);
 	property('credits', Number);
 	property('added', Date, { default: Date });
 	property('updated', Date);

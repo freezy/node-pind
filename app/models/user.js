@@ -6,33 +6,54 @@ module.exports = function (compound, User) {
 	User.validatesUniquenessOf('user', { message: 'This username is already taken.' });
 	User.validatesLengthOf('pass', { min: 6, message: { min: 'Password must be at least six characters.' }});
 
-	User.beforeSave = function(next) {
+	User.afterValidation = function(next) {
 		if (this.pass) {
 			this.pass = saltAndHash(this.pass);
+			this.authtoken = randomKey(32);
 		}
 		next();
+	};
+
+	User.beforeCreate = function(next) {
+
+		this.created = new Date();
+		this.updated = new Date();
+		this.credits = 0;
+
+		var that = this;
+		User.count(function(err, num) {
+			that.admin = !err && num == 0;
+			next();
+		})
+	};
+
+	User.beforeUpdate = function(next) {
+		that.updated = new Date();
 	}
 
 	User.verifyPassword = function(plainPass, hashedPass) {
 		var salt = hashedPass.substr(0, 10);
 		var validHash = salt + hash(plainPass + salt);
 		return hashedPass === validHash;
-	}
+	};
 };
 
 function hash(str) {
 	return ih.blake32(str);
 };
-function generateSalt() {
-	var set = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
-	var salt = '';
-	for (var i = 0; i < 10; i++) {
-		var p = Math.floor(Math.random() * set.length);
-		salt += set[p];
+function randomKey(n) {
+	if (!n) {
+		n = 10;
 	}
-	return salt;
+	var set = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
+	var key = '';
+	for (var i = 0; i < n; i++) {
+		var p = Math.floor(Math.random() * set.length);
+		key += set[p];
+	}
+	return key;
 };
 function saltAndHash(pass, callback) {
-	var salt = generateSalt();
+	var salt = randomKey();
 	return salt + hash(pass + salt);
 };

@@ -2,7 +2,7 @@
 node_modules
 app/server/modules/email-settings-mine.js
 pind.db
-settings-mine.json
+settings-mine.js
 test*.js
 gfx
 highscores.txt

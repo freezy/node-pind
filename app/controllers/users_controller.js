@@ -1,4 +1,5 @@
 var util = require('util');
+var settings = require('./config/settings-mine');
 
 load('application');
 
@@ -21,6 +22,8 @@ action('login', function (context) {
 						this.alert = wrongCredentials;
 					} else {
 						if (User.verifyPassword(body.pass, user.pass)) {
+							context.res.cookie('auth', user.authtoken);
+							context.req.session.cookie.maxAge = settings.pind.sessionTimeout;
 							context.req.session.user = user;
 							redirect(context.req.session.redirectUrl ? context.req.session.redirectUrl : pathTo.root);
 						} else {
@@ -53,9 +56,7 @@ action('signup', function () {
 			var now = new Date().getTime();
 			User.create({
 				user: req.body.user,
-				pass: req.body.pass,
-				created: now,
-				updated: now
+				pass: req.body.pass
 			}, function(err, user) {
 				if (err) {
 					if (user) {
@@ -65,13 +66,13 @@ action('signup', function () {
 					}
 					console.log('alert: %s', err);
 					console.log('validations: %j', user.errors);
+					render({user : req.body});
 				} else {
 					console.log('all good, user created.');
-					this.alert = null;
 					this.validationErrors = null;
+					this.alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
+					render('login');
 				}
-				console.log('rendering with user = %j', req.body);
-				render({user : req.body});
 			});
 		} else {
 			this.alert = { title: 'Mind reading problem.', message: 'You must provide both username and password.' };
