@@ -4,6 +4,7 @@ exports.routes = function (map) {
 	// login and register
 	map.get('login', 'users#login');
 	map.post('login', 'users#login', { as: 'loginPost'});
+	map.get('logout', 'users#logout');
 	map.get('signup', 'users#signup');
 	map.post('signup', 'users#signup', { as: 'signupPost'});
 

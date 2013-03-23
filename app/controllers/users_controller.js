@@ -85,3 +85,13 @@ action('signup', function () {
 	}
 
 });
+
+
+action('logout', function (context) {
+	this.title = 'Logout'
+	if (req.session.user) {
+		delete req.session.user;
+	}
+	this.alert = { title: 'Bye-bye!', message: 'You have been successfully logged out.' };
+	render('login');
+});

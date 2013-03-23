@@ -3,7 +3,7 @@ extends outer
 block body
 	div.navbar.navbar-static-top
 		div.navbar-inner
-			a(href='/home').icon.pind
+			a(href='#{pathTo.root}').icon.pind
 			div.container-fluid
 				ul#global-nav.nav
 					li.active
@@ -12,7 +12,7 @@ block body
 						a Second nav
 				ul.nav.pull-right
 					li
-						a#btn-logout
+						a(href='#{pathTo.logout}')#btn-logout
 							i.icon-lock.icon-black
 							| Sign Out
 
