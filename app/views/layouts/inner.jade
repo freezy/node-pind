@@ -1,0 +1,21 @@
+extends outer
+
+block body
+	div.navbar.navbar-static-top
+		div.navbar-inner
+			a(href='/home').icon.pind
+			div.container-fluid
+				ul#global-nav.nav
+					li.active
+						a Control Panel
+					li
+						a Second nav
+				ul.nav.pull-right
+					li
+						a#btn-logout
+							i.icon-lock.icon-black
+							| Sign Out
+
+	div.container-fluid
+		div.row-fluid
+			block content

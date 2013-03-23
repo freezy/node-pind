@@ -1,6 +1,6 @@
-extends ../layouts/users_layout
+extends ../layouts/outer
 
-block content
+block body
 	- contentFor('javascripts', javascriptIncludeTag('login'))
 	.boxglow
 		!= formTagBegin({ action: path_to.login, id: 'login-form', class: 'singlebox login' })

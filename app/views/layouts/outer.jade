@@ -12,7 +12,7 @@ html
 		- contentFor('javascripts', javascriptIncludeTag('application'))
 
 	body(data-spy='scroll', data-target='.sidebar')
-		block content
+		block body
 		block scripts
 			!= contentFor('javascripts')
 		block modals

@@ -1,6 +1,6 @@
-extends ../layouts/users_layout
+extends ../layouts/outer
 
-block content
+block body
 	// preset form values if we receive a userdata object //
 	- user = typeof(user) != 'undefined' ? user : { }
 	.boxglow
