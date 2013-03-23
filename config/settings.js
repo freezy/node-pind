@@ -3,7 +3,7 @@ module.exports = {
 		/**
 		 * Session timeout in milliseconds.
 		 */
-		sessionTimeout: 5000,
+		sessionTimeout: 3600000,
 		/**
 		 * Secret for hashing stuff. Create something long here: http://strongpasswordgenerator.com/
 		 */

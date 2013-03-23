@@ -70,11 +70,14 @@ action('login', function (context) {
 		if (context.req.signedCookies.user && context.req.signedCookies.authtoken) {
 			console.log('Autologin: Checking user "' + context.req.signedCookies.user + '".');
 			User.findOne({ where: { user: context.req.signedCookies.user }}, function(err, user) {
-				if (!err && user.authtoken == context.req.signedCookies.authtoken) {
+				if (!err && user && user.authtoken == context.req.signedCookies.authtoken) {
 					console.log('Autologin: User "' + user.user + '" had a valid auth token.');
 					context.req.session.user = user;
 					redirect(context.req.session.redirectUrl ? context.req.session.redirectUrl : pathTo.root);
 				} else {
+					console.log('Autologin: User "' + context.req.signedCookies.user + '" had an invalid auth token, resetting.');
+					context.res.clearCookie('authtoken');
+					context.res.clearCookie('user');
 					this.alert = null;
 					render();
 				}

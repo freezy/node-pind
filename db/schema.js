@@ -28,6 +28,14 @@ describe('Table', function () {
 	property('year', Number);
 	property('type', String);
 	property('platform', String);
+	property('filename', String);
+	property('hpid', String);
+	property('rom', String);
+	property('ipdbno', String);
+	property('ipdbmfg', String);
+	property('ipdrank', String);
+	property('rating', Number);
+	property('short', String);
 	property('added', Date);
 	property('updated', Date);
 	property('enabled', Boolean);
