@@ -4,7 +4,7 @@ extends ../layouts/users_layout
 
 block content
 	// preset form values if we receive a userdata object //
-	- user = typeof(udata) != 'undefined' ? udata : { }
+	- user = typeof(user) != 'undefined' ? user : { }
 	.boxglow
 		#account-form-container.singlebox.register
 			!= formTagBegin({ action: path_to.signup, id: 'account-form' })
@@ -14,7 +14,7 @@ block content
 					p#sub1.subheading Get playing. With balls.
 				fieldset
 					.modal-body
-						if user.user != null
+						if user.extended
 							#name-cg.control-group
 								.controls
 									input#name-tf(type='text', name='name', placeholder='Real Name', value=user.name).input-large

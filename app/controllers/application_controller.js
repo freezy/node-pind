@@ -1,30 +1,23 @@
 var util = require('util');
+var c = compound.utils.stylize.$;
+var log = compound.utils.debug;
+
+
+publish('requireUser', requireUser);
 
 before('protect from forgery', function () {
   protectFromForgery('4a63d1756c1801a833cdd50ece1d192ecba3fafa');
 });
 
-function requireLogin() {
-	console.log('requireLogin context: %s', util.inspect(req.body));
-	User.sayHello();
 
-	// check session inside `req.session`
-	// or cookie, or post with login and password, or something else to authenticate your user
-	// for example this logic defined in User.authenticate
+function requireUser() {
 	if (req.session.user) {
 		next();
 	} else {
-		if (req.body.user && req.body.pass) {
-			User.authenticate(req.body, function (user) {
-				req.user = user;
-				next(); // IMPORTANT: call next filter (or action) in chain
-			})
-		} else {
-			req.session.redirectUrl = req.originalUrl
-			redirect(path_to.login);
-		}
+		log(c('[auth] No valid session, redirecting to login page.').grey);
+		req.session.redirectUrl = req.originalUrl
+		redirect(path_to.login);
 	}
 }
 
-
-before(requireLogin, { except: [ 'login', 'loginPost', 'signup', 'signupPost' ] });
+before(requireUser, { except: [ 'login', 'loginPost', 'signup', 'signupPost' ] });

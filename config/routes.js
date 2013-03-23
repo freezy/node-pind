@@ -8,7 +8,7 @@ exports.routes = function (map) {
 	map.post('signup', 'users#signup', { as: 'signupPost'});
 
 	// home
-	map.root('home#index');
+	map.root('home#index', { as: 'root' });
 
 
     // Generic routes. Add all your routes below this line
