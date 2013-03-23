@@ -1,8 +1,16 @@
-.modal-alert.modal.hide.fade
-	button.close(data-dismiss='modal') &times;
-	div.modal-header
-		h3
-	div.modal-body
-		p
-	div.modal-footer
-		button(data-dismiss="modal")#ok.btn.btn-warning.fat OK
+
+- alert = typeof(alert) != 'undefined' ? alert : null
+if alert != null
+	.modal-alert.modal.hide.fade
+		button.close(data-dismiss='modal') &times;
+		div.modal-header
+			h3= alert.title
+		div.modal-body
+			p= alert.message
+		div.modal-footer
+			button(data-dismiss="modal")#ok.btn.btn-warning.fat OK
+
+	script(type='text/javascript')
+		$(document).ready(function() {
+			$('.modal-alert').modal('show');
+		});

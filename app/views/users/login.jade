@@ -1,6 +1,7 @@
 extends ../layouts/users_layout
 
 block content
+	- contentFor('javascripts', javascriptIncludeTag('login'))
 	.boxglow
 		!= formTagBegin({ action: path_to.login, id: 'login-form', class: 'singlebox login' })
 			.modal-header
@@ -22,5 +23,6 @@ block content
 				a(href="#")#forgot-password.slimlink Forgot password?
 		!= formTagEnd()
 
+block modals
 	include modals/alert
 	include modals/lost-password
