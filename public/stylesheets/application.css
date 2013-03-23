@@ -523,6 +523,18 @@ textarea {
 @media (min-width: 768px) and (max-width: 979px) {
 }
 @media (max-width: 767px) {
+  .navbar .navbar-inner a.icon.pind {
+    margin-top: 10px;
+  }
+  .navbar .navbar-inner .nav li a {
+    margin-bottom: 10px;
+    -moz-border-radius-bottomleft: 20px;
+    -webkit-border-bottom-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    -moz-border-radius-bottomright: 20px;
+    -webkit-border-bottom-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
 }
 @media (max-width: 480px) {
 }
