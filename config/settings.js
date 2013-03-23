@@ -3,7 +3,11 @@ module.exports = {
 		/**
 		 * Session timeout in milliseconds.
 		 */
-		sessionTimeout: 10000
+		sessionTimeout: 5000,
+		/**
+		 * Secret for hashing stuff. Create something long here: http://strongpasswordgenerator.com/
+		 */
+		secret: 'alongsecret'
 	},
 	hyperpin : {
 		path: 'C:/Games/HyperPin'

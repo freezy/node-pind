@@ -11,7 +11,9 @@ action('login', function (context) {
 	if (context.req.method == 'POST') {
 		console.log('Checking login credentials.');
 		if (req.body.user) {
-			User.findOne({where: {user: req.body.user}}, function(err, user) {
+
+			// find user by name
+			User.findOne({ where: { user: req.body.user }}, function(err, user) {
 				if (err) {
 					console.log("Error retrieving user: " + err);
 					redirect(pathTo.login);
@@ -22,8 +24,15 @@ action('login', function (context) {
 						this.alert = wrongCredentials;
 					} else {
 						if (User.verifyPassword(body.pass, user.pass)) {
-							context.res.cookie('auth', user.authtoken);
-							context.req.session.cookie.maxAge = settings.pind.sessionTimeout;
+
+							// set "remember me" cookie.
+							if (req.body.rememberme) {
+								context.res.cookie('authtoken', user.authtoken, { signed: true });
+								context.res.cookie('user', user.user, { signed: true });
+							} else {
+								context.res.clearCookie('authtoken');
+								context.res.clearCookie('user');
+							}
 							context.req.session.user = user;
 							redirect(context.req.session.redirectUrl ? context.req.session.redirectUrl : pathTo.root);
 						} else {
@@ -39,9 +48,43 @@ action('login', function (context) {
 			this.alert = { title: 'Mind reading problem.', message: 'A username would be useful.' };
 			render();
 		}
+
+	// nothing was posted.
 	} else {
-		this.alert = null;
-		render();
+
+		// check for logout
+		if (context.req.session.logout) {
+			req.session.destroy(function(err) {
+				if (err) {
+					console.log('Error while destroying session: ' + err);
+				}
+				this.alert = { title: 'Bye-bye!', message: 'You have been successfully logged out.' };
+				context.res.clearCookie('authtoken');
+				context.res.clearCookie('user');
+				render();
+			});
+			return;
+		}
+
+		// check for auto-login
+		if (context.req.signedCookies.user && context.req.signedCookies.authtoken) {
+			console.log('Autologin: Checking user "' + context.req.signedCookies.user + '".');
+			User.findOne({ where: { user: context.req.signedCookies.user }}, function(err, user) {
+				if (!err && user.authtoken == context.req.signedCookies.authtoken) {
+					console.log('Autologin: User "' + user.user + '" had a valid auth token.');
+					context.req.session.user = user;
+					redirect(context.req.session.redirectUrl ? context.req.session.redirectUrl : pathTo.root);
+				} else {
+					this.alert = null;
+					render();
+				}
+			});
+
+		// otherwise just display the page.
+		} else {
+			this.alert = null;
+			render();
+		}
 	}
 
 });
@@ -88,11 +131,11 @@ action('signup', function () {
 });
 
 
-action('logout', function (context) {
-	this.title = 'Logout'
-	if (req.session.user) {
-		delete req.session.user;
-	}
-	this.alert = { title: 'Bye-bye!', message: 'You have been successfully logged out.' };
-	render('login');
+/**
+ * Logs the user out. It actually only sets the "logout" session variable
+ * and redirects to the login page, which does the actual logout.
+ */
+action('logout', function(context) {
+	context.req.session.logout = true;
+	redirect(pathTo.login);
 });

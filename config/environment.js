@@ -1,3 +1,5 @@
+var settings = require('./settings');
+
 module.exports = function (compound) {
 
     var express = require('express');
@@ -19,8 +21,11 @@ module.exports = function (compound) {
         app.set('cssEngine', 'stylus');
 		app.set('view options', { layout: false });
         app.use(express.bodyParser());
-        app.use(express.cookieParser('couw2oewri7ph1umoew6iahluyiegleqiayoafluf7uzoaviuzo3phlayLahiEr7'));
-        app.use(express.session({secret: 'priEc9luCroATie5RoePo6s5epRO6vl32lasw5aP3OEYiaHl6D99pLaP69aw21sp'}));
+        app.use(express.cookieParser(settings.pind.secret));
+        app.use(express.session({
+			secret: settings.pind.secret,
+			cookie: { maxAge: settings.pind.sessionTimeout }
+		}));
         app.use(express.methodOverride());
         app.use(app.router);
     });
