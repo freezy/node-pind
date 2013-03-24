@@ -24,11 +24,14 @@ module.exports = function(app) {
  * @param res Response object
  * @param p Path of the table, e.g. "/Media/Visual Pinball/Table Images/Some Table.png"
  */
-exports.asset_banner = function(res, p) {
-	asset(res, p, function(gm) {
-		return gm
-			.rotate('black', -45)
-			.crop(800, 150, 400, 1250);
+exports.asset_banner = function(res, key) {
+	console.log('looking for key %s', key);
+	Table.findOne({ where: { key : key}}, function(err, row) {
+		asset(res, '/Media/' + (row.platform == 'FP' ? 'Future' : 'Visual') + ' Pinball/Table Images/' + row.hpid + '.png', function(gm) {
+			return gm
+				.rotate('black', -45)
+				.crop(800, 150, 400, 1250);
+		});
 	});
 }
 

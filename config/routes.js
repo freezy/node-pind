@@ -9,7 +9,10 @@ exports.routes = function (map) {
 	map.post('signup', 'users#signup', { as: 'signupPost'});
 
 	// home
-	map.root('home#index', { as: 'root' });
+	map.root('home#tables', { as: 'root' });
+
+	// media
+	map.get('asset/hp/banner/:id.png', 'asset#banner', { as: 'asset_banner'});
 
 
     // Generic routes. Add all your routes below this line
