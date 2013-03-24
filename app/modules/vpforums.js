@@ -90,16 +90,12 @@ function download(url, callback) {
 								var downloadUrl = m[1].replace(/&amp;/g, '&');
 								var filename = m[2].replace(/[^\w\d\.\-]/gi, '').trim();
 								console.log('Downloading "' + filename + '"...');
-								request(downloadUrl)
-								  .pipe(fs.createWriteStream(settings.pind.tmp + '/' + filename))
-								  .on('end', function(err) {
-									if (err) {
-										callback(err);
-									} else {
-										console.log('Download complete.');
-										callback(null, settings.pind.tmp + '/' + filename);
-									}
+								var stream = fs.createWriteStream(settings.pind.tmp + '/' + filename);
+								stream.on('close', function() {
+									console.log('Download complete.');
+									callback(null, settings.pind.tmp + '/' + filename);
 								});
+								request(downloadUrl).pipe(stream);
 							} else {
 								callback('Cannot find file download button at ' + url);
 							}

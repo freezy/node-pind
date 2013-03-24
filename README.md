@@ -53,6 +53,7 @@ TODO
 * Web table browser
 * Score stats for registered users
 * Look for another DB engine (sqlite is major PITA to compile).
+* Basic VPForums.org integration
 
 More to come. Still under heavy development.
 
