@@ -25,7 +25,6 @@ module.exports = function(app) {
  * @param p Path of the table, e.g. "/Media/Visual Pinball/Table Images/Some Table.png"
  */
 exports.asset_banner = function(res, key) {
-	console.log('looking for key %s', key);
 	Table.findOne({ where: { key : key}}, function(err, row) {
 		asset(res, '/Media/' + (row.platform == 'FP' ? 'Future' : 'Visual') + ' Pinball/Table Images/' + row.hpid + '.png', function(gm) {
 			return gm
@@ -35,14 +34,17 @@ exports.asset_banner = function(res, key) {
 	});
 }
 
-exports.asset_table = function(res, p, size) {
-	asset(res, p, function(gm) {
-		gm.rotate('black', -90);
-		if (size != null) {
-			gm.resize(size, size);
-		}
-		return gm;
+exports.asset_table = function(res, key, size) {
+	Table.findOne({ where: { key : key}}, function(err, row) {
+		asset(res, '/Media/' + (row.platform == 'FP' ? 'Future' : 'Visual') + ' Pinball/Table Images/' + row.hpid + '.png', function(gm) {
+			gm.rotate('black', -90);
+			if (size != null) {
+				gm.resize(size, size);
+			}
+			return gm;
+		});
 	});
+
 }
 
 /**

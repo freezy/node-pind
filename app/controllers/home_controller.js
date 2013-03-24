@@ -11,6 +11,7 @@ action('tables', function(context) {
 	Table.all(function(err, rows) {
 		for (var i = 0; i < rows.length; i++) {
 			rows[i]['banner'] = pathTo.asset_banner(rows[i].key);
+			rows[i]['portrait_small'] = pathTo.asset_portrait_small(rows[i].key);
 		}
 		render({ tables : rows });
 	});
