@@ -1,4 +1,11 @@
+/**
+ * Global settings file for pind. This is the only configuration setting
+ * you'll have to edit.
+ */
 module.exports = {
+	/**
+	 * Application-specific settings.
+	 */
 	pind: {
 		/**
 		 * Session timeout in milliseconds.
@@ -9,24 +16,44 @@ module.exports = {
 		 */
 		secret: 'alongsecret',
 		/**
-		 * A temp folder for extracting stuff.
+		 * A temp folder for extracting stuff. No trailing slash!
 		 */
-		tmp: 'E:/tmp'
+		tmp: 'C:/temp'
 	},
+	/**
+	 * HyperPin-specifc settings.
+	 */
 	hyperpin : {
+		/**
+		 * Path to installation folder. No trailing slash!
+		 */
 		path: 'C:/Games/HyperPin'
 	},
+	/**
+	 * Visual Pinball-specifc settings.
+	 */
 	visualpinball : {
+		/**
+		 * Path to installation folder. No trailing slash!
+		 */
 		path: 'C:/Games/Visual Pinball'
 	},
+	/**
+	 * VPinMame-specifc settings.
+	 */
 	vpinmame : {
+		/**
+		 * Path to installation folder. No trailing slash!
+		 */
 		path: 'C:/Games/Visual Pinball/VPinMame'
 	},
+	/**
+	 * VPForums.org-specific settings.
+	 */
 	vpforums: {
 		/**
 		 * VPForums.org credentials. Needed for automatic downloads.
 		 */
-		user: '',
-		pass: ''
+		user: '', pass: ''
 	}
 };
