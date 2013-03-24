@@ -213,6 +213,7 @@ exports.syncTop300 = function(callback) {
 						});
 					}, next);
 				} else {
+					log.debug('[ipdb] No match for  ' + table.name + ' (' + table.year + ')');
 					next();
 				}
 			});

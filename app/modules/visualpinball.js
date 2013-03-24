@@ -3,6 +3,14 @@ var log = require('winston');
 var ocd = require('ole-doc').OleCompoundDoc;
 var async = require('async');
 var util = require('util');
+var settings = require('../../config/settings-mine');
+
+var Table;
+
+module.exports = function(app) {
+	Table = app.models.Table;
+	return exports;
+}
 
 /**
  * Finds the table name for a given file name.
@@ -84,14 +92,24 @@ exports.identify = function(table, callback) {
  * Tries to determine which ROM is used for a table. It does it by looking
  * at the table script and intelligently guessing most recently used ROM.
  *
- * @param tablePath File name of the .vpt file
+ * @param fileName File name of the .vpt file (incl. extension, excl. path). File can not exist.
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Name of the game ROM</li></ol>
  */
 exports.getGameRomName = function(fileName, callback) {
 	var tablePath = settings.visualpinball.path + '/tables/' + fileName;
+	// skip if file doesn't exist.
+	if (!fs.existsSync(tablePath)) {
+		log.warn('Table file "' + tablePath + '" does not exist.');
+		callback();
+		return;
+	}
 	exports.getScriptFromTable(tablePath, function(err, script) {
+		if (err) {
+			callback(err);
+			return;
+		}
 		var m = script.match(/\.GameName\s*=\s*(.+)/);
 		if (m) {
 
@@ -139,9 +157,6 @@ exports.getGameRomName = function(fileName, callback) {
 				callback(null, gameName.match(/"([^"]+)/)[1]);
 				return;
 			}
-
-			console.log('value:' + gameName);
-
 
 			var m;
 			// Array(Romset1,Romset2,Romset3,Romset4,Romset5,Romset6,Romset7,Romset8)((tzOptions And (15*cOptRom))\cOptRom)
@@ -222,12 +237,16 @@ exports.getTableSetting = function(storageName, streamName, callback) {
  * Table scripts are at the end of the .vpt file. The header of the chunk equals
  * 04 00 00 00 43 4F 44	45 (0x04 0 0 0 "CODE") and ends with 04 00 00 00.
  *
- * @param tablePath Path to the .vpt file
+ * @param tablePath Path to the .vpt file. File must exist.
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Table script</li></ol>
  */
 exports.getScriptFromTable = function(tablePath, callback) {
+	if (!fs.existsSync(tablePath)) {
+		callback('File "' + tablePath + '" does not exist.');
+		return;
+	}
 	var now = new Date().getTime();
 	fs.open(tablePath, 'r', function(err, fd) {
 		var stat = fs.fstatSync(fd);
@@ -274,3 +293,21 @@ exports.scanDirectory = function(iterator, callback) {
 		async.eachSeries(tables, iterator, callback);
 	})
 };
+
+exports.updateRomNames = function(callback) {
+	Table.all({ where: { platform: 'VP' }}, function(err, rows) {
+		async.eachSeries(rows, function(row, next) {
+			exports.getGameRomName(row.filename + '.vpt', function(err, romname) {
+				if (err) {
+					next(err);
+				} else {
+					if (romname) {
+						row.updateAttribute('rom', romname, next);
+					} else {
+						next();
+					}
+				}
+			});
+		}, callback);
+	});
+}
