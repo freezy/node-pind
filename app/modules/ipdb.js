@@ -2,7 +2,15 @@ var request = require('request');
 var async = require('async');
 var natural = require('natural');
 var log = require('winston');
-var hp = require('./hyperpin');
+
+var hp;
+var Table;
+
+module.exports = function(app) {
+	hp = require('./hyperpin')(app);
+	Table = app.models.Table;
+	return exports;
+}
 
 /**
  * Performs a complete update from HyperPin and ipdb.org:
@@ -16,14 +24,14 @@ var hp = require('./hyperpin');
 exports.syncTables = function(callback) {
 
 	// 1. Sync with local database (aka HyperPin)
-	hp.syncTables(function(err, games) {
+	hp.syncTables(function(err, tables) {
 		if (err) {
 			log.error('[ipdb] ' + err);
 			return;
 		}
 
 		// 2. Fetch data from ipdb.org
-		async.eachLimit(games, 3, exports.enrich, function(err) {
+		async.eachLimit(tables, 3, exports.enrich, function(err) {
 
 			if (err) {
 				log.error('[ipdb] ' + err);
@@ -31,11 +39,11 @@ exports.syncTables = function(callback) {
 			}
 
 			// 3. Update db
-			async.eachSeries(games, Table.updateAll, function(err) {
+			async.eachSeries(tables, Table.updateOne, function(err) {
 				if (err) {
 					log.error('[ipdb] ' + err);
 				} else {
-					log.info('[ipdb] ' + games.length + ' games updated.');
+					log.info('[ipdb] ' + tables.length + ' games updated.');
 
 					// 4. Update ranking from top 300 list
 					exports.syncTop300(function(err, games) {
@@ -58,8 +66,8 @@ exports.syncTables = function(callback) {
  *
  * Currently, we're pulling:
  * 	<ul><li>name - Name</li>
- * 	    <li>ipdbno - ipdb.org number</li>
- * 	    <li>ipdbmfg - ipdb.org manufacturer ID</li>
+ * 	    <li>ipdb_no - ipdb.org number</li>
+ * 	    <li>ipdb_mfg - ipdb.org manufacturer ID</li>
  * 	    <li>modelno - Model number</li>
  * 	    <li>rating - Rating</li>
  * 	    <li>short - Abbreviation</li></ul>
@@ -88,8 +96,8 @@ exports.enrich = function(game, callback) {
 
 	log.info('[ipdb] Fetching data for ' + game.name);
 	var url;
-	if (game.ipdbno && !forceSearch) {
-		url = 'http://www.ipdb.org/machine.cgi?id=' + game.ipdbno;
+	if (game.ipdb_no && !forceSearch) {
+		url = 'http://www.ipdb.org/machine.cgi?id=' + game.ipdb_no;
 	} else {
 		// advanced search: var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
 		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(game.name.replace(/[^0-9a-z]+/ig, ' ')) + '&searchtype=quick';
@@ -129,9 +137,9 @@ exports.enrich = function(game, callback) {
 			m = body.match(/<a name="(\d+)">([^<]+)/i);
 			if (m) {
 				game.name = m[2];
-				game.ipdbno = m[1];
+				game.ipdb_no = m[1];
 				game.modelno = firstMatch(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
-				game.ipdbmfg = firstMatch(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
+				game.ipdb_mfg = firstMatch(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
 				game.rating = firstMatch(body, /<b>Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
 				game.short = firstMatch(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i);
 
@@ -165,48 +173,57 @@ exports.syncTop300 = function(callback) {
 		var regex = /<td align=right nowrap>(\d+)[^<]*<\/td>\s*<td[^>]*>[^<]*<font[^>]*>[^<]*<\/font>\s*<img[^>]*>[^<]*<\/td>\s*<td><font[^>]*>(\d+)<\/font>\s*<B>([^<]+)<\/B>/gi;
 		var match;
 		var idx = 0;
+		var tables = [];
 		while (match = regex.exec(body)) {
-			var game = {
-				ipdbrank: match[1],
+			var table = {
+				ipdb_rank: match[1],
 				year : match[2],
 				name : match[3]
 			};
 
 			if (idx <= 300) {
-				game.type = 'SS';
+				table.type = 'SS';
 			} else {
-				game.type = 'EM';
+				table.type = 'EM';
 			}
-			var foundGames = 0;
-			var updatedGames = [];
+			tables.push(table);
+		}
+
+		var updatedTables = [];
+		var updateTables = function(table, next) {
 
 			// try to find a match in db
-			tm.find(game, function(err, rows, game) {
+			Table.all({ where: { name: table.name, year: table.year, type: table.type } }, function(err, rows) {
 				if (err) {
 					log.error('[ipdb] ' + err);
-					callback(err);
+					next(err);
 					return;
 				} else if (rows.length > 0) {
-					for (var i = 0; i < rows.length; i++) {
-						var row = rows[i];
-						log.debug('[ipdb] Matched ' + game.name + ' (' + row.platform + ')');
-						foundGames++;
-						var updatedGame = {
-							id: row.id,
-							ipdbrank: game.ipdbrank
-						};
-						tm.updateTable(updatedGame, function(err, game) {
-							updatedGames.push(game);
-							if (updatedGames.length == foundGames) {
-								log.error('[ipdb] Done, returning found games.');
-								callback(null, updatedGames);
+
+					// could be multiple hits (vp and fp version, for instance)
+					async.eachSeries(rows, function(row, cb) {
+						log.debug('[ipdb] Matched ' + row.name + ' (' + row.platform + ')');
+						row.updateAttribute('ipdb_rank', table.ipdb_rank, function(err, table) {
+							if (err) {
+								cb(err);
+							} else {
+								updatedTables.push(table);
+								cb();
 							}
 						});
-					}
+					}, next);
+				} else {
+					next();
 				}
 			});
-			idx++;
-		}
+		};
+
+		async.eachSeries(tables, updateTables, function(err) {
+			if (!err) {
+				callback(null, updatedTables);
+			}
+			log.error('[ipdb] Done, returning found games.');
+		});
 	});
 }
 

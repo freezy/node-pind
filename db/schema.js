@@ -32,10 +32,11 @@ describe('Table', function () {
 	property('filename', String);
 	property('hpid', String);
 	property('rom', String);
-	property('ipdbno', String);
-	property('ipdbmfg', String);
-	property('ipdrank', String);
+	property('ipdb_no', String);
+	property('ipdb_mfg', String);
+	property('ipdb_rank', String);
 	property('rating', Number);
+	property('modelno', String);
 	property('short', String);
 	property('added', Date);
 	property('updated', Date);

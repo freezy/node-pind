@@ -14,8 +14,8 @@ var platforms = {
 	FP: 'Future Pinball'
 }
 
-module.exports = function(compound) {
-	Table = compound.models.Table;
+module.exports = function(app) {
+	Table = app.models.Table;
 	return exports;
 }
 
@@ -85,45 +85,45 @@ exports.syncTables = function(callback) {
 				}
 
 				var l = result.menu.game.length;
-				var games = [];
+				var tables = [];
 				for (var i = 0; i < l; i++) {
 					var g = result.menu.game[i];
 					var d = g.description[0];
-					var game;
+					var table;
 					var m = d.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\)/); // match Medieval Madness (Williams 1997)
 					if (m) {
-						game = {
+						table = {
 							name: m[1],
 							manufacturer: m[2],
 							year: m[3]
 						};
 					} else {
-						game = {
+						table = {
 							name: d,
 							manufacturer: g.manufacturer[0],
 							year: g.year[0]
 						};
 					}
 					if (!g.$ || !g.$.name) {
-						log.error('[hyperpin] [' + platform + '] Cannot find "name" attribute for "' + game.name + '".');
-						callback('error parsing game "' + game.name + '", XML must contain "name" attribute.');
+						log.error('[hyperpin] [' + platform + '] Cannot find "name" attribute for "' + table.name + '".');
+						callback('error parsing game "' + table.name + '", XML must contain "name" attribute.');
 						return;
 					}
-					game.hpid = d;
-					game.type = g.type[0];
-					game.filename = g.$.name;
-					game.platform = platform;
-					game.enabled = g.enabled === undefined || (g.enabled[0].toLowerCase() == 'true' || g.enabled[0].toLowerCase() == 'yes');
-					games.push(game);
+					table.hpid = d;
+					table.type = g.type[0];
+					table.filename = g.$.name;
+					table.platform = platform;
+					table.enabled = g.enabled === undefined || (g.enabled[0].toLowerCase() == 'true' || g.enabled[0].toLowerCase() == 'yes');
+					tables.push(table);
 				}
-				log.info('[hyperpin] [' + platform + '] Finished parsing ' + games.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
-				Table.updateAll(games, now, callback);
+				log.info('[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
+				Table.updateAll(tables, now, callback);
 			});
 		});
 	};
 
 	// launch FP and VP parsing in parallel
-	async.each([ 'FP', 'VP' ], process, function(err) {
+	async.eachSeries([ 'FP', 'VP' ], process, function(err) {
 		Table.all(callback);
 	});
 };
