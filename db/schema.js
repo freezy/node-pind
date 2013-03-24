@@ -23,6 +23,7 @@
 
 describe('Table', function () {
 	property('id', String);
+	property('key', String);
 	property('name', String);
 	property('manufacturer', String);
 	property('year', Number);

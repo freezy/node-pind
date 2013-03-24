@@ -7,7 +7,11 @@ module.exports = {
 		/**
 		 * Secret for hashing stuff. Create something long here: http://strongpasswordgenerator.com/
 		 */
-		secret: 'alongsecret'
+		secret: 'alongsecret',
+		/**
+		 * A temp folder for extracting stuff.
+		 */
+		tmp: 'E:/tmp'
 	},
 	hyperpin : {
 		path: 'C:/Games/HyperPin'
@@ -17,5 +21,12 @@ module.exports = {
 	},
 	vpinmame : {
 		path: 'C:/Games/Visual Pinball/VPinMame'
+	},
+	vpforums: {
+		/**
+		 * VPForums.org credentials. Needed for automatic downloads.
+		 */
+		user: '',
+		pass: ''
 	}
 };

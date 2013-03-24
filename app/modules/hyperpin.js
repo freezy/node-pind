@@ -2,16 +2,21 @@ var fs = require('fs');
 var gm = require('gm');
 var log = require('winston');
 var path = require('path');
+var util = require('util');
 var async = require('async');
 var xml2js = require('xml2js');
-var config =  require('konphyg')(__dirname + '../../../config');
-var settings = config('settings-mine');
+var settings = require('../../config/settings-mine');
 
-var tm = require('./table-manager');
+var Table;
 
 var platforms = {
 	VP: 'Visual Pinball',
 	FP: 'Future Pinball'
+}
+
+module.exports = function(compound) {
+	Table = compound.models.Table;
+	return exports;
 }
 
 /**
@@ -112,14 +117,14 @@ exports.syncTables = function(callback) {
 					games.push(game);
 				}
 				log.info('[hyperpin] [' + platform + '] Finished parsing ' + games.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
-				tm.updateTables(games, now, callback);
+				Table.updateAll(games, now, callback);
 			});
 		});
 	};
 
 	// launch FP and VP parsing in parallel
 	async.each([ 'FP', 'VP' ], process, function(err) {
-		tm.findAll(callback);
+		Table.all(callback);
 	});
 };
 

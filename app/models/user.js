@@ -2,10 +2,16 @@ var ih = require('insanehash').crypto;
 
 module.exports = function (compound, User) {
 
+	/*
+	 * VALIDATIONS
+	 */
 	User.validatesLengthOf('user', { is: 3, message: { is: 'Username must be three characters.' }, allowBlank: false });
 	User.validatesUniquenessOf('user', { message: 'This username is already taken.' });
 	User.validatesLengthOf('pass', { min: 6, message: { min: 'Password must be at least six characters.' }});
 
+	/*
+	 * HOOKS
+	 */
 	User.afterValidation = function(next) {
 		if (this.pass) {
 			this.pass = saltAndHash(this.pass);
@@ -31,6 +37,9 @@ module.exports = function (compound, User) {
 		that.updated = new Date();
 	}
 
+	/*
+	 * SPECIAL FUNCTIONS
+	 */
 	User.verifyPassword = function(plainPass, hashedPass) {
 		var salt = hashedPass.substr(0, 10);
 		var validHash = salt + hash(plainPass + salt);

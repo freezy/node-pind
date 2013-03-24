@@ -1,6 +1,7 @@
+
 var settings = require('./settings');
 
-module.exports = function (compound) {
+module.exports = function(compound) {
 
     var express = require('express');
     var app = compound.app;

@@ -3,8 +3,6 @@ var log = require('winston');
 var ocd = require('ole-doc').OleCompoundDoc;
 var async = require('async');
 var util = require('util');
-var config =  require('konphyg')(__dirname + '../../../config');
-var settings = config('settings-mine');
 
 /**
  * Finds the table name for a given file name.

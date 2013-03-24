@@ -2,7 +2,6 @@ var request = require('request');
 var async = require('async');
 var natural = require('natural');
 var log = require('winston');
-var tm = require('./table-manager');
 var hp = require('./hyperpin');
 
 /**
@@ -32,7 +31,7 @@ exports.syncTables = function(callback) {
 			}
 
 			// 3. Update db
-			async.eachSeries(games, tm.updateTable, function(err) {
+			async.eachSeries(games, Table.updateAll, function(err) {
 				if (err) {
 					log.error('[ipdb] ' + err);
 				} else {
