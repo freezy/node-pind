@@ -1,5 +1,6 @@
 exports.routes = function (map) {
-    map.resources('tables');
+
+	// map.resources('tables');
 
 	// login and register
 	map.get('login', 'users#login');
@@ -15,8 +16,12 @@ exports.routes = function (map) {
 	map.get('asset/hp/banner/:id.png', 'asset#banner', { as: 'asset_banner'});
 	map.get('asset/hp/portrait/:id.small.png', 'asset#portrait_small', { as: 'asset_portrait_small'});
 
-    // Generic routes. Add all your routes below this line
-    // feel free to remove generic routes
-    map.all(':controller/:action');
-    map.all(':controller/:action/:id');
+	// api
+	map.post('api', 'application#api');
+
+
+	// Generic routes. Add all your routes below this line
+	// feel free to remove generic routes
+	// map.all(':controller/:action');
+	// map.all(':controller/:action/:id');
 };

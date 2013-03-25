@@ -12,34 +12,28 @@ action('login', function (context) {
 		console.log('Checking login credentials.');
 		if (req.body.user) {
 
-			// find user by name
-			User.findOne({ where: { user: req.body.user }}, function(err, user) {
+			// authenticate user
+			User.authenticate(req.body.user, req.body.pass, function(err, success) {
 				if (err) {
-					console.log("Error retrieving user: " + err);
 					redirect(pathTo.login);
-				} else {
-					var wrongCredentials = { title: 'Sorry!', message: 'Invalid credentials.' };
-					if (user == null) {
-						console.log('User "' + req.body.user  + '" not found.');
-						this.alert = wrongCredentials;
-					} else {
-						if (User.verifyPassword(body.pass, user.pass)) {
 
-							// set "remember me" cookie.
-							if (req.body.rememberme) {
-								context.res.cookie('authtoken', user.authtoken, { signed: true });
-								context.res.cookie('user', user.user, { signed: true });
-							} else {
-								context.res.clearCookie('authtoken');
-								context.res.clearCookie('user');
-							}
-							context.req.session.user = user;
-							redirect(context.req.session.redirectUrl ? context.req.session.redirectUrl : pathTo.root);
-						} else {
-							console.log('Wrong password.');
-							this.alert = wrongCredentials;
-						}
+				// credentials check out
+				} else if (success) {
+					// set "remember me" cookie.
+					if (req.body.rememberme) {
+						context.res.cookie('authtoken', user.authtoken, { signed: true });
+						context.res.cookie('user', user.user, { signed: true });
+					} else {
+						context.res.clearCookie('authtoken');
+						context.res.clearCookie('user');
 					}
+					context.req.session.user = user;
+					redirect(context.req.session.redirectUrl ? context.req.session.redirectUrl : pathTo.root);
+					return;
+
+				// access denied
+				} else {
+					this.alert = { title: 'Sorry!', message: 'Invalid credentials.' };
 				}
 				render();
 			});

@@ -2,9 +2,13 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var express = require('express');
 
-var am = require('./account-manager');
-var tm = require('./table-manager');
 var njrpc = require('./njrpc');
+var Table;
+
+module.exports = function(app) {
+	Table = app.models.Table;
+	return exports;
+}
 
 // API namespace "Control"
 var ControlApi = function() {
@@ -22,14 +26,14 @@ var ControlApi = function() {
 		InsertCoin : function(req, params, callback) {
 			if ('slot' in params) {
 				var slot = params.slot;
-				var binPath = fs.realpathSync(__dirname + '../../../../bin');
+				var binPath = fs.realpathSync(__dirname + '../../../bin');
 				exec(binPath + '/Keysender.exe', function (error, stdout, stderr) {
 					if (error !== null) {
 						console.log(error);
 					} else {
 						callback({
 							message : 'Coin inserted successfully! - ' + stdout,
-							balance : req.user.credits
+							balance : 10 //req.user.credits
 						});
 					}
 				});
@@ -45,7 +49,7 @@ var TableApi = function() {
 		name : 'Table',
 
 		GetAll : function(req, params, callback) {
-			tm.findAll(function(err, rows) {
+			Table.all(function(err, rows) {
 				if (err) {
 					throw new Error(err);
 				}
@@ -66,6 +70,11 @@ njrpc.interceptor = preHandler;
 
 exports.checkCredentials = express.basicAuth(function(user, pass, next) {
 	am.manualLogin(user, pass, next);
+});
+
+var auth = express.basicAuth(function(user, pass, callback) {
+	var result = (user === 'testUser' && pass === 'testPass');
+	callback(null /* error */, result);
 });
 
 exports.handle = function(req, res) {

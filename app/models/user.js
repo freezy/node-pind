@@ -45,6 +45,28 @@ module.exports = function (compound, User) {
 		var validHash = salt + hash(plainPass + salt);
 		return hashedPass === validHash;
 	};
+
+
+	User.authenticate = function(username, password, callback) {
+		User.findOne({ where: { user: username }}, function(err, row) {
+			if (err) {
+				console.log("Error retrieving user: " + err);
+				callback(err);
+			} else {
+				var wrongCredentials = { title: 'Sorry!', message: 'Invalid credentials.' };
+				if (row == null) {
+					console.log('User "' + username  + '" not found.');
+					callback(null, false);
+				} else {
+					if (User.verifyPassword(password, row.pass)) {
+						callback(null, true);
+					} else {
+						callback(null, false);
+					}
+				}
+			}
+		});
+	}
 };
 
 function hash(str) {
