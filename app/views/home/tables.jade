@@ -6,12 +6,11 @@ block content
 			.page-header
 				h1 Available Tables
 				p
-					each table in tables
-						.media
-							img(src=table.logo).bg
-							a(href='#').pull-left
-								img(src=table.portrait_small, alt=table.name).media-object
-							.media-body
-								h3= table.name
-								p some more text
+				each table in tables
+					.media
+						a(href='#').pull-left
+							img(src=table.portrait_small, alt=table.name).media-object
+						.media-body
+							h3= table.name
+							p some more text
 			.clearfix
