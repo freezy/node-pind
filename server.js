@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+var settings = require('./config/settings');
+
 /**
  * Server module exports method which returns new instance of application server
  *
@@ -14,7 +16,7 @@ var app = module.exports = function getServerInstance(params) {
 };
 
 if (!module.parent) {
-    var port = process.env.PORT || 3000;
+    var port = settings.pind.port;
     var host = process.env.HOST || '0.0.0.0';
 
     var server = app();

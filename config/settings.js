@@ -8,6 +8,10 @@ module.exports = {
 	 */
 	pind: {
 		/**
+		 * Where the HTTP server listens; 80 is the default port.
+		 */
+		port: 80,
+		/**
 		 * Session timeout in milliseconds.
 		 */
 		sessionTimeout: 3600000,

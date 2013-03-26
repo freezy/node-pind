@@ -30,6 +30,7 @@ var ControlApi = function() {
 				exec(binPath + '/Keysender.exe', function (error, stdout, stderr) {
 					if (error !== null) {
 						console.log(error);
+						throw new Error(error);
 					} else {
 						callback({
 							message : 'Coin inserted successfully! - ' + stdout,
