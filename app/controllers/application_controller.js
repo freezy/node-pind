@@ -11,7 +11,7 @@ before('protect from forgery', function () {
 });
 
 before(requireUser, { except: [ 'login', 'loginPost', 'signup', 'signupPost', 'api' ] });
-before(requireAuth, { only: 'api' });
+//before(requireAuth, { only: 'api' });
 
 var auth = express.basicAuth(User.authenticate);
 
