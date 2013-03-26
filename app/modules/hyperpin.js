@@ -26,7 +26,7 @@ module.exports = function(app) {
  */
 exports.asset_banner = function(res, key) {
 	Table.findOne({ where: { key : key}}, function(err, row) {
-		asset(res, '/Media/' + (row.platform == 'FP' ? 'Future' : 'Visual') + ' Pinball/Table Images/' + row.hpid + '.png', function(gm) {
+		asset(res, getPath('Table Images', row), function(gm) {
 			return gm
 				.rotate('black', -45)
 				.crop(800, 150, 400, 1250);
@@ -36,13 +36,20 @@ exports.asset_banner = function(res, key) {
 
 exports.asset_table = function(res, key, size) {
 	Table.findOne({ where: { key : key}}, function(err, row) {
-		asset(res, '/Media/' + (row.platform == 'FP' ? 'Future' : 'Visual') + ' Pinball/Table Images/' + row.hpid + '.png', function(gm) {
+		asset(res, getPath('Table Images', row), function(gm) {
 			gm.rotate('black', -90);
 			if (size != null) {
 				gm.resize(size, size);
 			}
 			return gm;
 		});
+	});
+
+}
+
+exports.asset_logo = function(res, key) {
+	Table.findOne({ where: { key : key}}, function(err, row) {
+		file(res, getPath('Wheel Images', row));
 	});
 
 }
@@ -133,21 +140,32 @@ exports.syncTables = function(callback) {
 	});
 };
 
-var asset = function(res, p, process) {
-
-	var filePath = settings.hyperpin.path + p;
-	fs.exists(filePath, function(exists) {
-		if (exists) {
-			var now = new Date().getTime();
-			process(gm(filePath)).stream(function (err, stdout, stderr) {
-				if (err) next(err);
-				res.writeHead(200, { 'Content-Type': 'image/png' });
-				stdout.pipe(res);
-				console.log("image processed in %d ms.", new Date().getTime() - now);
-			});
-		} else {
-			res.writeHead(404);
-			res.end('Sorry, ' + filePath + ' not found.');
-		}
-	});
+var asset = function(res, path, process) {
+	if (fs.existsSync(path)) {
+		var now = new Date().getTime();
+		process(gm(path)).stream(function (err, stream, stderr) {
+			if (err) next(err);
+			res.writeHead(200, { 'Content-Type': 'image/png' });
+			stream.pipe(res);
+			console.log("image processed in %d ms.", new Date().getTime() - now);
+		});
+	} else {
+		res.writeHead(404);
+		res.end('Sorry, ' + path + ' not found.');
+	}
 };
+
+var file = function(res, path) {
+	if (fs.existsSync(path)) {
+		res.writeHead(200, { 'Content-Type': 'image/png' });
+		var stream = fs.createReadStream(path);
+		stream.pipe(res);
+	} else {
+		res.writeHead(404);
+		res.end('Sorry, ' + filePath + ' not found.');
+	}
+}
+
+function getPath(what, table) {
+	return settings.hyperpin.path + '/Media/' + (table.platform == 'FP' ? 'Future' : 'Visual') + ' Pinball/' + what + '/' + table.hpid + '.png';
+}

@@ -13,11 +13,12 @@ exports.routes = function (map) {
 	map.root('home#tables', { as: 'root' });
 
 	// media
+	map.get('asset/hp/logo/:id.png', 'asset#logo', { as: 'asset_logo'});
 	map.get('asset/hp/banner/:id.png', 'asset#banner', { as: 'asset_banner'});
 	map.get('asset/hp/portrait/:id.small.png', 'asset#portrait_small', { as: 'asset_portrait_small'});
 
 	// api
-	map.post('api', 'application#api');
+	map.post('api', 'api#api');
 
 
 	// Generic routes. Add all your routes below this line

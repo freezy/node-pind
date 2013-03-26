@@ -11,3 +11,7 @@ action('banner', function(context) {
 action('portrait_small', function(context) {
 	hp.asset_table(context.res, params.id, 350);
 });
+
+action('logo', function(context) {
+	hp.asset_logo(context.res, params.id);
+});

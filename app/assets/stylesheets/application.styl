@@ -525,3 +525,33 @@ button, select, textarea
 @media (max-width: 480px) {
 	
 }
+
+
+// :tables
+// ============================================================================
+
+.content.tables
+	.media
+		background-color color-light
+		margin 20px
+		border-radius corner-size
+		box-shadow 0px 0px 5px 1px rgba(0,0,0,0.08) inset
+		border solid 1px rgba(0,0,0,0.15)
+
+	.pull-left
+		margin-right 0
+	.media-body
+		padding-left 15px
+	
+	.pull-left > img 
+		z-index 10
+
+	img.bg
+		position absolute
+		margin-left 200px
+		margin-top 80px
+		max-height 250px
+		opacity 0.2
+		filter url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale")
+		filter gray
+		-webkit-filter grayscale(100%)
