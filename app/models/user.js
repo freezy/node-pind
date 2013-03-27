@@ -56,12 +56,12 @@ module.exports = function (compound, User) {
 				var wrongCredentials = { title: 'Sorry!', message: 'Invalid credentials.' };
 				if (row == null) {
 					console.log('User "' + username  + '" not found.');
-					callback(null, false);
+					callback();
 				} else {
 					if (User.verifyPassword(password, row.pass)) {
-						callback(null, true);
+						callback(null, row);
 					} else {
-						callback(null, false);
+						callback();
 					}
 				}
 			}

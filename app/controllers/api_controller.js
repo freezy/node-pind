@@ -2,7 +2,7 @@ var express = require('express');
 
 var api = require('./app/modules/api')(app);
 
-//before(requireAuth, { only: 'api' });
+before(requireAuth, { only: 'api' });
 
 var auth = express.basicAuth(User.authenticate);
 

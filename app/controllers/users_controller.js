@@ -13,12 +13,13 @@ action('login', function (context) {
 		if (req.body.user) {
 
 			// authenticate user
-			User.authenticate(req.body.user, req.body.pass, function(err, success) {
+			User.authenticate(req.body.user, req.body.pass, function(err, user) {
 				if (err) {
 					redirect(pathTo.login);
 
 				// credentials check out
-				} else if (success) {
+				} else if (user) {
+
 					// set "remember me" cookie.
 					if (req.body.rememberme) {
 						context.res.cookie('authtoken', user.authtoken, { signed: true });
@@ -29,7 +30,6 @@ action('login', function (context) {
 					}
 					context.req.session.user = user;
 					redirect(context.req.session.redirectUrl ? context.req.session.redirectUrl : pathTo.root);
-					return;
 
 				// access denied
 				} else {
