@@ -481,10 +481,13 @@ textarea {
   overflow: hidden;
   font-weight: 300;
 }
+.navbar .navbar-inner .nav li {
+  line-height: 22px;
+}
 .navbar .navbar-inner .nav li a {
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 7px;
+  padding-bottom: 6px;
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 10px;

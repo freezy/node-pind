@@ -19,6 +19,5 @@ action('api', function(context) {
 });
 
 function requireAuth() {
-	var auth = express.basicAuth(User.authenticate);
 	auth(req, res, next);
 }
