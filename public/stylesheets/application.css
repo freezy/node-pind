@@ -248,6 +248,7 @@ button[type="submit"]:focus,
 }
 .icon.exit:before {
   content: "\24";
+  margin-right: -3px;
 }
 .icon.settings:before {
   content: "\25";
@@ -510,6 +511,9 @@ textarea {
   color: #3e3429;
   text-shadow: 0px 1px 0 rgba(255,255,255,0.5);
   background-color: rgba(0,0,0,0.3);
+}
+.navbar .navbar-inner .nav li a.icon {
+  margin-top: 14px;
 }
 .navbar .navbar-inner .nav li.active a {
   font-weight: 700;
