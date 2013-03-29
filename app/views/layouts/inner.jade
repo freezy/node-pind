@@ -6,13 +6,13 @@ block body
 			a(href='#{pathTo.root}').icon.pind
 			div.container-fluid
 				ul#global-nav.nav
-					li.active
-						a Control Panel
 					li
-						a Second nav
+						a(href='#{pathTo.root}')#btn-root Tables
+					li
+						a High scores
 				ul.nav.pull-right
 					li
-						a(href='#{pathTo.settings}').icon#btn-logout
+						a(href='#{pathTo.settings}').icon#btn-settings
 							i.icon.settings
 					li
 						a(href='#{pathTo.logout}').icon#btn-logout
