@@ -1,12 +1,21 @@
 extends ../layouts/inner
 
 block content
+	- contentFor('javascripts', javascriptIncludeTag('admin'))
 	div.span10.offset1
-		div.content.tables
+		div.content.admin
 			.page-header
-				h1 Settings
-				p table here.
-			.clearfix
+				h1 Administration
+					h2 Tables
+					table.table#tables
+						thead
+							tr
+								th Filename
+								th4
+						tbody
+					h2 Users
+	.clearfix
+
 
 block inlineScripts
 	script

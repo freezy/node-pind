@@ -50,6 +50,7 @@ var TableApi = function() {
 		name : 'Table',
 
 		GetAll : function(req, params, callback) {
+			console.log('Getting all tables...');
 			Table.all(function(err, rows) {
 				if (err) {
 					throw new Error(err);

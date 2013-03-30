@@ -2,7 +2,7 @@ var express = require('express');
 
 var api = require('./app/modules/api')(app);
 
-before(requireAuth, { only: 'api' });
+//before(requireAuth, { only: 'api' });
 
 var auth = express.basicAuth(User.authenticate);
 
@@ -14,7 +14,7 @@ action('api3', function(context) {
 });
 
 action('api', function(context) {
-	req.session.destroy();
+//	req.session.destroy();
 	api.handle(context.req, context.res);
 });
 
