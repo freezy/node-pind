@@ -3,10 +3,13 @@ var exec = require('child_process').exec;
 var express = require('express');
 
 var njrpc = require('./njrpc');
+
+var hp;
 var Table;
 
 module.exports = function(app) {
 	Table = app.models.Table;
+	hp = require('./hyperpin')(app);
 	return exports;
 }
 
@@ -62,12 +65,34 @@ var TableApi = function() {
 	};
 }
 
+var HyperPinApi = function() {
+	return {
+		name : 'HyperPin',
+
+		Sync : function(req, params, callback) {
+			hp.syncTables(function(err) {
+				if (err) {
+					console.log("ERROR: " + err);
+					throw new Error(err);
+				} else {
+					Table.all(function(err, rows) {
+						if (err) {
+							throw new Error(err);
+						}
+						callback({ rows : rows });
+					});
+				}
+			});
+		}
+	};
+}
+
 
 var preHandler = function(jsonReq, next) {
 	return next();
 }
 
-njrpc.register([ new ControlApi(), new TableApi() ]);
+njrpc.register([ new ControlApi(), new TableApi(), new HyperPinApi() ]);
 njrpc.interceptor = preHandler;
 
 exports.checkCredentials = express.basicAuth(function(user, pass, next) {

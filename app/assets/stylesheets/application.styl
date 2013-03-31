@@ -126,7 +126,10 @@ input[type='text'], input[type='password']
 
 // submit button
 button[type="submit"], .btn.fat
-		float right
+		
+		&.right
+			float right
+
 		padding 11px 25px
 		font-family font-serif
 		font-weight 700
@@ -149,7 +152,18 @@ button[type="submit"], .btn.fat
 			position relative
 			bottom -1px
 			background color-btn-light
-			box-shadow inset 0 1px 6px rgba(256,256,256,0.75)		
+			box-shadow inset 0 1px 6px rgba(256,256,256,0.75)
+
+		&[disabled="disabled"]
+			cursor default
+
+			&:hover
+				background color-btn-light
+				border 1px solid color-btn-border
+				box-shadow inset 0 0 2px rgba(256,256,256,0.75)
+				color #fff
+		span
+			margin-left 15px
 
 // :sections
 // ============================================================================
@@ -252,11 +266,17 @@ button[type="submit"], .btn.fat
 
 	&.settings:before
 		content "\25"
+	
+	&.refresh:before
+		content: "\26"
 
 
 	&.pind:before
 		content "\23"		
 	
+	&.spin
+		display inline-block
+		animation spin 2s infinite linear
 
 	&.inputhint
 		width 46px
@@ -388,6 +408,9 @@ button, select, textarea
 .row-fluid > div
 	margin-bottom 20px
 
+.page-header
+	border-bottom 1px solid #ddd
+
 // : scaffolding
 // ----------------------------------------------------------------------------
 
@@ -396,7 +419,7 @@ button, select, textarea
 	border 1px solid #fff
 	border-radius 5px
 	box-shadow 0 1px 3px rgba(0,0,0,0.5)
-	padding 10px
+	padding 20px
 
 
 // : navigation list
@@ -539,6 +562,16 @@ button, select, textarea
 	
 }
 
+// :admin
+// ============================================================================
+
+.tables-placeholder
+	background-color white
+	border 2px dashed black
+	border-radius corner-size
+	padding 30px
+	text-align center
+	
 
 // :tables
 // ============================================================================
