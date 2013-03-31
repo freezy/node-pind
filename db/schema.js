@@ -38,6 +38,10 @@ describe('Table', function () {
 	property('rating', Number);
 	property('modelno', String);
 	property('short', String);
+	property('media_table', Boolean);
+	property('media_backglass', Boolean);
+	property('media_wheel', Boolean);
+	property('media_video', Boolean);
 	property('added', Date);
 	property('updated', Date);
 	property('enabled', Boolean);

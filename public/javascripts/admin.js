@@ -6,7 +6,14 @@ $(document).ready(function() {
 			var rows = result.rows;
 			var $tbody = $('.admin #tables tbody');
 			for (var i = 0; i < rows.length; i++) {
-				$('<tr><td>' + rows[i].filename + '</td></tr>').appendTo($tbody);
+				var tr = '<tr><td>' + rows[i].filename + '</td><td>';
+				if (rows[i].media_video) {
+					tr += '<span class="badge badge-success">V</span>'
+				} else {
+					tr += '<span class="badge badge-important">V</span>'
+				}
+				tr += '</td></tr>';
+				$(tr).appendTo($tbody);
 			}
 		}
 	});
