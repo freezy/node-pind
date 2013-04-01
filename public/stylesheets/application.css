@@ -313,6 +313,12 @@ button[type="submit"].small span,
 .icon.refresh:before {
   content: "\26";
 }
+.icon.file:before {
+  content: "\e003";
+}
+.icon.chip:before {
+  content: "\e002";
+}
 .icon.video:before {
   content: "\f03d";
 }
@@ -327,6 +333,12 @@ button[type="submit"].small span,
 }
 .icon.pind:before {
   content: "\23";
+}
+.icon.github:before {
+  content: "\f09b";
+}
+.icon.github-alt:before {
+  content: "\f113";
 }
 .icon.spin {
   display: inline-block;
