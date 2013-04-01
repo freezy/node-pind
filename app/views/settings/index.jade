@@ -2,26 +2,63 @@ extends ../layouts/inner
 
 block content
 	- contentFor('javascripts', javascriptIncludeTag('admin'))
-	div.span10.offset1.admin.content
-		.page-header
-			h1 Administration
+	div.span10.offset1.content
+		section.admin
+			.page-header
+				h1 Administration
 
-		h2 Tables
-		table.table#tables
-			thead
-				tr
-					th Filename
-					th4
-			tbody
-		div.tables-placeholder
-			p No tables in database.
-			button.btn.fat
-				i.icon.refresh
-				span Load from HyperPin
+			h2 Tables
+			div.tables(style='display:none')
+				ul.nav.nav-pills.pull-right
+					li.active
+						a ROM
+					li
+						a IPDB
+					li
+						a Media
+				table.table#tables
+					thead
+						tr
+							th Filename
+							th
+							th ROM?
+					tbody
+			div.tables-placeholder(style='display:none')
+				p No tables in database.
+				button.btn.fat
+					i.icon.refresh
+					span Load from HyperPin
 
-		.clearfix
+			.clearfix
 
 
+		.row-fluid.footer
+			h2 Available Actions:
+			.row-fluid
+				.span3#hpsync
+					h3 Resync with HyperPin
+					p Read HyperPin's XML and update the local database.
+					button.btn.fat.small
+						i.icon.refresh
+						span Resync
+				.span3#dlrom
+					h3 Retrieve game ROMs
+					p Read ROM names from tables and try to download them.
+					button.btn.fat.small
+						i.icon.refresh
+						span Start
+				.span3#dlmedia
+					h3 Find Missing Media
+					p Check vpforums.org for available media packs.
+					button.btn.fat.small
+						i.icon.refresh
+						span Find
+				.span3#fetchhs
+					h3 Update High Scores
+					p Read Highscores from tables and update stats.
+					button.btn.fat.small
+						i.icon.refresh
+						span Update
 block inlineScripts
 	script
 		$(document).ready(function() {

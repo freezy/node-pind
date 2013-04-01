@@ -50,6 +50,9 @@ body {
   -ms-transition: all 0.3s ease !important;
   transition: all 0.3s ease !important;
 }
+.hidden {
+  display: none;
+}
 .subheading {
   font-size: 11px;
   line-height: 16px;
@@ -161,6 +164,15 @@ button[type="submit"] span,
 .btn.fat span {
   margin-left: 15px;
 }
+button[type="submit"].small,
+.btn.fat.small {
+  font-size: 15px;
+  padding: 5px 10px;
+}
+button[type="submit"].small span,
+.btn.fat.small span {
+  margin-left: 7px;
+}
 .modal-header {
   padding: 30px 30px 0px 30px;
   background-repeat: no-repeat;
@@ -194,13 +206,17 @@ button[type="submit"] span,
 .modal-body input:focus + div {
   left: -46px;
 }
-.modal-footer {
-  padding: 30px;
+.modal-footer,
+.row-fluid.footer {
   overflow: auto;
   background: rgba(81,67,54,0.15);
   border-top: 1px solid #fff;
   -webkit-box-shadow: inset 0 1px 0 rgba(0,0,0,0.15);
   box-shadow: inset 0 1px 0 rgba(0,0,0,0.15);
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.75);
+}
+.modal-footer {
+  padding: 30px;
 }
 .modal-footer .fatlink {
   padding: 12px 0px 8px;
@@ -234,6 +250,24 @@ button[type="submit"] span,
   -moz-border-radius-bottomright: 4px;
   -webkit-border-bottom-right-radius: 4px;
   border-bottom-right-radius: 4px;
+}
+.row-fluid.footer h2 {
+  margin-left: 30px;
+  padding-top: 15px;
+}
+.row-fluid.footer .span3 h3 {
+  line-height: 28px;
+}
+.row-fluid.footer .span3:first-child {
+  padding-left: 30px;
+}
+.row-fluid.footer .span3:last-child {
+  padding-right: 30px;
+}
+@media (max-width: 767px) {
+  .row-fluid.footer .span3 {
+    padding-left: 30px;
+  }
 }
 .icon {
   font-family: 'pind-symbols';
@@ -443,7 +477,10 @@ textarea {
   border-radius: 5px;
   -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
   box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-  padding: 20px;
+  padding: 0px;
+}
+.content > section {
+  padding: 30px;
 }
 .nav.nav-list {
   background: url("../images/bg_redox_01.png");
@@ -565,6 +602,43 @@ textarea {
   margin-top: 1px;
   padding: 5px 0 0 10px;
 }
+.nav.nav-pills li a {
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background-color: rgba(81,67,54,0.15);
+  margin: 0px;
+  border-right: 1px solid #fff;
+  -webkit-box-shadow: inset 1px 0px 0 rgba(0,0,0,0.15);
+  box-shadow: inset 1px 0px 0 rgba(0,0,0,0.15);
+}
+.nav.nav-pills li:first-child a {
+  -moz-border-radius-topleft: 20px;
+  -webkit-border-top-left-radius: 20px;
+  border-top-left-radius: 20px;
+  -moz-border-radius-bottomleft: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  -moz-border-radius-topright: 0px;
+  -webkit-border-top-right-radius: 0px;
+  border-top-right-radius: 0px;
+  -moz-border-radius-bottomright: 0px;
+  -webkit-border-bottom-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.nav.nav-pills li:last-child a {
+  -moz-border-radius-topleft: 0px;
+  -webkit-border-top-left-radius: 0px;
+  border-top-left-radius: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  -moz-border-radius-topright: 20px;
+  -webkit-border-top-right-radius: 20px;
+  border-top-right-radius: 20px;
+  -moz-border-radius-bottomright: 20px;
+  -webkit-border-bottom-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
 .navbar .nav li a {
   -webkit-transition: all 0.3s ease !important;
   -moz-transition: all 0.3s ease !important;
@@ -599,6 +673,10 @@ textarea {
   border-radius: 20px;
   padding: 30px;
   text-align: center;
+}
+.span3.disabled {
+  color: #9d9e9e;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
 }
 .content.tables .media {
   background-color: rgba(81,67,54,0.15);

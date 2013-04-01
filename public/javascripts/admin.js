@@ -34,20 +34,39 @@ function updateTables(rows) {
 		var $tbody = $('.admin #tables tbody');
 		$tbody.empty();
 		for (var i = 0; i < rows.length; i++) {
-			var tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].filename + '</td><td>';
+			var tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].hpid + '</td><td>';
 			if (rows[i].media_video) {
 				tr += '<span class="badge badge-success">V</span>'
 			} else {
 				tr += '<span class="badge badge-important">V</span>'
 			}
+
+			tr += '</td><td>';
+			if (rows[i].type != 'OG' && rows[i].platform == 'VP' && rows[i].rom === null) {
+				tr += '[---]';
+			} else {
+				tr += 'X';
+			}
+
 			tr += '</td></tr>';
 			$(tr).appendTo($tbody);
 		}
-		$('.admin #tables').show();
-		$('.admin .tables-placeholder').hide();
+		$('.admin .tables').slideDown(500);
+		$('.admin .tables-placeholder').fadeOut(500);
+
+		// enable boxes
+		['#dlrom', '#dlmedia', '#fetchhs'].forEach(function(id) {
+			$(id).removeClass('disabled').find('button').removeAttr('disabled');
+		});
+
 	} else {
-		$('.admin #tables').hide();
+		$('.admin .tables').hide();
 		$('.admin .tables-placeholder').show();
+
+		// disable boxes
+		['#dlrom', '#dlmedia', '#fetchhs'].forEach(function(id) {
+			$(id).addClass('disabled').find('button').attr('disabled', 'disabled');
+		});
 	}
 }
 
