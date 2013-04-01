@@ -297,6 +297,16 @@ button[type="submit"], .btn.fat
 		content: "\26"
 
 
+	&.video:before
+		content: "\f03d"
+	&.camera:before
+		content: "\f030"
+	&.logo:before
+		content: "\f024"
+	&.ipad:before
+		content: "\e001"
+
+
 	&.pind:before
 		content "\23"		
 	
@@ -575,6 +585,31 @@ button, select, textarea
 			border-radius-topright corner-size
 			border-radius-bottomright corner-size
 
+// : badge groups
+// ----------------------------------------------------------------------------
+
+ul.badge-group
+	margin 0
+
+	li
+		cursor default
+		border-radius 0
+		padding 3px 5px
+		&:first-child
+			padding-left 10px
+			border-radius-topleft 10px
+			border-radius-bottomleft 10px
+		&:last-child
+			padding-right 10px
+			border-radius-topright 10px
+			border-radius-bottomright 10px
+
+@media (max-width: 480px)
+	ul.badge-group
+		li
+			margin 2px
+			border-radius 10px
+			padding 3px 7px
 
 // :animation
 // ============================================================================

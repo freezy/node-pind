@@ -43,6 +43,15 @@ module.exports = {
 		path: 'C:/Games/Visual Pinball'
 	},
 	/**
+	 * Future Pinball-specifc settings.
+	 */
+	futurepinball : {
+		/**
+		 * Path to installation folder. No trailing slash!
+		 */
+		path: 'C:/Games/Future Pinball'
+	},
+	/**
 	 * VPinMame-specifc settings.
 	 */
 	vpinmame : {

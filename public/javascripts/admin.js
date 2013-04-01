@@ -44,17 +44,19 @@ function updateTables(rows) {
 		$tbody.empty();
 		for (var i = 0; i < rows.length; i++) {
 			// TODO implement proper pagination
-			if (i == 10) {
-				break;
-			}
-			var tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].hpid + '</td><td>';
-			if (rows[i].media_video) {
-				tr += '<span class="badge badge-success">V</span>'
-			} else {
-				tr += '<span class="badge badge-important">V</span>'
+			//if (i == 10) { break; }
+			var tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].hpid + '</td><td><ul class="badge-group">';
+
+			var ul = function(tag, icon, hint) {
+				return '<li class="badge badge-' + tag + '" title="' + hint + '"><i class="icon ' + icon + '"></i></li>';
 			}
 
-			tr += '</td><td>';
+			tr += ul(rows[i].media_wheel ? 'success' : 'important', 'logo', 'Wheel Image');
+			tr += ul(rows[i].media_backglass ? 'success' : 'important', 'ipad', 'Backglass Image');
+			tr += ul(rows[i].media_table ? 'success' : 'important', 'camera', 'Table Image');
+			tr += ul(rows[i].media_video ? 'success' : 'important', 'video', 'Table Video');
+
+			tr += '</ul></td><td>';
 			if (rows[i].type != 'OG' && rows[i].platform == 'VP' && rows[i].rom === null) {
 				tr += '[---]';
 			} else {

@@ -302,7 +302,10 @@ exports.updateRomNames = function(callback) {
 					next(err);
 				} else {
 					if (romname) {
-						row.updateAttribute('rom', romname, next);
+						row.updateAttributes({
+							rom: romname,
+							rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + romname + '.zip')
+						}, next);
 					} else {
 						next();
 					}

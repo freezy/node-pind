@@ -38,6 +38,8 @@ describe('Table', function () {
 	property('rating', Number);
 	property('modelno', String);
 	property('short', String);
+	property('table_file', Boolean);
+	property('rom_file', Boolean);
 	property('media_table', Boolean);
 	property('media_backglass', Boolean);
 	property('media_wheel', Boolean);
