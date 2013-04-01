@@ -4,12 +4,13 @@ var express = require('express');
 
 var njrpc = require('./njrpc');
 
-var hp;
+var hp, vp;
 var Table;
 
 module.exports = function(app) {
 	Table = app.models.Table;
 	hp = require('./hyperpin')(app);
+	vp = require('./visualpinball')(app);
 	return exports;
 }
 
@@ -75,11 +76,16 @@ var HyperPinApi = function() {
 					console.log("ERROR: " + err);
 					throw new Error(err);
 				} else {
-					Table.all(function(err, rows) {
+					vp.updateRomNames(function(err, tables) {
 						if (err) {
 							throw new Error(err);
 						}
-						callback({ rows : rows });
+						Table.all(function(err, rows) {
+							if (err) {
+								throw new Error(err);
+							}
+							callback({ rows : rows });
+						});
 					});
 				}
 			});

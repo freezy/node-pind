@@ -10,23 +10,32 @@ $(document).ready(function() {
 	});
 
 	// enable reload button
-	$('.admin .tables-placeholder button').click(function() {
-		var that = $(this);
-		that.attr('disabled', 'disabled');
-		that.find('.icon.refresh').addClass('spin');
-		var text = that.find('span').html();
-		that.find('span').html('Loading...');
+	var syncHyperPin = function() {
+		var labels = [];
+		[$('.admin .tables-placeholder button'), $('#hpsync button')].forEach(function(btn) {
+			labels.push(btn.find('span').html());
+			btn.attr('disabled', 'disabled');
+			btn.find('.icon.refresh').addClass('spin');
+			btn.find('span').html('Syncing...');
+		});
+
 		api('HyperPin.Sync', {}, function(err, result) {
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
-				that.removeAttr('disabled');
-				that.find('.icon.refresh').removeClass('spin');
-				that.find('span').html(text);
+				[$('.admin .tables-placeholder button'), $('#hpsync button')].forEach(function(btn) {
+					btn.removeAttr('disabled');
+					btn.find('.icon.refresh').removeClass('spin');
+					btn.find('span').html(labels.shift());
+				});
 				updateTables(result.rows);
 			}
 		});
-	});
+	};
+
+	$('.admin .tables-placeholder button').click(syncHyperPin);
+	$('#hpsync button').click(syncHyperPin);
+
 });
 
 function updateTables(rows) {
@@ -34,6 +43,10 @@ function updateTables(rows) {
 		var $tbody = $('.admin #tables tbody');
 		$tbody.empty();
 		for (var i = 0; i < rows.length; i++) {
+			// TODO implement proper pagination
+			if (i == 10) {
+				break;
+			}
 			var tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].hpid + '</td><td>';
 			if (rows[i].media_video) {
 				tr += '<span class="badge badge-success">V</span>'
@@ -45,7 +58,12 @@ function updateTables(rows) {
 			if (rows[i].type != 'OG' && rows[i].platform == 'VP' && rows[i].rom === null) {
 				tr += '[---]';
 			} else {
-				tr += 'X';
+				if (rows[i].rom) {
+					tr += rows[i].rom;
+				} else {
+					tr += 'X';
+				}
+
 			}
 
 			tr += '</td></tr>';
@@ -55,7 +73,7 @@ function updateTables(rows) {
 		$('.admin .tables-placeholder').fadeOut(500);
 
 		// enable boxes
-		['#dlrom', '#dlmedia', '#fetchhs'].forEach(function(id) {
+		['#dlrom', '#dlmedia', '#fetchhs', '#ipdbsync'].forEach(function(id) {
 			$(id).removeClass('disabled').find('button').removeAttr('disabled');
 		});
 
@@ -64,7 +82,7 @@ function updateTables(rows) {
 		$('.admin .tables-placeholder').show();
 
 		// disable boxes
-		['#dlrom', '#dlmedia', '#fetchhs'].forEach(function(id) {
+		['#dlrom', '#dlmedia', '#fetchhs', '#ipdbsync'].forEach(function(id) {
 			$(id).addClass('disabled').find('button').attr('disabled', 'disabled');
 		});
 	}

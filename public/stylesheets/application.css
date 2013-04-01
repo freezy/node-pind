@@ -255,17 +255,21 @@ button[type="submit"].small span,
   margin-left: 30px;
   padding-top: 15px;
 }
-.row-fluid.footer .span3 h3 {
+.row-fluid.footer .span3 h3,
+.row-fluid.footer .span4 h3 {
   line-height: 28px;
 }
-.row-fluid.footer .span3:first-child {
+.row-fluid.footer .span3:first-child,
+.row-fluid.footer .span4:first-child {
   padding-left: 30px;
 }
-.row-fluid.footer .span3:last-child {
+.row-fluid.footer .span3:last-child,
+.row-fluid.footer .span4:last-child {
   padding-right: 30px;
 }
 @media (max-width: 767px) {
-  .row-fluid.footer .span3 {
+  .row-fluid.footer .span3,
+  .row-fluid.footer .span4 {
     padding-left: 30px;
   }
 }
@@ -674,7 +678,8 @@ textarea {
   padding: 30px;
   text-align: center;
 }
-.span3.disabled {
+.span3.disabled,
+.span4.disabled {
   color: #9d9e9e;
   text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
 }
