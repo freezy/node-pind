@@ -671,6 +671,7 @@ ul.badge-group {
   margin: 0;
 }
 ul.badge-group li {
+  text-shadow: -1px -1px 0 rgba(0,0,0,0.25);
   cursor: default;
   -webkit-border-radius: 0;
   border-radius: 0;
