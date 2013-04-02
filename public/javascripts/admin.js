@@ -32,6 +32,7 @@ $(document).ready(function() {
 
 	// enable reload button
 	var syncHyperPin = function() {
+		fetching();
 		var labels = [];
 		[$('.admin .tables-placeholder button'), $('#hpsync button')].forEach(function(btn) {
 			labels.push(btn.find('span').html());
@@ -40,7 +41,10 @@ $(document).ready(function() {
 			btn.find('span').html('Syncing...');
 		});
 
-		api('HyperPin.Sync', {}, function(err, result) {
+		var limit = $('select.numrows').val();
+		var offset = ($('.pagination ul').data('page') - 1) * limit;
+
+		api('HyperPin.Sync', { limit: limit, offset: offset }, function(err, result) {
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
@@ -146,19 +150,27 @@ function updateTables(response) {
 		$('.admin .tables-placeholder').fadeOut(500);
 
 		// enable boxes
-		['#dlrom', '#dlmedia', '#fetchhs', '#ipdbsync'].forEach(function(id) {
-			$(id).removeClass('disabled').find('button').removeAttr('disabled');
-		});
+		fetched();
 
 	} else {
 		$('.admin .tables').hide();
 		$('.admin .tables-placeholder').show();
 
 		// disable boxes
-		['#dlrom', '#dlmedia', '#fetchhs', '#ipdbsync'].forEach(function(id) {
-			$(id).addClass('disabled').find('button').attr('disabled', 'disabled');
-		});
+		fetching();
 	}
+}
+
+function fetching() {
+	['#dlrom', '#dlmedia', '#fetchhs', '#ipdbsync'].forEach(function(id) {
+		$(id).addClass('disabled').find('button').attr('disabled', 'disabled');
+	});
+}
+
+function fetched() {
+	['#dlrom', '#dlmedia', '#fetchhs', '#ipdbsync'].forEach(function(id) {
+		$(id).removeClass('disabled').find('button').removeAttr('disabled');
+	});
 }
 
 function api(method, params, callback) {

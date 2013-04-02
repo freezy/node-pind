@@ -94,12 +94,7 @@ var HyperPinApi = function() {
 						if (err) {
 							throw new Error(err);
 						}
-						Table.all(function(err, rows) {
-							if (err) {
-								throw new Error(err);
-							}
-							callback({ rows : rows });
-						});
+						TableApi().GetAll(req, params, callback);
 					});
 				}
 			});
