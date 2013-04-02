@@ -1,8 +1,15 @@
 $(document).ready(function() {
 
+	// load data on startup
 	refreshTables();
 
-	// enable prev/next butons
+	// enable items/page dropdown
+	$('select.numrows').change(function() {
+		$('.pagination ul').data('page', 1);
+		refreshTables();
+	});
+
+	// enable prev/next buttons
 	$('.pagination li.first a').click(function(event) {
 		event.preventDefault();
 		var $ul = $(this).parents('ul');
@@ -91,7 +98,8 @@ function updateTables(response) {
 	$('.pagination li').removeClass('disabled');
 	if (page == 1) {
 		$('.pagination li.first').addClass('disabled');
-	} else if (page == pages) {
+	}
+	if (page == pages) {
 		$('.pagination li.last').addClass('disabled');
 	}
 

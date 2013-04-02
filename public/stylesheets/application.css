@@ -55,7 +55,8 @@ body {
 }
 footer {
   text-align: center;
-  margin-top: -25px;
+  position: relative;
+  top: -25px;
   margin-bottom: 10px;
 }
 footer i.icon {
@@ -547,6 +548,7 @@ select.numrows {
   cursor: pointer;
   -webkit-border-radius: 0;
   border-radius: 0;
+  line-height: 22px;
 }
 .pagination.pagination-small ul li a:hover {
   background-color: rgba(0,0,0,0.15);
