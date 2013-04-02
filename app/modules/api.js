@@ -54,13 +54,27 @@ var TableApi = function() {
 		name : 'Table',
 
 		GetAll : function(req, params, callback) {
-			console.log('Getting all tables...');
-			Table.all(function(err, rows) {
+			console.log('Getting all tables: %j', params);
+			var p = {
+				order: params.order ? params.order.replace(/[^\w\s]*/g, '') : 'name ASC',
+				offset: params.offset ? parseInt(params.offset) : 0,
+				limit: params.limit ? parseInt(params.limit) : 0
+			};
+			console.log('Params: %j', p);
+			Table.all(p, function(err, rows) {
 				if (err) {
 					throw new Error(err);
 				}
-				console.log("Got " + rows.length + " rows.");
-				callback({ rows : rows });
+				delete p.limit;
+				delete p.skip;
+				delete p.order;
+				Table.count(function(err, num) {
+					if (err) {
+						throw new Error(err);
+					}
+					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
+					callback({ rows : rows, count: num });
+				});
 			});
 		}
 	};

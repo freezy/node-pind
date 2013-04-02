@@ -1,11 +1,25 @@
 $(document).ready(function() {
 
-	// fetch tables
-	api('Table.GetAll', {}, function(err, result) {
-		if (err) {
-			alert('Problem: ' + err);
-		} else {
-			updateTables(result.rows);
+	refreshTables();
+
+	// enable prev/next butons
+	$('.pagination li.first a').click(function(event) {
+		event.preventDefault();
+		var $ul = $(this).parents('ul');
+		var page = parseInt($ul.data('page'));
+		if (page > 1) {
+			$ul.data('page', page - 1);
+			refreshTables();
+		}
+	});
+	$('.pagination li.last a').click(function(event) {
+		event.preventDefault();
+		var $ul = $(this).parents('ul');
+		var page = parseInt($ul.data('page'));
+		var numpages = parseInt($(this).parent().prev().find('a').html());
+		if (page < numpages) {
+			$ul.data('page', page + 1);
+			refreshTables();
 		}
 	});
 
@@ -28,7 +42,7 @@ $(document).ready(function() {
 					btn.find('.icon.refresh').removeClass('spin');
 					btn.find('span').html(labels.shift());
 				});
-				updateTables(result.rows);
+				updateTables(result);
 			}
 		});
 	};
@@ -38,7 +52,50 @@ $(document).ready(function() {
 
 });
 
-function updateTables(rows) {
+function refreshTables() {
+	var limit = $('select.numrows').val();
+	var offset = ($('.pagination ul').data('page') - 1) * limit;
+
+	// fetch tables
+	api('Table.GetAll', { limit: limit, offset: offset }, function(err, result) {
+		if (err) {
+			alert('Problem: ' + err);
+		} else {
+			updateTables(result);
+		}
+	});
+}
+
+function updateTables(response) {
+	var numrows = $('select.numrows').val();
+	var pages = Math.ceil(response.count / numrows);
+	var page = $('.pagination ul').data('page');
+
+	// update pagination
+	$('.pagination li:not(.first):not(.last)').remove();
+	for (var i = pages; i > 0; i--) {
+		var li = $('<li class="p' + i + (page == i ? ' current' : '') + '"><a href="#">' + i + '</a>');
+		if (page != i) {
+			li.find('a').click(function(event) {
+				event.preventDefault();
+				$(this).parents('ul').data('page', $(this).html());
+				refreshTables();
+			});
+		} else {
+			li.find('a').click(function(event) {
+				event.preventDefault();
+			});
+		}
+		$('.pagination li.first').after(li);
+	}
+	$('.pagination li').removeClass('disabled');
+	if (page == 1) {
+		$('.pagination li.first').addClass('disabled');
+	} else if (page == pages) {
+		$('.pagination li.last').addClass('disabled');
+	}
+
+	var rows = response.rows;
 	if (rows.length > 0) {
 		var $tbody = $('.admin #tables tbody');
 		$tbody.empty();

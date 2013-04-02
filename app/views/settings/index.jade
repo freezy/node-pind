@@ -9,13 +9,33 @@ block content
 
 			h2 Tables
 			div.tables(style='display:none')
-				ul.nav.nav-pills.pull-right
+
+				.pagination.pagination-small.pull-right
+					ul(data-page="1")
+						li.first.disabled
+							a
+								i.icon.arrow-left
+						li.p1.current
+							a 1
+						li.last
+							a
+								i.icon.arrow-right
+
+				select.numrows.input-mini.pull-right
+					option(selected="selected") 10
+					option 20
+					option 50
+					option 100
+
+			//ul.nav.nav-pills.pull-right
+
 					li.active
 						a ROM
 					li
 						a IPDB
 					li
 						a Media
+
 				.clearfix
 				table.table#tables
 					thead
