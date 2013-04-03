@@ -14,6 +14,7 @@ of neat stuff. Particularly it should be able to:
   * Make use of available artwork using realtime image processing and caching
 * List high scores of all tables for a given user, including a "global" score
   based on achievements.
+* Provide a voting system for new tables to install.
 * Administer HyperPin's tables. This includes:
   * Automatically download missing artwork
   * Easily search, download and add new tables
@@ -32,6 +33,10 @@ of neat stuff. Particularly it should be able to:
 * Implement reasonable security. Passwords are salted and strongly hashed, 
   auto-login uses a random token, SSL connections should be enforced when
   transferring sensitive data.
+
+Note that for a single user cab, pind is mainly useful for managing tables, 
+which is a major PITA to do manually. Most of the other features however are
+about multiple players using the same cab.
 
 
 Development Principles
