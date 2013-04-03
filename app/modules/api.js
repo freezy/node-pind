@@ -60,7 +60,21 @@ var TableApi = function() {
 				offset: params.offset ? parseInt(params.offset) : 0,
 				limit: params.limit ? parseInt(params.limit) : 0
 			};
-			console.log('Params: %j', p);
+			if (params.filters && Array.isArray(params.filters)) {
+				for (var i = 0; i < params.filters.length; i++) {
+					var filter = params.filters[i];
+					switch (filter) {
+						case 'table':
+							break;
+						case 'rom':
+							break;
+						case 'ipdb':
+							break;
+						case 'media':
+							break;
+					}
+				}
+			}
 			Table.all(p, function(err, rows) {
 				if (err) {
 					throw new Error(err);

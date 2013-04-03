@@ -19,6 +19,8 @@ of neat stuff. Particularly it should be able to:
   * Automatically download missing artwork
   * Easily search, download and add new tables
   * Automatically download missing ROMs
+  * Automatically search for DirectB2S backglasses
+  * Bulk-update VPinMAME rotation settings in tables
   * Match tables on IPDB.org for additional meta data
   * Support for Visual Pinball and Future Pinball
 * Manage users:

@@ -27,14 +27,15 @@ block content
 					option 50
 					option 100
 
-				ul.nav.nav-pills.pull-right
-
-					li.active
-						a ROM
-					li
-						a IPDB
-					li
-						a Media
+				ul.nav.nav-pills.pull-right.filter
+					li(data-filter="table")
+						a(href="#") Table
+					li(data-filter="rom")
+						a(href="#") ROM
+					li(data-filter="ipdb")
+						a(href="#") IPDB
+					li(data-filter="media")
+						a(href="#") Media
 
 				.clearfix
 				table.table#tables

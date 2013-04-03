@@ -490,48 +490,6 @@ select.numrows
 	background-color #e3e3e3
 	text-shadow 0px 1px 0 rgba(255,255,255,0.8)
 
-.pagination.pagination-small ul 
-	li
-		a
-			color black
-			background-color rgba(0,0,0,0.07)
-			text-shadow 0px 1px 0 rgba(255,255,255,0.8)
-			border solid 1px rgba(0,0,0,0.15)
-			border-left none
-			cursor pointer
-			border-radius 0
-			line-height 22px
-			&:hover
-				background-color rgba(0,0,0,0.15)
-
-		&.current a
-			background-color color-dark
-			color white
-			text-shadow 1px -1px 0 black
-			font-weight 700
-			cursor default				
-
-		&.disabled a
-			color color-medium
-			cursor default
-			&:hover
-				background-color rgba(0,0,0,0.07)
-		
-		&.last a i, &.first a i
-			font-size 25px
-			line-height 10px
-			position relative
-			top 5px
-			margin-left 0
-
-		&:first-child a
-			border-left solid 1px rgba(0,0,0,0.15)
-			border-radius-topleft corner-size
-			border-radius-bottomleft corner-size
-		&:last-child a
-			border-radius-topright corner-size
-			border-radius-bottomright corner-size
-		
 
 
 // : scaffolding
@@ -653,24 +611,58 @@ select.numrows
 
 // : pills
 // ----------------------------------------------------------------------------
-.nav.nav-pills
-	li a
-			border-radius 0px
-			background-color color-light
-			margin 0px
-			border-right 1px solid #fff
-			box-shadow inset 1px 0px 0 rgba(0,0,0,0.15)
 
-	li:first-child a 
+ul.nav.nav-pills, .pagination.pagination-small ul
+	li
+		a
+			color black
+			background-color rgba(0,0,0,0.07)
+			text-shadow 0px 1px 0 rgba(255,255,255,0.8)
+			border solid 1px rgba(0,0,0,0.15)
+			border-left none
+			cursor pointer
+			border-radius 0
+			line-height 22px
+			&:hover
+				background-color rgba(0,0,0,0.15)
+
+		&.current a, &.active a
+			background-color color-dark
+			color white
+			text-shadow 1px -1px 0 black
+			font-weight 700
+
+		&.current a
+			cursor default
+
+		&.disabled a
+			color color-medium
+			cursor default
+			&:hover
+				background-color rgba(0,0,0,0.07)
+		
+		&.last a i, &.first a i
+			font-size 25px
+			line-height 10px
+			position relative
+			top 5px
+			margin-left 0
+
+		&:first-child a
+			border-left solid 1px rgba(0,0,0,0.15)
 			border-radius-topleft corner-size
 			border-radius-bottomleft corner-size
-			border-radius-topright 0px
-			border-radius-bottomright 0px
-	li:last-child a 
-			border-radius-topleft 0px
-			border-radius-bottomleft 0px
+		&:last-child a
 			border-radius-topright corner-size
 			border-radius-bottomright corner-size
+
+ul.nav.nav-pills
+	margin 20px 0
+	li a
+		padding 2px 10px
+		font-size 11.9px
+		line-height 22px
+		margin 0
 
 // : badge groups
 // ----------------------------------------------------------------------------

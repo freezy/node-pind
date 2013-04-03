@@ -61,14 +61,25 @@ $(document).ready(function() {
 	$('.admin .tables-placeholder button').click(syncHyperPin);
 	$('#hpsync button').click(syncHyperPin);
 
+	// enable filters
+	$('ul.filter li a').click(function(event) {
+		event.preventDefault();
+		$(this).parents('li').toggleClass('active');
+		refreshTables();
+	});
 });
 
 function refreshTables() {
 	var limit = $('select.numrows').val();
 	var offset = ($('.pagination ul').data('page') - 1) * limit;
+	var filters = [];
+
+	$('ul.filter li.active').each(function() {
+		filters.push($(this).data('filter'));
+	});
 
 	// fetch tables
-	api('Table.GetAll', { limit: limit, offset: offset }, function(err, result) {
+	api('Table.GetAll', { limit: limit, offset: offset, filters: filters }, function(err, result) {
 		if (err) {
 			alert('Problem: ' + err);
 		} else {
