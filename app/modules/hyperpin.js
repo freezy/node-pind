@@ -5,6 +5,7 @@ var path = require('path');
 var util = require('util');
 var async = require('async');
 var xml2js = require('xml2js');
+
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 

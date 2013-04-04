@@ -3,12 +3,11 @@ var log = require('winston');
 var ocd = require('ole-doc').OleCompoundDoc;
 var async = require('async');
 var util = require('util');
+
+var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
-var Table;
-
 module.exports = function(app) {
-	Table = app.models.Table;
 	return exports;
 }
 
@@ -295,7 +294,7 @@ exports.scanDirectory = function(iterator, callback) {
 };
 
 exports.updateRomNames = function(callback) {
-	Table.all({ where: { platform: 'VP' }}, function(err, rows) {
+	schema.Table.findAll({ where: { platform: 'VP' }}).success(function(rows) {
 		async.eachSeries(rows, function(row, next) {
 			exports.getGameRomName(row.filename + '.vpt', function(err, romname) {
 				if (err) {
@@ -312,5 +311,5 @@ exports.updateRomNames = function(callback) {
 				}
 			});
 		}, callback);
-	});
+	}).error(callback);
 }
