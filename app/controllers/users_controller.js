@@ -1,19 +1,20 @@
 var util = require('util');
 var settings = require('./config/settings-mine');
+var schema = require('./app/model/schema');
 
 load('application');
 
-action('login', function (context) {
+action('login', function() {
 
 	this.title = 'Login';
 
 	// check if data was posted.
-	if (context.req.method == 'POST') {
+	if (req.method == 'POST') {
 		console.log('Checking login credentials.');
 		if (req.body.user) {
 
 			// authenticate user
-			User.authenticate(req.body.user, req.body.pass, function(err, user) {
+			schema.User.authenticate(req.body.user, req.body.pass, function(err, user) {
 				if (err) {
 					redirect(pathTo.login);
 
@@ -22,14 +23,14 @@ action('login', function (context) {
 
 					// set "remember me" cookie.
 					if (req.body.rememberme) {
-						context.res.cookie('authtoken', user.authtoken, { signed: true });
-						context.res.cookie('user', user.user, { signed: true });
+						res.cookie('authtoken', user.authtoken, { signed: true });
+						res.cookie('user', user.user, { signed: true });
 					} else {
-						context.res.clearCookie('authtoken');
-						context.res.clearCookie('user');
+						res.clearCookie('authtoken');
+						res.clearCookie('user');
 					}
-					context.req.session.user = user;
-					redirect(context.req.session.redirectUrl ? context.req.session.redirectUrl : pathTo.root);
+					req.session.user = user;
+					redirect(req.session.redirectUrl ? req.session.redirectUrl : pathTo.root);
 
 				// access denied
 				} else {
@@ -47,31 +48,28 @@ action('login', function (context) {
 	} else {
 
 		// check for logout
-		if (context.req.session.logout) {
+		if (req.session.logout) {
 			req.session.destroy(function(err) {
 				if (err) {
 					console.log('Error while destroying session: ' + err);
 				}
 				this.alert = { title: 'Bye-bye!', message: 'You have been successfully logged out.' };
-				context.res.clearCookie('authtoken');
-				context.res.clearCookie('user');
+				res.clearCookie('authtoken');
+				res.clearCookie('user');
 				render();
 			});
 			return;
 		}
 
 		// check for auto-login
-		if (context.req.signedCookies.user && context.req.signedCookies.authtoken) {
-			console.log('Autologin: Checking user "' + context.req.signedCookies.user + '".');
-			User.findOne({ where: { user: context.req.signedCookies.user }}, function(err, user) {
-				if (!err && user && user.authtoken == context.req.signedCookies.authtoken) {
-					console.log('Autologin: User "' + user.user + '" had a valid auth token.');
-					context.req.session.user = user;
-					redirect(context.req.session.redirectUrl ? context.req.session.redirectUrl : pathTo.root);
+		if (req.signedCookies.user && req.signedCookies.authtoken) {
+			schema.User.autologin(req.signedCookies.user, req.signedCookies.authtoken, function(err, user) {
+				if (user) {
+					req.session.user = user;
+					redirect(req.session.redirectUrl ? req.session.redirectUrl : pathTo.root);
 				} else {
-					console.log('Autologin: User "' + context.req.signedCookies.user + '" had an invalid auth token, resetting.');
-					context.res.clearCookie('authtoken');
-					context.res.clearCookie('user');
+					res.clearCookie('authtoken');
+					res.clearCookie('user');
 					this.alert = null;
 					render();
 				}
@@ -94,26 +92,41 @@ action('signup', function () {
 	if (req.method == 'POST') {
 		if (req.body.user && req.body.pass) {
 			var now = new Date().getTime();
-			User.create({
-				user: req.body.user,
-				pass: req.body.pass
-			}, function(err, user) {
-				if (err) {
-					if (user) {
-						this.validationErrors = user.errors;
+			var that = this;
+			schema.User.find({ where: { user: req.body.user }}).success(function(user) {
+				if (!user) {
+					user = schema.User.build({
+						user: req.body.user,
+						pass: req.body.pass
+					});
+					that.validationErrors = user.validate();
+
+					if (!that.validationErrors) {
+						schema.User.c(user).success(function(user) {
+							console.log('all good, user created.');
+							that.validationErrors = null;
+							that.alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
+							render('login');
+
+						}).error(function(err) {
+							that.alert = { title: 'Ooops. Looks like a user creation problem.', message: err };
+							console.log('alert: %s', err);
+							console.log('validations: %j', user.errors);
+							render({user : req.body});
+						});
 					} else {
-						this.alert = { title: 'Ooops. Looks like a user creation problem.', message: err };
+						render({user : req.body});
 					}
-					console.log('alert: %s', err);
-					console.log('validations: %j', user.errors);
-					render({user : req.body});
 				} else {
-					console.log('all good, user created.');
-					this.validationErrors = null;
-					this.alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
-					render('login');
+					that.validationErrors = { user: 'This username is already taken.' };
+					render({user : req.body});
 				}
+			}).error(function(err) {
+				console.log('Error checking unique constraint for user: ' + err);
+				that.alert = { title: 'Whoopsie!', message: 'An internal server error occurred. Try again or contact us.' };
+				render();
 			});
+
 		} else {
 			this.alert = { title: 'Mind reading problem.', message: 'You must provide both username and password.' };
 			this.validationErrors = null;
@@ -132,7 +145,7 @@ action('signup', function () {
  * Logs the user out. It actually only sets the "logout" session variable
  * and redirects to the login page, which does the actual logout.
  */
-action('logout', function(context) {
-	context.req.session.logout = true;
+action('logout', function() {
+	req.session.logout = true;
 	redirect(pathTo.login);
 });

@@ -2,6 +2,15 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var express = require('express');
 
+
+var Sequelize = require('sequelize-sqlite').sequelize
+var sqlite = require('sequelize-sqlite').sqlite
+
+var sequelize = new Sequelize('database', 'username', 'password', {
+	dialect: 'sqlite',
+	storage: 'dev.sqlite'
+})
+
 var njrpc = require('./njrpc');
 
 var hp, vp;
@@ -67,10 +76,12 @@ var TableApi = function() {
 						case 'table':
 							break;
 						case 'rom':
+							p.where = { rom_file: false };
 							break;
 						case 'ipdb':
 							break;
 						case 'media':
+							p.where = { rom_file: false };
 							break;
 					}
 				}
