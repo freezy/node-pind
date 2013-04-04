@@ -56,6 +56,10 @@ module.exports = function(sequelize, DataTypes) {
 			authtoken: DataTypes.STRING,
 			name: DataTypes.STRING,
 			email: DataTypes.STRING,
+			admin: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false
+			},
 			credits: {
 				type: DataTypes.INTEGER,
 				defaultValue: 0

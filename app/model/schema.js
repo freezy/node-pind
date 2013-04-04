@@ -32,6 +32,7 @@ var sequelize = new Sequelize(null, null, null, {
 });
 
 Users = sequelize.import(__dirname + "/user");
+Tables = sequelize.import(__dirname + "/table");
 
 sequelize.sync().on('success', function() {
 	console.log('Connected to SQLite.');
@@ -50,5 +51,6 @@ create = function(next){
 module.exports = {
 	sequelize: sequelize,
 	create: create,
+	Table:  Tables,
 	User:  Users
 };

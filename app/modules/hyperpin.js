@@ -5,9 +5,8 @@ var path = require('path');
 var util = require('util');
 var async = require('async');
 var xml2js = require('xml2js');
+var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
-
-var Table;
 
 var platforms = {
 	VP: 'Visual Pinball',
@@ -15,7 +14,6 @@ var platforms = {
 }
 
 module.exports = function(app) {
-	Table = app.models.Table;
 	return exports;
 }
 
@@ -25,17 +23,20 @@ module.exports = function(app) {
  * @param p Path of the table, e.g. "/Media/Visual Pinball/Table Images/Some Table.png"
  */
 exports.asset_banner = function(res, key) {
-	Table.findOne({ where: { key : key}}, function(err, row) {
+	schema.Table.find({ where: { key : key }}).success(function(row) {
 		asset(res, getPath('Table Images', row), function(gm) {
 			return gm
 				.rotate('black', -45)
 				.crop(800, 150, 400, 1250);
 		});
+	}).error(function(err) {
+		console.log('Error retrieving table for banner ' + key + ': ' + err);
+		res.writeHead(500);
 	});
 }
 
 exports.asset_table = function(res, key, size) {
-	Table.findOne({ where: { key : key}}, function(err, row) {
+	schema.Table.find({ where: { key : key }}).success(function(row) {
 		asset(res, getPath('Table Images', row), function(gm) {
 			gm.rotate('black', -90);
 			if (size != null) {
@@ -43,15 +44,20 @@ exports.asset_table = function(res, key, size) {
 			}
 			return gm;
 		});
+	}).error(function(err) {
+		console.log('Error retrieving table for table image ' + key + ': ' + err);
+		res.writeHead(500);
 	});
-
 }
 
 exports.asset_logo = function(res, key) {
-	Table.findOne({ where: { key : key}}, function(err, row) {
+	schema.Table.find({ where: { key : key }}).success(function(row) {
 		file(res, getPath('Wheel Images', row));
-	});
 
+	}).error(function(err) {
+		console.log('Error retrieving table for logo ' + key + ': ' + err);
+		res.writeHead(500);
+	});
 }
 
 /**
@@ -141,14 +147,16 @@ exports.syncTables = function(callback) {
 					tables.push(table);
 				}
 				log.info('[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
-				Table.updateAll(tables, now, callback);
+				schema.Table.updateAll(tables, now, callback);
 			});
 		});
 	};
 
 	// launch FP and VP parsing in parallel
 	async.eachSeries([ 'FP', 'VP' ], process, function(err) {
-		Table.all(callback);
+		schema.Table.findAll().success(function(rows) {
+			callback(null, rows);
+		}).error(callback);
 	});
 };
 

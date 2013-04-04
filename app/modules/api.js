@@ -2,22 +2,12 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var express = require('express');
 
-
-var Sequelize = require('sequelize-sqlite').sequelize
-var sqlite = require('sequelize-sqlite').sqlite
-
-var sequelize = new Sequelize('database', 'username', 'password', {
-	dialect: 'sqlite',
-	storage: 'dev.sqlite'
-})
-
+var schema = require('../model/schema');
 var njrpc = require('./njrpc');
 
 var hp, vp;
-var Table;
 
 module.exports = function(app) {
-	Table = app.models.Table;
 	hp = require('./hyperpin')(app);
 	vp = require('./visualpinball')(app);
 	return exports;
@@ -86,20 +76,21 @@ var TableApi = function() {
 					}
 				}
 			}
-			Table.all(p, function(err, rows) {
-				if (err) {
-					throw new Error(err);
-				}
+			schema.Table.findAll(p).success(function(rows) {
+
 				delete p.limit;
 				delete p.skip;
 				delete p.order;
-				Table.count(function(err, num) {
-					if (err) {
-						throw new Error(err);
-					}
+				schema.Table.count(p).success(function(num) {
+
 					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
 					callback({ rows : rows, count: num });
+
+				}).error(function(err) {
+						throw new Error(err);
 				});
+			}).error(function(err) {
+				throw Error(err);
 			});
 		}
 	};

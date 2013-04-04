@@ -93,36 +93,44 @@ action('signup', function () {
 		if (req.body.user && req.body.pass) {
 			var now = new Date().getTime();
 			var that = this;
-			schema.User.find({ where: { user: req.body.user }}).success(function(user) {
-				if (!user) {
-					user = schema.User.build({
-						user: req.body.user,
-						pass: req.body.pass
-					});
-					that.validationErrors = user.validate();
-
-					if (!that.validationErrors) {
-						schema.User.c(user).success(function(user) {
-							console.log('all good, user created.');
-							that.validationErrors = null;
-							that.alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
-							render('login');
-
-						}).error(function(err) {
-							that.alert = { title: 'Ooops. Looks like a user creation problem.', message: err };
-							console.log('alert: %s', err);
-							console.log('validations: %j', user.errors);
-							render({user : req.body});
+			schema.User.count().success(function(num) {
+				schema.User.find({ where: { user: req.body.user }}).success(function(user) {
+					if (!user) {
+						user = schema.User.build({
+							user: req.body.user,
+							pass: req.body.pass,
+							admin: num == 0
 						});
+						that.validationErrors = user.validate();
+
+						if (!that.validationErrors) {
+							schema.User.c(user).success(function(user) {
+								console.log('all good, user created.');
+								that.validationErrors = null;
+								that.alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
+								render('login');
+
+							}).error(function(err) {
+								that.alert = { title: 'Ooops. Looks like a user creation problem.', message: err };
+								console.log('alert: %s', err);
+								console.log('validations: %j', user.errors);
+								render({user : req.body});
+							});
+						} else {
+							render({user : req.body});
+						}
 					} else {
+						that.validationErrors = { user: 'This username is already taken.' };
 						render({user : req.body});
 					}
-				} else {
-					that.validationErrors = { user: 'This username is already taken.' };
-					render({user : req.body});
-				}
+				}).error(function(err) {
+					console.log('Error checking unique constraint for user: ' + err);
+					that.alert = { title: 'Whoopsie!', message: 'An internal server error occurred. Try again or contact us.' };
+					render();
+				});
+
 			}).error(function(err) {
-				console.log('Error checking unique constraint for user: ' + err);
+				console.log('Error counting users: ' + err);
 				that.alert = { title: 'Whoopsie!', message: 'An internal server error occurred. Try again or contact us.' };
 				render();
 			});
