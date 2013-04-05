@@ -3,14 +3,23 @@ var async = require('async');
 var natural = require('natural');
 var log = require('winston');
 
+var schema = require('../model/schema');
+
 var hp;
-var Table;
 
 module.exports = function(app) {
 	hp = require('./hyperpin')(app);
-	Table = app.models.Table;
 	return exports;
-}
+};
+
+exports.syncIPDB = function(callback) {
+	schema.Table.findAll( { where: [ 'type != ?', 'OG' ]}).success(function(rows) {
+
+		// fetch data from ipdb.org
+		exports.enrichAll(rows, callback);
+
+	}).error(callback);
+};
 
 /**
  * Performs a complete update from HyperPin and ipdb.org:
@@ -21,44 +30,57 @@ module.exports = function(app) {
  * @param callback Function to execute after completion, invoked with one argumens:
  * 	<ol><li>{String} Error message on error</li></ol>
  */
-exports.syncTables = function(callback) {
+exports.syncAll = function(callback) {
 
-	// 1. Sync with local database (aka HyperPin)
+	// sync with local database (aka HyperPin)
 	hp.syncTables(function(err, tables) {
 		if (err) {
 			log.error('[ipdb] ' + err);
 			return;
 		}
 
-		// 2. Fetch data from ipdb.org
-		async.eachLimit(tables, 3, exports.enrich, function(err) {
+		// fetch data from ipdb.org
+		exports.enrichAll(tables, callback);
+	});
+};
 
+exports.enrichAll = function(tables, callback) {
+	async.eachLimit(tables, 3, exports.enrich, function(err) {
+
+		if (err) {
+			log.error('[ipdb] ' + err);
+			callback(err);
+			return;
+		}
+
+		// update db
+		async.eachSeries(tables,
+			function(table, cb) {
+				table.save().success(function(r) {
+					cb(null, r);
+				}).error(cb);
+			}, 
+			function(err) {
 			if (err) {
 				log.error('[ipdb] ' + err);
-				return;
+				callback(err);
+			} else {
+				log.info('[ipdb] ' + tables.length + ' games updated.');
+
+				// update ranking from top 300 list
+				exports.syncTop300(function(err, games) {
+					if (err) {
+						log.error('[ipdb] ' + err);
+						callback(err);
+					} else {
+						log.info('[ipdb] Top 300 synced (' + games.length + ' games).');
+						callback();
+					}
+				});
 			}
-
-			// 3. Update db
-			async.eachSeries(tables, Table.updateOne, function(err) {
-				if (err) {
-					log.error('[ipdb] ' + err);
-				} else {
-					log.info('[ipdb] ' + tables.length + ' games updated.');
-
-					// 4. Update ranking from top 300 list
-					exports.syncTop300(function(err, games) {
-						if (err) {
-							log.error('[ipdb] ' + err);
-						} else {
-							log.info('[ipdb] Top 300 synced (' + games.length + ' games).');
-							callback();
-						}
-					});
-				}
-			});
 		});
 	});
-}
+};
 
 /**
  * Tries to find the pinball table on ipdb.org and adds additional metadata to
@@ -153,7 +175,7 @@ exports.enrich = function(game, callback) {
 			}
 		}
 	});
-}
+};
 
 /**
  * Fetches the Top 300 page from ipdb.org and updates the database with the
@@ -191,29 +213,25 @@ exports.syncTop300 = function(callback) {
 		var updateTables = function(table, next) {
 
 			// try to find a match in db
-			Table.all({ where: { name: table.name, year: table.year, type: table.type } }, function(err, rows) {
-				if (err) {
-					log.error('[ipdb] ' + err);
-					next(err);
-					return;
-				} else if (rows.length > 0) {
+			schema.Table.findAll({ where: { name: table.name, year: table.year, type: table.type }}).success(function(rows) {
+					
+				if (rows.length > 0) {
 
 					// could be multiple hits (vp and fp version, for instance)
 					async.eachSeries(rows, function(row, cb) {
 						log.debug('[ipdb] Matched ' + row.name + ' (' + row.platform + ')');
-						row.updateAttribute('ipdb_rank', table.ipdb_rank, function(err, table) {
-							if (err) {
-								cb(err);
-							} else {
-								updatedTables.push(table);
-								cb();
-							}
-						});
+						row.updateAttributes({ ipdb_rank: table.ipdb_rank }).success(function(table) {
+							updatedTables.push(table);
+							cb();
+						}).error(cb);
 					}, next);
 				} else {
 					log.debug('[ipdb] No match for  ' + table.name + ' (' + table.year + ')');
 					next();
 				}
+			}).error(function(err){
+				log.error('[ipdb] ' + err);
+				next(err);
 			});
 		};
 
@@ -224,12 +242,12 @@ exports.syncTop300 = function(callback) {
 			log.error('[ipdb] Done, returning found games.');
 		});
 	});
-}
+};
 
 var firstMatch = function(str, regex) {
 	var m = str.match(regex);
 	return m ? m[1] : null;
-}
+};
 
 var findBestMatch = function(matches, game) {
 
@@ -271,4 +289,4 @@ var findBestMatch = function(matches, game) {
 	console.log('matches are now sorted: %j', bestMatches);
 
 	return bestMatches[0];
-}
+};

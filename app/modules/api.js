@@ -5,11 +5,12 @@ var express = require('express');
 var schema = require('../model/schema');
 var njrpc = require('./njrpc');
 
-var hp, vp;
+var hp, vp, ipdb;
 
 module.exports = function(app) {
 	hp = require('./hyperpin')(app);
 	vp = require('./visualpinball')(app);
+	ipdb = require('./ipdb')(app);
 	return exports;
 }
 
@@ -113,6 +114,15 @@ var HyperPinApi = function() {
 						TableApi().GetAll(req, params, callback);
 					});
 				}
+			});
+		},
+
+		FetchIPDB : function(req, params, callback) {
+			ipdb.syncIPDB(function(err, tables) {
+				if (err) {
+					throw new Error(err);
+				}
+				TableApi().GetAll(req, params, callback);
 			});
 		}
 	};

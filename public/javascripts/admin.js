@@ -58,8 +58,23 @@ $(document).ready(function() {
 		});
 	};
 
+	var syncIPDB = function() {
+		var limit = $('select.numrows').val();
+		var offset = ($('.pagination ul').data('page') - 1) * limit;
+
+		api('HyperPin.FetchIPDB', { limit: limit, offset: offset }, function(err, result) {
+			if (err) {
+				alert('Problem Syncing: ' + err);
+			} else {
+				updateTables(result);
+			}
+		});		
+	};
+
 	$('.admin .tables-placeholder button').click(syncHyperPin);
 	$('#hpsync button').click(syncHyperPin);
+	$('#ipdbsync button').click(syncIPDB);
+
 
 	// enable filters
 	$('ul.filter li a').click(function(event) {
