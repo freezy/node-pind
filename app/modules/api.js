@@ -2,6 +2,7 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var express = require('express');
 
+var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 var njrpc = require('./njrpc');
 
@@ -61,21 +62,36 @@ var TableApi = function() {
 				limit: params.limit ? parseInt(params.limit) : 0
 			};
 			if (params.filters && Array.isArray(params.filters)) {
+				console.log('Filters: %j', params.filters);
 				for (var i = 0; i < params.filters.length; i++) {
+					if (i == 0) {
+						p.where = '';
+					}
 					var filter = params.filters[i];
 					switch (filter) {
 						case 'table':
+							p.where += '(`table_file` = false) OR ';
 							break;
 						case 'rom':
-							p.where = { rom_file: false };
+							p.where += '(`rom_file` = false AND rom IS NOT NULL) OR ';
 							break;
 						case 'ipdb':
+							p.where += '(`ipdb_no` IS NULL AND `type` <> "OG") OR ';
 							break;
 						case 'media':
-							p.where = { rom_file: false };
+							if (settings.pind.ignoreTableVids) {
+								p.where += '(`media_table` = false OR `media_backglass` = false OR `media_wheel` = false) OR ';
+							} else {
+								p.where += '(`media_table` = false OR `media_backglass` = false OR `media_wheel` = false OR `media_video` = false) OR ';
+							}
 							break;
 					}
+
 				}
+				if (p.where) {
+					p.where = p.where.substr(0, p.where.length - 4);
+				}
+				console.log('query = %s', p.where);
 			}
 			schema.Table.findAll(p).success(function(rows) {
 
@@ -88,8 +104,9 @@ var TableApi = function() {
 					callback({ rows : rows, count: num });
 
 				}).error(function(err) {
-						throw new Error(err);
+					throw new Error(err);
 				});
+
 			}).error(function(err) {
 				throw Error(err);
 			});

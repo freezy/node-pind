@@ -27,7 +27,7 @@ block content
 					option 50
 					option 100
 
-				ul.nav.nav-pills.pull-right.filter
+				ul.nav.nav-pills.pull-left.filter
 					li(data-filter="table")
 						a(href="#") Table
 					li(data-filter="rom")
@@ -38,7 +38,7 @@ block content
 						a(href="#") Media
 
 				.clearfix
-				table.table#tables
+				table.table#tables(data-ignoretablevids="#{ignoreTableVids}")
 					thead
 						tr
 							th Name

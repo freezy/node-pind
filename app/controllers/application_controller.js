@@ -15,7 +15,6 @@ function requireUser() {
 	if (req.session.user) {
 		next();
 	} else {
-		console.log('req = %s', util.inspect(req));
 		log(c('[auth] No valid session, redirecting to login page.').grey);
 		req.session.redirectUrl = req.originalUrl;
 		redirect(path_to.login);

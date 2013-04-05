@@ -80,6 +80,7 @@ $(document).ready(function() {
 	$('ul.filter li a').click(function(event) {
 		event.preventDefault();
 		$(this).parents('li').toggleClass('active');
+		$('.pagination ul').data('page', 1);
 		refreshTables();
 	});
 });
@@ -104,9 +105,12 @@ function refreshTables() {
 }
 
 function updateTables(response) {
+
+	// retrieve variables
 	var numrows = $('select.numrows').val();
 	var pages = Math.ceil(response.count / numrows);
 	var page = $('.pagination ul').data('page');
+	var ignoreTableVids = $('#tables').data('ignoretablevids');
 
 	// update pagination
 	$('.pagination li:not(.first):not(.last)').remove();
@@ -155,7 +159,9 @@ function updateTables(response) {
 			tr += ul(rows[i].media_wheel ? 'success' : 'important', 'logo', 'Wheel Image');
 			tr += ul(rows[i].media_backglass ? 'success' : 'important', 'ipad', 'Backglass Image');
 			tr += ul(rows[i].media_table ? 'success' : 'important', 'camera', 'Table Image');
-			tr += ul(rows[i].media_video ? 'success' : 'important', 'video', 'Table Video');
+			if (!ignoreTableVids) {
+				tr += ul(rows[i].media_video ? 'success' : 'important', 'video', 'Table Video');
+			}
 
 			tr += '</ul></td><td>';
 			if (rows[i].type != 'OG' && rows[i].platform == 'VP' && rows[i].rom === null) {

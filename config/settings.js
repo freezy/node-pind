@@ -25,6 +25,11 @@ module.exports = {
 		tmp: 'C:/temp',
 
 		/**
+		 * Set this to true if you don't use table videos.
+		 */
+		ignoreTableVids: false,
+
+		/**
 		 * Database configuration.
 		 */
 		database: {
