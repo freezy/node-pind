@@ -1,7 +1,11 @@
 module.exports = {
     development: {
-        driver: 'sqlite3',
-        database: 'dev.sqlite'
+        driver:   "mysql",
+        host:     "localhost",
+        post:     3306,
+        database: "pind", 
+        username: "pind",
+        password: "p1nd"
     },
     test: {
         driver: 'sqlite3',
