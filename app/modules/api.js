@@ -70,19 +70,19 @@ var TableApi = function() {
 					var filter = params.filters[i];
 					switch (filter) {
 						case 'table':
-							p.where += '(`table_file` = false) OR ';
+							p.where += '(NOT `table_file`) OR ';
 							break;
 						case 'rom':
-							p.where += '(`rom_file` = false AND rom IS NOT NULL) OR ';
+							p.where += '(NOT `rom_file` AND rom IS NOT NULL) OR ';
 							break;
 						case 'ipdb':
 							p.where += '(`ipdb_no` IS NULL AND `type` <> "OG") OR ';
 							break;
 						case 'media':
 							if (settings.pind.ignoreTableVids) {
-								p.where += '(`media_table` = false OR `media_backglass` = false OR `media_wheel` = false) OR ';
+								p.where += '(NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel`) OR ';
 							} else {
-								p.where += '(`media_table` = false OR `media_backglass` = false OR `media_wheel` = false OR `media_video` = false) OR ';
+								p.where += '(NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel` OR NOT `media_video`) OR ';
 							}
 							break;
 					}

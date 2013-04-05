@@ -1,8 +1,11 @@
-var Sequelize = require('sequelize');
+var Sequelize = require("sequelize");
+var settings = require('../../config/settings-mine');
 
-var sequelize = new Sequelize('pind', 'pind', 'p1nd',  {
-	dialect: 'mysql',
-	storage: 'pind.db',
+
+var config = {
+
+	// disable logging
+	logging: false,
 
 	define: {
 		classMethods: {
@@ -29,7 +32,33 @@ var sequelize = new Sequelize('pind', 'pind', 'p1nd',  {
 			}
 		}
 	}
-});
+};
+
+// update config with individual settings
+if (settings.pind.database.engine == 'mysql') {
+	config.dialect = 'mysql';
+	config.host = settings.pind.database.host;
+	config.port = settings.pind.database.port;
+	config.define = { engine: 'MYISAM' };
+	// use pooling in order to reduce db connection overload and to increase speed
+	// currently only for mysql
+	config.pool = { maxConnections: 5, maxIdleTime: 30 };
+	config.freezeTableName = false;
+
+} else if (settings.pind.database.engine == 'sqlite') {
+	config.dialect = 'sqlite';
+	config.storage = settings.pind.database.database + '.db';
+} else {
+	throw new Error('Unknown database engine (' + settings.pind.database.engine + ').');
+}
+
+// instantiate db engine
+var sequelize = new Sequelize(
+	settings.pind.database.database,
+	settings.pind.database.user,
+	settings.pind.database.pass,
+	config
+);
 
 Users = sequelize.import(__dirname + "/user");
 Tables = sequelize.import(__dirname + "/table");

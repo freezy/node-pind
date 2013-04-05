@@ -162,7 +162,7 @@ exports.syncTables = function(callback) {
 };
 
 var asset = function(res, path, process) {
-	if (fs.existsSync(path)) {
+	if (path && fs.existsSync(path)) {
 		var now = new Date().getTime();
 		process(gm(path)).stream(function (err, stream, stderr) {
 			if (err) next(err);
@@ -188,5 +188,8 @@ var file = function(res, path) {
 }
 
 function getPath(what, table) {
+	if (table == null) {
+		return null;
+	}
 	return settings.hyperpin.path + '/Media/' + (table.platform == 'FP' ? 'Future' : 'Visual') + ' Pinball/' + what + '/' + table.hpid + '.png';
 }
