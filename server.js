@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var settings = require('./config/settings');
+var settings = require('./config/settings-mine');
 
 /**
  * Server module exports method which returns new instance of application server
@@ -27,4 +27,3 @@ if (!module.parent) {
         );
     });
 }
-

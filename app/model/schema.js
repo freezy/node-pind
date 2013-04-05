@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 
-var sequelize = new Sequelize(null, null, null, {
-	dialect: 'sqlite',
+var sequelize = new Sequelize('pind', 'pind', 'p1nd',  {
+	dialect: 'mysql',
 	storage: 'pind.db',
 
 	define: {

@@ -153,8 +153,6 @@ exports.enrich = function(game, callback) {
 			}
 		}
 	});
-
-
 }
 
 /**
