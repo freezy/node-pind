@@ -11,10 +11,10 @@ var config = {
 		classMethods: {
 			c: function(data) {
 				var obj = this.build(data);
-				if (typeof(obj.beforeCreate) == "function") {
+				if (typeof(obj.beforeCreate) == 'function') {
 					obj.beforeCreate();
 				}
-				if (typeof(obj.beforeSave) == "function") {
+				if (typeof(obj.beforeSave) == 'function') {
 					obj.beforeSave();
 				}
 				return obj.save();
@@ -22,10 +22,10 @@ var config = {
 
 			u: function(data) {
 				var obj = this.build(data);
-				if (typeof(obj.beforeUpdate) == "function") {
+				if (typeof(obj.beforeUpdate) == 'function') {
 					obj.beforeUpdate();
 				}
-				if (typeof(obj.beforeSave) == "function") {
+				if (typeof(obj.beforeSave) == 'function') {
 					obj.beforeSave();
 				}
 				return obj.save();
@@ -60,8 +60,8 @@ var sequelize = new Sequelize(
 	config
 );
 
-Users = sequelize.import(__dirname + "/user");
-Tables = sequelize.import(__dirname + "/table");
+Users = sequelize.import(__dirname + '/user');
+Tables = sequelize.import(__dirname + '/table');
 
 sequelize.sync().on('success', function() {
 	console.log('Connected to SQLite.');

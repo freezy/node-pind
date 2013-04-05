@@ -42,7 +42,6 @@ module.exports = function(sequelize, DataTypes) {
 
 			updateAll: function(tables, now, callback) {
 
-				console.log('tables: %j', tables);
 				var that = this;
 				var updateOrCreate = function(table, callback) {
 					if (!table.hpid || !table.platform) {

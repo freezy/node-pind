@@ -58,6 +58,7 @@ $(document).ready(function() {
 		});
 	};
 
+	// enable sync ipdb button
 	var syncIPDB = function() {
 		var limit = $('select.numrows').val();
 		var offset = ($('.pagination ul').data('page') - 1) * limit;
@@ -71,9 +72,17 @@ $(document).ready(function() {
 		});		
 	};
 
+	// enable clear filters button
+	var clearFilters = function() {
+		$('ul.filter li.active').removeClass('active');
+		$('.pagination ul').data('page', 1);
+		refreshTables();
+	}
+
 	$('.admin .tables-placeholder button').click(syncHyperPin);
 	$('#hpsync button').click(syncHyperPin);
 	$('#ipdbsync button').click(syncIPDB);
+	$('.tables-noresult button').click(clearFilters);
 
 
 	// enable filters
@@ -111,6 +120,7 @@ function updateTables(response) {
 	var pages = Math.ceil(response.count / numrows);
 	var page = $('.pagination ul').data('page');
 	var ignoreTableVids = $('#tables').data('ignoretablevids');
+	var resultsFiltered = $('ul.filter li.active').length > 0;
 
 	// update pagination
 	$('.pagination li:not(.first):not(.last)').remove();
@@ -133,7 +143,7 @@ function updateTables(response) {
 	if (page == 1) {
 		$('.pagination li.first').addClass('disabled');
 	}
-	if (page == pages) {
+	if (page == pages || pages == 0) {
 		$('.pagination li.last').addClass('disabled');
 	}
 
@@ -178,15 +188,27 @@ function updateTables(response) {
 			tr += '</td></tr>';
 			$(tr).appendTo($tbody);
 		}
-		$('.admin .tables').slideDown(500);
-		$('.admin .tables-placeholder').fadeOut(500);
+
+		$('.admin .tables').show();
+		$('.admin .tables .table-wrapper').slideDown(500);
+		$('.admin .tables-placeholder').fadeOut(200);
+		$('.admin .tables-noresult').fadeOut(200);
 
 		// enable boxes
 		fetched();
 
+	} else if (resultsFiltered) {
+
+		$('.admin .tables').show();
+		$('.admin .tables .table-wrapper').slideUp(200);
+		$('.admin .tables-noresult').fadeIn(500);
+		$('.admin .tables-placeholder').hide();
+
 	} else {
 		$('.admin .tables').hide();
-		$('.admin .tables-placeholder').show();
+		$('.admin .tables .table-wrapper').show();
+		$('.admin .tables-noresult').hide();
+		$('.admin .tables-placeholder').fadeIn(500);
 
 		// disable boxes
 		fetching();

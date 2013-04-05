@@ -810,7 +810,8 @@ ul.badge-group li:last-child {
 }
 @media (max-width: 480px) {
 }
-.tables-placeholder {
+.tables-placeholder,
+.tables-noresult {
   background-color: #fff;
   border: 2px dashed #000;
   -webkit-border-radius: 20px;
