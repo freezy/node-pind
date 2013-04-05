@@ -1,4 +1,4 @@
-var Sequelize = require("sequelize");
+var Sequelize = require('sequelize');
 var settings = require('../../config/settings-mine');
 
 

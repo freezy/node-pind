@@ -1,14 +1,12 @@
+// unused!! 
 module.exports = {
     development: {
-        driver:   "sqlite3",
-		database: 'dev.sqlite'
+        driver:   "memory",
     },
     test: {
-        driver: 'sqlite3',
-        database: 'test.sqlite'
+        driver: 'memory',
     },
     production: {
-        driver: 'sqlite3',
-        database: 'prod.sqlite'
+        driver: 'memory',
     }
 };
