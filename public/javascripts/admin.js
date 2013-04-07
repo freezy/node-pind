@@ -175,12 +175,16 @@ function updateTables(response) {
 
 			tr += '</ul></td>';
 			if (rows[i].type != 'OG' && rows[i].platform == 'VP' && rows[i].rom === null) {
-				tr += '<td class="rom unknown">unknown';
+				if (rows[i].table_file) {
+					tr += '<td class="rom missing">missing';
+				} else {
+					tr += '<td class="rom unknown">(unknown)';
+				}
 			} else {
 				if (rows[i].rom) {
 					tr += '<td class="rom">' + rows[i].rom;
 				} else {
-					tr += '<td class="rom na">n/a';
+					tr += '<td class="rom na">(n/a)';
 				}
 
 			}
