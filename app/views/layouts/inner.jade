@@ -2,20 +2,20 @@ extends outer
 
 block body
 	div.navbar.navbar-static-top
-		div.navbar-inner
+		div.navbar-inner.mainmenu
 			a(href='#{pathTo.root}').icon.pind
 			div.container-fluid
 				ul#global-nav.nav
-					li
-						a(href='#{pathTo.root}')#btn-root Tables
-					li
+					li.root
+						a(href='#{pathTo.root}') Tables
+					li.highscores
 						a High Scores
 				ul.nav.pull-right
-					li
-						a(href='#{pathTo.admin}').icon#btn-settings
+					li.settings
+						a(href='#{pathTo.admin}').icon
 							i.icon.settings
-					li
-						a(href='#{pathTo.logout}').icon#btn-logout
+					li.logout
+						a(href='#{pathTo.logout}').icon
 							i.icon.exit
 
 	div.container

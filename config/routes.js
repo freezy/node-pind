@@ -21,7 +21,8 @@ exports.routes = function (map) {
 	map.post('api', 'api#api');
 
 	// admin
-	map.get('admin', 'settings#index');
+	map.get('admin/tables', 'settings#tables', { as: 'admin' });
+	map.get('admin/users', 'settings#users', { as: 'admin_users' });
 
 	// Generic routes. Add all your routes below this line
 	// feel free to remove generic routes

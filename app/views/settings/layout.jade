@@ -1,0 +1,21 @@
+extends ../layouts/inner
+
+block content
+	- contentFor('javascripts', javascriptIncludeTag('data'))
+	- contentFor('javascripts', javascriptIncludeTag('admin'))
+	div.span10.offset1.content
+		section.admin
+			.page-header
+				h1 Administration
+
+			ul.nav.nav-tabs.submenu
+				li.tables
+					a(href="#{pathTo.admin}") Tables
+				li.users
+					a(href="#{pathTo.admin_users}") Users
+
+			block inner-content
+
+		.row-fluid.footer
+
+			block inner-footer

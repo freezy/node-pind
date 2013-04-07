@@ -1,0 +1,53 @@
+extends layout
+
+block inner-content
+	div.data.users(style='display:none')
+
+		.pagination.pagination-small.pull-right
+			ul(data-page="1")
+				li.first.disabled
+					a
+						i.icon.arrow-left
+				li.p1.current
+					a 1
+				li.last
+					a
+						i.icon.arrow-right
+
+		select.numrows.input-mini.pull-right
+			option(selected="selected") 10
+			option 20
+			option 50
+			option 100
+
+		ul.nav.nav-pills.pull-left.filter
+			li(data-filter="table")
+				a(href="#") Never logged
+			li(data-filter="rom")
+				a(href="#") No credits
+
+		.clearfix
+		.table-wrapper(style='display:none')
+			table.table#tables
+				thead
+					tr
+						th Login
+						th Name
+						th Email
+						th Credits
+						th Last Login
+						th Created
+				tbody
+
+		div.tables-noresult(style='display:none')
+			p No results found.
+			button.btn.fat.small Clear Filters
+
+	.clearfix
+
+block inlineScripts
+	script
+		$(document).ready(function() {
+			menu('settings');
+			submenu('users');
+		});

@@ -73,6 +73,11 @@ footer a {
   text-shadow: 0px 1px 0 #000;
   font-family: 'Arvo', serif;
   font-size: 16px;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 footer a:hover {
   text-decoration: none;
@@ -866,8 +871,8 @@ ul.badge-group li:last-child {
 }
 @media (max-width: 480px) {
 }
-.tables-placeholder,
-.tables-noresult {
+.data + .empty,
+.data .noresult {
   background-color: #fff;
   border: 2px dashed #000;
   -webkit-border-radius: 20px;
