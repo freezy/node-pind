@@ -1,6 +1,7 @@
 extends layout
 
 block inner-content
+	- contentFor('javascripts', javascriptIncludeTag('admin_users'))
 	div.data.users(style='display:none')
 
 		.pagination.pagination-small.pull-right
@@ -27,21 +28,23 @@ block inner-content
 				a(href="#") No credits
 
 		.clearfix
-		.table-wrapper(style='display:none')
-			table.table#tables
+		.wrapper(style='display:none')
+			table.table
 				thead
 					tr
 						th Login
-						th Name
-						th Email
 						th Credits
-						th Last Login
-						th Created
 				tbody
 
-		div.tables-noresult(style='display:none')
-			p No results found.
+		div.noresult(style='display:none')
+			p No users found.
 			button.btn.fat.small Clear Filters
+
+	div.empty(style='display:none')
+		p No users in database.
+		button.btn.fat
+			i.icon.refresh
+			span Load from HyperPin
 
 	.clearfix
 

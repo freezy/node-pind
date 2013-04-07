@@ -1,6 +1,7 @@
 extends layout
 
 block inner-content
+	- contentFor('javascripts', javascriptIncludeTag('admin_tables'))
 	div.data.tables(style='display:none')
 
 		.pagination.pagination-small.pull-right
