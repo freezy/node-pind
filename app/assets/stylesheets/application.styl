@@ -33,6 +33,7 @@ animation-slow = 0.5s
 
 font-serif = 'Arvo', serif
 font-sans = 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif
+font-fixed = Inconsolata, Consolas, 'Courier New', Fixed, monospace
 
 
 // :global stuff
@@ -703,7 +704,7 @@ ul.badge-group
 
 // desktop
 @media(max-width: 980px) {
-
+	
 }
 
 // tablet to desktop
@@ -740,10 +741,15 @@ ul.badge-group
 .span3.disabled, .span4.disabled
 	color color-medium
 	text-shadow 1px 1px 0 rgba(255,255,255,0.4)
-	
+
+table#tables td.rom
+	font-family font-fixed	
+	&.na, &.unknown
+		color color-medium
 
 // :tables
 // ============================================================================
+
 
 .content.tables
 	.media

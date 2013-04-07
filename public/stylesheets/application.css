@@ -824,6 +824,13 @@ ul.badge-group li:last-child {
   color: #9d9e9e;
   text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
 }
+table#tables td.rom {
+  font-family: Inconsolata, Consolas, 'Courier New', Fixed, monospace;
+}
+table#tables td.rom.na,
+table#tables td.rom.unknown {
+  color: #9d9e9e;
+}
 .content.tables .media {
   background-color: rgba(81,67,54,0.15);
   margin: 20px;

@@ -9,6 +9,7 @@ var config = {
 
 	define: {
 		classMethods: {
+
 			c: function(data) {
 				var obj = this.build(data);
 				if (typeof(obj.beforeCreate) == 'function') {

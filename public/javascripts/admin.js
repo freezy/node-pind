@@ -173,14 +173,14 @@ function updateTables(response) {
 				tr += ul(rows[i].media_video ? 'success' : 'important', 'video', 'Table Video');
 			}
 
-			tr += '</ul></td><td>';
+			tr += '</ul></td>';
 			if (rows[i].type != 'OG' && rows[i].platform == 'VP' && rows[i].rom === null) {
-				tr += '[---]';
+				tr += '<td class="rom unknown">unknown';
 			} else {
 				if (rows[i].rom) {
-					tr += rows[i].rom;
+					tr += '<td class="rom">' + rows[i].rom;
 				} else {
-					tr += 'X';
+					tr += '<td class="rom na">n/a';
 				}
 
 			}
