@@ -1,127 +1,137 @@
-function enableData(d, renderResult) {
+function enableData(config) {
+	
+	if (!config.dataId) {
+		throw new Error('Must provide data ID when enabling data.');
+	}
+	if (!config.renderRows) {
+		throw new Error('Must provide render function when enabling data.');
+	}
+	if (!config.apiCall) {
+		throw new Error('Must provide API call when enabling data.');
+	}
 
 	// enable items/page dropdown
-	$('.data.' + d + ' select.numrows').change(function() {
-		$('.data.' + d + ' .pagination ul').data('page', 1);
-		refreshData(d, renderResult);
+	$('.data.' + config.renderResult + ' select.numrows').change(function() {
+		$('.data.' + config.dataId + ' .pagination ul').data('page', 1);
+		refreshData(config);
 	});
 
 	// enable prev/next buttons
-	$('.data.' + d + ' .pagination li.first a').click(function(event) {
+	$('.data.' + config.dataId + ' .pagination li.first a').click(function(event) {
 		event.preventDefault();
 		var $ul = $(this).parents('ul');
 		var page = parseInt($ul.data('page'));
 		if (page > 1) {
 			$ul.data('page', page - 1);
-			refreshData(d, renderResult);
+			refreshData(config);
 		}
 	});
-	$('.data.' + d + ' .pagination li.last a').click(function(event) {
+	$('.data.' + config.dataId + ' .pagination li.last a').click(function(event) {
 		event.preventDefault();
 		var $ul = $(this).parents('ul');
 		var page = parseInt($ul.data('page'));
 		var numpages = parseInt($(this).parent().prev().find('a').html());
 		if (page < numpages) {
 			$ul.data('page', page + 1);
-			refreshData(d, renderResult);
+			refreshData(config);
 		}
 	});
 
 	// enable filters
-	$('.data.' + d + ' ul.filter li a').click(function(event) {
+	$('.data.' + config.dataId + ' ul.filter li a').click(function(event) {
 		event.preventDefault();
 		$(this).parents('li').toggleClass('active');
 		$('.pagination ul').data('page', 1);
-		refreshData(d, renderResult);
+		refreshData(config);
 	});
 
 	// enable clear filters button
 	var clearFilters = function() {
-		$('.data.' + d + ' ul.filter li.active').removeClass('active');
-		$('.data.' + d + ' .pagination ul').data('page', 1);
-		refreshData(d, renderResult);
+		$('.data.' + config.dataId + ' ul.filter li.active').removeClass('active');
+		$('.data.' + config.dataId + ' .pagination ul').data('page', 1);
+		refreshData(config);
 	}
-	$('.data.' + d + ' .noresult button').click(clearFilters);
+	$('.data.' + config.dataId + ' .noresult button').click(clearFilters);
 }
 
-function refreshData(d, renderResult) {
-	var limit = $('.data.' + d + ' select.numrows').val();
-	var offset = ($('.data.' + d + ' .pagination ul').data('page') - 1) * limit;
+function refreshData(config) {
+	var limit = $('.data.' + config.dataId + ' select.numrows').val();
+	var offset = ($('.data.' + config.dataId + ' .pagination ul').data('page') - 1) * limit;
 	var filters = [];
 
-	$('.data.' + d + ' ul.filter li.active').each(function() {
+	$('.data.' + config.dataId + ' ul.filter li.active').each(function() {
 		filters.push($(this).data('filter'));
 	});
 
 	// fetch tables
-	api('Table.GetAll', { limit: limit, offset: offset, filters: filters }, function(err, result) {
+	api(config.apiCall, { limit: limit, offset: offset, filters: filters }, function(err, result) {
 		if (err) {
 			alert('Problem: ' + err);
 		} else {
-			updateData(d, result, renderResult);
+			updateData(config, result);
 		}
 	});
 }
 
-function updateData(d, response, renderResult) {
+function updateData(config, response) {
 
 	// retrieve variables
-	var numrows = $('.data.' + d + ' select.numrows').val();
+	var numrows = $('.data.' + config.dataId + ' select.numrows').val();
 	var pages = Math.ceil(response.count / numrows);
-	var page = $('.data.' + d + ' .pagination ul').data('page');
-	var resultsFiltered = $('.data.' + d + ' ul.filter li.active').length > 0;
+	var page = $('.data.' + config.dataId + ' .pagination ul').data('page');
+	var resultsFiltered = $('.data.' + config.dataId + ' ul.filter li.active').length > 0;
 
 	// update pagination
-	$('.data.' + d + ' .pagination li:not(.first):not(.last)').remove();
+	$('.data.' + config.dataId + ' .pagination li:not(.first):not(.last)').remove();
 	for (var i = pages; i > 0; i--) {
 		var li = $('<li class="p' + i + (page == i ? ' current' : '') + '"><a href="#">' + i + '</a>');
 		if (page != i) {
 			li.find('a').click(function(event) {
 				event.preventDefault();
 				$(this).parents('ul').data('page', $(this).html());
-				refreshData(d, renderResult);
+				refreshData(config);
 			});
 		} else {
 			li.find('a').click(function(event) {
 				event.preventDefault();
 			});
 		}
-		$('.data.' + d + ' .pagination li.first').after(li);
+		$('.data.' + config.dataId + ' .pagination li.first').after(li);
 	}
-	$('.data.' + d + ' .pagination li').removeClass('disabled');
+	$('.data.' + config.dataId + ' .pagination li').removeClass('disabled');
 	if (page == 1) {
-		$('.data.' + d + ' .pagination li.first').addClass('disabled');
+		$('.data.' + config.dataId + ' .pagination li.first').addClass('disabled');
 	}
 	if (page == pages || pages == 0) {
-		$('.data.' + d + ' .pagination li.last').addClass('disabled');
+		$('.data.' + config.dataId + ' .pagination li.last').addClass('disabled');
 	}
 
 	// results returned
 	if (response.rows && response.rows.length > 0) {
 
 		// run callback
-		renderResult($('.admin #tables tbody'), response.rows);
+		config.renderRows($('.data.' + config.dataId + ' table tbody'), response.rows);
 
-		$('.data.' + d).show();
-		$('.data.' + d + ' .wrapper').slideDown(500);
-		$('.data.' + d + ' + div.empty').fadeOut(200);
-		$('.data.' + d + ' .noresult').fadeOut(200);
+		$('.data.' + config.dataId).show();
+		$('.data.' + config.dataId + ' .wrapper').slideDown(500);
+		$('.data.' + config.dataId + ' + div.empty').fadeOut(200);
+		$('.data.' + config.dataId + ' .noresult').fadeOut(200);
 
 	// no results due to filtering
 	} else if (resultsFiltered) {
 
-		$('.data.' + d).show();
-		$('.data.' + d + ' .wrapper').slideUp(200);
-		$('.data.' + d + ' + div.empty').hide();
-		$('.data.' + d + ' .noresult').fadeIn(500);
+		$('.data.' + config.dataId).show();
+		$('.data.' + config.dataId + ' .wrapper').slideUp(200);
+		$('.data.' + config.dataId + ' + div.empty').hide();
+		$('.data.' + config.dataId + ' .noresult').fadeIn(500);
 
 	// no results due to no data
 	} else {
 
-		$('.data.' + d).hide();
-		$('.data.' + d + ' .wrapper').show();
-		$('.data.' + d + ' + div.empty').fadeIn(500);
-		$('.data.' + d + ' .noresult').hide();
+		$('.data.' + config.dataId).hide();
+		$('.data.' + config.dataId + ' .wrapper').show();
+		$('.data.' + config.dataId + ' + div.empty').fadeIn(500);
+		$('.data.' + config.dataId + ' .noresult').hide();
 	}
 }
 

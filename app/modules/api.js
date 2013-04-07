@@ -114,6 +114,39 @@ var TableApi = function() {
 	};
 }
 
+var UserApi = function() {
+	return {
+		name : 'User',
+
+		GetAll : function(req, params, callback) {
+			console.log('Getting all users: %j', params);
+			var p = {
+				order: params && params.order ? params.order.replace(/[^\w\s]*/g, '') : 'name ASC',
+				offset: params && params.offset ? parseInt(params.offset) : 0,
+				limit: params && params.limit ? parseInt(params.limit) : 0
+			};
+
+			schema.User.findAll(p).success(function(rows) {
+
+				delete p.limit;
+				delete p.skip;
+				delete p.order;
+				schema.User.count(p).success(function(num) {
+
+					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
+					callback({ rows : rows, count: num });
+
+				}).error(function(err) {
+						throw new Error(err);
+					});
+
+			}).error(function(err) {
+				throw Error(err);
+			});
+		}
+	};
+}
+
 var HyperPinApi = function() {
 	return {
 		name : 'HyperPin',
@@ -150,7 +183,7 @@ var preHandler = function(jsonReq, next) {
 	return next();
 }
 
-njrpc.register([ new ControlApi(), new TableApi(), new HyperPinApi() ]);
+njrpc.register([ new ControlApi(), new TableApi(), new HyperPinApi(), new UserApi() ]);
 njrpc.interceptor = preHandler;
 
 exports.checkCredentials = express.basicAuth(function(user, pass, next) {

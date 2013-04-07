@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-	var d = 'tables';
 	var renderTables = function($tbody, rows) {
 
 		var ignoreTableVids = $tbody.parents('table').data('ignoreTableVids');
@@ -49,9 +48,16 @@ $(document).ready(function() {
 		fetched();
 	};
 
+	var config = {
+		dataId: 'tables',
+		renderRows: renderTables,
+		apiCall: 'Table.GetAll'
+	};
+
+
 	// load data on startup
-	enableData(d, renderTables);
-	refreshData(d, renderTables);
+	enableData(config);
+	refreshData(config);
 
 	// enable sync hyperpin button
 	var syncHyperPin = function() {
@@ -76,7 +82,7 @@ $(document).ready(function() {
 					btn.find('.icon.refresh').removeClass('spin');
 					btn.find('span').html(labels.shift());
 				});
-				updateData(d, result, renderTables);
+				updateData(config, result);
 			}
 		});
 	};
@@ -91,7 +97,7 @@ $(document).ready(function() {
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
-				updateData(d, result, renderTables);
+				updateData(config, result);
 			}
 		});		
 	};
@@ -99,8 +105,6 @@ $(document).ready(function() {
 	$('.data.tables + .empty button').click(syncHyperPin);
 	$('#hpsync button').click(syncHyperPin);
 	$('#ipdbsync button').click(syncIPDB);
-
-
 
 });
 
