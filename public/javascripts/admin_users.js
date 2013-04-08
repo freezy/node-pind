@@ -6,7 +6,7 @@ $(document).ready(function() {
 		for (var i = 0; i < rows.length; i++) {
 
 			var tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].user + '</td>';
-			tr != '<td>' + rows[i].credits + '</td>';
+			tr += '<td>' + rows[i].credits + '</td>';
 			tr += '</td></tr>';
 			$(tr).appendTo($tbody);
 		}
