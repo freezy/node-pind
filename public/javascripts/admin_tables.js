@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	var render = function($tbody, rows) {
-
+		var ignoreTableVids = $('.data.tables table').data('ignoretablevids');
 		$tbody.empty();
 		for (var i = 0; i < rows.length; i++) {
 
