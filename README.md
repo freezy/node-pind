@@ -19,7 +19,7 @@ of neat stuff. Particularly it should be able to:
   * Automatically download missing artwork
   * Easily search, download and add new tables
   * Automatically download missing ROMs
-  * Automatically search for DirectB2S backglasses
+  * Automatically search, download and patch table for DirectB2S backglasses
   * Bulk-update VPinMAME rotation settings in tables
   * Match tables on IPDB.org for additional meta data
   * Support for Visual Pinball and Future Pinball
@@ -44,10 +44,10 @@ about multiple players using the same cab.
 Development Principles
 ======================
 
-* Get up and running with the least possible effort (still work to do).
-* Be as lightweight as possible - it's for running on a cab.
-* Be responsive - nobody likes slow applications.
-* Be beautiful - minimal yet elegant.
+* Get up and running with the least possible effort (not there yet).
+* Be as lightweight as possible - it's for running on a cab (check).
+* Be responsive - nobody likes slow applications (check).
+* Be beautiful - minimal yet elegant (check).
 
 
 Installation
@@ -87,7 +87,6 @@ Working
 TODO
 ----
 
-* Add drop coin feature
 * User manager
 * Link users to high-scores
 * Web table browser
