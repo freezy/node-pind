@@ -102,7 +102,7 @@ More to come. Still under heavy development.
 Technologies
 ============
 
-Besides obviously [NodeJS](http://nodejs.org/ on server side, there are a few
+Besides obviously [NodeJS](http://nodejs.org/) on server side, there are a few
 more technologies used:
 
 * [Twitter Bootstrap](http://twitter.github.io/bootstrap/) for client side CSS
