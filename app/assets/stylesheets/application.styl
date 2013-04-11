@@ -15,6 +15,10 @@ color-light      = rgba(81,67,54,0.15)           // highlighted background, or r
 color-lighter    = url('../images/bg_redox_01.png') // standard background (#f0f0f0)
 
 color-btn-light  = #e09d55  // default button background
+color-btn-light1 = #bf813f  // color 1 for gradient 3d buttons
+color-btn-light2 = #d99b59  // color 2 for gradient 3d buttons
+color-btn-light3 = #ab7337  // color 3 for gradient 3d buttons
+color-btn-light4 = #9c6224  // color 4 for gradient 3d buttons
 color-btn-dark   = #b87d3e  // typically when pushed
 color-btn-border = #d48f46  // default button border
 
@@ -786,9 +790,10 @@ ul.badge-group
 			border-radius-bottomright corner-size
 
 // landscape phones
-@media (max-width: 480px) {
-	
-}
+@media (max-width: 480px)
+	.fuzzy3d + p
+		clear left
+
 
 // :admin
 // ============================================================================
@@ -841,6 +846,10 @@ table#tables td.rom
 		filter gray
 		-webkit-filter grayscale(100%)
 
+// :coin drop
+// ============================================================================
+
+
 
 // :nice looking 3d buttons
 // ============================================================================
@@ -882,12 +891,12 @@ table#tables td.rom
 		text-shadow 0px 1px 2px rgba(0, 0, 0, 0.55)
 		font-size 16px
 		border-radius 20px
-		background-image -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7fbf2b), color-stop(15%, #97d844), color-stop(100%, #70aa25))
-		background-image -webkit-linear-gradient(top, #7fbf2b 0%, #97d844 15%, #70aa25 100%)
-		background-image -moz-linear-gradient(top, #7fbf2b 0%, #97d844 15%, #70aa25 100%)
-		background-image -o-linear-gradient(top, #7fbf2b 0%, #97d844 15%, #70aa25 100%)
-		background-image -ms-linear-gradient(top, #7fbf2b 0%, #97d844 15%, #70aa25 100%)
-		background-image linear-gradient(top, #7fbf2b 0%, #97d844 15%, #70aa25 100%)
+		background-image -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, color-btn-light1), color-stop(15%, color-btn-light2), color-stop(100%, color-btn-light3))
+		background-image -webkit-linear-gradient(top, color-btn-light1 0%, color-btn-light2 15%, color-btn-light3 100%)
+		background-image -moz-linear-gradient(top, color-btn-light1 0%, color-btn-light2 15%, color-btn-light3 100%)
+		background-image -o-linear-gradient(top, color-btn-light1 0%, color-btn-light2 15%, color-btn-light3 100%)
+		background-image -ms-linear-gradient(top, color-btn-light1 0%, color-btn-light2 15%, color-btn-light3 100%)
+		background-image linear-gradient(top, color-btn-light1 0%, color-btn-light2 15%, color-btn-light3 100%)
 		box-shadow 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 0 10px rgba(255, 255, 255, 0.35)
 		border 0
 		position relative
@@ -897,7 +906,7 @@ table#tables td.rom
 		&:before
 			content " "
 			display block
-			background #709b14
+			background color-btn-light4
 			background-image -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(90%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.2)))
 			background-image -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 90%, rgba(0, 0, 0, 0.2) 100%)
 			background-image -moz-linear-gradient(top, rgba(0, 0, 0, 0) 90%, rgba(0, 0, 0, 0.2) 100%)
