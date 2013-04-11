@@ -33,8 +33,9 @@ of neat stuff. Particularly it should be able to:
 * Provide an Android app for some features (such as inserting a coin, browsing
   tables and high scores).
 * Implement reasonable security. Passwords are salted and strongly hashed, 
-  auto-login uses a random token, SSL connections should be enforced when
-  transferring sensitive data.
+  auto-login uses a random token, CSRF protection, SSL connections should be
+  enforced when transferring sensitive data.
+* Be usable on a phone (responsive layout).
 
 Note that for a single user cab, pind is mainly useful for managing tables, 
 which is a major PITA to do manually. Most of the other features however are
@@ -77,7 +78,7 @@ Working
 
 * Register user via web
 * UI for table manager
-* Trigger coin drop via API
+* Trigger coin drop via API and web app
 * Parse HyperPin "database" and store locally
 * Scrape ipdb.org for additional meta data
 * Rudimentary access to HyperPin media via API
@@ -96,6 +97,18 @@ TODO
 * Browsing features
 
 More to come. Still under heavy development.
+
+
+Technologies
+============
+
+Besides obviously [NodeJS](http://nodejs.org/ on server side, there are a few
+more technologies used:
+
+* [Twitter Bootstrap](http://twitter.github.io/bootstrap/) for client side CSS
+* Vector icons from [Font Awesome](http://fortawesome.github.io/Font-Awesome/),
+  assembled by [IcoMoon](http://icomoon.io/) (along with some custom icons).
+* [jQuery](http://jquery.com/) for all our JS needs.
 
 
 Credits
