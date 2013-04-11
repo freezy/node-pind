@@ -86,14 +86,14 @@ Working
 TODO
 ----
 
-* Integrate with an MVC framework (CompoundJS looks good).
+* Add drop coin feature
+* User manager
 * Link users to high-scores
 * Web table browser
 * Score stats for registered users
 * Look for another DB engine (sqlite is major PITA to compile).
 * Basic VPForums.org integration
 * Browsing features
-* Admin features
 
 More to come. Still under heavy development.
 
