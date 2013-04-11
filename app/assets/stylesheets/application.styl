@@ -30,6 +30,7 @@ corner-size = 20px
 
 key-height = 87px
 
+animation-faster = 0.1s
 animation-fast = 0.3s
 animation-slow = 0.5s
 
@@ -862,6 +863,7 @@ table#tables td.rom
 	float left
 	position relative
 	margin-right 30px
+	transition all animation-faster ease !important
 
 	&:before
 		content " "
@@ -902,6 +904,7 @@ table#tables td.rom
 		position relative
 		top -2px
 		margin-bottom 20px
+		transition all animation-fast ease !important
 
 		&:before
 			content " "
@@ -927,6 +930,7 @@ table#tables td.rom
 				height 47px
 
 		&:active
+			transition all animation-faster ease !important
 			top 0px
 			&:before
 				height 43px

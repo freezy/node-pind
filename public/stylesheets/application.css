@@ -946,6 +946,11 @@ table#tables td.rom.missing {
   float: left;
   position: relative;
   margin-right: 30px;
+  -webkit-transition: all 0.1s ease !important;
+  -moz-transition: all 0.1s ease !important;
+  -o-transition: all 0.1s ease !important;
+  -ms-transition: all 0.1s ease !important;
+  transition: all 0.1s ease !important;
 }
 .fuzzy3d:before {
   content: " ";
@@ -995,6 +1000,11 @@ table#tables td.rom.missing {
   position: relative;
   top: -2px;
   margin-bottom: 20px;
+  -webkit-transition: all 0.3s ease !important;
+  -moz-transition: all 0.3s ease !important;
+  -o-transition: all 0.3s ease !important;
+  -ms-transition: all 0.3s ease !important;
+  transition: all 0.3s ease !important;
 }
 .fuzzy3d button:before {
   content: " ";
@@ -1027,6 +1037,11 @@ table#tables td.rom.missing {
   height: 47px;
 }
 .fuzzy3d button:active {
+  -webkit-transition: all 0.1s ease !important;
+  -moz-transition: all 0.1s ease !important;
+  -o-transition: all 0.1s ease !important;
+  -ms-transition: all 0.1s ease !important;
+  transition: all 0.1s ease !important;
   top: 0px;
 }
 .fuzzy3d button:active:before {
