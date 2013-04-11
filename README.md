@@ -76,6 +76,7 @@ Working
 -------
 
 * Register user via web
+* UI for table manager
 * Trigger coin drop via API
 * Parse HyperPin "database" and store locally
 * Scrape ipdb.org for additional meta data
@@ -101,9 +102,10 @@ More to come. Still under heavy development.
 Credits
 =======
 
-Full credits for the high score features go to Dna Disturber's [PINemHi](http://www.pinemhi.com/),
-along with a big thanks for the permission to redistribute the binary. Looking
-forward to even more features!
+* Full credits for the high score features go to Dna Disturber's [PINemHi](http://www.pinemhi.com/),
+  along with a big thanks for the permission to redistribute the binary. Looking
+  forward to even more features!
+* Thanks to Sacha Greif for the nice [3D buttons](http://sachagreif.com/bootstrap/).
 
 
 License

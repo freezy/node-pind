@@ -1,0 +1,31 @@
+extends ../layouts/inner
+
+block content
+	div.span10.offset1.content
+		section.coindrop
+			.page-header
+				h1 Drop A Coin
+
+			p
+				| Drop a coin into the running game. Make sure a game is running,
+				| if you drop coins into HyperPin, you're losing credits for
+				| nothing.
+			br
+			.clearfix
+			.row-fluid
+				.offset2.span3
+					.fuzzy3d
+						button Drop -.20
+					p Gives you <b>one</b> credit.
+					.clearfix
+				.offset2.span3
+					.fuzzy3d
+						button Drop -.50
+					p Gives you <b>three</b> credits.
+					.clearfix
+
+block inlineScripts
+	script
+		$(document).ready(function() {
+			menu('coin');
+		});

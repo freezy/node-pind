@@ -10,7 +10,8 @@ exports.routes = function (map) {
 	map.post('signup', 'users#signup', { as: 'signupPost'});
 
 	// home
-	map.root('home#tables', { as: 'root' });
+	map.root('home#index', { as: 'root' });
+	map.get('coin', 'home#coin');
 
 	// media
 	map.get('asset/hp/logo/:id.png', 'asset#logo', { as: 'asset_logo'});

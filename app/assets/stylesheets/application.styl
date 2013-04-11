@@ -828,3 +828,84 @@ table#tables td.rom
 		filter url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale")
 		filter gray
 		-webkit-filter grayscale(100%)
+
+
+// :nice looking 3d buttons
+// ============================================================================
+ 
+.fuzzy3d 
+	z-index 0
+	color #b3aca5
+	font-family font-serif
+	line-height 1.7
+	float left
+	position relative
+	margin-right 30px
+
+	&:before
+		content " "
+		display block
+		width 170px
+		padding 0 2px
+		height 45px
+		margin-top 2px
+		background rgba(0, 0, 0, 0.8)
+		border-radius 22px
+		box-shadow 0 1px 2px rgba(255, 255, 255, 0.2)
+		z-index -100
+		position absolute
+		top -2px
+		left -2px
+
+	button
+		font-family font-serif
+		display block
+		cursor pointer
+		float left
+		height 40px
+		width 170px
+		padding 0 15px
+		color white
+		font-weight bold
+		text-shadow 0px 1px 2px rgba(0, 0, 0, 0.55)
+		font-size 16px
+		border-radius 20px
+		background-image -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7fbf2b), color-stop(15%, #97d844), color-stop(100%, #70aa25))
+		background-image -webkit-linear-gradient(top, #7fbf2b 0%, #97d844 15%, #70aa25 100%)
+		background-image -moz-linear-gradient(top, #7fbf2b 0%, #97d844 15%, #70aa25 100%)
+		background-image -o-linear-gradient(top, #7fbf2b 0%, #97d844 15%, #70aa25 100%)
+		background-image -ms-linear-gradient(top, #7fbf2b 0%, #97d844 15%, #70aa25 100%)
+		background-image linear-gradient(top, #7fbf2b 0%, #97d844 15%, #70aa25 100%)
+		box-shadow 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 0 10px rgba(255, 255, 255, 0.35)
+		border 0
+		position relative
+		top -2px
+		margin-bottom 20px
+
+		&:before
+			content " "
+			display block
+			background #709b14
+			background-image -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(90%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.2)))
+			background-image -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 90%, rgba(0, 0, 0, 0.2) 100%)
+			background-image -moz-linear-gradient(top, rgba(0, 0, 0, 0) 90%, rgba(0, 0, 0, 0.2) 100%)
+			background-image -o-linear-gradient(top, rgba(0, 0, 0, 0) 90%, rgba(0, 0, 0, 0.2) 100%)
+			background-image -ms-linear-gradient(top, rgba(0, 0, 0, 0) 90%, rgba(0, 0, 0, 0.2) 100%)
+			background-image linear-gradient(top, rgba(0, 0, 0, 0) 90%, rgba(0, 0, 0, 0.2) 100%)
+			border-radius 20px
+			position absolute
+			z-index -50
+			top 0px
+			left 0px
+			width 170px
+			height 45px
+
+		&:hover
+			top -4px
+			&:before
+				height 47px
+
+		&:active
+			top 0px
+			&:before
+				height 43px

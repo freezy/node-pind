@@ -6,6 +6,12 @@ action('index', function (context) {
 	render();
 });
 
+action('coin', function (context) {
+	this.title = 'Coin Drop';
+	render();
+});
+
+
 action('tables', function(context) {
 	this.title = 'Tables';
 	Table.all(function(err, rows) {
