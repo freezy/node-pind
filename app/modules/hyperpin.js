@@ -3,6 +3,7 @@ var gm = require('gm');
 var log = require('winston');
 var path = require('path');
 var util = require('util');
+var exec = require('child_process').exec;
 var async = require('async');
 var xml2js = require('xml2js');
 
@@ -158,6 +159,20 @@ exports.syncTables = function(callback) {
 		schema.Table.findAll().success(function(rows) {
 			callback(null, rows);
 		}).error(callback);
+	});
+};
+
+exports.insertCoin = function(slot, callback) {
+	var binPath = fs.realpathSync(__dirname + '../../../bin');
+	exec(binPath + '/Keysender.exe', function(error, stdout, stderr) {
+		if (error !== null) {
+			callback(error);
+		} else {
+			callback(null, {
+				message : 'Coin inserted successfully!',
+				balance : 10 //req.user.credits
+			});
+		}
 	});
 };
 

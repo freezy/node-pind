@@ -1,6 +1,7 @@
 extends ../layouts/inner
 
 block content
+	- contentFor('javascripts', javascriptIncludeTag('data', 'coin'))
 	div.span10.offset1.content
 		section.coindrop
 			.page-header
@@ -14,15 +15,19 @@ block content
 			.clearfix
 			.row-fluid
 				.offset2.span3
-					.fuzzy3d
+					#coinleft.fuzzy3d
 						button Drop -.20
 					p Gives you <b>one</b> credit.
 					.clearfix
 				.offset2.span3
-					.fuzzy3d
+					#coinright.fuzzy3d
 						button Drop -.50
 					p Gives you <b>three</b> credits.
 					.clearfix
+
+			.alert(style='display:none')
+				button.button.close(data-dismiss='alert') ×
+				p
 
 block inlineScripts
 	script

@@ -1,5 +1,4 @@
 var fs = require('fs');
-var exec = require('child_process').exec;
 var express = require('express');
 
 var settings = require('../../config/settings-mine');
@@ -31,18 +30,16 @@ var ControlApi = function() {
 		InsertCoin : function(req, params, callback) {
 			if ('slot' in params) {
 				var slot = params.slot;
-				var binPath = fs.realpathSync(__dirname + '../../../bin');
-				exec(binPath + '/Keysender.exe', function (error, stdout, stderr) {
-					if (error !== null) {
-						console.log(error);
-						throw new Error(error);
+
+				hp.insertCoin(slot, function(err, result) {
+					if (err) {
+						console.log(err);
+						throw new Error(err);
 					} else {
-						callback({
-							message : 'Coin inserted successfully! - ' + stdout,
-							balance : 10 //req.user.credits
-						});
+						callback(result);
 					}
 				});
+
 			} else {
 				throw new Error('Parameter "slot" is missing.');
 			}
