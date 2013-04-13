@@ -31,15 +31,30 @@ function requireUser() {
 			redirect(path_to.login);
 		});
 	} else {
+
 		// api is a special case, can be authenticated via http simple auth.
 		if (req.url == pathTo.api) {
-			var auth = express.basicAuth(schema.User.authenticate, 'Authentication Required.');
-			auth(req, res, function() {
-				console.log('HTTP Basic authentication successful for user ' + req.remoteUser.user + '.');
-				req.session6.user = req.remoteUser;
-				next();
-			});
 
+			// we allow auto-login here
+			if (req.signedCookies.user && req.signedCookies.authtoken) {
+				schema.User.autologin(req.signedCookies.user, req.signedCookies.authtoken, function(err, user) {
+					if (user) {
+						req.session.user = user;
+						next();
+					} else {
+						send(401);
+					}
+				});
+
+			// otherwise try http simple auth
+			} else {
+				var auth = express.basicAuth(schema.User.authenticate, 'Authentication Required.');
+				auth(req, res, function() {
+					console.log('HTTP Basic authentication successful for user ' + req.remoteUser.user + '.');
+					req.session.user = req.remoteUser;
+					next();
+				});
+			}
 		} else {
 			log(c('[auth] No valid session, redirecting to login page.').grey);
 			req.session.redirectUrl = req.originalUrl;

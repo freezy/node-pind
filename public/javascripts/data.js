@@ -135,6 +135,14 @@ function updateData(config, response) {
 	}
 }
 
+/**
+ * Calls the pind JSON-RPC API.
+ * @param method Namespace and name of the method ("Namespace.Method")
+ * @param params Parameters as object
+ * @param callback callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Object} Result</li></ol>
+ */
 function api(method, params, callback) {
 	$.ajax({
 		url: '/api',
@@ -150,6 +158,13 @@ function api(method, params, callback) {
 			callback(ret.error.message, ret.error);
 		} else {
 			callback(null, ret.result);
+		}
+	}).fail(function(xhr, status, error) {
+		if (xhr.status == 401) {
+			window.location = $('head meta[name="login"]').attr('content');
+
+		} else {
+			alert(error);
 		}
 	});
 }

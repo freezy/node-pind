@@ -22,9 +22,9 @@ block inner-content
 			option 100
 
 		ul.nav.nav-pills.pull-left.filter
-			li(data-filter="table")
+			li(data-filter="neverlogged")
 				a(href="#") Never logged
-			li(data-filter="rom")
+			li(data-filter="nocredits")
 				a(href="#") No credits
 
 		.clearfix
@@ -32,8 +32,8 @@ block inner-content
 			table.table
 				thead
 					tr
-						th Login
-						th Credits
+						th(style='width: 80%') Login
+						th(style='width: 20%') Credits
 				tbody
 
 		div.noresult(style='display:none')
