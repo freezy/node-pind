@@ -183,7 +183,7 @@ exports.insertCoin = function(user, slot, callback) {
 			}
 		});
 	} else {
-		callback('User has no more credits.');
+		callback('No more credits available.');
 	}
 };
 

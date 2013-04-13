@@ -973,11 +973,6 @@ table#tables td.rom.missing {
   float: left;
   position: relative;
   margin-right: 30px;
-  -webkit-transition: all 0.1s ease !important;
-  -moz-transition: all 0.1s ease !important;
-  -o-transition: all 0.1s ease !important;
-  -ms-transition: all 0.1s ease !important;
-  transition: all 0.1s ease !important;
 }
 .fuzzy3d:before {
   content: " ";
@@ -1010,11 +1005,6 @@ table#tables td.rom.missing {
   font-size: 16px;
   -webkit-border-radius: 20px;
   border-radius: 20px;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #bf813f), color-stop(15%, #d99b59), color-stop(100%, #ab7337));
-  background-image: -webkit-linear-gradient(top, #bf813f 0%, #d99b59 15%, #ab7337 100%);
-  background-image: -moz-linear-gradient(top, #bf813f 0%, #d99b59 15%, #ab7337 100%);
-  background-image: -o-linear-gradient(top, #bf813f 0%, #d99b59 15%, #ab7337 100%);
-  background-image: -ms-linear-gradient(top, #bf813f 0%, #d99b59 15%, #ab7337 100%);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #bf813f), color-stop(0.15, #d99b59), color-stop(1, #ab7337));
   background-image: -webkit-linear-gradient(top, #bf813f 0%, #d99b59 15%, #ab7337 100%);
   background-image: -moz-linear-gradient(top, #bf813f 0%, #d99b59 15%, #ab7337 100%);
@@ -1027,21 +1017,11 @@ table#tables td.rom.missing {
   position: relative;
   top: -2px;
   margin-bottom: 20px;
-  -webkit-transition: all 0.3s ease !important;
-  -moz-transition: all 0.3s ease !important;
-  -o-transition: all 0.3s ease !important;
-  -ms-transition: all 0.3s ease !important;
-  transition: all 0.3s ease !important;
 }
 .fuzzy3d button:before {
   content: " ";
   display: block;
   background: #9c6224;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(90%, rgba(0,0,0,0)), color-stop(100%, rgba(0,0,0,0.2)));
-  background-image: -webkit-linear-gradient(top, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 100%);
-  background-image: -moz-linear-gradient(top, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 100%);
-  background-image: -o-linear-gradient(top, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 100%);
-  background-image: -ms-linear-gradient(top, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 100%);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.9, rgba(0,0,0,0)), color-stop(1, rgba(0,0,0,0.2)));
   background-image: -webkit-linear-gradient(top, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 100%);
   background-image: -moz-linear-gradient(top, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 100%);
@@ -1064,13 +1044,33 @@ table#tables td.rom.missing {
   height: 47px;
 }
 .fuzzy3d button:active {
-  -webkit-transition: all 0.1s ease !important;
-  -moz-transition: all 0.1s ease !important;
-  -o-transition: all 0.1s ease !important;
-  -ms-transition: all 0.1s ease !important;
-  transition: all 0.1s ease !important;
   top: 0px;
 }
 .fuzzy3d button:active:before {
   height: 43px;
+}
+.fuzzy3d button[disabled] {
+  color: #eee;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #aeaeae), color-stop(0.15, #c9c9c9), color-stop(1, #9e9e9e));
+  background-image: -webkit-linear-gradient(top, #aeaeae 0%, #c9c9c9 15%, #9e9e9e 100%);
+  background-image: -moz-linear-gradient(top, #aeaeae 0%, #c9c9c9 15%, #9e9e9e 100%);
+  background-image: -o-linear-gradient(top, #aeaeae 0%, #c9c9c9 15%, #9e9e9e 100%);
+  background-image: -ms-linear-gradient(top, #aeaeae 0%, #c9c9c9 15%, #9e9e9e 100%);
+  background-image: linear-gradient(top, #aeaeae 0%, #c9c9c9 15%, #9e9e9e 100%);
+}
+.fuzzy3d button[disabled]:hover {
+  cursor: default;
+  top: -2px;
+}
+.fuzzy3d button[disabled]:hover:before {
+  height: 45px;
+}
+.fuzzy3d button[disabled]:active {
+  top: -2px;
+}
+.fuzzy3d button[disabled]:active:before {
+  height: 45px;
+}
+.fuzzy3d button[disabled]:before {
+  background: #888;
 }

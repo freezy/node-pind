@@ -13,8 +13,8 @@ block content
 				| nothing.
 			br
 
-		.dmd
-			span CREDITS #{user.credits}
+		.dmd(data-credits=user.credits)
+			span GAME OVER
 
 		section.coindrop
 			.row-fluid
@@ -35,4 +35,5 @@ block inlineScripts
 	script
 		$(document).ready(function() {
 			menu('coin');
+			updateCredits();
 		});
