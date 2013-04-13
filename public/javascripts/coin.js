@@ -15,12 +15,9 @@ $(document).ready(function() {
 
 function updateCredits() {
 
-	var $btn = $('.fuzzy3d > button');
-	var $outer = $('.fuzzy3d');
 	var $dmd = $('.dmd');
-
 	var credits = $dmd.data('credits');
 
 	$dmd.find('span').html('CREDITS ' + credits);
-	$btn.prop('disabled', credits == 0);
+	$('.fuzzy3d > button').prop('disabled', credits == 0);
 }

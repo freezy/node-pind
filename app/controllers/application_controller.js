@@ -1,4 +1,5 @@
 var util = require('util');
+var express = require('express');
 var schema = require(compound.root + '/app/model/schema');
 
 var c = compound.utils.stylize.$;
@@ -30,9 +31,20 @@ function requireUser() {
 			redirect(path_to.login);
 		});
 	} else {
-		log(c('[auth] No valid session, redirecting to login page.').grey);
-		req.session.redirectUrl = req.originalUrl;
-		redirect(path_to.login);
+		// api is a special case, can be authenticated via http simple auth.
+		if (req.url == pathTo.api) {
+			var auth = express.basicAuth(schema.User.authenticate, 'Authentication Required.');
+			auth(req, res, function() {
+				console.log('HTTP Basic authentication successful for user ' + req.remoteUser.user + '.');
+				req.session6.user = req.remoteUser;
+				next();
+			});
+
+		} else {
+			log(c('[auth] No valid session, redirecting to login page.').grey);
+			req.session.redirectUrl = req.originalUrl;
+			redirect(path_to.login);
+		}
 	}
 }
 

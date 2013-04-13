@@ -3,6 +3,7 @@ app/server/modules/email-settings-mine.js
 settings-mine.js
 test*.js
 *.db
-*.sqlitenode_modules
+*.sqlite
+node_modules
 gfx
 highscores.txt
