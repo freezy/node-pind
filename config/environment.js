@@ -21,9 +21,7 @@ module.exports = function(compound) {
         app.set('cssDirectory', '/stylesheets/');
         app.set('cssEngine', 'stylus');
 		app.set('view options', { layout: false });
-//        app.use(express.bodyParser());
-		app.use(express.multipart());
-		app.use(express.urlencoded());
+        app.use(express.bodyParser());
         app.use(express.cookieParser(settings.pind.secret));
         app.use(express.session({
 			secret: settings.pind.secret,

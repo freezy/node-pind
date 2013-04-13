@@ -5,6 +5,12 @@ $(document).ready(function() {
 
 });
 
+function modalAlert(type, message) {
+	$alert = $('<div class="alert alert-' + type + '" style="display:none"><button class="button close" data-dismiss="alert">×</button><p>' + message + '</p></div>');
+	$('section.alerts').append($alert);
+	$alert.slideDown(200);
+}
+
 function menu(c) {
 	$('.mainmenu ul.nav li').removeClass('active');
 	$('.mainmenu ul.nav li.' + c).addClass('active');

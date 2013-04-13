@@ -1,21 +1,25 @@
-var express = require('express');
+load('application');
+before(use('requireUser'));
 
+var express = require('express');
 var api = require('./app/modules/api')(app);
 
 //before(requireAuth, { only: 'api' });
 
 var auth = express.basicAuth(User.authenticate);
 
-action('api3', function(context) {
+action('authhandle', function(context) {
 	auth(context.req, context.res, next);
 }, function(context) {
 	req.session.destroy();
 	api.handle(context.req, context.res);
 });
 
-action('api', function(context) {
+
+action('handle', function() {
 //	req.session.destroy();
-	api.handle(context.req, context.res);
+	console.log('*** API request: %j', req.body);
+	api.handle(req, res);
 });
 
 function requireAuth() {

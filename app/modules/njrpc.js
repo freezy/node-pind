@@ -208,28 +208,15 @@
 			var url = URL.parse(req.url, true);
 			//Allow certain paths to go thru
 			if (url.pathname in this.paths) {
+				console.log('### falling through.');
 				return this.paths[url.pathname](req, res);
 			}
 			switch (req.method) {
 				case 'POST':
-					//Grab POST request
-					var jsonString = '';
-					return req
-						.on('data', function(chunk) {
-							jsonString += chunk;
-						})
-						.on('end', function() {
-							if (!jsonString.length) return _handleInvalidRequest(400, 'Body should not be empty in the request', res);
-							try {
-								var jsonReq = JSON.parse(jsonString);
-							}
-							catch (err) {
-								return _this.output(res, _generateError(null, "Parse Error", err + ". Cannot parse message body: " + jsonString));
-							}
-							return _dispatchInternal(req, res, JSON.parse(jsonString), function(err, result) {
-								_this.output(res, err || result);
-							});
-						});
+					_dispatchInternal(req, res, req.body, function(err, result) {
+						_this.output(res, err || result);
+					});
+					return req;
 				case 'GET':
 					var jsonRequest = url.query;
 					try {

@@ -162,18 +162,29 @@ exports.syncTables = function(callback) {
 	});
 };
 
-exports.insertCoin = function(slot, callback) {
-	var binPath = fs.realpathSync(__dirname + '../../../bin');
-	exec(binPath + '/Keysender.exe', function(error, stdout, stderr) {
-		if (error !== null) {
-			callback(error);
-		} else {
-			callback(null, {
-				message : 'Coin inserted successfully!',
-				balance : 42 //req.user.credits
-			});
-		}
-	});
+exports.insertCoin = function(user, slot, callback) {
+	console.log('checking amount of credits..');
+	if (user.credits > 0) {
+		console.log(user.credits + ' > 0, all good, inserting coin.');
+		var binPath = fs.realpathSync(__dirname + '../../../bin');
+		exec(binPath + '/Keysender.exe', function(error, stdout, stderr) {
+			if (error !== null) {
+				callback(error);
+			} else {
+				console.log('coin inserted, updating user credits.');
+				user.credits--;
+				user.save(['credits']).success(function(u) {
+					console.log('user credits updated to ' + u.credits + ', calling callback.');
+					callback(null, {
+						message : 'Coin inserted successfully!',
+						credits : u.credits
+					});
+				}).error(callback);
+			}
+		});
+	} else {
+		callback('User has no more credits.');
+	}
 };
 
 var asset = function(res, path, process) {

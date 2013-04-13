@@ -1,4 +1,5 @@
 var settings = require('./config/settings-mine');
+
 load('application');
 before(use('requireAdmin'));
 

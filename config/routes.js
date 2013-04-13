@@ -19,7 +19,7 @@ exports.routes = function (map) {
 	map.get('asset/hp/portrait/:id.small.png', 'asset#portrait_small', { as: 'asset_portrait_small'});
 
 	// api
-	map.post('api', 'api#api');
+	map.post('api', 'api#handle');
 
 	// admin
 	map.get('admin/tables', 'settings#tables', { as: 'admin' });

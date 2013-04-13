@@ -30,8 +30,8 @@ var ControlApi = function() {
 		InsertCoin : function(req, params, callback) {
 			if ('slot' in params) {
 				var slot = params.slot;
-
-				hp.insertCoin(slot, function(err, result) {
+				console.log('inserting coin into slot ' + slot + '...');
+				hp.insertCoin(req.session.user, slot, function(err, result) {
 					if (err) {
 						console.log(err);
 						throw new Error(err);
