@@ -165,9 +165,6 @@ input[type='text'], input[type='password']
 			background color-lighter
 			color color-medium
 	
-input::selection
-		color red
-
 .input-micro
 	width 35px
 
@@ -864,16 +861,19 @@ td input[type='text']
 
 td.nowrap
 	white-space nowrap
+@media (max-width: 480px)
+	td.nowrap
+		white-space normal
 
 td 
-	.icon
+	.icon.clickable
 		cursor pointer
+		&:hover
+			color black
 		&.remove
 			margin-right 5px
 		&.ok
 			margin-left 5px
-		&:hover
-			color black
 
 
 // :coin drop

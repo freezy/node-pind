@@ -5,7 +5,7 @@ $(document).ready(function() {
 		$tbody.empty();
 
 		var tdCredits = function(credits) {
-			return '<i class="icon pencil"></i> ' + credits;
+			return '<i class="icon pencil clickable"></i> ' + credits;
 		}
 
 		for (var i = 0; i < rows.length; i++) {
@@ -42,9 +42,9 @@ $(document).ready(function() {
 			var $td = $(event.currentTarget).parents('td');
 			var value = $td.data('value');
 			$td.html(
-				'<i class="icon remove"></i>' +
+				'<i class="icon remove clickable"></i>' +
 					'<input type="text" value="' + value + '" class="input-micro" />' +
-					'<i class="icon ok"></i> '
+					'<i class="icon ok clickable"></i> '
 			);
 
 			// enable enter and esc while typing

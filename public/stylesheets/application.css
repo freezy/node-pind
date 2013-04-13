@@ -151,9 +151,6 @@ input[type='password'][disabled]:hover {
   background: url("../images/bg_redox_01.png");
   color: #9d9e9e;
 }
-input::selection {
-  color: #f00;
-}
 .input-micro {
   width: 35px;
 }
@@ -960,17 +957,22 @@ td input[type='text'] {
 td.nowrap {
   white-space: nowrap;
 }
-td .icon {
+@media (max-width: 480px) {
+  td.nowrap {
+    white-space: normal;
+  }
+}
+td .icon.clickable {
   cursor: pointer;
 }
-td .icon.remove {
+td .icon.clickable:hover {
+  color: #000;
+}
+td .icon.clickable.remove {
   margin-right: 5px;
 }
-td .icon.ok {
+td .icon.clickable.ok {
   margin-left: 5px;
-}
-td .icon:hover {
-  color: #000;
 }
 .dmd {
   margin-top: -10px;

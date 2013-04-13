@@ -10,12 +10,12 @@ $(document).ready(function() {
 				return '<li class="badge' + (tag ? ' badge-' + tag : '') + '" title="' + hint + '"><i class="icon ' + icon + '"></i></li>';
 			}
 
-			tr += '<td><ul class="badge-group">';
+			tr += '<td class="nowrap"><ul class="badge-group">';
 			tr += ul(rows[i].table_file ? 'success' : 'important', 'file', 'Table File');
 			tr += ul(rows[i].rom_file ? 'success' : rows[i].rom_file === null ? null : 'important', 'chip', 'ROM File');
 			tr += '</ul></td>';
 
-			tr += '<td><ul class="badge-group">';
+			tr += '<td class="nowrap"><ul class="badge-group">';
 			tr += ul(rows[i].media_wheel ? 'success' : 'important', 'logo', 'Wheel Image');
 			tr += ul(rows[i].media_backglass ? 'success' : 'important', 'ipad', 'Backglass Image');
 			tr += ul(rows[i].media_table ? 'success' : 'important', 'camera', 'Table Image');
