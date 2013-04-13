@@ -8,6 +8,7 @@ action('index', function (context) {
 
 action('coin', function (context) {
 	this.title = 'Coin Drop';
+	this.user = context.req.session.user;
 	render();
 });
 

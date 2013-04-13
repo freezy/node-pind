@@ -170,7 +170,7 @@ exports.insertCoin = function(slot, callback) {
 		} else {
 			callback(null, {
 				message : 'Coin inserted successfully!',
-				balance : 10 //req.user.credits
+				balance : 42 //req.user.credits
 			});
 		}
 	});

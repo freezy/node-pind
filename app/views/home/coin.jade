@@ -3,7 +3,7 @@ extends ../layouts/inner
 block content
 	- contentFor('javascripts', javascriptIncludeTag('data', 'coin'))
 	div.span10.offset1.content
-		section.coindrop
+		section
 			.page-header
 				h1 Drop A Coin
 
@@ -12,7 +12,11 @@ block content
 				| if you drop coins into HyperPin, you're losing credits for
 				| nothing.
 			br
-			.clearfix
+
+		.dmd
+			span CREDITS #{user.credits}
+
+		section.coindrop
 			.row-fluid
 				.offset2.span3
 					#coinleft.fuzzy3d

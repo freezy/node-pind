@@ -1,9 +1,8 @@
 .idea
-node_modules
 app/server/modules/email-settings-mine.js
-pind.db
 settings-mine.js
 test*.js
+*.db
+*.sqlitenode_modules
 gfx
 highscores.txt
-*.sqlite

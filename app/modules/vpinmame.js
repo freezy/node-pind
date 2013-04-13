@@ -152,7 +152,6 @@ exports.getHighscore = function(romname, callback) {
 			}
 
 
-
 			// special titles
 			var b = blocks.trim().split(/\n\r/);
 			var blocks = function(block) {
@@ -600,7 +599,7 @@ var nameOnly = function(block, str, title) {
 		return { title: title, player: player(m[1]) }
 	}
 	return false;
-}
+};
 /**
  * Example:
  *  LON
@@ -620,8 +619,7 @@ var onlyName = function(block, str, title) {
 		return { title: title, player: player(m[1]) }
 	}
 	return false;
-}
-
+};
 /**
  * Example:
  *
@@ -642,8 +640,7 @@ var nameScore = function(block, str, title) {
 		return { title: title, player: player(m[1]), score: num(m[3]) }
 	}
 	return false;
-}
-
+};
 /**
  * Example:
  *  RULER OF THE UNIVERSE
@@ -665,8 +662,7 @@ var nameInfo = function(block, str, title) {
 		return { title: title, player: player(m[1]), info: tidy(m[2]) }
 	}
 	return false;
-}
-
+};
 /**
  * Example:
  *
@@ -709,7 +705,7 @@ var nameDashScore = function(block, str, title) {
 		return { title: title, player: player(m[1]), score: num(m[2]) }
 	}
 	return false;
-}
+};
 /**
  * Example:
  *
@@ -731,8 +727,7 @@ var infoEqualsScoreName = function(block, str, title) {
 		return { title: title, player: player(m[3]), info: tidy(m[1]), score: num(m[2]) }
 	}
 	return false;
-}
-
+};
 /**
  * Example:
  *
@@ -753,9 +748,7 @@ var nameTitle = function(block, str, title) {
 		return { title: title, player: player(m[1]) }
 	}
 	return false;
-}
-
-
+};
 /**
  * Example:
  *
@@ -785,8 +778,7 @@ var listName = function(block, str, title) {
 		return ret;
 	}
 	return false;
-}
-
+};
 /**
  * Example:
  *
@@ -817,8 +809,7 @@ var listNameScore = function(block, str, title) {
 		return ret;
 	}
 	return false;
-}
-
+};
 /**
  * Example:
  *
@@ -849,8 +840,7 @@ var listRankNameScore = function(block, str, title) {
 		return ret;
 	}
 	return false;
-}
-
+};
 /**
  * Example:
  *
@@ -881,8 +871,7 @@ var listRankName = function(block, str, title) {
 		return ret;
 	}
 	return false;
-}
-
+};
 /**
  * Info on 2 lines.
  *
@@ -918,4 +907,4 @@ var listRankNameInfo2 = function(block, str, title) {
 		return i ? ret : false;
 	}
 	return false;
-}
+};

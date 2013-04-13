@@ -118,7 +118,7 @@ Credits
   along with a big thanks for the permission to redistribute the binary. Looking
   forward to even more features!
 * Thanks to Sacha Greif for the nice [3D buttons](http://sachagreif.com/bootstrap/).
-
+* Thanks to Andreas Nylin for the DMD font and his permission to use it freely.
 
 License
 =======
