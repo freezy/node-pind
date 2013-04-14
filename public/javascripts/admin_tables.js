@@ -92,7 +92,7 @@ $(document).ready(function() {
 		var limit = $('select.numrows').val();
 		var offset = ($('.pagination ul').data('page') - 1) * limit;
 
-		api('HyperPin.FetchIPDB', { limit: limit, offset: offset }, function(err, result) {
+		api('Pind.FetchIPDB', { limit: limit, offset: offset }, function(err, result) {
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
@@ -101,14 +101,15 @@ $(document).ready(function() {
 		});
 	};
 
-	// enable sync ipdb button
-	var syncHiscores = function() {
+	// enable fetchHiscores button
+	var fetchHiscores = function() {
 		fetching('#fetchhs');
-		api('HyperPin.FetchIPDB', { limit: limit, offset: offset }, function(err, result) {
+		api('Pind.FetchHiscores', { }, function(err, result) {
+			fetched();
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
-				updateData(config, result);
+				alert('High scores updated successfully.');
 			}
 		});
 	};
@@ -116,6 +117,7 @@ $(document).ready(function() {
 	$('.data.tables + .empty button').click(syncHyperPin);
 	$('#hpsync button').click(syncHyperPin);
 	$('#ipdbsync button').click(syncIPDB);
+	$('#fetchhs button').click(fetchHiscores);
 
 });
 

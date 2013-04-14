@@ -42,7 +42,7 @@ var TableApi = function() {
 					p.where = p.where.substr(0, p.where.length - 4);
 				}
 			}
-			schema.Table.findAll(p).success(function(rows) {
+			schema.Table.all(p).success(function(rows) {
 
 				delete p.limit;
 				delete p.skip;

@@ -4,6 +4,14 @@ var util = require('util');
 var async = require('async');
 var settings = require('../../config/settings-mine');
 
+exports.init = function() {
+	var pinemhiConfigPath = fs.realpathSync(binPath() + '/pinemhi.ini');
+	var pinemhiConfig = '[paths]\r\n';
+	pinemhiConfig += 'VP=' + fs.realpathSync(settings.vpinmame.path + '/nvram') + '\\\r\n';
+	pinemhiConfig += 'FP=' + fs.realpathSync(settings.futurepinball.path + '/fpRAM') + '\\\r\n';
+	fs.writeFileSync(pinemhiConfigPath, pinemhiConfig);
+};
+
 /**
  * Returns highscores for a given ROM.
  * @param romname Name of the ROM
@@ -12,12 +20,15 @@ var settings = require('../../config/settings-mine');
  * 		<li>{Object} Parsed high scores.</li></ol>
  */
 exports.getHighscore = function(romname, callback) {
-	var binPath = fs.realpathSync(__dirname + '../../../../bin');
-	exec(binPath + '/PINemHi.exe' + ' ' + romname + ".nv", { cwd: binPath }, function (error, stdout, stderr) {
+	var path = binPath();
+	exec(path + '/PINemHi.exe' + ' ' + romname + ".nv", { cwd: path }, function (error, stdout, stderr) {
 		if (stdout.match(/^not supported rom/i)) {
 			//callback('ROM is not supported by PINemHi.');
-			callback();
-			return;
+			return callback();
+		}
+		if (stdout.match(/^no such file/i)) {
+			console.log(stdout);
+			return callback('PINemHi could not find the .nv file. Check your paths.');
 		}
 		if (error !== null) {
 			console.log(error);
@@ -561,8 +572,8 @@ function tidy(str) {
 	return (' ' + str.trim().replace(/\s+/g, ' ').toLowerCase().replace(/(\.\s+\w|^\s*\w|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\S*/ig, function(txt){
 		return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 	}) + ' ').replace(/\W(am|pm)\W/i, function(txt) {
-			return txt.toUpperCase();
-		}).trim();
+		return txt.toUpperCase();
+	}).trim();
 }
 
 /**
@@ -578,6 +589,9 @@ function player(str) {
 	return str.trim();
 }
 
+function binPath() {
+	return fs.realpathSync(__dirname + '../../../bin');
+}
 
 /**
  * Example:

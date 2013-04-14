@@ -21,16 +21,8 @@ var HyperPinAPI = function() {
 					});
 				}
 			});
-		},
-
-		FetchIPDB : function(req, params, callback) {
-			ipdb.syncIPDB(function(err, tables) {
-				if (err) {
-					throw new Error(err);
-				}
-				tableApi.GetAll(req, params, callback);
-			});
 		}
+
 	};
 };
 

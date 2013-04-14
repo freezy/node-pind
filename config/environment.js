@@ -4,7 +4,9 @@ var settings = require('./settings');
 module.exports = function(compound) {
 
     var express = require('express');
-    var app = compound.app;
+	var vpm = require(compound.root + '/app/modules/vpinmame');
+
+	var app = compound.app;
 
 	function compile(str, path) {
 		return stylus(str)
@@ -31,4 +33,6 @@ module.exports = function(compound) {
         app.use(app.router);
     });
 
+	// create config file for pinemhi
+	vpm.init();
 };

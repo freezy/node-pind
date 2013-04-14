@@ -1,6 +1,7 @@
 var njrpc = require('./njrpc');
 
 njrpc.register([
+	require('./api/pind').api,
 	require('./api/control').api,
 	require('./api/table').api,
 	require('./api/user').api,
