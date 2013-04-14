@@ -5,8 +5,19 @@ var async = require('async');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
+/**
+ * Updates high scores from .nv RAM files.
+ *
+ * Loops through available tables and matches available users. To database
+ * only goes when both are matched.
+ *
+ * @param callback Function to execute after completion, invoked with one argument:
+ * 	<ol><li>{String} Error message on error</li></ol>
+ */
 exports.fetchHighscores = function(callback) {
 	var now = new Date();
+
+	// called when there is a match between user and table
 	var updateHighscore = function(hiscore, callback) {
 		var where = { where: { type: hiscore.type, tableId: hiscore.table.id }};
 		switch (hiscore.type) {
@@ -19,10 +30,12 @@ exports.fetchHighscores = function(callback) {
 				where.where.title = hiscore.title;
 				break;
 		}
-
+		// check if there's already an entry for type and table
 		schema.Hiscore.find(where).success(function(row) {
-			if (row == null) {
-				console.log('No current entry found, adding new highscore.');
+
+			// if not, add new entry
+			if (!row) {
+				//console.log('No current entry found, adding new highscore.');
 				schema.Hiscore.create({
 					type: hiscore.type,
 					score: hiscore.score,
@@ -32,27 +45,30 @@ exports.fetchHighscores = function(callback) {
 					createdAt: now,
 					updatedAt: now
 				}).success(function(row) {
-						row.setTable(hiscore.table).success(function(row) {
-							row.setUser(hiscore.user).success(function(row) {
-								callback(null, row);
-							}).error(callback);
-						}).error(callback);
-					}).error(callback);
-			} else {
-				console.log('Found entry %s, updating', row.id);
-				row.updateAttributes({
-					score: hiscore.score,
-					info: hiscore.info,
-					updatedAt: new Date()
-				}).success(function(row) {
+					row.setTable(hiscore.table).success(function(row) {
 						row.setUser(hiscore.user).success(function(row) {
 							callback(null, row);
 						}).error(callback);
 					}).error(callback);
+				}).error(callback);
+
+			// if so, update entry
+			} else {
+				//console.log('Found entry %s, updating', row.id);
+				row.updateAttributes({
+					score: hiscore.score,
+					info: hiscore.info,
+					updatedAt: now
+				}).success(function(row) {
+					row.setUser(hiscore.user).success(function(row) {
+						callback(null, row);
+					}).error(callback);
+				}).error(callback);
 			}
 		}).error(callback);
 	};
 
+	// fetch all VP table and store them into a dictionary
 	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL' }).success(function(rows) {
 		var roms = [];
 		var tables = {};
@@ -64,23 +80,25 @@ exports.fetchHighscores = function(callback) {
 				//break;
 			}
 		}
-		// "cache" users to avoid tons of queries
+		// cache users to avoid re-quering
 		schema.User.all().success(function(rows) {
 			var users = {};
 			for (var i = 0; i < rows.length; i++) {
 				users[tr(rows[i].user)] = rows[i];
 			}
 
+			// for every rom, get high scores and try to match against the 2 dictionaries
 			async.eachSeries(roms, function(rom, next) {
 				exports.getHighscore(rom, function(err, hiscore) {
 					if (err || !hiscore) {
-						console.log('Error with rom %s: %s', rom, err);
+						console.log('[%s] Error: %s', rom, err ? err : 'Unsupported ROM.');
 						next();
 					} else {
 						var hiscores = [];
-						//console.log('Got hiscore: %s', util.inspect(hiscore));
+
+						// grand champion
 						if (hiscore.grandChampion && users[tr(hiscore.grandChampion.player)]) {
-							console.log('[%s] Matched grand champion: %s', rom, hiscore.grandChampion.player);
+							console.log('[%s] Matched grand champion: %s (%s)', rom, hiscore.grandChampion.player, hiscore.grandChampion.score);
 							hiscores.push({
 								type: 'champ',
 								score: hiscore.grandChampion.score,
@@ -88,11 +106,13 @@ exports.fetchHighscores = function(callback) {
 								user: users[tr(hiscore.grandChampion.player)]
 							});
 						}
+
+						// regular high scores
 						if (hiscore.highest) {
 							for (var i = 0; i < hiscore.highest.length; i++) {
 								var hs = hiscore.highest[i];
 								if (users[tr(hs.player)]) {
-									console.log('[%s] Matched high score %s: %s', rom, hs.rank, hiscore.grandChampion.player);
+									console.log('[%s] Matched high score %s: %s (%s)', rom, hs.rank, hs.player, hs.score);
 									hiscores.push({
 										type: 'hiscore',
 										score: hs.score,
@@ -103,11 +123,13 @@ exports.fetchHighscores = function(callback) {
 								}
 							}
 						}
+
+						// special titles
 						if (hiscore.other) {
 							for (var i = 0; i < hiscore.other.length; i++) {
 								var hs = hiscore.other[i];
 								if (users[tr(hs.player)]) {
-									console.log('[%s] Matched %s: %s', rom, hs.title, hiscore.grandChampion.player);
+									console.log('[%s] Matched %s: %s', rom, hs.title, hs.player);
 									hiscores.push({
 										type: 'special',
 										title: hs.title,
@@ -120,16 +142,12 @@ exports.fetchHighscores = function(callback) {
 								}
 							}
 						}
+
+						// now we have all high scores for this table, update them in the db
 						async.eachSeries(hiscores, updateHighscore, next);
 					}
-				})
-			}, function(err) {
-				if (err) {
-					console.log('ERROR: ' + err);
-				}
-				console.log('All done!');
-				callback();
-			});
+				});
+			}, callback);
 
 		}).error(function(err) {
 			throw Error(err);
