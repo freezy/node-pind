@@ -5,7 +5,7 @@ var async = require('async');
 var settings = require('../../config/settings-mine');
 
 exports.init = function() {
-	var pinemhiConfigPath = fs.realpathSync(binPath() + '/pinemhi.ini');
+	var pinemhiConfigPath = binPath() + '\\pinemhi.ini';
 	var pinemhiConfig = '[paths]\r\n';
 	pinemhiConfig += 'VP=' + fs.realpathSync(settings.vpinmame.path + '/nvram') + '\\\r\n';
 	pinemhiConfig += 'FP=' + fs.realpathSync(settings.futurepinball.path + '/fpRAM') + '\\\r\n';
