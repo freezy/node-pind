@@ -24,22 +24,53 @@ var PindApi = function() {
 		},
 
 		FetchHiscores : function(req, params, callback) {
+			var now = new Date();
 
-			var addHighscore = function(hiscore, callback) {
-				schema.Hiscore.create({
-					type: hiscore.type,
-					score: hiscore.score,
-					rank: hiscore.rank,
-					title: hiscore.title,
-					info: hiscore.info
-				}).success(function(row) {
-					row.setTable(hiscore.table).success(function(row) {
-						row.setUser(hiscore.user).success(function(row) {
-							callback(null, row);
+			var updateHighscore = function(hiscore, callback) {
+				var where = { where: { type: hiscore.type, tableId: hiscore.table.id }};
+				switch (hiscore.type) {
+					case 'champ':
+						break;
+					case 'hiscore':
+						where.where.rank = hiscore.rank;
+						break;
+					case 'special':
+						where.where.title = hiscore.title;
+						break;
+				}
+
+				schema.Hiscore.find(where).success(function(row) {
+					if (row == null) {
+						console.log('No current entry found, adding new highscore.');
+						schema.Hiscore.create({
+							type: hiscore.type,
+							score: hiscore.score,
+							rank: hiscore.rank,
+							title: hiscore.title,
+							info: hiscore.info,
+							createdAt: now,
+							updatedAt: now
+						}).success(function(row) {
+							row.setTable(hiscore.table).success(function(row) {
+								row.setUser(hiscore.user).success(function(row) {
+									callback(null, row);
+								}).error(callback);
+							}).error(callback);
 						}).error(callback);
-					}).error(callback);
+					} else {
+						console.log('Found entry %s, updating', row.id);
+						row.updateAttributes({
+							score: hiscore.score,
+							info: hiscore.info,
+							updatedAt: now
+						}).success(function(row) {
+							row.setUser(hiscore.user).success(function(row) {
+								callback(null, row);
+							}).error(callback);
+						}).error(callback);
+					}
 				}).error(callback);
-			}
+			};
 
 			schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL' }).success(function(rows) {
 				var roms = [];
@@ -108,7 +139,7 @@ var PindApi = function() {
 										}
 									}
 								}
-								async.eachSeries(hiscores, addHighscore, next);
+								async.eachSeries(hiscores, updateHighscore, next);
 							}
 						})
 					}, function(err) {
@@ -116,6 +147,7 @@ var PindApi = function() {
 							console.log('ERROR: ' + err);
 						}
 						console.log('All done!');
+						callback({ message: 'all ok.' });
 					});
 
 				}).error(function(err) {
@@ -125,7 +157,6 @@ var PindApi = function() {
 			}).error(function(err) {
 				throw Error(err);
 			});
-			callback({message: 'all ok.'});
 		}
 	};
 };

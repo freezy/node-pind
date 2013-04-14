@@ -11,7 +11,9 @@ module.exports = function(sequelize, DataTypes) {
 			score: DataTypes.INTEGER,
 			rank: DataTypes.INTEGER,
 			title: DataTypes.STRING,
-			info: DataTypes.STRING
+			info: DataTypes.STRING,
+			createdAt: DataTypes.DATE,
+			updatedAt: DataTypes.DATE
 		},
 		{
 			classMethods: {
