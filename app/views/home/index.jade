@@ -9,6 +9,17 @@ block content
 
 			p This is going to be the home page with overviews of all the stuff happening.
 
+			table.table
+				thead
+					tr
+						th Name
+						th Points
+				tbody
+					for hiscore in hiscores
+						tr
+							td= hiscore.user
+							td= hiscore.totalPoints
+
 block inlineScripts
 	script
 		$(document).ready(function() {
