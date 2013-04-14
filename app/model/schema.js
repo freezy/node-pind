@@ -1,7 +1,6 @@
 var Sequelize = require('sequelize');
 var settings = require('../../config/settings-mine');
 
-
 var config = {
 
 	// disable logging
@@ -61,8 +60,18 @@ var sequelize = new Sequelize(
 	config
 );
 
-Users = sequelize.import(__dirname + '/user');
-Tables = sequelize.import(__dirname + '/table');
+// retrieve base definitions
+User = sequelize.import(__dirname + '/user');
+Table = sequelize.import(__dirname + '/table');
+Hiscore = sequelize.import(__dirname + '/hiscore');
+
+
+// setup associations
+User.hasMany(Hiscore);
+Table.hasMany(Hiscore);
+Hiscore.belongsTo(User);
+Hiscore.belongsTo(Table);
+
 
 sequelize.sync().on('success', function() {
 	console.log('Connected to SQLite.');
@@ -81,6 +90,7 @@ create = function(next){
 module.exports = {
 	sequelize: sequelize,
 	create: create,
-	Table:  Tables,
-	User:  Users
+	Table:  Table,
+	User:  User,
+	Hiscore:  Hiscore
 };

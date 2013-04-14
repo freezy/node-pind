@@ -101,6 +101,18 @@ $(document).ready(function() {
 		});
 	};
 
+	// enable sync ipdb button
+	var syncHiscores = function() {
+		fetching('#fetchhs');
+		api('HyperPin.FetchIPDB', { limit: limit, offset: offset }, function(err, result) {
+			if (err) {
+				alert('Problem Syncing: ' + err);
+			} else {
+				updateData(config, result);
+			}
+		});
+	};
+
 	$('.data.tables + .empty button').click(syncHyperPin);
 	$('#hpsync button').click(syncHyperPin);
 	$('#ipdbsync button').click(syncIPDB);

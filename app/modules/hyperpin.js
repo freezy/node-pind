@@ -15,10 +15,6 @@ var platforms = {
 	FP: 'Future Pinball'
 }
 
-module.exports = function(app) {
-	return exports;
-}
-
 /**
  * Sends a banner version of the table to the given response object.
  * @param res Response object

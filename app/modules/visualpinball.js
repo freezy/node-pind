@@ -7,10 +7,6 @@ var util = require('util');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
-module.exports = function(app) {
-	return exports;
-}
-
 /**
  * Finds the table name for a given file name.
  * @param table Object with filename set
