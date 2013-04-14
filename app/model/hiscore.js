@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.ENUM('champ', 'hiscore', 'buyin_champ', 'buyin_hiscore', 'special'),
 			score: DataTypes.INTEGER,
 			rank: DataTypes.INTEGER,
+			points: DataTypes.INTEGER,
 			title: DataTypes.STRING,
 			info: DataTypes.STRING,
 			createdAt: DataTypes.DATE,

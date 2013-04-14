@@ -33,6 +33,17 @@ exports.fetchHighscores = function(callback) {
 		// check if there's already an entry for type and table
 		schema.Hiscore.find(where).success(function(row) {
 
+			var points = function(hiscore) {
+				switch (hiscore.type) {
+					case 'champ':
+						return 5;
+					case 'hiscore':
+						return 5 - hiscore.rank;
+					case 'special':
+						return 2;
+				}
+			}
+
 			// if not, add new entry
 			if (!row) {
 				//console.log('No current entry found, adding new highscore.');
@@ -42,6 +53,7 @@ exports.fetchHighscores = function(callback) {
 					rank: hiscore.rank,
 					title: hiscore.title,
 					info: hiscore.info,
+					points: points(hiscore),
 					createdAt: now,
 					updatedAt: now
 				}).success(function(row) {
@@ -58,6 +70,7 @@ exports.fetchHighscores = function(callback) {
 				row.updateAttributes({
 					score: hiscore.score,
 					info: hiscore.info,
+					points: points(hiscore),
 					updatedAt: now
 				}).success(function(row) {
 					row.setUser(hiscore.user).success(function(row) {
