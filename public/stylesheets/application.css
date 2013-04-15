@@ -31,8 +31,8 @@ body {
   border: 1px solid #fff;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 .singlebox {
   width: 300px;
@@ -257,16 +257,13 @@ button[type="submit"].small span,
 }
 .modal-body {
   padding: 30px 30px 20px 30px;
-  overflow: hidden;
+  overflow-y: visible;
 }
 .modal-body li {
   color: #625648;
 }
 .modal-body .alert {
   margin: 10px 0 0 0;
-}
-.modal-body input:focus + div {
-  left: -46px;
 }
 .modal-footer,
 .row-fluid.footer {
@@ -429,7 +426,6 @@ button[type="submit"].small span,
   width: 46px;
   height: 35px;
   display: block;
-  position: absolute;
   left: 0px;
   padding-top: 12px;
   padding-left: 15px;
@@ -449,12 +445,8 @@ button[type="submit"].small span,
   -o-transition: all 0.3s ease !important;
   -ms-transition: all 0.3s ease !important;
   transition: all 0.3s ease !important;
-}
-.icon.inputhint.user {
-  top: 235px;
-}
-.icon.inputhint.locked {
-  top: 284px;
+  margin-top: -53px;
+  position: absolute;
 }
 .modal-header .icon {
   padding-bottom: 30px;
@@ -462,6 +454,9 @@ button[type="submit"].small span,
 }
 .modal button.close {
   margin: 15px;
+}
+input:focus + div.inputhint {
+  margin-left: -50px;
 }
 .fatlink {
   display: block;
@@ -526,9 +521,6 @@ button[type="submit"].small span,
 .singlebox.login,
 .singlebox.register {
   width: 305px;
-}
-.singlebox.login form section.body input:focus + div {
-  left: -46px;
 }
 .singlebox.login form section.subfooter label,
 .singlebox.login form section.subfooter input[type='checkbox'] {

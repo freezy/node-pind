@@ -23,10 +23,12 @@ block body
 						#user-cg.control-group
 							.controls
 								input#user-tf(type='text', name='user', placeholder='Username', value=user.user).input-large.disabled
+								.icon.inputhint.user
 								span.help-block Your three-letter acronym. Case doesn't matter.
 						#pass-cg.control-group
 							.controls
 								input#pass-tf(type='password', name='pass', , placeholder='Password', value='').input-large
+								.icon.inputhint.locked
 								span.help-block At least six chars.
 					.modal-footer.lastfooter
 						button(type='submit')#account-form-btn2.btn.right Go!

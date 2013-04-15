@@ -28,8 +28,6 @@ color-red = #b94a48
 
 corner-size = 20px
 
-key-height = 87px
-
 animation-faster = 0.1s
 animation-fast = 0.3s
 animation-slow = 0.5s
@@ -67,7 +65,7 @@ body
 	background color-lighter
 	border 1px solid #fff
 	border-radius 5px
-	box-shadow 0 1px 3px rgba(0,0,0,0.2)
+	box-shadow 0 1px 3px rgba(0,0,0,0.5)
 
 // box dimensions / position
 .singlebox
@@ -252,15 +250,12 @@ button[type="submit"], .btn.fat
 
 .modal-body
 	padding 30px 30px 20px 30px
-	overflow hidden
+	overflow-y visible
 
 	li
 		color color-dark
 	.alert
 		margin: 10px 0 0 0
-
-	input:focus + div
-		left -46px;
 
 .modal-footer, .row-fluid.footer	
 	overflow auto
@@ -395,7 +390,6 @@ button[type="submit"], .btn.fat
 		width 46px
 		height 35px
 		display block
-		position absolute
 		left 0px
 		padding-top 12px
 		padding-left 15px
@@ -407,11 +401,8 @@ button[type="submit"], .btn.fat
 		text-shadow none
 		background color-darkest
 		transition all animation-fast ease !important
-
-		&.user
-			top key-height + 148px
-		&.locked
-			top key-height + 197px
+		margin-top -53px
+		position absolute
 
 .modal-header .icon
 	padding-bottom 30px
@@ -419,6 +410,9 @@ button[type="submit"], .btn.fat
 
 .modal button.close
 	margin 15px
+
+input:focus + div.inputhint
+	margin-left -50px	
 
 // :links
 // ============================================================================
@@ -477,15 +471,11 @@ button[type="submit"], .btn.fat
 	width 305px	
 
 // login box
-.singlebox.login 
-	form 
-		section.body input:focus + div
-			left -46px;
+.singlebox.login form section.subfooter
+	label, input[type='checkbox']
+		float right
+		margin-left 10px
 
-		section.subfooter
-			label, input[type='checkbox']
-				float right
-				margin-left 10px
 
 
 // :bootstrap overloads
