@@ -36,11 +36,21 @@ var TableApi = function() {
 							}
 							break;
 					}
-
 				}
+				// trim trailing operator
 				if (p.where) {
-					p.where = p.where.substr(0, p.where.length - 4);
+					p.where = p.where.substr(0, p.where.lastIndexOf(')'));
 				}
+
+				// add search condition
+				if (params.search && params.search.length > 1) {
+					var where = 'LOWER(`name`) LIKE "%' + params.search + '%"';
+					if (p.where) {
+						where = '(' + p.where + ') AND (' + where + ')';
+					}
+					p.where = where;
+				}
+
 			}
 			schema.Table.all(p).success(function(rows) {
 

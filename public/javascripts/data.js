@@ -37,6 +37,14 @@ function enableData(config) {
 		}
 	});
 
+	// enable search box
+	$('.data.' + config.id + ' input.search').keyup(function() {
+		var query = $(this).val();
+		if (query.length != 1) {
+			refreshData(config);
+		}
+	});
+
 	// enable filters
 	$('.data.' + config.id + ' ul.filter li a').click(function(event) {
 		event.preventDefault();
@@ -49,12 +57,14 @@ function enableData(config) {
 	var clearFilters = function() {
 		$('.data.' + config.id + ' ul.filter li.active').removeClass('active');
 		$('.data.' + config.id + ' .pagination ul').data('page', 1);
+		$('.data.' + config.id + ' input.search').val('');
 		refreshData(config);
 	}
 	$('.data.' + config.id + ' .noresult button').click(clearFilters);
 }
 
 function refreshData(config) {
+	var search = $('.data.' + config.id + ' input.search').val();
 	var limit = $('.data.' + config.id + ' select.numrows').val();
 	var offset = ($('.data.' + config.id + ' .pagination ul').data('page') - 1) * limit;
 	var filters = [];
@@ -63,8 +73,16 @@ function refreshData(config) {
 		filters.push($(this).data('filter'));
 	});
 
+	var params = { limit: limit, offset: offset };
+	if (filters) {
+		params.filters = filters;
+	}
+	if (search && search.length != 1) {
+		params.search = search;
+	}
+
 	// fetch tables
-	api(config.apiCall, { limit: limit, offset: offset, filters: filters }, function(err, result) {
+	api(config.apiCall, params, function(err, result) {
 		if (err) {
 			alert('Problem: ' + err);
 		} else {
@@ -80,6 +98,7 @@ function updateData(config, response) {
 	var pages = Math.ceil(response.count / numrows);
 	var page = $('.data.' + config.id + ' .pagination ul').data('page');
 	var resultsFiltered = $('.data.' + config.id + ' ul.filter li.active').length > 0;
+	var searchQuery = $('.data.' + config.id + ' input.search').val();
 
 	// update pagination
 	$('.data.' + config.id + ' .pagination li:not(.first):not(.last)').remove();
@@ -118,7 +137,7 @@ function updateData(config, response) {
 		$('.data.' + config.id + ' .noresult').fadeOut(200);
 
 	// no results due to filtering
-	} else if (resultsFiltered) {
+	} else if (resultsFiltered || (searchQuery && searchQuery.length > 1)) {
 
 		$('.data.' + config.id).show();
 		$('.data.' + config.id + ' .wrapper').slideUp(200);
