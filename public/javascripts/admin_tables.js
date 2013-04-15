@@ -109,7 +109,7 @@ $(document).ready(function() {
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
-				alert('High scores updated successfully.');
+				alert(result.message);
 			}
 		});
 	};

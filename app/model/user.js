@@ -126,6 +126,7 @@ module.exports = function(sequelize, DataTypes) {
 			beforeCreate: function() {
 				this.pass = hashPassword(this.pass);
 				this.authtoken = randomKey(32);
+				return this;
 			}
 		},
 

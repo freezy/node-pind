@@ -18,7 +18,7 @@ exports.fetchHighscores = function(callback) {
 	var now = new Date();
 
 	// called when there is a match between user and table
-	var updateHighscore = function(hiscore, callback) {
+	var updateHighscore = function(hiscore, next) {
 		var where = { where: { type: hiscore.type, tableId: hiscore.table.id }};
 		switch (hiscore.type) {
 			case 'champ':
@@ -59,10 +59,13 @@ exports.fetchHighscores = function(callback) {
 				}).success(function(row) {
 					row.setTable(hiscore.table).success(function(row) {
 						row.setUser(hiscore.user).success(function(row) {
-							callback(null, row);
-						}).error(callback);
-					}).error(callback);
-				}).error(callback);
+							next();
+						}).error(next);
+					}).error(next);
+				}).error(function(err) {
+					console.log('ERROR: ' + err);
+					next(err);
+				});
 
 			// if so, update entry
 			} else {
@@ -74,11 +77,11 @@ exports.fetchHighscores = function(callback) {
 					updatedAt: now
 				}).success(function(row) {
 					row.setUser(hiscore.user).success(function(row) {
-						callback(null, row);
-					}).error(callback);
-				}).error(callback);
+						next();
+					}).error(next);
+				}).error(next);
 			}
-		}).error(callback);
+		}).error(next);
 	};
 
 	// fetch all VP table and store them into a dictionary
@@ -93,12 +96,15 @@ exports.fetchHighscores = function(callback) {
 				//break;
 			}
 		}
+		console.log('Found %d VP tables with ROM and a nvram.', roms.length);
 		// cache users to avoid re-quering
 		schema.User.all().success(function(rows) {
 			var users = {};
 			for (var i = 0; i < rows.length; i++) {
 				users[tr(rows[i].user)] = rows[i];
 			}
+
+			console.log('Found %d users to match against the %d roms...', rows.length, roms.length);
 
 			// for every rom, get high scores and try to match against the 2 dictionaries
 			async.eachSeries(roms, function(rom, next) {
@@ -107,6 +113,7 @@ exports.fetchHighscores = function(callback) {
 						console.log('[%s] Error: %s', rom, err ? err : 'Unsupported ROM.');
 						next();
 					} else {
+						console.log('[%s] Fetched, checking..', rom);
 						var hiscores = [];
 
 						// grand champion

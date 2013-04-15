@@ -104,7 +104,7 @@ action('signup', function () {
 						that.validationErrors = user.validate();
 
 						if (!that.validationErrors) {
-							schema.User.c(user).success(function(user) {
+							schema.User.build(user).beforeCreate().save().success(function(user) {
 								console.log('all good, user created.');
 								that.validationErrors = null;
 								that.alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
