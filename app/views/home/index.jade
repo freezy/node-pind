@@ -2,23 +2,45 @@ extends ../layouts/inner
 
 block content
 	- contentFor('javascripts', javascriptIncludeTag('data'))
-	div.span10.offset1.content
+	div.span12.content
 		section.home
 			.page-header
 				h1 Welcome!
 
 			p This is going to be the home page with overviews of all the stuff happening.
 
-			table.table
-				thead
-					tr
-						th Name
-						th Points
-				tbody
-					for hiscore in hiscores
-						tr
-							td= hiscore.user
-							td= hiscore.totalPoints
+			div.row-fluid
+				div.span4.dark
+					h3 Globally Best Players
+					table.table
+						thead
+							tr
+								th Name
+								th(style='width:30px') Points
+						tbody
+							for hiscore in hiscores
+								tr
+									td= hiscore.user
+									td.text-right= hiscore.totalPoints
+
+				div.span4.dark
+					h3 Quick Coin Drop
+					.fuzzy3d
+						button Drop -.20
+					.clearfix
+					h3 Latest News
+
+				div.span4.dark
+					h3 Free Table of the Week
+
+			div.row-fluid
+				div.span6.dark
+					h3 Next Table Poll
+					p Vote for the next new table.
+
+				div.span6.dark
+					h3 Favorite Tables
+
 
 block inlineScripts
 	script
