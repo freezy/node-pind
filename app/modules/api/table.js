@@ -39,7 +39,7 @@ var TableApi = function() {
 				}
 				// trim trailing operator
 				if (p.where) {
-					p.where = p.where.substr(0, p.where.lastIndexOf(')'));
+					p.where = p.where.substr(0, p.where.lastIndexOf(')') + 1);
 				}
 
 				// add search condition
@@ -49,6 +49,10 @@ var TableApi = function() {
 						where = '(' + p.where + ') AND (' + where + ')';
 					}
 					p.where = where;
+				}
+
+				if (p.where) {
+					console.log('Condition: WHERE %s', p.where);
 				}
 
 			}
