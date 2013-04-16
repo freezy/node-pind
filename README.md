@@ -51,6 +51,18 @@ Development Principles
 * Be beautiful - minimal yet elegant (check).
 
 
+Platforms
+=========
+
+If you've read as far as this, you already know that all the stuff mentioned
+above runs on Windows and Windows only. I'm currently testing this on XP,
+Windows 7 and Windows 8.
+
+However, I'm open to add support for other platforms if that's your
+development environment. If there are particular problems, let me know and I'll
+try to fix them (or even better, submit a PR).
+
+
 Installation
 ============
 
