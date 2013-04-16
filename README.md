@@ -89,21 +89,20 @@ Working
 -------
 
 * Register user via web
-* UI for table manager
+* Table manager
+* User manager
 * Trigger coin drop via API and web app
 * Parse HyperPin "database" and store locally
 * Scrape ipdb.org for additional meta data
 * Rudimentary access to HyperPin media via API
 * Parse game ROM name from .vpt
 * Get structured high-scores (incl. additional achievements) for a .vpt
+* Link users to high-scores
 
 TODO
 ----
-
-* User manager
-* Link users to high-scores
-* Web table browser
 * Score stats for registered users
+* Web table browser
 * Look for another DB engine (sqlite is major PITA to compile).
 * Basic VPForums.org integration
 * Browsing features
