@@ -153,7 +153,7 @@ exports.enrich = function(game, callback) {
 
 			m = body.match(/<a name="(\d+)">([^<]+)/i);
 			if (m) {
-				game.name = m[2];
+				game.name = trim(m[2]);
 				game.ipdb_no = m[1];
 				game.modelno = firstMatch(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
 				game.ipdb_mfg = firstMatch(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
@@ -193,7 +193,7 @@ exports.syncTop300 = function(callback) {
 			var table = {
 				ipdb_rank: match[1],
 				year : match[2],
-				name : match[3]
+				name : trim(match[3])
 			};
 
 			if (idx <= 300) {
@@ -243,6 +243,10 @@ var firstMatch = function(str, regex) {
 	var m = str.match(regex);
 	return m ? m[1] : null;
 };
+
+var trim = function(str) {
+	return str.replace(/[^\w\d\s\.\-,:_'"()]/ig, '');
+}
 
 var findBestMatch = function(matches, game) {
 
