@@ -101,14 +101,42 @@ exports.enrich = function(game, callback) {
 
 	var forceSearch = false;
 
+	/**
+	 * ipdb.org is quite picky about names and spelling errors etc will
+	 * result in empty search results.
+	 *
+	 * This function fixes common spelling mistakes and name aberrations.
+	 * @param name Original name from HyperPin
+	 */
+	var fixName = function(n) {
+
+		var name = n;
+		var r = function(needle, haystack) {
+			name = name.replace(needle, haystack);
+		}
+
+		// common spelling errors
+		r(/judgement day/i, 'judgment day');
+		r(/ad+am+s family/i, 'addams family');
+
+		// variations
+		r(/high speed 2/i, 'high speed ii');
+		r(/attack and revenge from mars/i, 'revenge from mars');
+
+		// strip off unnecessary shit
+		r(/night mode/i, '');
+		r(/v\d$/i, '');
+		r(/[^0-9a-z]+/ig, ' ');
+
+		return name;
+	}
+
 	if (!game.name) {
-		callback('First parameter must contain at least "name".');
-		return;
+		return callback('First parameter must contain at least "name".');
 	}
 
 	if (game.type == 'OG') { // ignore original games
-		callback(null, game);
-		return;
+		return callback(null, game);
 	}
 
 	log.info('[ipdb] Fetching data for ' + game.name);
@@ -117,7 +145,7 @@ exports.enrich = function(game, callback) {
 		url = 'http://www.ipdb.org/machine.cgi?id=' + game.ipdb_no;
 	} else {
 		// advanced search: var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
-		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(game.name.replace(/[^0-9a-z]+/ig, ' ')) + '&searchtype=quick';
+		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(fixName(game.name)) + '&searchtype=quick';
 	}
 	log.debug('[ipdb] Requesting ' + url);
 	request(url, function (error, response, body) {
@@ -221,7 +249,6 @@ exports.syncTop300 = function(callback) {
 						}).error(cb);
 					}, next);
 				} else {
-					log.debug('[ipdb] No match for  ' + table.name + ' (' + table.year + ')');
 					next();
 				}
 			}).error(function(err){

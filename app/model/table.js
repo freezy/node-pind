@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
 		rom: DataTypes.STRING,
 		ipdb_no: DataTypes.STRING,
 		ipdb_mfg: DataTypes.STRING,
-		ipdb_rank: DataTypes.STRING,
+		ipdb_rank: DataTypes.INTEGER,
 		rating: DataTypes.FLOAT,
 		modelno: DataTypes.STRING,
 		short: DataTypes.STRING,
