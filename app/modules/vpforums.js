@@ -7,22 +7,12 @@ var settings = require('../../config/settings-mine');
 exports.findMediaPack = function(table, callback) {
 	console.log('Searching media pack for "' + table.name + '"...');
 	fetchDownloads(35, table.name[0], function(err, results) {
-		var bestMatch, distance = 10;
-		for (var i = 0; i < results.length; i++) {
-			var result = results[i];
-			var name = result.title.replace(/[\[\(].*/, '').trim();
-			var d = natural.LevenshteinDistance(table.name.toLowerCase(), name.toLowerCase());
-			console.log('%d %s', d, name);
-			if (d < distance) {
-				bestMatch = result;
-				distance = d;
-				if (d == 0) {
-					break;
-				}
-			}
-		}
-		console.log('Best Match: %j', bestMatch);
-		download(bestMatch.url, function(err, filename) {
+
+		var match = matchResult(results, table.name, function(str) {
+			return str.replace(/[\[\(].*/, '').trim();
+		})[0];
+
+		download(match.url, settings.pind.tmp, function(err, filename) {
 			if (!err) {
 				console.log('Downloaded file to: %s', filename);
 			} else {
@@ -36,6 +26,52 @@ exports.findMediaPack = function(table, callback) {
 		});
 	});
 };
+
+/**
+ * Returns a list of links to all ROM files for a given table.
+ * @param table Row from tables database.
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Array} List of found links. Links are objects with <tt>name</tt> and <tt>url</tt>.</li></ol>
+ */
+exports.getRomLinks = function(table, callback) {
+	console.log('Searching ROM for "' + table.name + '"...');
+	fetchDownloads(9, table.name[0], function(err, results) {
+		var matches = matchResult(results, table.name, function(str) {
+			return str.replace(/[\[\(\-].*/, '').trim();
+		});
+		var links = [];
+		for (var i = 0; i < matches.length; i++) {
+			links.push({
+				title: matches[i].title,
+				url:  matches[i].url,
+				filename: matches[i].title.substr(matches[i].title.length - 4).toLowerCase() == '.zip'
+					? matches[i].title.substr(matches[i].title.lastIndexOf(' ') + 1).trim()
+					: null
+			});
+		}
+		callback(null, links);
+	});
+};
+
+function matchResult(results, title, trimFct) {
+	var matches = [];
+	var distance = 10;
+	for (var i = 0; i < results.length; i++) {
+		var result = results[i];
+		var name = trimFct(result.title);
+		var d = natural.LevenshteinDistance(title.toLowerCase(), name.toLowerCase());
+		console.log('%d %s', d, name);
+		if (d < distance) {
+			matches = [ result ];
+			distance = d;
+		} else if (d == distance) {
+			matches.push(result);
+		}
+	}
+	console.log('Matches: %j', matches);
+	return matches;
+}
 
 function fetchDownloads(cat, letter, callback, currentResult, page) {
 	if (!page) {
@@ -52,9 +88,9 @@ function fetchDownloads(cat, letter, callback, currentResult, page) {
 		if (m = body.match(/<li class='pagejump[^']+'>\s+<a[^>]+>Page \d of (\d+)/i)) {
 			numPages = m[1];
 		}
-		var regex = new RegExp(/<h3\s+class='ipsType_subtitle'>\s+<a\s+href='([^']+)[^>]+>([^<]+)/gi);
+		var regex = new RegExp(/<h3\s+class='ipsType_subtitle'>\s+<a\s+href='([^']+)'\s+title='View file named ([^']+)/gi);
 		while (m = regex.exec(body)) {
-			currentResult.push({ url: m[1].replace(/&amp;/g, '&'), title: m[2] });
+			currentResult.push({ url: m[1].replace(/&amp;/g, '&'), title: m[2].trim() });
 		}
 		if (numPages == page) {
 			callback(null, currentResult);
@@ -64,7 +100,7 @@ function fetchDownloads(cat, letter, callback, currentResult, page) {
 	});
 }
 
-function download(url, callback) {
+function download(url, folder, callback) {
 	login(function(err) {
 		if (err) {
 			callback(err);
@@ -89,11 +125,12 @@ function download(url, callback) {
 							if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>\s*Download\s*<\/a>[\s\S]*?<strong\s+class='name'>([^<]+)/i)) {
 								var downloadUrl = m[1].replace(/&amp;/g, '&');
 								var filename = m[2].replace(/[^\w\d\.\-]/gi, '').trim();
-								console.log('Downloading "' + filename + '"...');
-								var stream = fs.createWriteStream(settings.pind.tmp + '/' + filename);
+								var dest = folder + '/' + filename;
+								console.log('Downloading %s at %s...', filename, downloadUrl);
+								var stream = fs.createWriteStream(dest);
 								stream.on('close', function() {
-									console.log('Download complete.');
-									callback(null, settings.pind.tmp + '/' + filename);
+									console.log('Download completed at %.', dest);
+									callback(null, dest);
 								});
 								request(downloadUrl).pipe(stream);
 							} else {

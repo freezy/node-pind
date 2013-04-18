@@ -2,8 +2,13 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var util = require('util');
 var async = require('async');
+var request = require('request');
+
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
+
+var ipdb = require('./ipdb');
+var vpm = require('./vpforums');
 
 /**
  * Updates high scores from .nv RAM files.
@@ -176,7 +181,8 @@ exports.fetchHighscores = function(callback) {
 	}).error(function(err) {
 		throw Error(err);
 	});
-}
+};
+
 
 /**
  * Creates pinemhi.ini with the correct parameters.
@@ -188,6 +194,58 @@ exports.init = function() {
 	pinemhiConfig += 'FP=' + fs.realpathSync(settings.futurepinball.path + '/fpRAM') + '\\\r\n';
 	fs.writeFileSync(pinemhiConfigPath, pinemhiConfig);
 };
+
+/**
+ * Checks ipdb.org and vpforums.org for ROMs and downloads them, preferably from
+ * ipdb.org.
+ *
+ * @param callback
+ */
+exports.fetchMissingRoms = function(callback) {
+
+	var checkAndDownload = function(links, next) {
+		async.eachSeries(links, function(link, next) {
+			var filepath = settings.vpinmame.path + '/roms/' + link.filename;
+			if (!fs.existsSync(filepath)) {
+				console.log('Downloading %s at %s...', link.title, link.url);
+				var stream = fs.createWriteStream(filepath);
+				stream.on('close', function() {
+					console.log('Download complete, saved to %s.', filepath);
+					next();
+				});
+				request(link.url).pipe(stream);
+			} else {
+				console.log('Rom %s already available, skipping.', link.filename);
+				next();
+			}
+		}, next);
+	};
+
+
+	schema.Table.findAll({ where: 'NOT `rom_file` AND rom IS NOT NULL', limit: 1 }).success(function(rows) {
+		async.eachSeries(rows, function(row, next) {
+			if (row.ipdb_no) {
+
+				vpm.getRomLinks(row, function(err, links) {
+					console.log('VPM ROMS: %s', util.inspect(links));
+				});
+				return;
+
+				ipdb.getRomLinks(row.ipdb_no, function(err, links) {
+					if (!err) {
+						checkAndDownload(links, next);
+					} else {
+						next();
+					}
+				});
+			} else {
+				console.log('WARNING: ROM file found in table but no IPDB ID. Maybe try matching IPDB.org first?');
+				next();
+			}
+		}, callback);
+	});
+};
+
 
 /**
  * Returns highscores for a given ROM.

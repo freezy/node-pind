@@ -266,6 +266,31 @@ exports.syncTop300 = function(callback) {
 	});
 };
 
+/**
+ * Returns a list of links to all ROM files for a given table.
+ * @param ipdbId IPDB.org ID of the table.
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Array} List of found links. Links are objects with <tt>name</tt> and <tt>url</tt>.</li></ol>
+ */
+exports.getRomLinks = function(ipdbId, callback) {
+	var url = 'http://www.ipdb.org/machine.cgi?id=' + ipdbId;
+	log.info('[ipdb] Fetching details for game ID ' + ipdbId);
+	request(url, function (error, response, body) {
+		var regex = /ZIP<\/a>&nbsp;<\/td><td[^>]+><a href="([^"]+)"\s*>([^<]+rom[^<]+)/gi;
+		var match;
+		var urls = [];
+		while (match = regex.exec(body)) {
+			urls.push( {
+				title: match[2],
+				url: match[1],
+				filename: match[1].substr(match[1].lastIndexOf('/') + 1).trim()
+			})
+		}
+		callback(null, urls);
+	});
+};
+
 var firstMatch = function(str, regex) {
 	var m = str.match(regex);
 	return m ? m[1] : null;

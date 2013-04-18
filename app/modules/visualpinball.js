@@ -1,8 +1,8 @@
 var fs = require('fs');
 var log = require('winston');
 var ocd = require('ole-doc').OleCompoundDoc;
-var async = require('async');
 var util = require('util');
+var async = require('async');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
@@ -289,6 +289,12 @@ exports.scanDirectory = function(iterator, callback) {
 	})
 };
 
+/**
+ * Goes through all VP tables, reads the ROM name from the table file if
+ * available and updates the database.
+ *
+ * @param callback
+ */
 exports.updateRomNames = function(callback) {
 	schema.Table.findAll({ where: { platform: 'VP' }}).success(function(rows) {
 		async.eachSeries(rows, function(row, next) {
@@ -311,3 +317,4 @@ exports.updateRomNames = function(callback) {
 		}, callback);
 	}).error(callback);
 }
+
