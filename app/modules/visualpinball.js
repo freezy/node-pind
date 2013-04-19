@@ -109,7 +109,7 @@ exports.getGameRomName = function(fileName, callback) {
 		if (m) {
 
 			var getVariableValue = function(name) {
-				var regex = new RegExp(name + '\\s*=\\s*(.+)', 'i');
+				var regex = new RegExp('^\\s*[^\']*' + name + '\\s*=\\s*(.+)', 'im');
 				var m = script.match(regex);
 				return m ? m[1] : null;
 			}
