@@ -8,7 +8,7 @@ var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
 var ipdb = require('./ipdb');
-var vpm = require('./vpforums');
+var vpf = require('./vpforums');
 
 /**
  * Updates high scores from .nv RAM files.
@@ -203,44 +203,89 @@ exports.init = function() {
  */
 exports.fetchMissingRoms = function(callback) {
 
-	var checkAndDownload = function(links, next) {
+	/**
+	 * Loops through a list of download links, checks if the file is already
+	 * locally available and otherwise fetches it using the given download
+	 * function.
+	 *
+	 * @param links List of download links
+	 * @param downloadFct Download function. Args are link object, destination folder and callback
+	 * @param callback Callback function
+	 */
+	var checkAndDownload = function(links, downloadFct, callback) {
 		async.eachSeries(links, function(link, next) {
-			var filepath = settings.vpinmame.path + '/roms/' + link.filename;
-			if (!fs.existsSync(filepath)) {
-				console.log('Downloading %s at %s...', link.title, link.url);
-				var stream = fs.createWriteStream(filepath);
-				stream.on('close', function() {
-					console.log('Download complete, saved to %s.', filepath);
-					next();
-				});
-				request(link.url).pipe(stream);
+			if (!fs.existsSync(settings.vpinmame.path + '/roms/' + link.filename)) {
+				downloadFct(link, settings.vpinmame.path + '/roms', next);
 			} else {
-				console.log('Rom %s already available, skipping.', link.filename);
+				console.log('ROM %s already available, skipping.', link.filename);
 				next();
 			}
-		}, next);
+		}, callback);
 	};
 
+	/**
+	 * Downloads a file.
+	 * @param link {Object} Contains: <tt>url</tt>, <tt>filename</tt>, <tt>title</tt>.
+	 * @param folder Destination folder
+	 * @param next Callback. Second argument is filename where saved.
+	 */
+	var download = function(link, folder, next) {
+		console.log('Downloading %s at %s...', link.title, link.url);
+		var filepath = folder + '/' + link.filename;
+		var stream = fs.createWriteStream(filepath);
+		stream.on('close', function() {
+			console.log('Download complete, saved to %s.', filepath);
+			next(null, filepath);
+		});
+		stream.on('error', next);
+		request(link.url).pipe(stream);
+	};
 
+	/**
+	 * Downloads all ROMs from vpforums.org (that don't exist already).
+	 * @param row Tables row from database
+	 * @param next Callback
+	 */
+	var downloadVPF = function(row, next) {
+		vpf.getRomLinks(row, function(err, links) {
+			if (err) {
+				console.log('ERROR: ' + err);
+				return next(err);
+			}
+			checkAndDownload(links, vpf.download, next);
+		});
+	}
+
+	/**
+	 * Downloads all ROMs from ipdb.org (that don't exist already), followed
+	 * by vpforums.org.
+	 * @param row Tables row from database
+	 * @param next Callback
+	 */
+	var downloadIPDB = function(row, next) {
+		ipdb.getRomLinks(row.ipdb_no, function(err, links) {
+			console.log('IPDB ROMS: %s', util.inspect(links));
+			if (err) {
+				console.log('ERROR: ' + err);
+				return next(err);
+			}
+			checkAndDownload(links, download, function(err) {
+				if (err) {
+					return next(err);
+				}
+				downloadVPF(row, next);
+			});
+		});
+	}
+
+	console.log('Fetching tables with no ROM file...')
 	schema.Table.findAll({ where: 'NOT `rom_file` AND rom IS NOT NULL', limit: 1 }).success(function(rows) {
 		async.eachSeries(rows, function(row, next) {
 			if (row.ipdb_no) {
-
-				vpm.getRomLinks(row, function(err, links) {
-					console.log('VPM ROMS: %s', util.inspect(links));
-				});
-				return;
-
-				ipdb.getRomLinks(row.ipdb_no, function(err, links) {
-					if (!err) {
-						checkAndDownload(links, next);
-					} else {
-						next();
-					}
-				});
+				downloadIPDB(row, next);
 			} else {
 				console.log('WARNING: ROM file found in table but no IPDB ID. Maybe try matching IPDB.org first?');
-				next();
+				downloadVPF(row, next);
 			}
 		}, callback);
 	});

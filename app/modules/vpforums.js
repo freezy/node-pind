@@ -12,7 +12,7 @@ exports.findMediaPack = function(table, callback) {
 			return str.replace(/[\[\(].*/, '').trim();
 		})[0];
 
-		download(match.url, settings.pind.tmp, function(err, filename) {
+		exports.download(match.url, settings.pind.tmp, function(err, filename) {
 			if (!err) {
 				console.log('Downloaded file to: %s', filename);
 			} else {
@@ -54,6 +54,68 @@ exports.getRomLinks = function(table, callback) {
 	});
 };
 
+/**
+ * Downloads a file from vpforums.org.
+ * @param link
+ * @param folder
+ * @param callback
+ */
+exports.download = function(link, folder, callback) {
+
+	// fetch the "overview" page
+	request(link.url, function(err, response, body) {
+		if (err) {
+			return callback(err);
+		}
+
+		// starts the download, assuming we have a logged session.
+		var download = function(body) {
+			var m;
+			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
+				var confirmUrl = m[1].replace(/&amp;/g, '&');
+				console.log('Getting confirmation page...');
+				// fetch the "confirm" page, where the actual link is
+				request(confirmUrl, function(err, response, body) {
+					if (err) {
+						callback(err);
+					} else {
+						if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>\s*Download\s*<\/a>[\s\S]*?<strong\s+class='name'>([^<]+)/i)) {
+							var downloadUrl = m[1].replace(/&amp;/g, '&');
+							var filename = m[2].replace(/[^\w\d\.\-]/gi, '').trim();
+							var dest = folder + '/' + filename;
+							console.log('Downloading %s at %s...', filename, downloadUrl);
+							var stream = fs.createWriteStream(dest);
+							stream.on('close', function() {
+								console.log('Download completed at %s.', dest);
+								callback(null, dest);
+							});
+							request(downloadUrl).pipe(stream);
+						} else {
+							callback('Cannot find file download button at ' + link);
+						}
+					}
+				});
+			} else {
+				callback('Cannot find confirmation download button at ' + link);
+			}
+		};
+
+		// check if need to login
+		if (body.match(/<a href='[^']+' title='Sign In' id='sign_in'>Sign In/i)) {
+			console.log('Seems we need to login first.');
+			login(function(err) {
+				if (err) {
+					return callback(err);
+				}
+				download(body);
+			});
+		} else {
+			console.log('Looks like we\'re already logged in.');
+			download(body);
+		}
+	});
+};
+
 function matchResult(results, title, trimFct) {
 	var matches = [];
 	var distance = 10;
@@ -61,7 +123,6 @@ function matchResult(results, title, trimFct) {
 		var result = results[i];
 		var name = trimFct(result.title);
 		var d = natural.LevenshteinDistance(title.toLowerCase(), name.toLowerCase());
-		console.log('%d %s', d, name);
 		if (d < distance) {
 			matches = [ result ];
 			distance = d;
@@ -69,7 +130,6 @@ function matchResult(results, title, trimFct) {
 			matches.push(result);
 		}
 	}
-	console.log('Matches: %j', matches);
 	return matches;
 }
 
@@ -97,52 +157,6 @@ function fetchDownloads(cat, letter, callback, currentResult, page) {
 		} else {
 			fetchDownloads(cat, letter, callback, currentResult, page + 1);
 		}
-	});
-}
-
-function download(url, folder, callback) {
-	login(function(err) {
-		if (err) {
-			callback(err);
-			return;
-		}
-		console.log('Getting download page...');
-
-		// fetch the "overview" page
-		request(url, function(err, response, body) {
-			if (err) {
-				callback(err);
-			} else {
-				var m;
-				if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
-					var confirmUrl = m[1].replace(/&amp;/g, '&');
-					console.log('Getting confirmation page...');
-					// fetch the "confirm" page, where the actual link is
-					request(confirmUrl, function(err, response, body) {
-						if (err) {
-							callback(err);
-						} else {
-							if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>\s*Download\s*<\/a>[\s\S]*?<strong\s+class='name'>([^<]+)/i)) {
-								var downloadUrl = m[1].replace(/&amp;/g, '&');
-								var filename = m[2].replace(/[^\w\d\.\-]/gi, '').trim();
-								var dest = folder + '/' + filename;
-								console.log('Downloading %s at %s...', filename, downloadUrl);
-								var stream = fs.createWriteStream(dest);
-								stream.on('close', function() {
-									console.log('Download completed at %.', dest);
-									callback(null, dest);
-								});
-								request(downloadUrl).pipe(stream);
-							} else {
-								callback('Cannot find file download button at ' + url);
-							}
-						}
-					});
-				} else {
-					callback('Cannot find confirmation download button at ' + url);
-				}
-			}
-		});
 	});
 }
 
