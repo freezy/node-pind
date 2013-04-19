@@ -87,103 +87,108 @@ exports.identify = function(table, callback) {
  * Tries to determine which ROM is used for a table. It does it by looking
  * at the table script and intelligently guessing most recently used ROM.
  *
- * @param fileName File name of the .vpt file (incl. extension, excl. path). File can not exist.
+ * @param script Table script body
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Name of the game ROM</li></ol>
  */
-exports.getGameRomName = function(fileName, callback) {
-	var tablePath = settings.visualpinball.path + '/tables/' + fileName;
-	// skip if file doesn't exist.
-	if (!fs.existsSync(tablePath)) {
-		log.warn('Table file "' + tablePath + '" does not exist.');
-		callback();
-		return;
-	}
-	exports.getScriptFromTable(tablePath, function(err, script) {
-		if (err) {
-			callback(err);
+exports.getRomName = function(script, callback) {
+
+	var m = script.match(/\.GameName\s*=\s*(.+)/);
+	if (m) {
+
+		var getVariableValue = function(name) {
+			var regex = new RegExp('^\\s*[^\']*' + name + '\\s*=\\s*(.+)', 'im');
+			var m = script.match(regex);
+			return m ? m[1] : null;
+		}
+		var getIntValue = function(str) {
+			var m;
+			if (m = str.match(/&h(\d+)/i)) {
+				return parseInt(m[1], 16)
+			}
+			return parseInt(str);
+		}
+		var getStrValue = function(str) {
+			var m;
+			if (m = str.match(/"([^"]+)"/i)) {
+				return m[1];
+			}
+			return str;
+		}
+		var getOptionsValue = function(varName, callback) {
+			var valueDef = getVariableValue(varName);
+			var m;
+			if (m = valueDef.match(/LoadValue\("([^"]+)",\s*"([^"]+)"\)/i)) {
+				exports.getTableSetting(m[1], m[2], callback);
+
+			} else if (m = valueDef.match(/LoadValue\(([^"]+),\s*"([^"]+)"\)/i)) {
+				exports.getTableSetting(getStrValue(getVariableValue(m[1])), m[2], callback);
+
+			} else {
+				callback('Cannot parse options value.');
+			}
+		}
+		var gameName;
+		if (m[1].match(/\W/)) {
+			gameName = m[1];
+		} else {
+			gameName = getVariableValue(m[1]);
+		}
+
+		// direct hit, all good.
+		if (gameName.indexOf('"') == 0) {
+			callback(null, gameName.match(/"([^"]+)/)[1]);
 			return;
 		}
-		var m = script.match(/\.GameName\s*=\s*(.+)/);
-		if (m) {
 
-			var getVariableValue = function(name) {
-				var regex = new RegExp('^\\s*[^\']*' + name + '\\s*=\\s*(.+)', 'im');
-				var m = script.match(regex);
-				return m ? m[1] : null;
-			}
-			var getIntValue = function(str) {
-				var m;
-				if (m = str.match(/&h(\d+)/i)) {
-					return parseInt(m[1], 16)
-				}
-				return parseInt(str);
-			}
-			var getStrValue = function(str) {
-				var m;
-				if (m = str.match(/"([^"]+)"/i)) {
-					return m[1];
-				}
-				return str;
-			}
-			var getOptionsValue = function(varName, callback) {
-				var valueDef = getVariableValue(varName);
-				var m;
-				if (m = valueDef.match(/LoadValue\("([^"]+)",\s*"([^"]+)"\)/i)) {
-					exports.getTableSetting(m[1], m[2], callback);
+		var m;
+		// Array(Romset1,Romset2,Romset3,Romset4,Romset5,Romset6,Romset7,Romset8)((tzOptions And (15*cOptRom))\cOptRom)
+		if (m = gameName.match(/Array\((\w+\d,?\s*){2,}\)\s*\(\((\w+)\s*And\s*\((\d+)\s*\*\s*(\w+)\)\s*\)\s*\\\s*(\w+)\s*\)/i)) {
+			var optionsVar = m[2];     // tzOptions
+			var multiplicator = m[3];  // 15
+			var constantVar = m[4];    // cOptRom
+			var romVars = gameName.match(/Array\(([^\)]+)\)/i)[1].split(',');
 
-				} else if (m = valueDef.match(/LoadValue\(([^"]+),\s*"([^"]+)"\)/i)) {
-					exports.getTableSetting(getStrValue(getVariableValue(m[1])), m[2], callback);
-
+			getOptionsValue(optionsVar, function(err, optionsVal) {
+				var arrayPos;
+				if (err) {
+					// if nothing found (maybe game has never been run), return the first defined rom
+					arrayPos = 0;
 				} else {
-					callback('Cannot parse options value.');
+					var constantVal = getIntValue(getVariableValue(constantVar));
+					arrayPos = Math.floor((optionsVal & (multiplicator * constantVal)) / constantVal);
 				}
-			}
-			var gameName;
-			if (m[1].match(/\W/)) {
-				gameName = m[1];
-			} else {
-				gameName = getVariableValue(m[1]);
-			}
-
-			// direct hit, all good.
-			if (gameName.indexOf('"') == 0) {
-				callback(null, gameName.match(/"([^"]+)/)[1]);
-				return;
-			}
-
-			var m;
-			// Array(Romset1,Romset2,Romset3,Romset4,Romset5,Romset6,Romset7,Romset8)((tzOptions And (15*cOptRom))\cOptRom)
-			if (m = gameName.match(/Array\((\w+\d,?\s*){2,}\)\s*\(\((\w+)\s*And\s*\((\d+)\s*\*\s*(\w+)\)\s*\)\s*\\\s*(\w+)\s*\)/i)) {
-				var optionsVar = m[2];     // tzOptions
-				var multiplicator = m[3];  // 15
-				var constantVar = m[4];    // cOptRom
-				var romVars = gameName.match(/Array\(([^\)]+)\)/i)[1].split(',');
-
-				getOptionsValue(optionsVar, function(err, optionsVal) {
-					var arrayPos;
-					if (err) {
-						// if nothing found (maybe game has never been run), return the first defined rom
-						arrayPos = 0;
-					} else {
-						var constantVal = getIntValue(getVariableValue(constantVar));
-						arrayPos = Math.floor((optionsVal & (multiplicator * constantVal)) / constantVal);
-					}
-					var romVar = romVars[arrayPos].trim();
-					var romName = getVariableValue(romVar);
-					callback(null, getStrValue(romName));
-				});
-
-			} else {
-				callback('Could not find currently used ROM in script.');
-			}
+				var romVar = romVars[arrayPos].trim();
+				var romName = getVariableValue(romVar);
+				callback(null, getStrValue(romName));
+			});
 
 		} else {
-			callback('Could not find ".GameName" in the script anywhere.');
+			callback('Could not find currently used ROM in script.');
 		}
-	})
+
+	} else {
+		callback('Could not find ".GameName" in the script anywhere.');
+	}
 }
+
+exports.getDmdOrientation = function(script, callback) {
+	var m = script.match(/\.Games\([^\)]+\)\.Settings\.Value\("ro[lr]"\)\s*=\s*(\d+)/i);
+	if (m) {
+		return callback(null, m[1]);
+	}
+	callback('No DMD orientation setting found.');
+}
+
+exports.getController = function(script, callback) {
+	var m = script.match(/Set\s*Controller\s*=\s*CreateObject\("([^"]+)"/i);
+	if (m) {
+		return callback(null, m[1]);
+	}
+	callback('No Controller object declaration found.');
+}
+
 
 /**
  * Returns a specific setting for a given table.
@@ -239,8 +244,7 @@ exports.getTableSetting = function(storageName, streamName, callback) {
  */
 exports.getScriptFromTable = function(tablePath, callback) {
 	if (!fs.existsSync(tablePath)) {
-		callback('File "' + tablePath + '" does not exist.');
-		return;
+		return callback('File "' + tablePath + '" does not exist.');
 	}
 	var now = new Date().getTime();
 	fs.open(tablePath, 'r', function(err, fd) {
@@ -291,27 +295,60 @@ exports.scanDirectory = function(iterator, callback) {
 
 /**
  * Goes through all VP tables, reads the ROM name from the table file if
- * available and updates the database.
+ * available and updates the database. Also reads the rotation setting.
  *
  * @param callback
  */
-exports.updateRomNames = function(callback) {
+exports.updateTableData = function(callback) {
+
+	// fetch all VP tables
 	schema.Table.findAll({ where: { platform: 'VP' }}).success(function(rows) {
 		async.eachSeries(rows, function(row, next) {
-			exports.getGameRomName(row.filename + '.vpt', function(err, romname) {
+
+			// skip if file doesn't exist.
+			var tablePath = settings.visualpinball.path + '/tables/' + row.filename + '.vpt';
+			if (!fs.existsSync(tablePath)) {
+				log.warn('Table file "' + tablePath + '" does not exist.');
+				return next();
+			}
+
+			// read script from table
+			exports.getScriptFromTable(tablePath, function(err, script) {
 				if (err) {
-					next(err);
-				} else {
-					if (romname) {
-						row.updateAttributes({
-							rom: romname,
-							rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + romname + '.zip')
-						}).done(next);
-					} else {
-						next();
-					}
+					console.log('Error getting script: ' + err);
+					return next(err);
 				}
+
+				// parse rom name
+				exports.getRomName(script, function(err, rom) {
+					if (err) {
+						console.log('Error reading ROM name: ' + err);
+						rom = null;
+					}
+
+					exports.getDmdOrientation(script, function(err, rotation) {
+						if (err) {
+							console.log('Error reading DMD rotation: ' + err);
+							rotation = null;
+						}
+
+						exports.getController(script, function(err, controller) {
+							if (err) {
+								console.log('Error reading controller: ' + err);
+								controller = null;
+							}
+
+							row.updateAttributes({
+								rom: rom,
+								dmd_rotation: rotation,
+								controller: controller,
+								rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + rom + '.zip')
+							}).done(next);
+						});
+					});
+				});
 			});
+
 		}, callback);
 	}).error(callback);
 }

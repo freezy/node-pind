@@ -31,6 +31,8 @@ module.exports = function(sequelize, DataTypes) {
 		short: DataTypes.STRING,
 		table_file: DataTypes.BOOLEAN,
 		rom_file: DataTypes.BOOLEAN,
+		dmd_rotation: DataTypes.INTEGER,
+		controller: DataTypes.STRING,
 		media_table: DataTypes.BOOLEAN,
 		media_backglass: DataTypes.BOOLEAN,
 		media_wheel: DataTypes.BOOLEAN,

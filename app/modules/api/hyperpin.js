@@ -13,7 +13,7 @@ var HyperPinAPI = function() {
 					console.log("ERROR: " + err);
 					throw new Error(err);
 				} else {
-					vp.updateRomNames(function(err, tables) {
+					vp.updateTableData(function(err, tables) {
 						if (err) {
 							throw new Error(err);
 						}

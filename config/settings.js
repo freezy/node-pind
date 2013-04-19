@@ -99,7 +99,13 @@ module.exports = {
 		/**
 		 * Path to installation folder. No trailing slash!
 		 */
-		path: 'C:/Games/Visual Pinball/VPinMame'
+		path: 'C:/Games/Visual Pinball/VPinMame',
+		/**
+		 * When bulk-applying rotation settings on tables, this indicates how to set the "rol" setting.
+		 * If set to true, the DMD will be rotated 90°, otherwise it will have the same orientation as
+		 * the playfield.
+		 */
+		rotate: false
 	},
 	/**
 	 * VPForums.org-specific settings.
