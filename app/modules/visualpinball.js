@@ -306,9 +306,7 @@ exports.updateRomNames = function(callback) {
 						row.updateAttributes({
 							rom: romname,
 							rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + romname + '.zip')
-						}).success(function(r) {
-							next(null, r);
-						}).error(next);
+						}).done(next);
 					} else {
 						next();
 					}

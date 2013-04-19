@@ -224,6 +224,23 @@ exports.fetchMissingRoms = function(callback) {
 	};
 
 	/**
+	 * Updates the row with rom_file status.
+	 * @param row
+	 * @param next
+	 */
+	var checkSuccess = function(row, next) {
+		if (row.rom) {
+			console.log('Updating table row with new ROM status...');
+			row.updateAttributes({
+				rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + row.rom + '.zip')
+			}).done(next);
+		} else {
+			next();
+		}
+	};
+
+
+	/**
 	 * Downloads a file.
 	 * @param link {Object} Contains: <tt>url</tt>, <tt>filename</tt>, <tt>title</tt>.
 	 * @param folder Destination folder
@@ -252,9 +269,14 @@ exports.fetchMissingRoms = function(callback) {
 				console.log('ERROR: ' + err);
 				return next(err);
 			}
-			checkAndDownload(links, vpf.download, next);
+			checkAndDownload(links, vpf.download, function(err) {
+				if (err) {
+					return next(err);
+				}
+				checkSuccess(row, next);
+			});
 		});
-	}
+	};
 
 	/**
 	 * Downloads all ROMs from ipdb.org (that don't exist already), followed
@@ -276,7 +298,7 @@ exports.fetchMissingRoms = function(callback) {
 				downloadVPF(row, next);
 			});
 		});
-	}
+	};
 
 	console.log('Fetching tables with no ROM file...')
 	schema.Table.findAll({ where: 'NOT `rom_file` AND rom IS NOT NULL', limit: 1 }).success(function(rows) {
