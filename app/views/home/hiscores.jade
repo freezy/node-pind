@@ -1,0 +1,14 @@
+extends ../layouts/inner
+
+block content
+	- contentFor('javascripts', javascriptIncludeTag('data', 'hiscores'))
+	div.span10.offset1.content
+		section
+			.page-header
+				h1 High Scores
+
+block inlineScripts
+	script
+		$(document).ready(function() {
+			menu('hiscores');
+		});

@@ -21,6 +21,9 @@ var UserApi = function() {
 						case 'nocredits':
 							p.where += '(`credits` = 0) OR ';
 							break;
+						case 'hiscore':
+							p.where += '(`id` IN (SELECT DISTINCT `userId` FROM `hiscores`)) OR ';
+							break;
 					}
 				}
 				if (p.where) {

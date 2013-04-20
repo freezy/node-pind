@@ -1,6 +1,13 @@
 var schema = require('../../model/schema');
 var settings = require('../../../config/settings-mine');
 
+var pathTo;
+
+module.exports = function(app) {
+	pathTo = app.compound.map.pathTo;
+	return exports;
+};
+
 var TableApi = function() {
 	return {
 		name : 'Table',
@@ -34,6 +41,8 @@ var TableApi = function() {
 							} else {
 								p.where += '(NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel` OR NOT `media_video`) OR ';
 							}
+						case 'hiscore':
+							p.where += '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores`)) OR ';
 							break;
 					}
 				}
@@ -63,6 +72,34 @@ var TableApi = function() {
 				delete p.order;
 				schema.Table.count(p).success(function(num) {
 
+					// if fields are specified, strip non-specificed fields.
+					if (params.fields && params.fields instanceof Array) {
+						console.log('stripping fields..');
+						var rs = [];
+						for (var i = 0; i < rows.length; i++) {
+							var r = {};
+							for (var field in rows[i]) {
+								if (params.fields.indexOf(field) > -1) {
+									r[field] = rows[i][field];
+								}
+							}
+							// additional attributes
+							if (params.fields.indexOf('url_logo') > -1) {
+								r.url_logo = pathTo.asset_logo(rows[i].key);
+							}
+							if (params.fields.indexOf('url_banner') > -1) {
+								r.url_banner = pathTo.asset_banner(rows[i].key);
+							}
+							if (params.fields.indexOf('url_portrait_small') > -1) {
+								r.url_portrait_small = pathTo.asset_portrait_small(rows[i].key);
+							}
+							if (params.fields.indexOf('url_backglass_small') > -1) {
+								r.url_backglass_small = pathTo.asset_backglass_small(rows[i].key);
+							}
+							rs.push(r);
+						}
+						rows = rs;
+					}
 					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
 					callback({ rows : rows, count: num });
 

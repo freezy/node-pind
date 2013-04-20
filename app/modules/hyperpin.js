@@ -58,6 +58,20 @@ exports.asset_logo = function(res, key) {
 	});
 }
 
+exports.asset_backglass = function(res, key, size) {
+	schema.Table.find({ where: { key : key }}).success(function(row) {
+		asset(res, getPath('Backglass Images', row), function(gm) {
+			if (size != null) {
+				gm.resize(size, size);
+			}
+			return gm;
+		});
+	}).error(function(err) {
+		console.log('Error retrieving table for backglass ' + key + ': ' + err);
+		res.writeHead(500);
+	});
+}
+
 /**
  * Reads XML from Hyperpin config and updates database. Tables that were
  * removed from Hyperpin are marked as disabled.

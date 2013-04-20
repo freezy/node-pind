@@ -25,6 +25,12 @@ action('coin', function (context) {
 	render();
 });
 
+action('hiscores', function (context) {
+	this.title = 'High Scores';
+	this.user = context.req.session.user;
+	render();
+});
+
 
 action('tables', function(context) {
 	this.title = 'Tables';
