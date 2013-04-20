@@ -16,6 +16,7 @@ exports.routes = function (map) {
 
 	// media
 	map.get('asset/hp/logo/:id.png', 'asset#logo', { as: 'asset_logo'});
+	map.get('asset/hp/banner/:id.small.png', 'asset#banner_small', { as: 'asset_banner_small'});
 	map.get('asset/hp/banner/:id.png', 'asset#banner', { as: 'asset_banner'});
 	map.get('asset/hp/portrait/:id.small.png', 'asset#portrait_small', { as: 'asset_portrait_small'});
 	map.get('asset/hp/backglass/:id.small.png', 'asset#backglass_small', { as: 'asset_backglass_small'});

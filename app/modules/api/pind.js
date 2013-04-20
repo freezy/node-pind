@@ -58,7 +58,7 @@ var PindApi = function() {
 					});
 					next();
 				}, function(err) {
-					callback(result);
+					callback({ rows: result, count: rows.length });
 				});
 
 			}).error(function(err) {

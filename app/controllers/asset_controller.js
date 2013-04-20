@@ -8,6 +8,10 @@ action('banner', function(context) {
 	hp.asset_banner(context.res, params.id);
 });
 
+action('banner_small', function(context) {
+	hp.asset_banner(context.res, params.id, 350);
+});
+
 action('portrait_small', function(context) {
 	hp.asset_table(context.res, params.id, 350);
 });

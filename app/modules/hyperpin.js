@@ -20,12 +20,15 @@ var platforms = {
  * @param res Response object
  * @param p Path of the table, e.g. "/Media/Visual Pinball/Table Images/Some Table.png"
  */
-exports.asset_banner = function(res, key) {
+exports.asset_banner = function(res, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
 		asset(res, getPath('Table Images', row), function(gm) {
-			return gm
-				.rotate('black', -45)
-				.crop(800, 150, 400, 1250);
+			gm.rotate('black', -45);
+			gm.crop(800, 150, 400, 1250);
+			if (size != null) {
+				gm.resize(size, size);
+			}
+			return gm;
 		});
 	}).error(function(err) {
 		console.log('Error retrieving table for banner ' + key + ': ' + err);

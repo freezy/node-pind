@@ -1012,6 +1012,75 @@ td .icon.clickable.remove {
 td .icon.clickable.ok {
   margin-left: 5px;
 }
+.thumbnail-content {
+  padding: 15px;
+}
+.thumbnail-content h3 {
+  font-weight: 700;
+  margin: 0;
+  line-height: 24px;
+}
+ul.hiscores > li .thumbnail {
+  height: 300px;
+}
+ul.hiscores > li .thumbnail ul.ranking {
+  margin-top: 15px;
+}
+ul.hiscores > li .thumbnail ul.ranking li {
+  list-style-type: none;
+  margin-top: 3px;
+}
+ul.hiscores > li .thumbnail ul.ranking li .player {
+  font-weight: 900;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+ul.hiscores > li .thumbnail ul.ranking li .score {
+  font-size: 16px;
+  float: right;
+  margin-top: 2px;
+}
+ul.hiscores > li .thumbnail ul.ranking li .rank {
+  font-size: 12px;
+  position: absolute;
+  margin-top: 4px;
+  margin-left: -13px;
+  color: #9d9e9e;
+}
+ul.hiscores > li .thumbnail ul.ranking li .title {
+  font-size: 11px;
+  text-transform: uppercase;
+  position: absolute;
+  margin-top: 18px;
+  color: #9d9e9e;
+}
+ul.hiscores > li .thumbnail ul.ranking.champ li {
+  margin-bottom: 25px;
+}
+.row-fluid ul.thumbnails li.span12 + li {
+  margin-left: 0px;
+  clear: left;
+}
+.row-fluid ul.thumbnails li.span6:nth-child(2n + 3) {
+  margin-left: 0px;
+  clear: left;
+}
+.row-fluid ul.thumbnails li.span4:nth-child(3n + 4) {
+  margin-left: 0px;
+  clear: left;
+}
+.row-fluid ul.thumbnails li.span3:nth-child(4n + 5) {
+  margin-left: 0px;
+  clear: left;
+}
+.row-fluid ul.thumbnails li.span2:nth-child(6n + 7) {
+  margin-left: 0px;
+  clear: left;
+}
+.row-fluid ul.thumbnails li.span1:nth-child(12n + 13) {
+  margin-left: 0px;
+  clear: left;
+}
 .dmd {
   margin-top: -10px;
   margin-bottom: 25px;

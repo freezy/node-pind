@@ -90,6 +90,9 @@ var TableApi = function() {
 							if (params.fields.indexOf('url_banner') > -1) {
 								r.url_banner = pathTo.asset_banner(rows[i].key);
 							}
+							if (params.fields.indexOf('url_banner_small') > -1) {
+								r.url_banner_small = pathTo.asset_banner_small(rows[i].key);
+							}
 							if (params.fields.indexOf('url_portrait_small') > -1) {
 								r.url_portrait_small = pathTo.asset_portrait_small(rows[i].key);
 							}
