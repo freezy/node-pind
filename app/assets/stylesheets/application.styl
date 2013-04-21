@@ -918,6 +918,7 @@ td
 
 ul.hiscores > li .thumbnail
 	height 300px
+	background-color rgba(0,0,0,0.025)
 	
 	ul.ranking
 		margin-top 15px
@@ -955,15 +956,18 @@ ul.hiscores > li .thumbnail
 
 		&.champ li
 			margin-bottom 25px
-
+			
+@media(max-width: 767px)
+	ul.hiscores > li .thumbnail
+		height auto
 
 // bootstrap hacks
-.row-fluid ul.thumbnails li.span12 + li { margin-left : 0px;clear:left }
-.row-fluid ul.thumbnails li.span6:nth-child(2n + 3) { margin-left : 0px;clear:left }
-.row-fluid ul.thumbnails li.span4:nth-child(3n + 4) { margin-left : 0px;clear:left }
-.row-fluid ul.thumbnails li.span3:nth-child(4n + 5) { margin-left : 0px;clear:left}
-.row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left : 0px;clear:left }
-.row-fluid ul.thumbnails li.span1:nth-child(12n + 13) { margin-left : 0px;clear:left }
+.row-fluid ul.thumbnails li.span12 + li { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span6:nth-child(2n + 3) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span4:nth-child(3n + 4) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span3:nth-child(4n + 5) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span1:nth-child(12n + 13) { margin-left: 0px; clear: left }
 
 // :coin drop
 // ============================================================================

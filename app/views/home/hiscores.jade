@@ -8,7 +8,7 @@ block content
 				h1 High Scores
 
 			ul.thumbnails.hiscores
-				li.span4(ng-repeat='table in tables')
+				li.span4(ng-repeat='table in tables', tb-768-980='span6')
 					.thumbnail
 						img(src='{{table.url_banner_small}}')
 						.thumbnail-content

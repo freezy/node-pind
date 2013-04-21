@@ -9,7 +9,7 @@ action('banner', function(context) {
 });
 
 action('banner_small', function(context) {
-	hp.asset_banner(context.res, params.id, 350);
+	hp.asset_banner(context.res, params.id, 655);
 });
 
 action('portrait_small', function(context) {

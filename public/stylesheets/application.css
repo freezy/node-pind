@@ -1023,6 +1023,7 @@ td .icon.clickable.ok {
 }
 ul.hiscores > li .thumbnail {
   height: 300px;
+  background-color: rgba(0,0,0,0.025);
 }
 ul.hiscores > li .thumbnail ul.ranking {
   margin-top: 15px;
@@ -1061,6 +1062,11 @@ ul.hiscores > li .thumbnail ul.ranking li.anon {
 }
 ul.hiscores > li .thumbnail ul.ranking.champ li {
   margin-bottom: 25px;
+}
+@media (max-width: 767px) {
+  ul.hiscores > li .thumbnail {
+    height: auto;
+  }
 }
 .row-fluid ul.thumbnails li.span12 + li {
   margin-left: 0px;
