@@ -36,6 +36,7 @@ function HiscoresCtrl($scope, $http) {
 			if (hiscore.score) {
 				hiscore.score = groupdigit(hiscore.score);
 			}
+			hiscore.class = hiscore.user == null ? 'anon' : '';
 			$scope.hiscores[hiscore.tableKey].push(hiscore);
 		}
 

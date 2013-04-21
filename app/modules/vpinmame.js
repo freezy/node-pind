@@ -59,13 +59,18 @@ exports.fetchHighscores = function(callback) {
 					title: hiscore.title,
 					info: hiscore.info,
 					points: points(hiscore),
+					player: hiscore.player,
 					createdAt: now,
 					updatedAt: now
 				}).success(function(row) {
 					row.setTable(hiscore.table).success(function(row) {
-						row.setUser(hiscore.user).success(function(row) {
+						if (hiscore.user) {
+							row.setUser(hiscore.user).success(function(row) {
+								next();
+							}).error(next);
+						} else {
 							next();
-						}).error(next);
+						}
 					}).error(next);
 				}).error(function(err) {
 					console.log('ERROR: ' + err);
@@ -79,8 +84,10 @@ exports.fetchHighscores = function(callback) {
 					score: hiscore.score,
 					info: hiscore.info,
 					points: points(hiscore),
+					player: hiscore.player,
 					updatedAt: now
 				}).success(function(row) {
+
 					row.setUser(hiscore.user).success(function(row) {
 						next();
 					}).error(next);
@@ -102,6 +109,7 @@ exports.fetchHighscores = function(callback) {
 			}
 		}
 		console.log('Found %d VP tables with ROM and a nvram.', roms.length);
+
 		// cache users to avoid re-quering
 		schema.User.all().success(function(rows) {
 			var users = {};
@@ -122,13 +130,17 @@ exports.fetchHighscores = function(callback) {
 						var hiscores = [];
 
 						// grand champion
-						if (hiscore.grandChampion && users[tr(hiscore.grandChampion.player)]) {
-							console.log('[%s] Matched grand champion: %s (%s)', rom, hiscore.grandChampion.player, hiscore.grandChampion.score);
+						if (hiscore.grandChampion) {
+							var user = users[tr(hiscore.grandChampion.player)];
+							if (user) {
+								console.log('[%s] Matched grand champion: %s (%s)', rom, hiscore.grandChampion.player, hiscore.grandChampion.score);
+							}
 							hiscores.push({
 								type: 'champ',
 								score: hiscore.grandChampion.score,
+								player: hiscore.grandChampion.player,
 								table: tables[rom],
-								user: users[tr(hiscore.grandChampion.player)]
+								user: user ? user : null
 							});
 						}
 
@@ -136,16 +148,18 @@ exports.fetchHighscores = function(callback) {
 						if (hiscore.highest) {
 							for (var i = 0; i < hiscore.highest.length; i++) {
 								var hs = hiscore.highest[i];
-								if (users[tr(hs.player)]) {
+								var user = users[tr(hs.player)];
+								if (user) {
 									console.log('[%s] Matched high score %s: %s (%s)', rom, hs.rank, hs.player, hs.score);
-									hiscores.push({
-										type: 'hiscore',
-										score: hs.score,
-										rank: hs.rank,
-										table: tables[rom],
-										user: users[tr(hs.player)]
-									});
 								}
+								hiscores.push({
+									type: 'hiscore',
+									score: hs.score,
+									rank: hs.rank,
+									player: hs.player,
+									table: tables[rom],
+									user: user ? user : null
+								});
 							}
 						}
 
@@ -153,18 +167,20 @@ exports.fetchHighscores = function(callback) {
 						if (hiscore.other) {
 							for (var i = 0; i < hiscore.other.length; i++) {
 								var hs = hiscore.other[i];
-								if (users[tr(hs.player)]) {
+								var user = users[tr(hs.player)];
+								if (user) {
 									console.log('[%s] Matched %s: %s', rom, hs.title, hs.player);
-									hiscores.push({
-										type: 'special',
-										title: hs.title,
-										info: hs.info,
-										score: hs.score,
-										rank: hs.rank,
-										table: tables[rom],
-										user: users[tr(hs.player)]
-									});
 								}
+								hiscores.push({
+									type: 'special',
+									title: hs.title,
+									info: hs.info,
+									score: hs.score,
+									rank: hs.rank,
+									player: hs.player,
+									table: tables[rom],
+									user: user ? user : null
+								});
 							}
 						}
 

@@ -1056,6 +1056,9 @@ ul.hiscores > li .thumbnail ul.ranking li .title {
   margin-top: 18px;
   color: #9d9e9e;
 }
+ul.hiscores > li .thumbnail ul.ranking li.anon {
+  color: rgba(0,0,0,0.3);
+}
 ul.hiscores > li .thumbnail ul.ranking.champ li {
   margin-bottom: 25px;
 }

@@ -40,9 +40,9 @@ var PindApi = function() {
 
 		GetHiscores : function(req, params, callback) {
 			schema.sequelize.query(
-				'SELECT h.*, t.key, u.user FROM users u, hiscores h, tables t ' +
-				'WHERE u.id = h.userId ' +
-				'AND t.id = h.tableId ' +
+				'SELECT h.*, t.key, u.user FROM hiscores h, tables t ' +
+				'LEFT JOIN users u ON u.id = h.userId ' +
+				'WHERE t.id = h.tableId ' +
 				'ORDER BY t.name, h.type, h.rank'
 			).success(function(rows) {
 				var result = [];
@@ -54,7 +54,8 @@ var PindApi = function() {
 						points: row.points,
 						title: row.title,
 						info: row.info,
-						player: row.user,
+						player: row.player,
+						user: row.user,
 						tableKey: row.key
 					});
 					next();

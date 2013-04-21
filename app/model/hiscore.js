@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
 			points: DataTypes.INTEGER,
 			title: DataTypes.STRING,
 			info: DataTypes.STRING,
+			player: DataTypes.STRING,
 			createdAt: DataTypes.DATE,
 			updatedAt: DataTypes.DATE
 		},

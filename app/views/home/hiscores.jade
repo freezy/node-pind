@@ -14,12 +14,12 @@ block content
 						.thumbnail-content
 							h3 {{table.name}}
 							ul.ranking.champ
-								li(ng-repeat="hiscore in getHiscores(table, 'champ')")
+								li(ng-repeat="hiscore in getHiscores(table, 'champ')", class="{{hiscore.class}}")
 									span.title Grand Champion
 									span.player {{hiscore.player}}
 									span.score {{hiscore.score}}
 							ul.ranking.hiscore
-								li(ng-repeat="hiscore in getHiscores(table, 'hiscore')")
+								li(ng-repeat="hiscore in getHiscores(table, 'hiscore')", class="{{hiscore.class}}")
 									span.rank {{hiscore.rank}}
 									span.player {{hiscore.player}}
 									span.score {{hiscore.score}}
