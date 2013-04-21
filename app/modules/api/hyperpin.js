@@ -1,7 +1,13 @@
 var hp = require('./../hyperpin');
 var vp = require('./../visualpinball');
 var ipdb = require('./../ipdb');
-var tableApi = require('./table').api;
+
+var tableApi;
+
+module.exports = function(app) {
+	tableApi = require('./table')(app).api;
+	return exports;
+};
 
 var HyperPinAPI = function() {
 	return {
