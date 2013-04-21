@@ -6,10 +6,11 @@ var ipdb = require('../ipdb');
 var vpm = require('../vpinmame');
 var schema = require('../../model/schema');
 
-var tableApi = require('./table').api;
+var tableApi;
 var pathTo;
 
 module.exports = function(app) {
+	tableApi = require('./table')(app).api;
 	pathTo = app.compound.map.pathTo;
 	return exports;
 };
