@@ -20,9 +20,9 @@ var platforms = {
  * @param res Response object
  * @param p Path of the table, e.g. "/Media/Visual Pinball/Table Images/Some Table.png"
  */
-exports.asset_banner = function(res, key, size) {
+exports.asset_banner = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
-		asset(res, getPath('Table Images', row), function(gm) {
+		asset(context, getPath('Table Images', row), function(gm) {
 			gm.rotate('black', -45);
 			gm.crop(800, 150, 400, 1250);
 			if (size != null) {
@@ -32,13 +32,13 @@ exports.asset_banner = function(res, key, size) {
 		});
 	}).error(function(err) {
 		console.log('Error retrieving table for banner ' + key + ': ' + err);
-		res.writeHead(500);
+		context.res.writeHead(500);
 	});
 }
 
-exports.asset_table = function(res, key, size) {
+exports.asset_table = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
-		asset(res, getPath('Table Images', row), function(gm) {
+		asset(context, getPath('Table Images', row), function(gm) {
 			gm.rotate('black', -90);
 			if (size != null) {
 				gm.resize(size, size);
@@ -47,23 +47,23 @@ exports.asset_table = function(res, key, size) {
 		});
 	}).error(function(err) {
 		console.log('Error retrieving table for table image ' + key + ': ' + err);
-		res.writeHead(500);
+		context.res.writeHead(500);
 	});
 }
 
-exports.asset_logo = function(res, key) {
+exports.asset_logo = function(context, key) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
-		file(res, getPath('Wheel Images', row));
+		file(context, getPath('Wheel Images', row));
 
 	}).error(function(err) {
 		console.log('Error retrieving table for logo ' + key + ': ' + err);
-		res.writeHead(500);
+		context.res.writeHead(500);
 	});
 }
 
-exports.asset_backglass = function(res, key, size) {
+exports.asset_backglass = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
-		asset(res, getPath('Backglass Images', row), function(gm) {
+		asset(context, getPath('Backglass Images', row), function(gm) {
 			if (size != null) {
 				gm.resize(size, size);
 			}
@@ -71,7 +71,7 @@ exports.asset_backglass = function(res, key, size) {
 		});
 	}).error(function(err) {
 		console.log('Error retrieving table for backglass ' + key + ': ' + err);
-		res.writeHead(500);
+		context.res.writeHead(500);
 	});
 }
 
@@ -200,29 +200,44 @@ exports.insertCoin = function(user, slot, callback) {
 	}
 };
 
-var asset = function(res, path, process) {
+var asset = function(context, path, process) {
 	if (path && fs.existsSync(path)) {
+
+		// caching
+		var modified = new Date(fs.fstatSync(fs.openSync(path, 'r')).mtime);
+		var ifmodifiedsince = new Date(context.req.headers['if-modified-since']);
+		if (modified.getTime() >= ifmodifiedsince.getTime()) {
+			context.res.writeHead(304);
+			context.res.end();
+			return;
+		}
+
+		// cache, process.
 		var now = new Date().getTime();
 		process(gm(path)).stream(function (err, stream, stderr) {
 			if (err) next(err);
-			res.writeHead(200, { 'Content-Type': 'image/png' });
-			stream.pipe(res);
+			context.res.writeHead(200, { 
+				'Content-Type': 'image/png',
+				'Cache-Control': 'private',
+				'Last-Modified': modified
+			});
+			stream.pipe(context.res);
 			console.log("image processed in %d ms.", new Date().getTime() - now);
 		});
 	} else {
-		res.writeHead(404);
-		res.end('Sorry, ' + path + ' not found.');
+		context.res.writeHead(404);
+		context.res.end('Sorry, ' + path + ' not found.');
 	}
 };
 
-var file = function(res, path) {
+var file = function(context, path) {
 	if (fs.existsSync(path)) {
-		res.writeHead(200, { 'Content-Type': 'image/png' });
+		context.res.writeHead(200, { 'Content-Type': 'image/png' });
 		var stream = fs.createReadStream(path);
-		stream.pipe(res);
+		stream.pipe(context.res);
 	} else {
-		res.writeHead(404);
-		res.end('Sorry, ' + filePath + ' not found.');
+		context.res.writeHead(404);
+		context.res.end('Sorry, ' + filePath + ' not found.');
 	}
 }
 
