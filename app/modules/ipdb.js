@@ -5,7 +5,12 @@ var log = require('winston');
 
 var schema = require('../model/schema');
 
-var hp = require('./hyperpin');
+var hp;
+
+module.exports = function(app) {
+	hp = require('./hyperpin')(app);
+	return exports;
+};
 
 exports.syncIPDB = function(callback) {
 	schema.Table.findAll( { where: [ 'type != ?', 'OG' ]}).success(function(rows) {

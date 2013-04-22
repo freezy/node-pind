@@ -15,6 +15,13 @@ var platforms = {
 	FP: 'Future Pinball'
 }
 
+var socket;
+
+module.exports = function(app) {
+	socket = app.get('socket.io');
+	return exports;
+};
+
 /**
  * Sends a banner version of the table to the given response object.
  * @param res Response object
@@ -98,6 +105,7 @@ exports.syncTables = function(callback) {
 				callback('error reading file: ' + err);
 				return;
 			}
+
 			var parser = new xml2js.Parser();
 			parser.parseString(data, function (err, result) {
 
@@ -162,7 +170,11 @@ exports.syncTables = function(callback) {
 					tables.push(table);
 				}
 				log.info('[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
-				schema.Table.updateAll(tables, now, callback);
+				socket.emit('notice', { msg: 'Read ' + tables.length + ' tables from ' +  platforms[platform] + '.xml, updating local database...' });
+				schema.Table.updateAll(tables, now, function(err, tables) {
+					socket.emit('notice', { msg: 'Updated ' + tables.length + ' tables in database.' });
+					callback(err, tables);
+				});
 			});
 		});
 	};

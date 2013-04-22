@@ -1,10 +1,10 @@
-var hp = require('./../hyperpin');
-var vp = require('./../visualpinball');
-var ipdb = require('./../ipdb');
-
-var tableApi;
+var hp, vp, ipdb, tableApi, socket;
 
 module.exports = function(app) {
+	hp = require('./../hyperpin')(app);
+	vp = require('./../visualpinball')(app);
+	ipdb = require('./../ipdb')(app);
+	socket = app.get('socket.io');
 	tableApi = require('./table')(app).api;
 	return exports;
 };
@@ -19,10 +19,13 @@ var HyperPinAPI = function() {
 					console.log("ERROR: " + err);
 					throw new Error(err);
 				} else {
+					socket.emit('notice', { msg: 'Done syncing, starting analysis...' });
+
 					vp.updateTableData(function(err, tables) {
 						if (err) {
 							throw new Error(err);
 						}
+						socket.emit('notice', { msg: 'Finished analyzing tables.' });
 						tableApi.GetAll(req, params, callback);
 					});
 				}

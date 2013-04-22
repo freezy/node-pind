@@ -17,6 +17,7 @@
 		"jade": "0.27.7",
 		"jade-ext" : "latest",
 		"express": "~3.x",
+		"socketio": "latest",
 		"compound" : ">= 1.1.0",
 		"sequelize" : ">= 1.6.0",
 		"sequelize-sqlite" : "latest",

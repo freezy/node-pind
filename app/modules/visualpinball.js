@@ -7,6 +7,14 @@ var async = require('async');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
+var socket;
+
+module.exports = function(app) {
+	socket = app.get('socket.io');
+	return exports;
+};
+
+
 /**
  * Finds the table name for a given file name.
  * @param table Object with filename set
@@ -311,6 +319,7 @@ exports.updateTableData = function(callback) {
 				log.warn('Table file "' + tablePath + '" does not exist.');
 				return next();
 			}
+			socket.emit('notice', { msg: 'Analyzing ' + row.name + '...' });
 
 			// read script from table
 			exports.getScriptFromTable(tablePath, function(err, script) {

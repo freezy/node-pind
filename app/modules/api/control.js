@@ -1,5 +1,11 @@
 var api = require('./../api');
-var hp = require('./../hyperpin');
+
+var hp;
+
+module.exports = function(app) {
+	hp = require('./../hyperpin')(app);
+	return exports;
+};
 
 var ControlApi = function() {
 	return {

@@ -36,7 +36,6 @@ $(document).ready(function() {
 				} else {
 					tr += '<td class="rom na">(n/a)';
 				}
-
 			}
 
 			tr += '</td></tr>';
@@ -118,6 +117,12 @@ $(document).ready(function() {
 	$('#hpsync button').click(syncHyperPin);
 	$('#ipdbsync button').click(syncIPDB);
 	$('#fetchhs button').click(fetchHiscores);
+
+	var socket = io.connect('http://localhost');
+	socket.on('notice', function(notice) {
+		$('#console').html('<p>' + notice.msg + '</p>');
+//		$('#console').append('<p>' + notice.msg + '</p>');
+	});
 
 });
 

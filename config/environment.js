@@ -7,6 +7,7 @@ module.exports = function(compound) {
 	var vpm = require(compound.root + '/app/modules/vpinmame');
 
 	var app = compound.app;
+	var io = require('socket.io').listen(compound.server);
 
 	function compile(str, path) {
 		return stylus(str)
@@ -19,6 +20,7 @@ module.exports = function(compound) {
 	app.configure(function(){
 		app.locals.pretty = true;
         app.use(express.static(app.root + '/public', { maxAge: 86400000 }));
+		app.set('socket.io', io.sockets);
         app.set('jsDirectory', '/javascripts/');
         app.set('cssDirectory', '/stylesheets/');
         app.set('cssEngine', 'stylus');
