@@ -231,6 +231,14 @@ var asset = function(context, path, process) {
 };
 
 var file = function(context, path) {
+	// caching
+	var modified = new Date(fs.fstatSync(fs.openSync(path, 'r')).mtime);
+	var ifmodifiedsince = new Date(context.req.headers['if-modified-since']);
+	if (modified.getTime() >= ifmodifiedsince.getTime()) {
+		context.res.writeHead(304);
+		context.res.end();
+		return;
+	}	
 	if (fs.existsSync(path)) {
 		context.res.writeHead(200, { 'Content-Type': 'image/png' });
 		var stream = fs.createReadStream(path);
