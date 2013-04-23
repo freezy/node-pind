@@ -118,7 +118,7 @@ $(document).ready(function() {
 	$('#ipdbsync button').click(syncIPDB);
 	$('#fetchhs button').click(fetchHiscores);
 
-	var socket = io.connect('http://localhost');
+	var socket = io.connect('/');
 	socket.on('notice', function(notice) {
 		$('#console').html('<p>' + notice.msg + '</p>');
 //		$('#console').append('<p>' + notice.msg + '</p>');
