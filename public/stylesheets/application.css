@@ -390,7 +390,7 @@ button[type="submit"].small span,
   content: "\25";
 }
 .icon.refresh:before {
-  content: "\26";
+  content: "\f01e";
 }
 .icon.file:before {
   content: "\e003";
@@ -444,6 +444,7 @@ button[type="submit"].small span,
   -o-animation: spin 2s infinite linear;
   -ms-animation: spin 2s infinite linear;
   animation: spin 2s infinite linear;
+  text-shadow: none;
 }
 .icon.inputhint {
   width: 46px;
@@ -1137,7 +1138,7 @@ ul.hiscores > li .thumbnail ul.ranking.champ li {
 #console .inner {
   padding-top: 8px;
   padding-bottom: 8px;
-  background-color: rgba(255,255,255,0.06);
+  background-color: rgba(255,255,255,0.07);
 }
 #console .inner span {
   text-align: left;

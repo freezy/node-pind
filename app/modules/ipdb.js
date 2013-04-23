@@ -5,9 +5,10 @@ var log = require('winston');
 
 var schema = require('../model/schema');
 
-var hp;
+var hp, socket;
 
 module.exports = function(app) {
+	socket = app.get('socket.io');
 	hp = require('./hyperpin')(app);
 	return exports;
 };
@@ -16,7 +17,10 @@ exports.syncIPDB = function(callback) {
 	schema.Table.findAll( { where: [ 'type != ?', 'OG' ]}).success(function(rows) {
 
 		// fetch data from ipdb.org
-		exports.enrichAll(rows, callback);
+		exports.enrichAll(rows, function(err, rows) {
+			socket.emit('notice', { msg: 'All done!', timeout: 5000 });
+			callback(err, rows);
+		});
 
 	}).error(callback);
 };
@@ -52,19 +56,22 @@ exports.enrichAll = function(tables, callback) {
 			callback(err);
 			return;
 		}
+		socket.emit('notice', { msg: 'Updating database', timeout: 30000 });
 
 		// update db
-		async.eachSeries(tables,
-			function(table, cb) {
-				table.save().success(function(r) {
-					cb(null, r);
-				}).error(cb);
-			}, 
-			function(err) {
+		async.eachSeries(tables, function(table, cb) {
+
+			table.save().success(function(r) {
+				cb(null, r);
+			}).error(cb);
+
+		}, function(err) {
+
 			if (err) {
 				log.error('[ipdb] ' + err);
 				callback(err);
 			} else {
+				socket.emit('notice', { msg: tables.length + ' games updated, fetching top 300 games', timeout: 30000 });
 				log.info('[ipdb] ' + tables.length + ' games updated.');
 
 				// update ranking from top 300 list
@@ -73,6 +80,7 @@ exports.enrichAll = function(tables, callback) {
 						log.error('[ipdb] ' + err);
 						callback(err);
 					} else {
+						socket.emit('notice', { msg: 'Top 300 synced (' + games.length + ' games).', timeout: 5000 });
 						log.info('[ipdb] Top 300 synced (' + games.length + ' games).');
 						callback();
 					}
@@ -144,6 +152,7 @@ exports.enrich = function(game, callback) {
 		return callback(null, game);
 	}
 
+	socket.emit('notice', { msg: 'Searching for "' + game.name + '"', timeout: 30000 });
 	log.info('[ipdb] Fetching data for ' + game.name);
 	var url;
 	if (game.ipdb_no && !forceSearch) {
@@ -247,6 +256,7 @@ exports.syncTop300 = function(callback) {
 
 					// could be multiple hits (vp and fp version, for instance)
 					async.eachSeries(rows, function(row, cb) {
+						socket.emit('notice', { msg: 'Matched ' + row.name + ' (' + row.platform + ') at rank ' + table.ipdb_rank, timeout: 30000 });
 						log.debug('[ipdb] Matched ' + row.name + ' (' + row.platform + ')');
 						row.updateAttributes({ ipdb_rank: table.ipdb_rank }).success(function(table) {
 							updatedTables.push(table);
