@@ -4,10 +4,10 @@ var settings = require('./settings');
 module.exports = function(compound) {
 
     var express = require('express');
-	var vpm = require(compound.root + '/app/modules/vpinmame');
 
 	var app = compound.app;
 	var io = require('socket.io').listen(compound.server);
+	var vpm = require(compound.root + '/app/modules/vpinmame')(app);
 
 	function compile(str, path) {
 		return stylus(str)

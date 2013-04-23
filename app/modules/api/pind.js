@@ -2,12 +2,12 @@ var async = require('async');
 var util = require('util');
 
 var api = require('../api');
-var vpm = require('../vpinmame');
 var schema = require('../../model/schema');
 
-var ipdb, tableApi, pathTo;
+var ipdb, vpm, tableApi, pathTo;
 
 module.exports = function(app) {
+	vpm = require('../vpinmame')(app);
 	ipdb = require('../ipdb')(app);
 	tableApi = require('./table')(app).api;
 	pathTo = app.compound.map.pathTo;

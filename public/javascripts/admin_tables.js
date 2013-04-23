@@ -107,8 +107,6 @@ $(document).ready(function() {
 			processed();
 			if (err) {
 				alert('Problem Syncing: ' + err);
-			} else {
-				alert(result.message);
 			}
 		});
 	};

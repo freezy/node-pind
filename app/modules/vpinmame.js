@@ -7,8 +7,15 @@ var request = require('request');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
-var ipdb = require('./ipdb');
+var ipdb;
 var vpf = require('./vpforums');
+
+module.exports = function(app) {
+	socket = app.get('socket.io');
+	ipdb = require('./ipdb')(app);
+	return exports;
+};
+
 
 /**
  * Updates high scores from .nv RAM files.
@@ -22,7 +29,7 @@ var vpf = require('./vpforums');
 exports.fetchHighscores = function(callback) {
 	var now = new Date();
 
-	// called when there is a match between user and table
+	// called when there is a match of a table
 	var updateHighscore = function(hiscore, next) {
 		var where = { where: { type: hiscore.type, tableId: hiscore.table.id }};
 		switch (hiscore.type) {
@@ -184,11 +191,20 @@ exports.fetchHighscores = function(callback) {
 							}
 						}
 
+						socket.emit('notice', { msg: 'Reading high scores from "' + rom + '" (' + tables[rom].name + ')', timeout: 5000 });
+
 						// now we have all high scores for this table, update them in the db
 						async.eachSeries(hiscores, updateHighscore, next);
 					}
 				});
-			}, callback);
+			}, function(err) {
+				if (!err) {
+					socket.emit('notice', { msg: 'High scores successfully synchronized.', timeout: 5000 });
+				} else {
+					socket.emit('notice', { msg: 'Error synchronizing: ' + err, timeout: 3600000 });
+				}
+				callback(err);
+			});
 
 		}).error(function(err) {
 			throw Error(err);
