@@ -130,6 +130,7 @@ Credits
   forward to even more features!
 * Thanks to Sacha Greif for the nice [3D buttons](http://sachagreif.com/bootstrap/).
 * Thanks to Andreas Nylin for the DMD font and his permission to use it freely.
+* Thanks to [Backpacker](http://backpacker.gr/) for the [BPdots](http://www.fontsquirrel.com/fonts/BPdots) font. It is licensed under Creative Commons 3.0, for more info see [here](http://www.fontsquirrel.com/license/BPdots).
 
 License
 =======
