@@ -25,7 +25,7 @@ var HyperPinAPI = function() {
 						if (err) {
 							throw new Error(err);
 						}
-						socket.emit('notice', { msg: 'Finished analyzing tables.' });
+						socket.emit('notice', { msg: 'Finished analyzing tables.', timeout: 5000 });
 						tableApi.GetAll(req, params, callback);
 					});
 				}

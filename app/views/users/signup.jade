@@ -2,6 +2,7 @@ extends ../layouts/outer
 
 block body
 	// preset form values if we receive a userdata object //
+	- contentFor('javascripts', javascriptIncludeTag('login'))
 	- user = typeof(user) != 'undefined' ? user : { }
 	.boxglow
 		#account-form-container.singlebox.register

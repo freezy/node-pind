@@ -135,7 +135,7 @@ $(document).ready(function() {
 
 function processing(skip) {
 	['#hpsync', '#dlrom', '#dlmedia', '#fetchhs', '#ipdbsync'].forEach(function(id) {
-		$(id).find('button').prop('disabled', true);
+		$(id).find('button').attr('disabled', 'disabled');
 		if (id != skip) {
 			$(id).addClass('disabled');
 		} else {
@@ -146,6 +146,6 @@ function processing(skip) {
 
 function processed() {
 	['#hpsync', '#dlrom', '#dlmedia', '#fetchhs', '#ipdbsync'].forEach(function(id) {
-		$(id).removeClass('disabled').find('button').removeProp('disabled').find('i').removeClass('spin');
+		$(id).removeClass('disabled').find('button').removeAttr('disabled').find('i').removeClass('spin');
 	});
 }
