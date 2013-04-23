@@ -119,9 +119,18 @@ $(document).ready(function() {
 	$('#fetchhs button').click(fetchHiscores);
 
 	var socket = io.connect('/');
+	var $console = $('#console');
+	var timer;
 	socket.on('notice', function(notice) {
-		$('#console').html('<p>' + notice.msg + '</p>');
-//		$('#console').append('<p>' + notice.msg + '</p>');
+		var timeout = notice.timeout ? notice.timeout : 1500;
+		if (!$console.is(':visible')) {
+			$console.slideDown(200);
+		}
+		$('#console span').html(notice.msg);
+		clearTimeout(timer);
+		timer = setTimeout(function() {
+			$console.slideUp(200);
+		}, timeout);
 	});
 
 });

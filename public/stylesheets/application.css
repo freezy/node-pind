@@ -1092,7 +1092,8 @@ ul.hiscores > li .thumbnail ul.ranking.champ li {
   margin-left: 0px;
   clear: left;
 }
-.dmd {
+.dmd,
+#console {
   margin-top: -10px;
   margin-bottom: 25px;
   text-align: center;
@@ -1102,7 +1103,8 @@ ul.hiscores > li .thumbnail ul.ranking.champ li {
   -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
   box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
 }
-.dmd span {
+.dmd span,
+#console span {
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #6b4b3b), color-stop(0.75, #7d4e45), color-stop(1, #4a3429));
   background: -webkit-linear-gradient(bottom, #6b4b3b 0%, #7d4e45 75%, #4a3429 100%);
   background: -moz-linear-gradient(bottom, #6b4b3b 0%, #7d4e45 75%, #4a3429 100%);
@@ -1118,6 +1120,34 @@ ul.hiscores > li .thumbnail ul.ranking.champ li {
   text-shadow: 0 0 7px #ff2d2d;
   -webkit-box-shadow: 0px -3px 10px -2px #000;
   box-shadow: 0px -3px 10px -2px #000;
+}
+#console {
+  padding: 0;
+  margin: -1px;
+  -webkit-box-shadow: 0px -2px 5px 0px rgba(0,0,0,0.3);
+  box-shadow: 0px -2px 5px 0px rgba(0,0,0,0.3);
+  -moz-border-radius-bottomleft: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border: 1px solid #000;
+}
+#console .inner {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: rgba(255,255,255,0.05);
+}
+#console .inner span {
+  text-align: left;
+  padding: 0 4px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  font-family: jd-lcd-rounded;
+  font-size: 28px;
+  margin: 0 8px;
+  display: block;
 }
 .fuzzy3d {
   z-index: 0;

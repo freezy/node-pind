@@ -170,7 +170,7 @@ exports.syncTables = function(callback) {
 					tables.push(table);
 				}
 				log.info('[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
-				socket.emit('notice', { msg: 'Read ' + tables.length + ' tables from ' +  platforms[platform] + '.xml, updating local database...' });
+				socket.emit('notice', { msg: 'Read ' + tables.length + ' tables from ' +  platforms[platform] + '.xml, updating local database...', timeout: 10000 });
 				schema.Table.updateAll(tables, now, function(err, tables) {
 					socket.emit('notice', { msg: 'Updated ' + tables.length + ' tables in database.' });
 					callback(err, tables);

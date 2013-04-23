@@ -40,6 +40,7 @@ font-serif = 'Arvo', serif
 font-sans = 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif
 font-fixed = Inconsolata, Consolas, 'Courier New', Fixed, monospace
 font-dmd = ozoneregular
+font-console = jd-lcd-rounded
 
 
 // :global stuff
@@ -956,7 +957,7 @@ ul.hiscores > li .thumbnail
 
 		&.champ li
 			margin-bottom 25px
-			
+
 @media(max-width: 767px)
 	ul.hiscores > li .thumbnail
 		height auto
@@ -972,7 +973,7 @@ ul.hiscores > li .thumbnail
 // :coin drop
 // ============================================================================
 
-.dmd 
+.dmd, #console
 	margin-top -10px
 	margin-bottom 25px
 	text-align center
@@ -980,7 +981,7 @@ ul.hiscores > li .thumbnail
 	padding-top 20px
 	padding-bottom 12px
 	box-shadow 0px 2px 5px 0px rgba(0,0,0,0.3)
-	span	
+	span
 		background linear-gradient(bottom, 0% #6b4b3b, 75% #7d4e45, 100% #4a3429);
 		padding 2px 20px
 		border-radius 3px
@@ -989,6 +990,27 @@ ul.hiscores > li .thumbnail
 		font-size 36px
 		text-shadow 0 0 7px #ff2d2d
 		box-shadow 0px -3px 10px -2px black
+
+#console 
+	padding 0
+	margin -1px
+	box-shadow 0px -2px 5px 0px rgba(0,0,0,0.3)
+	border-radius-bottomleft 4px
+	border-radius-bottomright 4px
+	border 1px solid black
+	
+	.inner
+		padding-top 8px
+		padding-bottom 8px
+		background-color rgba(255,255,255,0.05)
+		span
+			text-align left
+			padding 0 4px
+			border-radius 2px
+			font-family font-console
+			font-size 28px
+			margin 0 8px
+			display block
 
 
 // :nice looking 3d buttons
