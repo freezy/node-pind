@@ -1,10 +1,10 @@
 var async = require('async');
 var util = require('util');
 
-var api = require('../api');
+error = require('../error');
 var schema = require('../../model/schema');
 
-var ipdb, vpm, tableApi, pathTo;
+var ipdb, vpm, api, tableApi, pathTo;
 
 module.exports = function(app) {
 	vpm = require('../vpinmame')(app);
@@ -32,7 +32,7 @@ var PindApi = function() {
 				if (!err) {
 					callback({ message: 'High scores updated successfully.' });
 				} else {
-					callback(api.error(err));
+					callback(error.api(err));
 				}
 			});
 		},
@@ -42,7 +42,7 @@ var PindApi = function() {
 				if (!err) {
 					callback({ message: 'High scores updated successfully.', filepaths: filepaths });
 				} else {
-					callback(api.error(err));
+					callback(error.api(err));
 				}
 			});
 		},

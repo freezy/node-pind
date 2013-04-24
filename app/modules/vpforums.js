@@ -2,7 +2,10 @@ var fs= require('fs');
 var util = require('util');
 var request = require('request');
 var natural = require('natural');
+
+var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
+var error = require('./error');
 
 var socket;
 
@@ -13,7 +16,7 @@ module.exports = function(app) {
 
 
 exports.findMediaPack = function(table, callback) {
-	console.log('Searching media pack for "' + table.name + '"...');
+	console.log('[vpf] Searching media pack for "' + table.name + '"...');
 	fetchDownloads(35, table.name[0], function(err, results) {
 
 		var match = matchResult(results, table.name, function(str) {
@@ -22,13 +25,13 @@ exports.findMediaPack = function(table, callback) {
 
 		exports.download(match.url, settings.pind.tmp, function(err, filename) {
 			if (!err) {
-				console.log('Downloaded file to: %s', filename);
+				console.log('[vpf] Downloaded file to: %s', filename);
 			} else {
-				console.log("Error downloading: %s", err);
+				console.log('[vpf] Error downloading: %s', err);
 			}
 			logout(function(err) {
 				if (err) {
-					console.log(err);
+					console.log('[vpf] ERROR: ' + err);
 				}
 			});
 		});
@@ -44,9 +47,12 @@ exports.findMediaPack = function(table, callback) {
  */
 exports.getRomLinks = function(table, callback) {
 
-	console.log('Searching ROM for "' + table.name + '"...');
+	console.log('[vpf] Searching ROM for "' + table.name + '"...');
 	socket.emit('notice', { msg: 'VPF: Searching ROM for "' + table.name + '"', timeout: 120000 });
 	fetchDownloads(9, table.name[0], function(err, results) {
+		if (err) {
+			return callback(err);
+		}
 		var matches = matchResult(results, table.name, function(str) {
 			return str.replace(/[\[\(\-].*/, '').trim();
 		});
@@ -86,7 +92,7 @@ exports.download = function(link, folder, callback) {
 			var m;
 			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
 				var confirmUrl = m[1].replace(/&amp;/g, '&');
-				console.log('Getting confirmation page...');
+				console.log('[vpf] Getting confirmation page...');
 				// fetch the "confirm" page, where the actual link is
 				request(confirmUrl, function(err, response, body) {
 					if (err) {
@@ -96,10 +102,10 @@ exports.download = function(link, folder, callback) {
 							var downloadUrl = m[1].replace(/&amp;/g, '&');
 							var filename = m[2].replace(/[^\w\d\.\-]/gi, '').trim();
 							var dest = folder + '/' + filename;
-							console.log('Downloading %s at %s...', filename, downloadUrl);
+							console.log('[vpf] Downloading %s at %s...', filename, downloadUrl);
 							var stream = fs.createWriteStream(dest);
 							stream.on('close', function() {
-								console.log('Download completed at %s.', dest);
+								console.log('[vpf] Download completed at %s.', dest);
 								callback(null, dest);
 							});
 							request(downloadUrl).pipe(stream);
@@ -115,7 +121,7 @@ exports.download = function(link, folder, callback) {
 
 		// check if need to login
 		if (body.match(/<a href='[^']+' title='Sign In' id='sign_in'>Sign In/i)) {
-			console.log('Seems we need to login first.');
+			console.log('[vpf] Seems we need to login first.');
 			login(function(err) {
 				if (err) {
 					return callback(err);
@@ -123,7 +129,7 @@ exports.download = function(link, folder, callback) {
 				download(body);
 			});
 		} else {
-			console.log('Looks like we\'re already logged in.');
+			console.log('[vpf] Looks like we\'re already logged in.');
 			download(body);
 		}
 	});
@@ -146,29 +152,53 @@ function matchResult(results, title, trimFct) {
 	return matches;
 }
 
-function fetchDownloads(cat, letter, callback, currentResult, page) {
-	if (!page) {
-		page = 1;
-	}
-	if (!currentResult) {
-		currentResult = [];
-	}
-	var numPages = 1;
-	var url = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=categoryletters&cat=' + cat + '&letter=' + letter + '&sort_order=ASC&sort_key=file_name&num=10&st=' + ((page - 1) * 10);
-	console.log('Fetching page ' + page + ' for category ' + cat + ' and letter "' + letter + '".');
-	request(url, function (error, response, body) {
-		var m;
-		if (m = body.match(/<li class='pagejump[^']+'>\s+<a[^>]+>Page \d of (\d+)/i)) {
-			numPages = m[1];
-		}
-		var regex = new RegExp(/<h3\s+class='ipsType_subtitle'>\s+<a\s+href='([^']+)'\s+title='View file named ([^']+)/gi);
-		while (m = regex.exec(body)) {
-			currentResult.push({ url: m[1].replace(/&amp;/g, '&'), title: m[2].trim() });
-		}
-		if (numPages == page) {
-			callback(null, currentResult);
+function fetchDownloads(cat, letter, callback, currentResult) {
+
+	var fetch = function(cat, letter, callback, currentResult, page) {
+		var numPages = 1;
+		var url = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=categoryletters&cat=' + cat + '&letter=' + letter + '&sort_order=ASC&sort_key=file_name&num=10&st=' + ((page - 1) * 10);
+		console.log('[vpf] Fetching page ' + page + ' for category ' + cat + ' and letter "' + letter + '".');
+		request(url, function (err, response, body) {
+			if (err) {
+				console.log('[vpf] Error retrieving ' + url + ': ' + err);
+				return callback('Error retrieving ' + url + ': ' + err);
+			}
+			var m;
+			if (m = body.match(/<li class='pagejump[^']+'>\s+<a[^>]+>Page \d+ of (\d+)/i)) {
+				numPages = m[1];
+			} else {
+				var debugFile = error.dumpDebugData('vpf', 'no-numpage', body, 'html');
+				console.log('[vpf] Could not parse number of pages at ' + url + '. See ' + debugFile);
+				return callback('Could not parse number of pages at ' + url);
+			}
+			var regex = new RegExp(/<h3\s+class='ipsType_subtitle'>\s+<a\s+href='([^']+)'\s+title='View file named ([^']+)/gi);
+			while (m = regex.exec(body)) {
+				currentResult.push({ url: m[1].replace(/&amp;/g, '&'), title: m[2].trim() });
+			}
+			if (page >= numPages) {
+				// update cache
+				console.log('[vpf] Updating cache...');
+				schema.CacheVpfDownload.create({
+					category: cat,
+					letter: letter.toLowerCase(),
+					data: JSON.stringify(currentResult)
+				}).success(function(cache) {
+					callback(null, currentResult);
+				}).error(callback);
+				
+			} else {
+				fetch(cat, letter, callback, currentResult, page + 1);
+			}
+		});
+	};
+
+	// check cache first.
+	schema.CacheVpfDownload.all({ where: { category: cat, letter: letter.toLowerCase() }}).success(function(rows) {
+		if (rows.length == 0) {
+			// if empty, launch fetch.
+			fetch(cat, letter, callback, [], 1);
 		} else {
-			fetchDownloads(cat, letter, callback, currentResult, page + 1);
+			callback(null, JSON.parse(rows[0].data));
 		}
 	});
 }
@@ -177,7 +207,7 @@ function login(callback) {
 	if (!settings.vpforums.user || !settings.vpforums.pass) {
 		return callback('Need valid credentials for vpforums.org. Please update settings-mine.js.');
 	}
-	console.log('Logging in...');
+	console.log('[vpf] Logging in...');
 	socket.emit('notice', { msg: 'VPF: Logging in as "' + settings.vpforums.user + '"', timeout: 60000 });
 
 	// just get the index to obtain the damn auth key
@@ -190,7 +220,7 @@ function login(callback) {
 		if (!m) {
 			callback('Cannot find auth key in index page.');
 		} else {
-			console.log('Got auth key: ' + m[1]);
+			console.log('[vpf] Got auth key: ' + m[1]);
 
 			// post credentials
 			request.post({
@@ -210,7 +240,7 @@ function login(callback) {
 
 				// redirect means all ok.
 				if (response.statusCode == 302) {
-					console.log('Login successful.');
+					console.log('[vpf] Login successful.');
 					callback();
 					return;
 				}
@@ -228,7 +258,7 @@ function login(callback) {
 
 function logout(callback) {
 	// fetch another damn id
-	console.log('Logging out...');
+	console.log('[vpf] Logging out...');
 	request('http://www.vpforums.org/index.php', function(err, response, body) {
 		if (err) {
 			callback(err);
@@ -240,7 +270,7 @@ function logout(callback) {
 				if (err) {
 					callback(err);
 				} else {
-					console.log('Logout successful.');
+					console.log('[vpf] Logout successful.');
 					callback();
 				}
 			});

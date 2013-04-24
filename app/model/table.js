@@ -93,14 +93,15 @@ module.exports = function(sequelize, DataTypes) {
 				for (var i = 0; i < length; i++) {
 					key += range.charAt(Math.floor(Math.random() * range.length));
 				}
+				var that = this;
 				Table.count({ where: { key: key }}).success(function(num) {
 					if (num == 0) {
 						callback(null, key);
 					} else {
 						if (numtry > 9) {
-							this.generateKey(length + 1, callback, 0);
+							that.generateKey(length + 1, callback, 0);
 						} else {
-							this.generateKey(length, callback, numtry + 1);
+							that.generateKey(length, callback, numtry + 1);
 						}
 					}
 				}).error(callback);

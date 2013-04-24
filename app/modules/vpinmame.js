@@ -9,6 +9,8 @@ var settings = require('../../config/settings-mine');
 
 var ipdb, vpf;
 
+var isFetchingRoms = false;
+
 module.exports = function(app) {
 	socket = app.get('socket.io');
 	ipdb = require('./ipdb')(app);
@@ -235,6 +237,11 @@ exports.init = function() {
  */
 exports.fetchMissingRoms = function(callback) {
 
+	if (isFetchingRoms) {
+		return callback('Fetching process already running. Wait until complete.');
+	}
+	
+	isFetchingRoms = true;
 	var downloadedRoms = [];
 
 	/**
@@ -293,7 +300,9 @@ exports.fetchMissingRoms = function(callback) {
 			console.log('Download complete, saved to %s.', filepath);
 			next(null, filepath);
 		});
-		stream.on('error', next);
+		stream.on('error', function(err) {
+			console.log('Error downloading %s: %s', link.url, err);
+		});
 		request(link.url).pipe(stream);
 	};
 
@@ -341,7 +350,7 @@ exports.fetchMissingRoms = function(callback) {
 	};
 
 	console.log('Fetching tables with no ROM file...')
-	schema.Table.findAll({ where: 'NOT `rom_file` AND rom IS NOT NULL', limit: 1 }).success(function(rows) {
+	schema.Table.findAll({ where: 'NOT `rom_file` AND rom IS NOT NULL' }).success(function(rows) {
 		async.eachSeries(rows, function(row, next) {
 			if (row.ipdb_no) {
 				downloadIPDB(row, next);
@@ -356,6 +365,7 @@ exports.fetchMissingRoms = function(callback) {
 			} else {
 				callback(err);
 			}
+			isFetchingRoms = false;
 		});
 	});
 };

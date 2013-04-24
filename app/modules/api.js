@@ -16,14 +16,3 @@ module.exports = function(app) {
 exports.handle = function(req, res) {
 	njrpc.handle(req, res);
 }
-
-exports.error = function(message, code, data) {
-	var error = { error: { message: message } };
-	if (code) {
-		error.code = code;
-	}
-	if (data) {
-		error.data = data;
-	}
-	return error;
-};
