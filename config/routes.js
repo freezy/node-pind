@@ -19,7 +19,9 @@ exports.routes = function (map) {
 	map.get('asset/hp/banner/:id.small.png', 'asset#banner_small', { as: 'asset_banner_small'});
 	map.get('asset/hp/banner/:id.png', 'asset#banner', { as: 'asset_banner'});
 	map.get('asset/hp/portrait/:id.small.png', 'asset#portrait_small', { as: 'asset_portrait_small'});
+	map.get('asset/hp/portrait/:id.medium.png', 'asset#portrait_medium', { as: 'asset_portrait_medium'});
 	map.get('asset/hp/backglass/:id.small.png', 'asset#backglass_small', { as: 'asset_backglass_small'});
+	map.get('asset/hp/backglass/:id.medium.png', 'asset#backglass_medium', { as: 'asset_backglass_medium'});
 
 	// api
 	map.post('api', 'api#handle');

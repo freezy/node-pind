@@ -96,8 +96,14 @@ var TableApi = function() {
 							if (params.fields.indexOf('url_portrait_small') > -1) {
 								r.url_portrait_small = pathTo.asset_portrait_small(rows[i].key);
 							}
+							if (params.fields.indexOf('url_portrait_medium') > -1) {
+								r.url_portrait_medium = pathTo.asset_portrait_medium(rows[i].key);
+							}
 							if (params.fields.indexOf('url_backglass_small') > -1) {
 								r.url_backglass_small = pathTo.asset_backglass_small(rows[i].key);
+							}
+							if (params.fields.indexOf('url_backglass_medium') > -1) {
+								r.url_backglass_medium = pathTo.asset_backglass_medium(rows[i].key);
 							}
 							rs.push(r);
 						}

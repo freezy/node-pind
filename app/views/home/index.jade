@@ -1,9 +1,9 @@
 extends ../layouts/inner
 
 block content
-	- contentFor('javascripts', javascriptIncludeTag('data'))
-	div.span12.content
-		section.home
+	- contentFor('javascripts', javascriptIncludeTag('data', 'home'))
+	div.span12.content(ng-app)
+		section.home(ng-controller='HomeCtrl')
 			.page-header
 				h1 Welcome!
 
@@ -30,9 +30,11 @@ block content
 					.clearfix
 					h3 Latest News
 
-				div.span4.dark
+				div.span4.dark.table.vertical
 					h3 Free Table of the Week
-
+					img.backbox(src='{{table.url_backglass_medium}}')
+					h3 {{table.name}}
+					img.table(src='{{table.url_portrait_medium}}')
 			div.row-fluid
 				div.span6.dark
 					h3 Next Table Poll
