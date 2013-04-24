@@ -23,6 +23,7 @@ of neat stuff. Particularly it should be able to:
   * Bulk-update VPinMAME rotation settings in tables
   * Match tables on IPDB.org for additional meta data
   * Support for Visual Pinball and Future Pinball
+  * Receive real-time status updates during processing
 * Manage users:
   * Anyone can sign up individually using high score initials as user name
   * Administrator can manage credits for each user
@@ -89,6 +90,7 @@ Working
 -------
 
 * Register user via web
+* High score listing for all tables
 * Table manager
 * User manager
 * Trigger coin drop via API and web app
@@ -101,7 +103,6 @@ Working
 
 TODO
 ----
-* Score stats for registered users
 * Web table browser
 * Look for another DB engine (sqlite is major PITA to compile).
 * Basic VPForums.org integration
@@ -120,6 +121,7 @@ more technologies used:
 * Vector icons from [Font Awesome](http://fortawesome.github.io/Font-Awesome/),
   assembled by [IcoMoon](http://icomoon.io/) (along with some custom icons).
 * [jQuery](http://jquery.com/) for all our JS needs.
+* [Socket.IO](http://socket.io/) for the real-time features.
 
 
 Credits
