@@ -43,7 +43,7 @@ $(document).ready(function() {
 		}
 
 		// enable boxes
-		processed();
+		processed('#hpsync');
 	};
 
 	var config = {
@@ -72,6 +72,7 @@ $(document).ready(function() {
 		var offset = ($('.pagination ul').data('page') - 1) * limit;
 
 		api('HyperPin.Sync', { limit: limit, offset: offset }, function(err, result) {
+			processed('#hpsync');
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
@@ -92,6 +93,7 @@ $(document).ready(function() {
 		var offset = ($('.pagination ul').data('page') - 1) * limit;
 
 		api('Pind.FetchIPDB', { limit: limit, offset: offset }, function(err, result) {
+			processed('#ipdbsync');
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
@@ -105,6 +107,7 @@ $(document).ready(function() {
 		processing('#dlrom');
 
 		api('Pind.FetchMissingRoms', { }, function(err, result) {
+			processed('#dlrom');
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
@@ -118,7 +121,7 @@ $(document).ready(function() {
 	var fetchHiscores = function() {
 		processing('#fetchhs');
 		api('Pind.FetchHiscores', { }, function(err, result) {
-			processed();
+			processed('#fetchhs');
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			}
@@ -131,6 +134,7 @@ $(document).ready(function() {
 	$('#dlrom button').click(downloadRoms);
 	$('#fetchhs button').click(fetchHiscores);
 
+	// real time code
 	var socket = io.connect('/');
 	var $console = $('#console');
 	var timer;
@@ -145,22 +149,33 @@ $(document).ready(function() {
 			$console.slideUp(200);
 		}, timeout);
 	});
-
+	socket.on('startProcessing', function(msg) {
+		processing(msg.id);
+	});
+	socket.on('endProcessing', function(msg) {
+		processed(msg.id);
+	});
 });
 
-function processing(skip) {
-	['#hpsync', '#dlrom', '#dlmedia', '#fetchhs', '#ipdbsync'].forEach(function(id) {
-		$(id).find('button').attr('disabled', 'disabled');
-		if (id != skip) {
-			$(id).addClass('disabled');
-		} else {
-			$(id).find('i').addClass('spin');
+function updateActions() {
+	$('.action').removeClass('disabled').find('button').removeAttr('disabled').find('i').removeClass('spin');
+	$('.action').each(function() {
+		if ($(this).data('processing')) {
+			$($(this).data('exclusive'))
+				.addClass('disabled')
+				.find('button')
+				.attr('disabled', 'disabled');
+			$(this).find('button').attr('disabled', 'disabled').find('i').addClass('spin');
 		}
 	});
 }
 
-function processed() {
-	['#hpsync', '#dlrom', '#dlmedia', '#fetchhs', '#ipdbsync'].forEach(function(id) {
-		$(id).removeClass('disabled').find('button').removeAttr('disabled').find('i').removeClass('spin');
-	});
+function processing(section) {
+	$(section).data('processing', true);
+	updateActions();
+}
+
+function processed(section) {
+	$(section).data('processing', false);
+	updateActions()
 }

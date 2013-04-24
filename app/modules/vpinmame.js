@@ -10,6 +10,7 @@ var settings = require('../../config/settings-mine');
 var ipdb, vpf;
 
 var isFetchingRoms = false;
+var isFetchingHiscores = false;
 
 module.exports = function(app) {
 	socket = app.get('socket.io');
@@ -17,7 +18,6 @@ module.exports = function(app) {
 	vpf = require('./vpforums')(app);
 	return exports;
 };
-
 
 /**
  * Updates high scores from .nv RAM files.
@@ -29,6 +29,13 @@ module.exports = function(app) {
  * 	<ol><li>{String} Error message on error</li></ol>
  */
 exports.fetchHighscores = function(callback) {
+
+	if (isFetchingHiscores) {
+		return callback('Fetching process already running. Wait until complete.');
+	}
+	isFetchingHiscores = true;
+	socket.emit('startProcessing', { id: '#fetchhs' });
+
 	var now = new Date();
 
 	// called when there is a match of a table
@@ -205,6 +212,8 @@ exports.fetchHighscores = function(callback) {
 				} else {
 					socket.emit('notice', { msg: 'Error synchronizing: ' + err, timeout: 3600000 });
 				}
+				isFetchingHiscores = false;
+				socket.emit('endProcessing', { id: '#fetchhs' });
 				callback(err);
 			});
 
@@ -240,7 +249,7 @@ exports.fetchMissingRoms = function(callback) {
 	if (isFetchingRoms) {
 		return callback('Fetching process already running. Wait until complete.');
 	}
-	
+	socket.emit('startProcessing', { id: '#dlrom' });
 	isFetchingRoms = true;
 	var downloadedRoms = [];
 
@@ -365,6 +374,7 @@ exports.fetchMissingRoms = function(callback) {
 			} else {
 				callback(err);
 			}
+			socket.emit('endProcessing', { id: '#dlrom' });
 			isFetchingRoms = false;
 		});
 	});
@@ -922,6 +932,13 @@ exports.assertAll = function(startWith) {
 	}, function() {});
 }
 
+
+exports.isFetchingRoms = function() {
+	return isFetchingRoms;
+}
+exports.isFetchingHiscores = function() {
+	return isFetchingHiscores;
+}
 
 
 /**
