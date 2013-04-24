@@ -13,12 +13,23 @@ module.exports = function(app) {
 	return exports;
 };
 
+var isSyncing = false;
+
 exports.syncIPDB = function(callback) {
+
+	if (isSyncing) {
+		return callback('Syncing process already running. Wait until complete.');
+	}
+	socket.emit('startProcessing', { id: '#ipdbsync' });
+	isSyncing = true;
+
 	schema.Table.findAll( { where: [ 'type != ?', 'OG' ]}).success(function(rows) {
 
 		// fetch data from ipdb.org
 		exports.enrichAll(rows, function(err, rows) {
+			isSyncing = false;
 			socket.emit('notice', { msg: 'All done!', timeout: 5000 });
+			socket.emit('endProcessing', { id: '#ipdbsync' });
 			callback(err, rows);
 		});
 
@@ -305,6 +316,10 @@ exports.getRomLinks = function(ipdbId, callback) {
 		callback(null, urls);
 	});
 };
+
+exports.isSyncing = function() {
+	return isSyncing;
+}
 
 var firstMatch = function(str, regex) {
 	var m = str.match(regex);

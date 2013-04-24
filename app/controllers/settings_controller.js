@@ -1,5 +1,7 @@
 var settings = require('./config/settings-mine');
 var vpm = require('./app/modules/vpinmame')(app);
+var hp = require('./app/modules/hyperpin')(app);
+var ipdb = require('./app/modules/ipdb')(app);
 
 load('application');
 before(use('requireAdmin'));
@@ -7,11 +9,11 @@ before(use('requireAdmin'));
 action('tables', function (context) {
 
 	this.processing = {
-		hpsync: false,
+		hpsync: hp.isSyncing(),
 		dlrom: vpm.isFetchingRoms(),
 		dlmedia: false,
 		fetchhs: vpm.isFetchingHiscores(),
-		ipdbsync: false
+		ipdbsync: ipdb.isSyncing()
 	}
 	this.title = 'Settings :: Tables';
 	this.ignoreTableVids = settings.pind.ignoreTableVids;

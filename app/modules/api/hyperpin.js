@@ -14,24 +14,15 @@ var HyperPinAPI = function() {
 		name : 'HyperPin',
 
 		Sync : function(req, params, callback) {
-			hp.syncTables(function(err) {
+			hp.syncTablesWithData(function(err) {
 				if (err) {
 					console.log("ERROR: " + err);
 					throw new Error(err);
 				} else {
-					socket.emit('notice', { msg: 'Done syncing, starting analysis...' });
-
-					vp.updateTableData(function(err, tables) {
-						if (err) {
-							throw new Error(err);
-						}
-						socket.emit('notice', { msg: 'Finished analyzing tables.', timeout: 5000 });
-						tableApi.GetAll(req, params, callback);
-					});
+					tableApi.GetAll(req, params, callback);
 				}
 			});
 		}
-
 	};
 };
 

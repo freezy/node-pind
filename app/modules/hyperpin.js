@@ -9,15 +9,16 @@ var xml2js = require('xml2js');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
+var socket, vp;
 
 var platforms = {
 	VP: 'Visual Pinball',
 	FP: 'Future Pinball'
 }
-
-var socket;
+var isSyncing = false;
 
 module.exports = function(app) {
+	vp = require('./visualpinball')(app);
 	socket = app.get('socket.io');
 	return exports;
 };
@@ -79,6 +80,34 @@ exports.asset_backglass = function(context, key, size) {
 	}).error(function(err) {
 		console.log('Error retrieving table for backglass ' + key + ': ' + err);
 		context.res.writeHead(500);
+	});
+}
+
+exports.syncTablesWithData = function(callback) {
+
+	if (isSyncing) {
+		return callback('Syncing process already running. Wait until complete.');
+	}
+	socket.emit('startProcessing', { id: '#hpsync' });
+	isSyncing = true;
+
+	exports.syncTables(function(err) {
+		if (err) {
+			console.log("ERROR: " + err);
+			throw new Error(err);
+		} else {
+			socket.emit('notice', { msg: 'Done syncing, starting analysis...' });
+
+			vp.updateTableData(function(err, tables) {
+				if (err) {
+					throw new Error(err);
+				}
+				socket.emit('notice', { msg: 'Finished analyzing tables.', timeout: 5000 });
+				isSyncing = false;
+				socket.emit('endProcessing', { id: '#hpsync' });
+				callback();
+			});
+		}
 	});
 }
 
@@ -211,6 +240,10 @@ exports.insertCoin = function(user, slot, callback) {
 		callback('No more credits available.');
 	}
 };
+
+exports.isSyncing = function() {
+	return isSyncing;
+}
 
 var asset = function(context, path, process) {
 	if (path && fs.existsSync(path)) {
