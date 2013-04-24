@@ -37,6 +37,17 @@ var PindApi = function() {
 			});
 		},
 
+		FetchMissingRoms : function(req, params, callback) {
+			vpm.fetchMissingRoms(function(err, filepaths) {
+				if (!err) {
+					callback({ message: 'High scores updated successfully.', filepaths: filepaths });
+				} else {
+					callback(api.error(err));
+				}
+			});
+		},
+
+
 		GetHiscores : function(req, params, callback) {
 			schema.sequelize.query(
 				'SELECT h.*, t.key, u.user FROM hiscores h ' +

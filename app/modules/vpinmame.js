@@ -7,12 +7,12 @@ var request = require('request');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
-var ipdb;
-var vpf = require('./vpforums');
+var ipdb, vpf;
 
 module.exports = function(app) {
 	socket = app.get('socket.io');
 	ipdb = require('./ipdb')(app);
+	vpf = require('./vpforums')(app);
 	return exports;
 };
 
@@ -235,6 +235,8 @@ exports.init = function() {
  */
 exports.fetchMissingRoms = function(callback) {
 
+	var downloadedRoms = [];
+
 	/**
 	 * Loops through a list of download links, checks if the file is already
 	 * locally available and otherwise fetches it using the given download
@@ -247,7 +249,10 @@ exports.fetchMissingRoms = function(callback) {
 	var checkAndDownload = function(links, downloadFct, callback) {
 		async.eachSeries(links, function(link, next) {
 			if (!fs.existsSync(settings.vpinmame.path + '/roms/' + link.filename)) {
-				downloadFct(link, settings.vpinmame.path + '/roms', next);
+				downloadFct(link, settings.vpinmame.path + '/roms', function(err, filepath) {
+					downloadedRoms.push(filepath);
+					next();
+				});
 			} else {
 				console.log('ROM %s already available, skipping.', link.filename);
 				next();
@@ -266,6 +271,7 @@ exports.fetchMissingRoms = function(callback) {
 			row.updateAttributes({
 				rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + row.rom + '.zip')
 			}).done(next);
+
 		} else {
 			next();
 		}
@@ -279,6 +285,7 @@ exports.fetchMissingRoms = function(callback) {
 	 * @param next Callback. Second argument is filename where saved.
 	 */
 	var download = function(link, folder, next) {
+		socket.emit('notice', { msg: 'IPDB: Downloading "' + link.filename + '"', timeout: 60000 });
 		console.log('Downloading %s at %s...', link.title, link.url);
 		var filepath = folder + '/' + link.filename;
 		var stream = fs.createWriteStream(filepath);
@@ -317,6 +324,7 @@ exports.fetchMissingRoms = function(callback) {
 	 * @param next Callback
 	 */
 	var downloadIPDB = function(row, next) {
+		socket.emit('notice', { msg: 'IPDB: Searching ROMs for "' + row.name + '"', timeout: 5000 });
 		ipdb.getRomLinks(row.ipdb_no, function(err, links) {
 			console.log('IPDB ROMS: %s', util.inspect(links));
 			if (err) {
@@ -341,7 +349,14 @@ exports.fetchMissingRoms = function(callback) {
 				console.log('WARNING: ROM file found in table but no IPDB ID. Maybe try matching IPDB.org first?');
 				downloadVPF(row, next);
 			}
-		}, callback);
+		}, function(err) {
+			if (!err) {
+				socket.emit('notice', { msg: 'All done, ' + downloadedRoms.length + ' ROMs downloaded.', timeout: 5000 });
+				callback(null, downloadedRoms);
+			} else {
+				callback(err);
+			}
+		});
 	});
 };
 

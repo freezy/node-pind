@@ -4,6 +4,14 @@ var request = require('request');
 var natural = require('natural');
 var settings = require('../../config/settings-mine');
 
+var socket;
+
+module.exports = function(app) {
+	socket = app.get('socket.io');
+	return exports;
+};
+
+
 exports.findMediaPack = function(table, callback) {
 	console.log('Searching media pack for "' + table.name + '"...');
 	fetchDownloads(35, table.name[0], function(err, results) {
@@ -35,7 +43,9 @@ exports.findMediaPack = function(table, callback) {
  * 		<li>{Array} List of found links. Links are objects with <tt>name</tt> and <tt>url</tt>.</li></ol>
  */
 exports.getRomLinks = function(table, callback) {
+
 	console.log('Searching ROM for "' + table.name + '"...');
+	socket.emit('notice', { msg: 'VPF: Searching ROM for "' + table.name + '"', timeout: 120000 });
 	fetchDownloads(9, table.name[0], function(err, results) {
 		var matches = matchResult(results, table.name, function(str) {
 			return str.replace(/[\[\(\-].*/, '').trim();
@@ -62,6 +72,8 @@ exports.getRomLinks = function(table, callback) {
  */
 exports.download = function(link, folder, callback) {
 
+	socket.emit('notice', { msg: 'VPF: Downloading "' + link.filename + '"', timeout: 60000 });
+
 	// fetch the "overview" page
 	request(link.url, function(err, response, body) {
 		if (err) {
@@ -70,6 +82,7 @@ exports.download = function(link, folder, callback) {
 
 		// starts the download, assuming we have a logged session.
 		var download = function(body) {
+			socket.emit('notice', { msg: 'VPF: Downloading "' + link.filename + '"', timeout: 60000 });
 			var m;
 			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
 				var confirmUrl = m[1].replace(/&amp;/g, '&');
@@ -162,9 +175,10 @@ function fetchDownloads(cat, letter, callback, currentResult, page) {
 
 function login(callback) {
 	if (!settings.vpforums.user || !settings.vpforums.pass) {
-		callback('Need valid credentials for vpforums.org. Please update settings-mine.js.');
+		return callback('Need valid credentials for vpforums.org. Please update settings-mine.js.');
 	}
 	console.log('Logging in...');
+	socket.emit('notice', { msg: 'VPF: Logging in as "' + settings.vpforums.user + '"', timeout: 60000 });
 
 	// just get the index to obtain the damn auth key
 	request('http://www.vpforums.org/index.php', function(err, response, body) {

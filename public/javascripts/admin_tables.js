@@ -100,6 +100,20 @@ $(document).ready(function() {
 		});
 	};
 
+	// enable download missing roms button
+	var downloadRoms = function() {
+		processing('#dlrom');
+
+		api('Pind.FetchMissingRoms', { }, function(err, result) {
+			if (err) {
+				alert('Problem Syncing: ' + err);
+			} else {
+				console.log('Downloaded ROMs: ' + result.filepaths);
+				refreshData(config);
+			}
+		});
+	};
+
 	// enable fetchHiscores button
 	var fetchHiscores = function() {
 		processing('#fetchhs');
@@ -114,6 +128,7 @@ $(document).ready(function() {
 	$('.data.tables + .empty button').click(syncHyperPin);
 	$('#hpsync button').click(syncHyperPin);
 	$('#ipdbsync button').click(syncIPDB);
+	$('#dlrom button').click(downloadRoms);
 	$('#fetchhs button').click(fetchHiscores);
 
 	var socket = io.connect('/');
