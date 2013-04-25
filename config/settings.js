@@ -105,7 +105,12 @@ module.exports = {
 		 * If set to true, the DMD will be rotated 90°, otherwise it will have the same orientation as
 		 * the playfield.
 		 */
-		rotate: false
+		rotate: false,
+		/**
+		 * Watches for the ROM's data container for file changes. Set this to true if you want to get
+		 * your high scores updated automatically.
+		 */
+		watchNvrams: true
 	},
 	/**
 	 * VPForums.org-specific settings.

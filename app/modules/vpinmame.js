@@ -7,7 +7,7 @@ var request = require('request');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
-var ipdb, vpf;
+var ipdb, vpf, socket;
 
 var isFetchingRoms = false;
 var isFetchingHiscores = false;
@@ -22,8 +22,7 @@ module.exports = function(app) {
 /**
  * Updates high scores from .nv RAM files.
  *
- * Loops through available tables and matches available users. To database
- * only goes when both are matched.
+ * Loops through available tables and matches available users.
  *
  * @param callback Function to execute after completion, invoked with one argument:
  * 	<ol><li>{String} Error message on error</li></ol>
@@ -38,80 +37,6 @@ exports.fetchHighscores = function(callback) {
 
 	var now = new Date();
 
-	// called when there is a match of a table
-	var updateHighscore = function(hiscore, next) {
-		var where = { where: { type: hiscore.type, tableId: hiscore.table.id }};
-		switch (hiscore.type) {
-			case 'champ':
-				break;
-			case 'hiscore':
-				where.where.rank = hiscore.rank;
-				break;
-			case 'special':
-				where.where.title = hiscore.title;
-				break;
-		}
-		// check if there's already an entry for type and table
-		schema.Hiscore.find(where).success(function(row) {
-
-			var points = function(hiscore) {
-				switch (hiscore.type) {
-					case 'champ':
-						return 5;
-					case 'hiscore':
-						return 5 - hiscore.rank;
-					case 'special':
-						return 2;
-				}
-			}
-
-			// if not, add new entry
-			if (!row) {
-				//console.log('No current entry found, adding new highscore.');
-				schema.Hiscore.create({
-					type: hiscore.type,
-					score: hiscore.score,
-					rank: hiscore.rank,
-					title: hiscore.title,
-					info: hiscore.info,
-					points: points(hiscore),
-					player: hiscore.player,
-					createdAt: now,
-					updatedAt: now
-				}).success(function(row) {
-					row.setTable(hiscore.table).success(function(row) {
-						if (hiscore.user) {
-							row.setUser(hiscore.user).success(function(row) {
-								next();
-							}).error(next);
-						} else {
-							next();
-						}
-					}).error(next);
-				}).error(function(err) {
-					console.log('ERROR: ' + err);
-					next(err);
-				});
-
-			// if so, update entry
-			} else {
-				//console.log('Found entry %s, updating', row.id);
-				row.updateAttributes({
-					score: hiscore.score,
-					info: hiscore.info,
-					points: points(hiscore),
-					player: hiscore.player,
-					updatedAt: now
-				}).success(function(row) {
-
-					row.setUser(hiscore.user).success(function(row) {
-						next();
-					}).error(next);
-				}).error(next);
-			}
-		}).error(next);
-	};
-
 	// fetch all VP table and store them into a dictionary
 	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL' }).success(function(rows) {
 		var roms = [];
@@ -121,7 +46,6 @@ exports.fetchHighscores = function(callback) {
 			if (fs.existsSync(settings.vpinmame.path + '/nvram/' + rows[i].rom + '.nv')) {
 				roms.push(rows[i].rom);
 				tables[rows[i].rom] = rows[i];
-				//break;
 			}
 		}
 		console.log('Found %d VP tables with ROM and a nvram.', roms.length);
@@ -137,75 +61,7 @@ exports.fetchHighscores = function(callback) {
 
 			// for every rom, get high scores and try to match against the 2 dictionaries
 			async.eachSeries(roms, function(rom, next) {
-				exports.getHighscore(rom, function(err, hiscore) {
-					if (err || !hiscore) {
-						console.log('[%s] Error: %s', rom, err ? err : 'Unsupported ROM.');
-						next();
-					} else {
-						console.log('[%s] Fetched, checking..', rom);
-						var hiscores = [];
-
-						// grand champion
-						if (hiscore.grandChampion) {
-							var user = users[tr(hiscore.grandChampion.player)];
-							if (user) {
-								console.log('[%s] Matched grand champion: %s (%s)', rom, hiscore.grandChampion.player, hiscore.grandChampion.score);
-							}
-							hiscores.push({
-								type: 'champ',
-								score: hiscore.grandChampion.score,
-								player: hiscore.grandChampion.player,
-								table: tables[rom],
-								user: user ? user : null
-							});
-						}
-
-						// regular high scores
-						if (hiscore.highest) {
-							for (var i = 0; i < hiscore.highest.length; i++) {
-								var hs = hiscore.highest[i];
-								var user = users[tr(hs.player)];
-								if (user) {
-									console.log('[%s] Matched high score %s: %s (%s)', rom, hs.rank, hs.player, hs.score);
-								}
-								hiscores.push({
-									type: 'hiscore',
-									score: hs.score,
-									rank: hs.rank,
-									player: hs.player,
-									table: tables[rom],
-									user: user ? user : null
-								});
-							}
-						}
-
-						// special titles
-						if (hiscore.other) {
-							for (var i = 0; i < hiscore.other.length; i++) {
-								var hs = hiscore.other[i];
-								var user = users[tr(hs.player)];
-								if (user) {
-									console.log('[%s] Matched %s: %s', rom, hs.title, hs.player);
-								}
-								hiscores.push({
-									type: 'special',
-									title: hs.title,
-									info: hs.info,
-									score: hs.score,
-									rank: hs.rank,
-									player: hs.player,
-									table: tables[rom],
-									user: user ? user : null
-								});
-							}
-						}
-
-						socket.emit('notice', { msg: 'Reading high scores from "' + rom + '" (' + tables[rom].name + ')', timeout: 5000 });
-
-						// now we have all high scores for this table, update them in the db
-						async.eachSeries(hiscores, updateHighscore, next);
-					}
-				});
+				matchHiscore(tables,  users, rom, next);
 			}, function(err) {
 				if (!err) {
 					socket.emit('notice', { msg: 'High scores successfully synchronized.', timeout: 5000 });
@@ -226,16 +82,252 @@ exports.fetchHighscores = function(callback) {
 	});
 };
 
+/**
+ * Checks if a high score is available and updates it, otherwise adds it.
+ *
+ * @param hiscore Hiscore object, with table reference
+ * @param next Callback
+ */
+var updateHighscore = function(hiscore, next) {
+	var where = { where: { type: hiscore.type, tableId: hiscore.table.id }};
+	switch (hiscore.type) {
+		case 'champ':
+			break;
+		case 'hiscore':
+			where.where.rank = hiscore.rank;
+			break;
+		case 'special':
+			where.where.title = hiscore.title;
+			break;
+	}
+	// check if there's already an entry for type and table
+	schema.Hiscore.find(where).success(function(row) {
+
+		var points = function(hiscore) {
+			switch (hiscore.type) {
+				case 'champ':
+					return 5;
+				case 'hiscore':
+					return 5 - hiscore.rank;
+				case 'special':
+					return 2;
+			}
+		};
+
+		// if not, add new entry
+		if (!row) {
+			//console.log('No current entry found, adding new highscore.');
+			schema.Hiscore.create({
+				type: hiscore.type,
+				score: hiscore.score,
+				rank: hiscore.rank,
+				title: hiscore.title,
+				info: hiscore.info,
+				points: points(hiscore),
+				player: hiscore.player
+			}).success(function(row) {
+				row.setTable(hiscore.table).success(function(row) {
+					if (hiscore.user) {
+						row.setUser(hiscore.user).success(function(row) {
+							next();
+						}).error(next);
+					} else {
+						next();
+					}
+				}).error(next);
+			}).error(function(err) {
+				console.log('ERROR: ' + err);
+				next(err);
+			});
+
+		// if so, update entry
+		} else {
+			//console.log('Found entry %s, updating', row.id);
+			row.updateAttributes({
+				score: hiscore.score,
+				info: hiscore.info,
+				points: points(hiscore),
+				player: hiscore.player
+			}).success(function(row) {
+
+				row.setUser(hiscore.user).success(function() {
+					next();
+				}).error(next);
+			}).error(next);
+		}
+	}).error(next);
+};
+
 
 /**
- * Creates pinemhi.ini with the correct parameters.
+ * Reads highscores from a given ROM name and adds it to the database. ROM name must
+ * exist in the provided tables dictionary.
+ *
+ * @param tables Cached list of tables. Key equals ROM name, value equals row from tables.
+ * @param users Cached list of users. Key equals lower case user name, value equals row from users.
+ * @param rom Rom name, without extension.
+ * @param next Callback
  */
-exports.init = function() {
+var matchHiscore = function(tables, users, rom, next) {
+
+	if (!tables[rom]) {
+		console.log('[%s] Error: ROM is not in provided tables array.', rom);
+		return next();
+	}
+
+	exports.getHighscore(rom, function(err, hiscore) {
+		if (err || !hiscore) {
+			console.log('[%s] Error: %s', rom, err ? err : 'Unsupported ROM.');
+			next();
+		} else {
+			console.log('[%s] Fetched, checking..', rom);
+			var hiscores = [];
+
+			// grand champion
+			if (hiscore.grandChampion) {
+				var user = users[tr(hiscore.grandChampion.player)];
+				if (user) {
+					console.log('[%s] Matched grand champion: %s (%s)', rom, hiscore.grandChampion.player, hiscore.grandChampion.score);
+				}
+				hiscores.push({
+					type: 'champ',
+					score: hiscore.grandChampion.score,
+					player: hiscore.grandChampion.player,
+					table: tables[rom],
+					user: user ? user : null
+				});
+			}
+
+			// regular high scores
+			if (hiscore.highest) {
+				for (var i = 0; i < hiscore.highest.length; i++) {
+					var hs = hiscore.highest[i];
+					var user = users[tr(hs.player)];
+					if (user) {
+						console.log('[%s] Matched high score %s: %s (%s)', rom, hs.rank, hs.player, hs.score);
+					}
+					hiscores.push({
+						type: 'hiscore',
+						score: hs.score,
+						rank: hs.rank,
+						player: hs.player,
+						table: tables[rom],
+						user: user ? user : null
+					});
+				}
+			}
+
+			// special titles
+			if (hiscore.other) {
+				for (var i = 0; i < hiscore.other.length; i++) {
+					var hs = hiscore.other[i];
+					var user = users[tr(hs.player)];
+					if (user) {
+						console.log('[%s] Matched %s: %s', rom, hs.title, hs.player);
+					}
+					hiscores.push({
+						type: 'special',
+						title: hs.title,
+						info: hs.info,
+						score: hs.score,
+						rank: hs.rank,
+						player: hs.player,
+						table: tables[rom],
+						user: user ? user : null
+					});
+				}
+			}
+
+			socket.emit('notice', { msg: 'Reading high scores from "' + rom + '" (' + tables[rom].name + ')', timeout: 5000 });
+
+			// now we have all high scores for this table, update them in the db
+			async.eachSeries(hiscores, updateHighscore, next);
+		}
+	});
+};
+
+/**
+ * Updates high scores of a changed ROM upon file change. This method
+ * can be directly passed to fs.watch().
+ *
+ * @param event File change event
+ * @param filename Changed file
+ */
+exports.watchHighscores = function(event, filename) {
+	if (isFetchingHiscores) {
+		return;
+	}
+	isFetchingHiscores = true;
+	if (!filename) {
+		return;
+	}
+	console.log('File change detected.');
+	var ext = filename.substr(filename.lastIndexOf('.')).toLowerCase();
+	if (ext != '.nv') {
+		return;
+	}
+	var romname = filename.substr(0, filename.lastIndexOf('.'));
+
+	console.log('File change detected for ROM "' + romname + '".');
+	socket.emit('notice', { msg: 'Updated NVRAM, updating high score for ROM "' + romname + '"', timeout: 60000 });
+	socket.emit('startProcessing', { id: '#fetchhs' });
+	schema.Table.find({ where: { platform: 'VP', rom: romname }}).success(function(table) {
+		if (table) {
+			schema.User.all().success(function(rows) {
+				var users = {};
+				for (var i = 0; i < rows.length; i++) {
+					users[tr(rows[i].user)] = rows[i];
+				}
+				var tables = {};
+				tables[romname] = table;
+				matchHiscore(tables, users, romname, function() {
+					isFetchingHiscores = false;
+					console.log('High score for ROM "' + romname + '" updated successfully.');
+					socket.emit('notice', { msg: 'High scores for "' + table.name + '" updated.', timeout: 5000 });
+					socket.emit('endProcessing', { id: '#fetchhs' });
+				});
+			});
+		} else {
+			console.log('No table found for ROM "' + romname + '".');
+		}
+	});
+};
+
+/**
+ * Links new user to existing high scores.
+ * @param user New user object from database
+ * @param callback Callback
+ */
+exports.linkNewUser = function(user, callback) {
+	schema.Hiscore.all({ where: [ 'lower(player) = ?', user.user.toLowerCase() ]}).success(function(rows) {
+		async.eachSeries(rows, function(row, next) {
+			row.setUser(user).success(function(row) {
+				next();
+			}).error(next);
+		}, callback);
+	});
+};
+
+/**
+ * Executed when application starts.
+ */
+exports.init = function(_socket) {
+
+	if (_socket) {
+		socket = _socket;
+	}
+
+	// update pinemhi config path
 	var pinemhiConfigPath = binPath() + '\\pinemhi.ini';
 	var pinemhiConfig = '[paths]\r\n';
 	pinemhiConfig += 'VP=' + fs.realpathSync(settings.vpinmame.path + '/nvram') + '\\\r\n';
 	pinemhiConfig += 'FP=' + fs.realpathSync(settings.futurepinball.path + '/fpRAM') + '\\\r\n';
 	fs.writeFileSync(pinemhiConfigPath, pinemhiConfig);
+
+	// enable nvram watching
+	if (settings.vpinmame.watchNvrams) {
+		fs.watch(settings.vpinmame.path + '/nvram', exports.watchHighscores);
+	}
 };
 
 /**

@@ -35,6 +35,6 @@ module.exports = function(compound) {
         app.use(app.router);
     });
 
-	// create config file for pinemhi
-	vpm.init();
+	// create config file for pinemhi and start watching .nv files if necessary
+	vpm.init(io.sockets);
 };

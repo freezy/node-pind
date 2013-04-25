@@ -52,6 +52,13 @@ module.exports = function(sequelize, DataTypes) {
 					Table.find({ where: { hpid: table.hpid, platform: table.platform }}).success(function(row) {
 						if (row) {
 
+							// don't update name and year if it was already matched by ipdb.org
+							if (row.ipdb_no) {
+								delete table.name;
+								delete table.year;
+							}
+							console.log('Updating with %s', util.inspect(table));
+
 							row.updateAttributes(table).success(function(r) {
 								callback(null, r);
 							}).error(callback);

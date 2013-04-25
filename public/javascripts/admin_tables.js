@@ -5,7 +5,13 @@ $(document).ready(function() {
 		$tbody.empty();
 		for (var i = 0; i < rows.length; i++) {
 
-			var tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].hpid + '</td>';
+			var tr;
+			if (rows[i].name && rows[i].year && rows[i].manufacturer) {
+				tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].name + ' (' + rows[i].manufacturer + ' ' + rows[i].year + ')</td>';
+			} else {
+				tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].hpid + '</td>';
+			}
+			
 			var ul = function(tag, icon, hint) {
 				return '<li class="badge' + (tag ? ' badge-' + tag : '') + '" title="' + hint + '"><i class="icon ' + icon + '"></i></li>';
 			}

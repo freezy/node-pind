@@ -2,6 +2,8 @@ var util = require('util');
 var settings = require('./config/settings-mine');
 var schema = require('./app/model/schema');
 
+var vpm = require('./app/modules/vpinmame')(app);
+
 load('application');
 
 action('login', function() {
@@ -109,6 +111,9 @@ action('signup', function () {
 								that.validationErrors = null;
 								that.alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
 								render('login');
+								vpm.linkNewUser(user, function() {
+									console.log('User successfully linked to high scores.');
+								});
 
 							}).error(function(err) {
 								that.alert = { title: 'Ooops. Looks like a user creation problem.', message: err };
