@@ -1,3 +1,5 @@
+var error = require('./../error');
+
 var hp, vp, ipdb, tableApi, socket;
 
 module.exports = function(app) {
@@ -17,11 +19,24 @@ var HyperPinAPI = function() {
 			hp.syncTablesWithData(function(err) {
 				if (err) {
 					console.log("ERROR: " + err);
-					throw new Error(err);
+					socket.emit('notice', { msg: 'ERROR: ' + err, type: 'error', timeout: 60000 });
+					callback(error.api(err));
 				} else {
 					tableApi.GetAll(req, params, callback);
 				}
 			});
+		},
+
+		FindMissingMedia : function(req, params, callback) {
+			hp.findMissingMedia(function(err) {
+				if (err) {
+					console.log("ERROR: " + err);
+					socket.emit('notice', { msg: 'ERROR: ' + err, type: 'error', timeout: 60000 });
+					callback(error.api(err));
+				} else {
+					tableApi.GetAll(req, params, callback);
+				}
+			})
 		}
 	};
 };

@@ -36,7 +36,10 @@
 		"request" : "2.14.0",
 		"natural" : "0.1.19",
 		"winston" : "0.6.2",
-		"ole-doc" : "0.1.0"
+		"ole-doc" : "0.1.0",
+		"jquery" : "1.8.3",
+		"jsdom" : "0.6.0",
+		"unzip" : "0.1.7"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",

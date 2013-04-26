@@ -57,7 +57,6 @@ module.exports = function(sequelize, DataTypes) {
 								delete table.name;
 								delete table.year;
 							}
-							console.log('Updating with %s', util.inspect(table));
 
 							row.updateAttributes(table).success(function(r) {
 								callback(null, r);

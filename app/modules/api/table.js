@@ -41,6 +41,7 @@ var TableApi = function() {
 							} else {
 								p.where += '(NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel` OR NOT `media_video`) OR ';
 							}
+							break;
 						case 'hiscore':
 							p.where += '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores`)) OR ';
 							break;

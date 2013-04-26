@@ -9,7 +9,7 @@ var xml2js = require('xml2js');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
-var socket, vp;
+var socket, vp, vpf;
 
 var platforms = {
 	VP: 'Visual Pinball',
@@ -19,6 +19,7 @@ var isSyncing = false;
 
 module.exports = function(app) {
 	vp = require('./visualpinball')(app);
+	vpf = require('./vpforums')(app);
 	socket = app.get('socket.io');
 	return exports;
 };
@@ -216,6 +217,79 @@ exports.syncTables = function(callback) {
 	});
 };
 
+/**
+ * Loops through all tables that are any media missing, searches for it on vpforums.org,
+ * downloads it and extracts to the correct location.
+ *
+ * @param callback
+ */
+exports.findMissingMedia = function(callback) {
+
+	/**
+	 * Processes row for either media pack or table video
+	 * @param row Table row
+	 * @param what For logging
+	 * @param next Callback
+	 */
+	var process = function(row, what, next) {
+		socket.emit('notice', { msg: 'Searching ' + what + ' for "' + row.name + '"', timeout: 60000 });
+		vpf.findMediaPack(row, function(err, filename) {
+			if (err) {
+				return next(err);
+			}
+			socket.emit('notice', { msg: 'Download successful, extracting missing media files' });
+			vpf.extractMedia(row, filename, function(err, files) {
+				if (err) {
+					return next(err);
+				}
+				console.log('Successfully extracted ' + files.length + ' media files.');
+				if (files.length > 0) {
+					socket.emit('tableUpdate', { key: row.key });
+				}
+				fs.unlinkSync(filename);
+				next();
+			});
+		});
+	};
+
+	schema.Table.all({ where: 'NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel`' }).success(function(rows) {
+		async.eachSeries(rows, function(row, next) {
+			process(row, 'media pack', next);
+		}, function(err) {
+			if (err) {
+				return callback(err);
+			}
+			if (!settings.pind.ignoreTableVids) {
+				// do the same for the tables
+				schema.Table.all({ where: 'NOT `media_video`' }).success(function(rows) {
+					async.eachSeries(rows, function(row, next) {
+						process(row, 'table video', next);
+					}, function(err) {
+						if (err) {
+							return callback(err);
+						}
+						// long session, logout.
+						vpf.logout(function() {
+							exports.syncTables(callback);
+						});
+					});
+				});
+			} else {
+				// long session, logout.
+				vpf.logout(function() {
+					exports.syncTables(callback);
+				});
+			}
+		});
+	}).error(callback);
+};
+
+/**
+ * Triggers a coin insert.
+ * @param user
+ * @param slot
+ * @param callback
+ */
 exports.insertCoin = function(user, slot, callback) {
 	console.log('checking amount of credits..');
 	if (user.credits > 0) {

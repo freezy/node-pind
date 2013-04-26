@@ -123,6 +123,20 @@ $(document).ready(function() {
 		});
 	};
 
+	// enable download missing media button
+	var downloadMedia = function() {
+		processing('#dlmedia');
+
+		api('HyperPin.FindMissingMedia', { }, function(err) {
+			processed('#dlmedia');
+			if (err) {
+				alert('Problem Downloading: ' + err);
+			} else {
+				refreshData(config);
+			}
+		});
+	};
+
 	// enable fetchHiscores button
 	var fetchHiscores = function() {
 		processing('#fetchhs');
@@ -138,6 +152,7 @@ $(document).ready(function() {
 	$('#hpsync button').click(syncHyperPin);
 	$('#ipdbsync button').click(syncIPDB);
 	$('#dlrom button').click(downloadRoms);
+	$('#dlmedia button').click(downloadMedia);
 	$('#fetchhs button').click(fetchHiscores);
 
 	// real time code
@@ -160,6 +175,11 @@ $(document).ready(function() {
 	});
 	socket.on('endProcessing', function(msg) {
 		processed(msg.id);
+	});
+	socket.on('tableUpdate', function(msg) {
+		if ($('tr[data-id="' + msg.key + '"]').length > 0) {
+			refreshData(config);
+		}
 	});
 });
 
