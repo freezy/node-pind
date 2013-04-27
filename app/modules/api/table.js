@@ -88,6 +88,18 @@ var TableApi = function() {
 							if (params.fields.indexOf('url_logo') > -1) {
 								r.url_logo = pathTo.asset_logo(rows[i].key);
 							}
+							if (params.fields.indexOf('url_square_small') > -1) {
+								r.url_square_small = pathTo.asset_square_small(rows[i].key);
+							}
+							if (params.fields.indexOf('url_square_medium') > -1) {
+								r.url_square_medium = pathTo.asset_square_medium(rows[i].key);
+							}
+							if (params.fields.indexOf('url_widescreen_small') > -1) {
+								r.url_widescreen_small = pathTo.asset_widescreen_small(rows[i].key);
+							}
+							if (params.fields.indexOf('url_widescreen_medium') > -1) {
+								r.url_widescreen_medium = pathTo.asset_widescreen_medium(rows[i].key);
+							}
 							if (params.fields.indexOf('url_banner') > -1) {
 								r.url_banner = pathTo.asset_banner(rows[i].key);
 							}

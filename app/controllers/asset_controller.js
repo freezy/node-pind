@@ -24,6 +24,22 @@ action('logo', function(context) {
 	hp.asset_logo(context, params.id);
 });
 
+action('square_small', function(context) {
+	hp.asset_square(context, params.id, 150);
+});
+
+action('square_medium', function(context) {
+	hp.asset_square(context, params.id, 300);
+});
+
+action('widescreen_small', function(context) {
+	hp.asset_widescreen(context, params.id, 200);
+});
+
+action('widescreen_medium', function(context) {
+	hp.asset_widescreen(context, params.id, 450);
+});
+
 action('backglass_small', function(context) {
 	hp.asset_backglass(context, params.id, 150);
 });

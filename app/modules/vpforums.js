@@ -49,7 +49,11 @@ var findMedia = function(table, cat, callback) {
  * 		<li>{String} Absolute file path of the downloaded archive.</li></ol>
  */
 exports.findMediaPack = function(table, callback) {
-	findMedia(table, 35, callback);
+	if (table.platform == 'VP') {
+		findMedia(table, 35, callback);
+	} else {
+		findMedia(table, 36, callback);
+	}
 };
 
 exports.findTableVideo = function(table, callback) {

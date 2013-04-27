@@ -11,6 +11,8 @@ var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 var socket, vp, vpf;
 
+var disableCache = false;
+
 var platforms = {
 	VP: 'Visual Pinball',
 	FP: 'Future Pinball'
@@ -31,13 +33,13 @@ module.exports = function(app) {
  */
 exports.asset_banner = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
-		asset(context, getPath('Table Images', row), function(gm) {
+		asset(context, getPath('Table Images', row), function(gm, callback) {
 			gm.rotate('black', -45);
 			gm.crop(800, 150, 400, 1250);
 			if (size != null) {
 				gm.resize(size, size);
 			}
-			return gm;
+			callback(gm);
 		});
 	}).error(function(err) {
 		console.log('Error retrieving table for banner ' + key + ': ' + err);
@@ -47,12 +49,12 @@ exports.asset_banner = function(context, key, size) {
 
 exports.asset_table = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
-		asset(context, getPath('Table Images', row), function(gm) {
+		asset(context, getPath('Table Images', row), function(gm, callback) {
 			gm.rotate('black', -90);
 			if (size != null) {
 				gm.resize(size, size);
 			}
-			return gm;
+			callback(gm);
 		});
 	}).error(function(err) {
 		console.log('Error retrieving table for table image ' + key + ': ' + err);
@@ -70,13 +72,66 @@ exports.asset_logo = function(context, key) {
 	});
 }
 
-exports.asset_backglass = function(context, key, size) {
+exports.asset_square = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
-		asset(context, getPath('Backglass Images', row), function(gm) {
+		asset(context, getPath('Table Images', row), function(gm, callback) {
+			gm.rotate('black', -120);
+			gm.crop(590, 590, 800, 1100);
 			if (size != null) {
 				gm.resize(size, size);
 			}
-			return gm;
+			callback(gm);
+		});
+	}).error(function(err) {
+		console.log('Error retrieving table for square ' + key + ': ' + err);
+		context.res.writeHead(500);
+	});
+}
+
+
+exports.asset_widescreen = function(context, key, size) {
+
+	schema.Table.find({ where: { key : key }}).success(function(row) {
+		asset(context, getPath('Backglass Images', row), function(gm, callback) {
+
+			gm.size(function(err, dim) {
+				var ar = 1.777777777777778;
+				var h = dim.width / ar;
+
+				gm.crop(dim.width, h, 0, 0);
+				if (size != null) {
+					gm.resize(size, size);
+				}
+				callback(gm);
+			})
+		});
+	}).error(function(err) {
+		console.log('Error retrieving table for square ' + key + ': ' + err);
+		context.res.writeHead(500);
+	});
+
+/*	schema.Table.find({ where: { key : key }}).success(function(row) {
+		asset(context, getPath('Table Images', row), function(gm, callback) {
+			gm.rotate('black', -120);
+			gm.crop(800, 450, 700, 1180);
+			if (size != null) {
+				gm.resize(size, size);
+			}
+ 			callback(gm);
+		});
+	}).error(function(err) {
+		console.log('Error retrieving table for square ' + key + ': ' + err);
+		context.res.writeHead(500);
+	});*/
+}
+
+exports.asset_backglass = function(context, key, size) {
+	schema.Table.find({ where: { key : key }}).success(function(row) {
+		asset(context, getPath('Backglass Images', row), function(gm, callback) {
+			if (size != null) {
+				gm.resize(size, size);
+			}
+			callback(gm);
 		});
 	}).error(function(err) {
 		console.log('Error retrieving table for backglass ' + key + ': ' + err);
@@ -231,9 +286,9 @@ exports.findMissingMedia = function(callback) {
 	 * @param what For logging
 	 * @param next Callback
 	 */
-	var process = function(row, what, next) {
+	var process = function(row, what, findFct, next) {
 		socket.emit('notice', { msg: 'Searching ' + what + ' for "' + row.name + '"', timeout: 60000 });
-		vpf.findMediaPack(row, function(err, filename) {
+		findFct(row, function(err, filename) {
 			if (err) {
 				return next(err);
 			}
@@ -254,7 +309,7 @@ exports.findMissingMedia = function(callback) {
 
 	schema.Table.all({ where: 'NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel`' }).success(function(rows) {
 		async.eachSeries(rows, function(row, next) {
-			process(row, 'media pack', next);
+			process(row, 'media pack', vpf.findMediaPack, next);
 		}, function(err) {
 			if (err) {
 				return callback(err);
@@ -263,7 +318,7 @@ exports.findMissingMedia = function(callback) {
 				// do the same for the tables
 				schema.Table.all({ where: 'NOT `media_video`' }).success(function(rows) {
 					async.eachSeries(rows, function(row, next) {
-						process(row, 'table video', next);
+						process(row, 'table video', vpf.findTableVideo, next);
 					}, function(err) {
 						if (err) {
 							return callback(err);
@@ -325,7 +380,7 @@ var asset = function(context, path, process) {
 		// caching
 		var modified = new Date(fs.fstatSync(fs.openSync(path, 'r')).mtime);
 		var ifmodifiedsince = new Date(context.req.headers['if-modified-since']);
-		if (modified.getTime() >= ifmodifiedsince.getTime()) {
+		if (modified.getTime() >= ifmodifiedsince.getTime() && !disableCache) {
 			context.res.writeHead(304);
 			context.res.end();
 			return;
@@ -333,15 +388,17 @@ var asset = function(context, path, process) {
 
 		// cache, process.
 		var now = new Date().getTime();
-		process(gm(path)).stream(function (err, stream, stderr) {
-			if (err) next(err);
-			context.res.writeHead(200, { 
-				'Content-Type': 'image/png',
-				'Cache-Control': 'private',
-				'Last-Modified': modified
+		process(gm(path), function(gm) {
+			gm.stream(function (err, stream, stderr) {
+				if (err) next(err);
+				context.res.writeHead(200, {
+					'Content-Type': 'image/png',
+					'Cache-Control': 'private',
+					'Last-Modified': modified
+				});
+				stream.pipe(context.res);
+				console.log("image processed in %d ms.", new Date().getTime() - now);
 			});
-			stream.pipe(context.res);
-			console.log("image processed in %d ms.", new Date().getTime() - now);
 		});
 	} else {
 		context.res.writeHead(404);

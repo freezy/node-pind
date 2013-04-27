@@ -1,22 +1,26 @@
 extends ../layouts/inner
 
 block content
-	div.span10.offset1
-		div.content.tables
+	- contentFor('javascripts', javascriptIncludeTag('data', 'tables'))
+	div.span10.offset1.content(ng-app)
+		section(ng-controller='TablesCtrl')
 			.page-header
-				h1 Available Tables
-				p
-				each table in tables
-					.media
-						a(href='#').pull-left
-							img(src=table.portrait_small, alt=table.name).media-object
-						.media-body
-							h3= table.name
-							p some more text
-			.clearfix
+				h1 Tables
+
+			ul.thumbnails.tables
+				li.span4(ng-repeat='table in tables')
+					.thumbnail
+						img(src='{{table.url_backglass_medium}}')
+						hr
+						.thumbnail-content
+
+							h3 {{table.name}}
+							p {{table.manufacturer}} - {{table.year}}
+		.clear-fix
+
 
 block inlineScripts
 	script
 		$(document).ready(function() {
-			menu('btn-root');
+			// menu('hiscores');
 		});
