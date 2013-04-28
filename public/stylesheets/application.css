@@ -1023,7 +1023,7 @@ td .icon.clickable.remove {
 td .icon.clickable.ok {
   margin-left: 5px;
 }
-.thumbnails.tables img {
+.thumbnails img {
   -moz-border-radius-topleft: 3px;
   -webkit-border-top-left-radius: 3px;
   border-top-left-radius: 3px;
@@ -1031,68 +1031,67 @@ td .icon.clickable.ok {
   -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
 }
-.thumbnails.tables li {
-  text-align: center;
-}
-.thumbnails.tables li .thumbnail {
+.thumbnails li .thumbnail {
   background-color: rgba(255,255,255,0.5);
   padding: 0;
-  -webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.15);
-  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.15);
 }
-.thumbnails.tables hr {
-  border: 4px solid #e09d55;
+.thumbnails li hr {
+  border: 3px solid #e09d55;
   margin: 0;
 }
-.thumbnail-content {
+.thumbnails li .thumbnail-content {
   padding: 15px;
 }
-.thumbnail-content h3 {
+.thumbnails li .thumbnail-content h3 {
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 25px;
   line-height: 24px;
 }
-ul.hiscores > li .thumbnail {
-  height: 300px;
-  background-color: rgba(0,0,0,0.025);
+.thumbnails.tables li {
+  text-align: center;
+  padding: 0;
+  height: 355px;
 }
-ul.hiscores > li .thumbnail ul.ranking {
+.thumbnails.hiscores li .thumbnail {
+  height: 310px;
+}
+.thumbnails.hiscores li ul.ranking {
   margin-top: 15px;
   margin-left: 10px;
 }
-ul.hiscores > li .thumbnail ul.ranking li {
+.thumbnails.hiscores li ul.ranking li {
   list-style-type: none;
   margin-top: 3px;
 }
-ul.hiscores > li .thumbnail ul.ranking li .player {
+.thumbnails.hiscores li ul.ranking li .player {
   font-weight: 900;
   font-size: 24px;
   text-transform: uppercase;
 }
-ul.hiscores > li .thumbnail ul.ranking li .score {
+.thumbnails.hiscores li ul.ranking li .score {
   font-size: 16px;
   float: right;
   margin-top: 2px;
 }
-ul.hiscores > li .thumbnail ul.ranking li .rank {
+.thumbnails.hiscores li ul.ranking li .rank {
   font-size: 12px;
   position: absolute;
   margin-top: 4px;
   margin-left: -13px;
   color: #9d9e9e;
 }
-ul.hiscores > li .thumbnail ul.ranking li .title {
+.thumbnails.hiscores li ul.ranking li .title {
   font-size: 11px;
   text-transform: uppercase;
   position: absolute;
   margin-top: 18px;
   color: #9d9e9e;
 }
-ul.hiscores > li .thumbnail ul.ranking li.anon {
+.thumbnails.hiscores li ul.ranking li.anon {
   color: rgba(0,0,0,0.3);
 }
-ul.hiscores > li .thumbnail ul.ranking.champ li {
+.thumbnails.hiscores li ul.ranking.champ li {
   margin-bottom: 25px;
 }
 @media (max-width: 767px) {

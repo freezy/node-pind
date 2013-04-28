@@ -918,77 +918,83 @@ td
 			margin-left 5px
 
 
-// ============================================================================
 
-.thumbnails.tables
+
+// :thumbnails
+// ============================================================================
+	
+
+.thumbnails
 	img 
 		border-radius-topleft 3px
 		border-radius-topright 3px
 	li
-		text-align center
-
 		.thumbnail
 			background-color rgba(255,255,255,0.5)
 			padding 0
-			box-shadow 0px 1px 3px 0px rgba(0,0,0,0.15)
-	hr 
-		border 4px solid color-btn-light
-		margin 0
+		hr 
+			border 3px solid color-btn-light
+			margin 0
 
+		.thumbnail-content
+			padding 15px
 
-
-// :hiscore grid
-// ============================================================================
-
-.thumbnail-content
-	padding 15px
-
-	h3
-		font-weight 700
-		margin-top 0
-		margin-bottom 25px
-		line-height 24px
-
-ul.hiscores > li .thumbnail
-	height 300px
-	background-color rgba(0,0,0,0.025)
-	
-	ul.ranking
-		margin-top 15px
-		margin-left 10px
+			h3
+				font-weight 700
+				margin-top 0
+				margin-bottom 25px
+				line-height 24px	
+			
+	&.tables
+		
 		li
-			list-style-type none
-			margin-top 3px
+			text-align center
+			padding 0
+			height 355px
+	
+	&.hiscores
+		li 
+			.thumbnail
+				height 310px
 
-			.player
-				font-weight 900
-				font-size 24px
-				text-transform uppercase
+			ul.ranking
+				margin-top 15px
+				margin-left 10px
+				li
+					list-style-type none
+					margin-top 3px
 
-			.score
-				font-size 16px
-				float right				
-				margin-top 2px
+					.player
+						font-weight 900
+						font-size 24px
+						text-transform uppercase
 
-			.rank
-				font-size 12px
-				position absolute
-				margin-top 4px
-				margin-left -13px
-				color color-medium
+					.score
+						font-size 16px
+						float right				
+						margin-top 2px
 
-			.title
-				font-size 11px
-				text-transform uppercase
-				position absolute
-				margin-top 18px
-				color color-medium
+					.rank
+						font-size 12px
+						position absolute
+						margin-top 4px
+						margin-left -13px
+						color color-medium
 
-			&.anon
-				color rgba(0,0,0,0.3)
+					.title
+						font-size 11px
+						text-transform uppercase
+						position absolute
+						margin-top 18px
+						color color-medium
 
-		&.champ li
-			margin-bottom 25px
+					&.anon
+						color rgba(0,0,0,0.3)
+
+				&.champ li
+					margin-bottom 25px		
+
+
 
 @media(max-width: 767px)
 	ul.hiscores > li .thumbnail
