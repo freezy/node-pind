@@ -35,9 +35,9 @@ $(document).ready(function() {
 		}
 
 		// setup click events
-		$('.icon.remove').live('click', onCreditCancel);
-		$('.icon.ok').live('click', onCreditSave);
-		$('.icon.pencil').live('click', function(event) {
+		$(document).on('click', '.icon.remove', onCreditCancel);
+		$(document).on('click', '.icon.ok', onCreditSave);
+		$(document).on('click', '.icon.pencil', function(event) {
 			var id = $(event.currentTarget).parents('tr').data('id');
 			var $td = $(event.currentTarget).parents('td');
 			var value = $td.data('value');
