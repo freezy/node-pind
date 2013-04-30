@@ -404,10 +404,14 @@ function fetchDownloads(cat, title, callback) {
 	};
 
 	// check cache first.
-	schema.CacheVpfDownload.all({ where: { category: cat, letter: title[0].toLowerCase() }}).success(function(rows) {
+	var params = { where: { category: cat }};
+	if (title) {
+		params.where.letter = title[0].toLowerCase();
+	}
+	schema.CacheVpfDownload.all(params).success(function(rows) {
 		if (rows.length == 0) {
 			// if empty, launch fetch.
-			fetch(cat, title[0], [], 1, goAgainOrCallback);
+			fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
 		} else {
 			console.log('[vpf] Returning cached letter "%s".', title[0]);
 			goAgainOrCallback(null, JSON.parse(rows[0].data));
