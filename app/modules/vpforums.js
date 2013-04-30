@@ -18,6 +18,15 @@ module.exports = function(app) {
 	return exports;
 };
 
+/**
+ * Finds and downloads either a media pack or a table video.
+ *
+ * @param cat VPF category
+ * @param table Table of the media pack
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{String} Absolute file path of the downloaded archive.</li></ol>
+ */
 var findMedia = function(table, cat, callback) {
 	console.log('[vpf] Searching media pack for "' + table.name + '"...');
 	fetchDownloads(35, table.name, function(err, results) {
@@ -56,6 +65,13 @@ exports.findMediaPack = function(table, callback) {
 	}
 };
 
+/**
+ * Finds a table video and downloads it.
+ * @param table Table of the media pack
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{String} Absolute file path of the downloaded archive.</li></ol>
+ */
 exports.findTableVideo = function(table, callback) {
 	if (table.platform == 'VP') {
 		findMedia(table, 43, callback);
@@ -257,9 +273,28 @@ function fetchDownloads(cat, title, callback) {
 	// recursive function that fetches items from vpforums.org.
 	var fetch = function(cat, letter, currentResult, page, callback) {
 		var numPages;
-		var url = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=categoryletters&cat=' + cat + '&letter=' + letter + '&sort_order=ASC&sort_key=file_name&num=10&st=' + ((page - 1) * 10);
-		console.log('[vpf] Fetching page ' + page + ' for category ' + cat + ' and letter "' + letter + '".');
-		request(url, function (err, response, body) {
+		var url;
+		var num = 25;
+		if (letter) {
+			url = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=categoryletters&cat=' + cat + '&letter=' + letter + '&sort_order=ASC&sort_key=file_name&num=' + num + '&st=' + ((page - 1) * num);
+			console.log('[vpf] Fetching page ' + page + ' for category ' + cat + ' and letter "' + letter + '".');
+		} else {
+			url = 'http://www.vpforums.org/index.php?app=downloads&showcat=' + cat + '&num=' + num + '&st=' + ((page - 1) * num);
+			console.log('[vpf] Fetching page ' + page + ' for category ' + cat + '.');
+		}
+
+		var saveToCache = function(cat, letter, data, callback) {
+			// update cache
+			console.log('[vpf] Updating cache for letter "%s"...', letter);
+			schema.CacheVpfDownload.create({
+				category: cat,
+				letter: letter,
+				data: JSON.stringify(data)
+			}).done(function() {
+				callback(null, data);
+			});
+		};
+		request(url, function(err, response, body) {
 			if (err) {
 				console.log('[vpf] Error retrieving ' + url + ': ' + err);
 				return callback('Error retrieving ' + url + ': ' + err);
@@ -290,16 +325,51 @@ function fetchDownloads(cat, title, callback) {
 
 			}, function() {
 				if (page >= numPages) {
-					// update cache
-					console.log('[vpf] Updating cache...');
-					schema.CacheVpfDownload.create({
-						category: cat,
-						letter: letter.toLowerCase(),
-						data: JSON.stringify(currentResult)
-					}).done(function() {
-						callback(null, currentResult);
-					});
+					if (letter) {
+						saveToCache(cat, letter.toLowerCase(), currentResult, callback);
+					} else {
+						// first, sort array by title.
+						currentResult = currentResult.sort(function(a, b) {	
+							if (a.title[0].toLowerCase() < b.title[0].toLowerCase())
+								return -1;
+							if (a.title[0].toLowerCase() > b.title[0].toLowerCase())
+								return 1;
+							return 0;
+						});
+						// everything was fetched, so split by letter
+						var letter;
+						var previousLetter = '0';
+						var results = { letter: previousLetter, data: [] };
+						var allResults = [];
+						for(var i = 0; i < currentResult.length; i++) {
+							var l = currentResult[i].title[0];
+							if (l.match(/\d/)) {
+								letter = '0';
+							} else {
+								letter = l.toLowerCase();
+							}
+							if (letter != previousLetter) {
+								allResults.push(results);
+								results = { letter: letter, data: [] };
+							}
+							results.data.push(currentResult[i]);
 
+							// on last result, push and we're done.
+							if (i == currentResult.length - 1) {
+								allResults.push(results);
+							}
+							previousLetter = letter;
+						}
+						async.eachSeries(allResults, function(results, next) {
+							saveToCache(cat, results.letter, results.data, next);
+
+						}, function(err) {
+							if (err) {
+								return callback(err);
+							}
+							callback(null, currentResult);
+						});
+					}
 				} else {
 					fetch(cat, letter, currentResult, page + 1, callback);
 				}
@@ -347,6 +417,12 @@ function fetchDownloads(cat, title, callback) {
 
 }
 
+/**
+ * Logs the user on vpforums.org in order to obtain download permissions.
+ *
+ * @param callback Function to execute after completion, invoked with one argument:
+ * 	<ol><li>{String} Error message on error</li></ol>
+ */
 function login(callback) {
 	if (!settings.vpforums.user || !settings.vpforums.pass) {
 		return callback('Need valid credentials for vpforums.org. Please update settings-mine.js.');
@@ -400,6 +476,13 @@ function login(callback) {
 	});
 }
 
+/**
+ * Destroys the current VPF session. Typically called after longish fetching
+ * routines.
+ *
+ * @param callback Function to execute after completion, invoked with one argument:
+ * 	<ol><li>{String} Error message on error</li></ol>
+ */
 exports.logout = function(callback) {
 	// fetch another damn id
 	console.log('[vpf] Logging out...');
@@ -423,7 +506,15 @@ exports.logout = function(callback) {
 	});
 };
 
-
+/**
+ * Extracts a media pack or table video to the correct location. Will not 
+ * overwrite anything if files exist already.
+ * @param table Row from table
+ * @param path Path to the zip archive
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Array} List of extracted files.</li></ol>
+ */
 exports.extractMedia = function(table, path, callback) {
 	var extractedFiles = [];
 	fs.createReadStream(path)
@@ -468,7 +559,7 @@ exports.extractMedia = function(table, path, callback) {
 							entry.autodrain();
 						}
 
-					}  else if (['HyperPin'].indexOf(dirnames[l - 1]) > -1) {
+					} else if (['HyperPin'].indexOf(dirnames[l - 1]) > -1) {
 
 						if (['Instruction Cards'].indexOf(dirnames[l]) > -1) {
 							extract(entry, dirnames, filename, 2);
@@ -493,3 +584,22 @@ exports.extractMedia = function(table, path, callback) {
 			}
 		});
 };
+
+/**
+ * Fetches all current downloads in the "VP cabinet tables" section (and 
+ * automatically caches them).
+ *
+ * The goal of this is to be able to link already downloaded tables to a forum
+ * thread for future updates.
+ *
+ * @param callback 
+ */
+exports.cacheAllTableDownloads = function(callback) {
+
+	fetchDownloads(41, null, function(err, results) {
+		if (err) {
+			return console.log('ERROR: %s', err);
+		}
+		console.log('RESULT = %s', util.inspect(results));
+	});
+}
