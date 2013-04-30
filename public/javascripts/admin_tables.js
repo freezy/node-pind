@@ -7,7 +7,7 @@ $(document).ready(function() {
 
 			var tr;
 			if (rows[i].name && rows[i].year && rows[i].manufacturer) {
-				tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].name + ' (' + rows[i].manufacturer + ' ' + rows[i].year + ')</td>';
+				tr = '<tr data-id=' + rows[i].key + '><td>' + (rows[i].name_match ? rows[i].name_match : rows[i].name) + ' (' + rows[i].manufacturer + ' ' + rows[i].year + ')</td>';
 			} else {
 				tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].hpid + '</td>';
 			}

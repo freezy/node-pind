@@ -1,3 +1,7 @@
+var fuzzy = require('fuzzy');
+var util = require('util');
+var _ = require('underscore');
+
 var schema = require('../../model/schema');
 var settings = require('../../../config/settings-mine');
 
@@ -53,13 +57,13 @@ var TableApi = function() {
 				}
 
 				// add search condition
-				if (params.search && params.search.length > 1) {
+/*				if (params.search && params.search.length > 1) {
 					var where = 'LOWER(`name`) LIKE "%' + params.search + '%"';
 					if (p.where) {
 						where = '(' + p.where + ') AND (' + where + ')';
 					}
 					p.where = where;
-				}
+				}*/
 
 				if (p.where) {
 					console.log('Condition: WHERE %s', p.where);
@@ -67,6 +71,25 @@ var TableApi = function() {
 
 			}
 			schema.Table.all(p).success(function(rows) {
+
+				if (params.search && params.search.length > 1) {
+					var options = {
+						pre: '<b>',
+						post: '</b>',
+						extract: function(el) { return el.name; }
+					};
+					var hits = fuzzy.filter(params.search, rows, options);
+					var results = [];
+					_.each(hits, function(hit) {
+						var result = hit.original;
+						result.name_match = hit.string;
+
+						console.log('result = %s', JSON.stringify(result));
+						results.push(result);
+					});
+
+					return callback({ rows : results, count: results.length });
+				}
 
 				delete p.limit;
 				delete p.skip;

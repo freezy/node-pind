@@ -20,8 +20,8 @@
 		"socket.io": "latest",
 		"compound" : "latest",
 		"sequelize" : ">= 1.6.0",
-		"sequelize-mysql" : "latest",
-		"mysql" : "latest",
+		"sequelize-sqlite" : "latest",
+		"sqlite" : "latest",
 		"coffee-script" : ">= 1.1.1",
 		"stylus": "latest",
 		"seedjs" : "latest",
@@ -39,7 +39,8 @@
 		"ole-doc" : "0.1.0",
 		"jquery" : "1.8.3",
 		"jsdom" : "0.6.0",
-		"unzip" : "0.1.7"
+		"unzip" : "0.1.7",
+		"underscore" : "latest"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",

@@ -9,7 +9,12 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			category: DataTypes.INTEGER,
 			letter: DataTypes.STRING,
-			data: DataTypes.TEXT
+			title: DataTypes.STRING,
+			url: DataTypes.STRING,
+			downloads: DataTypes.STRING,
+			views: DataTypes.STRING,
+			author: DataTypes.STRING,
+			lastUpdate: DataTypes.DATE
 		},
 		{
 			classMethods: {

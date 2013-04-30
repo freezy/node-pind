@@ -270,6 +270,7 @@ function matchResult(results, title, trimFct, strategy) {
  */
 function fetchDownloads(cat, title, callback) {
 
+
 	// recursive function that fetches items from vpforums.org.
 	var fetch = function(cat, letter, currentResult, page, callback) {
 		var numPages;
@@ -283,16 +284,34 @@ function fetchDownloads(cat, title, callback) {
 			console.log('[vpf] Fetching page ' + page + ' for category ' + cat + '.');
 		}
 
-		var saveToCache = function(cat, letter, data, callback) {
+		var saveToCache = function(cat, letter, items, callback) {
 			// update cache
 			console.log('[vpf] Updating cache for letter "%s"...', letter);
-			schema.CacheVpfDownload.create({
-				category: cat,
-				letter: letter,
-				data: JSON.stringify(data)
-			}).done(function() {
-				callback(null, data);
-			});
+
+			async.eachSeries(items, function(item, next) {
+				var l;
+				if (!letter) {
+					if (item.title.match(/^\d/)) {
+						l = '0';
+					} else {
+						l = item.title[0].toLowerCase();
+					}
+				} else {
+					l = letter.toLowerCase();
+				}
+
+				schema.CacheVpfDownload.create({
+					category: cat,
+					letter: l,
+					title: item.title,
+					url: item.url,
+					downloads: item.downloads,
+					views: item.views,
+					author: item.author,
+					lastUpdate: new Date(item.updated)
+				}).done(next);
+			}, callback);
+
 		};
 		request(url, function(err, response, body) {
 			if (err) {
@@ -324,52 +343,8 @@ function fetchDownloads(cat, title, callback) {
 				next();
 
 			}, function() {
-				if (page >= numPages) {
-					if (letter) {
-						saveToCache(cat, letter.toLowerCase(), currentResult, callback);
-					} else {
-						// first, sort array by title.
-						currentResult = currentResult.sort(function(a, b) {	
-							if (a.title[0].toLowerCase() < b.title[0].toLowerCase())
-								return -1;
-							if (a.title[0].toLowerCase() > b.title[0].toLowerCase())
-								return 1;
-							return 0;
-						});
-						// everything was fetched, so split by letter
-						var letter;
-						var previousLetter = '0';
-						var results = { letter: previousLetter, data: [] };
-						var allResults = [];
-						for(var i = 0; i < currentResult.length; i++) {
-							var l = currentResult[i].title[0];
-							if (l.match(/\d/)) {
-								letter = '0';
-							} else {
-								letter = l.toLowerCase();
-							}
-							if (letter != previousLetter) {
-								allResults.push(results);
-								results = { letter: letter, data: [] };
-							}
-							results.data.push(currentResult[i]);
-
-							// on last result, push and we're done.
-							if (i == currentResult.length - 1) {
-								allResults.push(results);
-							}
-							previousLetter = letter;
-						}
-						async.eachSeries(allResults, function(results, next) {
-							saveToCache(cat, results.letter, results.data, next);
-
-						}, function(err) {
-							if (err) {
-								return callback(err);
-							}
-							callback(null, currentResult);
-						});
-					}
+				if (true || page >= numPages) {
+					saveToCache(cat, letter, currentResult, callback);
 				} else {
 					fetch(cat, letter, currentResult, page + 1, callback);
 				}
@@ -384,7 +359,18 @@ function fetchDownloads(cat, title, callback) {
 	 * @param result
 	 */
 	var goAgainOrCallback = function(err, result) {
-		var words = title.toLowerCase().split(' ');
+
+		// no second guess if no title given (all results are returned anyway)
+		if (!title) {
+			return callback(null, result);
+		}
+
+		var words = title.trim().toLowerCase().split(' ');
+
+		// no second guess if no title consists only of one word
+		if (words.length < 2) {
+			return callback(null, result);
+		}
 
 		if (words[0] == 'the' && words[0][0] != words[1][0]) {
 			console.log('[vpf] Title starts with "The", let\'s fetch also letter "%s" for second word.', words[1][0]);
@@ -395,7 +381,7 @@ function fetchDownloads(cat, title, callback) {
 					// if empty, launch fetch.
 					fetch(cat, words[1][0], result, 1, callback);
 				} else {
-					callback(null, result.concat(JSON.parse(rows[0].data)));
+					callback(null, result.concat(rows));
 				}
 			});
 		} else {
@@ -413,12 +399,14 @@ function fetchDownloads(cat, title, callback) {
 			// if empty, launch fetch.
 			fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
 		} else {
-			console.log('[vpf] Returning cached letter "%s".', title[0]);
-			goAgainOrCallback(null, JSON.parse(rows[0].data));
+			if (title) {
+				console.log('[vpf] Returning cached letter "%s" for category %d.', title[0], cat);
+			} else {
+				console.log('[vpf] Returning all cached letters for category %d.', cat);
+			}
+			goAgainOrCallback(null, rows);
 		}
 	});
-
-
 }
 
 /**
