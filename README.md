@@ -70,13 +70,14 @@ Installation
 1. Download and install [Node.js](http://nodejs.org/).
 2. Download and install [Python 2.7](http://www.python.org/download/releases/2.7.3/).
 3. Download and install the [Visual Studio 2010 Express](http://go.microsoft.com/?linkid=9709949).
-4. Download and install [GraphicsMagick](http://www.graphicsmagick.org/download.html)
+4. On Windows 7 or above, download and install the [Windows 7 SDK](http://www.microsoft.com/en-us/download/details.aspx?id=8279).
+5. Download and install [GraphicsMagick](http://www.graphicsmagick.org/download.html)
    and verify that the installer adds the directory to your PATH.
-5. Clone the repository to somewhere.
-6. Copy `config/settings.json` to `config/settings-mine.json` and update it.
-7. `npm install -d`
-8. `node create-schema`
-9. `node server`
+6. Clone the repository to somewhere.
+7. Copy `config/settings.json` to `config/settings-mine.json` and update it.
+8. `npm install -d`
+9. `node create-schema`
+10. `node server`
 
 Visual Studio is needed for compiling the dependencies, notably sqlite3, the
 database engine. This concerns only Windows, but then all the pinball stuff
