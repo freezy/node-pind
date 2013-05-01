@@ -6,6 +6,7 @@ var request = require('request');
 var natural = require('natural');
 var jsdom = require('jsdom').jsdom;
 var jquery = require('jquery');
+var chrono = require('chrono-node');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
@@ -263,13 +264,19 @@ function matchResult(results, title, trimFct, strategy) {
  * Retrieves all downloadable items for a given category and letter. This is a
  * cached operation, items are only downloaded the first time.
  *
+ * Article URL:    http://www.vpforums.org/index.php?app=downloads&showfile=6527
+ * Thumb URL:      http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&record=11988&id=6527
+ * Full image URL: http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&record=11988&id=6527&full=1
+ * "record" param seems unnecessary.
+ *
  * @todo Cache invalidation
  * @param cat VPF category
- * @param title First letter
+ * @param title Title of the item. If not null, only items starting with the same letter will be returned.
  * @param callback Callback.
  */
 function fetchDownloads(cat, title, callback) {
 
+	var firstPageOnly = true;
 
 	// recursive function that fetches items from vpforums.org.
 	var fetch = function(cat, letter, currentResult, page, callback) {
@@ -284,10 +291,14 @@ function fetchDownloads(cat, title, callback) {
 			console.log('[vpf] Fetching page ' + page + ' for category ' + cat + '.');
 		}
 
-		var saveToCache = function(cat, letter, items, callback) {
+		var saveToCache = function(cat, letter, items, cb) {
 			// update cache
-			console.log('[vpf] Updating cache for letter "%s"...', letter);
-
+			if (letter) {
+				console.log('[vpf] Updating cache for letter "%s"...', letter);
+			} else {
+				console.log('[vpf] Updating cache...');
+			}
+			results = [];
 			async.eachSeries(items, function(item, next) {
 				var l;
 				if (!letter) {
@@ -299,18 +310,45 @@ function fetchDownloads(cat, title, callback) {
 				} else {
 					l = letter.toLowerCase();
 				}
-
-				schema.CacheVpfDownload.create({
+				var obj = {
 					category: cat,
 					letter: l,
 					title: item.title,
-					url: item.url,
+					fileId: item.fileId,
 					downloads: item.downloads,
 					views: item.views,
 					author: item.author,
 					lastUpdate: new Date(item.updated)
-				}).done(next);
-			}, callback);
+				};
+				var where = { where: { fileId: item.fileId, category: cat }};
+
+				// check if already cached
+				schema.CacheVpfDownload.find(where).done(function(err, row) {
+					if (err) {
+						return next(err);
+					}
+					var done = function(err, r) {
+						if (err) {
+							console.log('%j', obj)
+							return next(err);
+						}
+						results.push(r);
+						next();
+					};
+					if (row) {
+						row.updateAttributes(obj).done(done);
+					} else {
+						schema.CacheVpfDownload.create(obj).done(done);		
+					}
+				});
+				
+			}, function(err) {
+				if (err) {
+					return cb(err);
+				}
+				console.log('saveToCache: returning %d results.', results.length);
+				cb(null, results);
+			});
 
 		};
 		request(url, function(err, response, body) {
@@ -330,20 +368,35 @@ function fetchDownloads(cat, title, callback) {
 
 			// initialize jquery on result
 			var $ = jquery.create(jsdom(body).createWindow());
+			var today = new Date();
+			today.setHours(0);today.setMinutes(0);today.setSeconds(0);today.setMilliseconds(0);
 			async.eachSeries($('.idm_category_row'), function(that, next) {
 
-				var fileinfos = $(that).find('.file_info').html().match(/([\d,]+)\s+downloads\s+\(([\d,]+)\s+views/i);
-				currentResult.push({
-					url: $(that).find('h3.ipsType_subtitle a').attr('href').replace(/s=[a-f\d]+&?/gi, ''),
-					title: $(that).find('h3.ipsType_subtitle a').attr('title').replace(/^view file named\s+/ig, ''),
-					downloads: parseInt(fileinfos[1].replace(/,/, '')),
-					views: parseInt(fileinfos[2].replace(/,/, '')),
-					updated: Date.parse($(that).find('.file_info .date').html().trim().replace(/^added|^updated/i, '').trim())
-				});
-				next();
+				var fileinfo = $(that).find('.file_info').html().match(/([\d,]+)\s+downloads\s+\(([\d,]+)\s+views/i);
+				var url = $(that).find('h3.ipsType_subtitle a').attr('href').replace(/s=[a-f\d]+&?/gi, '');
+				var dateString = $(that).find('.file_info .date').html().trim().replace(/^added|^updated|,/gi, '').trim();
+				var dateParsed = chrono.parse(dateString, today);
+
+				var u = url.match(/showfile=(\d+)/i);
+				// author dom is different when logged in (names are linked)
+				var author = $(that).find('.basic_info .desc').html().match(/by\s+([^\s]+)/i);
+				if (u) {
+					currentResult.push({
+						fileId: parseInt(u[1]),
+						title: $(that).find('h3.ipsType_subtitle a').attr('title').replace(/^view file named\s+/ig, ''),
+						downloads: parseInt(fileinfo[1].replace(/,/, '')),
+						views: parseInt(fileinfo[2].replace(/,/, '')),
+						updated: dateParsed.length > 0 ? dateParsed[0].startDate : null,
+						author: author ? author[1] : $(that).find('.___hover___member span').html()
+					});
+					next();
+				} else {
+					console.log('ERROR: Could not parse file ID from %s.', url);
+					next('Could not parse file ID from ' + url);	
+				}
 
 			}, function() {
-				if (true || page >= numPages) {
+				if (firstPageOnly || page >= numPages) {
 					saveToCache(cat, letter, currentResult, callback);
 				} else {
 					fetch(cat, letter, currentResult, page + 1, callback);
@@ -359,6 +412,10 @@ function fetchDownloads(cat, title, callback) {
 	 * @param result
 	 */
 	var goAgainOrCallback = function(err, result) {
+
+		if (err) {
+			return callback(err);
+		}
 
 		// no second guess if no title given (all results are returned anyway)
 		if (!title) {
@@ -590,8 +647,9 @@ exports.cacheAllTableDownloads = function(callback) {
 
 	fetchDownloads(41, null, function(err, results) {
 		if (err) {
+			callback(err);
 			return console.log('ERROR: %s', err);
 		}
-		console.log('RESULT = %s', util.inspect(results));
+		callback(null, results);
 	});
 }

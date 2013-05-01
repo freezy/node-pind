@@ -40,7 +40,8 @@
 		"jquery" : "1.8.3",
 		"jsdom" : "0.6.0",
 		"unzip" : "0.1.7",
-		"underscore" : "latest"
+		"underscore" : "latest",
+		"chrono-node" : "latest"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",

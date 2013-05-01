@@ -10,9 +10,9 @@ module.exports = function(sequelize, DataTypes) {
 			category: DataTypes.INTEGER,
 			letter: DataTypes.STRING,
 			title: DataTypes.STRING,
-			url: DataTypes.STRING,
-			downloads: DataTypes.STRING,
-			views: DataTypes.STRING,
+			fileId: DataTypes.STRING,
+			downloads: DataTypes.INTEGER,
+			views: DataTypes.INTEGER,
 			author: DataTypes.STRING,
 			lastUpdate: DataTypes.DATE
 		},

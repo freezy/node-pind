@@ -169,7 +169,7 @@ app.compound.on('ready', function() {
 			if (err) {
 				console.log("ERROR: " + err);
 			} else {
-				console.log("All cached: %s", util.inspect(result));
+				console.log("All cached: %j", result);
 			}
 		});
 	}
