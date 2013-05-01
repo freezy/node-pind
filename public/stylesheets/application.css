@@ -959,6 +959,11 @@ table#tables td.rom.unknown {
 table#tables td.rom.missing {
   color: #b94a48;
 }
+table#tables td b {
+  background-color: rgba(224,157,85,0.3);
+  font-weight: normal;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+}
 .table.vertical {
   padding: 10px 50px 0;
 }

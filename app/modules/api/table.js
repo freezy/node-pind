@@ -17,11 +17,66 @@ var TableApi = function() {
 		name : 'Table',
 
 		GetAll : function(req, params, callback) {
-			var p = {
-				order: params.order ? params.order.replace(/[^\w\s]*/g, '') : 'name ASC',
-				offset: params.offset ? parseInt(params.offset) : 0,
-				limit: params.limit ? parseInt(params.limit) : 0
+			var search = params.search && params.search.length > 1;
+			var p = {};
+			var fields = function(row) {
+				var fieldsProvided = params.fields && params.fields instanceof Array;
+				var r = {};
+				if (fieldsProvided) {
+					for (var field in row) {
+						if (params.fields.indexOf(field) > -1) {
+							r[field] = row[field];
+						}
+					}
+				} else {
+					r = JSON.parse(JSON.stringify(row));
+				}
+				if (!fieldsProvided) {
+					return r;
+				}
+				// additional attributes
+				if (params.fields.indexOf('url_logo') > -1) {
+					r.url_logo = pathTo.asset_logo(row.key);
+				}
+				if (params.fields.indexOf('url_square_small') > -1) {
+					r.url_square_small = pathTo.asset_square_small(row.key);
+				}
+				if (params.fields.indexOf('url_square_medium') > -1) {
+					r.url_square_medium = pathTo.asset_square_medium(row.key);
+				}
+				if (params.fields.indexOf('url_widescreen_small') > -1) {
+					r.url_widescreen_small = pathTo.asset_widescreen_small(row.key);
+				}
+				if (params.fields.indexOf('url_widescreen_medium') > -1) {
+					r.url_widescreen_medium = pathTo.asset_widescreen_medium(row.key);
+				}
+				if (params.fields.indexOf('url_banner') > -1) {
+					r.url_banner = pathTo.asset_banner(row.key);
+				}
+				if (params.fields.indexOf('url_banner_small') > -1) {
+					r.url_banner_small = pathTo.asset_banner_small(row.key);
+				}
+				if (params.fields.indexOf('url_portrait_small') > -1) {
+					r.url_portrait_small = pathTo.asset_portrait_small(row.key);
+				}
+				if (params.fields.indexOf('url_portrait_medium') > -1) {
+					r.url_portrait_medium = pathTo.asset_portrait_medium(row.key);
+				}
+				if (params.fields.indexOf('url_backglass_small') > -1) {
+					r.url_backglass_small = pathTo.asset_backglass_small(row.key);
+				}
+				if (params.fields.indexOf('url_backglass_medium') > -1) {
+					r.url_backglass_medium = pathTo.asset_backglass_medium(row.key);
+				}
+				return r;
 			};
+			if (!search) {
+				p = {
+					order: params.order ? params.order.replace(/[^\w\s]*/g, '') : 'name ASC',
+					offset: params.offset ? parseInt(params.offset) : 0,
+					limit: params.limit ? parseInt(params.limit) : 0
+				};
+			}
 			if (params.filters && Array.isArray(params.filters)) {
 				console.log('Filters: %j', params.filters);
 				for (var i = 0; i < params.filters.length; i++) {
@@ -72,23 +127,29 @@ var TableApi = function() {
 			}
 			schema.Table.all(p).success(function(rows) {
 
-				if (params.search && params.search.length > 1) {
+				if (search) {
+					console.log('Fuzzy-filtering ' + rows.length + ' rows...');
 					var options = {
 						pre: '<b>',
 						post: '</b>',
 						extract: function(el) { return el.name; }
 					};
 					var hits = fuzzy.filter(params.search, rows, options);
+					console.log('Fuzzy-filtered ' + hits.length + ' hits.');
 					var results = [];
 					_.each(hits, function(hit) {
-						var result = hit.original;
+						var result = fields(hit.original);
 						result.name_match = hit.string;
-
-						console.log('result = %s', JSON.stringify(result));
 						results.push(result);
 					});
 
-					return callback({ rows : results, count: results.length });
+					var offset = params.offset ? parseInt(params.offset) : 0;
+					var limit = params.limit ? parseInt(params.limit) : 0;
+					if (offset || limit) {
+						return callback({ rows : results.slice(offset, offset + limit), count: results.length });
+					} else {
+						return callback({ rows : results, count: results.length });
+					}
 				}
 
 				delete p.limit;
@@ -101,47 +162,7 @@ var TableApi = function() {
 						console.log('stripping fields..');
 						var rs = [];
 						for (var i = 0; i < rows.length; i++) {
-							var r = {};
-							for (var field in rows[i]) {
-								if (params.fields.indexOf(field) > -1) {
-									r[field] = rows[i][field];
-								}
-							}
-							// additional attributes
-							if (params.fields.indexOf('url_logo') > -1) {
-								r.url_logo = pathTo.asset_logo(rows[i].key);
-							}
-							if (params.fields.indexOf('url_square_small') > -1) {
-								r.url_square_small = pathTo.asset_square_small(rows[i].key);
-							}
-							if (params.fields.indexOf('url_square_medium') > -1) {
-								r.url_square_medium = pathTo.asset_square_medium(rows[i].key);
-							}
-							if (params.fields.indexOf('url_widescreen_small') > -1) {
-								r.url_widescreen_small = pathTo.asset_widescreen_small(rows[i].key);
-							}
-							if (params.fields.indexOf('url_widescreen_medium') > -1) {
-								r.url_widescreen_medium = pathTo.asset_widescreen_medium(rows[i].key);
-							}
-							if (params.fields.indexOf('url_banner') > -1) {
-								r.url_banner = pathTo.asset_banner(rows[i].key);
-							}
-							if (params.fields.indexOf('url_banner_small') > -1) {
-								r.url_banner_small = pathTo.asset_banner_small(rows[i].key);
-							}
-							if (params.fields.indexOf('url_portrait_small') > -1) {
-								r.url_portrait_small = pathTo.asset_portrait_small(rows[i].key);
-							}
-							if (params.fields.indexOf('url_portrait_medium') > -1) {
-								r.url_portrait_medium = pathTo.asset_portrait_medium(rows[i].key);
-							}
-							if (params.fields.indexOf('url_backglass_small') > -1) {
-								r.url_backglass_small = pathTo.asset_backglass_small(rows[i].key);
-							}
-							if (params.fields.indexOf('url_backglass_medium') > -1) {
-								r.url_backglass_medium = pathTo.asset_backglass_medium(rows[i].key);
-							}
-							rs.push(r);
+							rs.push(fields(rows[i]));
 						}
 						rows = rs;
 					}

@@ -276,7 +276,7 @@ function matchResult(results, title, trimFct, strategy) {
  */
 function fetchDownloads(cat, title, callback) {
 
-	var firstPageOnly = true;
+	var firstPageOnly = false;
 
 	// recursive function that fetches items from vpforums.org.
 	var fetch = function(cat, letter, currentResult, page, callback) {
