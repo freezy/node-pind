@@ -8,8 +8,8 @@ var jsdom = require('jsdom').jsdom;
 var jquery = require('jquery');
 var chrono = require('chrono-node');
 
-var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
+var schema = require('../model/schema');
 var error = require('./error');
 
 var socket;
@@ -276,7 +276,9 @@ function matchResult(results, title, trimFct, strategy) {
  */
 function fetchDownloads(cat, title, callback) {
 
-	var firstPageOnly = false;
+	var firstPageOnly = true;
+	var currentCache = {};
+	var started = new Date().getTime();
 
 	// recursive function that fetches items from vpforums.org.
 	var fetch = function(cat, letter, currentResult, page, callback) {
@@ -292,6 +294,8 @@ function fetchDownloads(cat, title, callback) {
 		}
 
 		var saveToCache = function(cat, letter, items, cb) {
+			var cacheStarted = new Date().getTime();
+
 			// update cache
 			if (letter) {
 				console.log('[vpf] Updating cache for letter "%s"...', letter);
@@ -320,33 +324,26 @@ function fetchDownloads(cat, title, callback) {
 					author: item.author,
 					lastUpdate: new Date(item.updated)
 				};
-				var where = { where: { fileId: item.fileId, category: cat }};
 
-				// check if already cached
-				schema.CacheVpfDownload.find(where).done(function(err, row) {
+				var done = function(err, r) {
 					if (err) {
+						console.log('%j', obj)
 						return next(err);
 					}
-					var done = function(err, r) {
-						if (err) {
-							console.log('%j', obj)
-							return next(err);
-						}
-						results.push(r);
-						next();
-					};
-					if (row) {
-						row.updateAttributes(obj).done(done);
-					} else {
-						schema.CacheVpfDownload.create(obj).done(done);		
-					}
-				});
+					results.push(r);
+					next();
+				};
+				if (currentCache[item.fileId]) {
+					currentCache[item.fileId].updateAttributes(obj).done(done);
+				} else {
+					schema.CacheVpfDownload.create(obj).done(done);
+				}
 				
 			}, function(err) {
 				if (err) {
 					return cb(err);
 				}
-				console.log('saveToCache: returning %d results.', results.length);
+				console.log('[vpf] Saved %d results to cache in %s seconds.', results.length, Math.round((new Date().getTime() - cacheStarted) / 100) / 10);
 				cb(null, results);
 			});
 
@@ -397,6 +394,7 @@ function fetchDownloads(cat, title, callback) {
 
 			}, function() {
 				if (firstPageOnly || page >= numPages) {
+					console.log('[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
 					saveToCache(cat, letter, currentResult, callback);
 				} else {
 					fetch(cat, letter, currentResult, page + 1, callback);
@@ -452,10 +450,16 @@ function fetchDownloads(cat, title, callback) {
 		params.where.letter = title[0].toLowerCase();
 	}
 	schema.CacheVpfDownload.all(params).success(function(rows) {
-		if (rows.length == 0) {
+		// update "cached cache"
+		for (var i = 0; i < rows.length; i++) {
+			currentCache[rows[i].fileId] = rows[i];
+		}
+
+		if (true || rows.length == 0) {
 			// if empty, launch fetch.
 			fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
 		} else {
+
 			if (title) {
 				console.log('[vpf] Returning cached letter "%s" for category %d.', title[0], cat);
 			} else {

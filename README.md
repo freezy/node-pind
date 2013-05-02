@@ -17,7 +17,7 @@ of neat stuff. Particularly it should be able to:
 * Provide a voting system for new tables to install.
 * Administer HyperPin's tables. This includes:
   * Automatically download missing artwork
-  * Easily search, download and add new tables
+  * Easily (fuzzy-) search, download and add new tables
   * Automatically download missing ROMs
   * Automatically search, download and patch table for DirectB2S backglasses
   * Bulk-update VPinMAME rotation settings in tables

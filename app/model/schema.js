@@ -75,7 +75,7 @@ Hiscore.belongsTo(Table);
 
 
 sequelize.sync().on('success', function() {
-	console.log('Connected to SQLite.');
+	console.log('Connected to %s.', settings.pind.database.engine == 'mysql' ? "MySQL" : "SQLite");
 }).error(function(err){
 	console.log('Error connecting to SQLite: ' + err);
 });
