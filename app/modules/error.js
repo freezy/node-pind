@@ -1,5 +1,6 @@
 var fs = require('fs');
 
+
 exports.api = function(message, code, data) {
 	var error = { error: { message: message } };
 	if (code) {

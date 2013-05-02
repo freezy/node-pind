@@ -1,0 +1,24 @@
+extends layout
+
+block inner-content
+	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.waitforimages-1.4.2.min'))
+	- contentFor('javascripts', javascriptIncludeTag('admin_sources'))
+
+	h2 VPForums.org
+
+	div.data.vpf.tables
+		.input-prepend.input-pill
+			span.add-on
+				i.icon.search
+			input.search.input-medium(type='text', placeholder='search')
+
+		.wrapper
+
+	.clearfix
+
+block inlineScripts
+	script
+		$(document).ready(function() {
+			menu('settings');
+			submenu('sources');
+		});

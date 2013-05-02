@@ -20,6 +20,11 @@ action('tables', function (context) {
 	render();
 });
 
+action('sources', function (context) {
+	this.title = 'Settings :: Sources';
+	render();
+});
+
 action('users', function (context) {
 	this.title = 'Settings :: Users';
 	render();

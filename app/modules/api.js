@@ -8,7 +8,8 @@ module.exports = function(app) {
 		require('./api/control')(app).api,
 		require('./api/table')(app).api,
 		require('./api/user').api,
-		require('./api/hyperpin')(app).api
+		require('./api/hyperpin')(app).api,
+		require('./api/vpforums')(app).api
 	]);
 	return exports;
 };

@@ -387,6 +387,9 @@ button[type="submit"], .btn.fat
 
 	&.pind:before
 		content "\23"		
+	&.pd-round:before
+		content "\e006"
+
 	&.github:before
 		content "\f09b"			
 	&.github-alt:before
@@ -924,7 +927,52 @@ td
 		&.ok
 			margin-left 5px
 
+// :sources
+// 
 
+vpf-thumbsize = 120px
+vpf-padding = 15px
+.item.vpf
+	.thumb
+		width vpf-thumbsize
+		height vpf-thumbsize
+		background-position center
+		background-size cover
+		opacity 0
+		transition all animation-slow ease
+
+		border-radius-topleft 3px
+		border-radius-bottomleft 3px
+
+		&.loaded
+			opacity 1
+
+		& + .thumb-placeholder:before
+			content none
+	
+	.thumb-placeholder
+		width vpf-thumbsize - vpf-padding - vpf-padding
+		height vpf-thumbsize - vpf-padding - vpf-padding
+		margin-top - vpf-thumbsize
+		background-color rgba(0,0,0,0.2)
+		padding vpf-padding
+		border-right 4px solid #e09d55
+		border-radius-topleft 3px
+		border-radius-bottomleft 3px
+
+		font-size vpf-thumbsize - vpf-padding - vpf-padding
+		font-family 'pind-symbols'
+		speak none
+		line-height 1
+		-webkit-font-smoothing antialiased
+
+		&:before 
+			content "\e006"
+			color rgba(255,255,255,0.5)
+			text-shadow none
+
+	.box
+		background-color white
 
 
 // :thumbnails

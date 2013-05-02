@@ -425,6 +425,9 @@ button[type="submit"].small span,
 .icon.pind:before {
   content: "\23";
 }
+.icon.pd-round:before {
+  content: "\e006";
+}
 .icon.github:before {
   content: "\f09b";
 }
@@ -1027,6 +1030,63 @@ td .icon.clickable.remove {
 }
 td .icon.clickable.ok {
   margin-left: 5px;
+}
+.item.vpf .thumb {
+  width: 120px;
+  height: 120px;
+  background-position: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.item.vpf .thumb.loaded {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.item.vpf .thumb + .thumb-placeholder:before {
+  content: none;
+}
+.item.vpf .thumb-placeholder {
+  width: 90px;
+  height: 90px;
+  margin-top: -120px;
+  background-color: rgba(0,0,0,0.2);
+  padding: 15px;
+  border-right: 4px solid #e09d55;
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  font-size: 90px;
+  font-family: 'pind-symbols';
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+.item.vpf .thumb-placeholder:before {
+  content: "\e006";
+  color: rgba(255,255,255,0.5);
+  text-shadow: none;
+}
+.item.vpf .box {
+  background-color: #fff;
 }
 .thumbnails img {
   -moz-border-radius-topleft: 3px;
