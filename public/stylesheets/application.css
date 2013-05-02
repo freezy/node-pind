@@ -1033,11 +1033,15 @@ td .icon.clickable.ok {
 }
 .item.vpf h3 {
   line-height: 24px;
+  margin-bottom: 0;
 }
 .item.vpf h4 {
   font-family: 'Arvo', serif;
-  color: rgba(0,0,0,0.3);
+  font-weight: 700;
+  font-size: 15px;
+  color: rgba(0,0,0,0.25);
   text-transform: none;
+  margin-top: 0px;
 }
 .item.vpf .thumbnail {
   min-height: 120px;

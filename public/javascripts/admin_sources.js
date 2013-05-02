@@ -12,13 +12,13 @@ $(document).ready(function() {
 
 				$parent.append($('<li class="span6 vpf item" data-id="' + row.fileId + '"><div class="thumbnail">' +
 					'<div class="pull-left">' +
-//						'<div class="thumb"></div>' +
-						'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')"></div>' +
+						'<div class="thumb"></div>' +
+//						'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')"></div>' +
 						'<div class="thumb-placeholder"></div>' +
 					'</div>' +
 //					'<div class="box">' +
-						'<h3>' + row.title + '</h3>' +
-						'<h4>subtitle</h4>' +
+						'<h3>' + row.title_trimmed + '</h3>' +
+						'<h4>' + row.info + '</h4>' +
 //					'</div>' +
 				'</div></li>'));
 			}
