@@ -16,10 +16,8 @@ $(document).ready(function() {
 //						'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')"></div>' +
 						'<div class="thumb-placeholder"></div>' +
 					'</div>' +
-//					'<div class="box">' +
-						'<h3>' + row.title_trimmed + '</h3>' +
-						'<h4>' + row.info + '</h4>' +
-//					'</div>' +
+					'<h3>' + row.title_trimmed + '</h3>' +
+					'<h4>' + row.info + '</h4>' +
 				'</div></li>'));
 			}
 			console.log('content added, enabling fades...');
