@@ -11,8 +11,8 @@ var VPForumsAPI = function() {
 		name : 'VPForums',
 
 		FindTables : function(req, params, callback) {
-			schema.CacheVpfDownload.all({ limit: 3 }).success(function(rows) {
-				callback({ rows: rows.slice(0, 3), num: rows.length });
+			schema.CacheVpfDownload.all({ limit: 6, order: 'lastUpdate DESC' }).success(function(rows) {
+				callback({ rows: rows.slice(0, 6), num: rows.length });
 			});
 		}
 	};

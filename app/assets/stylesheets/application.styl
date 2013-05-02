@@ -933,9 +933,19 @@ td
 vpf-thumbsize = 120px
 vpf-padding = 15px
 .item.vpf
+	h3
+		line-height 24px
+	h4
+		font-family font-serif
+		color rgba(0,0,0,0.3)
+		text-transform none
+	.thumbnail
+		min-height vpf-thumbsize
+
 	.thumb
 		width vpf-thumbsize
 		height vpf-thumbsize
+		margin-right 15px
 		background-position center
 		background-size cover
 		opacity 0
@@ -946,10 +956,13 @@ vpf-padding = 15px
 
 		&.loaded
 			opacity 1
+			& + .thumb-placeholder
+				transition all animation-slow ease
+				background none
+				&:before
+					transition all animation-slow ease
+					content none
 
-		& + .thumb-placeholder:before
-			content none
-	
 	.thumb-placeholder
 		width vpf-thumbsize - vpf-padding - vpf-padding
 		height vpf-thumbsize - vpf-padding - vpf-padding
