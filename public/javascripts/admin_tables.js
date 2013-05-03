@@ -54,6 +54,7 @@ $(document).ready(function() {
 
 	var config = {
 		id: 'tables',
+		body: 'table tbody',
 		renderRows: render,
 		apiCall: 'Table.GetAll'
 	};

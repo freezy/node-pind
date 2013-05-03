@@ -1,3 +1,14 @@
+/**
+ * Sets up data for a container
+ * 
+ * Configuration object contains the following keys:
+ * <ul><li><tt>id</tt> - class of the wrapping container</li>
+ *     <li><tt>body</tt> - selector where the data is attached to</li>
+ *     <li><tt>renderRows</tt> - function that renders received data</li>
+ *     <li><tt>apiCall</tt> - name of the api call</li>
+ *
+ * @param config configuration object (see above).
+ */
 function enableData(config) {
 	
 	if (!config.id) {
@@ -63,6 +74,10 @@ function enableData(config) {
 	$('.data.' + config.id + ' .noresult button').click(clearFilters);
 }
 
+/**
+ * Refreshes data with current options.
+ * @param config Data configuration.
+ */
 function refreshData(config) {
 	var search = $('.data.' + config.id + ' input.search').val();
 	var limit = $('.data.' + config.id + ' select.numrows').val();
@@ -91,18 +106,29 @@ function refreshData(config) {
 	});
 }
 
+/**
+ * Updates UI for a given response.
+ * @param config Data configuration.
+ * @param response Response from server
+ */
 function updateData(config, response) {
 
 	// retrieve variables
 	var numrows = $('.data.' + config.id + ' select.numrows').val();
+	var pager = $('.data.' + config.id + ' .pagination');
 	var pages = Math.ceil(response.count / numrows);
-	var page = $('.data.' + config.id + ' .pagination ul').data('page');
+	var page = pager.find('ul').data('page');
 	var resultsFiltered = $('.data.' + config.id + ' ul.filter li.active').length > 0;
 	var searchQuery = $('.data.' + config.id + ' input.search').val();
 
 	// update pagination
-	$('.data.' + config.id + ' .pagination li:not(.first):not(.last)').remove();
+	pager.find('li:not(.first):not(.last)').remove();
 	for (var i = pages; i > 0; i--) {
+
+		// on large number of pages, don't render all the pagination bar
+		if (pages > 9 && ((i > 1 && i < page - 2) || (i > page + 2 && i < pages - 1))) {
+//			continue;
+		}
 		var li = $('<li class="p' + i + (page == i ? ' current' : '') + '"><a href="#">' + i + '</a>');
 		if (page != i) {
 			li.find('a').click(function(event) {
@@ -115,21 +141,21 @@ function updateData(config, response) {
 				event.preventDefault();
 			});
 		}
-		$('.data.' + config.id + ' .pagination li.first').after(li);
+		pager.find('li.first').after(li);
 	}
-	$('.data.' + config.id + ' .pagination li').removeClass('disabled');
+	pager.find('li').removeClass('disabled');
 	if (page == 1) {
-		$('.data.' + config.id + ' .pagination li.first').addClass('disabled');
+		pager.find('li.first').addClass('disabled');
 	}
 	if (page == pages || pages == 0) {
-		$('.data.' + config.id + ' .pagination li.last').addClass('disabled');
+		pager.find('li.last').addClass('disabled');
 	}
 
 	// results returned
 	if (response.rows && response.rows.length > 0) {
 
 		// run callback
-		config.renderRows($('.data.' + config.id + ' table tbody'), response.rows);
+		config.renderRows($('.data.' + config.id + ' ' + config.body), response.rows);
 
 		$('.data.' + config.id).show();
 		$('.data.' + config.id + ' .wrapper').slideDown(500);

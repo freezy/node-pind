@@ -2,16 +2,43 @@ extends layout
 
 block inner-content
 	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.waitforimages-1.4.2.min'))
+	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.fancybox-2.1.4.min'))
 	- contentFor('javascripts', javascriptIncludeTag('admin_sources'))
 
 	h2 VPForums.org
 
 	div.data.vpf.tables
+
+		.pagination.pagination-small.pull-right
+			ul(data-page="1")
+				li.first.disabled
+					a
+						i.icon.arrow-left
+				li.p1.current
+					a 1
+				li.last
+					a
+						i.icon.arrow-right
+
+		select.numrows.input-mini.pull-right
+			option(selected="selected") 10
+			option 20
+			option 30
+
 		.input-prepend.input-pill
 			span.add-on
 				i.icon.search
-			input.search.input-medium(type='text', placeholder='search')
+			input.search.input-small(type='text', placeholder='search')
 
+		ul.nav.nav-pills.pull-left.filter
+			li(data-filter="table")
+				a(href="#") Latest
+			li(data-filter="rom")
+				a(href="#") By Downloads
+			li(data-filter="ipdb")
+				a(href="#") By Views
+
+		.clearfix
 		.wrapper
 			ul.thumbnails
 

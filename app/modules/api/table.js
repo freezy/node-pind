@@ -153,7 +153,7 @@ var TableApi = function() {
 				}
 
 				delete p.limit;
-				delete p.skip;
+				delete p.offset;
 				delete p.order;
 				schema.Table.count(p).success(function(num) {
 

@@ -1,3 +1,6 @@
+var fuzzy = require('fuzzy');
+var _ = require('underscore');
+
 var error = require('./../error');
 
 var schema = require('../../model/schema');
@@ -11,6 +14,9 @@ var VPForumsAPI = function() {
 		name : 'VPForums',
 
 		FindTables : function(req, params, callback) {
+			
+			var search = params.search && params.search.length > 1;
+			var p = { where: { category: 41 }};
 			var trim = function(str) {
 				str = str.replace(/[\-_]+/g, ' ');
 				str = str.replace(/[^\s]\(/g, ' (');
@@ -23,7 +29,61 @@ var VPForumsAPI = function() {
 					return [str, ''];
 				}
 			};
-			schema.CacheVpfDownload.all({ order: 'lastUpdate DESC' }).success(function(rows) {
+			// pagination
+			if (!search) {
+				p.offset = params.offset ? parseInt(params.offset) : 0;
+				p.limit = params.limit ? parseInt(params.limit) : 0;
+			}
+			// sort
+			if (params.order) {
+				switch(params.order) {
+					case 'downloads':
+						p.order = 'downloads DESC';
+						break;
+					case 'views':
+						p.order = 'views DESC';
+						break;
+					case 'latest':
+					default:
+						p.order = 'lastUpdate DESC';
+				}
+			} else {
+				p.order = 'lastUpdate DESC';
+			}
+			schema.CacheVpfDownload.all(p).success(function(rows) {
+
+				if (search) {
+					console.log('Fuzzy-filtering ' + rows.length + ' rows...');
+					var options = {
+						pre: '<b>',
+						post: '</b>',
+						extract: function(el) { return el.title; }
+					};
+					var hits = fuzzy.filter(params.search, rows, options);
+					console.log('Fuzzy-filtered ' + hits.length + ' hits.');
+
+					var pagedResults;
+					var offset = params.offset ? parseInt(params.offset) : 0;
+					var limit = params.limit ? parseInt(params.limit) : 0;
+					if (offset || limit) {
+						pagedResults = hits.slice(offset, offset + limit);
+					} else {
+						pagedResults = hits;
+					}
+
+					var results = [];
+					_.each(pagedResults, function(hit) {
+						var result = hit.original.values;
+						var split = trim(result.title);
+						result.title_match = hit.string;
+						result.title_trimmed = split[0];
+						result.info = split[1];
+						results.push(result);
+					});
+					return callback({ rows : results, count: hits.length });					
+				}
+
+
 				var pagedRows = rows.slice(0, 100);
 				var returnedRows = [];
 				for (var i = 0; i < pagedRows.length; i++) {
@@ -34,7 +94,18 @@ var VPForumsAPI = function() {
 
 					returnedRows.push(row);
 				}
-				callback({ rows: returnedRows, num: rows.length });
+
+				delete p.limit;
+				delete p.offset;
+				delete p.order;
+				schema.CacheVpfDownload.count(p).success(function(num) {
+
+					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
+					callback({ rows: returnedRows, count: num });
+
+				}).error(function(err) {
+					throw new Error(err);
+				});
 			});
 		}
 	};

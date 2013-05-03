@@ -61,6 +61,7 @@ $(document).ready(function() {
 
 	var config = {
 		id: 'users',
+		body: 'table tbody',
 		renderRows: render,
 		apiCall: 'User.GetAll'
 	};

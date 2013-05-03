@@ -288,7 +288,7 @@ function fetchDownloads(cat, title, callback) {
 	 * @param cb Callback function.
 	 */
 	var saveToCache = function(cat, letter, items, cb) {
-			var cacheStarted = new Date().getTime();
+		var cacheStarted = new Date().getTime();
 
 		// update cache
 		if (letter) {
