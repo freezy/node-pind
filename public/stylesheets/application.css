@@ -1038,7 +1038,7 @@ td .icon.clickable.ok {
 .item.vpf h4 {
   font-family: 'Arvo', serif;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   color: rgba(0,0,0,0.25);
   text-transform: none;
   margin-top: 0px;
@@ -1113,9 +1113,6 @@ td .icon.clickable.ok {
   content: "\e006";
   color: rgba(255,255,255,0.5);
   text-shadow: none;
-}
-.item.vpf .box {
-  background-color: #fff;
 }
 .thumbnails img {
   -moz-border-radius-topleft: 3px;
