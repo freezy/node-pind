@@ -280,7 +280,76 @@ function fetchDownloads(cat, title, callback) {
 	var currentCache = {};
 	var started = new Date().getTime();
 
-	// recursive function that fetches items from vpforums.org.
+	/**
+	 * Saves or creates cache entries.
+	 * @param cat category
+	 * @param letter first letter of title
+	 * @param items items to cache
+	 * @param cb Callback function.
+	 */
+	var saveToCache = function(cat, letter, items, cb) {
+			var cacheStarted = new Date().getTime();
+
+		// update cache
+		if (letter) {
+			console.log('[vpf] Updating cache for letter "%s"...', letter);
+		} else {
+			console.log('[vpf] Updating cache...');
+		}
+		results = [];
+		async.eachSeries(items, function(item, next) {
+			var l;
+			if (!letter) {
+				if (item.title.match(/^\d/)) {
+					l = '0';
+				} else {
+					l = item.title[0].toLowerCase();
+				}
+			} else {
+				l = letter.toLowerCase();
+			}
+			var obj = {
+				category: cat,
+				letter: l,
+				title: item.title,
+				fileId: item.fileId,
+				downloads: item.downloads,
+				views: item.views,
+				author: item.author,
+				lastUpdate: new Date(item.updated)
+			};
+
+			var done = function(err, r) {
+				if (err) {
+					console.log('%j', obj)
+					return next(err);
+				}
+				results.push(r);
+				next();
+			};
+			if (currentCache[item.fileId]) {
+				currentCache[item.fileId].updateAttributes(obj).done(done);
+			} else {
+				schema.CacheVpfDownload.create(obj).done(done);
+			}
+			
+		}, function(err) {
+			if (err) {
+				return cb(err);
+			}
+			console.log('[vpf] Saved %d results to cache in %s seconds.', results.length, Math.round((new Date().getTime() - cacheStarted) / 100) / 10);
+			cb(null, results);
+		});
+
+	};
+
+	/**
+	 * Recursive function that fetches items from vpforums.org.
+	 * @param cat category
+	 * @param letter first letter of title
+	 * @param currentResult result array to add items to
+	 * @param callback Callback function.
+	 */
 	var fetch = function(cat, letter, currentResult, page, callback) {
 		var numPages;
 		var url;
@@ -293,61 +362,7 @@ function fetchDownloads(cat, title, callback) {
 			console.log('[vpf] Fetching page ' + page + ' for category ' + cat + '.');
 		}
 
-		var saveToCache = function(cat, letter, items, cb) {
-			var cacheStarted = new Date().getTime();
-
-			// update cache
-			if (letter) {
-				console.log('[vpf] Updating cache for letter "%s"...', letter);
-			} else {
-				console.log('[vpf] Updating cache...');
-			}
-			results = [];
-			async.eachSeries(items, function(item, next) {
-				var l;
-				if (!letter) {
-					if (item.title.match(/^\d/)) {
-						l = '0';
-					} else {
-						l = item.title[0].toLowerCase();
-					}
-				} else {
-					l = letter.toLowerCase();
-				}
-				var obj = {
-					category: cat,
-					letter: l,
-					title: item.title,
-					fileId: item.fileId,
-					downloads: item.downloads,
-					views: item.views,
-					author: item.author,
-					lastUpdate: new Date(item.updated)
-				};
-
-				var done = function(err, r) {
-					if (err) {
-						console.log('%j', obj)
-						return next(err);
-					}
-					results.push(r);
-					next();
-				};
-				if (currentCache[item.fileId]) {
-					currentCache[item.fileId].updateAttributes(obj).done(done);
-				} else {
-					schema.CacheVpfDownload.create(obj).done(done);
-				}
-				
-			}, function(err) {
-				if (err) {
-					return cb(err);
-				}
-				console.log('[vpf] Saved %d results to cache in %s seconds.', results.length, Math.round((new Date().getTime() - cacheStarted) / 100) / 10);
-				cb(null, results);
-			});
-
-		};
+		
 		request(url, function(err, response, body) {
 			if (err) {
 				console.log('[vpf] Error retrieving ' + url + ': ' + err);
@@ -443,6 +458,10 @@ function fetchDownloads(cat, title, callback) {
 			callback(null, result);
 		}
 	};
+
+	// ------------------------------------------------------------------------
+	// code starts here
+	// ------------------------------------------------------------------------
 
 	// check cache first.
 	var params = { where: { category: cat }};
