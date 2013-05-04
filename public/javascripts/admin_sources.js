@@ -8,11 +8,11 @@ $(document).ready(function() {
 			var imgUrl = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&full=1&id=' + row.fileId;
 
 			$parent.append($('<li class="span6 vpf item" data-id="' + row.fileId + '"><div class="thumbnail">' +
-				'<div class="pull-left"><a class="colorbox" href="' + imgUrl + '">' +
+				'<div class="pull-left thumb-wrapper">' +
 //					'<div class="thumb"></div>' +
-					'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')"></div>' +
+					'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')" data-src="' + imgUrl + '"></div>' +
 					'<div class="thumb-placeholder"></div>' +
-				'</a></div>' +
+				'</div>' +
 				'<h3>' + row.title_trimmed + '</h3>' +
 				'<h4>' + row.info + '</h4>' +
 			'</div></li>'	));
@@ -20,16 +20,15 @@ $(document).ready(function() {
 
 		$parent.find('.thumb').waitForImages({
 			each: function() {
-				$(this).addClass('loaded');
+				var $a = $('<a class="colorbox" href="' + $(this).data('src') + '">').colorbox({
+					transition: "fade",
+					photo: true,
+					maxWidth: '95%',
+					maxHeight: '95%'
+				});
+				$(this).addClass('loaded').parent('.thumb-wrapper').wrap($a);
 			},
 			waitForAll: true
-		});
-
-		$parent.find('a.colorbox').colorbox({
-			transition: "fade",
-			photo: true,
-			maxWidth: '95%',
-			maxHeight: '95%'
 		});
 	}
 
