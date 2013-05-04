@@ -255,6 +255,13 @@ button[type="submit"].small span,
   border: solid 1px rgba(0,0,0,0.15);
   margin-left: 20px;
 }
+.btn.icn.btn-small {
+  padding: 2px 6px;
+  margin-right: 10px;
+}
+.btn.icn.btn-small i {
+  font-size: 16px;
+}
 .modal-header {
   padding: 30px 30px 0px 30px;
   background-repeat: no-repeat;
@@ -439,6 +446,31 @@ button[type="submit"].small span,
 }
 .icon.arrow-left:before {
   content: "\e005";
+}
+.icon.zoom-in:before {
+  content: "\f00e";
+}
+.icon.zoom-out:before {
+  content: "\f010";
+}
+.icon.download-alt:before {
+  content: "\f019";
+}
+.icon.star:before {
+  content: "\e008";
+}
+.icon.star-2:before {
+  content: "\e009";
+}
+.icon.eye:before {
+  content: "\e00a";
+  font-size: 110%;
+}
+.icon.circle-arrow-down:before {
+  content: "\f0ab";
+}
+.icon.link:before {
+  content: "\f0c1";
 }
 .icon.spin {
   display: inline-block;
@@ -732,6 +764,48 @@ select.numrows {
 .navbar .navbar-inner .nav li i.icon-black {
   margin-top: 1px;
   padding: 5px 0 0 10px;
+}
+ul.pills li {
+  float: left;
+  list-style: none;
+  color: #000;
+  background-color: rgba(0,0,0,0.07);
+  font-size: 11.9px;
+  text-shadow: 0px 1px 0 rgba(255,255,255,0.8);
+  border: solid 1px rgba(0,0,0,0.15);
+  border-left: none;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  line-height: 22px;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 0px 8px;
+}
+ul.pills li:first-child {
+  border-left: solid 1px rgba(0,0,0,0.15);
+  -moz-border-radius-topleft: 20px;
+  -webkit-border-top-left-radius: 20px;
+  border-top-left-radius: 20px;
+  -moz-border-radius-bottomleft: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+ul.pills li:last-child {
+  -moz-border-radius-topright: 20px;
+  -webkit-border-top-right-radius: 20px;
+  border-top-right-radius: 20px;
+  -moz-border-radius-bottomright: 20px;
+  -webkit-border-bottom-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+ul.pills li i {
+  margin-right: 5px;
+}
+ul.pills li.link:hover {
+  background-color: rgba(0,0,0,0.15);
 }
 ul.nav.nav-pills li a,
 .pagination.pagination-small ul li a {
@@ -1045,6 +1119,43 @@ td .icon.clickable.ok {
 }
 .item.vpf .thumbnail {
   min-height: 120px;
+  position: relative;
+}
+.item.vpf .thumbnail .updated {
+  font-size: 11.9px;
+  margin-right: 15px;
+  color: rgba(0,0,0,0.75);
+}
+.item.vpf .thumbnail ul.pills {
+  position: absolute;
+  bottom: 15px;
+  margin-left: 135px;
+}
+.item.vpf .thumbnail ul.pills a:hover {
+  text-decoration: none;
+}
+.item.vpf .thumbnail ul.pills li {
+  cursor: default;
+}
+.item.vpf .thumbnail ul.pills .icon.link,
+.item.vpf .thumbnail ul.pills .icon.download-alt {
+  font-size: 130%;
+}
+.item.vpf .thumbnail ul.pills .icon.link {
+  position: relative;
+  margin-left: 2px;
+  margin-right: 1px;
+  top: 2px;
+}
+.item.vpf .thumbnail div.author {
+  float: right;
+  max-width: 75px;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.item.vpf a.colorbox:hover {
+  text-decoration: none;
 }
 .item.vpf .thumb {
   width: 120px;

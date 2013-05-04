@@ -42,7 +42,8 @@
 		"unzip" : "0.1.7",
 		"underscore" : "latest",
 		"chrono-node" : "latest",
-		"fuzzy" : "latest"
+		"fuzzy" : "latest",
+		"relative-date" : "1.1.1"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",

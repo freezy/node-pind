@@ -9,12 +9,21 @@ $(document).ready(function() {
 
 			$parent.append($('<li class="span6 vpf item" data-id="' + row.fileId + '"><div class="thumbnail">' +
 				'<div class="pull-left thumb-wrapper">' +
-//					'<div class="thumb"></div>' +
-					'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')" data-src="' + imgUrl + '"></div>' +
+					'<div class="thumb"></div>' +
+//					'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')" data-src="' + imgUrl + '"></div>' +
 					'<div class="thumb-placeholder"></div>' +
 				'</div>' +
 				'<h3>' + row.title_trimmed + '</h3>' +
+				'<p class="pull-right updated">' + row.lastUpdateRel + '</p>' +
 				'<h4>' + row.info + '</h4>' +
+				'<ul class="pills small">' +
+					'<li><i class="icon user"></i><div class="author">' + row.author + '</div></li>' +
+					'<li><i class="icon circle-arrow-down"></i>' + row.downloads + '</li>' +
+					'<li><i class="icon eye"></i>' + row.views + '</li>' +
+					'<li class="link"><a href="#"><i class="icon link"></i></a></li>' +
+					'<li class="link"><a href="#"><i class="icon download-alt"></i></a></li>' +
+				'</ul>' +
+				'<div class="clearfix"></div>' +
 			'</div></li>'	));
 		}
 

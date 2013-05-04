@@ -1,4 +1,6 @@
 var fuzzy = require('fuzzy');
+var relativeDate = require('relative-date');
+
 var _ = require('underscore');
 
 var error = require('./../error');
@@ -20,7 +22,7 @@ var VPForumsAPI = function() {
 			var trim = function(str) {
 				str = str.replace(/[\-_]+/g, ' ');
 				str = str.replace(/[^\s]\(/g, ' (');
-				var m = str.match(/\s+((vp9|fs\s|fs$|\(|\[|mod\s|directB2S|FSLB|B2S|de\s|em\s|BLUEandREDledGImod).*)/i);
+				var m = str.match(/\s+((vp\s*9|v[\d\.]{3,}|fs\s|fs$|\(|\[|mod\s|directB2S|FSLB|B2S|de\s|em\s|BLUEandREDledGImod|8 step GI|FSHD|HR\s|Low Res).*)/i);
 				if (m) {
 					var info = m[1];
 					var title = str.substr(0, str.length - info.length).trim();
@@ -29,6 +31,15 @@ var VPForumsAPI = function() {
 					return [str, ''];
 				}
 			};
+			var enhance = function(row) {
+				var result = row.values;
+				var split = trim(result.title);
+				result.title_match = row.string;
+				result.title_trimmed = split[0];
+				result.info = split[1];
+				result.lastUpdateRel = relativeDate(result.lastUpdate);
+				return result;
+			}
 			// pagination
 			if (!search) {
 				p.offset = params.offset ? parseInt(params.offset) : 0;
@@ -62,6 +73,7 @@ var VPForumsAPI = function() {
 					var hits = fuzzy.filter(params.search, rows, options);
 					console.log('Fuzzy-filtered ' + hits.length + ' hits.');
 
+					// paging needs to be done manually
 					var pagedResults;
 					var offset = params.offset ? parseInt(params.offset) : 0;
 					var limit = params.limit ? parseInt(params.limit) : 0;
@@ -71,29 +83,19 @@ var VPForumsAPI = function() {
 						pagedResults = hits;
 					}
 
+					// enhance and return
 					var results = [];
 					_.each(pagedResults, function(hit) {
-						var result = hit.original.values;
-						var split = trim(result.title);
-						result.title_match = hit.string;
-						result.title_trimmed = split[0];
-						result.info = split[1];
-						results.push(result);
+						results.push(enhance(hit.original));
 					});
 					return callback({ rows : results, count: hits.length });					
 				}
 
 
-				var pagedRows = rows.slice(0, 100);
 				var returnedRows = [];
-				for (var i = 0; i < pagedRows.length; i++) {
-					var row = pagedRows[i].values;
-					var split = trim(row.title);
-					row.title_trimmed = split[0];
-					row.info = split[1];
-
-					returnedRows.push(row);
-				}
+				_.each(rows, function(row) {
+					returnedRows.push(enhance(row));
+				});
 
 				delete p.limit;
 				delete p.offset;
