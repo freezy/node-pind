@@ -9,8 +9,8 @@ $(document).ready(function() {
 
 			$parent.append($('<li class="span6 vpf item" data-id="' + row.fileId + '"><div class="thumbnail">' +
 				'<div class="pull-left thumb-wrapper">' +
-//					'<div class="thumb"></div>' +
-					'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')" data-src="' + imgUrl + '"></div>' +
+					'<div class="thumb"></div>' +
+//					'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')" data-src="' + imgUrl + '"></div>' +
 					'<div class="thumb-placeholder"></div>' +
 				'</div>' +
 				'<h3>' + row.title_trimmed + '</h3>' +

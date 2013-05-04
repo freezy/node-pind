@@ -123,17 +123,24 @@ function updateData(config, response) {
 
 	// update pagination
 	pager.find('li:not(.first):not(.last)').remove();
+	var lastSkipped = false;
 	for (var i = pages; i > 0; i--) {
 
 		// on large number of pages, don't render all the pagination bar
-		if (pages > 9 && ((i > 1 && i < page - 2) || (i > page + 2 && i < pages - 1))) {
-//			continue;
+		if (pages > 9 && ((i > 2 && i < (page - 1)) || (i > (page + 1) && i < (pages - 1)))) {
+			if (!lastSkipped) {
+				pager.find('li.first').after($('<li class="spacer"></li>'));
+			}
+			lastSkipped = true;
+			continue;
 		}
+		lastSkipped = false;
+
 		var li = $('<li class="p' + i + (page == i ? ' current' : '') + '"><a href="#">' + i + '</a>');
 		if (page != i) {
 			li.find('a').click(function(event) {
 				event.preventDefault();
-				$(this).parents('ul').data('page', $(this).html());
+				$(this).parents('ul').data('page', parseInt($(this).html()));
 				refreshData(config);
 			});
 		} else {
@@ -141,6 +148,7 @@ function updateData(config, response) {
 				event.preventDefault();
 			});
 		}
+		// insert into dom
 		pager.find('li.first').after(li);
 	}
 	pager.find('li').removeClass('disabled');

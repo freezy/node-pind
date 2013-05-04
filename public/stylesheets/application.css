@@ -879,6 +879,10 @@ ul.nav.nav-pills li:last-child a,
   -webkit-border-bottom-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
+ul.nav.nav-pills li.spacer + li a,
+.pagination.pagination-small ul li.spacer + li a {
+  border-left: 5px solid rgba(0,0,0,0.15);
+}
 ul.nav.nav-pills {
   margin: 20px 0;
 }
