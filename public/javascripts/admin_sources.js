@@ -18,9 +18,9 @@ $(document).ready(function() {
 				'<h4>' + row.info + '</h4>' +
 				'<ul class="pills small">' +
 					'<li><i class="icon user"></i><div class="author">' + row.author + '</div></li>' +
-					'<li><i class="icon circle-arrow-down"></i>' + row.downloads + '</li>' +
-					'<li><i class="icon eye"></i>' + row.views + '</li>' +
-					'<li class="link"><a href="#"><i class="icon link"></i></a></li>' +
+					'<li><i class="icon circle-arrow-down" title="' + groupdigit(row.downloads) + '"></i><span class="hidden-desktop-small">' + groupdigit(row.downloads) + '</span></li>' +
+					'<li><i class="icon eye" title="' + groupdigit(row.views) + '"></i><span class="hidden-desktop-small">' + groupdigit(row.views) + '</span></li>' +
+					'<li class="link"><a href="http://www.vpforums.org/index.php?app=downloads&showfile=' + row.fileId + '" target="_blank"><i class="icon link"></i></a></li>' +
 					'<li class="link"><a href="#"><i class="icon download-alt"></i></a></li>' +
 				'</ul>' +
 				'<div class="clearfix"></div>' +

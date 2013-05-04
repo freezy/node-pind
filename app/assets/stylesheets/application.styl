@@ -1008,7 +1008,7 @@ vpf-padding = 15px
 			font-size 11.9px
 			margin-right 15px
 			color rgba(0,0,0,0.75)
-		ul.pills				
+		ul.pills
 			position absolute
 			bottom 15px
 			margin-left vpf-thumbsize + 15px
@@ -1029,7 +1029,7 @@ vpf-padding = 15px
 
 		div.author
 			float right
-			max-width 75px
+			max-width 70px
 			text-overflow ellipsis
 			overflow hidden
 
@@ -1079,6 +1079,57 @@ vpf-padding = 15px
 			content "\e006"
 			color rgba(255,255,255,0.5)
 			text-shadow none
+
+
+
+/* Large desktop */
+@media (min-width: 1200px)
+	.visible-desktop-small
+		display none !important
+	.item.vpf .thumbnail ul.pills i.icon
+		color inherit
+
+/* Small desktop */
+@media(min-width: 980px) and (max-width: 1199px)
+	.visible-desktop-small
+		display inherit  !important
+	.hidden-desktop-small
+		display none !important
+
+	.item.vpf .thumbnail 
+		h4
+			max-width 150px
+			text-overflow ellipsis
+			overflow hidden
+			white-space nowrap
+		ul.pills 
+			div.author
+				max-width 45px
+			i.icon.circle-arrow-down, i.icon.eye 
+				margin 0
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px)
+	.visible-desktop-small
+		display none !important
+	.item.vpf .thumbnail ul.pills i.icon
+		color green !important
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px)
+	.visible-desktop-small
+		display none !important
+	.item.vpf .thumbnail ul.pills i.icon
+		color blue !important
+ 
+/* Landscape phones and down */
+@media (max-width: 480px)
+	.visible-desktop-small
+		display none !important
+	.item.vpf .thumbnail ul.pills i.icon
+		color orange !important
+
+
 
 // :thumbnails
 // ============================================================================

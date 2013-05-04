@@ -1149,7 +1149,7 @@ td .icon.clickable.ok {
 }
 .item.vpf .thumbnail div.author {
   float: right;
-  max-width: 75px;
+  max-width: 70px;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -1224,6 +1224,65 @@ td .icon.clickable.ok {
   content: "\e006";
   color: rgba(255,255,255,0.5);
   text-shadow: none;
+}
+/* Large desktop */
+@media (min-width: 1200px) {
+  .visible-desktop-small {
+    display: none !important;
+  }
+  .item.vpf .thumbnail ul.pills i.icon {
+    color: inherit;
+  }
+}
+/* Small desktop */
+@media (min-width: 980px) and (max-width: 1199px) {
+  .visible-desktop-small {
+    display: inherit !important;
+  }
+  .hidden-desktop-small {
+    display: none !important;
+  }
+  .item.vpf .thumbnail h4 {
+    max-width: 150px;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .item.vpf .thumbnail ul.pills div.author {
+    max-width: 45px;
+  }
+  .item.vpf .thumbnail ul.pills i.icon.circle-arrow-down,
+  .item.vpf .thumbnail ul.pills i.icon.eye {
+    margin: 0;
+  }
+}
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+  .visible-desktop-small {
+    display: none !important;
+  }
+  .item.vpf .thumbnail ul.pills i.icon {
+    color: #008000 !important;
+  }
+}
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+  .visible-desktop-small {
+    display: none !important;
+  }
+  .item.vpf .thumbnail ul.pills i.icon {
+    color: #00f !important;
+  }
+}
+/* Landscape phones and down */
+@media (max-width: 480px) {
+  .visible-desktop-small {
+    display: none !important;
+  }
+  .item.vpf .thumbnail ul.pills i.icon {
+    color: #ffa500 !important;
+  }
 }
 .thumbnails img {
   -moz-border-radius-topleft: 3px;
