@@ -1086,8 +1086,10 @@ vpf-padding = 15px
 @media (min-width: 1200px)
 	.visible-desktop-small
 		display none !important
-	.item.vpf .thumbnail ul.pills i.icon
-		color inherit
+	.item.vpf .thumbnail 
+		ul.pills 
+			div.author
+				max-width 85px
 
 /* Small desktop */
 @media(min-width: 980px) and (max-width: 1199px)
@@ -1097,6 +1099,11 @@ vpf-padding = 15px
 		display none !important
 
 	.item.vpf .thumbnail 
+		h3
+			max-width 250px
+			text-overflow ellipsis
+			overflow hidden
+			white-space nowrap
 		h4
 			max-width 150px
 			text-overflow ellipsis
@@ -1112,22 +1119,63 @@ vpf-padding = 15px
 @media (min-width: 768px) and (max-width: 979px)
 	.visible-desktop-small
 		display none !important
-	.item.vpf .thumbnail ul.pills i.icon
-		color green !important
+
  
 /* Landscape phone to portrait tablet */
+vpf-thumbsize-small = 95px
+vpf-padding-small = 10px
 @media (max-width: 767px)
 	.visible-desktop-small
 		display none !important
-	.item.vpf .thumbnail ul.pills i.icon
-		color blue !important
- 
+
+	.item.vpf
+		.thumbnail
+			min-height vpf-thumbsize-small
+			ul.pills
+				margin-left vpf-thumbsize-small + 15px
+				div.author
+					max-width 40px
+		.thumb
+			width vpf-thumbsize-small
+			height vpf-thumbsize-small
+
+		.thumb-placeholder
+			width vpf-thumbsize-small - vpf-padding-small - vpf-padding-small
+			height vpf-thumbsize-small - vpf-padding-small - vpf-padding-small
+			margin-top - vpf-thumbsize-small
+			padding vpf-padding-small
+			font-size vpf-thumbsize-small - vpf-padding-small - vpf-padding-small
+
 /* Landscape phones and down */
+vpf-thumbsize-small = 75px
+vpf-padding-small = 10px
 @media (max-width: 480px)
-	.visible-desktop-small
+	.visible-desktop-small, .hidden-phone-small
 		display none !important
-	.item.vpf .thumbnail ul.pills i.icon
-		color orange !important
+
+	.item.vpf
+		.thumbnail
+			min-height vpf-thumbsize-small
+			h3
+				font-size 18px
+				text-overflow ellipsis
+				overflow hidden
+				white-space nowrap	
+			ul.pills
+				margin-left vpf-thumbsize-small + 15px
+				bottom 10px
+				i.icon.circle-arrow-down, i.icon.eye 
+					margin 0
+		.thumb
+			width vpf-thumbsize-small
+			height vpf-thumbsize-small
+
+		.thumb-placeholder
+			width vpf-thumbsize-small - vpf-padding-small - vpf-padding-small
+			height vpf-thumbsize-small - vpf-padding-small - vpf-padding-small
+			margin-top - vpf-thumbsize-small
+			padding vpf-padding-small
+			font-size vpf-thumbsize-small - vpf-padding-small - vpf-padding-small
 
 
 
