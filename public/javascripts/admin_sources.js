@@ -8,7 +8,7 @@ $(document).ready(function() {
 			var imgUrl = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&full=1&id=' + row.fileId;
 
 			$parent.append($('<li class="span6 vpf item" data-id="' + row.fileId + '"><div class="thumbnail">' +
-				'<div class="pull-left"><a href="' + imgUrl + '" class="fancybox">' +
+				'<div class="pull-left"><a class="colorbox" href="' + imgUrl + '">' +
 //					'<div class="thumb"></div>' +
 					'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')"></div>' +
 					'<div class="thumb-placeholder"></div>' +
@@ -19,12 +19,18 @@ $(document).ready(function() {
 		}
 
 		$parent.find('.thumb').waitForImages({
-			each: function(img) {
+			each: function() {
 				$(this).addClass('loaded');
 			},
 			waitForAll: true
 		});
-		$parent.find('a').fancybox();
+
+		$parent.find('a.colorbox').colorbox({
+			transition: "fade",
+			photo: true,
+			maxWidth: '95%',
+			maxHeight: '95%'
+		});
 	}
 
 	var config = {
