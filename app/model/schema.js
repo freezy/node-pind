@@ -64,6 +64,7 @@ var sequelize = new Sequelize(
 User = sequelize.import(__dirname + '/user');
 Table = sequelize.import(__dirname + '/table');
 Hiscore = sequelize.import(__dirname + '/hiscore');
+Transfer = sequelize.import(__dirname + '/transfer');
 VpfFile = sequelize.import(__dirname + '/vpf_file');
 
 
@@ -94,5 +95,6 @@ module.exports = {
 	Table: Table,
 	User: User,
 	Hiscore: Hiscore,
+	Transfer: Transfer,
 	VpfFile: VpfFile
 };

@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+	// download popup action
 	var addTransfer = function(event) {
 		event.preventDefault();
 		var row = $(this).parents('li.item').data('row');
@@ -8,7 +9,7 @@ $(document).ready(function() {
 		$dialog.find('.modal-header img').attr('src', row.imgUrlSmall);
 		$dialog.find('.modal-header h2 span').html(row.title);
 		$dialog.modal('show');
-		$dialog.find('.modal-footer button.download').click(function() {
+		$dialog.find('.modal-footer button.download').off('click').click(function() {
 			var params = { id: row.id };
 			$.each($dialog.find('.modal-body form').serializeArray(), function(idx, checkbox) {
 				params[checkbox.name] = checkbox.value ? true : false;
@@ -22,6 +23,7 @@ $(document).ready(function() {
 		})
 	};
 
+	// list rendering
 	var render = function($parent, rows) {
 		$parent.empty();
 		for (var i = 0; i < rows.length; i++) {

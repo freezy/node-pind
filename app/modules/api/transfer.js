@@ -29,9 +29,15 @@ var TransferApi = function() {
 							dlvideo:  params.dlvideo ? true : false,
 							addtohp:  params.addtohp ? true : false
 						})
+					}, function(err, msg) {
+						if (err) {
+							return callback(error.api(err));
+						}
+						callback(msg);
 					});
+				} else {
+					callback('Cannot find VPF file with ID "' + params.id + '".');
 				}
-				callback('yeah, sure.');
 			});
 
 		}

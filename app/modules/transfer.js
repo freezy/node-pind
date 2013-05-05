@@ -10,8 +10,17 @@ module.exports = function(app) {
 	return exports;
 };
 
-exports.queue = function() {
-
-
-
+exports.queue = function(transfer, callback) {
+	schema.Transfer.all({ where: {
+		type: transfer.type,
+		engine: transfer.engine,
+		reference: transfer.reference
+	}}).success(function(rows) {
+		if (rows.length > 0) {
+			return callback('Item already queued.');
+		}
+		schema.Transfer.create(transfer).success(function(row) {
+			callback(null, "Download successfully added to queue.");
+		});
+	})
 };
