@@ -6,14 +6,29 @@ var _ = require('underscore');
 var error = require('./../error');
 
 var schema = require('../../model/schema');
+var socket, vpf;
 
 module.exports = function(app) {
+	vpf = require('./../vpforums')(app);
+	socket = app.get('socket.io');
 	return exports;
 };
 
 var VPForumsAPI = function() {
 	return {
 		name : 'VPForums',
+
+		CreateIndex : function(req, params, callback) {
+			vpf.cacheAllTableDownloads(function(err) {
+				if (err) {
+					console.log("ERROR: " + err);
+					socket.emit('notice', { msg: 'ERROR: ' + err, type: 'error', timeout: 60000 });
+					callback(error.api(err));
+				} else {
+					socket.emit('dataUpdated', { });
+				}
+			});
+		},
 
 		FindTables : function(req, params, callback) {
 			

@@ -83,7 +83,54 @@ $(document).ready(function() {
 		apiCall: 'VPForums.FindTables'
 	};
 
+	function updateActions(socket) {
+		var $downloadIndexBtn = $('.empty button');
+		if ($downloadIndexBtn.data('processing')) {
+
+			socket = io.connect('/');
+			socket.on('dataUpdated', function() {
+				refreshData(config);
+			});
+			socket.on('progressUpdate', function(msg) {
+				$('.progress.indexing .bar').css('width', (msg.progress * 100) + '%');
+			});
+
+			$('.progress.indexing').slideDown();
+			$downloadIndexBtn.attr('disabled', 'disabled');
+			$downloadIndexBtn.find('.icon.refresh').addClass('spin');
+			$downloadIndexBtn.find('span').html('Downloading Index...');
+		} else {
+			if (socket) {
+				socket.disconnect();
+			}
+			$('.progress.indexing').slideUp();
+			$downloadIndexBtn.removeAttr('disabled');
+			$downloadIndexBtn.find('.icon.refresh').removeClass('spin');
+			$downloadIndexBtn.find('span').html('Download index');
+		}
+	}
+
 	// load data on startup
 	enableData(config);
 	refreshData(config);
+
+	var socket = null;
+	updateActions(socket);
+
+	// enable download index button
+	var downloadIndex = function() {
+
+		$(this).data('processing', true);
+		updateActions(socket);
+		api('VPForums.CreateIndex', {}, function(err, result) {
+			if (err) {
+				alert('Problem Syncing: ' + err);
+			}
+		});
+	};
+
+	// setup buttons
+	$('.empty button').click(downloadIndex);
+
 });
+

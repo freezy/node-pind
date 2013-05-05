@@ -19,6 +19,8 @@ module.exports = function(app) {
 	return exports;
 };
 
+exports.isDownloadingIndex = false;
+
 /**
  * Finds and downloads either a media pack or a table video.
  *
@@ -276,7 +278,7 @@ function matchResult(results, title, trimFct, strategy) {
  */
 function fetchDownloads(cat, title, callback) {
 
-	var firstPageOnly = true;
+	var firstPageOnly = false;
 	var currentCache = {};
 	var started = new Date().getTime();
 
@@ -412,6 +414,7 @@ function fetchDownloads(cat, title, callback) {
 					console.log('[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
 					saveToCache(cat, letter, currentResult, callback);
 				} else {
+					socket.emit('progressUpdate', { progress: page / numPages });
 					fetch(cat, letter, currentResult, page + 1, callback);
 				}
 			});
@@ -474,7 +477,7 @@ function fetchDownloads(cat, title, callback) {
 			currentCache[rows[i].fileId] = rows[i];
 		}
 
-		if (true || rows.length == 0) {
+		if (rows.length == 0) {
 			// if empty, launch fetch.
 			fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
 		} else {
@@ -668,7 +671,13 @@ exports.extractMedia = function(table, path, callback) {
  */
 exports.cacheAllTableDownloads = function(callback) {
 
+	if (exports.isDownloadingIndex) {
+		return callback('Fetching process already running. Wait until complete.');
+	}
+	exports.isDownloadingIndex = true;
+
 	fetchDownloads(41, null, function(err, results) {
+		exports.isDownloadingIndex = false;
 		if (err) {
 			callback(err);
 			return console.log('ERROR: %s', err);

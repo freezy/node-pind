@@ -569,7 +569,11 @@ select.numrows
 	background-color #e3e3e3
 	text-shadow 0px 1px 0 rgba(255,255,255,0.8)
 
-
+.progress
+	background-color color-light
+	background-image none
+.progress-striped .bar
+	background-color color-btn-light
 
 // : scaffolding
 // ----------------------------------------------------------------------------
@@ -921,6 +925,10 @@ ul.badge-group
 	border-radius corner-size
 	padding 30px
 	text-align center
+
+	.progress
+		margin-top 20px
+		margin-bottom 0
 
 .span3.disabled, .span4.disabled
 	color color-medium

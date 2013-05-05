@@ -1,5 +1,6 @@
 var settings = require('./config/settings-mine');
 var vpm = require('./app/modules/vpinmame')(app);
+var vpf = require('./app/modules/vpforums')(app);
 var hp = require('./app/modules/hyperpin')(app);
 var ipdb = require('./app/modules/ipdb')(app);
 
@@ -22,6 +23,7 @@ action('tables', function (context) {
 
 action('sources', function (context) {
 	this.title = 'Settings :: Sources';
+	this.isDownloadingIndex = vpf.isDownloadingIndex;
 	render();
 });
 

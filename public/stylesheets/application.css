@@ -634,6 +634,13 @@ select.numrows {
   background-color: #e3e3e3;
   text-shadow: 0px 1px 0 rgba(255,255,255,0.8);
 }
+.progress {
+  background-color: rgba(81,67,54,0.15);
+  background-image: none;
+}
+.progress-striped .bar {
+  background-color: #e09d55;
+}
 .content {
   background: url("../images/bg_redox_01.png");
   border: 1px solid #fff;
@@ -1049,6 +1056,11 @@ ul.badge-group li:last-child {
   border-radius: 20px;
   padding: 30px;
   text-align: center;
+}
+.data + .empty .progress,
+.data .noresult .progress {
+  margin-top: 20px;
+  margin-bottom: 0;
 }
 .span3.disabled,
 .span4.disabled {

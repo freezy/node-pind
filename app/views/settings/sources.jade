@@ -1,6 +1,7 @@
 extends layout
 
 block inner-content
+	- contentFor('javascripts', '<script type="text/javascript" src="/socket.io/socket.io.js"></script>')
 	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.waitforimages-1.4.2.min'))
 	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.colorbox-min'))
 	- contentFor('javascripts', javascriptIncludeTag('admin_sources'))
@@ -51,11 +52,14 @@ block inner-content
 
 	div.empty(style='display:none')
 		p
-			| No index found. Click below to fetch the file index, which takes about a minute. <br>Data will autmatically
-			| refresh when done.
-		button.btn.fat
+			| No index found. Click below to fetch the file index which takes a few minutes. <br>Data will
+			| be automatically refreshed when done.
+		button.btn.fat(data-processing='#{isDownloadingIndex}')
 			i.icon.refresh
 			span Download index
+
+		.indexing.progress.progress-striped.active(style='display:none')
+			.bar
 
 	.clearfix
 
