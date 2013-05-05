@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'pind-symbols';
-	src:url('../fonts/pind-symbols.eot');
-	src:url('../fonts/pind-symbols.eot') format('embedded-opentype'),
-		url('../fonts/pind-symbols.woff') format('woff'),
-		url('../fonts/pind-symbols.ttf') format('truetype'),
-		url('../fonts/pind-symbols.svg#pind-symbols') format('svg');
+	src:url('../fonts/pind-symbols.eot?96430');
+	src:url('../fonts/pind-symbols.eot?96430') format('embedded-opentype'),
+		url('../fonts/pind-symbols.woff?96430') format('woff'),
+		url('../fonts/pind-symbols.ttf?96430') format('truetype'),
+		url('../fonts/pind-symbols.svg?96430#pind-symbols') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
