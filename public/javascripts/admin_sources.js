@@ -11,7 +11,6 @@ $(document).ready(function() {
 		$dialog.find('.modal-footer button.download').click(function() {
 			var params = { id: row.id };
 			$.each($dialog.find('.modal-body form').serializeArray(), function(idx, checkbox) {
-				console.log('%j', checkbox);
 				params[checkbox.name] = checkbox.value ? true : false;
 			});
 			api('Transfer.AddVPFTable', params, function(err, result) {
@@ -21,7 +20,6 @@ $(document).ready(function() {
 				console.log('got: %j', result);
 			});
 		})
-		//alert('transferring file id ' + row.fileId);
 	};
 
 	var render = function($parent, rows) {
