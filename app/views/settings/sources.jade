@@ -47,6 +47,35 @@ block inner-content
 
 	.clearfix
 
+block modals
+	.modal-alert.modal.hide.fade.download-table
+		button.close(data-dismiss='modal') &times;
+		div.modal-header
+			h2
+				img
+				i.icon.download-alt
+				span Download Table
+		.clearfix
+		div.modal-body
+			h3 When finished downloading:
+			form
+				fieldset
+					label.checkbox
+						input.btn(type="checkbox", name="dlrom", checked)
+						| Find and download needed ROMs
+					label.checkbox
+						input.btn(type="checkbox", name="dlmedia", checked)
+						| Download media pack
+					label.checkbox
+						input.btn(type="checkbox", name="dlvideo", checked)
+						| Download table video
+					label.checkbox
+						input.btn(type="checkbox", name="addtohp")
+						| Add table to HyperPin
+		div.modal-footer
+			button(data-dismiss="modal")#ok.btn.btn-warning.fat.right Download
+			a.cancel.btn.fatlink(href='#') Cancel
+
 block inlineScripts
 	script
 		$(document).ready(function() {

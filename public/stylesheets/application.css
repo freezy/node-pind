@@ -306,6 +306,9 @@ button[type="submit"].small span,
 .modal-footer .fatlink {
   padding: 12px 0px 8px;
 }
+.modal-footer a.cancel {
+  width: 150px;
+}
 .modal-subfooter {
   padding: 15px 30px;
   background: rgba(81,67,54,0.3);
@@ -1360,6 +1363,31 @@ td .icon.clickable.ok {
     padding: 10px;
     font-size: 55px;
   }
+}
+.modal.download-table .modal-header img {
+  width: 100px;
+  height: 100px;
+  margin-top: -10px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  border: 2px solid #000;
+}
+.modal.download-table .modal-header img + i.icon {
+  margin-left: -76px;
+  font-size: 55px;
+  color: #f3f3f3;
+  text-shadow: none;
+  cursor: default;
+}
+.modal.download-table .modal-header h2 span {
+  position: absolute;
+  margin-left: 40px;
+}
+.modal.download-table .modal-body {
+  padding-top: 0;
+}
+.modal.download-table .modal-body h3 {
+  line-height: 22px;
 }
 .thumbnails img {
   -moz-border-radius-topleft: 3px;

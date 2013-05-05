@@ -4,15 +4,16 @@
 // :variables
 // ============================================================================
 
-color-darkest    = #3e3429  // nearly-black background
-color-darker     = #473522  // text and foreground glyphes
-color-dark       = #625648	// slightly lighter text and foreground glyphes
-color-dark-noise = url('../images/bg_brown_noise.png')
-color-medium     = #9d9e9e  // text in blurred input fields or less important
+color-darkest     = #3e3429  // nearly-black background
+color-darker      = #473522  // text and foreground glyphes
+color-dark        = #625648	// slightly lighter text and foreground glyphes
+color-dark-noise  = url('../images/bg_brown_noise.png')
+color-medium      = #9d9e9e  // text in blurred input fields or less important
 
-color-lightish   = rgba(81,67,54,0.30)           // darker than highlighted background
-color-light      = rgba(81,67,54,0.15)           // highlighted background, or rgba(126,111,99,0.28)
-color-lighter    = url('../images/bg_redox_01.png') // standard background (#f0f0f0)
+color-lightish    = rgba(81,67,54,0.30)           // darker than highlighted background
+color-light       = rgba(81,67,54,0.15)           // highlighted background, or rgba(126,111,99,0.28)
+color-lighter     = url('../images/bg_redox_01.png') // standard background (#f0f0f0)
+color-lighter-rgb = #f3f3f3 // same tone as above.
 
 color-btn-light  = #e09d55  // default button background
 color-btn-light1 = #bf813f  // color 1 for gradient 3d buttons
@@ -288,6 +289,9 @@ button[type="submit"], .btn.fat
 
 	.fatlink 
 		padding 12px 0px 8px
+
+	a.cancel
+		width 150px		
 		
 .modal-subfooter
 	padding 15px 30px
@@ -1193,6 +1197,32 @@ vpf-padding-small = 10px
 			margin-top - vpf-thumbsize-small
 			padding vpf-padding-small
 			font-size vpf-thumbsize-small - vpf-padding-small - vpf-padding-small
+
+
+.modal.download-table
+	.modal-header
+		img
+			width 100px
+			height 100px
+			margin-top -10px
+			border-radius 50px
+			border 2px solid black
+
+			& + i.icon
+				margin-left -76px
+				font-size 55px
+				color color-lighter-rgb
+				text-shadow none
+				cursor default
+
+		h2 span
+			position absolute
+			margin-left 40px
+
+	.modal-body
+		padding-top 0
+		h3
+			line-height 22px
 
 
 

@@ -9,7 +9,8 @@ module.exports = function(app) {
 		require('./api/table')(app).api,
 		require('./api/user').api,
 		require('./api/hyperpin')(app).api,
-		require('./api/vpforums')(app).api
+		require('./api/vpforums')(app).api,
+		require('./api/transfer')(app).api
 	]);
 	return exports;
 };

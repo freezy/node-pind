@@ -9,6 +9,10 @@ $(document).ready(function() {
 
 	// modal boxes
 	$('.modal-form-errors').modal({ show : false, keyboard : true, backdrop : true});
+	$('.modal .modal-footer a.cancel').click(function(event) {
+		event.preventDefault();
+		$(this).parents('.modal').modal('hide');
+	})
 
 });
 
@@ -41,12 +45,10 @@ function updateColumnSize() {
 		});
 		console.log('>=768');
 	}
-
 }
 
-
 function modalAlert(type, message) {
-	$alert = $('<div class="alert alert-' + type + '" style="display:none"><button class="button close" data-dismiss="alert">×</button><p>' + message + '</p></div>');
+	var $alert = $('<div class="alert alert-' + type + '" style="display:none"><button class="button close" data-dismiss="alert">×</button><p>' + message + '</p></div>');
 	$('section.alerts').append($alert);
 	$alert.slideDown(200);
 }
