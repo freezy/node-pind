@@ -4,21 +4,23 @@ $(document).ready(function() {
 		event.preventDefault();
 		var row = $(this).parents('li.item').data('row');
 
-/*		api('Transfer.AddVPFTable', {
-
-		}, function(err, result) {
-			if (err) {
-			} else {
-				$td.html(tdCredits(result.credits));
-				$td.data('value', result.credits);
-			}
-		});
-		*/
-
 		var $dialog = $('.modal.download-table');
 		$dialog.find('.modal-header img').attr('src', row.imgUrlSmall);
 		$dialog.find('.modal-header h2 span').html(row.title);
 		$dialog.modal('show');
+		$dialog.find('.modal-footer button.download').click(function() {
+			var params = { id: row.id };
+			$.each($dialog.find('.modal-body form').serializeArray(), function(idx, checkbox) {
+				console.log('%j', checkbox);
+				params[checkbox.name] = checkbox.value ? true : false;
+			});
+			api('Transfer.AddVPFTable', params, function(err, result) {
+				if (err) {
+					return alert(err);
+				}
+				console.log('got: %j', result);
+			});
+		})
 		//alert('transferring file id ' + row.fileId);
 	};
 
