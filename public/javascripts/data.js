@@ -64,6 +64,16 @@ function enableData(config) {
 		refreshData(config);
 	});
 
+	// enable sort field
+	$('.data.' + config.id + ' ul.sort li a').click(function(event) {
+		event.preventDefault();
+		$(this).parents('ul').find('li').removeClass('current');
+		$(this).parents('li').addClass('current');
+		$('.pagination ul').data('page', 1);
+		$(this).blur();
+		refreshData(config);
+	});
+
 	// enable clear filters button
 	var clearFilters = function() {
 		$('.data.' + config.id + ' ul.filter li.active').removeClass('active');
@@ -83,6 +93,7 @@ function refreshData(config) {
 	var limit = $('.data.' + config.id + ' select.numrows').val();
 	var offset = ($('.data.' + config.id + ' .pagination ul').data('page') - 1) * limit;
 	var filters = [];
+	var sort = $('.data.' + config.id + ' ul.sort li.current').data('sort');
 
 	$('.data.' + config.id + ' ul.filter li.active').each(function() {
 		filters.push($(this).data('filter'));
@@ -94,6 +105,9 @@ function refreshData(config) {
 	}
 	if (search && search.length != 1) {
 		params.search = search;
+	}
+	if (sort) {
+		params.order = sort;
 	}
 
 	// fetch tables

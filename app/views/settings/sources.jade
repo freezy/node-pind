@@ -30,12 +30,12 @@ block inner-content
 				i.icon.search
 			input.search.input-small(type='text', placeholder='search')
 
-		ul.nav.nav-pills.pull-left.filter
-			li(data-filter="table")
+		ul.nav.nav-pills.pull-left.sort
+			li.current(data-sort="latest")
 				a(href="#") Latest
-			li(data-filter="rom")
+			li(data-sort="downloads")
 				a(href="#") By Downloads
-			li(data-filter="ipdb")
+			li(data-sort="views")
 				a(href="#") By Views
 
 		.clearfix
