@@ -52,6 +52,9 @@ function enableData(config) {
 	$('.data.' + config.id + ' input.search').keyup(function() {
 		var query = $(this).val();
 		if (query.length != 1) {
+			// clear sort
+			$('.data.' + config.id + ' ul.sort li').removeClass('current');
+			$('.pagination ul').data('page', 1);
 			refreshData(config);
 		}
 	});

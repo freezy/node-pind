@@ -1237,7 +1237,7 @@ td .icon.clickable.ok {
     display: none !important;
   }
   .item.vpf .thumbnail ul.pills div.author {
-    max-width: 85px;
+    max-width: 70px;
   }
 }
 /* Small desktop */
