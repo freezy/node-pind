@@ -61,7 +61,7 @@ var VPForumsAPI = function() {
 			} else {
 				p.order = 'lastUpdate DESC';
 			}
-			schema.CacheVpfDownload.all(p).success(function(rows) {
+			schema.VpfFile.all(p).success(function(rows) {
 
 				if (search) {
 					console.log('Fuzzy-filtering ' + rows.length + ' rows...');
@@ -100,7 +100,7 @@ var VPForumsAPI = function() {
 				delete p.limit;
 				delete p.offset;
 				delete p.order;
-				schema.CacheVpfDownload.count(p).success(function(num) {
+				schema.VpfFile.count(p).success(function(num) {
 
 					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
 					callback({ rows: returnedRows, count: num });

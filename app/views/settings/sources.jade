@@ -45,6 +45,18 @@ block inner-content
 		.wrapper
 			ul.thumbnails
 
+		div.noresult(style='display:none')
+			p No results found.
+			button.btn.fat.small Clear Filters
+
+	div.empty(style='display:none')
+		p
+			| No index found. Click below to fetch the file index, which takes about a minute. <br>Data will autmatically
+			| refresh when done.
+		button.btn.fat
+			i.icon.refresh
+			span Download index
+
 	.clearfix
 
 block modals

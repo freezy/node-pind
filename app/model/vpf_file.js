@@ -1,7 +1,7 @@
 
 module.exports = function(sequelize, DataTypes) {
 
-	var CacheVpfDownload = sequelize.define('cache_vpf_downloads', {
+	var VpfFile = sequelize.define('vpf_file', {
 			id: {
 				type: DataTypes.INTEGER,
 				autoIncrement: true,
@@ -14,7 +14,8 @@ module.exports = function(sequelize, DataTypes) {
 			downloads: DataTypes.INTEGER,
 			views: DataTypes.INTEGER,
 			author: DataTypes.STRING,
-			lastUpdate: DataTypes.DATE
+			lastUpdate: DataTypes.DATE,
+			downloaded: DataTypes.DATE
 		},
 		{
 			classMethods: {
@@ -27,6 +28,7 @@ module.exports = function(sequelize, DataTypes) {
 
 			timestamps: true
 		});
-	return CacheVpfDownload;
+
+	return VpfFile;
 }
 

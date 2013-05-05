@@ -10,7 +10,7 @@ module.exports = function(app) {
 	return exports;
 };
 
-exports.addVPFTable = function() {
+exports.queue = function() {
 
 
 

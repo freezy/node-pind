@@ -330,7 +330,7 @@ function fetchDownloads(cat, title, callback) {
 			if (currentCache[item.fileId]) {
 				currentCache[item.fileId].updateAttributes(obj).done(done);
 			} else {
-				schema.CacheVpfDownload.create(obj).done(done);
+				schema.VpfFile.create(obj).done(done);
 			}
 			
 		}, function(err) {
@@ -446,7 +446,7 @@ function fetchDownloads(cat, title, callback) {
 			console.log('[vpf] Title starts with "The", let\'s fetch also letter "%s" for second word.', words[1][0]);
 
 			// check cache first.
-			schema.CacheVpfDownload.all({ where: { category: cat, letter: words[1][0] }}).success(function(rows) {
+			schema.VpfFile.all({ where: { category: cat, letter: words[1][0] }}).success(function(rows) {
 				if (rows.length == 0) {
 					// if empty, launch fetch.
 					fetch(cat, words[1][0], result, 1, callback);
@@ -468,7 +468,7 @@ function fetchDownloads(cat, title, callback) {
 	if (title) {
 		params.where.letter = title[0].toLowerCase();
 	}
-	schema.CacheVpfDownload.all(params).success(function(rows) {
+	schema.VpfFile.all(params).success(function(rows) {
 		// update "cached cache"
 		for (var i = 0; i < rows.length; i++) {
 			currentCache[rows[i].fileId] = rows[i];

@@ -64,7 +64,7 @@ var sequelize = new Sequelize(
 User = sequelize.import(__dirname + '/user');
 Table = sequelize.import(__dirname + '/table');
 Hiscore = sequelize.import(__dirname + '/hiscore');
-CacheVpfDownload = sequelize.import(__dirname + '/cache_vpf_download');
+VpfFile = sequelize.import(__dirname + '/vpf_file');
 
 
 // setup associations
@@ -91,8 +91,8 @@ create = function(next){
 module.exports = {
 	sequelize: sequelize,
 	create: create,
-	Table:  Table,
-	User:  User,
-	Hiscore:  Hiscore,
-	CacheVpfDownload: CacheVpfDownload
+	Table: Table,
+	User: User,
+	Hiscore: Hiscore,
+	VpfFile: VpfFile
 };
