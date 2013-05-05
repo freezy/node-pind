@@ -1,0 +1,19 @@
+extends layout
+
+block inner-content
+	- contentFor('javascripts', '<script type="text/javascript" src="/socket.io/socket.io.js"></script>')
+	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.waitforimages-1.4.2.min'))
+	- contentFor('javascripts', javascriptIncludeTag('admin_transfers'))
+
+	div.data.vpf.transfers
+
+
+
+	.clearfix
+
+block inlineScripts
+	script
+		$(document).ready(function() {
+			menu('settings');
+			submenu('transfers');
+		});

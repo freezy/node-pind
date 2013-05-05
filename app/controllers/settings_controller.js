@@ -27,6 +27,11 @@ action('sources', function (context) {
 	render();
 });
 
+action('transfers', function (context) {
+	this.title = 'Settings :: Transfers';
+	render();
+});
+
 action('users', function (context) {
 	this.title = 'Settings :: Users';
 	render();
