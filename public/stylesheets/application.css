@@ -1173,6 +1173,9 @@ td .icon.clickable.ok {
   margin-right: 1px;
   top: 2px;
 }
+.item.vpf .thumbnail a:hover {
+  text-decoration: none;
+}
 .item.vpf .thumbnail div.author {
   float: right;
   max-width: 70px;

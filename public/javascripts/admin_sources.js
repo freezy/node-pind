@@ -6,13 +6,18 @@ $(document).ready(function() {
 
 			var row = rows[i];
 			var imgUrl = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&full=1&id=' + row.fileId;
+			var imgUrlSmall = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&id=' + row.fileId;
+
+			// pre-load image
+			//(new Image()).src = imgUrl;
+			//$('<img/>')[0].src = imgUrl;
 
 			$parent.append($('<li class="span6 vpf item" data-id="' + row.fileId + '"><div class="thumbnail">' +
-				'<div class="pull-left thumb-wrapper">' +
-					'<div class="thumb"></div>' +
-//					'<div class="thumb" style="background-image: url(\'' + imgUrl + '\')" data-src="' + imgUrl + '"></div>' +
+				'<div class="pull-left thumb-wrapper"><a href="' + imgUrl + '">' +
+//					'<div class="thumb"></div>' +
+					'<div class="thumb" style="background-image: url(\'' + imgUrlSmall + '\')"></div>' +
 					'<div class="thumb-placeholder"></div>' +
-				'</div>' +
+				'</a></div>' +
 				'<h3>' + row.title_trimmed + '</h3>' +
 				'<p class="pull-right updated hidden-phone-small">' + row.lastUpdateRel + '</p>' +
 				'<h4 class="hidden-phone-small">' + row.info + '</h4>' +
@@ -29,13 +34,21 @@ $(document).ready(function() {
 
 		$parent.find('.thumb').waitForImages({
 			each: function() {
-				var $a = $('<a class="colorbox" href="' + $(this).data('src') + '">').colorbox({
+				var that = $(this);
+				that.parent('a').colorbox({
 					transition: "fade",
 					photo: true,
-					maxWidth: '95%',
-					maxHeight: '95%'
+					maxWidth: '99%',
+					maxHeight: '99%'
 				});
-				$(this).addClass('loaded').parent('.thumb-wrapper').wrap($a);
+				that.addClass('loaded');
+			},
+			finished: function() {
+				// preload hires images
+/*				$parent.find('.thumb-wrapper > a').each(function() {
+					$('<img/>')[0].src = $(this).attr('href');
+				});
+*/
 			},
 			waitForAll: true
 		});
