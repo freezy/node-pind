@@ -5,8 +5,9 @@ block inner-content
 	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.waitforimages-1.4.2.min'))
 	- contentFor('javascripts', javascriptIncludeTag('admin_transfers'))
 
-	div.data.vpf.transfers
+	div.data.vpf.transfers(ng-controller='TransferCtrl')
 
+		//- pager
 		.pagination.pagination-small.pull-right
 			ul(data-page="1")
 				li.first.disabled
@@ -18,15 +19,20 @@ block inner-content
 					a
 						i.icon.arrow-right
 
-		select.numrows.input-mini.pull-right
-			option(selected="selected") 10
+		//- number of rows
+		select.numrows.input-mini.pull-right(ng-model="numrows")
+			option 10
 			option 20
 			option 50
 			option 100
+
+		//- search box
 		.input-prepend.input-pill
 			span.add-on
 				i.icon.search
 			input.search.input-medium(type='text', placeholder='keywords')
+
+		//- filter pills
 		ul.nav.nav-pills.pull-left.filter
 			li
 				.icon
@@ -40,7 +46,9 @@ block inner-content
 			li(data-filter="media")
 				a(href="#") Media
 		.clearfix
-		.wrapper(style='display:none')
+
+		//- data
+		.wrapper.ng-cloak
 			table.table#transfers
 				thead
 					tr
@@ -49,9 +57,18 @@ block inner-content
 						th(style='width:100px') Added
 						th(style='width:70px') Status
 				tbody
+					tr(ng-repeat='transfer in transfers')
+						td
+						td {{transfer.title}}
+						td
+						td
+
+		//- empty search result
 		div.noresult(style='display:none')
 			p No results found.
 			button.btn.fat.small Clear Filters
+
+		//- no data
 		div.empty(style='display:none')
 			p There are currently no downloads in the queue. New downloads will appear automatically.
 

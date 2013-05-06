@@ -1668,3 +1668,11 @@ td .icon.clickable.ok {
 .fuzzy3d button[disabled]:before {
   background: #888;
 }
+[ngcloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+  display: none;
+}

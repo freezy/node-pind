@@ -10,7 +10,7 @@ block content
 			ul.thumbnails.hiscores
 				li.span4(ng-repeat='table in tables', tb-768-980='span6')
 					.thumbnail
-						img(src='{{table.url_banner_small}}')
+						img(ng-src='{{table.url_banner_small}}')
 						hr
 						.thumbnail-content
 							h3 {{table.name}}

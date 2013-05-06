@@ -2,7 +2,6 @@ $(document).ready(function() {
 
 });
 
-
 function TablesCtrl($scope, $http) {
 
 	$scope.tables = [];
