@@ -3,6 +3,7 @@ extends layout
 block inner-content
 	- contentFor('javascripts', '<script type="text/javascript" src="/socket.io/socket.io.js"></script>')
 	- contentFor('javascripts', javascriptIncludeTag('admin_tables'))
+
 	div.data.tables(style='display:none')
 
 		.pagination.pagination-small.pull-right

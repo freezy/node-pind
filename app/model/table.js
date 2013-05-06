@@ -42,6 +42,10 @@ module.exports = function(sequelize, DataTypes) {
 	{
 		classMethods: {
 
+			fuzzyExtract: function(el) {
+				return el.name;
+			},
+
 			updateAll: function(tables, now, callback) {
 
 				var that = this;
@@ -117,9 +121,15 @@ module.exports = function(sequelize, DataTypes) {
 		instanceMethods: {
 
 			// hooks
-			beforeCreate: function() {
+/*			beforeCreate: function() {
 				this.pass = hashPassword(this.pass);
 				this.authtoken = randomKey(32);
+			},*/
+
+			enhance: function(hit) {
+				var result = this.values;
+				result.name_match = hit ? hit.string : null;
+				return result;
 			}
 		},
 

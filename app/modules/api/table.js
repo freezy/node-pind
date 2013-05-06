@@ -128,7 +128,11 @@ var TableApi = function() {
 			schema.Table.all(p).success(function(rows) {
 
 				if (search) {
-					console.log('Fuzzy-filtering ' + rows.length + ' rows...');
+					// needs to have fuzzyExtract in the model!
+					return schema.Table.fuzzySearch(rows, params, callback);
+
+
+/*					console.log('Fuzzy-filtering ' + rows.length + ' rows...');
 					var options = {
 						pre: '<b>',
 						post: '</b>',
@@ -149,7 +153,7 @@ var TableApi = function() {
 						return callback({ rows : results.slice(offset, offset + limit), count: results.length });
 					} else {
 						return callback({ rows : results, count: results.length });
-					}
+					}*/
 				}
 
 				delete p.limit;

@@ -1,4 +1,7 @@
+var fuzzy = require('fuzzy');
+var _ = require('underscore');
 var Sequelize = require('sequelize');
+
 var settings = require('../../config/settings-mine');
 
 var config = {
@@ -9,26 +12,34 @@ var config = {
 	define: {
 		classMethods: {
 
-			c: function(data) {
-				var obj = this.build(data);
-				if (typeof(obj.beforeCreate) == 'function') {
-					obj.beforeCreate();
-				}
-				if (typeof(obj.beforeSave) == 'function') {
-					obj.beforeSave();
-				}
-				return obj.save();
-			},
+			fuzzySearch: function(rows, params, callback) {
+				console.log('Fuzzy-filtering ' + rows.length + ' rows...');
+				var options = {
+					pre: '<b>',
+					post: '</b>',
+					extract: this.fuzzyExtract
+				};
+				var hits = fuzzy.filter(params.search, rows, options);
+				console.log('Fuzzy-filtered ' + hits.length + ' hits.');
 
-			u: function(data) {
-				var obj = this.build(data);
-				if (typeof(obj.beforeUpdate) == 'function') {
-					obj.beforeUpdate();
+				// paging needs to be done manually
+				var pagedResults;
+				var offset = params.offset ? parseInt(params.offset) : 0;
+				var limit = params.limit ? parseInt(params.limit) : 0;
+				if (offset || limit) {
+					pagedResults = hits.slice(offset, offset + limit);
+				} else {
+					pagedResults = hits;
 				}
-				if (typeof(obj.beforeSave) == 'function') {
-					obj.beforeSave();
-				}
-				return obj.save();
+
+				// enhance and return
+				var results = [];
+				var enhance = pagedResults.length > 0 && pagedResults[0].original.enhance instanceof Function;
+				_.each(pagedResults, function(hit) {
+					results.push(enhance ? hit.original.enhance(hit) : hit.original);
+				});
+
+				callback({ rows : results, count: hits.length });
 			}
 		}
 	}
