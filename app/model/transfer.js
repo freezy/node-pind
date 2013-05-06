@@ -21,7 +21,9 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		{
 			classMethods: {
-
+				fuzzyExtract: function(row) {
+					return row.title;
+				}
 			},
 
 			instanceMethods: {
