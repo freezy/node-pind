@@ -101,12 +101,13 @@ Working
 * Parse game ROM name from .vpt
 * Get structured high-scores (incl. additional achievements) for a .vpt
 * Link users to high-scores
+* Super fast real-time fuzzy search on VPF
+* Queue downloads from VPF
 
 TODO
 ----
 * Web table browser
 * Look for another DB engine (sqlite is major PITA to compile).
-* Basic VPForums.org integration
 * Browsing features
 
 More to come. Still under heavy development.
@@ -123,6 +124,7 @@ more technologies used:
   assembled by [IcoMoon](http://icomoon.io/) (along with some custom icons).
 * [jQuery](http://jquery.com/) for all our JS needs.
 * [Socket.IO](http://socket.io/) for the real-time features.
+* [AngularJS](http://angularjs.org/) for client side development.
 
 
 Credits
