@@ -22,24 +22,13 @@ $(document).ready(function() {
 	refreshData(config);*/
 });
 
-function TransferCtrl($scope, $http) {
+function TransferCtrl($scope, Jsonrpc) {
 
 	$scope.transfers = [];
 	$scope.numrows = 10;
 
 	console.log('numrows = %s', $scope.numrows);
 
-	ngApi($http, 'Transfer.GetAll', {
-		limit: $scope.numrows
-//		filters: [ ],
-//		fields: [ ]
-	}, function(err, result) {
-		$scope.transfers = result.rows;
-	});
+	Jsonrpc.init('Transfer.GetAll');
+	Jsonrpc.refresh($scope);
 }
-
-angular.module('phonecatServices', ['ngResource']).factory('Phone', function($resource) {
-	return $resource('phones/:phoneId.json', {}, {
-			query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
-	});
-});

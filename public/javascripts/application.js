@@ -74,3 +74,66 @@ function groupdigit(nStr){
 	}
 	return x1 + x2;
 }
+
+var pindAppModule = angular.module('pind', []);
+
+pindAppModule.directive('numrows', function(Jsonrpc) {
+	return {
+		restrict: 'C',
+		link: function(scope, element, attrs) {
+			element.bind('change', function() {
+				Jsonrpc.refresh(scope);
+			});
+		}
+	}
+});
+
+pindAppModule.factory('Jsonrpc', function($http) {
+
+	return {
+
+		method: '',
+
+		init: function(m) {
+			this.method = m;
+		},
+
+		call: function(method, params, callback) {
+			$http({
+				url: '/api',
+				method: 'POST',
+				headers: {
+					'Content-Type' : 'application/json'
+				},
+				data: JSON.stringify({ jsonrpc: '2.0', id: Math.random(), method: this.method, params: params})
+
+			}).success(function(ret) {
+				if (ret.error) {
+					callback(ret.error.message, ret.error);
+				} else if (ret.result.error) {
+					callback(typeof ret.result.error.message === 'object' ? JSON.stringify(ret.result.error.message) : ret.result.error.message, ret.result.error);
+				} else {
+					callback(null, ret.result);
+				}
+
+			}).error(function(data) {
+				if (data.status == 401) {
+					window.location = $('head meta[name="login"]').attr('content');
+				} else {
+					alert(data.error);
+				}
+			});
+		},
+
+		refresh: function(scope) {
+//			alert('method = ' + this.method);
+			this.call(this.method, {
+				limit: scope.numrows
+		//		filters: [ ],
+		//		fields: [ ]
+			}, function(err, result) {
+				scope.transfers = result.rows;
+			})
+		}
+	};
+});

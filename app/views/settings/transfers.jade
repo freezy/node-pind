@@ -5,7 +5,7 @@ block inner-content
 	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.waitforimages-1.4.2.min'))
 	- contentFor('javascripts', javascriptIncludeTag('admin_transfers'))
 
-	div.data.vpf.transfers(ng-controller='TransferCtrl')
+	div.data.vpf.transfers(ng-controller='TransferCtrl', resource='Transfer.GetAll')
 
 		//- pager
 		.pagination.pagination-small.pull-right
@@ -20,7 +20,7 @@ block inner-content
 						i.icon.arrow-right
 
 		//- number of rows
-		select.numrows.input-mini.pull-right(ng-model="numrows")
+		select.numrows.input-mini.pull-right
 			option 10
 			option 20
 			option 50
