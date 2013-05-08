@@ -5,22 +5,13 @@ block inner-content
 	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.waitforimages-1.4.2.min'))
 	- contentFor('javascripts', javascriptIncludeTag('admin_transfers'))
 
-	div.data.vpf.transfers(ng-controller='TransferCtrl', resource='Transfer.GetAll')
+	div.data.vpf.transfers(ng-controller='DataCtrl')
 
 		//- pager
-		.pagination.pagination-small.pull-right
-			ul(data-page="1")
-				li.first.disabled
-					a
-						i.icon.arrow-left
-				li.p1.current
-					a 1
-				li.last
-					a
-						i.icon.arrow-right
+		pager(page='page', pages='numpages')
 
 		//- number of rows
-		select.numrows.input-mini.pull-right
+		select.numrows.input-mini.pull-right(ng-model='limit')
 			option 10
 			option 20
 			option 50
@@ -48,7 +39,7 @@ block inner-content
 		.clearfix
 
 		//- data
-		.wrapper.ng-cloak
+		.wrapper.ng-cloak(resource='Transfer.GetAll')
 			table.table#transfers
 				thead
 					tr
@@ -57,7 +48,7 @@ block inner-content
 						th(style='width:100px') Added
 						th(style='width:70px') Status
 				tbody
-					tr(ng-repeat='transfer in transfers')
+					tr(ng-repeat='transfer in data')
 						td
 						td {{transfer.title}}
 						td

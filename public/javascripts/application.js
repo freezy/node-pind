@@ -77,13 +77,68 @@ function groupdigit(nStr){
 
 var pindAppModule = angular.module('pind', []);
 
-pindAppModule.directive('numrows', function(Jsonrpc) {
+pindAppModule.directive('resource', function() {
 	return {
-		restrict: 'C',
+		restrict: 'A',
 		link: function(scope, element, attrs) {
-			element.bind('change', function() {
-				Jsonrpc.refresh(scope);
-			});
+			scope.resource = attrs['resource'];
+		}
+	}
+});
+
+pindAppModule.directive('pager', function() {
+	return {
+		restrict: 'E',
+		template:
+			'<div class="pagination pagination-small pull-right">' +
+				'<ul>' +
+					'<li class="first disabled"><a><i class="icon arrow-left"></i></a></li>' +
+					'<li class="p1 current"><a>1</a></li>' +
+					'<li class="last disabled"><a><i class="icon arrow-right"></i></a></li>' +
+				'</ul>' +
+			'</div>',
+		replace: true,
+		link: function(scope, element, attrs) {
+
+			var page = scope.$eval(attrs.page);
+			var pages = scope.$eval(attrs.pages);
+
+			element.find('li:not(.first):not(.last)').remove();
+			var lastSkipped = false;
+			for (var i = pages; i > 0; i--) {
+
+				// on large number of pages, don't render all the pagination bar
+				if (pages > 9 && ((i > 2 && i < (page - 1)) || (i > (page + 1) && i < (pages - 1)))) {
+					if (!lastSkipped) {
+						element.find('li.first').after($('<li class="spacer"></li>'));
+					}
+					lastSkipped = true;
+					continue;
+				}
+				lastSkipped = false;
+
+				var li = $('<li class="p' + i + (page == i ? ' current' : '') + '"><a href="#">' + i + '</a>');
+				if (page != i) {
+					li.find('a').click(function(event) {
+						event.preventDefault();
+						$(this).parents('ul').data('page', parseInt($(this).html()));
+						refreshData(config);
+					});
+				} else {
+					li.find('a').click(function(event) {
+						event.preventDefault();
+					});
+				}
+				// insert into dom
+				element.find('li.first').after(li);
+			}
+			element.find('li').removeClass('disabled');
+			if (page == 1) {
+				element.find('li.first').addClass('disabled');
+			}
+			if (page == pages || pages == 0) {
+				element.find('li.last').addClass('disabled');
+			}
 		}
 	}
 });
@@ -92,12 +147,6 @@ pindAppModule.factory('Jsonrpc', function($http) {
 
 	return {
 
-		method: '',
-
-		init: function(m) {
-			this.method = m;
-		},
-
 		call: function(method, params, callback) {
 			$http({
 				url: '/api',
@@ -105,7 +154,7 @@ pindAppModule.factory('Jsonrpc', function($http) {
 				headers: {
 					'Content-Type' : 'application/json'
 				},
-				data: JSON.stringify({ jsonrpc: '2.0', id: Math.random(), method: this.method, params: params})
+				data: JSON.stringify({ jsonrpc: '2.0', id: Math.random(), method: method, params: params})
 
 			}).success(function(ret) {
 				if (ret.error) {
@@ -123,17 +172,6 @@ pindAppModule.factory('Jsonrpc', function($http) {
 					alert(data.error);
 				}
 			});
-		},
-
-		refresh: function(scope) {
-//			alert('method = ' + this.method);
-			this.call(this.method, {
-				limit: scope.numrows
-		//		filters: [ ],
-		//		fields: [ ]
-			}, function(err, result) {
-				scope.transfers = result.rows;
-			})
 		}
 	};
 });

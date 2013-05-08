@@ -22,13 +22,35 @@ $(document).ready(function() {
 	refreshData(config);*/
 });
 
-function TransferCtrl($scope, Jsonrpc) {
 
-	$scope.transfers = [];
-	$scope.numrows = 10;
+function DataCtrl($scope, Jsonrpc) {
 
-	console.log('numrows = %s', $scope.numrows);
+	$scope.data = [];
 
-	Jsonrpc.init('Transfer.GetAll');
-	Jsonrpc.refresh($scope);
+	$scope.page = 1;
+	$scope.numpages = 5;
+	$scope.limit = 10;
+	$scope.resource = null;
+
+	$scope.refresh = function() {
+
+		if (!$scope.resource) {
+			return alert('Must set "resource" attribute somewhere in scope.');
+		}
+
+		Jsonrpc.call($scope.resource, {
+			limit: $scope.limit
+
+		}, function(err, result) {
+			if (err) {
+				return alert(err);
+			}
+			$scope.data = result.rows;
+			$scope.pages = Math.ceil(result.rows.count / $scope.limit);
+		});
+	};
+
+	// refresh as soon as the resource attribute is set
+	$scope.$watch('resource', $scope.refresh);
+	$scope.$watch('limit', $scope.refresh);
 }
