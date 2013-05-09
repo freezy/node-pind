@@ -1,6 +1,9 @@
 $(document).ready(function() {
-	var scope = angular.element($('.ng-scope[ng-controller="DataCtrl"]')).scope();
 
+	/*
+	 * data mapping
+	 */
+	var scope = angular.element($('.ng-scope[ng-controller="DataCtrl"]')).scope();
 	scope.mapperFn = function(table) {
 
 		if (table.name && table.year && table.manufacturer) {
@@ -35,9 +38,10 @@ $(document).ready(function() {
 		}
 		return table;
 	}
-});
 
-function deprecated() {
+	/*
+	 * bottom actions
+	 */
 
 	// enable sync hyperpin button
 	var syncHyperPin = function() {
@@ -94,7 +98,7 @@ function deprecated() {
 				alert('Problem Syncing: ' + err);
 			} else {
 				console.log('Downloaded ROMs: ' + result.filepaths);
-				refreshData(config);
+				scope.$broadcast('paramsUpdated');
 			}
 		});
 	};
@@ -108,7 +112,7 @@ function deprecated() {
 			if (err) {
 				alert('Problem Downloading: ' + err);
 			} else {
-				refreshData(config);
+				scope.$broadcast('paramsUpdated');
 			}
 		});
 	};
@@ -154,10 +158,10 @@ function deprecated() {
 	});
 	socket.on('tableUpdate', function(msg) {
 		if ($('tr[data-id="' + msg.key + '"]').length > 0) {
-			refreshData(config);
+			scope.$broadcast('paramsUpdated');
 		}
 	});
-};
+});
 
 function updateActions() {
 	$('.action').removeClass('disabled').find('button').removeAttr('disabled').find('i').removeClass('spin');

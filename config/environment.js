@@ -18,7 +18,7 @@ module.exports = function(compound) {
 	}
 
 	app.configure(function(){
-		app.locals.pretty = true;
+		app.locals.pretty = false;
         app.use(express.static(app.root + '/public', { maxAge: 86400000 }));
 		app.set('socket.io', io.sockets);
         app.set('jsDirectory', '/javascripts/');
