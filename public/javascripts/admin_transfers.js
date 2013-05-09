@@ -28,35 +28,43 @@ function DataCtrl($scope, Jsonrpc) {
 	$scope.data = [];
 
 	$scope.page = 1;
-	$scope.numpages = 5;
+	$scope.numpages = 1;
 	$scope.limit = 10;
 	$scope.resource = null;
+	$scope.search = '';
+	$scope.filters = [];
 
-	$scope.refresh = function() {
+	var refresh = function() {
 
 		if (!$scope.resource) {
 			return alert('Must set "resource" attribute somewhere in scope.');
 		}
 
-		var offset = ($scope.page - 1) * $scope.limit;
-
-		Jsonrpc.call($scope.resource, {
-			offset: offset,
+		var params = {
+			offset: ($scope.page - 1) * $scope.limit,
 			limit: $scope.limit
+		};
 
-		}, function(err, result) {
+		if ($scope.search && $scope.search.length != 1) {
+			params.search = $scope.search;
+		}
+
+		if ($scope.filters && $scope.filters.length > 0) {
+			params.filters = $scope.filters;
+		}
+
+		Jsonrpc.call($scope.resource, params, function(err, result) {
 			if (err) {
 				return alert(err);
 			}
 			$scope.data = result.rows;
 			$scope.numpages = Math.ceil(result.count / $scope.limit);
-			$scope.$broadcast('dataRefreshed');
-			console.log('refresh done, fetched %d records, page %d of %d', result.count, $scope.page, $scope.numpages);
+			$scope.$broadcast('dataUpdated');
 		});
 	};
 
-	// refresh as soon as the resource attribute is set
-	$scope.$watch('resource', $scope.refresh);
-	$scope.$watch('limit', $scope.refresh);
-	$scope.$watch('page', $scope.refresh);
+	// refresh on explicit params updated event and as soon as resource is set.
+	$scope.$watch('resource', refresh);
+	$scope.$on('paramsUpdated', refresh);
+
 }

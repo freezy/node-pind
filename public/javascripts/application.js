@@ -81,7 +81,81 @@ pindAppModule.directive('resource', function() {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
-			scope.resource = attrs['resource'];
+			scope.resource = attrs.resource;
+		}
+	}
+});
+
+pindAppModule.directive('searchbox', function() {
+	return {
+		restrict: 'E',
+		replace: true,
+		template:
+			'<div class="input-prepend input-pill">' +
+				'<span class="add-on"><i class="icon search"></i></span>' +
+				'<input type="text" class="search input-medium" placeholder="keywords" ng-model="search">' +
+			'</div>',
+		link: function(scope, element, attrs) {
+
+			var keyTimer;
+			element.find('input').on('keyup', function() {
+				var query = $(this).val();
+				if (query.length != 1) {
+					window.clearTimeout(keyTimer);
+					keyTimer = setTimeout(function() {
+						// TODO clear sort
+						// TODO reset page
+						scope[attrs.value] = query;
+						scope.$broadcast('paramsUpdated');
+					}, 300);
+				}
+			});
+		}
+	};
+});
+
+pindAppModule.directive('filters', function() {
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+			element.find('li a').click(function(event) {
+				event.preventDefault();
+				var parent = $(this).parents('li');
+				var filter = parent.data('filter');
+				if (parent.hasClass('active')) {
+					// remove from array
+					scope[attrs.value].splice(scope.filters.indexOf(filter));
+				} else {
+					// add to array
+					scope[attrs.value].push(filter);
+				}
+				parent.toggleClass('active');
+				scope.$broadcast('paramsUpdated');
+			});
+		}
+	}
+});
+
+pindAppModule.directive('numrows', function() {
+	return {
+		restrict: 'E',
+		replace: true,
+		template: '<select></select>',
+		link: function(scope, element, attrs) {
+			try {
+				var values = JSON.parse(attrs.selection);
+				if (values && values.length > 0) {
+					for (var i = 0; i < values.length; i++) {
+						element.append('<option value="' + values[i] + '">' + values[i] + '</option>');
+					}
+				}
+				element.on('change', function() {
+					scope[attrs.value] = element.val();
+					scope.$broadcast('paramsUpdated');
+				})
+			} catch (e) {
+				// ignore.
+			}
 		}
 	}
 });
@@ -90,7 +164,7 @@ pindAppModule.directive('pager', function() {
 	return {
 		restrict: 'E',
 		template:
-			'<div class="pagination pagination-small pull-right">' +
+			'<div>' +
 				'<ul>' +
 					'<li class="first disabled"><a><i class="icon arrow-left"></i></a></li>' +
 					'<li class="current"><a>1</a></li>' +
@@ -103,8 +177,6 @@ pindAppModule.directive('pager', function() {
 			var render = function() {
 				var page = scope.$eval(attrs.page);
 				var pages = scope.$eval(attrs.pages);
-
-				console.log('rendering %d/%d', page, pages);
 
 				element.find('li:not(.first):not(.last)').remove();
 				var lastSkipped = false;
@@ -125,6 +197,7 @@ pindAppModule.directive('pager', function() {
 						li.find('a').click(function(event) {
 							event.preventDefault();
 							scope.$apply(attrs.page + ' = ' + parseInt($(this).html()));
+							scope.$broadcast('paramsUpdated');
 						});
 					} else {
 						li.find('a').click(function(event) {
@@ -146,17 +219,19 @@ pindAppModule.directive('pager', function() {
 				element.find('li.first a').off('click').click(function(event) {
 					event.preventDefault();
 					if (page > 1) {
-						scope.$apply(attrs.page + ' = ' + attrs.page + ' - 1');
+						scope[attrs.page]--;
+						scope.$broadcast('paramsUpdated');
 					}
 				});
 				element.find('li.last a').off('click').click(function(event) {
 					event.preventDefault();
 					if (page < pages) {
-						scope.$apply(attrs.page + ' = ' + attrs.page + ' + 1');
+						scope[attrs.page]++;
+						scope.$broadcast('paramsUpdated');
 					}
 				});
 			}
-			scope.$on('dataRefreshed', render);
+			scope.$on('dataUpdated', render);
 		}
 	}
 });
