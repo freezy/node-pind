@@ -49,11 +49,11 @@ block inner-content
 								i.icon.user
 								.author.hidden-phone-small {{row.author}}
 							li
-								i.icon.circle-arrow-down(title="{{row.downloads}}")
-								span.hidden-desktop-small.hidden-phone-small {{row.downloads}}
+								i.icon.circle-arrow-down(title="{{row.downloads|groupdigit}}")
+								span.hidden-desktop-small.hidden-phone-small {{row.downloads|groupdigit}}
 							li
-								i.icon.eye(title="{{row.views}}")
-								span.hidden-desktop-small.hidden-phone-small {{row.views}}
+								i.icon.eye(title="{{row.views|groupdigit}}")
+								span.hidden-desktop-small.hidden-phone-small {{row.views|groupdigit}}
 							li.link
 								a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
 									i.icon.link
