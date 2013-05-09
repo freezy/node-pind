@@ -8,31 +8,35 @@ block inner-content
 
 	h2 VPForums.org
 
-	div.data.vpf.tables(ng-controller='DataCtrl')
+	div(ng-controller='DataCtrl')
 
-		//- pager
-		pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
+		//- control bar
+		div.controls(style='display:none')
 
-		//- number of rows
-		numrows.numrows.input-mini.pull-right(selection='[10, 20, 30]', value='limit')
+			//- pager
+			pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
 
-		//- search box
-		searchbox(value='search', wait='300')
+			//- number of rows
+			numrows.numrows.input-mini.pull-right(selection='[10, 20, 30]', value='limit')
 
-		//- sort pills
-		ul.nav.nav-pills.pull-left.sort(sort, value='sort')
-			li
-				.icon
-					i.icon.sort(title="Sort results by")
-			li.current(data-sort="latest")
-				a(href="#") Latest
-			li(data-sort="downloads")
-				a(href="#") By Downloads
-			li(data-sort="views")
-				a(href="#") By Views
+			//- search box
+			searchbox(value='search', wait='300')
 
+			//- sort pills
+			ul.nav.nav-pills.pull-left.sort(sort, value='sort')
+				li
+					.icon
+						i.icon.sort(title="Sort results by")
+				li.current(data-sort="latest")
+					a(href="#") Latest
+				li(data-sort="downloads")
+					a(href="#") By Downloads
+				li(data-sort="views")
+					a(href="#") By Views
 		.clearfix
-		.wrapper.ng-cloak(resource='VPForums.FindTables')
+
+		//- data
+		div.data.ng-cloak(resource='VPForums.FindTables', style='display:none')
 			ul.thumbnails
 				li.span6.vpf.item(ng-repeat='(idx, row) in data', data-id="{{row.fileId}}", data-idx="{{idx}}")
 					.thumbnail
@@ -58,22 +62,24 @@ block inner-content
 									i.icon.download-alt
 						.clearfix
 
+		//- empty search result
 		div.noresult(style='display:none')
 			p No results found.
 			button.btn.fat.small Clear Filters
 
-	div.empty(style='display:none')
-		p
-			| No index found. Click below to fetch the file index which takes a few minutes. <br>Data will
-			| be automatically refreshed when done.
-		button.btn.fat(data-processing='#{isDownloadingIndex}')
-			i.icon.refresh
-			span Download index
+		//- no data
+		div.nodata(style='display:none')
+			p
+				| No index found. Click below to fetch the file index which takes a few minutes. <br>
+				| Data will be automatically refreshed when done.
+			button.btn.fat(data-processing='#{isDownloadingIndex}')
+				i.icon.refresh
+				span Download index
 
-		.indexing.progress.progress-striped.active(style='display:none')
-			.bar
+			.indexing.progress.progress-striped.active(style='display:none')
+				.bar
 
-	.clearfix
+		.clearfix
 
 block modals
 	.modal-alert.modal.hide.fade.download-table

@@ -1048,8 +1048,8 @@ ul.badge-group li:last-child {
     clear: left;
   }
 }
-.data + .empty,
-.data .noresult {
+.nodata,
+.noresult {
   background-color: #fff;
   border: 2px dashed #000;
   -webkit-border-radius: 20px;
@@ -1057,8 +1057,8 @@ ul.badge-group li:last-child {
   padding: 30px;
   text-align: center;
 }
-.data + .empty .progress,
-.data .noresult .progress {
+.nodata .progress,
+.noresult .progress {
   margin-top: 20px;
   margin-bottom: 0;
 }

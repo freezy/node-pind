@@ -5,34 +5,37 @@ block inner-content
 	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.waitforimages-1.4.2.min'))
 	- contentFor('javascripts', javascriptIncludeTag('admin_transfers'))
 
-	div.data.vpf.transfers(ng-controller='DataCtrl')
+	div(ng-controller='DataCtrl')
 
-		//- pager
-		pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
+		//- control bar
+		div.controls(style='display:none')
 
-		//- number of rows
-		numrows.numrows.input-mini.pull-right(selection='[10, 20, 50, 100]', value='limit')
+			//- pager
+			pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
 
-		//- search box
-		searchbox(value='search', wait='300')
+			//- number of rows
+			numrows.numrows.input-mini.pull-right(selection='[10, 20, 50, 100]', value='limit')
 
-		//- filter pills
-		ul.nav.nav-pills.pull-left.filter(filters, value='filters')
-			li
-				.icon
-					i.icon.filter(title="Filter results by missing")
-			li(data-filter="completed", selected="selected")
-				a(href="#") Completed
-			li(data-filter="table")
-				a(href="#") Table
-			li(data-filter="rom")
-				a(href="#") ROM
-			li(data-filter="media")
-				a(href="#") Media
+			//- search box
+			searchbox(value='search', wait='300')
+
+			//- filter pills
+			ul.nav.nav-pills.pull-left.filter(filters, value='filters')
+				li
+					.icon
+						i.icon.filter(title="Filter results by missing")
+				li(data-filter="completed", selected="selected")
+					a(href="#") Completed
+				li(data-filter="table")
+					a(href="#") Table
+				li(data-filter="rom")
+					a(href="#") ROM
+				li(data-filter="media")
+					a(href="#") Media
 		.clearfix
 
 		//- data
-		.wrapper.ng-cloak(resource='Transfer.GetAll')
+		div.data.ng-cloak(resource='Transfer.GetAll', style='display:none')
 			table.table#transfers
 				thead
 					tr
@@ -53,7 +56,7 @@ block inner-content
 			button.btn.fat.small Clear Filters
 
 		//- no data
-		div.empty(style='display:none')
+		div.nodata(style='display:none')
 			p There are currently no downloads in the queue. New downloads will appear automatically.
 
 	.clearfix

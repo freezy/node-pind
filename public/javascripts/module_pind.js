@@ -82,6 +82,7 @@ pindAppModule.directive('filters', function() {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
+
 			element.find('li a').click(function(event) {
 				event.preventDefault();
 				var parent = $(this).parents('li');
@@ -111,6 +112,7 @@ pindAppModule.directive('sort', function() {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
+
 			element.find('li a').click(function(event) {
 				event.preventDefault();
 
@@ -276,6 +278,113 @@ pindAppModule.directive('pager', function() {
 				});
 			}
 			scope.$on('dataUpdated', render);
+		}
+	}
+});
+
+/*
+ * Control bar on top
+ */
+pindAppModule.directive('controls', function() {
+	return {
+		restrict: 'C',
+		link: function(scope, element) {
+			scope.$on('dataUpdated', function() {
+
+				// results
+				if (scope.data && scope.data.length > 0) {
+					$(element).show();
+
+				// no results due to filtering
+				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
+					$(element).fadeOut(500);
+
+				// no results due to no data
+				} else {
+					$(element).hide();
+				}
+			});
+		}
+	}
+});
+
+
+/*
+ * Data block
+ */
+pindAppModule.directive('data', function() {
+	return {
+		restrict: 'C',
+		link: function(scope, element) {
+			scope.$on('dataUpdated', function() {
+
+				// results
+				if (scope.data && scope.data.length > 0) {
+					setTimeout(function() {
+						$(element).slideDown(500);
+					}, 200);
+
+				// no results due to filtering
+				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
+					$(element).slideUp(200);
+
+				// no results due to no data
+				} else {
+					$(element).hide();
+				}
+			});
+		}
+	}
+});
+
+/*
+ * Info block when a search or filter returned no result.
+ */
+pindAppModule.directive('noresult', function() {
+	return {
+		restrict: 'C',
+		link: function(scope, element) {
+			scope.$on('dataUpdated', function() {
+
+				// results
+				if (scope.data && scope.data.length > 0) {
+					$(element).fadeOut(200);
+
+				// no results due to filtering
+				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
+					$(element).fadeIn(500);
+
+				// no results due to no data
+				} else {
+					$(element).hide();
+				}
+			});
+		}
+	}
+});
+
+/*
+ * Info block when data was not yet populated.
+ */
+pindAppModule.directive('nodata', function() {
+	return {
+		restrict: 'C',
+		link: function(scope, element) {
+			scope.$on('dataUpdated', function() {
+
+				// results
+				if (scope.data && scope.data.length > 0) {
+					$(element).fadeOut(200);
+
+				// no results due to filtering
+				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
+					$(element).hide();
+
+				// no results due to no data
+				} else {
+					$(element).fadeIn(500);
+				}
+			});
 		}
 	}
 });

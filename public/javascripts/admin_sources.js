@@ -1,3 +1,54 @@
+$(document).ready(function() {
+
+	function updateActions(socket) {
+		var $downloadIndexBtn = $('.nodata button');
+		if ($downloadIndexBtn.data('processing')) {
+
+			socket = io.connect('/');
+			socket.on('dataUpdated', function() {
+				var scope = angular.element($('.ng-scope[ng-controller="DataCtrl"]')).scope();
+				scope.$broadcast('paramsUpdated');
+			});
+			socket.on('progressUpdate', function(msg) {
+				$('.progress.indexing .bar').css('width', (msg.progress * 100) + '%');
+			});
+
+			$('.progress.indexing').slideDown();
+			$downloadIndexBtn.attr('disabled', 'disabled');
+			$downloadIndexBtn.find('.icon.refresh').addClass('spin');
+			$downloadIndexBtn.find('span').html('Downloading Index...');
+		} else {
+			if (socket) {
+				socket.disconnect();
+			}
+			$('.progress.indexing').slideUp();
+			$downloadIndexBtn.removeAttr('disabled');
+			$downloadIndexBtn.find('.icon.refresh').removeClass('spin');
+			$downloadIndexBtn.find('span').html('Download index');
+		}
+	}
+
+	var socket = null;
+	updateActions(socket);
+
+	// enable download index button
+	var downloadIndex = function() {
+
+		$(this).data('processing', true);
+		updateActions(socket);
+		api('VPForums.CreateIndex', {}, function(err, result) {
+			if (err) {
+				alert('Problem Syncing: ' + err);
+			}
+		});
+	};
+
+	// setup buttons
+	$('.nodata button').click(downloadIndex);
+
+});
+
+
 /*
  * Renders a thumb that fades in when downloaded.
  *
@@ -49,7 +100,7 @@ pindAppModule.directive('thumb', function() {
 pindAppModule.directive('downloadLink', function() {
 	return {
 		restrict: 'C',
-		link: function(scope, element, attrs) {
+		link: function(scope, element) {
 			element.click(function(event) {
 
 				event.preventDefault();
@@ -75,64 +126,3 @@ pindAppModule.directive('downloadLink', function() {
 		}
 	}
 });
-
-var deprecated = function() {
-
-	var config = {
-		id: 'vpf.tables',
-		body: 'ul.thumbnails',
-		renderRows: render,
-		apiCall: 'VPForums.FindTables'
-	};
-
-	function updateActions(socket) {
-		var $downloadIndexBtn = $('.empty button');
-		if ($downloadIndexBtn.data('processing')) {
-
-			socket = io.connect('/');
-			socket.on('dataUpdated', function() {
-				refreshData(config);
-			});
-			socket.on('progressUpdate', function(msg) {
-				$('.progress.indexing .bar').css('width', (msg.progress * 100) + '%');
-			});
-
-			$('.progress.indexing').slideDown();
-			$downloadIndexBtn.attr('disabled', 'disabled');
-			$downloadIndexBtn.find('.icon.refresh').addClass('spin');
-			$downloadIndexBtn.find('span').html('Downloading Index...');
-		} else {
-			if (socket) {
-				socket.disconnect();
-			}
-			$('.progress.indexing').slideUp();
-			$downloadIndexBtn.removeAttr('disabled');
-			$downloadIndexBtn.find('.icon.refresh').removeClass('spin');
-			$downloadIndexBtn.find('span').html('Download index');
-		}
-	}
-
-	// load data on startup
-	enableData(config);
-	refreshData(config);
-
-	var socket = null;
-	updateActions(socket);
-
-	// enable download index button
-	var downloadIndex = function() {
-
-		$(this).data('processing', true);
-		updateActions(socket);
-		api('VPForums.CreateIndex', {}, function(err, result) {
-			if (err) {
-				alert('Problem Syncing: ' + err);
-			}
-		});
-	};
-
-	// setup buttons
-	$('.empty button').click(downloadIndex);
-
-};
-
