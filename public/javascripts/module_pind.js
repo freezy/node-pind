@@ -344,9 +344,7 @@ pindAppModule.directive('data', function() {
 
 				// results
 				if (scope.data && scope.data.length > 0) {
-					setTimeout(function() {
-						$(element).slideDown(500);
-					}, 200);
+					$(element).show();
 
 				// no results due to filtering
 				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
@@ -375,7 +373,7 @@ pindAppModule.directive('noresult', function() {
 
 				// results
 				if (scope.data && scope.data.length > 0) {
-					$(element).fadeOut(200);
+					$(element).hide();
 
 				// no results due to filtering
 				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
