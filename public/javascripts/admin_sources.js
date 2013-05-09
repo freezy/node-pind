@@ -16,7 +16,7 @@ $(document).ready(function() {
 			$('.progress.indexing').slideDown();
 			$downloadIndexBtn.attr('disabled', 'disabled');
 			$downloadIndexBtn.find('.icon.refresh').addClass('spin');
-			$downloadIndexBtn.find('span').html('Downloading Index...');
+			$downloadIndexBtn.find('span').html('Downloading index...');
 		} else {
 			if (socket) {
 				socket.disconnect();

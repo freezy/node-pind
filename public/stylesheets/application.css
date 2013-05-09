@@ -1067,17 +1067,17 @@ ul.badge-group li:last-child {
   color: #9d9e9e;
   text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
 }
-table#tables td.rom {
+table td.rom {
   font-family: Inconsolata, Consolas, 'Courier New', Fixed, monospace;
 }
-table#tables td.rom.na,
-table#tables td.rom.unknown {
+table td.rom.na,
+table td.rom.unknown {
   color: #9d9e9e;
 }
-table#tables td.rom.missing {
+table td.rom.missing {
   color: #b94a48;
 }
-table#tables td b {
+table td b {
   background-color: rgba(224,157,85,0.3);
   font-weight: normal;
   text-shadow: 1px 1px 0 rgba(255,255,255,0.8);

@@ -1,75 +1,43 @@
 $(document).ready(function() {
 	var scope = angular.element($('.ng-scope[ng-controller="DataCtrl"]')).scope();
 
-	scope.enrichFn = function(table) {
+	scope.mapperFn = function(table) {
 
+		if (table.name && table.year && table.manufacturer) {
+			table.title = (table.name_match ? table.name_match : table.name) + ' (' + table.manufacturer + ' ' + table.year + ')';
+		} else {
+			table.title = table.hpid;
+		}
+
+		table.badge_table = table.table_file ? 'success' : 'important';
+		table.badge_rom = table.rom_file ? 'success' : table.rom_file === null ? null : 'important';
+		table.badge_media_wheel = table.media_wheel ? 'success' : 'important';
+		table.badge_media_backglass = table.media_backglass ? 'success' : 'important';
+		table.badge_media_table = table.media_table ? 'success' : 'important';
+		table.badge_media_video = table.media_video ? 'success' : 'important';
+
+		if (table.type != 'OG' && table.platform == 'VP' && table.rom === null) {
+			if (table.table_file) {
+				table.rom_display = 'missing';
+				table.rom_class = ' missing';
+			} else {
+				table.rom_display = '(unknown)';
+				table.rom_class = ' unknown';
+			}
+		} else {
+			if (table.rom) {
+				table.rom_display = table.rom;
+				table.rom_class = '';
+			} else {
+				table.rom_display = '(n/a)';
+				table.rom_class = ' na';
+			}
+		}
+		return table;
 	}
 });
 
 function deprecated() {
-	var render = function($tbody, rows) {
-		var ignoreTableVids = $('.data.tables table').data('ignoretablevids');
-		$tbody.empty();
-		for (var i = 0; i < rows.length; i++) {
-
-			var tr;
-			if (rows[i].name && rows[i].year && rows[i].manufacturer) {
-				tr = '<tr data-id=' + rows[i].key + '><td>' + (rows[i].name_match ? rows[i].name_match : rows[i].name) + ' (' + rows[i].manufacturer + ' ' + rows[i].year + ')</td>';
-			} else {
-				tr = '<tr data-id=' + rows[i].key + '><td>' + rows[i].hpid + '</td>';
-			}
-			
-			var ul = function(tag, icon, hint) {
-				return '<li class="badge' + (tag ? ' badge-' + tag : '') + '" title="' + hint + '"><i class="icon ' + icon + '"></i></li>';
-			}
-
-			tr += '<td class="nowrap"><ul class="badge-group">';
-			tr += ul(rows[i].table_file ? 'success' : 'important', 'file', 'Table File');
-			tr += ul(rows[i].rom_file ? 'success' : rows[i].rom_file === null ? null : 'important', 'chip', 'ROM File');
-			tr += '</ul></td>';
-
-			tr += '<td class="nowrap"><ul class="badge-group">';
-			tr += ul(rows[i].media_wheel ? 'success' : 'important', 'logo', 'Wheel Image');
-			tr += ul(rows[i].media_backglass ? 'success' : 'important', 'ipad', 'Backglass Image');
-			tr += ul(rows[i].media_table ? 'success' : 'important', 'camera', 'Table Image');
-			if (!ignoreTableVids) {
-				tr += ul(rows[i].media_video ? 'success' : 'important', 'video', 'Table Video');
-			}
-
-			tr += '</ul></td>';
-			if (rows[i].type != 'OG' && rows[i].platform == 'VP' && rows[i].rom === null) {
-				if (rows[i].table_file) {
-					tr += '<td class="rom missing">missing';
-				} else {
-					tr += '<td class="rom unknown">(unknown)';
-				}
-			} else {
-				if (rows[i].rom) {
-					tr += '<td class="rom">' + rows[i].rom;
-				} else {
-					tr += '<td class="rom na">(n/a)';
-				}
-			}
-
-			tr += '</td></tr>';
-			$(tr).appendTo($tbody);
-		}
-
-		// enable boxes
-		processed('#hpsync');
-	};
-
-	var config = {
-		id: 'tables',
-		body: 'table tbody',
-		renderRows: render,
-		apiCall: 'Table.GetAll'
-	};
-
-
-	// load data on startup
-	enableData(config);
-	refreshData(config);
 
 	// enable sync hyperpin button
 	var syncHyperPin = function() {

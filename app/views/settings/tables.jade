@@ -35,7 +35,7 @@ block inner-content
 
 		//- data
 		div.data.ng-cloak(resource='Table.GetAll', style='display:none')
-			table.table#tables(data-ignoretablevids="#{ignoreTableVids}")
+			table.table
 				thead
 					tr
 						th Name
@@ -44,7 +44,25 @@ block inner-content
 						th(style='width:70px') ROM
 				tbody
 					tr(ng-repeat='(idx, table) in data', data-id='{{table.key}}', data-idx="{{idx}}")
-						td {{table.hpid}}
+						td {{table.title}}
+						td.nowrap
+							ul.badge-group
+								li.badge(title="Table file", class="badge-{{table.badge_table}}")
+									i.icon.file
+								li.badge(title="ROM", class="badge-{{table.badge_rom}}")
+									i.icon.chip
+						td.nowrap
+							ul.badge-group
+								li.badge(title="Wheel Image", class="badge-{{table.badge_media_wheel}}")
+									i.icon.logo
+								li.badge(title="Backglass Image", class="badge-{{table.badge_media_backglass}}")
+									i.icon.ipad
+								li.badge(title="Table Image", class="badge-{{table.badge_media_table}}")
+									i.icon.camera
+								- if (!ignoreTableVids)
+									li.badge(title="Table Video", class="badge-{{table.badge_media_video}}")
+										i.icon.video
+						td.rom(class="{{table.rom_class}}") {{table.rom_display}}
 
 		//- empty search result
 		div.noresult(style='display:none')

@@ -16,7 +16,7 @@ function DataCtrl($scope, Jsonrpc) {
 	$scope.sort = '';
 	$scope.filters = [];
 
-	$scope.enrichFn = null;
+	$scope.mapperFn = null;
 
 	var refresh = function() {
 
@@ -45,10 +45,11 @@ function DataCtrl($scope, Jsonrpc) {
 			if (err) {
 				return alert(err);
 			}
-			if ($scope.enrichFn) {
-
+			if ($scope.mapperFn) {
+				$scope.data = _.map(result.rows, $scope.mapperFn);
+			} else {
+				$scope.data = result.rows;
 			}
-			$scope.data = result.rows;
 			$scope.numpages = Math.ceil(result.count / $scope.limit);
 			$scope.$broadcast('dataUpdated');
 		});
