@@ -20,7 +20,7 @@ block inner-content
 		searchbox(value='search', wait='300')
 
 		//- sort pills
-		ul.nav.nav-pills.pull-left.sort
+		ul.nav.nav-pills.pull-left.sort(sort, value='sort')
 			li
 				.icon
 					i.icon.sort(title="Sort results by")
@@ -34,7 +34,7 @@ block inner-content
 		.clearfix
 		.wrapper.ng-cloak(resource='VPForums.FindTables')
 			ul.thumbnails
-				li.span6.vpf.item(ng-repeat='row in data', data-id="{{row.fileId}}")
+				li.span6.vpf.item(ng-repeat='(idx, row) in data', data-id="{{row.fileId}}", data-idx="{{idx}}")
 					.thumbnail
 						thumb.ng-transclude(fileid="{{row.fileId}}")
 						h3 {{row.title_trimmed}}
@@ -54,7 +54,7 @@ block inner-content
 								a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
 									i.icon.link
 							li.link.transfer
-								a(href="#")
+								a.downloadLink(href="#")
 									i.icon.download-alt
 						.clearfix
 

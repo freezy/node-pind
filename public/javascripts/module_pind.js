@@ -13,6 +13,7 @@ function DataCtrl($scope, Jsonrpc) {
 	$scope.limit = 10;
 	$scope.resource = null;
 	$scope.search = '';
+	$scope.sort = '';
 	$scope.filters = [];
 
 	var refresh = function() {
@@ -32,6 +33,10 @@ function DataCtrl($scope, Jsonrpc) {
 
 		if ($scope.filters && $scope.filters.length > 0) {
 			params.filters = $scope.filters;
+		}
+
+		if ($scope.sort && $scope.sort.length > 0) {
+			params.order = $scope.sort;
 		}
 
 		Jsonrpc.call($scope.resource, params, function(err, result) {
@@ -89,6 +94,36 @@ pindAppModule.directive('filters', function() {
 					scope[attrs.value].push(filter);
 				}
 				parent.toggleClass('active');
+				scope.$broadcast('paramsUpdated');
+			});
+		}
+	}
+});
+
+
+/*
+ * Defines a unordered list as sort pills.
+ *
+ * Attributes:
+ *   - value: defines the name of the scope's sort value.
+ */
+pindAppModule.directive('sort', function() {
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+			element.find('li a').click(function(event) {
+				event.preventDefault();
+
+				// clear all
+				$(this).parents('ul').find('li').removeClass('current');
+
+				// set current
+				var parent = $(this).parents('li');
+				parent.addClass('current');
+				$(this).blur();
+
+				// update and refresh
+				scope[attrs.value] = parent.data('sort');
 				scope.$broadcast('paramsUpdated');
 			});
 		}
