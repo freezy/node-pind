@@ -13,10 +13,22 @@ function DataCtrl($scope, Jsonrpc) {
 	$scope.limit = 10;
 	$scope.resource = null;
 	$scope.search = '';
+	$scope.searchInput = ''; // that's the direct reference to the input field, so we can reset it easily.
 	$scope.sort = '';
 	$scope.filters = [];
 
 	$scope.mapperFn = null;
+
+	$scope.reset = function() {
+		$scope.page = 1;
+		$scope.numpages = 1;
+		$scope.limit = 10;
+		$scope.search = '';
+		$scope.searchInput = '';
+		$scope.sort = '';
+		$scope.filters = [];
+		$scope.$broadcast('paramsUpdated');
+	}
 
 	var refresh = function() {
 
@@ -60,8 +72,7 @@ function DataCtrl($scope, Jsonrpc) {
 	$scope.$on('paramsUpdated', refresh);
 }
 
-
-var pindAppModule = angular.module('pind', []);
+var pindAppModule = angular.module('pind', ['ngSanitize']);
 
 /*
  * Defines namespace and method of an api call.
@@ -152,21 +163,28 @@ pindAppModule.directive('searchbox', function() {
 		template:
 			'<div class="input-prepend input-pill">' +
 				'<span class="add-on"><i class="icon search"></i></span>' +
-				'<input type="text" class="search input-medium" placeholder="keywords">' +
+				'<input type="text" class="search input-medium" placeholder="keywords" ng-model="searchInput">' +
 			'</div>',
 		link: function(scope, element, attrs) {
 			var wait = parseInt(attrs.wait) ? parseInt(attrs.wait) : 300;
 			var keyTimer;
-			element.find('input').on('keyup', function() {
-				var query = $(this).val();
-				if (query.length != 1) {
-					window.clearTimeout(keyTimer);
-					keyTimer = setTimeout(function() {
-						// TODO clear sort
-						// TODO reset page
-						scope[attrs.value] = query;
-						scope.$broadcast('paramsUpdated');
-					}, wait);
+			element.find('input').on('keyup', function(e) {
+				// ESC clears search value
+				if (e.keyCode == 27) {
+					$(this).val('');
+					scope[attrs.value] = '';
+					scope.$broadcast('paramsUpdated');
+				} else {
+					var query = $(this).val();
+					if (query.length != 1) {
+						window.clearTimeout(keyTimer);
+						keyTimer = setTimeout(function() {
+							// TODO clear sort
+							// TODO reset page
+							scope[attrs.value] = query;
+							scope.$broadcast('paramsUpdated');
+						}, wait);
+					}
 				}
 			});
 		}
@@ -303,7 +321,7 @@ pindAppModule.directive('controls', function() {
 
 				// no results due to filtering
 				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
-					$(element).fadeOut(500);
+					$(element).show();
 
 				// no results due to no data
 				} else {
@@ -350,6 +368,9 @@ pindAppModule.directive('noresult', function() {
 	return {
 		restrict: 'C',
 		link: function(scope, element) {
+			element.find('button').click(function() {
+				scope.reset();
+			});
 			scope.$on('dataUpdated', function() {
 
 				// results

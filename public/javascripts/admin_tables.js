@@ -47,7 +47,7 @@ $(document).ready(function() {
 	var syncHyperPin = function() {
 		processing('#hpsync');
 		var labels = [];
-		[$('.data.tables + .empty button'), $('#hpsync button')].forEach(function(btn) {
+		[$('.nodata button'), $('#hpsync button')].forEach(function(btn) {
 			labels.push(btn.find('span').html());
 			btn.attr('disabled', 'disabled');
 			btn.find('.icon.refresh').addClass('spin');
@@ -62,12 +62,12 @@ $(document).ready(function() {
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
-				[$('.data.tables + .empty button'), $('#hpsync button')].forEach(function(btn) {
+				[$('.nodata button'), $('#hpsync button')].forEach(function(btn) {
 					btn.removeAttr('disabled');
 					btn.find('.icon.refresh').removeClass('spin');
 					btn.find('span').html(labels.shift());
 				});
-				updateData(config, result);
+				scope.$broadcast('paramsUpdated');
 			}
 		});
 	};
@@ -83,7 +83,7 @@ $(document).ready(function() {
 			if (err) {
 				alert('Problem Syncing: ' + err);
 			} else {
-				updateData(config, result);
+				scope.$broadcast('paramsUpdated');
 			}
 		});
 	};
@@ -128,7 +128,7 @@ $(document).ready(function() {
 		});
 	};
 
-	$('.data.tables + .empty button').click(syncHyperPin);
+	$('.nodata button').click(syncHyperPin);
 	$('#hpsync button').click(syncHyperPin);
 	$('#ipdbsync button').click(syncIPDB);
 	$('#dlrom button').click(downloadRoms);

@@ -13,7 +13,7 @@ block inner-content
 			pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
 
 			//- number of rows
-			numrows.numrows.input-mini.pull-right(selection='[10, 50, 100]', value='limit')
+			numrows.numrows.input-mini.pull-right(selection='[10, 20, 50, 100]', value='limit')
 
 			//- search box
 			searchbox(value='search', wait='300')
@@ -44,7 +44,7 @@ block inner-content
 						th(style='width:70px') ROM
 				tbody
 					tr(ng-repeat='(idx, table) in data', data-id='{{table.key}}', data-idx="{{idx}}")
-						td {{table.title}}
+						td(ng-bind-html="table.title")
 						td.nowrap
 							ul.badge-group
 								li.badge(title="Table file", class="badge-{{table.badge_table}}")
@@ -72,9 +72,9 @@ block inner-content
 		//- no data
 		div.nodata(style='display:none')
 			p No tables in database.
-				button.btn.fat
-					i.icon.refresh
-					span Load from HyperPin
+			button.btn.fat
+				i.icon.refresh
+				span Load from HyperPin
 	.clearfix
 
 block inner-footer
