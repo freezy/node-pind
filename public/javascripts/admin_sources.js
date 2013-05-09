@@ -34,6 +34,7 @@ $(document).ready(function() {
 	// enable download index button
 	var downloadIndex = function() {
 
+		$(this).blur();
 		$(this).data('processing', true);
 		updateActions(socket);
 		api('VPForums.CreateIndex', {}, function(err, result) {

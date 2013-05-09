@@ -4,45 +4,37 @@ block inner-content
 	- contentFor('javascripts', '<script type="text/javascript" src="/socket.io/socket.io.js"></script>')
 	- contentFor('javascripts', javascriptIncludeTag('admin_tables'))
 
-	div.data.tables(style='display:none')
+	div(ng-controller='DataCtrl')
 
-		.pagination.pagination-small.pull-right
-			ul(data-page="1")
-				li.first.disabled
-					a
-						i.icon.arrow-left
-				li.p1.current
-					a 1
-				li.last
-					a
-						i.icon.arrow-right
+		//- control bar
+		div.controls(style='display:none')
 
-		select.numrows.input-mini.pull-right
-			option(selected="selected") 10
-			option 20
-			option 50
-			option 100
+			//- pager
+			pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
 
-		.input-prepend.input-pill
-			span.add-on
-				i.icon.search
-			input.search.input-medium(type='text', placeholder='keywords')
+			//- number of rows
+			numrows.numrows.input-mini.pull-right(selection='[10, 50, 100]', value='limit')
 
-		ul.nav.nav-pills.pull-left.filter
-			li
-				.icon
-					i.icon.filter(title="Filter results by missing")
-			li(data-filter="table")
-				a(href="#") Table
-			li(data-filter="rom")
-				a(href="#") ROM
-			li(data-filter="ipdb")
-				a(href="#") IPDB
-			li(data-filter="media")
-				a(href="#") Media
+			//- search box
+			searchbox(value='search', wait='300')
 
+			//- filter pills
+			ul.nav.nav-pills.pull-left.filter(filters, value='filters')
+				li
+					.icon
+						i.icon.filter(title="Filter results by missing")
+				li(data-filter="table")
+					a(href="#") Table
+				li(data-filter="rom")
+					a(href="#") ROM
+				li(data-filter="ipdb")
+					a(href="#") IPDB
+				li(data-filter="media")
+					a(href="#") Media
 		.clearfix
-		.wrapper(style='display:none')
+
+		//- data
+		div.data.ng-cloak(resource='Table.GetAll', style='display:none')
 			table.table#tables(data-ignoretablevids="#{ignoreTableVids}")
 				thead
 					tr
@@ -51,17 +43,20 @@ block inner-content
 						th(style='width:100px') Media
 						th(style='width:70px') ROM
 				tbody
+					tr(ng-repeat='(idx, table) in data', data-id='{{table.key}}', data-idx="{{idx}}")
+						td {{table.hpid}}
 
+		//- empty search result
 		div.noresult(style='display:none')
 			p No results found.
 			button.btn.fat.small Clear Filters
 
-	div.empty(style='display:none')
-		p No tables in database.
-		button.btn.fat
-			i.icon.refresh
-			span Load from HyperPin
-
+		//- no data
+		div.nodata(style='display:none')
+			p No tables in database.
+				button.btn.fat
+					i.icon.refresh
+					span Load from HyperPin
 	.clearfix
 
 block inner-footer

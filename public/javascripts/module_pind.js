@@ -16,6 +16,8 @@ function DataCtrl($scope, Jsonrpc) {
 	$scope.sort = '';
 	$scope.filters = [];
 
+	$scope.enrichFn = null;
+
 	var refresh = function() {
 
 		if (!$scope.resource) {
@@ -42,6 +44,9 @@ function DataCtrl($scope, Jsonrpc) {
 		Jsonrpc.call($scope.resource, params, function(err, result) {
 			if (err) {
 				return alert(err);
+			}
+			if ($scope.enrichFn) {
+
 			}
 			$scope.data = result.rows;
 			$scope.numpages = Math.ceil(result.count / $scope.limit);

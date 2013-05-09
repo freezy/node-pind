@@ -1,5 +1,12 @@
 $(document).ready(function() {
+	var scope = angular.element($('.ng-scope[ng-controller="DataCtrl"]')).scope();
 
+	scope.enrichFn = function(table) {
+
+	}
+});
+
+function deprecated() {
 	var render = function($tbody, rows) {
 		var ignoreTableVids = $('.data.tables table').data('ignoretablevids');
 		$tbody.empty();
@@ -182,7 +189,7 @@ $(document).ready(function() {
 			refreshData(config);
 		}
 	});
-});
+};
 
 function updateActions() {
 	$('.action').removeClass('disabled').find('button').removeAttr('disabled').find('i').removeClass('spin');

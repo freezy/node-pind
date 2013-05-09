@@ -1,6 +1,3 @@
-
-
-
 var _ = require('underscore');
 
 var error = require('./../error');
@@ -23,11 +20,12 @@ var VPForumsAPI = function() {
 				if (err) {
 					console.log("ERROR: " + err);
 					socket.emit('notice', { msg: 'ERROR: ' + err, type: 'error', timeout: 60000 });
-					callback(error.api(err));
+
 				} else {
 					socket.emit('dataUpdated', { });
 				}
 			});
+			callback('Index creation started. Status updates via socket.');
 		},
 
 		FindTables : function(req, params, callback) {
