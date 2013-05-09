@@ -14,10 +14,10 @@ block inner-content
 		numrows.numrows.input-mini.pull-right(selection='[10, 20, 50, 100]', value='limit')
 
 		//- search box
-		searchbox(value='search')
+		searchbox(value='search', wait='300')
 
 		//- filter pills
-		ul.nav.nav-pills.pull-left.filter(value='filters')
+		ul.nav.nav-pills.pull-left.filter(filters, value='filters')
 			li
 				.icon
 					i.icon.filter(title="Filter results by missing")
