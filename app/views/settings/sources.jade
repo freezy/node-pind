@@ -8,29 +8,18 @@ block inner-content
 
 	h2 VPForums.org
 
-	div.data.vpf.tables
+	div.data.vpf.tables(ng-controller='DataCtrl')
 
-		.pagination.pagination-small.pull-right
-			ul(data-page="1")
-				li.first.disabled
-					a
-						i.icon.arrow-left
-				li.p1.current
-					a 1
-				li.last
-					a
-						i.icon.arrow-right
+		//- pager
+		pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
 
-		select.numrows.input-mini.pull-right
-			option(selected="selected") 10
-			option 20
-			option 30
+		//- number of rows
+		numrows.numrows.input-mini.pull-right(selection='[10, 20, 30]', value='limit')
 
-		.input-prepend.input-pill
-			span.add-on
-				i.icon.search
-			input.search.input-small(type='text', placeholder='search')
+		//- search box
+		searchbox(value='search', wait='300')
 
+		//- sort pills
 		ul.nav.nav-pills.pull-left.sort
 			li
 				.icon
@@ -43,8 +32,31 @@ block inner-content
 				a(href="#") By Views
 
 		.clearfix
-		.wrapper
+		.wrapper.ng-cloak(resource='VPForums.FindTables')
 			ul.thumbnails
+				li.span6.vpf.item(ng-repeat='row in data', data-id="{{row.fileId}}")
+					.thumbnail
+						thumb.ng-transclude(fileid="{{row.fileId}}")
+						h3 {{row.title_trimmed}}
+						p.pull-right.updated.hidden-phone-small {{row.lastUpdateRel}}
+						h4.hidden-phone-small {{row.info}}
+						ul.pills.small
+							li
+								i.icon.user
+								.author.hidden-phone-small {{row.author}}
+							li
+								i.icon.circle-arrow-down(title="{{row.downloads}}")
+								span.hidden-desktop-small.hidden-phone-small {{row.downloads}}
+							li
+								i.icon.eye(title="{{row.views}}")
+								span.hidden-desktop-small.hidden-phone-small {{row.views}}
+							li.link
+								a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
+									i.icon.link
+							li.link.transfer
+								a(href="#")
+									i.icon.download-alt
+						.clearfix
 
 		div.noresult(style='display:none')
 			p No results found.
