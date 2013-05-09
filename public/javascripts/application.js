@@ -93,52 +93,70 @@ pindAppModule.directive('pager', function() {
 			'<div class="pagination pagination-small pull-right">' +
 				'<ul>' +
 					'<li class="first disabled"><a><i class="icon arrow-left"></i></a></li>' +
-					'<li class="p1 current"><a>1</a></li>' +
+					'<li class="current"><a>1</a></li>' +
 					'<li class="last disabled"><a><i class="icon arrow-right"></i></a></li>' +
 				'</ul>' +
 			'</div>',
 		replace: true,
 		link: function(scope, element, attrs) {
 
-			var page = scope.$eval(attrs.page);
-			var pages = scope.$eval(attrs.pages);
+			var render = function() {
+				var page = scope.$eval(attrs.page);
+				var pages = scope.$eval(attrs.pages);
 
-			element.find('li:not(.first):not(.last)').remove();
-			var lastSkipped = false;
-			for (var i = pages; i > 0; i--) {
+				console.log('rendering %d/%d', page, pages);
 
-				// on large number of pages, don't render all the pagination bar
-				if (pages > 9 && ((i > 2 && i < (page - 1)) || (i > (page + 1) && i < (pages - 1)))) {
-					if (!lastSkipped) {
-						element.find('li.first').after($('<li class="spacer"></li>'));
+				element.find('li:not(.first):not(.last)').remove();
+				var lastSkipped = false;
+				for (var i = pages; i > 0; i--) {
+
+					// on large number of pages, don't render all the pagination bar
+					if (pages > 9 && ((i > 2 && i < (page - 1)) || (i > (page + 1) && i < (pages - 1)))) {
+						if (!lastSkipped) {
+							element.find('li.first').after($('<li class="spacer"></li>'));
+						}
+						lastSkipped = true;
+						continue;
 					}
-					lastSkipped = true;
-					continue;
-				}
-				lastSkipped = false;
+					lastSkipped = false;
 
-				var li = $('<li class="p' + i + (page == i ? ' current' : '') + '"><a href="#">' + i + '</a>');
-				if (page != i) {
-					li.find('a').click(function(event) {
-						event.preventDefault();
-						$(this).parents('ul').data('page', parseInt($(this).html()));
-						refreshData(config);
-					});
-				} else {
-					li.find('a').click(function(event) {
-						event.preventDefault();
-					});
+					var li = $('<li class="p' + i + (page == i ? ' current' : '') + '"><a href="#">' + i + '</a>');
+					if (page != i) {
+						li.find('a').click(function(event) {
+							event.preventDefault();
+							scope.$apply(attrs.page + ' = ' + parseInt($(this).html()));
+						});
+					} else {
+						li.find('a').click(function(event) {
+							event.preventDefault();
+						});
+					}
+					// insert into dom
+					element.find('li.first').after(li);
 				}
-				// insert into dom
-				element.find('li.first').after(li);
+				element.find('li').removeClass('disabled');
+				if (page == 1) {
+					element.find('li.first').addClass('disabled');
+				}
+				if (page == pages || pages == 0) {
+					element.find('li.last').addClass('disabled');
+				}
+
+				// enable prev/next buttons
+				element.find('li.first a').off('click').click(function(event) {
+					event.preventDefault();
+					if (page > 1) {
+						scope.$apply(attrs.page + ' = ' + attrs.page + ' - 1');
+					}
+				});
+				element.find('li.last a').off('click').click(function(event) {
+					event.preventDefault();
+					if (page < pages) {
+						scope.$apply(attrs.page + ' = ' + attrs.page + ' + 1');
+					}
+				});
 			}
-			element.find('li').removeClass('disabled');
-			if (page == 1) {
-				element.find('li.first').addClass('disabled');
-			}
-			if (page == pages || pages == 0) {
-				element.find('li.last').addClass('disabled');
-			}
+			scope.$on('dataRefreshed', render);
 		}
 	}
 });

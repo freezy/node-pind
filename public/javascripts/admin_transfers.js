@@ -38,7 +38,10 @@ function DataCtrl($scope, Jsonrpc) {
 			return alert('Must set "resource" attribute somewhere in scope.');
 		}
 
+		var offset = ($scope.page - 1) * $scope.limit;
+
 		Jsonrpc.call($scope.resource, {
+			offset: offset,
 			limit: $scope.limit
 
 		}, function(err, result) {
@@ -46,11 +49,14 @@ function DataCtrl($scope, Jsonrpc) {
 				return alert(err);
 			}
 			$scope.data = result.rows;
-			$scope.pages = Math.ceil(result.rows.count / $scope.limit);
+			$scope.numpages = Math.ceil(result.count / $scope.limit);
+			$scope.$broadcast('dataRefreshed');
+			console.log('refresh done, fetched %d records, page %d of %d', result.count, $scope.page, $scope.numpages);
 		});
 	};
 
 	// refresh as soon as the resource attribute is set
 	$scope.$watch('resource', $scope.refresh);
 	$scope.$watch('limit', $scope.refresh);
+	$scope.$watch('page', $scope.refresh);
 }
