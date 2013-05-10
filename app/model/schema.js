@@ -6,8 +6,8 @@ var settings = require('../../config/settings-mine');
 
 var config = {
 
-	// disable logging
-	logging: false,
+	// enable/disable logging
+	logging: console.log,
 
 	define: {
 		classMethods: {
@@ -39,7 +39,7 @@ var config = {
 					results.push(enhance ? hit.original.enhance(hit) : hit.original);
 				});
 
-				callback({ rows : results, count: hits.length });
+				callback({ rows: results, count: hits.length });
 			}
 		}
 	}
@@ -50,7 +50,7 @@ if (settings.pind.database.engine == 'mysql') {
 	config.dialect = 'mysql';
 	config.host = settings.pind.database.host;
 	config.port = settings.pind.database.port;
-	config.define = { engine: 'MYISAM' };
+	config.define.engine = 'MYISAM';
 	// use pooling in order to reduce db connection overload and to increase speed
 	// currently only for mysql
 	config.pool = { maxConnections: 5, maxIdleTime: 30 };
