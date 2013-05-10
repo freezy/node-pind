@@ -1,12 +1,17 @@
 var fs = require('fs');
+var _ = require('underscore');
 
 var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 
-var socket;
+var socket, vpf, extr;
+
+var transferring = false;
 
 module.exports = function(app) {
 	socket = app.get('socket.io');
+	vpf = require('./vpforums')(app);
+	extr = require('./extract')(app);
 	return exports;
 };
 
@@ -23,4 +28,43 @@ exports.queue = function(transfer, callback) {
 			callback(null, "Download successfully added to queue.");
 		});
 	})
+};
+
+exports.start = function(callback) {
+	if (transferring) {
+		return callback(null, { alreadyStarted: true });
+	}
+	schema.Transfer.all({ where: 'started IS NULL', order: 'createdAt ASC' }).success(function(rows) {
+		if (rows.length > 0) {
+			rowsloop:
+			for (var i = 0; i < rows.length; i++) {
+				var row = rows[i];
+				switch (row.engine) {
+					case 'vpf': {
+						console.log('Starting download of %s', row.url);	
+						vpf.download(row, settings.pind.tmp, function(err, filepath) {
+							if (err) {
+								return callback(err);
+							}
+							extr.extractMedia({}, filepath, function(err, extractedFiles) {
+								if (err) {
+									return callback(err);
+								}
+
+
+							});
+						});
+						break rowsloop;
+					}
+					default: {
+						console.log('Skipping unsupported engine "' + row.engine + '".');
+					}
+				}
+			}
+			callback(null, {});
+		} else {
+			callback(null, { emptyQueue: true });
+		}
+		
+	});
 };

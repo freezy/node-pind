@@ -9,7 +9,7 @@ var xml2js = require('xml2js');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
-var socket, vp, vpf;
+var socket, vp, vpf, extr;
 
 var disableCache = false;
 
@@ -22,6 +22,7 @@ var isSyncing = false;
 module.exports = function(app) {
 	vp = require('./visualpinball')(app);
 	vpf = require('./vpforums')(app);
+	extr = require('./extract')(app);
 	socket = app.get('socket.io');
 	return exports;
 };
@@ -293,7 +294,7 @@ exports.findMissingMedia = function(callback) {
 				return next(err);
 			}
 			socket.emit('notice', { msg: 'Download successful, extracting missing media files' });
-			vpf.extractMedia(row, filename, function(err, files) {
+			extr.extractMedia(row, filename, function(err, files) {
 				if (err) {
 					return next(err);
 				}

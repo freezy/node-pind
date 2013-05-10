@@ -73,11 +73,12 @@ Installation
 4. On Windows 7 or above, download and install the [Windows 7 SDK](http://www.microsoft.com/en-us/download/details.aspx?id=8279).
 5. Download and install [GraphicsMagick](http://www.graphicsmagick.org/download.html)
    and verify that the installer adds the directory to your PATH.
-6. Clone the repository to somewhere.
-7. Copy `config/settings.json` to `config/settings-mine.json` and update it.
-8. `npm install -d`
-9. `node create-schema`
-10. `node server`
+6. Download and install [Unrar](http://gnuwin32.sourceforge.net/downlinks/unrar.php) and add it's *bin* path to the Windows PATH environment variable. This is needed for automatic extraction of downloaded files.
+7. Clone the repository to somewhere.
+8. Copy `config/settings.json` to `config/settings-mine.json` and update it.
+9. `npm install -d`
+10. `node create-schema`
+11. `node server`
 
 Visual Studio is needed for compiling the dependencies, notably sqlite3, the
 database engine. This concerns only Windows, but then all the pinball stuff

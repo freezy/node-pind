@@ -13,7 +13,6 @@ function DataCtrl($scope, Jsonrpc) {
 	$scope.limit = 10;
 	$scope.resource = null;
 	$scope.search = '';
-	$scope.searchInput = ''; // that's the direct reference to the input field, so we can reset it easily.
 	$scope.sort = '';
 	$scope.filters = [];
 
@@ -24,10 +23,9 @@ function DataCtrl($scope, Jsonrpc) {
 		$scope.numpages = 1;
 		$scope.limit = 10;
 		$scope.search = '';
-		$scope.searchInput = '';
 		$scope.sort = '';
 		$scope.filters = [];
-		$scope.$broadcast('paramsUpdated');
+		$scope.$broadcast('paramsReset');
 	}
 
 	var refresh = function() {
@@ -70,6 +68,7 @@ function DataCtrl($scope, Jsonrpc) {
 	// refresh on explicit params updated event and as soon as resource is set.
 	$scope.$watch('resource', refresh);
 	$scope.$on('paramsUpdated', refresh);
+	$scope.$on('paramsReset', refresh);
 }
 
 var pindAppModule = angular.module('pind', ['ngSanitize']);
@@ -99,7 +98,9 @@ pindAppModule.directive('filters', function() {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
-
+			scope.$on('paramsReset', function() {
+				element.find('li').removeClass('active');
+			});
 			element.find('li a').click(function(event) {
 				event.preventDefault();
 				var parent = $(this).parents('li');
@@ -163,9 +164,12 @@ pindAppModule.directive('searchbox', function() {
 		template:
 			'<div class="input-prepend input-pill">' +
 				'<span class="add-on"><i class="icon search"></i></span>' +
-				'<input type="text" class="search input-medium" placeholder="keywords" ng-model="searchInput">' +
+				'<input type="text" class="search input-medium" placeholder="keywords">' +
 			'</div>',
 		link: function(scope, element, attrs) {
+			scope.$on('paramsReset', function() {
+				element.find('input').val('');
+			});
 			var wait = parseInt(attrs.wait) ? parseInt(attrs.wait) : 300;
 			var keyTimer;
 			element.find('input').on('keyup', function(e) {
@@ -243,7 +247,6 @@ pindAppModule.directive('pager', function() {
 				'</div>',
 		replace: true,
 		link: function(scope, element, attrs) {
-
 			var render = function() {
 				var page = scope.$eval(attrs.page);
 				var pages = scope.$eval(attrs.pages);

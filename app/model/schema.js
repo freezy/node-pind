@@ -7,7 +7,7 @@ var settings = require('../../config/settings-mine');
 var config = {
 
 	// enable/disable logging
-	logging: console.log,
+	logging: false, //console.log,
 
 	define: {
 		classMethods: {

@@ -10,14 +10,17 @@ app.compound.on('ready', function() {
 	var hp = require('./app/modules/hyperpin')(app);
 	var vpm = require('./app/modules/vpinmame')(app);
 	var vpf = require('./app/modules/vpforums')(app);
+	var trns = require('./app/modules/transfer')(app);
+	var extr = require('./app/modules/extract')(app);
 
 	var log = require('winston');
 	log.cli();
 
-	cacheAllTableDownloads();
+//	cacheAllTableDownloads();
+//	startDownloads();
 
 //	assertHiscores();
-//	extractMedia('E:/tmp/Elvira_and_the_Party_Monsters__Bally_1995_.zip');
+	extractMedia('C:/Temp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
 //	vpParse();
 
 //	syncTables2();
@@ -160,7 +163,7 @@ app.compound.on('ready', function() {
 	};
 
 	function extractMedia(filename) {
-		vpf.extractMedia(filename);
+		extr.extractMedia({ hpid: 'unknown' }, filename);
 	}
 
 	function cacheAllTableDownloads() {
@@ -170,6 +173,16 @@ app.compound.on('ready', function() {
 				console.log("ERROR: " + err);
 			} else {
 				console.log("Received %d results.", result.length);
+			}
+		});
+	}
+
+	function startDownloads() {
+		trns.start(function(err, result) {
+			if (err) {
+				console.log("ERROR: " + err);
+			} else {
+				console.log("Done, got: %j", result);
 			}
 		});
 	}
