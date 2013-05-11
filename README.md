@@ -30,6 +30,7 @@ of neat stuff. Particularly it should be able to:
   * Credits allow users to insert coins via web app or Android client (using
     NFC where supported)
   * Users can be notified by mail when someone beats a high score
+* Include a download manager for assets and tables
 * Provide an API for all features (JSON-RPC 2.0)
 * Provide an Android app for some features (such as inserting a coin, browsing
   tables and high scores).
