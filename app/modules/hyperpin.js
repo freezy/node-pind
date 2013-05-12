@@ -282,9 +282,10 @@ exports.syncTables = function(callback) {
 exports.findMissingMedia = function(callback) {
 
 	/**
-	 * Processes row for either media pack or table video
+	 * Downloads and extracts media file.
 	 * @param row Table row
 	 * @param what For logging
+	 * @param findFct Function that searches and downloads media pack and runs callback with path of downloaded file.
 	 * @param next Callback
 	 */
 	var process = function(row, what, findFct, next) {
@@ -315,6 +316,9 @@ exports.findMissingMedia = function(callback) {
 			if (err) {
 				return callback(err);
 			}
+
+			// TODO: move this up into process and make process public. process also takes a flag for ignoreTableVids.
+			// now, do the same for table video.
 			if (!settings.pind.ignoreTableVids) {
 				// do the same for the tables
 				schema.Table.all({ where: 'NOT `media_video`' }).success(function(rows) {

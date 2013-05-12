@@ -5,13 +5,14 @@ var async = require('async');
 var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 
-var socket, vpf, extr;
+var socket, vpf, vpm, extr;
 
 var transferring = false;
 
 module.exports = function(app) {
 	socket = app.get('socket.io');
 	vpf = require('./vpforums')(app);
+	vpm = require('./vpinmame')(app);
 	extr = require('./extract')(app);
 	return exports;
 };
@@ -31,6 +32,11 @@ exports.queue = function(transfer, callback) {
 	})
 };
 
+/**
+ * Starts the next download in the queue.
+ * @param callback
+ * @returns {*}
+ */
 exports.next = function(callback) {
 	if (transferring) {
 		return callback(null, { alreadyStarted: true });
@@ -118,24 +124,55 @@ exports.postProcess = function(transfer, callback) {
 
 		var actions = [];
 		var availableActions = ['addtohp', 'dlrom', 'dlmedia', 'dlvideo'];
+		var table = {
+			name: schema.VpfFile.splitName(transfer.title)[0],
+			platform: 'VP'
+		};
 
+		// explode checked actions into array
 		for (var i = 0; i < availableActions.length; i++) {
 			if (action[availableActions[i]]) {
 				actions.push(availableActions[i]);
 			}
 		}
+
+		// process checked actions
 		async.eachSeries(actions, function(action, next) {
 
 			// download ROM
 			if (action == 'dlrom') {
-
+				vpm.fetchMissingRom(table, function(err, downloadedRoms) {
+					if (err) {
+						return next(err);
+					}
+					console.log('[transfer] Added ' + downloadedRoms.length + ' ROMs to the download queue.');
+					next();
+				});
 			}
 
+			// download media
+			else if (action == 'dlmedia') {
+				vpf.findMediaPack(table, function(err, filepath) {
+					if (err) {
+						return next(err);
+					}
+					extr.extract(filepath, table.hpid ? table.hpid : null, function(err, files) {
+						if (err) {
+							return next(err);
+						}
+						console.log('Successfully extracted ' + files.length + ' media files.');
+						fs.unlinkSync(filepath);
+						next();
+					});
+				})
+			}
 
-			next();
-		}, function(err) {
-
-		});
+			// otherwise just continue
+			else {
+				console.log('[transfer] Unimplemented action: %s', action);
+				next();
+			}
+		}, callback);
 
 	} else {
 		callback();

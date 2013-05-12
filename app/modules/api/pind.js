@@ -47,10 +47,6 @@ var PindApi = function() {
 			});
 		},
 
-		AddTransfer : function(req, params, callback) {
-
-		},
-
 		GetHiscores : function(req, params, callback) {
 			schema.sequelize.query(
 				'SELECT h.*, t.key, u.user FROM hiscores h ' +
