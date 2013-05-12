@@ -17,12 +17,12 @@ app.compound.on('ready', function() {
 	log.cli();
 
 //	cacheAllTableDownloads();
-//	startDownloads();
+	nextDownload();
 
 //	assertHiscores();
 //	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.rar');
 //	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.zip');
-	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
+//	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
 //	vpParse();
 
 //	syncTables2();
@@ -184,8 +184,8 @@ app.compound.on('ready', function() {
 		});
 	}
 
-	function startDownloads() {
-		trns.start(function(err, result) {
+	function nextDownload() {
+		trns.next(function(err, result) {
 			if (err) {
 				console.log("ERROR: " + err);
 			} else {
