@@ -1,5 +1,8 @@
+var _ = require('underscore');
 var fs = require('fs');
+var util = require('util');
 var exec = require('child_process').exec;
+var async = require('async');
 var unzip = require('unzip');
 
 var settings = require('../../config/settings-mine');
@@ -10,6 +13,48 @@ module.exports = function(app) {
 	socket = app.get('socket.io');
 	return exports;
 };
+
+/**
+ * Extracts files of an archive to the correct location. Currently supported
+ * are ZIP or RAR files containing one of the following:
+ *   <ul><li>Media packs containing backglass images, flyers, wheel images
+ *           and table images</li>
+ *       <li>Table videos</li>
+ *       <li>Visual Pinball Tables</li>
+ * @param filepath
+ * @param renameTo
+ * @param callback
+ */
+exports.extract = function(filepath, renameTo, callback) {
+
+	// 1. read files from archive
+	exports.getFiles(filepath, function(err, files) {
+
+		if (err) {
+			return callback(err);
+		}
+		console.log('Got files, preparing extraction...');
+
+		// 2. figure out what to extract
+		exports.prepareExtract(files, renameTo, function(err, mapping) {
+
+			if (err) {
+				return callback(err);
+			}
+			console.log('Got the following mapping: \r%s', util.inspect(mapping));
+
+			// 3. extract to file system
+			var ext = filepath.substr(filepath.lastIndexOf('.')).toLowerCase();
+			if (ext == '.rar') {
+				exports.rarExtract(filepath, mapping, callback);
+			} else if (ext == '.zip') {
+				exports.zipExtract(filepath, mapping, callback);
+			} else {
+				callback('Unknown file extension "' + ext + '".');
+			}
+		});
+	});
+}
 
 /**
  * Reads all files of an archive. ZIP and RAR supported.
@@ -37,7 +82,6 @@ exports.getFiles = function(filepath, callback) {
 			var m;
 			var filenames = [];
 			while (m = regex.exec(stdout)) {
-				console.log(m[2]);
 				filenames.push(m[1].trim().replace(/\\/g, '/') + (m[2][1] == 'D' ? '/' : ''));
 			}
 			callback(null, filenames.sort());
@@ -64,99 +108,147 @@ exports.getFiles = function(filepath, callback) {
 }
 
 /**
- * Extracts a media pack or table video to the correct location. Will not 
- * overwrite anything if files exist already.
- * @param table Row from table
- * @param path Path to the zip archive
+ * Loops through a given number of files from an archive and determines where to extract them.
+ *
+ * @param files Array containing path names within the archive (in no particular order)
+ * @param renameTo If provided, rename use this as destination file name (extension will be kept, don't provide).
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Object} Object containing file mapping. Attributes are path within the zip files,
+ *                   while their values are objects containing <tt>src</tt>
+ *                   and <tt>dst</tt>.</li></ol>
+ */
+exports.prepareExtract = function(files, renameTo, callback) {
+
+	var mapping = {};
+	for (var i = 0; i < files.length; i++) {
+		var filepath = files[i];
+		var dirnames = filepath.split('/');
+		var filename = dirnames.pop();
+		var l = dirnames.length - 1;
+
+		var asMedia = function(filepath, filename, depth) {
+			var ext = filename.substr(filename.lastIndexOf('.'));
+			var dst = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + (renameTo ? renameTo + ext : filename);
+			if (!fs.existsSync(dst)) {
+				mapping[filepath] = { src: filepath, dst: dst };
+			} else {
+				console.log('"%s" already exists, skipping.', dst);
+			}
+		}
+
+		if (filename) {
+			if (['Visual Pinball', 'Future Pinball'].indexOf(dirnames[l - 1]) > -1) {
+				if (['Backglass Images', 'Table Images', 'Table Videos', 'Wheel Images'].indexOf(dirnames[l]) > -1) {
+					asMedia(filepath, filename, 2);
+				}
+			} else if (['HyperPin'].indexOf(dirnames[l - 2]) > -1) {
+
+				// flyers seem to have a naming convention problem..
+				if (dirnames[l - 1] == 'Flyers') {
+					dirnames[l - 1] = 'Flyer Images';
+				}
+
+				if (['Flyer Images'].indexOf(dirnames[l - 1]) > -1) {
+					asMedia(filepath, filename, 3);
+				}
+
+			} else if (['HyperPin'].indexOf(dirnames[l - 1]) > -1) {
+
+				if (['Instruction Cards'].indexOf(dirnames[l]) > -1) {
+					asMedia(filepath, filename, 2);
+				}
+			} else {
+				//console.log('2 Ignoring %s (%s)', entry.path, dirnames[l - 2]);
+			}
+		} else {
+			//console.log('3 Ignoring %s', entry.path);
+		}
+	}
+	callback(null, mapping);
+};
+
+/**
+ * Extracts a given number of files of a zip archive to a given destination for each file.
+ *
+ * @param zipfile Path to the zip archive
+ * @param mapping Object containing file mapping. Attributes are path within the zip files,
+ *   while their values are objects containing <tt>src</tt> and <tt>dst</tt>.
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Array} List of extracted files.</li></ol>
  */
-exports.extractMedia = function(table, path, callback) {
+exports.zipExtract = function(zipfile, mapping, callback) {
 	var extractedFiles = [];
-	var ext = path.substr(path.lastIndexOf('.')).toLowerCase();
-	if (ext == '.rar') {
-		var rar = new rarfile.RarFile(path, { debugMode: true, rarTool: settings.pind.unrar });
-		rar.on('ready', function() {
-			console.log('rar contents: %j (%d file(s))', rar.names, rar.length());
-			if (rar.length() > 0) {
-				var outname = settings.pind.tmp + '/' + rar.names[0];
-				var outfile = fs.createWriteStream(outname);
-				console.log('writing out to %s', outname);
-				rar.on('end', function() {
-					console.log('done writing.');
-				})
-				rar.pipe(rar.names[0], outfile);
+	fs.createReadStream(zipfile)
+	.pipe(unzip.Parse())
+	.on('entry', function (entry) {
+		try {
+			var map = mapping[entry.path];
+			if (map) {
+				console.log('[unzip] Extracting "%s" to "%s"...', entry.path, map.dst);
+				extractedFiles.push(map.dst);
+				entry.pipe(fs.createWriteStream(map.dst));
+			} else {
+				console.log('[unzip] Skipping "%s".', entry.path);
+				entry.autodrain();
 			}
-		});
-//		var outfile = fs.createWriteStream('2_copy.jpg');
-//		rf.pipe('2.jpg', outfile);
-		return;
-	}
-	fs.createReadStream(path)
-		.pipe(unzip.Parse())
-		.on('entry', function (entry) {
-			try {
-				var dirnames = entry.path.split('/');
-				var filename = dirnames.pop();
-				var l = dirnames.length - 1;
+		} catch (err) {
+			callback(err.message);
+		}
+	})
+	.on('close', function() {
+		if (callback) {
+			callback(null, extractedFiles);
+		}
+	});
+};
 
-				var extract = function(entry, dirnames, filename, depth) {
-					var ext = filename.substr(filename.lastIndexOf('.'));
-					var dest = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + table.hpid + ext;
-					if (!fs.existsSync(dest)) {
-						console.log('Extracting "%s" to "%s"...', entry.path, dest);
-						extractedFiles.push(dest);
-						entry.pipe(fs.createWriteStream(dest));
-					} else {
-						console.log('"%s" already exists, skipping.', dest);
-						entry.autodrain();
-					}
+/**
+ * Extracts a given number of files of a rar archive to a given destination for each file.
+ *
+ * @param rarfile Path to the rar archive
+ * @param mapping Object containing file mapping. Attributes are path within the zip files,
+ *   while their values are objects containing <tt>src</tt> and <tt>dst</tt>.
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Array} List of extracted files.</li></ol>
+ */
+exports.rarExtract = function(rarfile, mapping, callback) {
+
+	var extractedFiles = [];
+	async.eachSeries(_.values(mapping),
+		function(map, next) {
+			var dstFolder = map.dst.substr(0, map.dst.lastIndexOf('/'));
+			var dstFilename = map.dst.substr(map.dst.lastIndexOf('/') + 1);
+			var srcFilename = map.src.substr(map.src.lastIndexOf('/') + 1);
+			console.log('[unrar] Extracting "%s" to "%s"...', map.src, map.dst);
+			var cmd = '"' + settings.pind.unrar + '" x -ep -y "' + rarfile + '" "' + map.src.replace(/\//g, '\\') + '" "' + dstFolder.replace(/\//g, '\\') + '"';
+			console.log('[unrar] > %s', cmd);
+			exec(cmd, function (err, stdout, stderr) {
+				if (err) {
+					return next(err);
 				}
-
-				if (filename) {
-					if (['Visual Pinball', 'Future Pinball'].indexOf(dirnames[l - 1]) > -1) {
-						if (['Backglass Images', 'Table Images', 'Table Videos', 'Wheel Images'].indexOf(dirnames[l]) > -1) {
-							extract(entry, dirnames, filename, 2);
-						} else {
-							entry.autodrain();
-						}
-
-					} else if (['HyperPin'].indexOf(dirnames[l - 2]) > -1) {
-
-						// flyers seem to have a naming convention problem..
-						if (dirnames[l - 1] == 'Flyers') {
-							dirnames[l - 1] = 'Flyer Images';
-						}
-
-						if (['Flyer Images'].indexOf(dirnames[l - 1]) > -1) {
-							extract(entry, dirnames, filename, 3);
-						} else {
-							entry.autodrain();
-						}
-
-					} else if (['HyperPin'].indexOf(dirnames[l - 1]) > -1) {
-
-						if (['Instruction Cards'].indexOf(dirnames[l]) > -1) {
-							extract(entry, dirnames, filename, 2);
-						} else {
-							entry.autodrain();
-						}
-					} else {
-						//console.log('2 Ignoring %s (%s)', entry.path, dirnames[l - 2]);
-						entry.autodrain();
-					}
+				if (stderr) {
+					return next(stderr);
+				}
+				if (!stdout.match(/all ok/i)) {
+					return next(stdout);
+				}
+				extractedFiles.push(map.dst);
+				if (dstFilename != srcFilename) {
+					console.log('[unrar] Renaming "%s" to "%s"', dstFolder + '/' + srcFilename, map.dst);
+					fs.rename(dstFolder + '/' + srcFilename, map.dst, next);
 				} else {
-					//console.log('3 Ignoring %s', entry.path);
-					entry.autodrain();
+					next();
 				}
-			} catch (err) {
-				callback(err.message);
+			});
+
+		}, function(err) {
+			if (err) {
+				return callback(err);
 			}
-		})
-		.on('close', function() {
-			if (callback) {
-				callback(null, extractedFiles);
-			}
-		});
+			callback(null, extractedFiles);
+		}
+	);
 };

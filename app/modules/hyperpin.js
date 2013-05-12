@@ -294,7 +294,7 @@ exports.findMissingMedia = function(callback) {
 				return next(err);
 			}
 			socket.emit('notice', { msg: 'Download successful, extracting missing media files' });
-			extr.extractMedia(row, filename, function(err, files) {
+			extr.extract(filename, row.hpid, function(err, files) {
 				if (err) {
 					return next(err);
 				}

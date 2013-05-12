@@ -165,13 +165,12 @@ app.compound.on('ready', function() {
 	};
 
 	function extractMedia(filename) {
-		extr.getFiles(filename, function(err, files) {
+		extr.extract(filename, null, function(err, files) {
 			if (err) {
 				return console.log('ERROR: ' + err);
 			}
 			console.log('Files in archive: ' + util.inspect(files));
 		});
-		//extr.extractMedia({ hpid: 'unknown' }, filename);
 	}
 
 	function cacheAllTableDownloads() {

@@ -46,7 +46,7 @@ exports.start = function(callback) {
 							if (err) {
 								return callback(err);
 							}
-							extr.extractMedia({}, filepath, function(err, extractedFiles) {
+							extr.extract(filepath, null, function(err, extractedFiles) {
 								if (err) {
 									return callback(err);
 								}
