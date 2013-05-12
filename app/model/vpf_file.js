@@ -22,13 +22,32 @@ module.exports = function(sequelize, DataTypes) {
 			classMethods: {
 				fuzzyExtract: function(el) {
 					return el.title;
+				},
+
+
+				/**
+				 * Splits the title into two parts: the "real" title and all the tags that fly along.
+				 * @param title
+				 * @returns {Array}
+				 */
+				splitName: function(title) {
+					title = title.replace(/[\-_]+/g, ' ');
+					title = title.replace(/[^\s]\(/g, ' (');
+					var m = title.match(/\s+((vp\s*9|v[\d\.]{3,}|fs\s|fs$|\(|\[|mod\s|directB2S|FSLB|B2S|de\s|em\s|BLUEandREDledGImod|8 step GI|FSHD|HR\s|Low Res|night mod).*)/i);
+					if (m) {
+						var info = m[1];
+						var title = title.substr(0, title.length - info.length).trim();
+						return [title, info];
+					} else {
+						return [title, ''];
+					}
 				}
 			},
 
 			instanceMethods: {
-				enhance: function(hit) {
+				map: function(hit) {
 					var result = this.values;
-					var split = trim(result.title);
+					var split = VpfFile.splitName(result.title);
 					result.title_match = hit ? hit.string : null;
 					result.title_trimmed = split[0];
 					result.info = split[1];
@@ -41,17 +60,4 @@ module.exports = function(sequelize, DataTypes) {
 		});
 
 	return VpfFile;
-}
-
-function trim(str) {
-	str = str.replace(/[\-_]+/g, ' ');
-	str = str.replace(/[^\s]\(/g, ' (');
-	var m = str.match(/\s+((vp\s*9|v[\d\.]{3,}|fs\s|fs$|\(|\[|mod\s|directB2S|FSLB|B2S|de\s|em\s|BLUEandREDledGImod|8 step GI|FSHD|HR\s|Low Res|night mod).*)/i);
-	if (m) {
-		var info = m[1];
-		var title = str.substr(0, str.length - info.length).trim();
-		return [title, info];
-	} else {
-		return [str, ''];
-	}
 }

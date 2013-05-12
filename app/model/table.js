@@ -126,7 +126,7 @@ module.exports = function(sequelize, DataTypes) {
 				this.authtoken = randomKey(32);
 			},*/
 
-			enhance: function(hit) {
+			map: function(hit) {
 				var result = this.values;
 				result.name_match = hit ? hit.string : null;
 				return result;

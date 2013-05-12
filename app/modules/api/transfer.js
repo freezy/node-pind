@@ -63,7 +63,6 @@ var TransferApi = function() {
 
 				var returnedRows = [];
 				_.each(rows, function(row) {
-//					returnedRows.push(row.enhance());
 					returnedRows.push(row);
 				});
 

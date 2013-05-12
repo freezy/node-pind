@@ -330,19 +330,8 @@ exports.init = function(_socket) {
 	}
 };
 
-/**
- * Checks ipdb.org and vpforums.org for ROMs and downloads them, preferably from
- * ipdb.org.
- *
- * @param callback
- */
-exports.fetchMissingRoms = function(callback) {
+exports.fetchMissingRom = function(table, callback) {
 
-	if (isFetchingRoms) {
-		return callback('Fetching process already running. Wait until complete.');
-	}
-	socket.emit('startProcessing', { id: '#dlrom' });
-	isFetchingRoms = true;
 	var downloadedRoms = [];
 
 	/**
@@ -378,10 +367,12 @@ exports.fetchMissingRoms = function(callback) {
 			console.log('Updating table row with new ROM status...');
 			row.updateAttributes({
 				rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + row.rom + '.zip')
-			}).done(next);
+			}).success(function() {
+				next(null, downloadedRoms);
+			}).fail(next);
 
 		} else {
-			next();
+			next(null, downloadedRoms);
 		}
 	};
 
@@ -409,11 +400,11 @@ exports.fetchMissingRoms = function(callback) {
 
 	/**
 	 * Downloads all ROMs from vpforums.org (that don't exist already).
-	 * @param row Tables row from database
+	 * @param table Tables row from database
 	 * @param next Callback
 	 */
-	var downloadVPF = function(row, next) {
-		vpf.getRomLinks(row, function(err, links) {
+	var downloadVPF = function(table, next) {
+		vpf.getRomLinks(table, function(err, links) {
 			if (err) {
 				console.log('ERROR: ' + err);
 				return next(err);
@@ -422,7 +413,7 @@ exports.fetchMissingRoms = function(callback) {
 				if (err) {
 					return next(err);
 				}
-				checkSuccess(row, next);
+				checkSuccess(table, next);
 			});
 		});
 	};
@@ -430,12 +421,12 @@ exports.fetchMissingRoms = function(callback) {
 	/**
 	 * Downloads all ROMs from ipdb.org (that don't exist already), followed
 	 * by vpforums.org.
-	 * @param row Tables row from database
+	 * @param table Tables row from database
 	 * @param next Callback
 	 */
-	var downloadIPDB = function(row, next) {
-		socket.emit('notice', { msg: 'IPDB: Searching ROMs for "' + row.name + '"', timeout: 5000 });
-		ipdb.getRomLinks(row.ipdb_no, function(err, links) {
+	var downloadIPDB = function(table, next) {
+		socket.emit('notice', { msg: 'IPDB: Searching ROMs for "' + table.name + '"', timeout: 5000 });
+		ipdb.getRomLinks(table.ipdb_no, function(err, links) {
 			console.log('IPDB ROMS: %s', util.inspect(links));
 			if (err) {
 				console.log('ERROR: ' + err);
@@ -445,20 +436,45 @@ exports.fetchMissingRoms = function(callback) {
 				if (err) {
 					return next(err);
 				}
-				downloadVPF(row, next);
+				downloadVPF(table, next);
 			});
 		});
 	};
 
+	if (table.ipdb_no) {
+		downloadIPDB(table, callback);
+	} else {
+		console.log('WARNING: ROM file found in table but no IPDB ID. Maybe try matching IPDB.org first?');
+		downloadVPF(table, callback);
+	}
+
+}
+
+/**
+ * Checks ipdb.org and vpforums.org for ROMs and downloads them, preferably from
+ * ipdb.org.
+ *
+ * @param callback
+ */
+exports.fetchMissingRoms = function(callback) {
+
+	if (isFetchingRoms) {
+		return callback('Fetching process already running. Wait until complete.');
+	}
+	socket.emit('startProcessing', { id: '#dlrom' });
+	isFetchingRoms = true;
+	var downloadedRoms = [];
+
 	console.log('Fetching tables with no ROM file...')
 	schema.Table.findAll({ where: 'NOT `rom_file` AND rom IS NOT NULL' }).success(function(rows) {
 		async.eachSeries(rows, function(row, next) {
-			if (row.ipdb_no) {
-				downloadIPDB(row, next);
-			} else {
-				console.log('WARNING: ROM file found in table but no IPDB ID. Maybe try matching IPDB.org first?');
-				downloadVPF(row, next);
-			}
+			exports.fetchMissingRom(row, function(err, dlRoms) {
+				if (err) {
+					return next(err);
+				}
+				downloadedRoms = downloadedRoms.concat(dlRoms);
+				next();
+			});
 		}, function(err) {
 			if (!err) {
 				socket.emit('notice', { msg: 'All done, ' + downloadedRoms.length + ' ROMs downloaded.', timeout: 5000 });

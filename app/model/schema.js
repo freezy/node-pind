@@ -1,5 +1,5 @@
-var fuzzy = require('fuzzy');
 var _ = require('underscore');
+var fuzzy = require('fuzzy');
 var Sequelize = require('sequelize');
 
 var settings = require('../../config/settings-mine');
@@ -34,9 +34,9 @@ var config = {
 
 				// enhance and return
 				var results = [];
-				var enhance = pagedResults.length > 0 && pagedResults[0].original.enhance instanceof Function;
+				var map = pagedResults.length > 0 && pagedResults[0].original.map instanceof Function;
 				_.each(pagedResults, function(hit) {
-					results.push(enhance ? hit.original.enhance(hit) : hit.original);
+					results.push(map ? hit.original.map(hit) : hit.original);
 				});
 
 				callback({ rows: results, count: hits.length });

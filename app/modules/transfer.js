@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var fs = require('fs');
+var async = require('async');
 
 var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
@@ -105,4 +106,38 @@ exports.next = function(callback) {
 		}
 		
 	});
+};
+
+exports.postProcess = function(transfer, callback) {
+	if (!transfer.postAction) {
+		return callback();
+	}
+
+	var action = JSON.parse(transfer.postAction);
+	if (transfer.type == 'table') {
+
+		var actions = [];
+		var availableActions = ['addtohp', 'dlrom', 'dlmedia', 'dlvideo'];
+
+		for (var i = 0; i < availableActions.length; i++) {
+			if (action[availableActions[i]]) {
+				actions.push(availableActions[i]);
+			}
+		}
+		async.eachSeries(actions, function(action, next) {
+
+			// download ROM
+			if (action == 'dlrom') {
+
+			}
+
+
+			next();
+		}, function(err) {
+
+		});
+
+	} else {
+		callback();
+	}
 };
