@@ -25,6 +25,13 @@ module.exports = {
 		tmp: 'C:/temp',
 
 		/**
+		 * Absolute path to where unrar.exe is located.
+		 * You can download it here:
+		 * 		http://sourceforge.net/projects/gnuwin32/files/unrar/3.4.3/unrar-3.4.3.exe/download
+		 */
+		unrar: 'C:/Program Files (x86)/GnuWin32/bin/unrar.exe',
+
+		/**
 		 * Set this to true if you don't use table videos.
 		 */
 		ignoreTableVids: false,

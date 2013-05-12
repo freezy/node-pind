@@ -1,6 +1,6 @@
 var fs = require('fs');
+var exec = require('child_process').exec;
 var unzip = require('unzip');
-var rarfile = require('rarfile');
 
 var settings = require('../../config/settings-mine');
 
@@ -11,6 +11,57 @@ module.exports = function(app) {
 	return exports;
 };
 
+/**
+ * Reads all files of an archive. ZIP and RAR supported.
+ * @param filepath Absolute path to the archive
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Array} List of files in the archive.</li></ol>
+ */
+exports.getFiles = function(filepath, callback) {
+
+	var ext = filepath.substr(filepath.lastIndexOf('.')).toLowerCase();
+
+	// RAR code
+	if (ext == '.rar') {
+		var cmd = '"' + settings.pind.unrar + '" v "' + filepath + '"';
+
+		exec(cmd, function (err, stdout, stderr) {
+			if (err) {
+				return callback(err);
+			}
+			if (stderr) {
+				return callback(stderr);
+			}
+			var regex = new RegExp('\\s*([^\\r\\n]+)[\\r\\n]\\s*\\d+\\s+\\d+\\s+\\d+%\\s+[^\\s]+\\s+[^\\s]+\\s+([^\\s]+)\\s+\\d+', 'g');
+			var m;
+			var filenames = [];
+			while (m = regex.exec(stdout)) {
+				console.log(m[2]);
+				filenames.push(m[1].trim().replace(/\\/g, '/') + (m[2][1] == 'D' ? '/' : ''));
+			}
+			callback(null, filenames.sort());
+		});
+
+	// ZIP code
+	} else if (ext == '.zip') {
+		var filenames = [];
+		fs.createReadStream(filepath)
+		.pipe(unzip.Parse())
+		.on('entry', function (entry) {
+			filenames.push(entry.path);
+			entry.autodrain();
+
+		}).on('close', function() {
+			if (callback) {
+				callback(null, filenames.sort());
+			}
+		});
+
+	} else {
+		callback('Unknown file extension "' + ext + '".');
+	}
+}
 
 /**
  * Extracts a media pack or table video to the correct location. Will not 
@@ -25,7 +76,7 @@ exports.extractMedia = function(table, path, callback) {
 	var extractedFiles = [];
 	var ext = path.substr(path.lastIndexOf('.')).toLowerCase();
 	if (ext == '.rar') {
-		var rar = new rarfile.RarFile(path, { debugMode: true });
+		var rar = new rarfile.RarFile(path, { debugMode: true, rarTool: settings.pind.unrar });
 		rar.on('ready', function() {
 			console.log('rar contents: %j (%d file(s))', rar.names, rar.length());
 			if (rar.length() > 0) {

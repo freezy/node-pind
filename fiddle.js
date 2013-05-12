@@ -20,7 +20,9 @@ app.compound.on('ready', function() {
 //	startDownloads();
 
 //	assertHiscores();
-	extractMedia('C:/Temp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
+	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.rar');
+//	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.zip');
+//	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
 //	vpParse();
 
 //	syncTables2();
@@ -143,7 +145,7 @@ app.compound.on('ready', function() {
 	}
 
 	function vpParse() {
-		vpf.findMediaPack({ name: 'Elvira and the Party Monsters' }, function(err, whatever) {
+		vpf.findMediaPack({ name : 'Elvira and the Party Monsters' }, function(err, whatever) {
 			if (err) {
 				console.log("ERROR: " + err);
 			} else {
@@ -163,7 +165,13 @@ app.compound.on('ready', function() {
 	};
 
 	function extractMedia(filename) {
-		extr.extractMedia({ hpid: 'unknown' }, filename);
+		extr.getFiles(filename, function(err, files) {
+			if (err) {
+				return console.log('ERROR: ' + err);
+			}
+			console.log('Files in archive: ' + util.inspect(files));
+		});
+		//extr.extractMedia({ hpid: 'unknown' }, filename);
 	}
 
 	function cacheAllTableDownloads() {
