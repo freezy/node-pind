@@ -1,5 +1,5 @@
-var fs = require('fs');
 var _ = require('underscore');
+var fs = require('fs');
 
 var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');

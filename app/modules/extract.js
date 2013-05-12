@@ -33,7 +33,7 @@ exports.extract = function(filepath, renameTo, callback) {
 		if (err) {
 			return callback(err);
 		}
-		console.log('Got files, preparing extraction...');
+		console.log('[extract] Got %d entries, preparing extraction...', files.length);
 
 		// 2. figure out what to extract
 		exports.prepareExtract(files, renameTo, function(err, mapping) {
@@ -41,7 +41,6 @@ exports.extract = function(filepath, renameTo, callback) {
 			if (err) {
 				return callback(err);
 			}
-			console.log('Got the following mapping: \r%s', util.inspect(mapping));
 
 			// 3. extract to file system
 			var ext = filepath.substr(filepath.lastIndexOf('.')).toLowerCase();
@@ -127,14 +126,20 @@ exports.prepareExtract = function(files, renameTo, callback) {
 		var filename = dirnames.pop();
 		var l = dirnames.length - 1;
 
-		var asMedia = function(filepath, filename, depth) {
-			var ext = filename.substr(filename.lastIndexOf('.'));
-			var dst = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + (renameTo ? renameTo + ext : filename);
+		// adds it to the queue if not already exists
+		var add = function(dst) {
 			if (!fs.existsSync(dst)) {
 				mapping[filepath] = { src: filepath, dst: dst };
 			} else {
-				console.log('"%s" already exists, skipping.', dst);
+				console.log('[extract] "%s" already exists, skipping.', dst);
 			}
+		}
+
+		// adds it to the queue using the typical
+		var asMedia = function(depth) {
+			var ext = filename.substr(filename.lastIndexOf('.'));
+			var dst = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + (renameTo ? renameTo + ext : filename);
+			add(dst);
 		}
 
 		if (filename) {
@@ -143,7 +148,7 @@ exports.prepareExtract = function(files, renameTo, callback) {
 			// VP/FP-specific artwork
 			if (_.contains(['Visual Pinball', 'Future Pinball'], dirnames[l - 1])) {
 				if (_.contains(['Backglass Images', 'Table Images', 'Table Videos', 'Wheel Images'], dirnames[l])) {
-					asMedia(filepath, filename, 2);
+					asMedia(2);
 				}
 
 			// HyperPin-specific artwork
@@ -155,21 +160,19 @@ exports.prepareExtract = function(files, renameTo, callback) {
 				}
 
 				if (_.contains(['Flyer Images'], dirnames[l - 1])) {
-					asMedia(filepath, filename, 3);
+					asMedia(3);
 				}
 
 			} else if (_.contains(['HyperPin'], dirnames[l - 1])) {
 
 				if (_.contains(['Instruction Cards'], dirnames[l])) {
-					asMedia(filepath, filename, 2);
+					asMedia(2);
 				}
 
 			// VP tables
 			} else if (_.contains(['.vpt', '.vbs', '.exe'], ext)) {
-				mapping[filepath] = {
-					src: filepath,
-					dst: settings.visualpinball.path + '/Tables/' + filename
-				};
+				add(settings.visualpinball.path + '/Tables/' + filename);
+
 			} else {
 				//console.log('2 Ignoring %s (%s)', entry.path, dirnames[l - 2]);
 			}
