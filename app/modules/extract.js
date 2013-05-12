@@ -119,7 +119,8 @@ exports.getFiles = function(filepath, callback) {
  */
 exports.prepareExtract = function(files, renameTo, callback) {
 
-	var mapping = {};
+	var mapping = { extract: {}, skip: {}, ignore: [] };
+
 	for (var i = 0; i < files.length; i++) {
 		var filepath = files[i];
 		var dirnames = filepath.split('/');
@@ -129,18 +130,19 @@ exports.prepareExtract = function(files, renameTo, callback) {
 		// adds it to the queue if not already exists
 		var add = function(dst) {
 			if (!fs.existsSync(dst)) {
-				mapping[filepath] = { src: filepath, dst: dst };
+				mapping.extract[filepath] = { src: filepath, dst: dst };
 			} else {
+				mapping.skip[filepath] = { src: filepath, dst: dst };
 				console.log('[extract] "%s" already exists, skipping.', dst);
 			}
-		}
+		};
 
 		// adds it to the queue using the typical
 		var asMedia = function(depth) {
 			var ext = filename.substr(filename.lastIndexOf('.'));
 			var dst = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + (renameTo ? renameTo + ext : filename);
 			add(dst);
-		}
+		};
 
 		if (filename) {
 			var ext = filename.substr(filename.lastIndexOf('.'));
@@ -149,6 +151,8 @@ exports.prepareExtract = function(files, renameTo, callback) {
 			if (_.contains(['Visual Pinball', 'Future Pinball'], dirnames[l - 1])) {
 				if (_.contains(['Backglass Images', 'Table Images', 'Table Videos', 'Wheel Images'], dirnames[l])) {
 					asMedia(2);
+				} else {
+					mapping.ignore.push(filepath);
 				}
 
 			// HyperPin-specific artwork
@@ -161,12 +165,16 @@ exports.prepareExtract = function(files, renameTo, callback) {
 
 				if (_.contains(['Flyer Images'], dirnames[l - 1])) {
 					asMedia(3);
+				} else {
+					mapping.ignore.push(filepath);
 				}
 
 			} else if (_.contains(['HyperPin'], dirnames[l - 1])) {
 
 				if (_.contains(['Instruction Cards'], dirnames[l])) {
 					asMedia(2);
+				} else {
+					mapping.ignore.push(filepath);
 				}
 
 			// VP tables
@@ -174,7 +182,7 @@ exports.prepareExtract = function(files, renameTo, callback) {
 				add(settings.visualpinball.path + '/Tables/' + filename);
 
 			} else {
-				//console.log('2 Ignoring %s (%s)', entry.path, dirnames[l - 2]);
+				mapping.ignore.push(filepath);
 			}
 		} else {
 			//console.log('3 Ignoring %s', entry.path);
@@ -194,15 +202,14 @@ exports.prepareExtract = function(files, renameTo, callback) {
  * 		<li>{Array} List of extracted files.</li></ol>
  */
 exports.zipExtract = function(zipfile, mapping, callback) {
-	var extractedFiles = [];
 	fs.createReadStream(zipfile)
 	.pipe(unzip.Parse())
 	.on('entry', function (entry) {
 		try {
-			var map = mapping[entry.path];
+			var map = mapping.extract[entry.path];
 			if (map) {
 				console.log('[unzip] Extracting "%s" to "%s"...', entry.path, map.dst);
-				extractedFiles.push(map.dst);
+				map.extracted = true;
 				entry.pipe(fs.createWriteStream(map.dst));
 			} else {
 				console.log('[unzip] Skipping "%s".', entry.path);
@@ -214,7 +221,7 @@ exports.zipExtract = function(zipfile, mapping, callback) {
 	})
 	.on('close', function() {
 		if (callback) {
-			callback(null, extractedFiles);
+			callback(null, mapping);
 		}
 	});
 };
@@ -231,13 +238,13 @@ exports.zipExtract = function(zipfile, mapping, callback) {
  */
 exports.rarExtract = function(rarfile, mapping, callback) {
 
-	var extractedFiles = [];
-	async.eachSeries(_.values(mapping),
+	async.eachSeries(_.values(mapping.extract),
 		function(map, next) {
 			var dstFolder = map.dst.substr(0, map.dst.lastIndexOf('/'));
 			var dstFilename = map.dst.substr(map.dst.lastIndexOf('/') + 1);
 			var srcFilename = map.src.substr(map.src.lastIndexOf('/') + 1);
 			console.log('[unrar] Extracting "%s" to "%s"...', map.src, map.dst);
+			// TODO extract to tmp if to be renamed so there are no name conflicts.
 			var cmd = '"' + settings.pind.unrar + '" x -ep -y "' + rarfile + '" "' + map.src.replace(/\//g, '\\') + '" "' + dstFolder.replace(/\//g, '\\') + '"';
 			console.log('[unrar] > %s', cmd);
 			exec(cmd, function (err, stdout, stderr) {
@@ -250,7 +257,7 @@ exports.rarExtract = function(rarfile, mapping, callback) {
 				if (!stdout.match(/all ok/i)) {
 					return next(stdout);
 				}
-				extractedFiles.push(map.dst);
+				map.extracted = true;
 				if (dstFilename != srcFilename) {
 					console.log('[unrar] Renaming "%s" to "%s"', dstFolder + '/' + srcFilename, map.dst);
 					fs.rename(dstFolder + '/' + srcFilename, map.dst, next);
@@ -263,7 +270,7 @@ exports.rarExtract = function(rarfile, mapping, callback) {
 			if (err) {
 				return callback(err);
 			}
-			callback(null, extractedFiles);
+			callback(null, mapping);
 		}
 	);
 };
