@@ -20,9 +20,9 @@ app.compound.on('ready', function() {
 //	startDownloads();
 
 //	assertHiscores();
-	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.rar');
+//	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.rar');
 //	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.zip');
-//	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
+	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
 //	vpParse();
 
 //	syncTables2();

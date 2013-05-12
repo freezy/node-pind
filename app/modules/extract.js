@@ -138,26 +138,38 @@ exports.prepareExtract = function(files, renameTo, callback) {
 		}
 
 		if (filename) {
-			if (['Visual Pinball', 'Future Pinball'].indexOf(dirnames[l - 1]) > -1) {
-				if (['Backglass Images', 'Table Images', 'Table Videos', 'Wheel Images'].indexOf(dirnames[l]) > -1) {
+			var ext = filename.substr(filename.lastIndexOf('.'));
+
+			// VP/FP-specific artwork
+			if (_.contains(['Visual Pinball', 'Future Pinball'], dirnames[l - 1])) {
+				if (_.contains(['Backglass Images', 'Table Images', 'Table Videos', 'Wheel Images'], dirnames[l])) {
 					asMedia(filepath, filename, 2);
 				}
-			} else if (['HyperPin'].indexOf(dirnames[l - 2]) > -1) {
+
+			// HyperPin-specific artwork
+			} else if (_.contains(['HyperPin'], dirnames[l - 2])) {
 
 				// flyers seem to have a naming convention problem..
 				if (dirnames[l - 1] == 'Flyers') {
 					dirnames[l - 1] = 'Flyer Images';
 				}
 
-				if (['Flyer Images'].indexOf(dirnames[l - 1]) > -1) {
+				if (_.contains(['Flyer Images'], dirnames[l - 1])) {
 					asMedia(filepath, filename, 3);
 				}
 
-			} else if (['HyperPin'].indexOf(dirnames[l - 1]) > -1) {
+			} else if (_.contains(['HyperPin'], dirnames[l - 1])) {
 
-				if (['Instruction Cards'].indexOf(dirnames[l]) > -1) {
+				if (_.contains(['Instruction Cards'], dirnames[l])) {
 					asMedia(filepath, filename, 2);
 				}
+
+			// VP tables
+			} else if (_.contains(['.vpt', '.vbs', '.exe'], ext)) {
+				mapping[filepath] = {
+					src: filepath,
+					dst: settings.visualpinball.path + '/Tables/' + filename
+				};
 			} else {
 				//console.log('2 Ignoring %s (%s)', entry.path, dirnames[l - 2]);
 			}
