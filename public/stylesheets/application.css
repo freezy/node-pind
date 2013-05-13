@@ -1182,6 +1182,22 @@ td .icon.clickable.ok {
 .item.vpf .thumbnail ul.pills li {
   cursor: default;
 }
+.item.vpf .thumbnail ul.pills li.status-completed {
+  background-color: #c2d3bf;
+}
+.item.vpf .thumbnail ul.pills li.status-started {
+  -webkit-animation: pulsegreen 0.5s infinite alternate;
+  -moz-animation: pulsegreen 0.5s infinite alternate;
+  -o-animation: pulsegreen 0.5s infinite alternate;
+  -ms-animation: pulsegreen 0.5s infinite alternate;
+  animation: pulsegreen 0.5s infinite alternate;
+}
+.item.vpf .thumbnail ul.pills li.status-failed {
+  background-color: #ccb7b0;
+}
+.item.vpf .thumbnail ul.pills li.status-queued {
+  background-color: #e0df79;
+}
 .item.vpf .thumbnail ul.pills .icon.link,
 .item.vpf .thumbnail ul.pills .icon.download-alt {
   font-size: 130%;

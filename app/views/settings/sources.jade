@@ -57,7 +57,7 @@ block inner-content
 							li.link
 								a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
 									i.icon.link
-							li.link.transfer
+							li.link.transfer(class="status-{{row.downloadStatus}}")
 								a.downloadLink(href="#")
 									i.icon.download-alt
 						.clearfix

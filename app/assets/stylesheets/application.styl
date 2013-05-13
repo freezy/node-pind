@@ -1045,7 +1045,15 @@ vpf-padding = 15px
 				text-decoration none
 			li
 				cursor default
-
+				&.status-completed
+					background-color #c2d3bf
+				&.status-started
+					animation pulsegreen 0.5s infinite alternate
+				&.status-failed
+					background-color #ccb7b0
+				&.status-queued
+					background-color #e0df79
+		
 			.icon.link, .icon.download-alt
 				font-size 130%
 

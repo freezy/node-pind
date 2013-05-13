@@ -53,3 +53,25 @@
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(359deg); }
 }
+
+
+@-moz-keyframes pulsegreen {
+	0% { background-color: #e8e8e8 } 
+	100% { background-color: #b5d3af }
+}
+@-webkit-keyframes pulsegreen {
+	0% { background-color: #e8e8e8 } 
+	100% { background-color: #b5d3af }
+}
+@-o-keyframes pulsegreen {
+	0% { background-color: #e8e8e8 } 
+	100% { background-color: #b5d3af }
+}
+@-ms-keyframes pulsegreen {
+	0% { background-color: #e8e8e8 } 
+	100% { background-color: #b5d3af }
+}
+@keyframes pulsegreen {
+	0% { background-color: #e8e8e8 } 
+	100% { background-color: #b5d3af }
+}

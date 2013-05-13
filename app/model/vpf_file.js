@@ -16,8 +16,10 @@ module.exports = function(sequelize, DataTypes) {
 			views: DataTypes.INTEGER,
 			author: DataTypes.STRING,
 			lastUpdatedAt: DataTypes.DATE,
-			downloadedStartedAt: DataTypes.DATE,
-			downloadedAt: DataTypes.DATE
+			downloadQueuedAt: DataTypes.DATE,
+			downloadStartedAt: DataTypes.DATE,
+			downloadFailedAt: DataTypes.DATE,
+			downloadCompletedAt: DataTypes.DATE
 		},
 		{
 			classMethods: {
@@ -53,6 +55,18 @@ module.exports = function(sequelize, DataTypes) {
 					result.title_trimmed = split[0];
 					result.info = split[1];
 					result.lastUpdatedSince = relativeDate(result.lastUpdatedAt);
+					if (this.downloadCompletedAt) {
+						result.downloadStatus = 'completed'
+					} else if (this.downloadFailedAt) {
+						result.downloadStatus = 'failed'
+					} else if (this.downloadStartedAt) {
+						result.downloadStatus = 'started'
+					} else if (this.downloadQueuedAt) {
+							result.downloadStatus = 'queued'
+					} else {
+						result.downloadStatus = 'none'
+					}
+
 					return result;
 				}
 			},
