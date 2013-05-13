@@ -28,9 +28,27 @@ exports.queue = function(transfer, callback) {
 		}
 		schema.Transfer.create(transfer).success(function(row) {
 			callback(null, "Download successfully added to queue.");
+			exports.start(function() {
+				console.log('Download queue finished.');
+			})
 		});
-	})
+	});
 };
+
+exports.start = function(callback) {
+	var cb = function(err, result) {
+		if (err) {
+			return callback(err);
+		} else {
+			if (!result.alreadyStarted && !result.emptyQueue) {
+				exports.next(cb);
+			} else {
+				callback(null, result);
+			}
+		}
+	};
+	exports.next(cb);
+}
 
 /**
  * Starts the next download in the queue.

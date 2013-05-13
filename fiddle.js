@@ -185,7 +185,7 @@ app.compound.on('ready', function() {
 	}
 
 	function nextDownload() {
-		trns.next(function(err, result) {
+		trns.start(function(err, result) {
 			if (err) {
 				console.log("ERROR: " + err);
 			} else {
