@@ -15,8 +15,9 @@ module.exports = function(sequelize, DataTypes) {
 			downloads: DataTypes.INTEGER,
 			views: DataTypes.INTEGER,
 			author: DataTypes.STRING,
-			lastUpdate: DataTypes.DATE,
-			downloaded: DataTypes.DATE
+			lastUpdatedAt: DataTypes.DATE,
+			downloadedStartedAt: DataTypes.DATE,
+			downloadedAt: DataTypes.DATE
 		},
 		{
 			classMethods: {
@@ -51,7 +52,7 @@ module.exports = function(sequelize, DataTypes) {
 					result.title_match = hit ? hit.string : null;
 					result.title_trimmed = split[0];
 					result.info = split[1];
-					result.lastUpdateRel = relativeDate(result.lastUpdate);
+					result.lastUpdatedSince = relativeDate(result.lastUpdatedAt);
 					return result;
 				}
 			},

@@ -317,7 +317,7 @@ function fetchDownloads(cat, title, callback) {
 				downloads: item.downloads,
 				views: item.views,
 				author: item.author,
-				lastUpdate: new Date(item.updated)
+				lastUpdatedAt: new Date(item.updated)
 			};
 
 			var done = function(err, r) {

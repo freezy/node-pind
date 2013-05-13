@@ -59,7 +59,7 @@ exports.next = function(callback) {
 	if (transferring) {
 		return callback(null, { alreadyStarted: true });
 	}
-	schema.Transfer.all({ where: 'started IS NULL', order: 'createdAt ASC' }).success(function(rows) {
+	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'createdAt ASC' }).success(function(rows) {
 		var found = false;
 		if (rows.length > 0) {
 
@@ -72,7 +72,7 @@ exports.next = function(callback) {
 
 						// found a hit. now update "started" clock..
 						console.log('Starting download of %s', row.url);
-						row.updateAttributes({ started: new Date()}).success(function(row) {
+						row.updateAttributes({ startedAt: new Date()}).success(function(row) {
 
 							// now start the download
 							vpf.download(row, settings.pind.tmp, function(err, filepath) {
@@ -80,7 +80,7 @@ exports.next = function(callback) {
 								// on error, update db with error and exit
 								if (err) {
 									return row.updateAttributes({
-										failed: new Date(),
+										failedAt: new Date(),
 										result: err
 									}).success(function() {
 										callback(err);
@@ -89,7 +89,7 @@ exports.next = function(callback) {
 
 								// otherwise, update db with success and extract
 								row.updateAttributes({
-									completed: new Date(),
+									completedAt: new Date(),
 									result: JSON.stringify({ extracting: filepath }),
 									size: fs.fstatSync(fs.openSync(filepath, 'r')).size
 								}).success(function() {
@@ -99,7 +99,7 @@ exports.next = function(callback) {
 										// on error, update db with error and exit
 										if (err) {
 											return row.updateAttributes({
-												failed: new Date(),
+												failedAt: new Date(),
 												result: err
 											}).success(function() {
 												callback(err);

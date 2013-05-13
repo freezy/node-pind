@@ -14,9 +14,9 @@ module.exports = function(sequelize, DataTypes) {
 			reference: DataTypes.INTEGER,
 			postAction: DataTypes.TEXT,
 			size: DataTypes.BIGINT,
-			started: DataTypes.DATE,
-			completed: DataTypes.DATE,
-			failed: DataTypes.DATE,
+			startedAt: DataTypes.DATE,
+			completedAt: DataTypes.DATE,
+			failedAt: DataTypes.DATE,
 			result: DataTypes.TEXT
 		},
 		{

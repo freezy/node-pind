@@ -49,10 +49,10 @@ var VPForumsAPI = function() {
 						break;
 					case 'latest':
 					default:
-						p.order = 'lastUpdate DESC';
+						p.order = 'lastUpdatedAt DESC';
 				}
 			} else {
-				p.order = 'lastUpdate DESC';
+				p.order = 'lastUpdatedAt DESC';
 			}
 			schema.VpfFile.all(p).success(function(rows) {
 
