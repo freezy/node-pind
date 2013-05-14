@@ -480,6 +480,12 @@ button[type="submit"].small span,
 .icon.link:before {
   content: "\f0c1";
 }
+.icon.trash:before {
+  content: "\e007";
+}
+.icon.info:before {
+  content: "\e00b";
+}
 .icon.spin {
   display: inline-block;
   -webkit-animation: spin 2s infinite linear;
@@ -1443,6 +1449,16 @@ table tr.dragging td.dragHandle i {
 }
 .modal.download-table .modal-body h3 {
   line-height: 22px;
+}
+#transfers a:hover {
+  text-decoration: none;
+}
+#transfers i.icon.info {
+  margin-left: 3px;
+  margin-right: 0;
+}
+#transfers i.icon.link {
+  margin-left: 10px;
 }
 .thumbnails img {
   -moz-border-radius-topleft: 3px;

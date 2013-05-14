@@ -44,7 +44,7 @@ block inner-content
 						th Name
 						th(style='width:100px') Added
 						th(style='width:70px') Status
-						th(style='width:70px') Actions
+						th(style='width:70px')
 				tbody
 					tr(ng-repeat='transfer in data', id='{{transfer.id}}', sortable)
 						td.dragHandle
@@ -53,13 +53,18 @@ block inner-content
 							.progress.progress-striped.active
 								.bar(style="width: 0%;")
 						td {{transfer.title}}
+							a(href='{{transfer.url}}', target='_blank')
+								i.icon.link
 						td {{transfer.queuedSince}}
 						td
-						td
-							button.btn.btn-mini.btn-primary(type="button")
-								i.icon.ok
-							button.btn.btn-mini.btn-danger(type="button")
-								i.icon.ok
+						td.nowrap
+							ul.pills.small
+								li.link
+									a
+										i.icon.info
+								li.link
+									a
+										i.icon.trash
 
 		//- empty search result
 		div.noresult(style='display:none')

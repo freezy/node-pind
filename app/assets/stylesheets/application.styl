@@ -435,6 +435,13 @@ button[type="submit"], .btn.fat
 	&.link:before
 		content "\f0c1"
 
+	&.trash:before
+		content "\e007"
+
+	&.info:before
+		content "\e00b"
+
+
 	&.spin
 		display inline-block
 		animation spin 2s infinite linear
@@ -1262,6 +1269,18 @@ vpf-padding-small = 10px
 			line-height 22px
 
 
+// :transfers
+// ============================================================================
+
+#transfers
+	a
+		&:hover
+			text-decoration none
+	i.icon.info
+		margin-left 3px
+		margin-right 0
+	i.icon.link
+		margin-left 10px
 
 // :thumbnails
 // ============================================================================
