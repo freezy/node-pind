@@ -1,23 +1,30 @@
 $(document).ready(function() {
 
-/*	var render = function($tbody, rows) {
-		$tbody.empty();
-		for (var i = 0; i < rows.length; i++) {
-			var row = rows[i];
-			var tr = $('<tr><td></td><td>' + row.title + '</td></tr>');
-			$(tr).appendTo($tbody);
+});
+
+pindAppModule.directive('sortable', function() {
+	return function(scope, element, attrs) {
+		if (scope.$last) {
+			$(element).parents('tbody').tableDnD({
+				onDrop: function(table, row) {
+					
+				},
+				dragHandle: '.dragHandle',
+				onDragClass: 'dragging'
+			});
 		}
 	};
-
-	var config = {
-		id: 'transfers',
-		body: 'table tbody',
-		renderRows: render,
-		apiCall: 'Transfer.GetAll'
-	};
-
-
-	// load data on startup
-	enableData(config);
-	refreshData(config);*/
 });
+
+
+/*
+pindAppModule.directive('sortable', function() {
+	return {
+		restrict: 'A',
+		link: function(scope, element) {
+			scope.$on('transfersReady', function() {
+				
+			});
+		}
+	}
+});*/

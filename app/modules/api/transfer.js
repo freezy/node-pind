@@ -63,7 +63,7 @@ var TransferApi = function() {
 
 				var returnedRows = [];
 				_.each(rows, function(row) {
-					returnedRows.push(row);
+					returnedRows.push(row.map());
 				});
 
 				delete p.limit;
@@ -71,12 +71,12 @@ var TransferApi = function() {
 				delete p.order;
 				schema.Transfer.count(p).success(function(num) {
 
-					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
+					console.log('Returning ' + returnedRows.length + ' rows from a total of ' + num + '.');
 					callback({ rows: returnedRows, count: num });
 
 				}).error(function(err) {
-						throw new Error(err);
-					});
+					throw new Error(err);
+				});
 			});
 		}
 	};

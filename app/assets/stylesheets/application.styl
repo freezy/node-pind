@@ -575,6 +575,9 @@ select.numrows
 .progress-striped .bar
 	background-color color-btn-light
 
+td > .progress
+	margin-bottom 0
+
 // : scaffolding
 // ----------------------------------------------------------------------------
 
@@ -1012,6 +1015,22 @@ td
 		&.ok
 			margin-left 5px
 
+// drag and drop
+table	
+	td.dragHandle
+		&:hover
+			cursor s-resize
+		i
+			transition all animation-slow ease
+			color rgba(0,0,0,0.3)
+			&:hover
+				color rgba(0,0,0,0.7)
+	
+	tr.dragging
+		background-color rgba(0,0,0,0.07)
+
+		td.dragHandle i
+			color rgba(0,0,0,0.7)
 
 // :sources
 // ============================================================================

@@ -641,6 +641,9 @@ select.numrows {
 .progress-striped .bar {
   background-color: #e09d55;
 }
+td > .progress {
+  margin-bottom: 0;
+}
 .content {
   background: url("../images/bg_redox_01.png");
   border: 1px solid #fff;
@@ -1149,6 +1152,26 @@ td .icon.clickable.remove {
 }
 td .icon.clickable.ok {
   margin-left: 5px;
+}
+table td.dragHandle:hover {
+  cursor: s-resize;
+}
+table td.dragHandle i {
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  color: rgba(0,0,0,0.3);
+}
+table td.dragHandle i:hover {
+  color: rgba(0,0,0,0.7);
+}
+table tr.dragging {
+  background-color: rgba(0,0,0,0.07);
+}
+table tr.dragging td.dragHandle i {
+  color: rgba(0,0,0,0.7);
 }
 .item.vpf h3 {
   line-height: 24px;

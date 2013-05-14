@@ -1,3 +1,4 @@
+var relativeDate = require('relative-date');
 
 module.exports = function(sequelize, DataTypes) {
 
@@ -27,7 +28,11 @@ module.exports = function(sequelize, DataTypes) {
 			},
 
 			instanceMethods: {
-
+				map: function() {
+					var result = this.values;
+					result.queuedSince = relativeDate(result.createdAt);
+					return result;
+				}
 			},
 
 			timestamps: true
