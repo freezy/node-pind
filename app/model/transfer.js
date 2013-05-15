@@ -18,7 +18,8 @@ module.exports = function(sequelize, DataTypes) {
 			startedAt: DataTypes.DATE,
 			completedAt: DataTypes.DATE,
 			failedAt: DataTypes.DATE,
-			result: DataTypes.TEXT
+			result: DataTypes.TEXT,
+			sort: DataTypes.BIGINT
 		},
 		{
 			classMethods: {

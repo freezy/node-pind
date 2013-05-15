@@ -26,6 +26,7 @@ exports.queue = function(transfer, callback) {
 		if (rows.length > 0) {
 			return callback('Item already queued.');
 		}
+		transfer.sort = +new Date();
 		schema.Transfer.create(transfer).success(function(row) {
 
 			var startDownload = function() {
@@ -98,6 +99,12 @@ exports.next = function(callback) {
 
 							// now start the download (after VpfFile update)
 							var download = function() {
+								vpf.on('downloadStarted', function(dest) {
+									console.log('**** downloading to %s', dest);
+								});
+								vpf.on('downloadCompleted', function(size) {
+									console.log('**** downloaded %d bytes.', size);
+								});
 								vpf.download(row, settings.pind.tmp, function(err, filepath) {
 
 									// on error, update db with error and exit

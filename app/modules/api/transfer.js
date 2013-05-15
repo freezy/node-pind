@@ -15,6 +15,64 @@ var TransferApi = function() {
 	return {
 		name : 'Transfer',
 
+		// {"id":"1","between":{"prev":"2","next":"3"}}}
+		Reorder : function(req, params, callback) {
+			if (!params.id) {
+				return callback(error.api('Missing parameter: "id".'));
+			}
+			if (!params.between.prev && !params.between.next) {
+				return callback(error.api('Must specify at least previous or next item.'));
+			}
+			schema.Transfer.find(params.id).success(function(row) {
+				if (!row) {
+					return callback(error.api('No transfer found with ID "' + params.id + '".'));
+				}
+				var ids = _.reject(_.values(params.between), function(num) {
+					return num == 0;
+				});
+
+				schema.Transfer.all({ where: { id: ids }}).success(function(rows) {
+					
+					// item has been dropped between 2 rows: easy
+					if (params.between.prev && params.between.next) {
+						if (rows.length != 2) {
+							return callback(error.api('One of ' + ids + ' is not in database.'));
+						}
+						var prev = rows[0].id == params.between.prev ? rows[0] : rows[1];
+						var next = rows[1].id == params.between.next ? rows[1] : rows[0];
+						row.updateAttributes({
+							sort: Math.round((prev.sort + next.sort) / 2)
+						});
+					} 
+					// item has been dropped on top of the list (could be page 2+ though)
+					if (!params.between.prev && params.between.next) {
+						var next = rows[0];
+						// find prev item
+						schema.Transfer.find({ where: [ 'sort < ?', next.sort], limit: 1 }).success(function(prev) {
+							var prevSort = prev ? prev.sort : next.sort - 1024;
+							row.updateAttributes({
+								sort: Math.round((prevSort + next.sort) / 2)
+							});
+						});
+					}
+
+					// item has been dropped on bottom of the list (could be more items on next page)
+					if (params.between.prev && !params.between.next) {
+						var prev = rows[0];
+						// find prev item
+						schema.Transfer.find({ where: [ 'sort > ?', prev.sort], limit: 1 }).success(function(next) {
+							var nextSort = next ? next.sort : prev.sort + 1024;
+							row.updateAttributes({
+								sort: Math.round((prev.sort + nextSort) / 2)
+							});
+						});
+					}
+					callback();
+				});
+
+			});
+		},
+
 		AddVPFTable : function(req, params, callback) {
 			schema.VpfFile.find(params.id).success(function(row) {
 				if (row) {
@@ -46,7 +104,7 @@ var TransferApi = function() {
 		GetAll : function(req, params, callback) {
 
 			var search = params.search && params.search.length > 1;
-			var p = {  };
+			var p = { order: 'sort ASC' };
 
 			// pagination
 			if (!search) {

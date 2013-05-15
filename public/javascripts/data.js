@@ -230,40 +230,15 @@ function api(method, params, callback) {
 		var ret = JSON.parse(data);
 		if (ret.error) {
 			callback(ret.error.message, ret.error);
-		} else if (ret.result.error) {
+		} else if (ret.result && ret.result.error) {
 			callback(typeof ret.result.error.message === 'object' ? JSON.stringify(ret.result.error.message) : ret.result.error.message, ret.result.error);
 		} else {
-			callback(null, ret.result);
+			callback(null, ret.result ? ret.result : ret);
 		}
 	}).fail(function(xhr, status, error) {
 		if (xhr.status == 401) {
 			window.location = $('head meta[name="login"]').attr('content');
 
-		} else {
-			alert(error);
-		}
-	});
-}
-
-function ngApi($http, method, params, callback) {
-	$http({
-		url: '/api',
-		method: 'POST',
-		headers: {
-			'Content-Type' : 'application/json'
-		},
-		data: JSON.stringify({ jsonrpc: '2.0', id: 1, method: method, params: params})
-	}).success(function(ret) {
-		if (ret.error) {
-			callback(ret.error.message, ret.error);
-		} else if (ret.result.error) {
-			callback(typeof ret.result.error.message === 'object' ? JSON.stringify(ret.result.error.message) : ret.result.error.message, ret.result.error);
-		} else {
-			callback(null, ret.result);
-		}
-	}).error(function(data) {
-		if (data.status == 401) {
-			window.location = $('head meta[name="login"]').attr('content');
 		} else {
 			alert(error);
 		}

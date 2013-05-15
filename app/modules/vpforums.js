@@ -1,6 +1,8 @@
 var fs = require('fs');
+var sys = require('sys');
 var util = require('util');
 var async = require('async');
+var events = require('events');
 var request = require('request');
 var natural = require('natural');
 var jsdom = require('jsdom').jsdom;
@@ -13,12 +15,17 @@ var error = require('./error');
 
 var socket;
 
-module.exports = function(app) {
+function VPForums(app) {
+	if ((this instanceof VPForums) === false) {
+		return new VPForums(app);
+	}
+	events.EventEmitter.call(this);
 	socket = app.get('socket.io');
-	return exports;
-};
+}
+sys.inherits(VPForums, events.EventEmitter);
 
-exports.isDownloadingIndex = false;
+
+VPForums.prototype.isDownloadingIndex = false;
 
 /**
  * Finds and downloads either a media pack or a table video.
@@ -41,7 +48,7 @@ var findMedia = function(table, cat, callback) {
 		if (!match) {
 			return callback('Cannot find any media with name similar to "' + table.name + '".');
 		}
-		exports.download(match, settings.pind.tmp, function(err, filename) {
+		VPForums.download(match, settings.pind.tmp, function(err, filename) {
 			if (err) {
 				console.log('[vpf] Error downloading: %s', err);
 				return callback(err);
@@ -59,7 +66,7 @@ var findMedia = function(table, cat, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Absolute file path of the downloaded archive.</li></ol>
  */
-exports.findMediaPack = function(table, callback) {
+VPForums.prototype.findMediaPack = function(table, callback) {
 	if (table.platform == 'VP') {
 		findMedia(table, 35, callback);
 	} else {
@@ -74,7 +81,7 @@ exports.findMediaPack = function(table, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Absolute file path of the downloaded archive.</li></ol>
  */
-exports.findTableVideo = function(table, callback) {
+VPForums.prototype.findTableVideo = function(table, callback) {
 	if (table.platform == 'VP') {
 		findMedia(table, 43, callback);
 	} else {
@@ -89,7 +96,7 @@ exports.findTableVideo = function(table, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Array} List of found links. Links are objects with <tt>name</tt> and <tt>url</tt>.</li></ol>
  */
-exports.getRomLinks = function(table, callback) {
+VPForums.prototype.getRomLinks = function(table, callback) {
 
 	console.log('[vpf] Searching ROM for "' + table.name + '"...');
 	socket.emit('notice', { msg: 'VPF: Searching ROM for "' + table.name + '"', timeout: 120000 });
@@ -120,8 +127,9 @@ exports.getRomLinks = function(table, callback) {
  * @param folder
  * @param callback
  */
-exports.download = function(link, folder, callback) {
-
+VPForums.prototype.download = function(link, folder, callback) {
+	var that = this;
+	
 	socket.emit('notice', { msg: 'VPF: Starting download ' + (link.filename ? ' for "' + link.filename + '"' : ''), timeout: 60000 });
 
 	// fetch the "overview" page
@@ -148,10 +156,12 @@ exports.download = function(link, folder, callback) {
 							var filename = m[2].trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
 							var dest = folder + '/' + filename;
 							socket.emit('notice', { msg: 'VPF: Downloading "' + filename + '"', timeout: 60000 });
+							that.emit('downloadStarted', dest);
 							console.log('[vpf] Downloading %s at %s...', filename, downloadUrl);
 							var stream = fs.createWriteStream(dest);
 							stream.on('close', function() {
 								var size = fs.fstatSync(fs.openSync(dest, 'r')).size;
+								that.emit('downloadCompleted', size);
 								console.log('[vpf] Downloaded %d bytes to %s.', size, dest);
 
 								if (size < 64000) {
@@ -557,7 +567,7 @@ function login(callback) {
  * @param callback Function to execute after completion, invoked with one argument:
  * 	<ol><li>{String} Error message on error</li></ol>
  */
-exports.logout = function(callback) {
+VPForums.prototype.logout = function(callback) {
 	// fetch another damn id
 	console.log('[vpf] Logging out...');
 	request('http://www.vpforums.org/index.php', function(err, response, body) {
@@ -589,15 +599,15 @@ exports.logout = function(callback) {
  *
  * @param callback 
  */
-exports.cacheAllTableDownloads = function(callback) {
+VPForums.prototype.cacheAllTableDownloads = function(callback) {
 
-	if (exports.isDownloadingIndex) {
+	if (VPForums.isDownloadingIndex) {
 		return callback('Fetching process already running. Wait until complete.');
 	}
-	exports.isDownloadingIndex = true;
+	VPForums.isDownloadingIndex = true;
 
 	fetchDownloads(41, null, function(err, results) {
-		exports.isDownloadingIndex = false;
+		VPForums.isDownloadingIndex = false;
 		if (err) {
 			callback(err);
 			return console.log('ERROR: %s', err);
@@ -605,3 +615,5 @@ exports.cacheAllTableDownloads = function(callback) {
 		callback(null, results);
 	});
 }
+
+module.exports = VPForums;

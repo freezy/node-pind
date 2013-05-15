@@ -10,7 +10,7 @@ function DataCtrl($scope, Jsonrpc) {
 
 	$scope.page = 1;
 	$scope.numpages = 1;
-	$scope.limit = 10;
+//	$scope.limit = 10;
 	$scope.resource = null;
 	$scope.search = '';
 	$scope.sort = '';
@@ -21,7 +21,7 @@ function DataCtrl($scope, Jsonrpc) {
 	$scope.reset = function() {
 		$scope.page = 1;
 		$scope.numpages = 1;
-		$scope.limit = 10;
+//		$scope.limit = 10;
 		$scope.search = '';
 		$scope.sort = '';
 		$scope.filters = [];
@@ -213,6 +213,9 @@ pindAppModule.directive('numrows', function() {
 				var values = JSON.parse(attrs.selection);
 				if (values && values.length > 0) {
 					for (var i = 0; i < values.length; i++) {
+						if (i == 0) {
+							scope[attrs.value] = values[i];
+						}
 						element.append('<option value="' + values[i] + '">' + values[i] + '</option>');
 					}
 				}
