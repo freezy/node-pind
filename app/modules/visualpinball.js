@@ -18,6 +18,10 @@ function VisualPinball(app) {
 util.inherits(VisualPinball, events.EventEmitter);
 
 
+/**
+ * Sets up event listener for realtime updates via Socket.IO.
+ * @param app Express application
+ */
 VisualPinball.prototype.initAnnounce = function(app) {
 	var an = require('./announce')(app, this);
 
