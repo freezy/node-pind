@@ -7,12 +7,22 @@ module.exports = function(app, e) {
 	return exports;
 }
 
+/**
+ * object gets send without change to socket with the same event name.
+ * @param event
+ */
 exports.forward = function(event) {
 	emitter.on(event, function(obj) {
 		socket.emit(event, obj);
 	});
 };
 
+/**
+ * a notice gets send with a given message.
+ * @param event
+ * @param message
+ * @param timeout
+ */
 exports.notice = function(event, message, timeout) {
 	emitter.on(event, function(values) {
 		var msg = message;
@@ -30,38 +40,14 @@ exports.notice = function(event, message, timeout) {
 	});
 };
 
+/**
+ * sends given data with the same event name
+ * @param event
+ * @param data
+ * @param eventName
+ */
 exports.data = function(event, data, eventName) {
 	emitter.on(event, function() {
 		socket.emit(eventName ? eventName : event, data);
 	});
-};
-
-exports.register = function(socket) {
-
-
-
-	// object gets send without change to socket with the same event name.
-
-	// a notice gets send with a given message.
-
-	// sends given data with the same event name
-
-	// HyperPin.syncTablesWithData()
-/*	data(hp, 'processingStarted', { id: '#hpsync' });
-	notice(hp, 'syncCompleted', 'Done syncing, starting analysis...');
-	notice(hp, 'analysisCompleted', 'Finished analyzing tables.', 5000);
-	data(hp, 'processingCompleted', { id: '#hpsync' });
-
-	// HyperPin.syncTables()
-	notice(hp, 'xmlParsed', 'Read {{num}} tables from {{platform}}.xml, updating local database...');
-	notice(hp, 'tablesUpdated', 'Updated {{num}} tables in database.');
-
-	// HyperPin.findMissingMedia()
-	notice(hp, 'searchStarted', 'Searching {{what}} for "{{name}}"', 60000);
-	notice(hp, 'searchCompleted', 'Download successful, extracting missing media files');
-	forward(hp, 'tableUpdated');
-
-	// VisualPinball.updateTableData()
-	notice(vp, 'analysisStarted', 'Analyzing {{name}}...');*/
-
 };

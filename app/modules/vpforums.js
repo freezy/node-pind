@@ -13,16 +13,36 @@ var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 var error = require('./error');
 
-var socket;
-
 function VPForums(app) {
 	if ((this instanceof VPForums) === false) {
 		return new VPForums(app);
 	}
 	events.EventEmitter.call(this);
-	socket = app.get('socket.io');
 }
 sys.inherits(VPForums, events.EventEmitter);
+
+
+/**
+ * Sets up event listener for realtime updates via Socket.IO.
+ * @param app Express application
+ */
+VPForums.prototype.initAnnounce = function(app) {
+	var an = require('./announce')(app, this);
+
+	// getRomLinks()
+	an.notice('romSearchStarted', 'VPF: Searching ROM for "{{name}}"', 120000);
+
+	// fetchDownloads()
+	an.forward('progressUpdate');
+
+	// download()
+	an.notice('downloadInitializing', 'VPF: Initializing download{{fileinfo}}', 60000);
+	an.notice('downloadPreparing', 'VPF: Preparing download', 60000);
+	an.notice('downloadStarted', 'VPF: Downloading "{{filename}}"', 300000);
+
+	// login()
+	an.notice('loginStarted', 'VPF: Logging in as "{{user}}"', 30000);
+}
 
 
 VPForums.prototype.isDownloadingIndex = false;
@@ -38,11 +58,11 @@ VPForums.prototype.isDownloadingIndex = false;
  */
 var findMedia = function(table, cat, callback) {
 	console.log('[vpf] Searching media pack for "' + table.name + '"...');
-	fetchDownloads(35, table.name, function(err, results) {
+	this._fetchDownloads(35, table.name, function(err, results) {
 		if (err) {
 			return callback(err);
 		}
-		var match = matchResult(results, table.name, function(str) {
+		var match = this._matchResult(results, table.name, function(str) {
 			return str.replace(/[\[\(].*/, '').trim();
 		}, 'intelligent');
 		if (!match) {
@@ -98,13 +118,14 @@ VPForums.prototype.findTableVideo = function(table, callback) {
  */
 VPForums.prototype.getRomLinks = function(table, callback) {
 
+	var that = this;
 	console.log('[vpf] Searching ROM for "' + table.name + '"...');
-	socket.emit('notice', { msg: 'VPF: Searching ROM for "' + table.name + '"', timeout: 120000 });
-	fetchDownloads(9, table.name, function(err, results) {
+	this.emit('romSearchStarted', { name: table.name });
+	that._fetchDownloads(9, table.name, function(err, results) {
 		if (err) {
 			return callback(err);
 		}
-		var matches = matchResults(results, table.name, function(str) {
+		var matches = that._matchResults(results, table.name, function(str) {
 			return str.replace(/[\[\(\-].*/, '').trim();
 		});
 		var links = [];
@@ -130,7 +151,7 @@ VPForums.prototype.getRomLinks = function(table, callback) {
 VPForums.prototype.download = function(link, folder, callback) {
 	var that = this;
 	
-	socket.emit('notice', { msg: 'VPF: Starting download ' + (link.filename ? ' for "' + link.filename + '"' : ''), timeout: 60000 });
+	that.emit('downloadInitializing', { fileinfo: link.filename ? ' for "' + link.filename + '"' : '' });
 
 	// fetch the "overview" page
 	request(link.url, function(err, response, body) {
@@ -140,7 +161,7 @@ VPForums.prototype.download = function(link, folder, callback) {
 
 		// starts the download, assuming we have a logged session.
 		var download = function(body) {
-			socket.emit('notice', { msg: 'VPF: Progressing download', timeout: 60000 });
+			that.emit('downloadPreparing');
 			var m;
 			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
 				var confirmUrl = m[1].replace(/&amp;/g, '&');
@@ -155,8 +176,7 @@ VPForums.prototype.download = function(link, folder, callback) {
 							var downloadUrl = m[1].replace(/&amp;/g, '&');
 							var filename = m[2].trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
 							var dest = folder + '/' + filename;
-							socket.emit('notice', { msg: 'VPF: Downloading "' + filename + '"', timeout: 60000 });
-							that.emit('downloadStarted', dest);
+							that.emit('downloadStarted', { filename: filename, destpath: dest });
 							console.log('[vpf] Downloading %s at %s...', filename, downloadUrl);
 							var stream = fs.createWriteStream(dest);
 							stream.on('close', function() {
@@ -187,7 +207,7 @@ VPForums.prototype.download = function(link, folder, callback) {
 		// check if need to login
 		if (body.match(/<a href='[^']+' title='Sign In' id='sign_in'>Sign In/i)) {
 			console.log('[vpf] Seems we need to login first.');
-			login(function(err) {
+			that._login(function(err) {
 				if (err) {
 					return callback(err);
 				}
@@ -210,7 +230,7 @@ VPForums.prototype.download = function(link, folder, callback) {
  * @param maxDistance Maximal Lebenshtein Distance to original name.
  * @returns {Array}
  */
-function matchResults(results, title, trimFct, maxDistance) {
+VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance) {
 
 	var matches = [];
 	var distance = maxDistance ? maxDistance : 10;
@@ -231,13 +251,13 @@ function matchResults(results, title, trimFct, maxDistance) {
 
 /**
  * Finds the best single match for a list of results.
- * @param results Results from #fetchDownloads()
+ * @param results Results from #_fetchDownloads()
  * @param title Title to match against
  * @param trimFct Trims off title of results for better matches
  * @param strategy How to determine best match on tie. Valid values: "latest", "mostDownloaded", "mostViewed". Default "intelligent".
  */
-function matchResult(results, title, trimFct, strategy) {
-	var matches = matchResults(results, title, trimFct);
+VPForums.prototype._matchResult = function(results, title, trimFct, strategy) {
+	var matches = this._matchResults(results, title, trimFct);
 	console.log('Got matches: %j', matches);
 	matches.sort(function(a, b) {
 		var x;
@@ -285,11 +305,12 @@ function matchResult(results, title, trimFct, strategy) {
  * @param title Title of the item. If not null, only items starting with the same letter will be returned.
  * @param callback Callback.
  */
-function fetchDownloads(cat, title, callback) {
+VPForums.prototype._fetchDownloads = function(cat, title, callback) {
 
 	var firstPageOnly = false;
 	var currentCache = {};
 	var started = new Date().getTime();
+	var that = this;
 
 	/**
 	 * Saves or creates cache entries.
@@ -373,7 +394,6 @@ function fetchDownloads(cat, title, callback) {
 			console.log('[vpf] Fetching page ' + page + ' for category ' + cat + '.');
 		}
 
-		
 		request(url, function(err, response, body) {
 			if (err) {
 				console.log('[vpf] Error retrieving ' + url + ': ' + err);
@@ -423,7 +443,8 @@ function fetchDownloads(cat, title, callback) {
 					console.log('[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
 					saveToCache(cat, letter, currentResult, callback);
 				} else {
-					socket.emit('progressUpdate', { progress: page / numPages });
+					that.emit('progressUpdate', { progress: page / numPages });
+					console.log('Next...');
 					fetch(cat, letter, currentResult, page + 1, callback);
 				}
 			});
@@ -507,12 +528,12 @@ function fetchDownloads(cat, title, callback) {
  * @param callback Function to execute after completion, invoked with one argument:
  * 	<ol><li>{String} Error message on error</li></ol>
  */
-function login(callback) {
+VPForums.prototype._login = function(callback) {
 	if (!settings.vpforums.user || !settings.vpforums.pass) {
 		return callback('Need valid credentials for vpforums.org. Please update settings-mine.js.');
 	}
 	console.log('[vpf] Logging in...');
-	socket.emit('notice', { msg: 'VPF: Logging in as "' + settings.vpforums.user + '"', timeout: 60000 });
+	this.emit('loginStarted', { user: settings.vpforums.user });
 
 	// just get the index to obtain the damn auth key
 	request('http://www.vpforums.org/index.php', function(err, response, body) {
@@ -606,7 +627,7 @@ VPForums.prototype.cacheAllTableDownloads = function(callback) {
 	}
 	VPForums.isDownloadingIndex = true;
 
-	fetchDownloads(41, null, function(err, results) {
+	this._fetchDownloads(41, null, function(err, results) {
 		VPForums.isDownloadingIndex = false;
 		if (err) {
 			callback(err);
