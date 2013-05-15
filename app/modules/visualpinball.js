@@ -3,16 +3,20 @@ var log = require('winston');
 var ocd = require('ole-doc').OleCompoundDoc;
 var util = require('util');
 var async = require('async');
+var events = require('events');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
-var socket;
 
-module.exports = function(app) {
-	socket = app.get('socket.io');
-	return exports;
-};
+function VisualPinball(app) {
+	if ((this instanceof VisualPinball) === false) {
+		return new VisualPinball(app);
+	}
+	events.EventEmitter.call(this);
+}
+util.inherits(VisualPinball, events.EventEmitter);
+
 
 
 /**
@@ -22,7 +26,7 @@ module.exports = function(app) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Name of the game</li></ol>
  */
-exports.identify = function(table, callback) {
+VisualPinball.prototype.identify = function(table, callback) {
 
 	// those are applied multiple times as long as stuff gets stripped
 	var prestrip = [
@@ -100,8 +104,8 @@ exports.identify = function(table, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Name of the game ROM</li></ol>
  */
-exports.getRomName = function(script, callback) {
-
+VisualPinball.prototype.getRomName = function(script, callback) {
+	var that = this;
 	var m = script.match(/\.GameName\s*=\s*(.+)/);
 	if (m) {
 
@@ -128,10 +132,10 @@ exports.getRomName = function(script, callback) {
 			var valueDef = getVariableValue(varName);
 			var m;
 			if (m = valueDef.match(/LoadValue\("([^"]+)",\s*"([^"]+)"\)/i)) {
-				exports.getTableSetting(m[1], m[2], callback);
+				that.getTableSetting(m[1], m[2], callback);
 
 			} else if (m = valueDef.match(/LoadValue\(([^"]+),\s*"([^"]+)"\)/i)) {
-				exports.getTableSetting(getStrValue(getVariableValue(m[1])), m[2], callback);
+				that.getTableSetting(getStrValue(getVariableValue(m[1])), m[2], callback);
 
 			} else {
 				callback('Cannot parse options value.');
@@ -181,7 +185,7 @@ exports.getRomName = function(script, callback) {
 	}
 }
 
-exports.getDmdOrientation = function(script, callback) {
+VisualPinball.prototype.getDmdOrientation = function(script, callback) {
 	var m = script.match(/\.Games\([^\)]+\)\.Settings\.Value\("ro[lr]"\)\s*=\s*(\d+)/i);
 	if (m) {
 		return callback(null, m[1]);
@@ -189,7 +193,7 @@ exports.getDmdOrientation = function(script, callback) {
 	callback('No DMD orientation setting found.');
 }
 
-exports.getController = function(script, callback) {
+VisualPinball.prototype.getController = function(script, callback) {
 	var m = script.match(/Set\s*Controller\s*=\s*CreateObject\("([^"]+)"/i);
 	if (m) {
 		return callback(null, m[1]);
@@ -214,7 +218,7 @@ exports.getController = function(script, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Integer} Table setting</li></ol>
  */
-exports.getTableSetting = function(storageName, streamName, callback) {
+VisualPinball.prototype.getTableSetting = function(storageName, streamName, callback) {
 	var doc = new ocd(settings.visualpinball.path + '/User/VPReg.stg');
 	doc.on('err', function(err) {
 		callback(err);
@@ -250,7 +254,7 @@ exports.getTableSetting = function(storageName, streamName, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Table script</li></ol>
  */
-exports.getScriptFromTable = function(tablePath, callback) {
+VisualPinball.prototype.getScriptFromTable = function(tablePath, callback) {
 	if (!fs.existsSync(tablePath)) {
 		return callback('File "' + tablePath + '" does not exist.');
 	}
@@ -286,7 +290,7 @@ exports.getScriptFromTable = function(tablePath, callback) {
  * 		<li>{Function} callback that has to be called in order to proceed. Only one parameter, indicating error.</li></ol>
  * @param callback To be executed when all tables are processed, invoked with one argument, indicating error.
  */
-exports.scanDirectory = function(iterator, callback) {
+VisualPinball.prototype.scanDirectory = function(iterator, callback) {
 
 	var path = settings.visualpinball.path + '/tables';
 	fs.readdir(path, function(err, files) {
@@ -307,7 +311,8 @@ exports.scanDirectory = function(iterator, callback) {
  *
  * @param callback
  */
-exports.updateTableData = function(callback) {
+VisualPinball.prototype.updateTableData = function(callback) {
+	var that = this;
 
 	// fetch all VP tables
 	schema.Table.findAll({ where: { platform: 'VP' }}).success(function(rows) {
@@ -319,29 +324,30 @@ exports.updateTableData = function(callback) {
 				log.warn('Table file "' + tablePath + '" does not exist.');
 				return next();
 			}
-			socket.emit('notice', { msg: 'Analyzing ' + row.name + '...' });
+
+			that.emit('analysisStarted', { name: row.name });
 
 			// read script from table
-			exports.getScriptFromTable(tablePath, function(err, script) {
+			that.getScriptFromTable(tablePath, function(err, script) {
 				if (err) {
 					console.log('Error getting script: ' + err);
 					return next(err);
 				}
 
 				// parse rom name
-				exports.getRomName(script, function(err, rom) {
+				that.getRomName(script, function(err, rom) {
 					if (err) {
 						console.log('Error reading ROM name: ' + err);
 						rom = null;
 					}
 
-					exports.getDmdOrientation(script, function(err, rotation) {
+					that.getDmdOrientation(script, function(err, rotation) {
 						if (err) {
 							console.log('Error reading DMD rotation: ' + err);
 							rotation = null;
 						}
 
-						exports.getController(script, function(err, controller) {
+						that.getController(script, function(err, controller) {
 							if (err) {
 								console.log('Error reading controller: ' + err);
 								controller = null;
@@ -362,3 +368,4 @@ exports.updateTableData = function(callback) {
 	}).error(callback);
 }
 
+module.exports = VisualPinball;

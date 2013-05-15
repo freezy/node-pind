@@ -4,15 +4,19 @@ var util = require('util');
 var exec = require('child_process').exec;
 var async = require('async');
 var unzip = require('unzip');
+var events = require('events');
 
 var settings = require('../../config/settings-mine');
 
-var socket;
 
-module.exports = function(app) {
-	socket = app.get('socket.io');
-	return exports;
-};
+function Extract(app) {
+	if ((this instanceof Extract) === false) {
+		return new Extract(app);
+	}
+	events.EventEmitter.call(this);
+}
+util.inherits(Extract, events.EventEmitter);
+
 
 /**
  * Extracts files of an archive to the correct location. Currently supported
@@ -25,10 +29,11 @@ module.exports = function(app) {
  * @param renameTo
  * @param callback
  */
-exports.extract = function(filepath, renameTo, callback) {
+Extract.prototype.extract = function(filepath, renameTo, callback) {
+	var that = this;
 
 	// 1. read files from archive
-	exports.getFiles(filepath, function(err, files) {
+	that.getFiles(filepath, function(err, files) {
 
 		if (err) {
 			return callback(err);
@@ -36,7 +41,7 @@ exports.extract = function(filepath, renameTo, callback) {
 		console.log('[extract] Got %d entries, preparing extraction...', files.length);
 
 		// 2. figure out what to extract
-		exports.prepareExtract(files, renameTo, function(err, mapping) {
+		that.prepareExtract(files, renameTo, function(err, mapping) {
 
 			if (err) {
 				return callback(err);
@@ -45,9 +50,9 @@ exports.extract = function(filepath, renameTo, callback) {
 			// 3. extract to file system
 			var ext = filepath.substr(filepath.lastIndexOf('.')).toLowerCase();
 			if (ext == '.rar') {
-				exports.rarExtract(filepath, mapping, callback);
+				that.rarExtract(filepath, mapping, callback);
 			} else if (ext == '.zip') {
-				exports.zipExtract(filepath, mapping, callback);
+				that.zipExtract(filepath, mapping, callback);
 			} else {
 				callback('Unknown file extension "' + ext + '".');
 			}
@@ -62,7 +67,7 @@ exports.extract = function(filepath, renameTo, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Array} List of files in the archive.</li></ol>
  */
-exports.getFiles = function(filepath, callback) {
+Extract.prototype.getFiles = function(filepath, callback) {
 
 	var ext = filepath.substr(filepath.lastIndexOf('.')).toLowerCase();
 
@@ -117,7 +122,7 @@ exports.getFiles = function(filepath, callback) {
  *                   while their values are objects containing <tt>src</tt>
  *                   and <tt>dst</tt>.</li></ol>
  */
-exports.prepareExtract = function(files, renameTo, callback) {
+Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 
 	var mapping = { extract: {}, skip: {}, ignore: [] };
 
@@ -201,7 +206,7 @@ exports.prepareExtract = function(files, renameTo, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Array} List of extracted files.</li></ol>
  */
-exports.zipExtract = function(zipfile, mapping, callback) {
+Extract.prototype.zipExtract = function(zipfile, mapping, callback) {
 	fs.createReadStream(zipfile)
 	.pipe(unzip.Parse())
 	.on('entry', function (entry) {
@@ -236,7 +241,7 @@ exports.zipExtract = function(zipfile, mapping, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Array} List of extracted files.</li></ol>
  */
-exports.rarExtract = function(rarfile, mapping, callback) {
+Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 
 	async.eachSeries(_.values(mapping.extract),
 		function(map, next) {
@@ -274,3 +279,5 @@ exports.rarExtract = function(rarfile, mapping, callback) {
 		}
 	);
 };
+
+module.exports = Extract;

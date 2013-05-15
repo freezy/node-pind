@@ -5,34 +5,46 @@ var path = require('path');
 var util = require('util');
 var exec = require('child_process').exec;
 var async = require('async');
+var events = require('events');
 var xml2js = require('xml2js');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
-var socket, vp, vpf, extr;
+var vp, vpf, extr;
 
 var disableCache = false;
-
+var isSyncing = false;
 var platforms = {
 	VP: 'Visual Pinball',
 	FP: 'Future Pinball'
 }
-var isSyncing = false;
 
-module.exports = function(app) {
+function HyperPin(app) {
+	if ((this instanceof HyperPin) === false) {
+		return new HyperPin(app);
+	}
+
+	events.EventEmitter.call(this);
 	vp = require('./visualpinball')(app);
 	vpf = require('./vpforums')(app);
 	extr = require('./extract')(app);
-	socket = app.get('socket.io');
-	return exports;
-};
+
+/*	var an = require('./announce')(app, this);
+
+	an.data('processingStarted', { id: '#hpsync' });
+	an.notice('syncCompleted', 'Done syncing, starting analysis...');
+	an.notice('analysisCompleted', 'Finished analyzing tables.', 5000);
+	an.data('processingCompleted', { id: '#hpsync' });*/
+}
+util.inherits(HyperPin, events.EventEmitter);
+
 
 /**
  * Sends a banner version of the table to the given response object.
  * @param res Response object
  * @param p Path of the table, e.g. "/Media/Visual Pinball/Table Images/Some Table.png"
  */
-exports.asset_banner = function(context, key, size) {
+HyperPin.prototype.asset_banner = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
 		asset(context, getPath('Table Images', row), function(gm, callback) {
 			gm.rotate('black', -45);
@@ -48,7 +60,7 @@ exports.asset_banner = function(context, key, size) {
 	});
 }
 
-exports.asset_table = function(context, key, size) {
+HyperPin.prototype.asset_table = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
 		asset(context, getPath('Table Images', row), function(gm, callback) {
 			gm.rotate('black', -90);
@@ -63,7 +75,7 @@ exports.asset_table = function(context, key, size) {
 	});
 }
 
-exports.asset_logo = function(context, key) {
+HyperPin.prototype.asset_logo = function(context, key) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
 		file(context, getPath('Wheel Images', row));
 
@@ -73,7 +85,7 @@ exports.asset_logo = function(context, key) {
 	});
 }
 
-exports.asset_square = function(context, key, size) {
+HyperPin.prototype.asset_square = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
 		asset(context, getPath('Table Images', row), function(gm, callback) {
 			gm.rotate('black', -120);
@@ -90,7 +102,7 @@ exports.asset_square = function(context, key, size) {
 }
 
 
-exports.asset_widescreen = function(context, key, size) {
+HyperPin.prototype.asset_widescreen = function(context, key, size) {
 
 	schema.Table.find({ where: { key : key }}).success(function(row) {
 		asset(context, getPath('Backglass Images', row), function(gm, callback) {
@@ -126,7 +138,7 @@ exports.asset_widescreen = function(context, key, size) {
 	});*/
 }
 
-exports.asset_backglass = function(context, key, size) {
+HyperPin.prototype.asset_backglass = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
 		asset(context, getPath('Backglass Images', row), function(gm, callback) {
 			if (size != null) {
@@ -140,28 +152,30 @@ exports.asset_backglass = function(context, key, size) {
 	});
 }
 
-exports.syncTablesWithData = function(callback) {
+HyperPin.prototype.syncTablesWithData = function(callback) {
+	var that = this;
 
 	if (isSyncing) {
 		return callback('Syncing process already running. Wait until complete.');
 	}
-	socket.emit('startProcessing', { id: '#hpsync' });
+	console.log('********** EMITTING "processingStarted"');
+	that.emit('processingStarted');
 	isSyncing = true;
 
-	exports.syncTables(function(err) {
+	this.syncTables(function(err) {
 		if (err) {
 			console.log("ERROR: " + err);
 			throw new Error(err);
 		} else {
-			socket.emit('notice', { msg: 'Done syncing, starting analysis...' });
+			that.emit('syncCompleted');
 
 			vp.updateTableData(function(err, tables) {
 				if (err) {
 					throw new Error(err);
 				}
-				socket.emit('notice', { msg: 'Finished analyzing tables.', timeout: 5000 });
+				that.emit('analysisCompleted', 5000);
 				isSyncing = false;
-				socket.emit('endProcessing', { id: '#hpsync' });
+				that.emit('processingCompleted');
 				callback();
 			});
 		}
@@ -176,8 +190,8 @@ exports.syncTablesWithData = function(callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Object} Updated table object</li></ol>
  */
-exports.syncTables = function(callback) {
-
+HyperPin.prototype.syncTables = function(callback) {
+	var that = this;
 	var now = new Date().getTime();
 	var process = function(platform, callback) {
 
@@ -256,9 +270,10 @@ exports.syncTables = function(callback) {
 					tables.push(table);
 				}
 				log.info('[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
-				socket.emit('notice', { msg: 'Read ' + tables.length + ' tables from ' +  platforms[platform] + '.xml, updating local database...', timeout: 10000 });
+				that.emit('xmlParsed', { num: tables.length, platform: platforms[platform] });
+
 				schema.Table.updateAll(tables, now, function(err, tables) {
-					socket.emit('notice', { msg: 'Updated ' + tables.length + ' tables in database.' });
+					that.emit('tablesUpdated', { num: tables.length });
 					callback(err, tables);
 				});
 			});
@@ -279,7 +294,9 @@ exports.syncTables = function(callback) {
  *
  * @param callback
  */
-exports.findMissingMedia = function(callback) {
+HyperPin.prototype.findMissingMedia = function(callback) {
+
+	var that = this;
 
 	/**
 	 * Downloads and extracts media file.
@@ -289,19 +306,19 @@ exports.findMissingMedia = function(callback) {
 	 * @param next Callback
 	 */
 	var process = function(row, what, findFct, next) {
-		socket.emit('notice', { msg: 'Searching ' + what + ' for "' + row.name + '"', timeout: 60000 });
+		that.emit('searchStarted', { what: what, name: row.name });
 		findFct(row, function(err, filename) {
 			if (err) {
 				return next(err);
 			}
-			socket.emit('notice', { msg: 'Download successful, extracting missing media files' });
+			that.emit('searchCompleted');
 			extr.extract(filename, row.hpid, function(err, files) {
 				if (err) {
 					return next(err);
 				}
 				console.log('Successfully extracted ' + files.length + ' media files.');
 				if (files.length > 0) {
-					socket.emit('tableUpdate', { key: row.key });
+					that.emit('tableUpdated', { key: row.key });
 				}
 				fs.unlinkSync(filename);
 				next();
@@ -330,14 +347,14 @@ exports.findMissingMedia = function(callback) {
 						}
 						// long session, logout.
 						vpf.logout(function() {
-							exports.syncTables(callback);
+							this.syncTables(callback);
 						});
 					});
 				});
 			} else {
 				// long session, logout.
 				vpf.logout(function() {
-					exports.syncTables(callback);
+					this.syncTables(callback);
 				});
 			}
 		});
@@ -350,7 +367,7 @@ exports.findMissingMedia = function(callback) {
  * @param slot
  * @param callback
  */
-exports.insertCoin = function(user, slot, callback) {
+HyperPin.prototype.insertCoin = function(user, slot, callback) {
 	console.log('checking amount of credits..');
 	if (user.credits > 0) {
 		console.log(user.credits + ' > 0, all good, inserting coin.');
@@ -375,7 +392,7 @@ exports.insertCoin = function(user, slot, callback) {
 	}
 };
 
-exports.isSyncing = function() {
+HyperPin.prototype.isSyncing = function() {
 	return isSyncing;
 }
 
@@ -436,3 +453,5 @@ function getPath(what, table) {
 	}
 	return settings.hyperpin.path + '/Media/' + (table.platform == 'FP' ? 'Future' : 'Visual') + ' Pinball/' + what + '/' + table.hpid + '.png';
 }
+
+module.exports = HyperPin;
