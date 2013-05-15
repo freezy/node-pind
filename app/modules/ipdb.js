@@ -1,35 +1,65 @@
-var request = require('request');
-var async = require('async');
-var natural = require('natural');
 var log = require('winston');
+var util = require('util');
+var async = require('async');
+var events = require('events');
+var natural = require('natural');
+var request = require('request');
 
 var schema = require('../model/schema');
 
-var hp, socket;
-
-module.exports = function(app) {
-	socket = app.get('socket.io');
-	hp = require('./hyperpin')(app);
-	return exports;
-};
-
+var hp, ipdb;
 var isSyncing = false;
 
-exports.syncIPDB = function(callback) {
+function Ipdb(app) {
+	if ((this instanceof Ipdb) === false) {
+		return new Ipdb(app);
+	}
+	events.EventEmitter.call(this);
+	this.initAnnounce(app);
 
+	ipdb = this;
+	hp = require('./hyperpin')(app);
+}
+util.inherits(Ipdb, events.EventEmitter);
+
+/**
+ * Sets up event listener for realtime updates via Socket.IO.
+ * @param app Express application
+ */
+Ipdb.prototype.initAnnounce = function(app) {
+	var an = require('./announce')(app, this);
+
+	// syncIPDB()
+	an.data('processingStarted', { id: '#ipdbsync' });
+	an.data('processingCompleted', { id: '#ipdbsync' });
+	an.notice('processingCompleted', 'Finished matching IPDB.', 5000);
+
+	// enrichAll()
+	an.notice('fetchingCompleted', 'Updating database with {{num}} data sets', 30000);
+	an.notice('updateCompleted', '{{num}} games updated, fetching top 300 games', 30000);
+	an.notice('top300Completed', 'Top 300 synced ({{num}} games).', 30000);
+
+	// enrich()
+	an.notice('searchStarted', 'Searching for "{{name}}"', 30000);
+
+	// syncTop300()
+	an.notice('top300Matched', 'Matched {{name}} ({{platform}}) at rank {{rank}}.', 30000);
+}
+
+Ipdb.prototype.syncIPDB = function(callback) {
+	var that = this;
 	if (isSyncing) {
 		return callback('Syncing process already running. Wait until complete.');
 	}
-	socket.emit('startProcessing', { id: '#ipdbsync' });
+	that.emit('processingStarted');
 	isSyncing = true;
 
 	schema.Table.findAll( { where: [ 'type != ?', 'OG' ]}).success(function(rows) {
 
 		// fetch data from ipdb.org
-		exports.enrichAll(rows, function(err, rows) {
+		that.enrichAll(rows, function(err, rows) {
 			isSyncing = false;
-			socket.emit('notice', { msg: 'All done!', timeout: 5000 });
-			socket.emit('endProcessing', { id: '#ipdbsync' });
+			that.emit('processingCompleted');
 			callback(err, rows);
 		});
 
@@ -45,8 +75,8 @@ exports.syncIPDB = function(callback) {
  * @param callback Function to execute after completion, invoked with one argumens:
  * 	<ol><li>{String} Error message on error</li></ol>
  */
-exports.syncAll = function(callback) {
-
+Ipdb.prototype.syncAll = function(callback) {
+	var that = this;
 	// sync with local database (aka HyperPin)
 	hp.syncTables(function(err, tables) {
 		if (err) {
@@ -55,19 +85,20 @@ exports.syncAll = function(callback) {
 		}
 
 		// fetch data from ipdb.org
-		exports.enrichAll(tables, callback);
+		that.enrichAll(tables, callback);
 	});
 };
 
-exports.enrichAll = function(tables, callback) {
-	async.eachLimit(tables, 3, exports.enrich, function(err) {
+Ipdb.prototype.enrichAll = function(tables, callback) {
+	var that = this;
+	async.eachLimit(tables, 3, this.enrich, function(err) {
 
 		if (err) {
 			log.error('[ipdb] ' + err);
 			callback(err);
 			return;
 		}
-		socket.emit('notice', { msg: 'Updating database', timeout: 30000 });
+		that.emit('fetchingCompleted', { num: tables.length });
 
 		// update db
 		async.eachSeries(tables, function(table, cb) {
@@ -82,16 +113,16 @@ exports.enrichAll = function(tables, callback) {
 				log.error('[ipdb] ' + err);
 				callback(err);
 			} else {
-				socket.emit('notice', { msg: tables.length + ' games updated, fetching top 300 games', timeout: 30000 });
+				that.emit('updateCompleted', { num: tables.length });
 				log.info('[ipdb] ' + tables.length + ' games updated.');
 
 				// update ranking from top 300 list
-				exports.syncTop300(function(err, games) {
+				that.syncTop300(function(err, games) {
 					if (err) {
 						log.error('[ipdb] ' + err);
 						callback(err);
 					} else {
-						socket.emit('notice', { msg: 'Top 300 synced (' + games.length + ' games).', timeout: 5000 });
+						that.emit('top300Completed', { num: games.length });
 						log.info('[ipdb] Top 300 synced (' + games.length + ' games).');
 						callback();
 					}
@@ -121,8 +152,9 @@ exports.enrichAll = function(tables, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Object} Updated table object</li></ol>
  */
-exports.enrich = function(game, callback) {
+Ipdb.prototype.enrich = function(game, callback) {
 
+	var that = this;
 	var forceSearch = false;
 
 	/**
@@ -130,7 +162,7 @@ exports.enrich = function(game, callback) {
 	 * result in empty search results.
 	 *
 	 * This function fixes common spelling mistakes and name aberrations.
-	 * @param name Original name from HyperPin
+	 * @param n Original name from HyperPin
 	 */
 	var fixName = function(n) {
 
@@ -163,7 +195,7 @@ exports.enrich = function(game, callback) {
 		return callback(null, game);
 	}
 
-	socket.emit('notice', { msg: 'Searching for "' + game.name + '"', timeout: 30000 });
+	ipdb.emit('searchStarted', { name: game.name });
 	log.info('[ipdb] Fetching data for ' + game.name);
 	var url;
 	if (game.ipdb_no && !forceSearch) {
@@ -233,8 +265,8 @@ exports.enrich = function(game, callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Array} List of found tables</li></ol>
  */
-exports.syncTop300 = function(callback) {
-
+Ipdb.prototype.syncTop300 = function(callback) {
+	var that = this;
 	var url = 'http://www.ipdb.org/lists.cgi?anonymously=true&list=top300&submit=No+Thanks+-+Let+me+access+anonymously';
 	log.info('[ipdb] Fetching top 300 list from ipdb.org');
 	request(url, function (error, response, body) {
@@ -267,7 +299,7 @@ exports.syncTop300 = function(callback) {
 
 					// could be multiple hits (vp and fp version, for instance)
 					async.eachSeries(rows, function(row, cb) {
-						socket.emit('notice', { msg: 'Matched ' + row.name + ' (' + row.platform + ') at rank ' + table.ipdb_rank, timeout: 30000 });
+						that.emit('top300Matched', { name: row.name, platform: row.platform, rank: table.ipdb_rank });
 						log.debug('[ipdb] Matched ' + row.name + ' (' + row.platform + ')');
 						row.updateAttributes({ ipdb_rank: table.ipdb_rank }).success(function(table) {
 							updatedTables.push(table);
@@ -299,7 +331,7 @@ exports.syncTop300 = function(callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Array} List of found links. Links are objects with <tt>name</tt> and <tt>url</tt>.</li></ol>
  */
-exports.getRomLinks = function(ipdbId, callback) {
+Ipdb.prototype.getRomLinks = function(ipdbId, callback) {
 	var url = 'http://www.ipdb.org/machine.cgi?id=' + ipdbId;
 	log.info('[ipdb] Fetching details for game ID ' + ipdbId);
 	request(url, function (error, response, body) {
@@ -317,7 +349,7 @@ exports.getRomLinks = function(ipdbId, callback) {
 	});
 };
 
-exports.isSyncing = function() {
+Ipdb.prototype.isSyncing = function() {
 	return isSyncing;
 }
 
@@ -371,3 +403,5 @@ var findBestMatch = function(matches, game) {
 
 	return bestMatches[0];
 };
+
+module.exports = Ipdb;

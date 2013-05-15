@@ -12,7 +12,6 @@ var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 var vp, vpf, extr;
 
-
 var isSyncing = false;
 var platforms = {
 	VP: 'Visual Pinball',
@@ -62,7 +61,6 @@ HyperPin.prototype.syncTablesWithData = function(callback) {
 	if (isSyncing) {
 		return callback('Syncing process already running. Wait until complete.');
 	}
-	console.log('********** EMITTING "processingStarted"');
 	that.emit('processingStarted');
 	isSyncing = true;
 

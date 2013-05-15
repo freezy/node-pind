@@ -30,9 +30,9 @@ exports.notice = function(event, message, timeout) {
 	});
 };
 
-exports.data = function(event, data) {
+exports.data = function(event, data, eventName) {
 	emitter.on(event, function() {
-		socket.emit(event, data);
+		socket.emit(eventName ? eventName : event, data);
 	});
 };
 

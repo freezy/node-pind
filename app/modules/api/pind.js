@@ -4,9 +4,10 @@ var util = require('util');
 error = require('../error');
 var schema = require('../../model/schema');
 
-var ipdb, vpm, api, tableApi, pathTo;
+var ipdb, vpm, hs, api, tableApi, pathTo;
 
 module.exports = function(app) {
+	hs = require('../hiscore')(app);
 	vpm = require('../vpinmame')(app);
 	ipdb = require('../ipdb')(app);
 	tableApi = require('./table')(app).api;
@@ -28,7 +29,7 @@ var PindApi = function() {
 		},
 
 		FetchHiscores : function(req, params, callback) {
-			vpm.fetchHighscores(function(err) {
+			hs.fetchHighscores(function(err) {
 				if (!err) {
 					callback({ message: 'High scores updated successfully.' });
 				} else {

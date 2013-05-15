@@ -7,7 +7,6 @@ module.exports = function(compound) {
 
 	var app = compound.app;
 	var io = require('socket.io').listen(compound.server);
-	var vpm = require(compound.root + '/app/modules/vpinmame')(app);
 
 	app.configure(function(){
 		app.locals.pretty = false;
@@ -26,7 +25,4 @@ module.exports = function(compound) {
         app.use(express.methodOverride());
         app.use(app.router);
     });
-
-	// create config file for pinemhi and start watching .nv files if necessary
-	vpm.init(io.sockets);
 };

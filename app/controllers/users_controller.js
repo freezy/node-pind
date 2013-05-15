@@ -3,6 +3,7 @@ var settings = require('./config/settings-mine');
 var schema = require('./app/model/schema');
 
 var vpm = require('./app/modules/vpinmame')(app);
+var hs = require('./app/modules/hiscore')(app);
 
 load('application');
 
@@ -111,7 +112,7 @@ action('signup', function () {
 								that.validationErrors = null;
 								that.alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
 								render('login');
-								vpm.linkNewUser(user, function() {
+								hs.linkNewUser(user, function() {
 									console.log('User successfully linked to high scores.');
 								});
 
