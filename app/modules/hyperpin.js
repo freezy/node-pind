@@ -23,21 +23,34 @@ function HyperPin(app) {
 	if ((this instanceof HyperPin) === false) {
 		return new HyperPin(app);
 	}
-
 	events.EventEmitter.call(this);
 	vp = require('./visualpinball')(app);
 	vpf = require('./vpforums')(app);
 	extr = require('./extract')(app);
-
-/*	var an = require('./announce')(app, this);
-
-	an.data('processingStarted', { id: '#hpsync' });
-	an.notice('syncCompleted', 'Done syncing, starting analysis...');
-	an.notice('analysisCompleted', 'Finished analyzing tables.', 5000);
-	an.data('processingCompleted', { id: '#hpsync' });*/
+	this.initAnnounce(app);
 }
 util.inherits(HyperPin, events.EventEmitter);
 
+
+HyperPin.prototype.initAnnounce = function(app) {
+
+	var an = require('./announce')(app, this);
+
+	// syncTablesWithData()
+	an.data('processingStarted', { id: '#hpsync' });
+	an.notice('syncCompleted', 'Done syncing, starting analysis...');
+	an.notice('analysisCompleted', 'Finished analyzing tables.', 5000);
+	an.data('processingCompleted', { id: '#hpsync' });
+
+	// syncTables()
+	an.notice('xmlParsed', 'Read {{num}} tables from {{platform}}.xml, updating local database...');
+	an.notice('tablesUpdated', 'Updated {{num}} tables in database.');
+
+	// findMissingMedia()
+	an.notice('searchStarted', 'Searching {{what}} for "{{name}}"', 60000);
+	an.notice('searchCompleted', 'Download successful, extracting missing media files');
+	an.forward('tableUpdated');
+}
 
 /**
  * Sends a banner version of the table to the given response object.

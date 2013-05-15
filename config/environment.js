@@ -9,14 +9,6 @@ module.exports = function(compound) {
 	var io = require('socket.io').listen(compound.server);
 	var vpm = require(compound.root + '/app/modules/vpinmame')(app);
 
-	function compile(str, path) {
-		return stylus(str)
-			.set('filename', path)
-			.set('compress', false)
-			.use(nib())
-			.import('nib');
-	}
-
 	app.configure(function(){
 		app.locals.pretty = false;
         app.use(express.static(app.root + '/public', { maxAge: 86400000 }));

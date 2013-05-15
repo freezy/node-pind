@@ -8,15 +8,22 @@ var events = require('events');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
-
 function VisualPinball(app) {
 	if ((this instanceof VisualPinball) === false) {
 		return new VisualPinball(app);
 	}
 	events.EventEmitter.call(this);
+	this.initAnnounce(app);
 }
 util.inherits(VisualPinball, events.EventEmitter);
 
+
+VisualPinball.prototype.initAnnounce = function(app) {
+	var an = require('./announce')(app, this);
+
+	// updateTableData()
+	an.notice('analysisStarted', 'Analyzing {{name}}...');
+}
 
 
 /**

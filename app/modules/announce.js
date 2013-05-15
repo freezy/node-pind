@@ -1,4 +1,4 @@
-/*var socket, emitter;
+var socket, emitter;
 var defaultTimeout = 2000;
 
 module.exports = function(app, e) {
@@ -14,18 +14,17 @@ exports.forward = function(event) {
 };
 
 exports.notice = function(event, message, timeout) {
-	console.log('****** REGISTERING NOTICE "%s"', event);
 	emitter.on(event, function(values) {
-		console.log('****** NOTICE: %s', message);
+		var msg = message;
 		if (values) {
 			var regex = new RegExp('{{([^}]+)}}', 'g');
 			var m;
 			while (m = regex.exec(message)) {
-				message = message.replace('{{' + m[1] + '}}', values[m[1]]);
+				msg = msg.replace('{{' + m[1] + '}}', values[m[1]]);
 			}
 		}
 		socket.emit('notice', {
-			msg: message,
+			msg: msg,
 			timeout: timeout ? timeout : defaultTimeout
 		});
 	});
@@ -65,4 +64,4 @@ exports.register = function(socket) {
 	// VisualPinball.updateTableData()
 	notice(vp, 'analysisStarted', 'Analyzing {{name}}...');*/
 
-//};
+};
