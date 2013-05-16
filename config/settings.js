@@ -16,6 +16,10 @@ module.exports = {
 		 */
 		sessionTimeout: 3600000,
 		/**
+		 * Interval for download updates on the downloads page for the progress bar.
+		 */
+		downloaderRefreshRate: 3000,
+		/**
 		 * Secret for hashing stuff. Create something long here: http://strongpasswordgenerator.com/
 		 */
 		secret: 'alongsecret',

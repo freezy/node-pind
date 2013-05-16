@@ -44,6 +44,9 @@ VPForums.prototype.initAnnounce = function(app) {
 
 	// login()
 	an.notice('loginStarted', 'VPF: Logging in as "{{user}}"', 30000);
+
+	// downloadWatcher
+	an.downloadWatch('downloadWatch');
 }
 
 
@@ -146,10 +149,28 @@ VPForums.prototype.getRomLinks = function(table, callback) {
 	});
 };
 
+VPForums.prototype._watchDownload = function(filename, reference) {
+	if (!this.watches) {
+		this.watches = {};
+	}
+	var that = this;
+	this.watches[filename] = setInterval(function() {
+		var size = fs.fstatSync(fs.openSync(filename, 'r')).size;
+		that.emit('downloadWatch', { size: size, reference: reference });
+
+	}, settings.pind.downloaderRefreshRate);
+};
+
+VPForums.prototype._unWatchDownload = function(filename) {
+	clearInterval(this.watches[filename]);
+	delete this.watches[filename];
+};
+
 /**
  * Downloads a file from vpforums.org.
  * @param link
  * @param folder
+ * @param reference A reference passed to the event emitter.
  * @param callback
  */
 VPForums.prototype.download = function(link, folder, reference, callback) {
@@ -187,6 +208,7 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 								var size = fs.fstatSync(fs.openSync(dest, 'r')).size;
 								that.emit('downloadCompleted', { size: size, reference: reference });
 								console.log('[vpf] Downloaded %d bytes to %s.', size, dest);
+								that._unWatchDownload(dest);
 
 								if (size < 64000) {
 									var data = fs.readFileSync(dest, 'utf8');
@@ -197,7 +219,11 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 								}
 								callback(null, dest);
 							});
-							request(downloadUrl).pipe(stream);
+							request(downloadUrl).on('response', function(response) {
+								reference.size = response.headers['content-length'];
+								that._watchDownload(dest, reference);
+							}).pipe(stream);
+
 						} else {
 							callback('Cannot find file download button at ' + link);
 						}

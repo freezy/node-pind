@@ -30,10 +30,8 @@ util.inherits(Transfer, events.EventEmitter);
  * @param app Express application
  */
 Transfer.prototype.initAnnounce = function(app) {
-	var an = require('./announce')(app, this);
+	//var an = require('./announce')(app, this);
 }
-
-
 
 Transfer.prototype.queue = function(transfer, callback) {
 	var that = this;
@@ -119,7 +117,6 @@ Transfer.prototype.next = function(callback) {
 
 							// now start the download (after VpfFile update)
 							var download = function() {
-
 								vpf.download(row, settings.pind.tmp, row, function(err, filepath) {
 
 									// on error, update db with error and exit

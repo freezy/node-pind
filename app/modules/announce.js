@@ -51,3 +51,13 @@ exports.data = function(event, data, eventName) {
 		socket.emit(eventName ? eventName : event, data);
 	});
 };
+
+exports.downloadWatch = function(event) {
+	emitter.on(event, function(data) {
+		socket.emit('downloadWatch', {
+			id: data.reference.id,
+			totalSize: data.reference.size,
+			downloadedSize: data.size
+		});
+	});
+}

@@ -1,5 +1,9 @@
 $(document).ready(function() {
-
+	// real time code
+	var socket = io.connect('/');
+	socket.on('downloadWatch', function(status) {
+		$('#transfers tr#' + status.id + ' .progress .bar').css('width', (status.downloadedSize / status.totalSize * 100) + '%')
+	});
 });
 
 pindAppModule.directive('sortable', function() {
