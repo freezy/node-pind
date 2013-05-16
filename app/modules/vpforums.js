@@ -18,6 +18,7 @@ function VPForums(app) {
 		return new VPForums(app);
 	}
 	events.EventEmitter.call(this);
+	this.initAnnounce(app);
 }
 sys.inherits(VPForums, events.EventEmitter);
 

@@ -1,5 +1,5 @@
-var socket, emitter;
 var defaultTimeout = 2000;
+var socket, emitter;
 
 module.exports = function(app, e) {
 	emitter = e;
@@ -8,8 +8,8 @@ module.exports = function(app, e) {
 }
 
 /**
- * object gets send without change to socket with the same event name.
- * @param event
+ * Object gets send without change to socket with the same event name.
+ * @param event Name of the event
  */
 exports.forward = function(event) {
 	emitter.on(event, function(obj) {
@@ -18,10 +18,10 @@ exports.forward = function(event) {
 };
 
 /**
- * a notice gets send with a given message.
- * @param event
- * @param message
- * @param timeout
+ * A notice gets send with a given message.
+ * @param event Name of the event
+ * @param message Message to send. Use {{varname}} if payload contains values.
+ * @param timeout If set, override default timeout to send to client
  */
 exports.notice = function(event, message, timeout) {
 	emitter.on(event, function(values) {
@@ -41,10 +41,10 @@ exports.notice = function(event, message, timeout) {
 };
 
 /**
- * sends given data with the same event name
- * @param event
- * @param data
- * @param eventName
+ * Sends given data with the same event name
+ * @param event Name of the event
+ * @param data Data to send
+ * @param eventName If set, change event name to this value instead of original value
  */
 exports.data = function(event, data, eventName) {
 	emitter.on(event, function() {
