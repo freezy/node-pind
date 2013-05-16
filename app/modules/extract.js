@@ -186,6 +186,13 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 			} else if (_.contains(['.vpt', '.vbs', '.exe'], ext)) {
 				add(settings.visualpinball.path + '/Tables/' + filename);
 
+			// Music
+			} else if (_.contains(['.mp3', '.wma'], ext)) {
+				if (fs.existsSync(settings.visualpinball.path + '/Tables/Music')) {
+					add(settings.visualpinball.path + '/Tables/Music/' + filename);
+				} else {
+					mapping.ignore.push(filepath);
+				}
 			} else {
 				mapping.ignore.push(filepath);
 			}
