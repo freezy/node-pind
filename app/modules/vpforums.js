@@ -40,6 +40,7 @@ VPForums.prototype.initAnnounce = function(app) {
 	an.notice('downloadInitializing', 'VPF: Initializing download{{fileinfo}}', 60000);
 	an.notice('downloadPreparing', 'VPF: Preparing download', 60000);
 	an.notice('downloadStarted', 'VPF: Downloading "{{filename}}"', 300000);
+	an.notice('downloadCompleted', 'VPF: {{size}} bytes downloaded.');
 
 	// login()
 	an.notice('loginStarted', 'VPF: Logging in as "{{user}}"', 30000);
@@ -57,7 +58,9 @@ VPForums.prototype.isDownloadingIndex = false;
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Absolute file path of the downloaded archive.</li></ol>
  */
-var findMedia = function(table, cat, callback) {
+VPForums.prototype._findMedia = function(table, cat, callback) {
+
+	var that = this;
 	console.log('[vpf] Searching media pack for "' + table.name + '"...');
 	this._fetchDownloads(35, table.name, function(err, results) {
 		if (err) {
@@ -69,7 +72,7 @@ var findMedia = function(table, cat, callback) {
 		if (!match) {
 			return callback('Cannot find any media with name similar to "' + table.name + '".');
 		}
-		VPForums.download(match, settings.pind.tmp, function(err, filename) {
+		that.download(match, settings.pind.tmp, null, function(err, filename) {
 			if (err) {
 				console.log('[vpf] Error downloading: %s', err);
 				return callback(err);
@@ -89,9 +92,9 @@ var findMedia = function(table, cat, callback) {
  */
 VPForums.prototype.findMediaPack = function(table, callback) {
 	if (table.platform == 'VP') {
-		findMedia(table, 35, callback);
+		this._findMedia(table, 35, callback);
 	} else {
-		findMedia(table, 36, callback);
+		this._findMedia(table, 36, callback);
 	}
 };
 
@@ -104,9 +107,9 @@ VPForums.prototype.findMediaPack = function(table, callback) {
  */
 VPForums.prototype.findTableVideo = function(table, callback) {
 	if (table.platform == 'VP') {
-		findMedia(table, 43, callback);
+		this._findMedia(table, 43, callback);
 	} else {
-		findMedia(table, 34, callback);
+		this._findMedia(table, 34, callback);
 	}
 };
 
@@ -149,10 +152,10 @@ VPForums.prototype.getRomLinks = function(table, callback) {
  * @param folder
  * @param callback
  */
-VPForums.prototype.download = function(link, folder, callback) {
+VPForums.prototype.download = function(link, folder, reference, callback) {
 	var that = this;
 	
-	that.emit('downloadInitializing', { fileinfo: link.filename ? ' for "' + link.filename + '"' : '' });
+	that.emit('downloadInitializing', { reference: reference, fileinfo: link.filename ? ' for "' + link.filename + '"' : '' });
 
 	// fetch the "overview" page
 	request(link.url, function(err, response, body) {
@@ -162,7 +165,7 @@ VPForums.prototype.download = function(link, folder, callback) {
 
 		// starts the download, assuming we have a logged session.
 		var download = function(body) {
-			that.emit('downloadPreparing');
+			that.emit('downloadPreparing', { reference: reference });
 			var m;
 			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
 				var confirmUrl = m[1].replace(/&amp;/g, '&');
@@ -177,12 +180,12 @@ VPForums.prototype.download = function(link, folder, callback) {
 							var downloadUrl = m[1].replace(/&amp;/g, '&');
 							var filename = m[2].trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
 							var dest = folder + '/' + filename;
-							that.emit('downloadStarted', { filename: filename, destpath: dest });
+							that.emit('downloadStarted', { filename: filename, destpath: dest, reference: reference });
 							console.log('[vpf] Downloading %s at %s...', filename, downloadUrl);
 							var stream = fs.createWriteStream(dest);
 							stream.on('close', function() {
 								var size = fs.fstatSync(fs.openSync(dest, 'r')).size;
-								that.emit('downloadCompleted', size);
+								that.emit('downloadCompleted', { size: size, reference: reference });
 								console.log('[vpf] Downloaded %d bytes to %s.', size, dest);
 
 								if (size < 64000) {
@@ -445,7 +448,6 @@ VPForums.prototype._fetchDownloads = function(cat, title, callback) {
 					saveToCache(cat, letter, currentResult, callback);
 				} else {
 					that.emit('progressUpdate', { progress: page / numPages });
-					console.log('Next...');
 					fetch(cat, letter, currentResult, page + 1, callback);
 				}
 			});

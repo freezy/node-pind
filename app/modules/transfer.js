@@ -1,23 +1,42 @@
 var _ = require('underscore');
 var fs = require('fs');
+var util = require('util');
 var async = require('async');
+var events = require('events');
 
 var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 
-var socket, vpf, vpm, extr;
+var vpf, vpm, extr;
 
 var transferring = false;
 
-module.exports = function(app) {
-	socket = app.get('socket.io');
+function Transfer(app) {
+	if ((this instanceof Transfer) === false) {
+		return new Transfer(app);
+	}
+	events.EventEmitter.call(this);
+	this.initAnnounce(app);
+
 	vpf = require('./vpforums')(app);
 	vpm = require('./vpinmame')(app);
 	extr = require('./extract')(app);
-	return exports;
-};
+}
+util.inherits(Transfer, events.EventEmitter);
 
-exports.queue = function(transfer, callback) {
+
+/**
+ * Sets up event listener for realtime updates via Socket.IO.
+ * @param app Express application
+ */
+Transfer.prototype.initAnnounce = function(app) {
+	var an = require('./announce')(app, this);
+}
+
+
+
+Transfer.prototype.queue = function(transfer, callback) {
+	var that = this;
 	schema.Transfer.all({ where: {
 		type: transfer.type,
 		engine: transfer.engine,
@@ -31,7 +50,7 @@ exports.queue = function(transfer, callback) {
 
 			var startDownload = function() {
 				callback(null, "Download successfully added to queue.");
-				exports.start(function() {
+				that.start(function() {
 					console.log('Download queue finished.');
 				});
 			}
@@ -50,7 +69,8 @@ exports.queue = function(transfer, callback) {
 	});
 };
 
-exports.start = function(callback) {
+Transfer.prototype.start = function(callback) {
+	var that = this;
 	var cb = function(err, result) {
 		if (err) {
 			console.log('[transfer] ERROR: ' + err);
@@ -65,10 +85,10 @@ exports.start = function(callback) {
 				return callback(null, result);
 			}
 			console.log('[transfer] Next download is ready, starting.');
-			exports.next(cb);
+			that.next(cb);
 		}
 	};
-	exports.next(cb);
+	that.next(cb);
 }
 
 /**
@@ -76,12 +96,12 @@ exports.start = function(callback) {
  * @param callback
  * @returns {*}
  */
-exports.next = function(callback) {
+Transfer.prototype.next = function(callback) {
 	if (transferring) {
 		return callback(null, { alreadyStarted: true });
 	}
 	transferring = true;
-	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'createdAt ASC' }).success(function(rows) {
+	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'sort ASC' }).success(function(rows) {
 		var found = false;
 		if (rows.length > 0) {
 
@@ -99,13 +119,8 @@ exports.next = function(callback) {
 
 							// now start the download (after VpfFile update)
 							var download = function() {
-								vpf.on('downloadStarted', function(dest) {
-									console.log('**** downloading to %s', dest);
-								});
-								vpf.on('downloadCompleted', function(size) {
-									console.log('**** downloaded %d bytes.', size);
-								});
-								vpf.download(row, settings.pind.tmp, function(err, filepath) {
+
+								vpf.download(row, settings.pind.tmp, row, function(err, filepath) {
 
 									// on error, update db with error and exit
 									if (err) {
@@ -130,6 +145,7 @@ exports.next = function(callback) {
 										completedAt: new Date(),
 										result: JSON.stringify({ extracting: filepath }),
 										size: fs.fstatSync(fs.openSync(filepath, 'r')).size
+
 									}).success(function() {
 
 										// now, extract (after VpfFile update)
@@ -194,7 +210,7 @@ exports.next = function(callback) {
 	});
 };
 
-exports.postProcess = function(transfer, callback) {
+Transfer.prototype.postProcess = function(transfer, callback) {
 	if (!transfer.postAction) {
 		return callback();
 	}
@@ -258,3 +274,5 @@ exports.postProcess = function(transfer, callback) {
 		callback();
 	}
 };
+
+module.exports = Transfer;

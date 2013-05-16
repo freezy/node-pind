@@ -46,6 +46,12 @@ Ipdb.prototype.initAnnounce = function(app) {
 	an.notice('top300Matched', 'Matched {{name}} ({{platform}}) at rank {{rank}}.', 30000);
 }
 
+/**
+ * Refreshes all tables that aren't of type 'OG' with info from ipdb.org.
+ * @param callback Function to execute after completion, invoked with one argumens:
+ * 	<ol><li>{String} Error message on error</li>
+ *      <li>{Array} Updated tables</li></ol>
+ */
 Ipdb.prototype.syncIPDB = function(callback) {
 	var that = this;
 	if (isSyncing) {
