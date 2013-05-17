@@ -44,7 +44,7 @@ pindAppModule.directive('deletable', function() {
 					return alert(err);
 				}
 				if ($(element).parents('tbody').find('tr').length == 1) {
-					scope.$broadcast('paramsUpdated');
+					scope.$parent.$broadcast('paramsUpdated');
 				}
 				$(element).fadeOut();
 			});
