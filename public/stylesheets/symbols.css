@@ -9,29 +9,6 @@
 	font-style: normal;
 }
 
-@font-face {
-	font-family: 'ozoneregular';
-	src:url('../fonts/ozone-webfont.eot');
-	src:url('../fonts/ozone-webfont.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/ozone-webfont.woff') format('woff'),
-		url('../fonts/ozone-webfont.ttf') format('truetype'),
-		url('../fonts/ozone-webfont.svg#ozoneregular') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
-
-
-@font-face {
-	font-family: 'BPdotsBold';
-	src: url('../fonts/BPdotsBold-webfont.eot');
-	src: url('../fonts/BPdotsBold-webfont.eot?#iefix') format('embedded-opentype'),
-	     url('../fonts/BPdotsBold-webfont.woff') format('woff'),
-	     url('../fonts/BPdotsBold-webfont.ttf') format('truetype'),
-	     url('../fonts/BPdotsBold-webfont.svg#BPdotsBold') format('svg');
-	font-weight: normal;
-	font-style: normal;
-
-}
 
 @-moz-keyframes spin {
 	0% { -moz-transform: rotate(0deg); }
