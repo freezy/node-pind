@@ -149,14 +149,15 @@ VPForums.prototype.getRomLinks = function(table, callback) {
 	});
 };
 
-VPForums.prototype._watchDownload = function(filename, reference) {
+VPForums.prototype._watchDownload = function(filename, contentLength, reference) {
 	if (!this.watches) {
 		this.watches = {};
 	}
 	var that = this;
+	var fd = fs.openSync(filename, 'r');
 	this.watches[filename] = setInterval(function() {
-		var size = fs.fstatSync(fs.openSync(filename, 'r')).size;
-		that.emit('downloadWatch', { size: size, reference: reference });
+		var size = fs.fstatSync(fd).size;
+		that.emit('downloadWatch', { size: size, contentLength: contentLength, reference: reference });
 
 	}, settings.pind.downloaderRefreshRate);
 };
@@ -220,8 +221,8 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 								callback(null, dest);
 							});
 							request(downloadUrl).on('response', function(response) {
-								reference.size = response.headers['content-length'];
-								that._watchDownload(dest, reference);
+								that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: reference });
+								that._watchDownload(dest, response.headers['content-length'], reference);
 							}).pipe(stream);
 
 						} else {

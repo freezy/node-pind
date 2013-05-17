@@ -43,7 +43,8 @@
 		"underscore" : "latest",
 		"chrono-node" : "latest",
 		"fuzzy" : "latest",
-		"relative-date" : "1.1.1"
+		"relative-date" : "1.1.1",
+		"filesize" : "latest"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",

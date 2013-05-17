@@ -117,6 +117,15 @@ Transfer.prototype.next = function(callback) {
 
 							// now start the download (after VpfFile update)
 							var download = function() {
+								vpf.on('contentLengthReceived', function(data) {
+									if (data.reference.id) {
+										schema.Transfer.find(data.reference.id).success(function(row) {
+											if (row) {
+												row.updateAttributes({ size: data.contentLength });
+											}
+										});
+									}
+								})
 								vpf.download(row, settings.pind.tmp, row, function(err, filepath) {
 
 									// on error, update db with error and exit

@@ -56,7 +56,7 @@ exports.downloadWatch = function(event) {
 	emitter.on(event, function(data) {
 		socket.emit('downloadWatch', {
 			id: data.reference.id,
-			totalSize: data.reference.size,
+			totalSize: data.contentLength,
 			downloadedSize: data.size
 		});
 	});
