@@ -32,3 +32,22 @@ pindAppModule.directive('sortable', function() {
 		}
 	};
 });
+
+pindAppModule.directive('deletable', function() {
+	return function(scope, element, attrs) {
+		$(element).find('li.link.delete').click(function() {
+			var id = attrs.id;
+			api('Transfer.Delete', {
+				id: id
+			}, function(err, result) {
+				if (err) {
+					return alert(err);
+				}
+				if ($(element).parents('tbody').find('tr').length == 1) {
+					scope.$broadcast('paramsUpdated');
+				}
+				$(element).fadeOut();
+			});
+		});
+	};
+});

@@ -73,6 +73,18 @@ var TransferApi = function() {
 			});
 		},
 
+		Delete : function(req, params, callback) {
+			schema.Transfer.find(params.id).success(function(row) {
+				if (row) {
+					row.destroy().success(function() {
+						callback({ msg: 'Transfer with ID "' + params.id + '" removed.'});
+					});
+				} else {
+					callback(error.api('Cannot find VPF file with ID "' + params.id + '".'));
+				}
+			});
+		},
+
 		AddVPFTable : function(req, params, callback) {
 			schema.VpfFile.find(params.id).success(function(row) {
 				if (row) {

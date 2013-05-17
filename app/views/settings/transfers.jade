@@ -45,7 +45,7 @@ block inner-content
 						th(style='width:120px') Added
 						th(style='width:95px')
 				tbody
-					tr(ng-repeat='transfer in data', id='{{transfer.id}}', sortable)
+					tr(ng-repeat='transfer in data', id='{{transfer.id}}', sortable, deletable)
 						td.dragHandle
 							i.icon.sort
 						td
@@ -60,7 +60,7 @@ block inner-content
 								li.link
 									a
 										i.icon.info
-								li.link
+								li.link.delete
 									a
 										i.icon.trash
 
