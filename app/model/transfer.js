@@ -1,4 +1,5 @@
 var relativeDate = require('relative-date');
+var filesize = require('filesize');
 
 module.exports = function(sequelize, DataTypes) {
 
@@ -32,6 +33,7 @@ module.exports = function(sequelize, DataTypes) {
 				map: function() {
 					var result = this.values;
 					result.queuedSince = relativeDate(result.createdAt);
+					result.displaySize = result.size ? filesize(result.size, true) : '';
 					return result;
 				}
 			},

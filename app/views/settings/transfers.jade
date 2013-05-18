@@ -41,16 +41,21 @@ block inner-content
 					
 						th(style='width:5px')
 						th(style='width:100px')
+						th(style='width:40px')						
+						th(style='width:10px')						
 						th Name
 						th(style='width:120px') Added
 						th(style='width:95px')
 				tbody
-					tr(ng-repeat='transfer in data', id='{{transfer.id}}', sortable, deletable)
+					tr(ng-repeat='transfer in data', ng-controller='TransferItemCtrl', id='{{transfer.id}}', class='{{status}} {{dndClasses}}', sortable, deletable)
 						td.dragHandle
 							i.icon.sort
 						td
-							.progress.progress-striped.active
-								.bar(style="width: 0%;")
+							.progress.progress-striped(class='{{progressBarClass}}')
+								.bar(style="width: {{progress}}%;")
+						td {{transfer.displaySize}}
+						td 
+							i.icon(class='{{icon}}')
 						td {{transfer.title}}
 							a(href='{{transfer.url}}', target='_blank')
 								i.icon.link

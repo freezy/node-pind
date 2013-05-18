@@ -1466,6 +1466,9 @@ table tr.dragging td.dragHandle i {
 #transfers li.link {
   cursor: pointer;
 }
+#transfers tr.failed {
+  background-color: rgba(255,20,0,0.1);
+}
 .thumbnails img {
   -moz-border-radius-topleft: 3px;
   -webkit-border-top-left-radius: 3px;

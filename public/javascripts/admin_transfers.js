@@ -6,6 +6,34 @@ $(document).ready(function() {
 	});
 });
 
+function TransferItemCtrl($scope) {
+
+	$scope.progressBarClass = '';
+	$scope.status = 'queued';
+	$scope.progress = '0';
+	$scope.dndClasses = 'nodrag nodrop';
+
+	if ($scope.transfer.completedAt) {
+		$scope.status = 'completed'
+		$scope.progress = '100';
+	} else if ($scope.transfer.failedAt) {
+		$scope.status = 'failed'
+	} else if ($scope.transfer.startedAt) {
+		$scope.status = 'started'
+		$scope.progressBarClass = 'active';
+	} else {
+		$scope.status = 'queued';
+		$scope.dndClasses = '';
+	}
+	var iconmap = {
+		table: 'file',
+		rom: 'chip',
+		mediapack: 'ipad',
+		video: 'video'
+	}
+	$scope.icon = iconmap[$scope.transfer.type];
+}
+
 pindAppModule.directive('sortable', function() {
 	return function(scope, element, attrs) {
 		if (scope.$last) {

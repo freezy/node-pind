@@ -124,6 +124,12 @@ var TransferApi = function() {
 				p.limit = params.limit ? parseInt(params.limit) : 0;
 			}
 
+			var query = '(SELECT * FROM transfers WHERE failedAt IS NOT NULL ORDER BY failedAt ASC)'
+				+ ' UNION '
+				+ '(SELECT * FROM transfers WHERE startedAt IS NOT NULL AND completedAt IS NULL ORDER BY startedAt ASC)'
+				+ ' UNION '
+				+ '(SELECT * FROM transfers WHERE completedAt IS NOT NULL ORDER BY completeAt DESC);'
+
 			schema.Transfer.all(p).success(function(rows) {
 
 				if (search) {

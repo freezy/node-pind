@@ -7,7 +7,7 @@ var settings = require('../../config/settings-mine');
 var config = {
 
 	// enable/disable logging
-	logging: false, //console.log,
+	logging: console.log,
 
 	// disable inserting undefined values as NULL
 	omitNull: true,
