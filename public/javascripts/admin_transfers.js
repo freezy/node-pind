@@ -8,22 +8,25 @@ $(document).ready(function() {
 
 function TransferItemCtrl($scope) {
 
+	$scope.classes = ['nodrag', 'nodrop'];
 	$scope.progressBarClass = '';
-	$scope.status = 'queued';
 	$scope.progress = '0';
-	$scope.dndClasses = 'nodrag nodrop';
+	$scope.dragHandleClass = '';
+	$scope.showDragHandle = false;
 
 	if ($scope.transfer.completedAt) {
-		$scope.status = 'completed'
+		$scope.classes.push('completed');
 		$scope.progress = '100';
 	} else if ($scope.transfer.failedAt) {
-		$scope.status = 'failed'
+		$scope.classes.push('failed');
 	} else if ($scope.transfer.startedAt) {
-		$scope.status = 'started'
+		$scope.classes.push('started');
 		$scope.progressBarClass = 'active';
 	} else {
-		$scope.status = 'queued';
-		$scope.dndClasses = '';
+		$scope.classes.push('queued');
+		$scope.classes.splice(0, 2);
+		$scope.showDragHandle = true;
+		$scope.dragHandleClass = 'dragHandle';
 	}
 	var iconmap = {
 		table: 'file',
