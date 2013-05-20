@@ -17,11 +17,15 @@ function TransferItemCtrl($scope) {
 	if ($scope.transfer.completedAt) {
 		$scope.classes.push('completed');
 		$scope.progress = '100';
+
 	} else if ($scope.transfer.failedAt) {
 		$scope.classes.push('failed');
+
 	} else if ($scope.transfer.startedAt) {
 		$scope.classes.push('started');
 		$scope.progressBarClass = 'active';
+		$scope.progress = '5';
+
 	} else {
 		$scope.classes.push('queued');
 		$scope.classes.splice(0, 2);

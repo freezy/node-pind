@@ -1166,11 +1166,6 @@ table td > .dragHandle:hover {
   cursor: s-resize;
 }
 table td > .dragHandle i {
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  -ms-transition: all 0.5s ease;
-  transition: all 0.5s ease;
   color: rgba(0,0,0,0.3);
 }
 table td > .dragHandle i:hover {
@@ -1467,7 +1462,7 @@ table tr.dragging td > .dragHandle i {
   cursor: pointer;
 }
 #transfers tr.failed {
-  background-color: rgba(255,20,0,0.1);
+  background-color: rgba(255,20,0,0.075);
 }
 .thumbnails img {
   -moz-border-radius-topleft: 3px;
