@@ -81,6 +81,23 @@ block inner-content
 			i.icon.download-alt
 	.clearfix
 
+block inner-footer
+	h2 Available Actions:
+	.row-fluid
+		.span4.action
+			h3 Clear downloaded files
+			p Remove all completed transfers from the database.
+			button.btn.fat.small
+				i.icon.trash
+				span Clear
+		.span4.action
+			h3 Requeue all failed
+			p Clear and re-add all failed transfers to the queue.
+			button.btn.fat.small
+				i.icon.refresh
+				span Requeue
+		.span4
+
 block inlineScripts
 	script
 		$(document).ready(function() {
