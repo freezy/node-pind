@@ -33,6 +33,18 @@ Transfer.prototype.initAnnounce = function(app) {
 	//var an = require('./announce')(app, this);
 }
 
+
+
+Transfer.prototype.initTransfers = function() {
+	var that = this;
+	// reset started downloads
+	schema.sequelize.query('UPDATE transfers SET startedAt = NULL WHERE startedAt IS NOT NULL AND failedAt IS NULL AND completedAt IS NULL;').success(function(result) {
+		if (settings.pind.startDownloadsAutomatically) {
+			that.start(function() {});
+		}
+	});
+}
+
 Transfer.prototype.queue = function(transfer, callback) {
 	var that = this;
 	schema.Transfer.all({ where: {
@@ -48,9 +60,11 @@ Transfer.prototype.queue = function(transfer, callback) {
 
 			var startDownload = function() {
 				callback(null, "Download successfully added to queue.");
-				that.start(function() {
-					console.log('Download queue finished.');
-				});
+				if (settings.pind.startDownloadsAutomatically) {
+					that.start(function() {
+						console.log('Download queue finished.');
+					});
+				}
 			}
 
 			if (row.engine == 'vpf') {
@@ -67,6 +81,13 @@ Transfer.prototype.queue = function(transfer, callback) {
 	});
 };
 
+/**
+ * Starts the download queue.
+ *
+ * @param callback Function to execute after completion, invoked with one argumens:
+ * 	<ol><li>{String} Error message on error</li>
+        <li>{Object} Result with attribues: <tt>alreadyStarted</tt> or <tt>emptyQueue</tt>.</li></ol>
+ */
 Transfer.prototype.start = function(callback) {
 	var that = this;
 	var cb = function(err, result) {
@@ -90,7 +111,7 @@ Transfer.prototype.start = function(callback) {
 }
 
 /**
- * Starts the next download in the queue.
+ * Starts the next download in the queue and handles the result.
  * @param callback
  * @returns {*}
  */

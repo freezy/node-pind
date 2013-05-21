@@ -300,6 +300,10 @@ button[type="submit"].small span,
   box-shadow: inset 0 1px 0 rgba(0,0,0,0.15);
   text-shadow: 1px 1px 0 rgba(255,255,255,0.75);
 }
+.modal-footer .action button.more,
+.row-fluid.footer .action button.more {
+  margin-left: 10px;
+}
 .modal-footer {
   padding: 30px;
 }
@@ -485,6 +489,22 @@ button[type="submit"].small span,
 }
 .icon.info:before {
   content: "\e00b";
+}
+.icon.pause:before {
+  content: "\f04c";
+}
+.icon.stop:before {
+  content: "\f04d";
+}
+.icon.play:before {
+  content: "\f04b";
+}
+.icon.image:before {
+  content: "\e00c";
+}
+.icon.cabinet:before {
+  content: "\e00d";
+  font-size: 120%;
 }
 .icon.spin {
   display: inline-block;

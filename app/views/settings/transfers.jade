@@ -85,18 +85,27 @@ block inner-footer
 	h2 Available Actions:
 	.row-fluid
 		.span4.action
-			h3 Clear downloaded files
+			h3 Control Panel
+			p Manually start, resume, pause or stop the queue.
+			button#start.btn.fat.small
+				i.icon.play
+			button#pause.btn.fat.small.more
+				i.icon.pause
+			button#stop.btn.fat.small.more
+				i.icon.stop
+		.span4.action
+			h3 Clear downloaded
 			p Remove all completed transfers from the database.
 			button.btn.fat.small
 				i.icon.trash
 				span Clear
 		.span4.action
-			h3 Requeue all failed
+			h3 Requeue failed
 			p Clear and re-add all failed transfers to the queue.
 			button.btn.fat.small
 				i.icon.refresh
 				span Requeue
-		.span4
+		
 
 block inlineScripts
 	script

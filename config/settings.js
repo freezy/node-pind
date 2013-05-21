@@ -20,6 +20,12 @@ module.exports = {
 		 */
 		downloaderRefreshRate: 3000,
 		/**
+		 * If true, queueing will automatically start the download queue. Same when
+		 * application starts and there are still items in the queue.
+		 * If false, download queue must be started manually.
+		 */
+		startDownloadsAutomatically: true,
+		/**
 		 * Secret for hashing stuff. Create something long here: http://strongpasswordgenerator.com/
 		 */
 		secret: 'alongsecret',

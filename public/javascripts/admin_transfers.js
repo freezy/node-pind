@@ -35,7 +35,7 @@ function TransferItemCtrl($scope) {
 	var iconmap = {
 		table: 'file',
 		rom: 'chip',
-		mediapack: 'ipad',
+		mediapack: 'image',
 		video: 'video'
 	}
 	$scope.icon = iconmap[$scope.transfer.type];

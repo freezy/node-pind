@@ -284,6 +284,9 @@ button[type="submit"], .btn.fat
 	box-shadow inset 0 1px 0 rgba(0,0,0,0.15)
 	text-shadow 1px 1px 0 rgba(255,255,255,0.75)
 
+	.action button.more
+		margin-left 10px
+		
 .modal-footer
 	padding 30px
 
@@ -441,6 +444,19 @@ button[type="submit"], .btn.fat
 	&.info:before
 		content "\e00b"
 
+	&.pause:before
+		content "\f04c"
+	&.stop:before
+		content "\f04d"
+	&.play:before
+		content "\f04b"
+
+	&.image:before
+		content "\e00c"
+
+	&.cabinet:before
+		content "\e00d"
+		font-size 120%
 
 	&.spin
 		display inline-block
@@ -1291,6 +1307,7 @@ vpf-padding-small = 10px
 			cursor default
 	tr.failed
 		background-color rgba(255,20,0,0.075)
+
 
 // :thumbnails
 // ============================================================================
