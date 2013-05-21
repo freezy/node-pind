@@ -85,6 +85,30 @@ var TransferApi = function() {
 			});
 		},
 
+		Control : function(req, params, callback) {
+			switch (params.action) {
+				case 'start': {
+					transfer.start(function(err, result) {
+						if (err) {
+							return callback(error.api(err));
+						}
+						callback(result);
+					});
+					break;
+				}
+				case 'pause': {
+
+					break;
+				}
+				case 'stop': {
+
+					break;
+				}
+				default:
+					callback(error.api('Unknown action: "' + params.action + '".'));
+			}
+		},
+
 		AddVPFTable : function(req, params, callback) {
 			schema.VpfFile.find(params.id).success(function(row) {
 				if (row) {

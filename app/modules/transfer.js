@@ -9,14 +9,13 @@ var schema = require('../model/schema');
 
 var vpf, vpm, extr;
 
-var transferring = false;
-
 function Transfer(app) {
 	if ((this instanceof Transfer) === false) {
 		return new Transfer(app);
 	}
 	events.EventEmitter.call(this);
 	this.initAnnounce(app);
+	this.transferring = false;
 
 	vpf = require('./vpforums')(app);
 	vpm = require('./vpinmame')(app);
@@ -84,26 +83,44 @@ Transfer.prototype.queue = function(transfer, callback) {
 /**
  * Starts the download queue.
  *
- * @param callback Function to execute after completion, invoked with one argumens:
+ * @param callback Optional function to execute after download started (not finished), invoked with one argumens:
  * 	<ol><li>{String} Error message on error</li>
         <li>{Object} Result with attribues: <tt>alreadyStarted</tt> or <tt>emptyQueue</tt>.</li></ol>
  */
 Transfer.prototype.start = function(callback) {
 	var that = this;
+	var first = false;
 	var cb = function(err, result) {
 		if (err) {
 			console.log('[transfer] ERROR: ' + err);
-			return callback(err);
+			if (first && callback) {
+				return callback(err);
+			}
+			
 		} else {
 			if (result.alreadyStarted) {
 				console.log('[transfer] Downloads are already active, returning.');
-				return callback(null, result);
+				if (first && callback) {
+					callback(null, result);
+				}
+				return;
 			}
 			if (result.emptyQueue) {
 				console.log('[transfer] Queue is empty, returning.');
-				return callback(null, result);
+				if (first && callback) {
+					callback(null, result);
+				}
+				return;
 			}
 			console.log('[transfer] Next download is ready, starting.');
+
+			// still announce that we've started, but not for every item.
+			if (first && callback) {
+				callback(null, { ok: true });
+			}
+			first = false;
+
+			// now restart
 			that.next(cb);
 		}
 	};
@@ -116,10 +133,11 @@ Transfer.prototype.start = function(callback) {
  * @returns {*}
  */
 Transfer.prototype.next = function(callback) {
-	if (transferring) {
+	if (this.transferring) {
 		return callback(null, { alreadyStarted: true });
 	}
-	transferring = true;
+	this.transferring = true;
+	var that = this;
 	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'sort ASC' }).success(function(rows) {
 		var found = false;
 		if (rows.length > 0) {
@@ -157,11 +175,11 @@ Transfer.prototype.next = function(callback) {
 										}).done(function() {
 											if (vpfFile) {
 												vpfFile.updateAttributes({ downloadFailedAt: new Date() }).done(function() {
-													transferring = false;
+													that.transferring = false;
 													callback(err);
 												});
 											} else {
-												transferring = false;
+												that.transferring = false;
 												callback(err);
 											}
 										});
@@ -184,7 +202,7 @@ Transfer.prototype.next = function(callback) {
 														failedAt: new Date(),
 														result: err
 													}).success(function() {
-														transferring = false;
+														that.transferring = false;
 														callback(err);
 													});
 												}
@@ -193,7 +211,7 @@ Transfer.prototype.next = function(callback) {
 												row.updateAttributes({
 													result: JSON.stringify(extractResult)
 												}).success(function(row) {
-													transferring = false;
+													that.transferring = false;
 													callback(null, row);
 												});
 											});
@@ -227,11 +245,11 @@ Transfer.prototype.next = function(callback) {
 				}
 			}
 			if (!found) {
-				transferring = false;
+				that.transferring = false;
 				callback(null, { emptyQueue: true });
 			}
 		} else {
-			transferring = false;
+			that.transferring = false;
 			callback(null, { emptyQueue: true });
 		}
 	});

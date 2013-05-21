@@ -302,7 +302,7 @@ button[type="submit"].small span,
 }
 .modal-footer .action button.more,
 .row-fluid.footer .action button.more {
-  margin-left: 10px;
+  margin-right: 10px;
 }
 .modal-footer {
   padding: 30px;
