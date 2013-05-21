@@ -70,19 +70,24 @@ pindAppModule.directive('sortable', function() {
 
 pindAppModule.directive('deletable', function() {
 	return function(scope, element, attrs) {
-		$(element).find('li.link.delete').click(function() {
-			var id = attrs.id;
-			api('Transfer.Delete', {
-				id: id
-			}, function(err, result) {
-				if (err) {
-					return alert(err);
-				}
-				if ($(element).parents('tbody').find('tr').length == 1) {
-					scope.$parent.$broadcast('paramsUpdated');
-				}
-				$(element).fadeOut();
+		if (!scope.transfer.startedAt || scope.transfer.completedAt || scope.transfer.failedAt) {
+			$(element).find('li.link.delete').click(function() {
+				var id = attrs.id;
+				api('Transfer.Delete', {
+					id: id
+				}, function(err, result) {
+					if (err) {
+						return alert(err);
+					}
+					if ($(element).parents('tbody').find('tr').length == 1) {
+						scope.$parent.$broadcast('paramsUpdated');
+					}
+					$(element).fadeOut();
+				});
 			});
-		});
+		} else {
+			$(element).find('li.link.delete').addClass('disabled');
+		}
+		
 	};
 });

@@ -735,8 +735,10 @@ ul.pills
 			border-radius-bottomright corner-size
 		i
 			margin-right 5px
-		&.link:hover
+		&.link:hover:not(.disabled)
 			background-color rgba(0,0,0,0.15)
+		&.link.disabled a
+			color color-medium
 			
 ul.pills, ul.nav.nav-pills
 	li div.icon
@@ -1285,6 +1287,8 @@ vpf-padding-small = 10px
 		margin-left 10px
 	li.link
 		cursor pointer
+		&.disabled
+			cursor default
 	tr.failed
 		background-color rgba(255,20,0,0.075)
 
