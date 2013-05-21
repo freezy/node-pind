@@ -15,11 +15,7 @@ module.exports = function(sequelize, DataTypes) {
 			downloads: DataTypes.INTEGER,
 			views: DataTypes.INTEGER,
 			author: DataTypes.STRING,
-			lastUpdatedAt: DataTypes.DATE,
-			downloadQueuedAt: DataTypes.DATE,
-			downloadStartedAt: DataTypes.DATE,
-			downloadFailedAt: DataTypes.DATE,
-			downloadCompletedAt: DataTypes.DATE
+			lastUpdatedAt: DataTypes.DATE
 		},
 		{
 			classMethods: {
@@ -44,30 +40,34 @@ module.exports = function(sequelize, DataTypes) {
 					} else {
 						return [title, ''];
 					}
-				}
-			},
+				},
 
-			instanceMethods: {
-				map: function(hit) {
-					var result = this.values;
-					var split = VpfFile.splitName(result.title);
+				map: function(row, hit) {
+					var result = row.values ? row.values : row;
+					var split = this.splitName(result.title);
 					result.title_match = hit ? hit.string : null;
 					result.title_trimmed = split[0];
 					result.info = split[1];
 					result.lastUpdatedSince = relativeDate(result.lastUpdatedAt);
-					if (this.downloadCompletedAt) {
+					if (row.completedAt) {
 						result.downloadStatus = 'completed'
-					} else if (this.downloadFailedAt) {
+					} else if (row.failedAt) {
 						result.downloadStatus = 'failed'
-					} else if (this.downloadStartedAt) {
+					} else if (row.startedAt) {
 						result.downloadStatus = 'started'
-					} else if (this.downloadQueuedAt) {
-							result.downloadStatus = 'queued'
+					} else if (row.queuedAt) {
+						result.downloadStatus = 'queued'
 					} else {
 						result.downloadStatus = 'none'
 					}
 
 					return result;
+				}
+			},
+
+			instanceMethods: {
+				map: function(hit) {
+					return VpfFile.map(this, hit);
 				}
 			},
 

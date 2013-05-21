@@ -35,11 +35,16 @@ var config = {
 					pagedResults = hits;
 				}
 
-				// enhance and return
+				// search for map function either in class or instance.
 				var results = [];
-				var map = pagedResults.length > 0 && pagedResults[0].original.map instanceof Function;
+				var mapI = pagedResults.length > 0 && pagedResults[0].original.map instanceof Function;
+				var mapC = this.map instanceof Function;
+				var that = this;
 				_.each(pagedResults, function(hit) {
-					results.push(map ? hit.original.map(hit) : hit.original);
+					results.push(mapI ? hit.original.map(hit) : 
+					            (mapC ? that.map(hit.original, hit) : 
+					             hit.original)
+					);
 				});
 
 				callback({ rows: results, count: hits.length });

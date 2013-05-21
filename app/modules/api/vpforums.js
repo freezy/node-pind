@@ -54,25 +54,37 @@ var VPForumsAPI = function() {
 			} else {
 				p.order = 'lastUpdatedAt DESC';
 			}
-			schema.VpfFile.all(p).success(function(rows) {
+			var query = 
+				'SELECT f.*, t.startedAt, t.failedAt, t.completedAt, t.createdAt AS queuedAt FROM vpf_files f ' +
+				'LEFT JOIN transfers t ON t.reference = f.id ' +
+				'ORDER BY f.' + p.order;
+			if (!search) {
+				query += ' LIMIT ' + p.limit + ' OFFSET ' + p.offset;				
+			}
+			var queryStart = +new Date();
+			schema.sequelize.query(query).success(function(rows) {
 
+				var queryTime = (+new Date() - queryStart);
 				if (search) {
+					console.log('Fetched ' + rows.length + ' rows in ' + queryTime + 'ms for fuzzy search.');
 					// needs to have fuzzyExtract in the model!
 					return schema.VpfFile.fuzzySearch(rows, params, callback);
 				}
 
 				var returnedRows = [];
 				_.each(rows, function(row) {
-					returnedRows.push(row.map());
+					returnedRows.push(schema.VpfFile.map(row));
 				});
 
 				delete p.limit;
 				delete p.offset;
 				delete p.order;
+				var countStart = +new Date();
 				schema.VpfFile.count(p).success(function(num) {
+					var countTime = (+new Date() - countStart);
 
-					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
-					callback({ rows: returnedRows, count: num });
+					console.log('Returning ' + rows.length + ' rows from a total of ' + num + ' (%d/%dms).', queryTime, countTime);
+					callback({ rows: returnedRows, count: num, queryTime: queryTime, countTime: countTime });
 
 				}).error(function(err) {
 					throw new Error(err);
