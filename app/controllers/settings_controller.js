@@ -39,6 +39,7 @@ action('transfers', function(context) {
 		}
 		render();
 	});
+	this.ngController = 'TransferCtrl';
 });
 
 action('users', function(context) {

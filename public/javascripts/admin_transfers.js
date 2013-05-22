@@ -21,9 +21,13 @@ $(document).ready(function() {
 
 	// enable start button
 	$('button#start').click(function()( {
-		
+
 	}));
 });
+
+function TransferCtrl($scope) {
+	
+}
 
 function TransferItemCtrl($scope) {
 

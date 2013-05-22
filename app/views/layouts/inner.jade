@@ -20,10 +20,11 @@ block body
 						a(href='#{pathTo.logout}').icon
 							i.icon.exit
 
-	div.container
-		div.row-fluid
+	div.container(ng-app='pind')
+		- var ngc = typeof(ngController) === 'undefined' ? null : ngController;
+		div.row-fluid(ng-controller=ngc)
 			block content
-
+		
 	footer
 		a(href="https://github.com/freezy/node-pind", target="_blank")
 			i.icon.github-alt
