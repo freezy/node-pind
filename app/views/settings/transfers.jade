@@ -36,7 +36,7 @@ block inner-content
 
 		//- data
 		div.data.ng-cloak(resource='Transfer.GetAll', style='display:none')
-			table.table#transfers
+			table.table#transfers(data-status='#{status}')
 				thead
 					
 						th(style='width:5px')

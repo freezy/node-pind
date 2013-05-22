@@ -44,6 +44,31 @@ Transfer.prototype.initTransfers = function() {
 	});
 }
 
+/**
+ * Returns the status of the current queue. Can be on of:
+ *   <ol><li><tt>idling</tt> - Empty queue, nothing is transferring.</li>
+ *       <li><tt>transferring</tt> - Currently transferring an item.</li>
+ *       <li><tt>paused</tt> - A transfer has been explicitly paused (unsupported).</li>
+ *       <li><tt>stopped</tt> - No automatic transfers or transfer has been explicitly stopped.</li>
+ *   </ol>
+ *
+ * @param callback Optional function to execute after download started (not finished), invoked with one argumens:
+ * 	<ol><li>{String} Error message on error</li>
+ *      <li>{String} One of: <tt>idle</tt>, <tt>transferring</tt>, <tt>paused</tt>, <tt>stopped</tt>.
+ */
+Transfer.prototype.getStatus = function(callback) {
+	if (this.transferring) {
+		return callback(null, 'transferring');
+	}
+	schema.Transfer.count({ where: 'completedAt IS NOT NULL OR failedAt IS NOT NULL'}).success(function(num) {
+		if (num == 0) {
+			callback(null, 'idling');
+		} else {
+			callback(null, 'stopped');
+		}
+	});
+}
+
 Transfer.prototype.queue = function(transfer, callback) {
 	var that = this;
 	schema.Transfer.all({ where: {
@@ -85,7 +110,7 @@ Transfer.prototype.queue = function(transfer, callback) {
  *
  * @param callback Optional function to execute after download started (not finished), invoked with one argumens:
  * 	<ol><li>{String} Error message on error</li>
-        <li>{Object} Result with attribues: <tt>alreadyStarted</tt> or <tt>emptyQueue</tt>.</li></ol>
+ *      <li>{Object} Result with attribues: <tt>alreadyStarted</tt> or <tt>emptyQueue</tt>.</li></ol>
  */
 Transfer.prototype.start = function(callback) {
 	var that = this;

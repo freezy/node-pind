@@ -4,6 +4,7 @@ var vpf = require('./app/modules/vpforums')(app);
 var hp = require('./app/modules/hyperpin')(app);
 var hs = require('./app/modules/hiscore')(app);
 var ipdb = require('./app/modules/ipdb')(app);
+var trns = require('./app/modules/transfer')(app);
 
 load('application');
 before(use('requireAdmin'));
@@ -30,7 +31,14 @@ action('sources', function(context) {
 
 action('transfers', function(context) {
 	this.title = 'Settings :: Transfers';
-	render();
+	trns.getStatus(function(err, status) {
+		if (err) {
+			this.status = err;
+		} else {
+			this.status = status;
+		}
+		render();
+	});
 });
 
 action('users', function(context) {

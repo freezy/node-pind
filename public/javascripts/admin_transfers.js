@@ -4,6 +4,25 @@ $(document).ready(function() {
 	socket.on('downloadWatch', function(status) {
 		$('#transfers tr#' + status.id + ' .progress .bar').css('width', (status.downloadedSize / status.totalSize * 100) + '%')
 	});
+
+	var status = $('#transfers').data('status');
+
+	// enable/disable start button
+	if (status == 'idling' || status == 'transferring') {
+		$('button#start').attr('disabled', 'disabled');
+	}
+	// enable/disable stop button
+	if (status == 'idling' || status == 'stopped') {
+		$('button#stop').attr('disabled', 'disabled');
+	}
+	// gray out pausae button until supported
+	$('button#pause').attr('disabled', 'disabled');
+
+
+	// enable start button
+	$('button#start').click(function()( {
+		
+	}));
 });
 
 function TransferItemCtrl($scope) {
