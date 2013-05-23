@@ -7,26 +7,31 @@ $(document).ready(function() {
 
 	var status = $('#transfers').data('status');
 
-	// enable/disable start button
-	if (status == 'idling' || status == 'transferring') {
-		$('button#start').attr('disabled', 'disabled');
-	}
-	// enable/disable stop button
-	if (status == 'idling' || status == 'stopped') {
-		$('button#stop').attr('disabled', 'disabled');
-	}
-	// gray out pausae button until supported
-	$('button#pause').attr('disabled', 'disabled');
-
-
-	// enable start button
-	$('button#start').click(function()( {
-
-	}));
 });
 
 function TransferCtrl($scope) {
-	
+
+	$scope.status = $('#transfers').data('status');
+
+	// enable/disable start button
+	$scope.startDisabled = $scope.status == 'idling' || $scope.status == 'transferring';
+	$scope.stopDisabled = $scope.status == 'idling' || $scope.status == 'stopped';
+	$scope.pauseDisabled = true;
+
+	$scope.start = function() {
+		api('Transfer.Control', { action: 'start' }, function(err, result) {
+			if (err) {
+				return alert('Problem Starting: ' + err);
+			}
+			$scope.status = result.status;
+		});
+	}
+	$scope.pause = function() {
+		alert('not yet implemented.');
+	}
+	$scope.stop = function() {
+		alert('stopped.');
+	}
 }
 
 function TransferItemCtrl($scope) {

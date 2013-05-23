@@ -49,7 +49,6 @@ $(document).ready(function() {
 
 });
 
-
 /*
  * Renders a thumb that fades in when downloaded.
  *
@@ -98,6 +97,10 @@ pindAppModule.directive('thumb', function() {
 	}
 });
 
+/**
+ * On click, updates the download confirmation dialog and sets up the click
+ * listener of the dialog's button.
+ */
 pindAppModule.directive('downloadLink', function() {
 	return {
 		restrict: 'C',

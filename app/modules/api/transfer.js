@@ -86,14 +86,16 @@ var TransferApi = function() {
 		},
 
 		Control : function(req, params, callback) {
+			var done = function(result) {
+				transfer.getStatus(function(err, status) {
+					console.log('********** got status: %s', status);
+					callback({ status: status });
+				});
+			}
 			switch (params.action) {
 				case 'start': {
-					transfer.start(function(err, result) {
-						if (err) {
-							return callback(error.api(err));
-						}
-						callback(result);
-					});
+					transfer.start();
+					done();
 					break;
 				}
 				case 'pause': {
@@ -107,6 +109,8 @@ var TransferApi = function() {
 				default:
 					callback(error.api('Unknown action: "' + params.action + '".'));
 			}
+
+			callback(result);
 		},
 
 		AddVPFTable : function(req, params, callback) {

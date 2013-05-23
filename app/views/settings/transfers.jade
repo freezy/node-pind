@@ -87,11 +87,11 @@ block inner-footer
 		.span4.action
 			h3 Control Panel
 			p Manually start, resume, pause or stop the queue.
-			button#start.btn.fat.small.more
+			button.btn.fat.small.more(ng-disabled='startDisabled', ng-click='start()')
 				i.icon.play
-			button#pause.btn.fat.small.more
+			button.btn.fat.small.more(ng-disabled='pauseDisabled', ng-click='pause()')
 				i.icon.pause
-			button#stop.btn.fat.small.more
+			button.btn.fat.small.more(ng-disabled='stopDisabled', ng-click='stop()')
 				i.icon.stop
 			span#status Finished.
 		.span4.action

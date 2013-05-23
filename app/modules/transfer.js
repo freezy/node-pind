@@ -83,7 +83,7 @@ Transfer.prototype.queue = function(transfer, callback) {
 		schema.Transfer.create(transfer).success(function(row) {
 
 			var startDownload = function() {
-				callback(null, "Download successfully added to queue.");
+				callback(null, 'Download successfully added to queue.');
 				if (settings.pind.startDownloadsAutomatically) {
 					that.start(function() {
 						console.log('Download queue finished.');
@@ -100,7 +100,6 @@ Transfer.prototype.queue = function(transfer, callback) {
 					}
 				});
 			}
-
 		});
 	});
 };
@@ -139,16 +138,17 @@ Transfer.prototype.start = function(callback) {
 			}
 			console.log('[transfer] Next download is ready, starting.');
 
-			// still announce that we've started, but not for every item.
+			// still announce that we've started, but not every item.
 			if (first && callback) {
 				callback(null, { ok: true });
 			}
 			first = false;
 
-			// now restart
+			// now to next item...
 			that.next(cb);
 		}
 	};
+	console.log('[transfer] Kicking off download queue.');
 	that.next(cb);
 }
 
