@@ -11,12 +11,13 @@ $(document).ready(function() {
 
 function TransferCtrl($scope) {
 
+	$scope.$watch('status', function() {
+		console.log('Updated status to: ' + $scope.status);
+		$scope.startDisabled = $scope.status == 'idling' || $scope.status == 'transferring';
+		$scope.stopDisabled = $scope.status == 'idling' || $scope.status == 'stopped';
+		$scope.pauseDisabled = true;
+	});
 	$scope.status = $('#transfers').data('status');
-
-	// enable/disable start button
-	$scope.startDisabled = $scope.status == 'idling' || $scope.status == 'transferring';
-	$scope.stopDisabled = $scope.status == 'idling' || $scope.status == 'stopped';
-	$scope.pauseDisabled = true;
 
 	$scope.start = function() {
 		api('Transfer.Control', { action: 'start' }, function(err, result) {
@@ -24,6 +25,7 @@ function TransferCtrl($scope) {
 				return alert('Problem Starting: ' + err);
 			}
 			$scope.status = result.status;
+			$scope.$apply();
 		});
 	}
 	$scope.pause = function() {

@@ -93,7 +93,7 @@ block inner-footer
 				i.icon.pause
 			button.btn.fat.small.more(ng-disabled='stopDisabled', ng-click='stop()')
 				i.icon.stop
-			span#status Finished.
+			span#status {{status}}
 		.span4.action
 			h3 Clear downloaded
 			p Remove all completed transfers from the database.

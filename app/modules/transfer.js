@@ -8,6 +8,7 @@ var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 
 var vpf, vpm, extr;
+var transferring = false;
 
 function Transfer(app) {
 	if ((this instanceof Transfer) === false) {
@@ -15,7 +16,6 @@ function Transfer(app) {
 	}
 	events.EventEmitter.call(this);
 	this.initAnnounce(app);
-	this.transferring = false;
 
 	vpf = require('./vpforums')(app);
 	vpm = require('./vpinmame')(app);
@@ -57,7 +57,7 @@ Transfer.prototype.initTransfers = function() {
  *      <li>{String} One of: <tt>idle</tt>, <tt>transferring</tt>, <tt>paused</tt>, <tt>stopped</tt>.
  */
 Transfer.prototype.getStatus = function(callback) {
-	if (this.transferring) {
+	if (transferring) {
 		return callback(null, 'transferring');
 	}
 	schema.Transfer.count({ where: 'completedAt IS NOT NULL OR failedAt IS NOT NULL'}).success(function(num) {
@@ -158,10 +158,10 @@ Transfer.prototype.start = function(callback) {
  * @returns {*}
  */
 Transfer.prototype.next = function(callback) {
-	if (this.transferring) {
+	if (transferring) {
 		return callback(null, { alreadyStarted: true });
 	}
-	this.transferring = true;
+	transferring = true;
 	var that = this;
 	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'sort ASC' }).success(function(rows) {
 		var found = false;
@@ -200,11 +200,11 @@ Transfer.prototype.next = function(callback) {
 										}).done(function() {
 											if (vpfFile) {
 												vpfFile.updateAttributes({ downloadFailedAt: new Date() }).done(function() {
-													that.transferring = false;
+													transferring = false;
 													callback(err);
 												});
 											} else {
-												that.transferring = false;
+												transferring = false;
 												callback(err);
 											}
 										});
@@ -227,7 +227,7 @@ Transfer.prototype.next = function(callback) {
 														failedAt: new Date(),
 														result: err
 													}).success(function() {
-														that.transferring = false;
+														transferring = false;
 														callback(err);
 													});
 												}
@@ -236,7 +236,7 @@ Transfer.prototype.next = function(callback) {
 												row.updateAttributes({
 													result: JSON.stringify(extractResult)
 												}).success(function(row) {
-													that.transferring = false;
+													transferring = false;
 													callback(null, row);
 												});
 											});
@@ -270,11 +270,11 @@ Transfer.prototype.next = function(callback) {
 				}
 			}
 			if (!found) {
-				that.transferring = false;
+				transferring = false;
 				callback(null, { emptyQueue: true });
 			}
 		} else {
-			that.transferring = false;
+			transferring = false;
 			callback(null, { emptyQueue: true });
 		}
 	});

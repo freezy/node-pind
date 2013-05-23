@@ -109,8 +109,6 @@ var TransferApi = function() {
 				default:
 					callback(error.api('Unknown action: "' + params.action + '".'));
 			}
-
-			callback(result);
 		},
 
 		AddVPFTable : function(req, params, callback) {

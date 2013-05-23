@@ -37,6 +37,7 @@ action('transfers', function(context) {
 		} else {
 			this.status = status;
 		}
+//		this.status='transferring';
 		render();
 	});
 	this.ngController = 'TransferCtrl';
