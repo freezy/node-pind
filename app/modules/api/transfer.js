@@ -85,10 +85,18 @@ var TransferApi = function() {
 			});
 		},
 
+		ResetFailed : function(req, params, callback) {
+			transfer.resetFailed(function(err) {
+				if (err) {
+					return callback(error.api(err));
+				}
+				callback({success: true});
+			})
+		},
+
 		Control : function(req, params, callback) {
 			var done = function(result) {
 				transfer.getStatus(function(err, status) {
-					console.log('********** got status: %s', status);
 					callback({ status: status });
 				});
 			}

@@ -33,7 +33,10 @@ Transfer.prototype.initAnnounce = function(app) {
 }
 
 
-
+/**
+ * Executed when application starts. Resets all transfers in progress and
+ * starts download queue if setting allows it.
+ */
 Transfer.prototype.initTransfers = function() {
 	var that = this;
 	// reset started downloads
@@ -60,14 +63,33 @@ Transfer.prototype.getStatus = function(callback) {
 	if (transferring) {
 		return callback(null, 'transferring');
 	}
-	schema.Transfer.count({ where: 'completedAt IS NOT NULL OR failedAt IS NOT NULL'}).success(function(num) {
+	schema.Transfer.count({ where: 'completedAt IS NOT NULL AND failedAt IS NOT NULL'}).success(function(num) {
+		console.log('num = %d', num);
 		if (num == 0) {
 			callback(null, 'idling');
 		} else {
 			callback(null, 'stopped');
 		}
 	});
+};
+
+/**
+ * Resets failed downloads and restarts queue if setting allows it.
+ *
+ * @param callback Optional function to execute after download started (not finished), invoked with one argumens:
+ * 	<ol><li>{String} Error message on error</li></ol>
+ */
+Transfer.prototype.resetFailed = function(callback) {
+	var that = this;
+	// reset failed downloads
+	schema.sequelize.query('UPDATE transfers SET startedAt = NULL, failedAt = NULL WHERE failedAt IS NOT NULL').success(function(result) {
+		if (settings.pind.startDownloadsAutomatically) {
+			that.start(function() {});
+		}
+		callback();
+	}).error(callback);
 }
+
 
 Transfer.prototype.queue = function(transfer, callback) {
 	var that = this;

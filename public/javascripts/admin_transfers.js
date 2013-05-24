@@ -34,6 +34,15 @@ function TransferCtrl($scope) {
 	$scope.stop = function() {
 		alert('stopped.');
 	}
+
+	$scope.resetFailed = function() {
+		api('Transfer.ResetFailed', {}, function(err, result) {
+			if (err) {
+				return alert('Problem resetting failed: ' + err);
+			}
+			$scope.$broadcast('paramsUpdated');
+		});
+	}
 }
 
 function TransferItemCtrl($scope) {

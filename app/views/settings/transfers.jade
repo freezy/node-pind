@@ -101,11 +101,11 @@ block inner-footer
 				i.icon.trash
 				span Clear
 		.span4.action
-			h3 Requeue failed
+			h3 Reset failed
 			p Clear and re-add all failed transfers to the queue.
-			button.btn.fat.small
+			button.btn.fat.small(ng-click='resetFailed()')
 				i.icon.refresh
-				span Requeue
+				span Reset
 		
 
 block inlineScripts
