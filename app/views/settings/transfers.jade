@@ -93,7 +93,7 @@ block inner-footer
 				i.icon.pause
 			button.btn.fat.small.more(ng-disabled='stopDisabled', ng-click='stop()')
 				i.icon.stop
-			span#status 
+			span#status.ng-cloak 
 				strong {{status}}.
 		.span4.action
 			h3 Clear downloaded
@@ -115,7 +115,7 @@ block inlineScripts
 			// init menu
 			menu('settings');
 			submenu('transfers');
-			
+
 			// initialize scope variables
 			var transferScope = $('div[ng-controller="TransferCtrl"]').scope();
 			transferScope.status = '#{status}';

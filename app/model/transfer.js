@@ -26,15 +26,18 @@ module.exports = function(sequelize, DataTypes) {
 			classMethods: {
 				fuzzyExtract: function(row) {
 					return row.title;
+				},
+				map: function(row) {
+					var result = row.values ? row.values : row;
+					result.queuedSince = relativeDate(result.createdAt);
+					result.displaySize = result.size ? filesize(result.size, true) : '';
+					return result;
 				}
 			},
 
 			instanceMethods: {
 				map: function() {
-					var result = this.values;
-					result.queuedSince = relativeDate(result.createdAt);
-					result.displaySize = result.size ? filesize(result.size, true) : '';
-					return result;
+					return Transfer.map(this);
 				}
 			},
 

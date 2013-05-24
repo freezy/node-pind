@@ -158,13 +158,21 @@ var TransferApi = function() {
 				p.limit = params.limit ? parseInt(params.limit) : 0;
 			}
 
-			var query = '(SELECT * FROM transfers WHERE failedAt IS NOT NULL ORDER BY failedAt ASC)'
-				+ ' UNION '
-				+ '(SELECT * FROM transfers WHERE startedAt IS NOT NULL AND completedAt IS NULL ORDER BY startedAt ASC)'
-				+ ' UNION '
-				+ '(SELECT * FROM transfers WHERE completedAt IS NOT NULL ORDER BY completeAt DESC);'
+			var query = 
+				// failed
+				'(SELECT * FROM transfers WHERE failedAt IS NOT NULL ORDER BY failedAt ASC'
+				+') UNION ('
+				// transferring
+				+ 'SELECT * FROM transfers WHERE startedAt IS NOT NULL AND completedAt IS NULL AND failedAt IS NULL ORDER BY startedAt ASC'
+				+') UNION ('
+				// queued
+				+ 'SELECT * FROM transfers WHERE startedAt IS NULL AND completedAt IS NULL AND failedAt IS NULL ORDER BY sort ASC'
+				+') UNION ('
+				// completed
+				+ 'SELECT * FROM transfers WHERE completedAt IS NOT NULL ORDER BY completedAt DESC)'
 
-			schema.Transfer.all(p).success(function(rows) {
+			schema.sequelize.query(query, null, { raw: true, type: 'SELECT' }).success(function(rows) {
+			//schema.Transfer.all(p).success(function(rows) {
 
 				if (search) {
 					// needs to have fuzzyExtract in the model!
@@ -173,7 +181,7 @@ var TransferApi = function() {
 
 				var returnedRows = [];
 				_.each(rows, function(row) {
-					returnedRows.push(row.map());
+					returnedRows.push(schema.Transfer.map(row));
 				});
 
 				delete p.limit;
