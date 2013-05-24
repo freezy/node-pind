@@ -56,7 +56,8 @@ block inner-content
 						td {{transfer.displaySize}}
 						td 
 							i.icon(class='{{icon}}')
-						td {{transfer.title}}
+						td
+							span(ng-bind-html="displayName")
 							a(href='{{transfer.url}}', target='_blank')
 								i.icon.link
 						td {{transfer.queuedSince}}

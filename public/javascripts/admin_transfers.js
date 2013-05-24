@@ -53,6 +53,8 @@ function TransferItemCtrl($scope) {
 	$scope.dragHandleClass = '';
 	$scope.showDragHandle = false;
 
+	$scope.displayName = $scope.transfer.title_match ? $scope.transfer.title_match : $scope.transfer.title;
+
 	if ($scope.transfer.completedAt) {
 		$scope.classes.push('completed');
 		$scope.progress = '100';

@@ -154,13 +154,6 @@ var TransferApi = function() {
 		GetAll : function(req, params, callback) {
 
 			var search = params.search && params.search.length > 1;
-			var p = { order: 'sort ASC' };
-
-			// pagination
-			if (!search) {
-				p.offset = params.offset ? parseInt(params.offset) : 0;
-				p.limit = params.limit ? parseInt(params.limit) : 0;
-			}
 
 			var query = '('
 				// failed
@@ -175,6 +168,12 @@ var TransferApi = function() {
 				// completed
 				+ 'SELECT *, 4 AS s, 1 as sAsc, completedAt as sDesc FROM transfers WHERE completedAt IS NOT NULL'
 				+ ') ORDER BY s ASC, sAsc ASC, sDesc DESC'
+			
+			// pagination
+			if (!search) {
+				query += ' LIMIT ' + (params.limit ? parseInt(params.limit) : 0);
+				query += ' OFFSET ' + (params.offset ? parseInt(params.offset) : 0);
+			}
 
 			schema.sequelize.query(query, null, { raw: true, type: 'SELECT' }).success(function(rows) {
 			//schema.Transfer.all(p).success(function(rows) {
@@ -189,10 +188,7 @@ var TransferApi = function() {
 					returnedRows.push(schema.Transfer.map(row));
 				});
 
-				delete p.limit;
-				delete p.offset;
-				delete p.order;
-				schema.Transfer.count(p).success(function(num) {
+				schema.Transfer.count().success(function(num) {
 
 					console.log('Returning ' + returnedRows.length + ' rows from a total of ' + num + '.');
 					callback({ rows: returnedRows, count: num });
