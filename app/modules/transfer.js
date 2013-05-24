@@ -63,7 +63,7 @@ Transfer.prototype.getStatus = function(callback) {
 	if (transferring) {
 		return callback(null, 'transferring');
 	}
-	schema.Transfer.count({ where: 'completedAt IS NOT NULL AND failedAt IS NOT NULL'}).success(function(num) {
+	schema.Transfer.count({ where: 'startedAt IS NULL'}).success(function(num) {
 		console.log('num = %d', num);
 		if (num == 0) {
 			callback(null, 'idling');
