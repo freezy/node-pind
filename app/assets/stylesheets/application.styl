@@ -598,6 +598,9 @@ select.numrows
 .progress-striped .bar
 	background-color color-btn-light
 
+tr.completed .progress-striped .bar
+	background-color color-medium
+
 td > .progress
 	margin-bottom 0
 
@@ -1020,6 +1023,7 @@ table
 		filter gray
 		-webkit-filter grayscale(100%)
 
+
 td input[type='text']
 	padding 0 10px
 	margin 0
@@ -1059,6 +1063,8 @@ table
 		td > .dragHandle i
 			color rgba(0,0,0,0.7)
 
+tr.newblock td
+	border-top-width 5px
 // :sources
 // ============================================================================
 

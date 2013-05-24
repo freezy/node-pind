@@ -78,6 +78,13 @@ function TransferItemCtrl($scope) {
 		video: 'video'
 	}
 	$scope.icon = iconmap[$scope.transfer.type];
+
+	$scope.init = function(prev) {
+		if (prev && prev.s != $scope.transfer.s) {
+			$scope.classes.push('newblock');
+		}
+		console.log('prev: ' + prev);
+	}
 }
 
 pindAppModule.directive('sortable', function() {

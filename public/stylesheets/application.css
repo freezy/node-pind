@@ -667,6 +667,9 @@ select.numrows {
 .progress-striped .bar {
   background-color: #e09d55;
 }
+tr.completed .progress-striped .bar {
+  background-color: #9d9e9e;
+}
 td > .progress {
   margin-bottom: 0;
 }
@@ -1199,6 +1202,9 @@ table tr.dragging {
 }
 table tr.dragging td > .dragHandle i {
   color: rgba(0,0,0,0.7);
+}
+tr.newblock td {
+  border-top-width: 5px;
 }
 .item.vpf h3 {
   line-height: 24px;
