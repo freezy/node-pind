@@ -30,6 +30,7 @@ var TransferApi = function() {
 				var ids = _.reject(_.values(params.between), function(num) {
 					return num == 0;
 				});
+				console.log('Reorder: %j', params);
 
 				schema.Transfer.all({ where: { id: ids }}).success(function(rows) {
 					
@@ -40,6 +41,9 @@ var TransferApi = function() {
 						}
 						var prev = rows[0].id == params.between.prev ? rows[0] : rows[1];
 						var next = rows[1].id == params.between.next ? rows[1] : rows[0];
+						console.log('PREV: %j', prev);
+						console.log('NEXT: %j', next);
+						console.log('NEW SORT: %d', Math.round((prev.sort + next.sort) / 2))
 						row.updateAttributes({
 							sort: Math.round((prev.sort + next.sort) / 2)
 						});
@@ -158,18 +162,19 @@ var TransferApi = function() {
 				p.limit = params.limit ? parseInt(params.limit) : 0;
 			}
 
-			var query = 
+			var query = '('
 				// failed
-				'(SELECT * FROM transfers WHERE failedAt IS NOT NULL ORDER BY failedAt ASC'
-				+') UNION ('
+				+ 'SELECT *, 1 AS s, failedAt as sAsc, 1 as sDesc FROM transfers WHERE failedAt IS NOT NULL'
+				+ ') UNION ('
 				// transferring
-				+ 'SELECT * FROM transfers WHERE startedAt IS NOT NULL AND completedAt IS NULL AND failedAt IS NULL ORDER BY startedAt ASC'
-				+') UNION ('
+				+ 'SELECT *, 2 AS s, startedAt as sAsc, 1 as sDesc FROM transfers WHERE startedAt IS NOT NULL AND completedAt IS NULL AND failedAt IS NULL'
+				+ ') UNION ('
 				// queued
-				+ 'SELECT * FROM transfers WHERE startedAt IS NULL AND completedAt IS NULL AND failedAt IS NULL ORDER BY sort ASC'
-				+') UNION ('
+				+ 'SELECT *, 3 AS s, sort as sAsc, 1 as sDesc FROM transfers WHERE startedAt IS NULL AND completedAt IS NULL AND failedAt IS NULL'
+				+ ') UNION ('
 				// completed
-				+ 'SELECT * FROM transfers WHERE completedAt IS NOT NULL ORDER BY completedAt DESC)'
+				+ 'SELECT *, 4 AS s, 1 as sAsc, completedAt as sDesc FROM transfers WHERE completedAt IS NOT NULL'
+				+ ') ORDER BY s ASC, sAsc ASC, sDesc DESC'
 
 			schema.sequelize.query(query, null, { raw: true, type: 'SELECT' }).success(function(rows) {
 			//schema.Transfer.all(p).success(function(rows) {

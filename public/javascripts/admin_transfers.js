@@ -86,13 +86,13 @@ pindAppModule.directive('sortable', function() {
 			// http://isocra.com/2008/02/table-drag-and-drop-jquery-plugin/
 			$(element).parents('tbody').tableDnD({
 				onDrop: function(table, row) {
-					var next = $(row).next().attr('id');
-					var prev = $(row).prev().attr('id');
+					var next = $(row).next();
+					var prev = $(row).prev();
 					api('Transfer.Reorder', {
 						id: $(row).attr('id'),
 						between: {
-							prev: prev ? prev : 0,
-							next: next ? next : 0
+							prev: prev && prev.hasClass('queued') ? prev.attr('id') : 0,
+							next: next && next.hasClass('queued') ? next.attr('id') : 0
 						}
 					}, function(err, result) {
 						if (err) {
