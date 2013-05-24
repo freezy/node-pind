@@ -36,7 +36,7 @@ block inner-content
 
 		//- data
 		div.data.ng-cloak(resource='Transfer.GetAll', style='display:none')
-			table.table#transfers(data-status='#{status}')
+			table.table#transfers
 				thead
 					
 						th(style='width:5px')
@@ -93,7 +93,8 @@ block inner-footer
 				i.icon.pause
 			button.btn.fat.small.more(ng-disabled='stopDisabled', ng-click='stop()')
 				i.icon.stop
-			span#status {{status}}
+			span#status 
+				strong {{status}}.
 		.span4.action
 			h3 Clear downloaded
 			p Remove all completed transfers from the database.
@@ -111,6 +112,12 @@ block inner-footer
 block inlineScripts
 	script
 		$(document).ready(function() {
+			// init menu
 			menu('settings');
 			submenu('transfers');
+			
+			// initialize scope variables
+			var transferScope = $('div[ng-controller="TransferCtrl"]').scope();
+			transferScope.status = '#{status}';
+			transferScope.$apply();
 		});

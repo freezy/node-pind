@@ -31,16 +31,16 @@ action('sources', function(context) {
 
 action('transfers', function(context) {
 	this.title = 'Settings :: Transfers';
+	this.ngController = 'TransferCtrl';
 	trns.getStatus(function(err, status) {
 		if (err) {
 			this.status = err;
 		} else {
 			this.status = status;
 		}
-//		this.status='transferring';
 		render();
 	});
-	this.ngController = 'TransferCtrl';
+	
 });
 
 action('users', function(context) {

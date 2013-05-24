@@ -17,7 +17,6 @@ function TransferCtrl($scope) {
 		$scope.stopDisabled = $scope.status == 'idling' || $scope.status == 'stopped';
 		$scope.pauseDisabled = true;
 	});
-	$scope.status = $('#transfers').data('status');
 
 	$scope.start = function() {
 		api('Transfer.Control', { action: 'start' }, function(err, result) {
@@ -26,6 +25,7 @@ function TransferCtrl($scope) {
 			}
 			$scope.status = result.status;
 			$scope.$apply();
+			$scope.$broadcast('paramsUpdated');
 		});
 	}
 	$scope.pause = function() {
