@@ -85,7 +85,6 @@ function TransferItemCtrl($scope) {
 		if (prev && prev.s != $scope.transfer.s) {
 			$scope.classes.push('newblock');
 		}
-		console.log('prev: ' + prev);
 	}
 }
 
@@ -127,10 +126,10 @@ pindAppModule.directive('deletable', function() {
 					if (err) {
 						return alert(err);
 					}
-					if ($(element).parents('tbody').find('tr').length == 1) {
-						scope.$parent.$broadcast('paramsUpdated');
-					}
-					$(element).fadeOut();
+					$(element).fadeOut().promise().done(function() {
+						console.log('DATA should be refreshing now.');
+						scope.$parent.$parent.$broadcast('paramsUpdated');
+					});
 				});
 			});
 		} else {
