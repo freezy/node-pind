@@ -599,7 +599,13 @@ select.numrows
 	background-color color-btn-light
 
 tr.completed .progress-striped .bar
-	background-color color-medium
+	background-color rgba(0,0,0,0.15)
+
+tr.started .progress.progress-striped
+	background-color rgba(0,0,0,0.15)
+
+tr.queued .progress.progress-striped
+	background-color rgba(0,0,0,0.04)
 
 td > .progress
 	margin-bottom 0

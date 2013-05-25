@@ -668,7 +668,13 @@ select.numrows {
   background-color: #e09d55;
 }
 tr.completed .progress-striped .bar {
-  background-color: #9d9e9e;
+  background-color: rgba(0,0,0,0.15);
+}
+tr.started .progress.progress-striped {
+  background-color: rgba(0,0,0,0.15);
+}
+tr.queued .progress.progress-striped {
+  background-color: rgba(0,0,0,0.04);
 }
 td > .progress {
   margin-bottom: 0;
