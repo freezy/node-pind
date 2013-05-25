@@ -37,8 +37,9 @@ Transfer.prototype.initAnnounce = function(app) {
 	an.transferUpdate('extractFailed');
 	an.transferUpdate('extractCompleted');
 
+	an.forward('transferAdded');
 	an.forward('transferSizeKnown');
-
+	an.forward('transferClearedFailed');
 
 }
 
@@ -94,6 +95,7 @@ Transfer.prototype.resetFailed = function(callback) {
 		if (settings.pind.startDownloadsAutomatically) {
 			that.start(function() {});
 		}
+		that.emit('transferClearedFailed');
 		callback();
 	}).error(callback);
 }
@@ -117,6 +119,8 @@ Transfer.prototype.queue = function(transfer, callback) {
 		}
 		transfer.sort = +new Date();
 		schema.Transfer.create(transfer).success(function(row) {
+
+			that.emit('transferAdded', { transfer: row });
 
 			var startDownload = function() {
 				callback(null, 'Download successfully added to queue.');

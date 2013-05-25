@@ -37,7 +37,9 @@ function TransferCtrl($scope) {
 		});
 	}
 
+	// ------------------------------------------------------------------------
 	// real time code
+	// ------------------------------------------------------------------------
 	var socket = io.connect('/');
 
 	// download progress bar
@@ -45,15 +47,28 @@ function TransferCtrl($scope) {
 		$('#transfers tr#' + status.id + ' .progress .bar').css('width', (status.downloadedSize / status.totalSize * 100) + '%')
 	});
 
-	// upon completion
+	// something has changed
 	socket.on('transferUpdated', function(result) {
 		if ($('#transfers tr#' + result.id).length > 0) {
 			$scope.$broadcast('paramsUpdated');
 		};
 	});
 
+	// size was updated
 	socket.on('transferSizeKnown', function(result) {
 		$('#transfers tr#' + result.id + ' td.size').html(result.displaySize);
+	});
+
+	// cleared failed downloads
+	socket.on('transferClearedFailed', function() {
+		if ($('#transfers tr.failed').length > 0) {
+			$scope.$broadcast('paramsUpdated');
+		};
+	});
+
+	// new transfer added
+	socket.on('transferAdded', function() {
+		$scope.$broadcast('paramsUpdated');
 	});
 
 }

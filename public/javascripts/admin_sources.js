@@ -120,16 +120,29 @@ pindAppModule.directive('downloadLink', function() {
 
 				event.preventDefault();
 				var row = scope.data[$(this).parents('li.item').data('idx')];
+				var savedOptions = $.cookie('downloadOptions');
 
 				var $dialog = $('.modal.download-table');
 				$dialog.find('.modal-header img').attr('src', 'http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&id=' + row.fileId);
 				$dialog.find('.modal-header h2 span').html(row.title);
+				if (savedOptions) {
+					$dialog.find('form input[type="checkbox"]').each(function() {
+						if (savedOptions[$(this).attr('name')] !== undefined) {
+							$(this).prop('checked', savedOptions[$(this).attr('name')])
+						}
+					});
+				}
 				$dialog.modal('show');
 				$dialog.find('.modal-footer button.download').off('click').click(function() {
 					var params = { id: row.id };
+
+					// get values for API request
 					$.each($dialog.find('.modal-body form').serializeArray(), function(idx, checkbox) {
 						params[checkbox.name] = checkbox.value ? true : false;
 					});
+
+					// save values to cookie
+					$.cookie('downloadOptions', params);
 					api('Transfer.AddVPFTable', params, function(err, result) {
 						if (err) {
 							return alert(err);

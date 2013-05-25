@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	updateColumnSize();
 
+	$.cookie.json = true;
 
 	$(window).resize(function() {
 		//resize just happened, pixels changed

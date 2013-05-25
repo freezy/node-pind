@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
 				},
 				map: function(row) {
 					var result = row.values ? row.values : row;
-					var createdAt = result.createdAt instanceof Date ? result.createdAt : new Date(Date.parse(result.createdAt));
+					var createdAt = result.createdAt instanceof Date ? result.createdAt : new Date(Date.parse(result.createdAt + ' UTC'));
 					result.queuedSince = relativeDate(createdAt);
 					result.displaySize = result.size ? filesize(result.size, true) : '';
 					return result;
