@@ -1,13 +1,11 @@
 var _ = require('underscore');
 
 var error = require('./../error');
-
 var schema = require('../../model/schema');
-var socket, vpf;
+var vpf;
 
 module.exports = function(app) {
 	vpf = require('./../vpforums')(app);
-	socket = app.get('socket.io');
 	return exports;
 };
 
@@ -19,10 +17,6 @@ var VPForumsAPI = function() {
 			vpf.cacheAllTableDownloads(function(err) {
 				if (err) {
 					console.log("ERROR: " + err);
-					socket.emit('notice', { msg: 'ERROR: ' + err, type: 'error', timeout: 60000 });
-
-				} else {
-					socket.emit('dataUpdated', { });
 				}
 			});
 			callback('Index creation started. Status updates via socket.');
@@ -32,10 +26,6 @@ var VPForumsAPI = function() {
 			vpf.cacheLatestTableDownloads(function(err) {
 				if (err) {
 					console.log("ERROR: " + err);
-					socket.emit('notice', { msg: 'ERROR: ' + err, type: 'error', timeout: 60000 });
-
-				} else {
-					socket.emit('dataUpdated', { });
 				}
 			});
 			callback('Index update started. Status updates via socket.');

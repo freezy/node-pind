@@ -34,7 +34,7 @@ VPForums.prototype.initAnnounce = function(app) {
 	an.notice('romSearchStarted', 'VPF: Searching ROM for "{{name}}"', 120000);
 
 	// fetchDownloads()
-	an.forward('progressUpdate');
+	an.forward('downloadProgressUpdated');
 
 	// download()
 	an.notice('downloadInitializing', 'VPF: Initializing download{{fileinfo}}', 60000);
@@ -47,6 +47,12 @@ VPForums.prototype.initAnnounce = function(app) {
 
 	// downloadWatcher
 	an.downloadWatch('downloadWatch');
+
+	// index
+	an.data('refreshIndexCompleted', {}, 'downloadIndexUpdated');
+	an.data('downloadIndexCompleted', {}, 'downloadIndexUpdated');
+	an.notice('downloadIndexFailed', 'Index download failed: {{error}}');
+	an.notice('downloadIndexFailed', 'Index update failed: {{error}}');
 }
 
 
@@ -478,7 +484,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 					console.log('[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
 					saveToCache(cat, letter, currentResult, callback);
 				} else {
-					that.emit('progressUpdate', { progress: page / numPages });
+					that.emit('downloadProgressUpdated', { progress: page / numPages });
 					fetch(cat, letter, currentResult, page + 1, callback);
 				}
 			});
@@ -667,12 +673,15 @@ VPForums.prototype.cacheAllTableDownloads = function(callback) {
 	}
 	VPForums.isDownloadingIndex = true;
 
+	var that = this;
 	this._fetchDownloads(41, null, {}, function(err, results) {
 		VPForums.isDownloadingIndex = false;
 		if (err) {
+			that.emit('downloadIndexFailed', { error: err });
 			callback(err);
 			return console.log('ERROR: %s', err);
 		}
+		that.emit('downloadIndexCompleted');
 		callback(null, results);
 	});
 }
@@ -685,11 +694,13 @@ VPForums.prototype.cacheAllTableDownloads = function(callback) {
  */
 VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 
+
 	if (VPForums.isDownloadingIndex) {
 		return callback('Fetching process already running. Wait until complete.');
 	}
 	VPForums.isDownloadingIndex = true;
 
+	var that = this;
 	this._fetchDownloads(41, null, { 
 		forceUpdate : true,
 		firstPageOnly: true,
@@ -698,9 +709,11 @@ VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 	}, function(err, results) {
 		VPForums.isDownloadingIndex = false;
 		if (err) {
+			that.emit('refreshIndexFailed', { error: err });
 			callback(err);
 			return console.log('ERROR: %s', err);
 		}
+		that.emit('refreshIndexCompleted');
 		callback(null, results);
 	});
 }

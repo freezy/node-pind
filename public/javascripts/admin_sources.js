@@ -1,26 +1,16 @@
 $(document).ready(function() {
 
-	function updateActions(socket) {
+	function updateActions() {
 		var $downloadIndexBtn = $('.nodata button');
 		if ($downloadIndexBtn.data('processing')) {
-
-			socket = io.connect('/');
-			socket.on('dataUpdated', function() {
-				var scope = angular.element($('.ng-scope[ng-controller="DataCtrl"]')).scope();
-				scope.$broadcast('paramsUpdated');
-			});
-			socket.on('progressUpdate', function(msg) {
-				$('.progress.indexing .bar').css('width', (msg.progress * 100) + '%');
-			});
 
 			$('.progress.indexing').slideDown();
 			$downloadIndexBtn.attr('disabled', 'disabled');
 			$downloadIndexBtn.find('.icon.refresh').addClass('spin');
 			$downloadIndexBtn.find('span').html('Downloading index...');
+
 		} else {
-			if (socket) {
-				socket.disconnect();
-			}
+
 			$('.progress.indexing').slideUp();
 			$downloadIndexBtn.removeAttr('disabled');
 			$downloadIndexBtn.find('.icon.refresh').removeClass('spin');
@@ -28,15 +18,14 @@ $(document).ready(function() {
 		}
 	}
 
-	var socket = null;
-	updateActions(socket);
+	updateActions();
 
 	// enable download index button
 	var downloadIndex = function() {
 
 		$(this).blur();
 		$(this).data('processing', true);
-		updateActions(socket);
+		updateActions();
 		api('VPForums.CreateIndex', {}, function(err, result) {
 			if (err) {
 				alert('Problem Syncing: ' + err);
@@ -58,6 +47,21 @@ function SourceCtrl($scope) {
 			}
 		});
 	}
+
+	// ------------------------------------------------------------------------
+	// real time code
+	// ------------------------------------------------------------------------
+	var socket = io.connect('/');
+
+	// index refresh/download has finished
+	socket.on('downloadIndexUpdated', function() {
+		$scope.$broadcast('paramsUpdated');
+	});
+
+	// download progress update
+	socket.on('downloadProgressUpdated', function(msg) {
+		$('.progress.indexing .bar').css('width', (msg.progress * 100) + '%');
+	});
 }
 
 /*
@@ -154,13 +158,12 @@ pindAppModule.directive('downloadLink', function() {
 				});
 			};
 
-			$(element).sdclick(function(event) {
-				event.preventDefault();
+			// single click
+			$(element).sdclick(function() {
 				showDialog(scope.data[$(this).parents('li.item').data('idx')]);
 
-			}, function(event) {
-				event.preventDefault();
-
+			// double click
+			}, function() {
 				var row = scope.data[$(this).parents('li.item').data('idx')];
 				var savedOptions = $.cookie('downloadOptions');
 
