@@ -65,7 +65,7 @@ function TransferItemCtrl($scope) {
 	} else if ($scope.transfer.startedAt) {
 		$scope.classes.push('started');
 		$scope.progressBarClass = 'active';
-		$scope.progress = '5';
+		$scope.progress = '1';
 
 	} else {
 		$scope.classes.push('queued');
@@ -81,10 +81,9 @@ function TransferItemCtrl($scope) {
 	}
 	$scope.icon = iconmap[$scope.transfer.type];
 
-	$scope.init = function(prev) {
-		if (prev && prev.s != $scope.transfer.s) {
-			$scope.classes.push('newblock');
-		}
+	var prev = $scope.data[$scope.$index - 1];
+	if (prev && prev.s != $scope.transfer.s) {
+		$scope.classes.push('newblock');
 	}
 }
 

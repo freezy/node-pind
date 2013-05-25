@@ -46,7 +46,7 @@ block inner-content
 						th(style='width:120px') Added
 						th(style='width:95px')
 				tbody
-					tr(ng-repeat='transfer in data', ng-controller='TransferItemCtrl', id='{{transfer.id}}', ng-class='classes', sortable, deletable, ng-init='init(data[$index - 1])')
+					tr(ng-repeat='transfer in data', ng-controller='TransferItemCtrl', id='{{transfer.id}}', ng-class='classes', sortable, deletable)
 						td
 							span.dragHandle(ng-show='showDragHandle')
 								i.icon.sort
