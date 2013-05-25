@@ -412,6 +412,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 	 * @param cat category
 	 * @param letter first letter of title
 	 * @param currentResult result array to add items to
+	 * @param page Which page to fetch, first starts with 1.
 	 * @param callback Callback function.
 	 */
 	var fetch = function(cat, letter, currentResult, page, callback) {

@@ -1,8 +1,9 @@
 var util = require('util');
 var _ = require('underscore');
 
-error = require('../error');
+var error = require('../error');
 var schema = require('../../model/schema');
+var settings = require('../../../config/settings-mine');
 
 var transfer;
 
@@ -41,9 +42,6 @@ var TransferApi = function() {
 						}
 						var prev = rows[0].id == params.between.prev ? rows[0] : rows[1];
 						var next = rows[1].id == params.between.next ? rows[1] : rows[0];
-						console.log('PREV: %j', prev);
-						console.log('NEXT: %j', next);
-						console.log('NEW SORT: %d', Math.round((prev.sort + next.sort) / 2))
 						row.updateAttributes({
 							sort: Math.round((prev.sort + next.sort) / 2)
 						});
@@ -155,19 +153,23 @@ var TransferApi = function() {
 
 			var search = params.search && params.search.length > 1;
 
-			var query = '('
+			// this sucks ass but can't be avoided (mysql wants parentheses, sqlite doesn't.)
+			var p1 = settings.pind.database.engine == 'sqlite' ? '' : '(';
+			var p2 = settings.pind.database.engine == 'sqlite' ? '' : ')';
+
+			var query = p1
 				// failed
 				+ 'SELECT *, 1 AS s, failedAt as sAsc, 1 as sDesc FROM transfers WHERE failedAt IS NOT NULL'
-				+ ') UNION ('
+				+ p1 + ' UNION ' + p2
 				// transferring
 				+ 'SELECT *, 2 AS s, startedAt as sAsc, 1 as sDesc FROM transfers WHERE startedAt IS NOT NULL AND completedAt IS NULL AND failedAt IS NULL'
-				+ ') UNION ('
+				+ p1 + ' UNION ' + p2
 				// queued
 				+ 'SELECT *, 3 AS s, sort as sAsc, 1 as sDesc FROM transfers WHERE startedAt IS NULL AND completedAt IS NULL AND failedAt IS NULL'
-				+ ') UNION ('
+				+ p1 + ' UNION ' + p2
 				// completed
 				+ 'SELECT *, 4 AS s, 1 as sAsc, completedAt as sDesc FROM transfers WHERE completedAt IS NOT NULL'
-				+ ') ORDER BY s ASC, sAsc ASC, sDesc DESC'
+				+ p2 + ' ORDER BY s ASC, sAsc ASC, sDesc DESC'
 			
 			// pagination
 			if (!search) {
