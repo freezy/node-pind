@@ -46,7 +46,7 @@ function SourceCtrl($scope) {
 				alert('Problem Syncing: ' + err);
 			}
 		});
-	}
+	};
 
 	// ------------------------------------------------------------------------
 	// real time code
@@ -61,6 +61,16 @@ function SourceCtrl($scope) {
 	// download progress update
 	socket.on('downloadProgressUpdated', function(msg) {
 		$('.progress.indexing .bar').css('width', (msg.progress * 100) + '%');
+	});
+
+	// transfer removed from queue
+	socket.on('transferDeleted', function(data) {
+
+		// remove status-* classes
+		$('div.data li[data-transferid="' + data.id + '"] ul.pills.small li.link.transfer')
+			.removeClass(function(index, css) {
+				return (css.match(/\bstatus-\S+/g) || []).join(' ');
+			});
 	});
 }
 

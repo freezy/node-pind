@@ -76,14 +76,11 @@ var TransferApi = function() {
 		},
 
 		Delete : function(req, params, callback) {
-			schema.Transfer.find(params.id).success(function(row) {
-				if (row) {
-					row.destroy().success(function() {
-						callback({ msg: 'Transfer with ID "' + params.id + '" removed.'});
-					});
-				} else {
-					callback(error.api('Cannot find VPF file with ID "' + params.id + '".'));
+			transfer.delete(params.id, function(err) {
+				if (err) {
+					return callback(error.api(err));
 				}
+				callback({ msg: 'Transfer with ID "' + params.id + '" removed.'});
 			});
 		},
 
@@ -92,7 +89,7 @@ var TransferApi = function() {
 				if (err) {
 					return callback(error.api(err));
 				}
-				callback({success: true});
+				callback({ success: true });
 			})
 		},
 

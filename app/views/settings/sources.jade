@@ -36,9 +36,9 @@ block inner-content
 		.clearfix
 
 		//- data
-		div.data.ng-cloak(resource='VPForums.FindTables', style='display:none')
+		div.data.ng-cloak(resource="VPForums.FindTables", style="display:none")
 			ul.thumbnails
-				li.span6.vpf.item(ng-repeat='(idx, row) in data', data-id="{{row.fileId}}", data-idx="{{idx}}")
+				li.span6.vpf.item(ng-repeat="(idx, row) in data", data-id="{{row.fileId}}", data-idx="{{idx}}", data-transferId="{{row.transferId}}")
 					.thumbnail
 						thumb.ng-transclude(fileid="{{row.fileId}}")
 						h3 {{row.title_trimmed}}
@@ -63,20 +63,20 @@ block inner-content
 						.clearfix
 
 		//- empty search result
-		div.noresult(style='display:none')
+		div.noresult(style="display:none")
 			p No results found.
 			button.btn.fat.small Clear Filters
 
 		//- no data
-		div.nodata(style='display:none')
+		div.nodata(style="display:none")
 			p
 				| No index found. Click below to fetch the file index which takes a few minutes. <br>
 				| Data will be automatically refreshed when done.
-			button.btn.fat(data-processing='#{isDownloadingIndex}')
+			button.btn.fat(data-processing="#{isDownloadingIndex}")
 				i.icon.refresh
 				span Download index
 
-			.indexing.progress.progress-striped.active(style='display:none')
+			.indexing.progress.progress-striped.active(style="display:none")
 				.bar
 
 		.clearfix
@@ -87,7 +87,7 @@ block inner-footer
 		.span4.action
 			h3 Refresh
 			p Download the latest index from VPF in order to get the lastest tables.
-			button.btn.fat.small(ng-click='updateIndex()')
+			button.btn.fat.small(ng-click="updateIndex()")
 				i.icon.refresh
 				span Refresh
 		.span4
@@ -95,7 +95,7 @@ block inner-footer
 
 block modals
 	.modal-alert.modal.hide.fade.download-table
-		button.close(data-dismiss='modal') &times;
+		button.close(data-dismiss="modal") &times;
 		div.modal-header
 			h2
 				img

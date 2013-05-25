@@ -58,7 +58,7 @@ var VPForumsAPI = function() {
 				p.order = 'lastUpdatedAt DESC';
 			}
 			var query = 
-				'SELECT f.*, t.startedAt, t.failedAt, t.completedAt, t.createdAt AS queuedAt FROM vpf_files f ' +
+				'SELECT f.*, t.startedAt, t.failedAt, t.completedAt, t.createdAt AS queuedAt, t.id as transferId FROM vpf_files f ' +
 				'LEFT JOIN transfers t ON t.reference = f.id ' +
 				'ORDER BY f.' + p.order;
 			if (!search) {

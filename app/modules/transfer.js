@@ -38,8 +38,11 @@ Transfer.prototype.initAnnounce = function(app) {
 	an.transferUpdate('extractCompleted');
 
 	an.forward('transferAdded');
+	an.forward('transferDeleted');
 	an.forward('transferSizeKnown');
 	an.forward('transferClearedFailed');
+
+
 
 }
 
@@ -98,6 +101,21 @@ Transfer.prototype.resetFailed = function(callback) {
 		that.emit('transferClearedFailed');
 		callback();
 	}).error(callback);
+};
+
+Transfer.prototype.delete = function(id, callback) {
+	var that = this;
+	// delete from db
+	schema.Transfer.find(id).success(function(row) {
+		if (row) {
+			row.destroy().success(function() {
+				that.emit('transferDeleted', { id: id });
+				callback();
+			});
+		} else {
+			callback('Cannot find VPF file with ID "' + id + '".');
+		}
+	});
 }
 
 /**
