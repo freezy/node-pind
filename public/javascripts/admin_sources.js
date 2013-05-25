@@ -116,15 +116,22 @@ pindAppModule.directive('downloadLink', function() {
 	return {
 		restrict: 'C',
 		link: function(scope, element) {
-			element.click(function(event) {
 
-				event.preventDefault();
-				var row = scope.data[$(this).parents('li.item').data('idx')];
-				var savedOptions = $.cookie('downloadOptions');
+			var queryTransfer = function(id, params) {
+				params.id = id;
+				api('Transfer.AddVPFTable', params, function(err, result) {
+					if (err) {
+						return alert(err);
+					}
+					console.log('got: %j', result);
+				});
+			};
+			var showDialog = function(row) {
 
 				var $dialog = $('.modal.download-table');
 				$dialog.find('.modal-header img').attr('src', 'http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&id=' + row.fileId);
 				$dialog.find('.modal-header h2 span').html(row.title);
+				var savedOptions = $.cookie('downloadOptions');
 				if (savedOptions) {
 					$dialog.find('form input[type="checkbox"]').each(function() {
 						if (savedOptions[$(this).attr('name')] !== undefined) {
@@ -134,7 +141,7 @@ pindAppModule.directive('downloadLink', function() {
 				}
 				$dialog.modal('show');
 				$dialog.find('.modal-footer button.download').off('click').click(function() {
-					var params = { id: row.id };
+					var params = {};
 
 					// get values for API request
 					$.each($dialog.find('.modal-body form').serializeArray(), function(idx, checkbox) {
@@ -143,14 +150,27 @@ pindAppModule.directive('downloadLink', function() {
 
 					// save values to cookie
 					$.cookie('downloadOptions', params);
-					api('Transfer.AddVPFTable', params, function(err, result) {
-						if (err) {
-							return alert(err);
-						}
-						console.log('got: %j', result);
-					});
-				})
-			});
+					queryTransfer(row.id, params);
+				});
+			};
+
+			$(element).sdclick(function(event) {
+				event.preventDefault();
+				showDialog(scope.data[$(this).parents('li.item').data('idx')]);
+
+			}, function(event) {
+				event.preventDefault();
+
+				var row = scope.data[$(this).parents('li.item').data('idx')];
+				var savedOptions = $.cookie('downloadOptions');
+
+				if (!savedOptions) {
+					showDialog(row);
+				} else {
+					queryTransfer(row.id, savedOptions);
+				}
+
+			}, 300);
 		}
 	}
 });
