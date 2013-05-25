@@ -65,7 +65,7 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
 
 	var that = this;
 	console.log('[vpf] Searching media pack for "' + table.name + '"...');
-	this._fetchDownloads(35, table.name, function(err, results) {
+	this._fetchDownloads(35, table.name, {}, function(err, results) {
 		if (err) {
 			return callback(err);
 		}
@@ -128,7 +128,7 @@ VPForums.prototype.getRomLinks = function(table, callback) {
 	var that = this;
 	console.log('[vpf] Searching ROM for "' + table.name + '"...');
 	this.emit('romSearchStarted', { name: table.name });
-	that._fetchDownloads(9, table.name, function(err, results) {
+	that._fetchDownloads(9, table.name, {}, function(err, results) {
 		if (err) {
 			return callback(err);
 		}
@@ -334,9 +334,10 @@ VPForums.prototype._matchResult = function(results, title, trimFct, strategy) {
  * @todo Cache invalidation
  * @param cat VPF category
  * @param title Title of the item. If not null, only items starting with the same letter will be returned.
+ * @param options Object containing additional options: <tt>forceUpdate</tt> (boolean), <tt>firstPageOnly</tt> (boolean), <tt>sortKey</tt> (string), <tt>sortOrder</tt> (asc/desc)
  * @param callback Callback.
  */
-VPForums.prototype._fetchDownloads = function(cat, title, callback) {
+VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 
 	var firstPageOnly = false;
 	var currentCache = {};
@@ -417,11 +418,13 @@ VPForums.prototype._fetchDownloads = function(cat, title, callback) {
 		var numPages;
 		var url;
 		var num = 25;
+		var sortKey = 'sort_key=' + (options.sortKey ? options.sortKey : 'file_name');
+		var sortOrder = 'sort_order=' + (options.sortOrder ? options.sortOrder : 'ASC');
 		if (letter) {
-			url = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=categoryletters&cat=' + cat + '&letter=' + letter + '&sort_order=ASC&sort_key=file_name&num=' + num + '&st=' + ((page - 1) * num);
+			url = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=categoryletters&cat=' + cat + '&letter=' + letter + '&' + sortOrder + '&' + sortKey + '&num=' + num + '&st=' + ((page - 1) * num);
 			console.log('[vpf] Fetching page ' + page + ' for category ' + cat + ' and letter "' + letter + '".');
 		} else {
-			url = 'http://www.vpforums.org/index.php?app=downloads&showcat=' + cat + '&num=' + num + '&st=' + ((page - 1) * num);
+			url = 'http://www.vpforums.org/index.php?app=downloads&showcat=' + cat + '&' + sortOrder + '&' + sortKey + '&num=' + num + '&st=' + ((page - 1) * num);
 			console.log('[vpf] Fetching page ' + page + ' for category ' + cat + '.');
 		}
 
@@ -470,7 +473,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, callback) {
 				}
 
 			}, function() {
-				if (firstPageOnly || page >= numPages) {
+				if (firstPageOnly || options.firstPageOnly || page >= numPages) {
 					console.log('[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
 					saveToCache(cat, letter, currentResult, callback);
 				} else {
@@ -532,22 +535,28 @@ VPForums.prototype._fetchDownloads = function(cat, title, callback) {
 		params.where.letter = title[0].toLowerCase();
 	}
 	schema.VpfFile.all(params).success(function(rows) {
-		// update "cached cache"
-		for (var i = 0; i < rows.length; i++) {
-			currentCache[rows[i].fileId] = rows[i];
-		}
 
 		if (rows.length == 0) {
 			// if empty, launch fetch.
 			fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
 		} else {
 
-			if (title) {
-				console.log('[vpf] Returning cached letter "%s" for category %d.', title[0], cat);
-			} else {
-				console.log('[vpf] Returning all cached letters for category %d.', cat);
+			// update "cached cache"
+			for (var i = 0; i < rows.length; i++) {
+				currentCache[rows[i].fileId] = rows[i];
 			}
-			goAgainOrCallback(null, rows);
+
+			if (options.forceUpdate) {
+				console.log('[vpf] Force-refreshing category %d.', cat);
+				fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
+			} else {
+				if (title) {
+					console.log('[vpf] Returning cached letter "%s" for category %d.', title[0], cat);
+				} else {
+					console.log('[vpf] Returning all cached letters for category %d.', cat);
+				}
+				goAgainOrCallback(null, rows);
+			}
 		}
 	});
 }
@@ -657,7 +666,35 @@ VPForums.prototype.cacheAllTableDownloads = function(callback) {
 	}
 	VPForums.isDownloadingIndex = true;
 
-	this._fetchDownloads(41, null, function(err, results) {
+	this._fetchDownloads(41, null, {}, function(err, results) {
+		VPForums.isDownloadingIndex = false;
+		if (err) {
+			callback(err);
+			return console.log('ERROR: %s', err);
+		}
+		callback(null, results);
+	});
+}
+
+/**
+ * Fetches only latest page of downloads in the "VP cabinet tables" section (and 
+ * automatically caches them).
+ *
+ * @param callback 
+ */
+VPForums.prototype.cacheLatestTableDownloads = function(callback) {
+
+	if (VPForums.isDownloadingIndex) {
+		return callback('Fetching process already running. Wait until complete.');
+	}
+	VPForums.isDownloadingIndex = true;
+
+	this._fetchDownloads(41, null, { 
+		forceUpdate : true,
+		firstPageOnly: true,
+		sortKey: 'file_updated',
+		sortOrder: 'desc'
+	}, function(err, results) {
 		VPForums.isDownloadingIndex = false;
 		if (err) {
 			callback(err);

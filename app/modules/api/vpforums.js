@@ -28,6 +28,19 @@ var VPForumsAPI = function() {
 			callback('Index creation started. Status updates via socket.');
 		},
 
+		UpdateIndex : function(req, params, callback) {
+			vpf.cacheLatestTableDownloads(function(err) {
+				if (err) {
+					console.log("ERROR: " + err);
+					socket.emit('notice', { msg: 'ERROR: ' + err, type: 'error', timeout: 60000 });
+
+				} else {
+					socket.emit('dataUpdated', { });
+				}
+			});
+			callback('Index update started. Status updates via socket.');
+		},
+
 		FindTables : function(req, params, callback) {
 			
 			var search = params.search && params.search.length > 1;

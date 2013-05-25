@@ -25,6 +25,7 @@ action('tables', function(context) {
 
 action('sources', function(context) {
 	this.title = 'Settings :: Sources';
+	this.ngController = 'SourceCtrl';
 	this.isDownloadingIndex = vpf.isDownloadingIndex;
 	render();
 });

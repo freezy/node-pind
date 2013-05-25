@@ -49,6 +49,17 @@ $(document).ready(function() {
 
 });
 
+function SourceCtrl($scope) {
+
+	$scope.updateIndex = function() {
+		api('VPForums.UpdateIndex', {}, function(err, result) {
+			if (err) {
+				alert('Problem Syncing: ' + err);
+			}
+		});
+	}
+}
+
 /*
  * Renders a thumb that fades in when downloaded.
  *

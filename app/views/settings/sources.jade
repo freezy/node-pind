@@ -81,6 +81,18 @@ block inner-content
 
 		.clearfix
 
+block inner-footer
+	h2 Available Actions:
+	.row-fluid
+		.span4.action
+			h3 Refresh
+			p Download the latest index from VPF in order to get the lastest tables.
+			button.btn.fat.small(ng-click='updateIndex()')
+				i.icon.refresh
+				span Refresh
+		.span4
+		.span4
+
 block modals
 	.modal-alert.modal.hide.fade.download-table
 		button.close(data-dismiss='modal') &times;
