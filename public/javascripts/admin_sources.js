@@ -63,6 +63,17 @@ function SourceCtrl($scope) {
 		$('.progress.indexing .bar').css('width', (msg.progress * 100) + '%');
 	});
 
+	// transfer added to queue
+	socket.on('transferAdded', function(data) {
+
+		// add status-queued to download link
+		$('div.data li[data-id="' + data.transfer.reference + '"] ul.pills.small li.link.transfer')
+			.addClass('status-queued');
+
+		// also add data-transferid to parent
+		$('div.data li[data-id="' + data.transfer.reference + '"]').attr('data-transferid', data.transfer.id);
+	});
+
 	// transfer removed from queue
 	socket.on('transferDeleted', function(data) {
 
@@ -71,7 +82,14 @@ function SourceCtrl($scope) {
 			.removeClass(function(index, css) {
 				return (css.match(/\bstatus-\S+/g) || []).join(' ');
 			});
+
+		// also remove data-transferid from parent
+		$('div.data li[data-transferid="' + data.id + '"]').removeAttr('data-transferid');
 	});
+}
+
+function SourceItemCtrl($scope) {
+
 }
 
 /*
@@ -170,17 +188,16 @@ pindAppModule.directive('downloadLink', function() {
 
 			// single click
 			$(element).sdclick(function() {
-				showDialog(scope.data[$(this).parents('li.item').data('idx')]);
+				showDialog(scope.row);
 
 			// double click
 			}, function() {
-				var row = scope.data[$(this).parents('li.item').data('idx')];
 				var savedOptions = $.cookie('downloadOptions');
 
 				if (!savedOptions) {
-					showDialog(row);
+					showDialog(scope.row);
 				} else {
-					queryTransfer(row.id, savedOptions);
+					queryTransfer(scope.row.id, savedOptions);
 				}
 
 			}, 300);

@@ -38,7 +38,7 @@ block inner-content
 		//- data
 		div.data.ng-cloak(resource="VPForums.FindTables", style="display:none")
 			ul.thumbnails
-				li.span6.vpf.item(ng-repeat="(idx, row) in data", data-id="{{row.fileId}}", data-idx="{{idx}}", data-transferId="{{row.transferId}}")
+				li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}")
 					.thumbnail
 						thumb.ng-transclude(fileid="{{row.fileId}}")
 						h3 {{row.title_trimmed}}

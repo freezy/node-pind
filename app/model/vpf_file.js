@@ -48,7 +48,8 @@ module.exports = function(sequelize, DataTypes) {
 					result.title_match = hit ? hit.string : null;
 					result.title_trimmed = split[0];
 					result.info = split[1];
-					result.lastUpdatedSince = relativeDate(result.lastUpdatedAt);
+					var lastUpdatedAt = result.lastUpdatedAt instanceof Date ? result.lastUpdatedAt : new Date(Date.parse(result.lastUpdatedAt + ' UTC'));
+					result.lastUpdatedSince = relativeDate(lastUpdatedAt);
 					if (row.completedAt) {
 						result.downloadStatus = 'completed'
 					} else if (row.failedAt) {
