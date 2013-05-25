@@ -1,11 +1,4 @@
 $(document).ready(function() {
-	// real time code
-	var socket = io.connect('/');
-	socket.on('downloadWatch', function(status) {
-		$('#transfers tr#' + status.id + ' .progress .bar').css('width', (status.downloadedSize / status.totalSize * 100) + '%')
-	});
-
-	var status = $('#transfers').data('status');
 
 });
 
@@ -43,6 +36,26 @@ function TransferCtrl($scope) {
 			$scope.$broadcast('paramsUpdated');
 		});
 	}
+
+	// real time code
+	var socket = io.connect('/');
+
+	// download progress bar
+	socket.on('downloadWatch', function(status) {
+		$('#transfers tr#' + status.id + ' .progress .bar').css('width', (status.downloadedSize / status.totalSize * 100) + '%')
+	});
+
+	// upon completion
+	socket.on('transferUpdated', function(result) {
+		if ($('#transfers tr#' + result.id).length > 0) {
+			$scope.$broadcast('paramsUpdated');
+		};
+	});
+
+	socket.on('transferSizeKnown', function(result) {
+		$('#transfers tr#' + result.id + ' td.size').html(result.displaySize);
+	});
+
 }
 
 function TransferItemCtrl($scope) {

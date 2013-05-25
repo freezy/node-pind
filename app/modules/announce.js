@@ -61,3 +61,9 @@ exports.downloadWatch = function(event) {
 		});
 	});
 }
+
+exports.transferUpdate = function(event) {
+	emitter.on(event, function(data) {
+		socket.emit('transferUpdated', { id: data.transfer.id });
+	});
+}

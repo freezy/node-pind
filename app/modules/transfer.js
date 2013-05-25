@@ -3,6 +3,7 @@ var fs = require('fs');
 var util = require('util');
 var async = require('async');
 var events = require('events');
+var filesize = require('filesize');
 
 var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
@@ -29,7 +30,16 @@ util.inherits(Transfer, events.EventEmitter);
  * @param app Express application
  */
 Transfer.prototype.initAnnounce = function(app) {
-	//var an = require('./announce')(app, this);
+	var an = require('./announce')(app, this);
+
+	an.transferUpdate('transferFailed');
+	an.transferUpdate('transferCompleted');
+	an.transferUpdate('extractFailed');
+	an.transferUpdate('extractCompleted');
+
+	an.forward('transferSizeKnown');
+
+
 }
 
 /**
@@ -213,6 +223,11 @@ Transfer.prototype.next = function(callback) {
 											row.updateAttributes({ size: data.contentLength });
 										}
 									});
+									that.emit('transferSizeKnown', {
+										id: data.reference.id,
+										size: data.contentLength,
+										displaySize: filesize(data.contentLength, true)
+									});
 								}
 							});
 
@@ -221,6 +236,7 @@ Transfer.prototype.next = function(callback) {
 
 								// on error, update db with error and exit
 								if (err) {
+									that.emit('transferFailed', { error: err, transfer: row });
 									return row.updateAttributes({
 										failedAt: new Date(),
 										result: JSON.stringify({ error: err })
@@ -237,11 +253,13 @@ Transfer.prototype.next = function(callback) {
 									size: fs.fstatSync(fs.openSync(filepath, 'r')).size
 
 								}).success(function() {
+									that.emit('transferCompleted', { file: filepath, transfer: row });
 
 									// now, extract
 									extr.extract(filepath, null, function(err, extractResult) {
 										// on error, update db with error and exit
 										if (err) {
+											that.emit('extractFailed', { error: err, transfer: row });
 											return row.updateAttributes({
 												failedAt: new Date(),
 												result: err
@@ -255,6 +273,7 @@ Transfer.prototype.next = function(callback) {
 										row.updateAttributes({
 											result: JSON.stringify(extractResult)
 										}).success(function(row) {
+											that.emit('extractCompleted', { result: extractResult, transfer: row });
 											transferring = false;
 											callback(null, row);
 										});
