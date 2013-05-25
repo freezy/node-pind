@@ -32,7 +32,6 @@ Transfer.prototype.initAnnounce = function(app) {
 	//var an = require('./announce')(app, this);
 }
 
-
 /**
  * Executed when application starts. Resets all transfers in progress and
  * starts download queue if setting allows it.
@@ -64,7 +63,6 @@ Transfer.prototype.getStatus = function(callback) {
 		return callback(null, 'transferring');
 	}
 	schema.Transfer.count({ where: 'startedAt IS NULL'}).success(function(num) {
-		console.log('num = %d', num);
 		if (num == 0) {
 			callback(null, 'idling');
 		} else {
@@ -76,7 +74,7 @@ Transfer.prototype.getStatus = function(callback) {
 /**
  * Resets failed downloads and restarts queue if setting allows it.
  *
- * @param callback Optional function to execute after download started (not finished), invoked with one argumens:
+ * @param callback Optional function to execute after completion, invoked with one arguments:
  * 	<ol><li>{String} Error message on error</li></ol>
  */
 Transfer.prototype.resetFailed = function(callback) {
@@ -90,7 +88,13 @@ Transfer.prototype.resetFailed = function(callback) {
 	}).error(callback);
 }
 
-
+/**
+ * Adds a new transfer to the queue.
+ * @param transfer Transfer object containing at least title, url, type, engine, reference and postAction.
+ * @param callback Optional function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li><
+ * 	    <li>{String} Success message on success.</li></ol>
+ */
 Transfer.prototype.queue = function(transfer, callback) {
 	var that = this;
 	schema.Transfer.all({ where: {
@@ -108,10 +112,10 @@ Transfer.prototype.queue = function(transfer, callback) {
 				callback(null, 'Download successfully added to queue.');
 				if (settings.pind.startDownloadsAutomatically) {
 					that.start(function() {
-						console.log('Download queue finished.');
+						console.log('[transfer] Download queue finished.');
 					});
 				}
-			}
+			};
 
 			if (row.engine == 'vpf') {
 				schema.VpfFile.find(row.reference).success(function(row) {
@@ -197,97 +201,74 @@ Transfer.prototype.next = function(callback) {
 					case 'vpf': {
 
 						// found a hit. now update "started" clock..
-						console.log('Starting download of %s', row.url);
+						console.log('[transfer] Starting download of %s', row.url);
 						row.updateAttributes({ startedAt: new Date()}).success(function(row) {
 							var vpfFile;
 
-							// now start the download (after VpfFile update)
-							var download = function() {
-								vpf.on('contentLengthReceived', function(data) {
-									if (data.reference.id) {
-										schema.Transfer.find(data.reference.id).success(function(row) {
-											if (row) {
-												row.updateAttributes({ size: data.contentLength });
-											}
-										});
-									}
-								})
-								vpf.download(row, settings.pind.tmp, row, function(err, filepath) {
+							// update file size as soon as we receive the content length.
+							vpf.on('contentLengthReceived', function(data) {
+								if (data.reference.id) {
+									schema.Transfer.find(data.reference.id).success(function(row) {
+										if (row) {
+											row.updateAttributes({ size: data.contentLength });
+										}
+									});
+								}
+							});
 
-									// on error, update db with error and exit
-									if (err) {
-										return row.updateAttributes({
-											failedAt: new Date(),
-											result: err
-										}).done(function() {
-											if (vpfFile) {
-												vpfFile.updateAttributes({ downloadFailedAt: new Date() }).done(function() {
-													transferring = false;
-													callback(err);
-												});
-											} else {
+							// now start the download at VPF
+							vpf.download(row, settings.pind.tmp, row, function(err, filepath) {
+
+								// on error, update db with error and exit
+								if (err) {
+									return row.updateAttributes({
+										failedAt: new Date(),
+										result: JSON.stringify({ error: err })
+									}).done(function() {
+										transferring = false;
+										callback(err);
+									});
+								}
+
+								// otherwise, update db with success and extract
+								row.updateAttributes({
+									completedAt: new Date(),
+									result: JSON.stringify({ extracting: filepath }),
+									size: fs.fstatSync(fs.openSync(filepath, 'r')).size
+
+								}).success(function() {
+
+									// now, extract
+									extr.extract(filepath, null, function(err, extractResult) {
+										// on error, update db with error and exit
+										if (err) {
+											return row.updateAttributes({
+												failedAt: new Date(),
+												result: err
+											}).success(function() {
 												transferring = false;
 												callback(err);
-											}
-										});
-									}
-
-									// otherwise, update db with success and extract
-									row.updateAttributes({
-										completedAt: new Date(),
-										result: JSON.stringify({ extracting: filepath }),
-										size: fs.fstatSync(fs.openSync(filepath, 'r')).size
-
-									}).success(function() {
-
-										// now, extract (after VpfFile update)
-										var extract = function() {
-											extr.extract(filepath, null, function(err, extractResult) {
-												// on error, update db with error and exit
-												if (err) {
-													return row.updateAttributes({
-														failedAt: new Date(),
-														result: err
-													}).success(function() {
-														transferring = false;
-														callback(err);
-													});
-												}
-
-												// update extract result and we're clear.
-												row.updateAttributes({
-													result: JSON.stringify(extractResult)
-												}).success(function(row) {
-													transferring = false;
-													callback(null, row);
-												});
 											});
 										}
 
-										if (vpfFile) {
-											vpfFile.updateAttributes({ downloadCompletedAt: new Date() }).done(extract);
-										} else {
-											extract();
-										}
-
+										// update extract result and we're clear.
+										row.updateAttributes({
+											result: JSON.stringify(extractResult)
+										}).success(function(row) {
+											transferring = false;
+											callback(null, row);
+										});
 									});
-								});
-							}
 
-							schema.VpfFile.find(row.reference).success(function(row) {
-								vpfFile = row;
-								if (vpfFile) {
-									vpfFile.updateAttributes({ downloadStartedAt: new Date() }).done(download);
-								} else {
-									download();
-								}
+								});
 							});
+
 						});
 						found = true;
 						break rowsloop;
 					}
 					default: {
-						console.log('Skipping unsupported engine "' + row.engine + '".');
+						console.log('[transfer] Skipping unsupported engine "' + row.engine + '".');
 					}
 				}
 			}
@@ -348,7 +329,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						if (err) {
 							return next(err);
 						}
-						console.log('Successfully extracted ' + files.length + ' media files.');
+						console.log('[transfer] Successfully extracted ' + files.length + ' media files.');
 						fs.unlinkSync(filepath);
 						next();
 					});
