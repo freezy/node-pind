@@ -93,7 +93,7 @@ function TransferItemCtrl($scope) {
 	} else if ($scope.transfer.startedAt) {
 		$scope.classes.push('started');
 		$scope.progressBarClass = 'active';
-		$scope.progress = '1';
+		$scope.progress = $scope.transfer.progress ? $scope.transfer.progress * 100 : '1';
 
 	} else {
 		$scope.classes.push('queued');

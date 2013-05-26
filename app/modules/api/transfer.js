@@ -183,8 +183,9 @@ var TransferApi = function() {
 				}
 
 				var returnedRows = [];
+				var currentProgress = transfer.getCurrentProgress();
 				_.each(rows, function(row) {
-					returnedRows.push(schema.Transfer.map(row));
+					returnedRows.push(schema.Transfer.map(row, currentProgress[row.id]));
 				});
 
 				schema.Transfer.count().success(function(num) {

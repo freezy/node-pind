@@ -27,11 +27,14 @@ module.exports = function(sequelize, DataTypes) {
 				fuzzyExtract: function(row) {
 					return row.title;
 				},
-				map: function(row) {
+				map: function(row, progress) {
 					var result = row.values ? row.values : row;
 					var createdAt = result.createdAt instanceof Date ? result.createdAt : new Date(Date.parse(result.createdAt + ' UTC'));
 					result.queuedSince = relativeDate(createdAt);
 					result.displaySize = result.size ? filesize(result.size, true) : '';
+					if (progress) {
+						result.progress = progress;
+					}
 					return result;
 				}
 			},

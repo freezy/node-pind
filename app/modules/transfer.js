@@ -10,6 +10,7 @@ var schema = require('../model/schema');
 
 var vpf, vpm, extr;
 var transferring = { vpf: [] };
+var progress = { };
 
 function Transfer(app) {
 	if ((this instanceof Transfer) === false) {
@@ -21,6 +22,10 @@ function Transfer(app) {
 	vpf = require('./vpforums')(app);
 	vpm = require('./vpinmame')(app);
 	extr = require('./extract')(app);
+
+	vpf.on('downloadWatch', function(data) {
+		progress[data.reference.id] = data.size / data.contentLength;
+	});
 }
 util.inherits(Transfer, events.EventEmitter);
 
@@ -82,6 +87,11 @@ Transfer.prototype.getStatus = function(callback) {
 		}
 	});
 };
+
+Transfer.prototype.getCurrentProgress = function() {
+	return progress;
+}
+
 
 /**
  * Resets failed downloads and restarts queue if setting allows it.
@@ -251,13 +261,11 @@ Transfer.prototype.next = function(callback) {
 								// now start the download at VPF
 								vpf.download(row, settings.pind.tmp, row, function(err, filepath) {
 
-									console.log('AFTER download, slots before: %j', transferring);
-
 									// free up slot
 									transferring.vpf = _.reject(transferring.vpf, function(t) {
 										return t.id == transfer.id;
 									});
-									console.log('AFTER download, slots afterwards: %j', transferring);
+									delete progress[transfer.id];
 
 									// on error, update db with error and exit
 									if (err) {

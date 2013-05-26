@@ -118,6 +118,7 @@ block inlineScripts
 
 			// initialize scope variables
 			var transferScope = $('div[ng-controller="TransferCtrl"]').scope();
-			transferScope.status = '#{status}';
+			transferScope.status = '!{status}';
 			transferScope.$apply();
+
 		});
