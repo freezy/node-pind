@@ -1132,16 +1132,8 @@ table td b {
   font-size: 42px;
   color: rgba(0,0,0,0.7);
 }
-.table.vertical {
-  padding: 10px 50px 0;
-}
-.table.vertical h3 {
-  text-align: center;
-  line-height: 25px;
-}
-.table.vertical img {
-  margin: 20px 0;
-}
+section.home .media,
+ .media,
 .content.tables .media {
   background-color: rgba(81,67,54,0.15);
   margin: 20px;
@@ -1151,15 +1143,23 @@ table td b {
   box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.08) inset;
   border: solid 1px rgba(0,0,0,0.15);
 }
+section.home .pull-left,
+ .pull-left,
 .content.tables .pull-left {
   margin-right: 0;
 }
+section.home .media-body,
+ .media-body,
 .content.tables .media-body {
   padding-left: 15px;
 }
+section.home .pull-left > img,
+ .pull-left > img,
 .content.tables .pull-left > img {
   z-index: 10;
 }
+section.home img.bg,
+ img.bg,
 .content.tables img.bg {
   position: absolute;
   margin-left: 200px;
@@ -1516,7 +1516,11 @@ tr.newblock td {
   font-weight: normal;
   font-size: 11px;
 }
-.thumbnails img {
+.thumbnail {
+  background-color: rgba(255,255,255,0.5);
+  padding: 0;
+}
+.thumbnail > img {
   -moz-border-radius-topleft: 3px;
   -webkit-border-top-left-radius: 3px;
   border-top-left-radius: 3px;
@@ -1524,18 +1528,14 @@ tr.newblock td {
   -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
 }
-.thumbnails li .thumbnail {
-  background-color: rgba(255,255,255,0.5);
-  padding: 0;
-}
-.thumbnails li hr {
+hr {
   border: 3px solid #e09d55;
   margin: 0;
 }
-.thumbnails li .thumbnail-content {
+.thumbnail-content {
   padding: 15px;
 }
-.thumbnails li .thumbnail-content h3 {
+.thumbnail-content h3 {
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 25px;

@@ -10,31 +10,41 @@ block content
 			p This is going to be the home page with overviews of all the stuff happening.
 
 			div.row-fluid
-				div.span4.dark
-					h3 Globally Best Players
-					table.table
-						thead
-							tr
-								th Name
-								th(style='width:30px') Points
-						tbody
-							for hiscore in hiscores
-								tr
-									td= hiscore.user
-									td.text-right= hiscore.totalPoints
+				.span4
+					.thumbnail
+						img(src='/images/header-crowd.png')
+						hr
+						.thumbnail-content
+							h3 Leaderboard
+							table.table
+								thead
+									tr
+										th Name
+										th(style='width:30px') Points
+								tbody
+									for hiscore in hiscores
+										tr
+											td= hiscore.user
+											td.text-right= hiscore.totalPoints
 
-				div.span4.dark
-					h3 Quick Coin Drop
-					.fuzzy3d
-						button Drop -.20
-					.clearfix
-					h3 Latest News
+				.span4
+					.thumbnail
+						img(src='/images/header-coins.png')
+						hr
+						.thumbnail-content
+							h3 Quick Coin Drop
+							.fuzzy3d
+								button Drop -.20
+							.clearfix
 
-				div.span4.dark.table.vertical
-					h3 Free Table of the Week
-					img.backbox(src='{{table.url_backglass_medium}}')
-					h3 {{table.name}}
-					img.table(src='{{table.url_portrait_medium}}')
+				.span4
+					.thumbnail
+						img(ng-src='{{table.url_backglass_medium}}')
+						hr
+						.thumbnail-content
+							h3 {{table.name}}
+							p Free Table of the Week
+						img.table(ng-src='{{table.url_portrait_medium}}')
 			div.row-fluid
 				div.span6.dark
 					h3 Next Table Poll

@@ -88,10 +88,14 @@ Transfer.prototype.getStatus = function(callback) {
 	});
 };
 
+/**
+ * Returns a dictionary of all the progresses of the current downloads.
+ * Key is transfer ID, value is progress from 0 to 1.
+ * @returns {Object} Progresses of all current downloads.
+ */
 Transfer.prototype.getCurrentProgress = function() {
 	return progress;
 }
-
 
 /**
  * Resets failed downloads and restarts queue if setting allows it.
@@ -340,10 +344,12 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 	}
 
 	var action = JSON.parse(transfer.postAction);
+
+	// transfer type: TABLE
 	if (transfer.type == 'table') {
 
 		var actions = [];
-		var availableActions = ['addtohp', 'dlrom', 'dlmedia', 'dlvideo'];
+		var availableActions = ['addtohp', 'dlrom', 'dlmedia', 'dlvideo']; // order is important
 		var table = {
 			name: schema.VpfFile.splitName(transfer.title)[0],
 			platform: 'VP'

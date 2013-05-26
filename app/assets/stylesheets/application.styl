@@ -990,15 +990,9 @@ table
 
 // :home
 // ============================================================================
-.table.vertical
-	padding 10px 50px 0
+section.home
 
-	h3
-		text-align center
-		line-height 25px
 
-	img
-		margin 20px 0
 
 
 // :tables
@@ -1334,27 +1328,28 @@ vpf-padding-small = 10px
 // ============================================================================
 	
 
-.thumbnails
-	img 
+.thumbnail
+	background-color rgba(255,255,255,0.5)
+	padding 0
+	& > img 
 		border-radius-topleft 3px
 		border-radius-topright 3px
-	li
-		.thumbnail
-			background-color rgba(255,255,255,0.5)
-			padding 0
-		hr 
-			border 3px solid color-btn-light
-			margin 0
+hr 
+	border 3px solid color-btn-light
+	margin 0
 
-		.thumbnail-content
-			padding 15px
+.thumbnail-content
+	padding 15px
 
-			h3
-				font-weight 700
-				margin-top 0
-				margin-bottom 25px
-				line-height 24px	
-			
+	h3
+		font-weight 700
+		margin-top 0
+		margin-bottom 25px
+		line-height 24px	
+
+.thumbnails
+	
+
 	&.tables
 		
 		li
