@@ -9,7 +9,7 @@ var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 
 var vpf, vpm, extr;
-var transferring = false;
+var transferring = { vpf: [] };
 
 function Transfer(app) {
 	if ((this instanceof Transfer) === false) {
@@ -41,9 +41,6 @@ Transfer.prototype.initAnnounce = function(app) {
 	an.forward('transferDeleted');
 	an.forward('transferSizeKnown');
 	an.forward('transferClearedFailed');
-
-
-
 }
 
 /**
@@ -73,7 +70,8 @@ Transfer.prototype.initTransfers = function() {
  *      <li>{String} One of: <tt>idle</tt>, <tt>transferring</tt>, <tt>paused</tt>, <tt>stopped</tt>.
  */
 Transfer.prototype.getStatus = function(callback) {
-	if (transferring) {
+
+	if (transferring.vpf.length > 0) {
 		return callback(null, 'transferring');
 	}
 	schema.Transfer.count({ where: 'startedAt IS NULL'}).success(function(num) {
@@ -103,6 +101,11 @@ Transfer.prototype.resetFailed = function(callback) {
 	}).error(callback);
 };
 
+/**
+ * Deletes a transfer.
+ * @param id ID of transfer to delete
+ * @param callback
+ */
 Transfer.prototype.delete = function(id, callback) {
 	var that = this;
 	// delete from db
@@ -163,7 +166,7 @@ Transfer.prototype.queue = function(transfer, callback) {
 };
 
 /**
- * Starts the download queue.
+ * Kicks off the download queue.
  *
  * @param callback Optional function to execute after download started (not finished), invoked with one argumens:
  * 	<ol><li>{String} Error message on error</li>
@@ -180,13 +183,6 @@ Transfer.prototype.start = function(callback) {
 			}
 			
 		} else {
-			if (result.alreadyStarted) {
-				console.log('[transfer] Downloads are already active, returning.');
-				if (first && callback) {
-					callback(null, result);
-				}
-				return;
-			}
 			if (result.emptyQueue) {
 				console.log('[transfer] Queue is empty, returning.');
 				if (first && callback) {
@@ -212,113 +208,119 @@ Transfer.prototype.start = function(callback) {
 
 /**
  * Starts the next download in the queue and handles the result.
- * @param callback
+ * @param callback Executed at the end of each download or instantly when on download was started.
  * @returns {*}
  */
 Transfer.prototype.next = function(callback) {
-	if (transferring) {
-		return callback(null, { alreadyStarted: true });
-	}
-	transferring = true;
 	var that = this;
-	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'sort ASC' }).success(function(rows) {
-		var found = false;
-		if (rows.length > 0) {
+	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'sort ASC' }).success(function(transfers) {
+		if (transfers.length > 0) {
+			var downloadStarted = false;
 
-			// loop until we find an engine we support...
-			rowsloop:
-			for (var i = 0; i < rows.length; i++) {
-				var row = rows[i];
-				switch (row.engine) {
+			// loop through transfers
+			for (var i = 0; i < transfers.length; i++) {
+				var transfer = transfers[i];
+				switch (transfer.engine) {
 					case 'vpf': {
 
-						// found a hit. now update "started" clock..
-						console.log('[transfer] Starting download of %s', row.url);
-						row.updateAttributes({ startedAt: new Date()}).success(function(row) {
-							var vpfFile;
+						// downloads current transfer
+						var download = function(transfer) {
 
-							// update file size as soon as we receive the content length.
-							vpf.on('contentLengthReceived', function(data) {
-								if (data.reference.id) {
-									schema.Transfer.find(data.reference.id).success(function(row) {
-										if (row) {
-											row.updateAttributes({ size: data.contentLength });
-										}
+							downloadStarted = true;
+
+							// update "started" clock..
+							console.log('[transfer] Starting download of %s', transfer.url);
+							transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
+
+								// update file size as soon as we receive the content length.
+								vpf.on('contentLengthReceived', function(data) {
+									if (data.reference.id) {
+										schema.Transfer.find(data.reference.id).success(function(row) {
+											if (row) {
+												row.updateAttributes({ size: data.contentLength });
+											}
+										});
+										that.emit('transferSizeKnown', {
+											id: data.reference.id,
+											size: data.contentLength,
+											displaySize: filesize(data.contentLength, true)
+										});
+									}
+								});
+
+								// now start the download at VPF
+								vpf.download(row, settings.pind.tmp, row, function(err, filepath) {
+
+									console.log('AFTER download, slots before: %j', transferring);
+
+									// free up slot
+									transferring.vpf = _.reject(transferring.vpf, function(t) {
+										return t.id == transfer.id;
 									});
-									that.emit('transferSizeKnown', {
-										id: data.reference.id,
-										size: data.contentLength,
-										displaySize: filesize(data.contentLength, true)
-									});
-								}
-							});
+									console.log('AFTER download, slots afterwards: %j', transferring);
 
-							// now start the download at VPF
-							vpf.download(row, settings.pind.tmp, row, function(err, filepath) {
+									// on error, update db with error and exit
+									if (err) {
+										that.emit('transferFailed', { error: err, transfer: row });
+										return row.updateAttributes({
+											failedAt: new Date(),
+											result: JSON.stringify({ error: err })
+										}).done(function() {
+											callback(err);
+										});
+									}
 
-								// on error, update db with error and exit
-								if (err) {
-									that.emit('transferFailed', { error: err, transfer: row });
-									return row.updateAttributes({
-										failedAt: new Date(),
-										result: JSON.stringify({ error: err })
-									}).done(function() {
-										transferring = false;
-										callback(err);
-									});
-								}
+									// otherwise, update db with success and extract
+									row.updateAttributes({
+										completedAt: new Date(),
+										result: JSON.stringify({ extracting: filepath }),
+										size: fs.fstatSync(fs.openSync(filepath, 'r')).size
 
-								// otherwise, update db with success and extract
-								row.updateAttributes({
-									completedAt: new Date(),
-									result: JSON.stringify({ extracting: filepath }),
-									size: fs.fstatSync(fs.openSync(filepath, 'r')).size
+									}).success(function() {
+										that.emit('transferCompleted', { file: filepath, transfer: row });
 
-								}).success(function() {
-									that.emit('transferCompleted', { file: filepath, transfer: row });
+										// now, extract
+										extr.extract(filepath, null, function(err, extractResult) {
+											// on error, update db with error and exit
+											if (err) {
+												that.emit('extractFailed', { error: err, transfer: row });
+												return row.updateAttributes({
+													failedAt: new Date(),
+													result: err
+												}).success(function() {
+													callback(err);
+												});
+											}
 
-									// now, extract
-									extr.extract(filepath, null, function(err, extractResult) {
-										// on error, update db with error and exit
-										if (err) {
-											that.emit('extractFailed', { error: err, transfer: row });
-											return row.updateAttributes({
-												failedAt: new Date(),
-												result: err
-											}).success(function() {
-												transferring = false;
-												callback(err);
+											// update extract result and we're clear.
+											row.updateAttributes({
+												result: JSON.stringify(extractResult)
+											}).success(function(row) {
+												that.emit('extractCompleted', { result: extractResult, transfer: row });
+												callback(null, row);
 											});
-										}
-
-										// update extract result and we're clear.
-										row.updateAttributes({
-											result: JSON.stringify(extractResult)
-										}).success(function(row) {
-											that.emit('extractCompleted', { result: extractResult, transfer: row });
-											transferring = false;
-											callback(null, row);
 										});
 									});
-
 								});
 							});
+						};
 
-						});
-						found = true;
-						break rowsloop;
+						// found a hit. check if there are download slots available:
+						if (transferring.vpf.length < settings.vpforums.numConcurrentDownloads) {
+							transferring.vpf.push(transfer);
+							download(transfer);
+						}
 					}
 					default: {
-						console.log('[transfer] Skipping unsupported engine "' + row.engine + '".');
+						console.log('[transfer] Skipping unsupported engine "' + transfer.engine + '".');
 					}
 				}
 			}
-			if (!found) {
-				transferring = false;
+			// assure callback
+			if (!downloadStarted) {
 				callback(null, { emptyQueue: true });
 			}
 		} else {
-			transferring = false;
 			callback(null, { emptyQueue: true });
 		}
 	});

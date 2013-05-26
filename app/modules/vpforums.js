@@ -13,6 +13,8 @@ var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 var error = require('./error');
 
+var loggingIn = false;
+
 function VPForums(app) {
 	if ((this instanceof VPForums) === false) {
 		return new VPForums(app);
@@ -21,6 +23,7 @@ function VPForums(app) {
 	this.initAnnounce(app);
 }
 sys.inherits(VPForums, events.EventEmitter);
+
 
 
 /**
@@ -243,13 +246,28 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 
 		// check if need to login
 		if (body.match(/<a href='[^']+' title='Sign In' id='sign_in'>Sign In/i)) {
-			console.log('[vpf] Seems we need to login first.');
-			that._login(function(err) {
-				if (err) {
-					return callback(err);
-				}
-				download(body);
-			});
+
+			if (loggingIn) {
+				console.log('[vpf] Waiting for current login to complete...');
+				that.once('loginCompleted', function() {
+					console.log('[vpf] Login completed, let\'s go!');
+					download(body);
+				});
+				that.once('loginFailed', function(result) {
+					return callback('Error logging in: ' + result.error);
+				});
+
+			} else {
+				console.log('[vpf] Seems we need to login first.');
+				that._login(function(err) {
+					if (err) {
+						return callback(err);
+					}
+					download(body);
+				});
+			}
+
+
 		} else {
 			console.log('[vpf] Looks like we\'re already logged in.');
 			download(body);
@@ -578,8 +596,10 @@ VPForums.prototype._login = function(callback) {
 	if (!settings.vpforums.user || !settings.vpforums.pass) {
 		return callback('Need valid credentials for vpforums.org. Please update settings-mine.js.');
 	}
+	loggingIn = true;
 	console.log('[vpf] Logging in...');
-	this.emit('loginStarted', { user: settings.vpforums.user });
+	var that = this;
+	that.emit('loginStarted', { user: settings.vpforums.user });
 
 	// just get the index to obtain the damn auth key
 	request('http://www.vpforums.org/index.php', function(err, response, body) {
@@ -604,24 +624,27 @@ VPForums.prototype._login = function(callback) {
 					ips_password: settings.vpforums.pass
 				}
 			}, function(err, response, body) {
+				loggingIn = false;
 				if (err) {
-					callback(err);
-					return;
+					that.emit('loginFailed', { error: err, user: settings.vpforums.user });
+					return callback(err);
 				}
 
 				// redirect means all ok.
 				if (response.statusCode == 302) {
 					console.log('[vpf] Login successful.');
-					callback();
-					return;
+					that.emit('loginCompleted', { user: settings.vpforums.user });
+					return callback();
 				}
 
 				if (body.match(/username or password incorrect/i)) {
-					callback('Wrong credentials, check your settings-mine.js.');
-					return;
+					var err = 'Wrong credentials, check your settings-mine.js.';
+					that.emit('loginFailed', { error: err, user: settings.vpforums.user });
+					return callback(err);
 				}
 
-				callback('Unexpected response.');
+				that.emit('loginFailed', { error: 'Unexpected response', body: body, response: response, user: settings.vpforums.user });
+				callback('Unexpected response: ' + body);
 			})
 		}
 	});

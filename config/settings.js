@@ -16,7 +16,7 @@ module.exports = {
 		 */
 		sessionTimeout: 3600000,
 		/**
-		 * Interval for download updates on the downloads page for the progress bar.
+		 * Interval for download updates on the downloads page for the progress bars.
 		 */
 		downloaderRefreshRate: 3000,
 		/**
@@ -136,6 +136,10 @@ module.exports = {
 		/**
 		 * VPForums.org credentials. Needed for automatic downloads.
 		 */
-		user: '', pass: ''
+		user: '', pass: '',
+		/**
+		 * Number of concurrent downloads allowed.
+		 */
+		numConcurrentDownloads: 3
 	}
 };
