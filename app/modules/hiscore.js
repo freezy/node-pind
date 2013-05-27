@@ -51,8 +51,6 @@ Hiscore.prototype.isFetchingHiscores = function() {
  */
 Hiscore.prototype.initConfig = function() {
 
-	var that = this;
-
 	// update pinemhi config path
 	var pinemhiConfigPath = binPath() + '\\pinemhi.ini';
 	var pinemhiConfig = '[paths]\r\n';
@@ -62,7 +60,7 @@ Hiscore.prototype.initConfig = function() {
 
 	// enable nvram watching
 	if (settings.vpinmame.watchNvrams) {
-		fs.watch(settings.vpinmame.path + '/nvram', that.watchHighscores);
+		fs.watch(settings.vpinmame.path + '/nvram', this.watchHighscores);
 	}
 };
 
@@ -110,7 +108,7 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 
 			// for every rom, get high scores and try to match against the 2 dictionaries
 			async.eachSeries(roms, function(rom, next) {
-				that._matchHiscore(tables,  users, rom, next);
+				that._matchHiscore(tables, users, rom, next);
 			}, function(err) {
 				isFetchingHiscores = false;
 				that.emit('processingCompleted');
@@ -314,11 +312,10 @@ Hiscore.prototype.watchHighscores = function(event, filename) {
 	if (ext != '.nv') {
 		return;
 	}
-	var that = this;
 	var romname = filename.substr(0, filename.lastIndexOf('.'));
 
 	console.log('File change detected for ROM "' + romname + '".');
-	that.emit('nvramChangeDetected', { rom: romname });
+	Hiscore.prototype.emit('nvramChangeDetected', { rom: romname });
 	schema.Table.find({ where: { platform: 'VP', rom: romname }}).success(function(table) {
 		if (table) {
 			schema.User.all().success(function(rows) {
@@ -328,15 +325,15 @@ Hiscore.prototype.watchHighscores = function(event, filename) {
 				}
 				var tables = {};
 				tables[romname] = table;
-				that._matchHiscore(tables, users, romname, function() {
+				Hiscore.prototype._matchHiscore(tables, users, romname, function() {
 					isFetchingHiscores = false;
 					console.log('High score for ROM "' + romname + '" updated successfully.');
-					that.emit('nvramChangeProcessed', { name: table.name });
+					Hiscore.prototype.emit('nvramChangeProcessed', { name: table.name });
 				});
 			});
 		} else {
 			console.log('No table found for ROM "' + romname + '".');
-			that.emit('nvramChangeProcessed', { name: "unregistered" });
+			Hiscore.prototype.emit('nvramChangeProcessed', { name: "unregistered" });
 		}
 	});
 };

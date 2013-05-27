@@ -157,13 +157,13 @@ var TransferApi = function() {
 			var query = p1
 				// failed
 				+ 'SELECT *, 1 AS s, failedAt as sAsc, 1 as sDesc FROM transfers WHERE failedAt IS NOT NULL'
-				+ p1 + ' UNION ' + p2
+				+ p2 + ' UNION ' + p1
 				// transferring
 				+ 'SELECT *, 2 AS s, startedAt as sAsc, 1 as sDesc FROM transfers WHERE startedAt IS NOT NULL AND completedAt IS NULL AND failedAt IS NULL'
-				+ p1 + ' UNION ' + p2
+				+ p2 + ' UNION ' + p1
 				// queued
 				+ 'SELECT *, 3 AS s, sort as sAsc, 1 as sDesc FROM transfers WHERE startedAt IS NULL AND completedAt IS NULL AND failedAt IS NULL'
-				+ p1 + ' UNION ' + p2
+				+ p2 + ' UNION ' + p1
 				// completed
 				+ 'SELECT *, 4 AS s, 1 as sAsc, completedAt as sDesc FROM transfers WHERE completedAt IS NOT NULL'
 				+ p2 + ' ORDER BY s ASC, sAsc ASC, sDesc DESC'

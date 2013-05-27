@@ -249,14 +249,14 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 						}
 						// long session, logout.
 						vpf.logout(function() {
-							this.syncTables(callback);
+							that.syncTables(callback);
 						});
 					});
 				});
 			} else {
 				// long session, logout.
 				vpf.logout(function() {
-					this.syncTables(callback);
+					that.syncTables(callback);
 				});
 			}
 		});

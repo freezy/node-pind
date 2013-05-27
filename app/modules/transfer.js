@@ -323,6 +323,7 @@ Transfer.prototype.next = function(callback) {
 							download(transfer);
 						}
 					}
+					break;
 					default: {
 						console.log('[transfer] Skipping unsupported engine "' + transfer.engine + '".');
 					}
