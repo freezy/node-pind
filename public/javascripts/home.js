@@ -7,7 +7,8 @@ function HomeCtrl($scope, Jsonrpc) {
 
 
 
-	$scope.latestReleases;
+	$scope.latestReleases = [];
+	$scope.latestGames = [];
 
 	Jsonrpc.call('Table.GetAll', {
 		fields: ['name', 'year', 'url_portrait_medium', 'url_backglass_medium'],
@@ -20,6 +21,21 @@ function HomeCtrl($scope, Jsonrpc) {
 		} else {
 			if (result.rows.length > 0) {
 				$scope.table = result.rows[0];
+			}
+		}
+	});
+
+	Jsonrpc.call('Table.GetAll', {
+		fields: ['name', 'year', 'manufacturer', 'url_backglass_medium' ],
+		limit : 3,
+		offset: 0
+
+	}, function(err, result) {
+		if (err) {
+			alert('Problem loading tables: ' + err);
+		} else {
+			if (result.rows.length > 0) {
+				$scope.latestGames = result.rows;
 			}
 		}
 	});

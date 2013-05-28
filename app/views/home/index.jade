@@ -1,7 +1,7 @@
 extends ../layouts/inner
 
 block content
-	- contentFor('javascripts', javascriptIncludeTag('data', 'home'))
+	- contentFor('javascripts', javascriptIncludeTag('data', 'home', 'hiscores'))
 	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.waitforimages-1.4.2.min'))
 	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.colorbox-min'))
 	div.span12.content(ng-app)
@@ -43,9 +43,37 @@ block content
 					//---------------------------------------------------------
 					h2 Latest Games
 
-					//- LATEST GAMES
+					ul.thumbnails.tables
+						li.span4(ng-repeat='table in latestGames', tb-768-980='span6')
+							.thumbnail
+								img(src='{{table.url_backglass_medium}}')
+								hr
+								.thumbnail-content
+
+									h3 {{table.name}}
+									p {{table.manufacturer}} - {{table.year}}
+
+
+					//- LATEST HISCORES
 					//---------------------------------------------------------
 					h2 Latest Hiscores
+					ul.thumbnails.hiscores(ng-controller='HiscoresCtrl')
+						li.span4(ng-repeat='table in tables', tb-768-980='span6')
+							.thumbnail
+								img(ng-src='{{table.url_banner_small}}')
+								hr
+								.thumbnail-content
+									h3 {{table.name}}
+									ul.ranking.champ
+										li(ng-repeat="hiscore in getHiscores(table, 'champ')", class="{{hiscore.class}}")
+											span.title Grand Champion
+											span.player {{hiscore.player}}
+											span.score {{hiscore.score}}
+									ul.ranking.hiscore
+										li(ng-repeat="hiscore in getHiscores(table, 'hiscore')", class="{{hiscore.class}}")
+											span.rank {{hiscore.rank}}
+											span.player {{hiscore.player}}
+											span.score {{hiscore.score}}
 
 				.span3
 
