@@ -2,15 +2,55 @@ extends ../layouts/inner
 
 block content
 	- contentFor('javascripts', javascriptIncludeTag('data', 'home'))
+	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.waitforimages-1.4.2.min'))
+	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.colorbox-min'))
 	div.span12.content(ng-app)
 		section.home(ng-controller='HomeCtrl')
 			.page-header
 				h1 Welcome!
 
-			p This is going to be the home page with overviews of all the stuff happening.
-
+			h2 Latest Releases
 			div.row-fluid
-				.span4
+
+				.span9
+
+					//- LATEST RELEASES
+					//---------------------------------------------------------
+					ul.thumbnails
+						li.span6.vpf.item(ng-repeat="row in latestReleases", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}")
+							.thumbnail
+								thumb.ng-transclude(fileid="{{row.fileId}}")
+								h3 {{row.title_trimmed}}
+								p.pull-right.updated.hidden-phone-small {{row.lastUpdatedSince}}
+								h4.hidden-phone-small {{row.info}}
+								ul.pills.small
+									li
+										i.icon.user
+										.author.hidden-phone-small {{row.author}}
+									li
+										i.icon.circle-arrow-down(title="{{row.downloads|groupdigit}}")
+										span.hidden-desktop-small.hidden-phone-small {{row.downloads|groupdigit}}
+									li
+										i.icon.eye(title="{{row.views|groupdigit}}")
+										span.hidden-desktop-small.hidden-phone-small {{row.views|groupdigit}}
+									li.link
+										a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
+											i.icon.link
+								.clearfix
+
+
+					//- LATEST GAMES
+					//---------------------------------------------------------
+					h2 Latest Games
+
+					//- LATEST GAMES
+					//---------------------------------------------------------
+					h2 Latest Hiscores
+
+				.span3
+
+					//- LEADER BOARD
+					//---------------------------------------------------------
 					.thumbnail
 						img(src='/images/header-crowd.png')
 						hr
@@ -26,8 +66,10 @@ block content
 										tr
 											td= hiscore.user
 											td.text-right= hiscore.totalPoints
+					p
 
-				.span4
+					//- QUICK COIN DROP
+					//---------------------------------------------------------
 					.thumbnail
 						img(src='/images/header-coins.png')
 						hr
@@ -36,8 +78,10 @@ block content
 							.fuzzy3d
 								button Drop -.20
 							.clearfix
+					p
 
-				.span4
+					//- FREE TABLE OF THE WEEK
+					//---------------------------------------------------------
 					.thumbnail
 						img(ng-src='{{table.url_backglass_medium}}')
 						hr
@@ -45,13 +89,7 @@ block content
 							h3 {{table.name}}
 							p Free Table of the Week
 						img.table(ng-src='{{table.url_portrait_medium}}')
-			div.row-fluid
-				div.span6.dark
-					h3 Next Table Poll
-					p Vote for the next new table.
 
-				div.span6.dark
-					h3 Favorite Tables
 
 
 block inlineScripts
