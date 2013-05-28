@@ -14,9 +14,10 @@ function DataCtrl($scope, Jsonrpc) {
 	$scope.resource = null;
 	$scope.search = '';
 	$scope.sort = '';
-	$scope.filters = [];
+//	$scope.filters = [];
 
-	$scope.mapperFn = null;
+//	$scope.mapperFn = null;
+//	$scope.postDataFn = null;
 
 	$scope.reset = function() {
 		$scope.page = 1;
@@ -43,6 +44,10 @@ function DataCtrl($scope, Jsonrpc) {
 			params.search = $scope.search;
 		}
 
+		if ($scope.fields && $scope.fields.length != 1) {
+			params.fields = $scope.fields;
+		}
+
 		if ($scope.filters && $scope.filters.length > 0) {
 			params.filters = $scope.filters;
 		}
@@ -55,13 +60,25 @@ function DataCtrl($scope, Jsonrpc) {
 			if (err) {
 				return alert(err);
 			}
-			if ($scope.mapperFn) {
-				$scope.data = _.map(result.rows, $scope.mapperFn);
-			} else {
-				$scope.data = result.rows;
+			// copy rows to result, with mapper function if available.
+			var setData = function($scope, result) {
+				if ($scope.mapperFn) {
+					$scope.data = _.map(result.rows, $scope.mapperFn);
+				} else {
+					$scope.data = result.rows;
+				}
+				$scope.numpages = Math.ceil(result.count / $scope.limit);
+				$scope.$broadcast('dataUpdated');
 			}
-			$scope.numpages = Math.ceil(result.count / $scope.limit);
-			$scope.$broadcast('dataUpdated');
+
+			// do something else first if postDataFn is set.
+			if ($scope.postDataFn) {
+				$scope.postDataFn($scope, result, function($scope, result) {
+					setData($scope, result);
+				});
+			} else {
+				setData($scope, result);
+			}
 		});
 	};
 

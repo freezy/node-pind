@@ -49,12 +49,13 @@ var PindApi = function() {
 		},
 
 		GetHiscores : function(req, params, callback) {
-			schema.sequelize.query(
+			var query =
 				'SELECT h.*, t.key, u.user FROM hiscores h ' +
 				'JOIN tables t ON t.id = h.tableId ' +
 				'LEFT JOIN users u ON u.id = h.userId ' +
 				'ORDER BY t.name, h.type, h.rank'
-			).success(function(rows) {
+
+			schema.sequelize.query(query).success(function(rows) {
 				var result = [];
 				async.each(rows, function(row, next){
 					result.push({
