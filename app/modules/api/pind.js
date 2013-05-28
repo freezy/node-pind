@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var async = require('async');
 var util = require('util');
 
@@ -52,8 +53,15 @@ var PindApi = function() {
 			var query =
 				'SELECT h.*, t.key, u.user FROM hiscores h ' +
 				'JOIN tables t ON t.id = h.tableId ' +
-				'LEFT JOIN users u ON u.id = h.userId ' +
-				'ORDER BY t.name, h.type, h.rank'
+				'LEFT JOIN users u ON u.id = h.userId ';
+
+			if (params.tableIds) {
+				_.map(params.tableIds, function(id) {
+					return id.replace(/[^a-z\d]+/gi, '');
+				});
+				query += 'WHERE t.key IN ("' + params.tableIds.join('", "') + '") ';
+			}
+			query += 'ORDER BY t.name, h.type, h.rank';
 
 			schema.sequelize.query(query).success(function(rows) {
 				var result = [];
