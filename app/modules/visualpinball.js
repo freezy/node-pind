@@ -27,7 +27,7 @@ VisualPinball.prototype.initAnnounce = function(app) {
 
 	// updateTableData()
 	an.notice('analysisStarted', 'Analyzing {{name}}...');
-}
+};
 
 
 /**
@@ -124,21 +124,21 @@ VisualPinball.prototype.getRomName = function(script, callback) {
 			var regex = new RegExp('^\\s*[^\']*' + name + '\\s*=\\s*(.+)', 'im');
 			var m = script.match(regex);
 			return m ? m[1] : null;
-		}
+		};
 		var getIntValue = function(str) {
 			var m;
 			if (m = str.match(/&h(\d+)/i)) {
 				return parseInt(m[1], 16)
 			}
 			return parseInt(str);
-		}
+		};
 		var getStrValue = function(str) {
 			var m;
 			if (m = str.match(/"([^"]+)"/i)) {
 				return m[1];
 			}
 			return str;
-		}
+		};
 		var getOptionsValue = function(varName, callback) {
 			var valueDef = getVariableValue(varName);
 			var m;
@@ -151,7 +151,7 @@ VisualPinball.prototype.getRomName = function(script, callback) {
 			} else {
 				callback('Cannot parse options value.');
 			}
-		}
+		};
 		var gameName;
 		if (m[1].match(/\W/)) {
 			gameName = m[1];
@@ -165,7 +165,6 @@ VisualPinball.prototype.getRomName = function(script, callback) {
 			return;
 		}
 
-		var m;
 		// Array(Romset1,Romset2,Romset3,Romset4,Romset5,Romset6,Romset7,Romset8)((tzOptions And (15*cOptRom))\cOptRom)
 		if (m = gameName.match(/Array\((\w+\d,?\s*){2,}\)\s*\(\((\w+)\s*And\s*\((\d+)\s*\*\s*(\w+)\)\s*\)\s*\\\s*(\w+)\s*\)/i)) {
 			var optionsVar = m[2];     // tzOptions
@@ -194,7 +193,7 @@ VisualPinball.prototype.getRomName = function(script, callback) {
 	} else {
 		callback('Could not find ".GameName" in the script anywhere.');
 	}
-}
+};
 
 VisualPinball.prototype.getDmdOrientation = function(script, callback) {
 	var m = script.match(/\.Games\([^\)]+\)\.Settings\.Value\("ro[lr]"\)\s*=\s*(\d+)/i);
@@ -202,7 +201,7 @@ VisualPinball.prototype.getDmdOrientation = function(script, callback) {
 		return callback(null, m[1]);
 	}
 	callback('No DMD orientation setting found.');
-}
+};
 
 VisualPinball.prototype.getController = function(script, callback) {
 	var m = script.match(/Set\s*Controller\s*=\s*CreateObject\("([^"]+)"/i);
@@ -210,7 +209,7 @@ VisualPinball.prototype.getController = function(script, callback) {
 		return callback(null, m[1]);
 	}
 	callback('No Controller object declaration found.');
-}
+};
 
 
 /**
@@ -252,7 +251,7 @@ VisualPinball.prototype.getTableSetting = function(storageName, streamName, call
 		}
 	});
 	doc.read();
-}
+};
 
 /**
  * Extracts the table script from a given .vpt file.
@@ -270,9 +269,11 @@ VisualPinball.prototype.getScriptFromTable = function(tablePath, callback) {
 		return callback('File "' + tablePath + '" does not exist.');
 	}
 	var now = new Date().getTime();
-	fs.open(tablePath, 'r', function(err, fd) {
+	//noinspection JSCheckFunctionSignatures
+    fs.open(tablePath, 'r', function(err, fd) {
 		var stat = fs.fstatSync(fd);
-		var buf = new Buffer(8);
+		//noinspection JSUnresolvedFunction
+        var buf = new Buffer(8);
 		log.debug('[vp] [script] Found ' + tablePath + ' at ' + stat.size + ' bytes.');
 		var scriptStart, scriptEnd;
 		for (var i = stat.size; i > 0; i--) {
@@ -286,12 +287,13 @@ VisualPinball.prototype.getScriptFromTable = function(tablePath, callback) {
 				break;
 			}
 		}
-		var buf = new Buffer(scriptEnd - scriptStart);
+		//noinspection JSUnresolvedFunction
+        buf = new Buffer(scriptEnd - scriptStart);
 		log.debug('[vp] [script] Found positions ' + scriptStart + ' and ' + scriptEnd + ' in ' + (new Date().getTime() - now) + ' ms.');
 		fs.readSync(fd, buf, 0, buf.length, scriptStart);
 		callback(null, buf.toString());
 	});
-}
+};
 
 /**
  * Processes all tables.
@@ -377,6 +379,6 @@ VisualPinball.prototype.updateTableData = function(callback) {
 
 		}, callback);
 	}).error(callback);
-}
+};
 
 module.exports = VisualPinball;

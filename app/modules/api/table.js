@@ -1,6 +1,6 @@
-var fuzzy = require('fuzzy');
-var util = require('util');
 var _ = require('underscore');
+var util = require('util');
+var fuzzy = require('fuzzy');
 
 var schema = require('../../model/schema');
 var settings = require('../../../config/settings-mine');
@@ -20,11 +20,11 @@ var TableApi = function() {
 			var search = params.search && params.search.length > 1;
 			var p = {};
 			var fields = function(row) {
-				var fieldsProvided = params.fields && params.fields instanceof Array;
 				var r = {};
-				if (fieldsProvided) {
+                var fieldsProvided = _.isArray(params.fields);
+                if (fieldsProvided) {
 					for (var field in row) {
-						if (params.fields.indexOf(field) > -1) {
+						if (row.hasOwnProperty(field) && _.contains(params.fields, field)) {
 							r[field] = row[field];
 						}
 					}

@@ -48,5 +48,5 @@ module.exports = function(sequelize, DataTypes) {
 			timestamps: true
 		});
 	return Transfer;
-}
+};
 

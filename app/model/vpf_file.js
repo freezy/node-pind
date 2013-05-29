@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
 					var m = title.match(/\s+((vp\s*9|v[\d\.]{3,}|fs\s|fs$|\(|\[|mod\s|directB2S|FSLB|B2S|de\s|em\s|BLUEandREDledGImod|8 step GI|FSHD|HR\s|Low Res|night mod|chrome edition).*)/i);
 					if (m) {
 						var info = m[1];
-						var title = title.substr(0, title.length - info.length).trim();
+						title = title.substr(0, title.length - info.length).trim();
 						return [title, info];
 					} else {
 						return [title, ''];
@@ -76,4 +76,4 @@ module.exports = function(sequelize, DataTypes) {
 		});
 
 	return VpfFile;
-}
+};

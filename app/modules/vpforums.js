@@ -56,7 +56,7 @@ VPForums.prototype.initAnnounce = function(app) {
 	an.data('downloadIndexCompleted', {}, 'downloadIndexUpdated');
 	an.notice('downloadIndexFailed', 'Index download failed: {{error}}');
 	an.notice('downloadIndexFailed', 'Index update failed: {{error}}');
-}
+};
 
 
 VPForums.prototype.isDownloadingIndex = false;
@@ -141,7 +141,8 @@ VPForums.prototype.getRomLinks = function(table, callback) {
 		if (err) {
 			return callback(err);
 		}
-		var matches = that._matchResults(results, table.name, function(str) {
+		//noinspection JSCheckFunctionSignatures
+        var matches = that._matchResults(results, table.name, function(str) {
 			return str.replace(/[\[\(\-].*/, '').trim();
 		});
 		var links = [];
@@ -185,7 +186,7 @@ VPForums.prototype._unWatchDownload = function(filename) {
  */
 VPForums.prototype.download = function(link, folder, reference, callback) {
 	var that = this;
-	
+
 	that.emit('downloadInitializing', { reference: reference, fileinfo: link.filename ? ' for "' + link.filename + '"' : '' });
 
 	// fetch the "overview" page
@@ -302,7 +303,7 @@ VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance
 		}
 	}
 	return matches;
-}
+};
 
 /**
  * Finds the best single match for a list of results.
@@ -312,11 +313,13 @@ VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance
  * @param strategy How to determine best match on tie. Valid values: "latest", "mostDownloaded", "mostViewed". Default "intelligent".
  */
 VPForums.prototype._matchResult = function(results, title, trimFct, strategy) {
-	var matches = this._matchResults(results, title, trimFct);
+	//noinspection JSCheckFunctionSignatures
+    var matches = this._matchResults(results, title, trimFct);
 	console.log('Got matches: %j', matches);
 	matches.sort(function(a, b) {
 		var x;
-		switch (strategy) {
+		//noinspection FallthroughInSwitchStatementJS
+        switch (strategy) {
 			case 'mostDownloaded':
 				x = a.downloads > b.downloads;
 				break;
@@ -344,7 +347,7 @@ VPForums.prototype._matchResult = function(results, title, trimFct, strategy) {
 		return x ? -1 : 1;
 	});
 	return matches[0];
-}
+};
 
 /**
  * Retrieves all downloadable items for a given category and letter. This is a
@@ -384,7 +387,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 		} else {
 			console.log('[vpf] Updating cache...');
 		}
-		results = [];
+		var results = [];
 		async.eachSeries(items, function(item, next) {
 			var l;
 			if (!letter) {
@@ -409,7 +412,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 
 			var done = function(err, r) {
 				if (err) {
-					console.log('%j', obj)
+					console.log('%j', obj);
 					return next(err);
 				}
 				results.push(r);
@@ -420,7 +423,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			} else {
 				schema.VpfFile.create(obj).done(done);
 			}
-			
+
 		}, function(err) {
 			if (err) {
 				return cb(err);
@@ -494,7 +497,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 					next();
 				} else {
 					console.log('ERROR: Could not parse file ID from %s.', url);
-					next('Could not parse file ID from ' + url);	
+					next('Could not parse file ID from ' + url);
 				}
 
 			}, function() {
@@ -584,7 +587,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			}
 		}
 	});
-}
+};
 
 /**
  * Logs the user on vpforums.org in order to obtain download permissions.
@@ -638,7 +641,7 @@ VPForums.prototype._login = function(callback) {
 				}
 
 				if (body.match(/username or password incorrect/i)) {
-					var err = 'Wrong credentials, check your settings-mine.js.';
+					err = 'Wrong credentials, check your settings-mine.js.';
 					that.emit('loginFailed', { error: err, user: settings.vpforums.user });
 					return callback(err);
 				}
@@ -648,7 +651,7 @@ VPForums.prototype._login = function(callback) {
 			})
 		}
 	});
-}
+};
 
 /**
  * Destroys the current VPF session. Typically called after longish fetching
@@ -666,7 +669,7 @@ VPForums.prototype.logout = function(callback) {
 		}
 		var m;
 		if (m = body.match(/<a\shref="([^"]+do=logout[^"]+)/)) {
-			request(m[1], function(err, response, body) {
+			request(m[1], function(err) {
 				if (err) {
 					callback(err);
 				} else {
@@ -681,13 +684,13 @@ VPForums.prototype.logout = function(callback) {
 };
 
 /**
- * Fetches all current downloads in the "VP cabinet tables" section (and 
+ * Fetches all current downloads in the "VP cabinet tables" section (and
  * automatically caches them).
  *
  * The goal of this is to be able to link already downloaded tables to a forum
  * thread for future updates.
  *
- * @param callback 
+ * @param callback
  */
 VPForums.prototype.cacheAllTableDownloads = function(callback) {
 
@@ -707,13 +710,13 @@ VPForums.prototype.cacheAllTableDownloads = function(callback) {
 		that.emit('downloadIndexCompleted');
 		callback(null, results);
 	});
-}
+};
 
 /**
- * Fetches only latest page of downloads in the "VP cabinet tables" section (and 
+ * Fetches only latest page of downloads in the "VP cabinet tables" section (and
  * automatically caches them).
  *
- * @param callback 
+ * @param callback
  */
 VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 
@@ -724,7 +727,7 @@ VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 	VPForums.isDownloadingIndex = true;
 
 	var that = this;
-	this._fetchDownloads(41, null, { 
+	this._fetchDownloads(41, null, {
 		forceUpdate : true,
 		firstPageOnly: true,
 		sortKey: 'file_updated',
@@ -739,6 +742,6 @@ VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 		that.emit('refreshIndexCompleted');
 		callback(null, results);
 	});
-}
+};
 
 module.exports = VPForums;

@@ -41,8 +41,8 @@ var config = {
 				var mapC = this.map instanceof Function;
 				var that = this;
 				_.each(pagedResults, function(hit) {
-					results.push(mapI ? hit.original.map(hit) : 
-					            (mapC ? that.map(hit.original, hit) : 
+					results.push(mapI ? hit.original.map(hit) :
+					            (mapC ? that.map(hit.original, hit) :
 					             hit.original)
 					);
 				});
@@ -106,7 +106,7 @@ create = function(next){
 	}).error(function(err){
 		next(err);
 	});
-}
+};
 
 module.exports = {
 	sequelize: sequelize,

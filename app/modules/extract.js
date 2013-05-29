@@ -58,7 +58,7 @@ Extract.prototype.extract = function(filepath, renameTo, callback) {
 			}
 		});
 	});
-}
+};
 
 /**
  * Reads all files of an archive. ZIP and RAR supported.
@@ -109,7 +109,7 @@ Extract.prototype.getFiles = function(filepath, callback) {
 	} else {
 		callback('Unknown file extension "' + ext + '".');
 	}
-}
+};
 
 /**
  * Loops through a given number of files from an archive and determines where to extract them.
@@ -127,35 +127,35 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 	var mapping = { extract: {}, skip: {}, ignore: [] };
 
 	for (var i = 0; i < files.length; i++) {
-		var filepath = files[i];
-		var dirnames = filepath.split('/');
-		var filename = dirnames.pop();
-		var l = dirnames.length - 1;
+		const filepath = files[i];
+        const dirnames = filepath.split('/');
+        const filename = dirnames.pop();
+        const l = dirnames.length - 1;
 
 		// adds it to the queue if not already exists
-		var add = function(dst) {
+		function add(dst, filepath) {
 			if (!fs.existsSync(dst)) {
 				mapping.extract[filepath] = { src: filepath, dst: dst };
 			} else {
 				mapping.skip[filepath] = { src: filepath, dst: dst };
 				console.log('[extract] "%s" already exists, skipping.', dst);
 			}
-		};
+		}
 
 		// adds it to the queue using the typical
-		var asMedia = function(depth) {
-			var ext = filename.substr(filename.lastIndexOf('.'));
-			var dst = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + (renameTo ? renameTo + ext : filename);
-			add(dst);
-		};
+		function asMedia(depth, filename, filepath, dirnames) {
+            const ext = filename.substr(filename.lastIndexOf('.'));
+            const dst = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + (renameTo ? renameTo + ext : filename);
+			add(dst, filepath);
+		}
 
 		if (filename) {
-			var ext = filename.substr(filename.lastIndexOf('.'));
+            const ext = filename.substr(filename.lastIndexOf('.'));
 
 			// VP/FP-specific artwork
 			if (_.contains(['Visual Pinball', 'Future Pinball'], dirnames[l - 1])) {
 				if (_.contains(['Backglass Images', 'Table Images', 'Table Videos', 'Wheel Images'], dirnames[l])) {
-					asMedia(2);
+					asMedia(2, filename, filepath, dirnames);
 				} else {
 					mapping.ignore.push(filepath);
 				}
@@ -169,7 +169,7 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 				}
 
 				if (_.contains(['Flyer Images'], dirnames[l - 1])) {
-					asMedia(3);
+					asMedia(3, filename, filepath, dirnames);
 				} else {
 					mapping.ignore.push(filepath);
 				}
@@ -177,7 +177,7 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 			} else if (_.contains(['HyperPin'], dirnames[l - 1])) {
 
 				if (_.contains(['Instruction Cards'], dirnames[l])) {
-					asMedia(2);
+					asMedia(2, filename, filepath, dirnames);
 				} else {
 					mapping.ignore.push(filepath);
 				}
@@ -197,7 +197,7 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 				mapping.ignore.push(filepath);
 			}
 		} else {
-			//console.log('3 Ignoring %s', entry.path);
+			console.log('Ignoring %s', filepath);
 		}
 	}
 	callback(null, mapping);

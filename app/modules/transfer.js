@@ -46,7 +46,7 @@ Transfer.prototype.initAnnounce = function(app) {
 	an.forward('transferDeleted');
 	an.forward('transferSizeKnown');
 	an.forward('transferClearedFailed');
-}
+};
 
 /**
  * Executed when application starts. Resets all transfers in progress and
@@ -55,12 +55,12 @@ Transfer.prototype.initAnnounce = function(app) {
 Transfer.prototype.initTransfers = function() {
 	var that = this;
 	// reset started downloads
-	schema.sequelize.query('UPDATE transfers SET startedAt = NULL WHERE startedAt IS NOT NULL AND failedAt IS NULL AND completedAt IS NULL;').success(function(result) {
+	schema.sequelize.query('UPDATE transfers SET startedAt = NULL WHERE startedAt IS NOT NULL AND failedAt IS NULL AND completedAt IS NULL;').success(function() {
 		if (settings.pind.startDownloadsAutomatically) {
 			that.start(function() {});
 		}
 	});
-}
+};
 
 /**
  * Returns the status of the current queue. Can be on of:
@@ -95,7 +95,7 @@ Transfer.prototype.getStatus = function(callback) {
  */
 Transfer.prototype.getCurrentProgress = function() {
 	return progress;
-}
+};
 
 /**
  * Resets failed downloads and restarts queue if setting allows it.
@@ -106,7 +106,7 @@ Transfer.prototype.getCurrentProgress = function() {
 Transfer.prototype.resetFailed = function(callback) {
 	var that = this;
 	// reset failed downloads
-	schema.sequelize.query('UPDATE transfers SET startedAt = NULL, failedAt = NULL WHERE failedAt IS NOT NULL').success(function(result) {
+	schema.sequelize.query('UPDATE transfers SET startedAt = NULL, failedAt = NULL WHERE failedAt IS NOT NULL').success(function() {
 		if (settings.pind.startDownloadsAutomatically) {
 			that.start(function() {});
 		}
@@ -133,7 +133,7 @@ Transfer.prototype.delete = function(id, callback) {
 			callback('Cannot find VPF file with ID "' + id + '".');
 		}
 	});
-}
+};
 
 /**
  * Adds a new transfer to the queue.
@@ -195,7 +195,7 @@ Transfer.prototype.start = function(callback) {
 			if (first && callback) {
 				return callback(err);
 			}
-			
+
 		} else {
 			if (result.emptyQueue) {
 				console.log('[transfer] Queue is empty, returning.');
@@ -218,7 +218,7 @@ Transfer.prototype.start = function(callback) {
 	};
 	console.log('[transfer] Kicking off download queue.');
 	that.next(cb);
-}
+};
 
 /**
  * Starts the next download in the queue and handles the result.

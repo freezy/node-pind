@@ -44,7 +44,7 @@ Ipdb.prototype.initAnnounce = function(app) {
 
 	// syncTop300()
 	an.notice('top300Matched', 'Matched {{name}} ({{platform}}) at rank {{rank}}.', 30000);
-}
+};
 
 /**
  * Refreshes all tables that aren't of type 'OG' with info from ipdb.org.
@@ -160,7 +160,6 @@ Ipdb.prototype.enrichAll = function(tables, callback) {
  */
 Ipdb.prototype.enrich = function(game, callback) {
 
-	var that = this;
 	var forceSearch = false;
 
 	/**
@@ -175,7 +174,7 @@ Ipdb.prototype.enrich = function(game, callback) {
 		var name = n;
 		var r = function(needle, haystack) {
 			name = name.replace(needle, haystack);
-		}
+		};
 
 		// common spelling errors
 		r(/judgement day/i, 'judgment day');
@@ -191,7 +190,7 @@ Ipdb.prototype.enrich = function(game, callback) {
 		r(/[^0-9a-z]+/ig, ' ');
 
 		return name;
-	}
+	};
 
 	if (!game.name) {
 		return callback('First parameter must contain at least "name".');
@@ -300,7 +299,7 @@ Ipdb.prototype.syncTop300 = function(callback) {
 
 			// try to find a match in db
 			schema.Table.findAll({ where: { name: table.name, year: table.year, type: table.type }}).success(function(rows) {
-					
+
 				if (rows.length > 0) {
 
 					// could be multiple hits (vp and fp version, for instance)
@@ -357,7 +356,7 @@ Ipdb.prototype.getRomLinks = function(ipdbId, callback) {
 
 Ipdb.prototype.isSyncing = function() {
 	return isSyncing;
-}
+};
 
 var firstMatch = function(str, regex) {
 	var m = str.match(regex);
@@ -366,7 +365,7 @@ var firstMatch = function(str, regex) {
 
 var trim = function(str) {
 	return str.replace(/[^\w\d\s\.\-,:_'"()]/ig, '');
-}
+};
 
 var findBestMatch = function(matches, game) {
 
@@ -404,7 +403,7 @@ var findBestMatch = function(matches, game) {
 			return 1;
 		}
 		return 0;
-	})
+	});
 	console.log('matches are now sorted: %j', bestMatches);
 
 	return bestMatches[0];

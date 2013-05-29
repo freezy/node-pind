@@ -13,7 +13,8 @@ exports.api = function(message, code, data) {
 };
 
 exports.dumpDebugData = function(module, what, data, ext) {
-	var filename = __dirname + '/../../debug-' + module + '-' + what + '-' + new Date().getTime() + '.' + (ext ? ext : 'log');
+	//noinspection JSUnresolvedVariable
+    var filename = __dirname + '/../../debug-' + module + '-' + what + '-' + new Date().getTime() + '.' + (ext ? ext : 'log');
 	fs.writeFileSync(filename, data);
 	return fs.realpathSync(filename);
-}
+};

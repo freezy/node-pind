@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
 
 	function hash(str) {
 		return ih.blake32(str);
-	};
+	}
 	function randomKey(n) {
 		if (!n) {
 			n = 10;
@@ -16,12 +16,12 @@ module.exports = function(sequelize, DataTypes) {
 			key += set[p];
 		}
 		return key;
-	};
+	}
 
 	function hashPassword(pass) {
 		var salt = randomKey();
 		return salt + hash(pass + salt);
-	};
+	}
 
 	var User = sequelize.define('users', {
 		id: {
@@ -111,10 +111,6 @@ module.exports = function(sequelize, DataTypes) {
 
 		instanceMethods: {
 
-			printAll: function() {
-				console.log(JSON.stringify(this));
-			},
-
 			verifyPassword: function(plainPass) {
 				var salt = this.pass.substr(0, 10);
 				var validHash = salt + hash(plainPass + salt);
@@ -133,5 +129,5 @@ module.exports = function(sequelize, DataTypes) {
 		timestamps: true
 	});
 	return User;
-}
+};
 

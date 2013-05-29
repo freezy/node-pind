@@ -5,7 +5,7 @@ module.exports = function(app, e) {
 	emitter = e;
 	socket = app.get('socket.io');
 	return exports;
-}
+};
 
 /**
  * Object gets send without change to socket with the same event name.
@@ -60,10 +60,10 @@ exports.downloadWatch = function(event) {
 			downloadedSize: data.size
 		});
 	});
-}
+};
 
 exports.transferUpdate = function(event) {
 	emitter.on(event, function(data) {
 		socket.emit('transferUpdated', { id: data.transfer.id });
 	});
-}
+};

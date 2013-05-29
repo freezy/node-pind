@@ -16,7 +16,7 @@ var isSyncing = false;
 var platforms = {
 	VP: 'Visual Pinball',
 	FP: 'Future Pinball'
-}
+};
 
 function HyperPin(app) {
 	if ((this instanceof HyperPin) === false) {
@@ -52,8 +52,7 @@ HyperPin.prototype.initAnnounce = function(app) {
 	an.notice('searchStarted', 'Searching {{what}} for "{{name}}"', 60000);
 	an.notice('searchCompleted', 'Download successful, extracting missing media files');
 	an.forward('tableUpdated');
-}
-
+};
 
 HyperPin.prototype.syncTablesWithData = function(callback) {
 	var that = this;
@@ -71,7 +70,7 @@ HyperPin.prototype.syncTablesWithData = function(callback) {
 		} else {
 			that.emit('syncCompleted');
 
-			vp.updateTableData(function(err, tables) {
+			vp.updateTableData(function(err) {
 				if (err) {
 					throw new Error(err);
 				}
@@ -82,7 +81,7 @@ HyperPin.prototype.syncTablesWithData = function(callback) {
 			});
 		}
 	});
-}
+};
 
 /**
  * Reads XML from Hyperpin config and updates database. Tables that were
@@ -104,8 +103,7 @@ HyperPin.prototype.syncTables = function(callback) {
 
 			if (err) {
 				log.error('[hyperpin] [' + platform + '] ' + err);
-				callback('error reading file: ' + err);
-				return;
+                return callback('error reading file: ' + err);
 			}
 
 			var parser = new xml2js.Parser();
@@ -113,24 +111,21 @@ HyperPin.prototype.syncTables = function(callback) {
 
 				if (err) {
 					log.error('[hyperpin] [' + platform + '] ' + err);
-					callback('error parsing file: ' + err);
-					return;
+                    return callback('error parsing file: ' + err);
 				}
 				if (!result.menu) {
 					log.error('[hyperpin] [' + platform + '] Root element "menu" not found, aborting.');
-					callback('weird xml file, root element "menu" not found.');
-					return;
+                    return callback('weird xml file, root element "menu" not found.');
 				}
-				if (!result.menu.game) {
+				if (!result.menu['game']) {
 					log.warn('[hyperpin] [' + platform + '] XML database is empty.');
-					callback(null, []);
-					return;
+                    return callback(null, []);
 				}
 
-				var l = result.menu.game.length;
+				var l = result.menu['game'].length;
 				var tables = [];
 				for (var i = 0; i < l; i++) {
-					var g = result.menu.game[i];
+					var g = result.menu['game'][i];
 					var d = g.description[0];
 					var table;
 					var m = d.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\)/); // match Medieval Madness (Williams 1997)
@@ -184,6 +179,9 @@ HyperPin.prototype.syncTables = function(callback) {
 
 	// launch FP and VP parsing in parallel
 	async.eachSeries([ 'FP', 'VP' ], process, function(err) {
+        if (err) {
+            throw new Error(err);
+        }
 		schema.Table.findAll().success(function(rows) {
 			callback(null, rows);
 		}).error(callback);
@@ -273,8 +271,9 @@ HyperPin.prototype.insertCoin = function(user, slot, callback) {
 	console.log('checking amount of credits..');
 	if (user.credits > 0) {
 		console.log(user.credits + ' > 0, all good, inserting coin.');
-		var binPath = fs.realpathSync(__dirname + '../../../bin');
-		exec(binPath + '/Keysender.exe', function(error, stdout, stderr) {
+		//noinspection JSUnresolvedVariable
+        var binPath = fs.realpathSync(__dirname + '../../../bin');
+		exec(binPath + '/Keysender.exe', function(error) {
 			if (error !== null) {
 				callback(error);
 			} else {
@@ -296,6 +295,6 @@ HyperPin.prototype.insertCoin = function(user, slot, callback) {
 
 HyperPin.prototype.isSyncing = function() {
 	return isSyncing;
-}
+};
 
 module.exports = HyperPin;

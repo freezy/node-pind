@@ -20,7 +20,7 @@ exports.banner = function(context, key, size) {
 			console.log('Error retrieving table for banner ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
-}
+};
 
 exports.table = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
@@ -35,7 +35,7 @@ exports.table = function(context, key, size) {
 			console.log('Error retrieving table for table image ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
-}
+};
 
 exports.logo = function(context, key) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
@@ -45,7 +45,7 @@ exports.logo = function(context, key) {
 			console.log('Error retrieving table for logo ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
-}
+};
 
 exports.square = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
@@ -61,7 +61,7 @@ exports.square = function(context, key, size) {
 			console.log('Error retrieving table for square ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
-}
+};
 
 
 exports.widescreen = function(context, key, size) {
@@ -98,7 +98,7 @@ exports.widescreen = function(context, key, size) {
 	 console.log('Error retrieving table for square ' + key + ': ' + err);
 	 context.res.writeHead(500);
 	 });*/
-}
+};
 
 exports.backglass = function(context, key, size) {
 	schema.Table.find({ where: { key : key }}).success(function(row) {
@@ -112,7 +112,7 @@ exports.backglass = function(context, key, size) {
 			console.log('Error retrieving table for backglass ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
-}
+};
 
 
 var asset = function(context, path, process) {
@@ -130,8 +130,11 @@ var asset = function(context, path, process) {
 		// cache, process.
 		var now = new Date().getTime();
 		process(gm(path), function(gm) {
-			gm.stream(function (err, stream, stderr) {
-				if (err) next(err);
+			gm.stream(function (err, stream) {
+				if (err) {
+                    console.log('ERROR streaming image: ' + err);
+                    return context.res.writeHead(500);
+                }
 				context.res.writeHead(200, {
 					'Content-Type': 'image/png',
 					'Cache-Control': 'private',
@@ -162,9 +165,9 @@ var file = function(context, path) {
 		stream.pipe(context.res);
 	} else {
 		context.res.writeHead(404);
-		context.res.end('Sorry, ' + filePath + ' not found.');
+		context.res.end('Sorry, ' + path + ' not found.');
 	}
-}
+};
 
 function getPath(what, table) {
 	if (table == null) {

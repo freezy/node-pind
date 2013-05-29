@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var fs = require('fs');
 var util = require('util');
 var exec = require('child_process').exec;
@@ -39,11 +40,11 @@ Hiscore.prototype.initAnnounce = function(app) {
 	an.data('nvramChangeDetected', { id: '#fetchhs' }, 'processingStarted');
 	an.notice('nvramChangeProcessed', 'High scores for "{{name}}" updated.', 5000);
 	an.data('nvramChangeProcessed', { id: '#fetchhs' }, 'processingCompleted');
-}
+};
 
 Hiscore.prototype.isFetchingHiscores = function() {
 	return isFetchingHiscores;
-}
+};
 
 
 /**
@@ -82,7 +83,7 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 	isFetchingHiscores = true;
 	that.emit('processingStarted');
 
-	var now = new Date();
+//	var now = new Date();
 
 	// fetch all VP table and store them into a dictionary
 	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL' }).success(function(rows) {
@@ -171,11 +172,11 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 				points: points(hiscore),
 				player: hiscore.player
 			}).success(function(row) {
-					row.setTable(hiscore.table).success(function(row) {
+					//noinspection JSUnresolvedFunction
+                    row.setTable(hiscore.table).success(function(row) {
 						if (hiscore.user) {
-							row.setUser(hiscore.user).success(function(row) {
-								next();
-							}).error(next);
+							//noinspection JSUnresolvedFunction
+                            row.setUser(hiscore.user).success(next);
 						} else {
 							next();
 						}
@@ -185,7 +186,7 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 					next(err);
 				});
 
-			// if so, update entry
+		// if so, update entry
 		} else {
 			//console.log('Found entry %s, updating', row.id);
 			row.updateAttributes({
@@ -195,7 +196,8 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 				player: hiscore.player
 			}).success(function(row) {
 
-					row.setUser(hiscore.user).success(function() {
+					//noinspection JSUnresolvedFunction
+                    row.setUser(hiscore.user).success(function() {
 						next();
 					}).error(next);
 				}).error(next);
@@ -228,10 +230,11 @@ Hiscore.prototype._matchHiscore = function(tables, users, rom, next) {
 		} else {
 			console.log('[%s] Fetched, checking..', rom);
 			var hiscores = [];
+            var user, hs, i;
 
 			// grand champion
 			if (hiscore.grandChampion) {
-				var user = users[tr(hiscore.grandChampion.player)];
+				user = users[tr(hiscore.grandChampion.player)];
 				if (user) {
 					console.log('[%s] Matched grand champion: %s (%s)', rom, hiscore.grandChampion.player, hiscore.grandChampion.score);
 				}
@@ -246,9 +249,9 @@ Hiscore.prototype._matchHiscore = function(tables, users, rom, next) {
 
 			// regular high scores
 			if (hiscore.highest) {
-				for (var i = 0; i < hiscore.highest.length; i++) {
-					var hs = hiscore.highest[i];
-					var user = users[tr(hs.player)];
+				for (i = 0; i < hiscore.highest.length; i++) {
+					hs = hiscore.highest[i];
+					user = users[tr(hs.player)];
 					if (user) {
 						console.log('[%s] Matched high score %s: %s (%s)', rom, hs.rank, hs.player, hs.score);
 					}
@@ -265,9 +268,9 @@ Hiscore.prototype._matchHiscore = function(tables, users, rom, next) {
 
 			// special titles
 			if (hiscore.other) {
-				for (var i = 0; i < hiscore.other.length; i++) {
-					var hs = hiscore.other[i];
-					var user = users[tr(hs.player)];
+				for (i = 0; i < hiscore.other.length; i++) {
+					hs = hiscore.other[i];
+					user = users[tr(hs.player)];
 					if (user) {
 						console.log('[%s] Matched %s: %s', rom, hs.title, hs.player);
 					}
@@ -346,13 +349,11 @@ Hiscore.prototype.watchHighscores = function(event, filename) {
 Hiscore.prototype.linkNewUser = function(user, callback) {
 	schema.Hiscore.all({ where: [ 'lower(player) = ?', user.user.toLowerCase() ]}).success(function(rows) {
 		async.eachSeries(rows, function(row, next) {
-			row.setUser(user).success(function(row) {
-				next();
-			}).error(next);
+			//noinspection JSUnresolvedFunction
+            row.setUser(user).done(next);
 		}, callback);
 	});
 };
-
 
 
 /**
@@ -364,7 +365,7 @@ Hiscore.prototype.linkNewUser = function(user, callback) {
  */
 Hiscore.prototype.getHighscore = function(romname, callback) {
 	var path = binPath();
-	exec(path + '/PINemHi.exe' + ' ' + romname + ".nv", { cwd: path }, function (error, stdout, stderr) {
+	exec(path + '/PINemHi.exe' + ' ' + romname + ".nv", { cwd: path }, function (error, stdout) {
 		if (stdout.match(/^not supported rom/i)) {
 			//callback('ROM is not supported by PINemHi.');
 			return callback();
@@ -376,7 +377,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 		if (error !== null) {
 			console.log(error);
 		} else {
-			var m, regex, titles, blocks = stdout;
+			var m, n, regex, titles, block, blocks = stdout;
 			var scores = {};
 
 			function is(prefix) {
@@ -421,8 +422,9 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.highest = [];
 				blocks = blocks.replace(m[0].trim(), '');
-				var block = m[0];
-				var regex = new RegExp(/#?(\d+).?\s([\w\s+]{3})\s+([\d',]+)/gi);
+				block = m[0];
+				//noinspection JSValidateTypes
+                regex = new RegExp(/#?(\d+).?\s([\w\s+]{3})\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
 					if (m[2].trim().length > 0) {
 						scores.highest.push({ rank: m[1], player: player(m[2]), score: num(m[3]) });
@@ -434,13 +436,14 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 				|| is('gnr') || is('hook') || is('lah') || is('lw3') || is('rab') || is('torp')) {
 				if (m = blocks.match(/([\w\s\-\.']+(#\d|\d.)\s+[\w\s+]{3}\s+[\d',]+\s+){4,}/m)) {
 					blocks = blocks.replace(m[0].trim(), '');
-					regex = new RegExp(/([\w\s\-\.']+)#?(\d)\)?\s+([\w\s+]{3})\s+([\d',]+)/g);
-					var block = m[0];
-					var n = 0;
+					//noinspection JSValidateTypes
+                    regex = new RegExp(/([\w\s\-\.']+)#?(\d)\)?\s+([\w\s+]{3})\s+([\d',]+)/g);
+					block = m[0];
+					n = 0;
 					while (m = regex.exec(block)) {
 						// first is grand champion
 						if (n == 0) {
-							scores.grandChampion = { player: player(m[3]), score: num(m[4]), title: tidy(m[1]) }
+							scores.grandChampion = { player: player(m[3]), score: num(m[4]), title: tidy(m[1]) };
 							scores.highest = [];
 						} else {
 							scores.highest.push({ player: player(m[3]), score: num(m[4]), title: tidy(m[1]), rank: m[2]-1 });
@@ -454,13 +457,14 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 			if (is('wrldto')) {
 				if (m = blocks.match(/([\w\s\-\.]+\s+[\w\s+]{3}\s+[\d',]+\s+){4,}/m)) {
 					blocks = blocks.replace(m[0].trim(), '');
-					regex = new RegExp(/([\w\s\-\.]+)\s{2,}([\w\s+]{3})\s{2,}([\d',]+)/g);
-					var block = m[0];
-					var n = 0;
+					//noinspection JSValidateTypes
+                    regex = new RegExp(/([\w\s\-\.]+)\s{2,}([\w\s+]{3})\s{2,}([\d',]+)/g);
+					block = m[0];
+					n = 0;
 					while (m = regex.exec(block)) {
 						// first is grand champion
 						if (n == 0) {
-							scores.grandChampion = { player: player(m[2]), score: num(m[3]), title: tidy(m[1]) }
+							scores.grandChampion = { player: player(m[2]), score: num(m[3]), title: tidy(m[1]) };
 							scores.highest = [];
 						} else {
 							scores.highest.push({ player: player(m[2]), score: num(m[3]), title: tidy(m[1]), rank: n+1 });
@@ -480,8 +484,9 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 			if (m = regex.exec("\n" + blocks + "\n\r")) {
 				scores.buyin = [];
 				blocks = blocks.replace(m[0].trim(), '');
-				var block = m[0];
-				var regex = new RegExp(/(\d+).?\s(\w+)\s+([\d',]+)/gi);
+				block = m[0];
+				//noinspection JSValidateTypes
+                regex = new RegExp(/(\d+).?\s(\w+)\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
 					scores.buyin.push({ rank: m[1], player: player(m[2]), score: num(m[3]) });
 				}
@@ -508,7 +513,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 
 			// special titles
 			var b = blocks.trim().split(/\n\r/);
-			var blocks = function(block) {
+			blocks = function(block) {
 
 				var m;
 				var checks = [];
@@ -700,9 +705,10 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 					 * ...
 					 */
 					if (m = block.match(/nba team champions([\s\S]+)/i)) {
-						var b = m[1];
-						var ret = [];
-						var regex = new RegExp(/(\w+)\s+(\w+)\s+(.+)/g);
+                        ret = [];
+                        var b = m[1];
+						//noinspection JSValidateTypes
+                        var regex = new RegExp(/(\w+)\s+(\w+)\s+(.+)/g);
 						while (m = regex.exec(b)) {
 							ret.push({ title: 'NBA Team Champion', player: m[2], info: tidy(m[1]), info2: tidy(m[3])});
 						}
@@ -843,7 +849,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 			};
 			scores.other = [];
 			for (var i = 0; i < b.length; i++) {
-				var block = blocks(b[i]);
+				block = blocks(b[i]);
 				if (block) {
 					if (Array.isArray(block)) {
 						scores.other = scores.other.concat(block);
@@ -889,7 +895,7 @@ Hiscore.prototype.assertAll = function(startWith) {
 			continue;
 		}
 		var nvram = file.substr(0, file.length - 3);
-		if (file.substr(file.length - 3, file.length) == '.nv' && skip.indexOf(nvram) == -1) {
+		if (file.substr(file.length - 3, file.length) == '.nv' && !_.contains(skip, nvram)) {
 			nvrams.push(nvram);
 		}
 	}
@@ -905,7 +911,7 @@ Hiscore.prototype.assertAll = function(startWith) {
 			callback(err, result);
 		});
 	}, function() {});
-}
+};
 
 
 
@@ -938,7 +944,8 @@ function player(str) {
 }
 
 function binPath() {
-	return fs.realpathSync(__dirname + '../../../bin');
+	//noinspection JSUnresolvedVariable
+    return fs.realpathSync(__dirname + '../../../bin');
 }
 
 
@@ -1165,7 +1172,8 @@ var listNameScore = function(block, str, title) {
 	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
 		var b = m[1];
 		var ret = [];
-		var regex = new RegExp(/([\w\s+]{3})\s+([\d',]+)/g);
+		//noinspection JSValidateTypes
+        var regex = new RegExp(/([\w\s+]{3})\s+([\d',]+)/g);
 		while (m = regex.exec(b)) {
 			ret.push({ title: title, player: player(m[1]), score: num(m[2]) });
 		}
@@ -1196,7 +1204,8 @@ var listRankNameScore = function(block, str, title) {
 	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
 		var b = m[1];
 		var ret = [];
-		var regex = new RegExp(/#?(\d).?\s+([\w\s+]{3})\s+(\$\s+)?([\d',]+)/g);
+		//noinspection JSValidateTypes
+        var regex = new RegExp(/#?(\d).?\s+([\w\s+]{3})\s+(\$\s+)?([\d',]+)/g);
 		while (m = regex.exec(b)) {
 			ret.push({ title: title, rank: m[1], player: player(m[2]), score: num(m[4]) });
 		}
@@ -1227,7 +1236,8 @@ var listRankName = function(block, str, title) {
 	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
 		var b = m[1];
 		var ret = [];
-		var regex = new RegExp(/#?(\d).?\s+([\w\s+]{3})/g);
+		//noinspection JSValidateTypes
+        var regex = new RegExp(/#?(\d).?\s+([\w\s+]{3})/g);
 		while (m = regex.exec(b)) {
 			ret.push({ title: title, rank: m[1], player: player(m[2]) });
 		}
@@ -1261,7 +1271,8 @@ var listRankNameInfo2 = function(block, str, title) {
 	if (m = block.match(new RegExp(str + '\\s+([\\s\\S]+)', 'i'))) {
 		var b = m[1];
 		var ret = [];
-		var regex = new RegExp(/(\d).?\s+([\w\s+]{3})\s+(.+[\n\r]+.+)/g);
+		//noinspection JSValidateTypes
+        var regex = new RegExp(/(\d).?\s+([\w\s+]{3})\s+(.+[\n\r]+.+)/g);
 		var i = 0;
 		while (m = regex.exec(b)) {
 			ret.push({ title: title, rank: m[1], player: player(m[2]), info: tidy(m[3]) });

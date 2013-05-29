@@ -20,7 +20,7 @@ function HiscoresCtrl($scope, Jsonrpc) {
 			}
 			callback(scope, result);
 		});
-	}
+	};
 
 	$scope.getHiscores = function(table, type) {
 		var hiscores = [];
@@ -31,5 +31,5 @@ function HiscoresCtrl($scope, Jsonrpc) {
 			}
 		}
 		return hiscores;
-	}
+	};
 }

@@ -1,6 +1,6 @@
 /**
  * Sets up data for a container
- * 
+ *
  * Configuration object contains the following keys:
  * <ul><li><tt>id</tt> - class of the wrapping container</li>
  *     <li><tt>body</tt> - selector where the data is attached to</li>
@@ -10,7 +10,7 @@
  * @param config configuration object (see above).
  */
 function enableData(config) {
-	
+
 	if (!config.id) {
 		throw new Error('Must provide data ID when enabling data.');
 	}
@@ -87,7 +87,7 @@ function enableData(config) {
 		$('.data.' + config.id + ' .pagination ul').data('page', 1);
 		$('.data.' + config.id + ' input.search').val('');
 		refreshData(config);
-	}
+	};
 	$('.data.' + config.id + ' .noresult button').click(clearFilters);
 }
 
@@ -244,7 +244,7 @@ function api(method, params, callback) {
 		}
 	});
 }
-
+/*
 function ngApi($http, method, params, callback) {
 	$http({
 		url : '/api',
@@ -268,4 +268,4 @@ function ngApi($http, method, params, callback) {
 			alert(error);
 		}
 	});
-}
+}*/

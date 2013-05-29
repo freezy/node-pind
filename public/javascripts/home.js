@@ -1,11 +1,4 @@
-$(document).ready(function() {
-
-});
-
-
 function HomeCtrl($scope, Jsonrpc) {
-
-
 
 	$scope.latestReleases = [];
 	$scope.latestGames = [];
@@ -50,7 +43,6 @@ function HomeCtrl($scope, Jsonrpc) {
 		}
 	});
 }
-
 
 function SourceItemCtrl($scope) {
 

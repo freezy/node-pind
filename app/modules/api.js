@@ -17,4 +17,4 @@ module.exports = function(app) {
 
 exports.handle = function(req, res) {
 	njrpc.handle(req, res);
-}
+};
