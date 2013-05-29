@@ -17,31 +17,21 @@ function HomeCtrl($scope, Jsonrpc) {
 			}
 		}
 	});
+}
 
-	Jsonrpc.call('Table.GetAll', {
-		fields: ['name', 'year', 'manufacturer', 'url_backglass_medium' ],
-		limit : 3,
-		offset: 0
+function LatestReleasesCtrl($scope) {
+	$scope.limit = 4;
+}
 
-	}, function(err, result) {
-		if (err) {
-			alert('Problem loading tables: ' + err);
-		} else {
-			if (result.rows.length > 0) {
-				$scope.latestGames = result.rows;
-			}
-		}
-	});
+function LatestGamesCtrl($scope) {
+	$scope.limit = 3;
+	$scope.fields = ['name', 'year', 'manufacturer', 'url_backglass_medium' ];
+}
 
-	Jsonrpc.call('VPForums.FindTables', { limit : 4 }, function(err, result) {
-		if (err) {
-			alert('Problem loading latest releases: ' + err);
-		} else {
-			if (result.rows.length > 0) {
-				$scope.latestReleases = result.rows;
-			}
-		}
-	});
+function LatestHiscoresCtrl($scope) {
+	$scope.limit = 3;
+	$scope.filters = [ 'hiscoreAny' ];
+	$scope.fields = [ 'key', 'name', 'year', 'url_banner_small'];
 }
 
 function SourceItemCtrl($scope) {

@@ -14,66 +14,71 @@ block content
 
 				.span9
 
-					//- LATEST RELEASES
+					//- RELEASES
 					//---------------------------------------------------------
-					ul.thumbnails
-						li.span6.vpf.item(ng-repeat="row in latestReleases", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}")
-							.thumbnail
-								thumb.ng-transclude(fileid="{{row.fileId}}")
-								h3 {{row.title_trimmed}}
-								p.pull-right.updated.hidden-phone-small {{row.lastUpdatedSince}}
-								h4.hidden-phone-small {{row.info}}
-								ul.pills.small
-									li
-										i.icon.user
-										.author.hidden-phone-small {{row.author}}
-									li
-										i.icon.circle-arrow-down(title="{{row.downloads|groupdigit}}")
-										span.hidden-desktop-small.hidden-phone-small {{row.downloads|groupdigit}}
-									li
-										i.icon.eye(title="{{row.views|groupdigit}}")
-										span.hidden-desktop-small.hidden-phone-small {{row.views|groupdigit}}
-									li.link
-										a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
-											i.icon.link
-								.clearfix
+
+					div(ng-controller='LatestReleasesCtrl')
+						ul.thumbnails(ng-controller='DataCtrl', resource="VPForums.FindTables")
+							li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}")
+								.thumbnail
+									thumb.ng-transclude(fileid="{{row.fileId}}")
+									h3 {{row.title_trimmed}}
+									p.pull-right.updated.hidden-phone-small {{row.lastUpdatedSince}}
+									h4.hidden-phone-small {{row.info}}
+									ul.pills.small
+										li
+											i.icon.user
+											.author.hidden-phone-small {{row.author}}
+										li
+											i.icon.circle-arrow-down(title="{{row.downloads|groupdigit}}")
+											span.hidden-desktop-small.hidden-phone-small {{row.downloads|groupdigit}}
+										li
+											i.icon.eye(title="{{row.views|groupdigit}}")
+											span.hidden-desktop-small.hidden-phone-small {{row.views|groupdigit}}
+										li.link
+											a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
+												i.icon.link
+									.clearfix
 
 
-					//- LATEST GAMES
+					//- GAMES
 					//---------------------------------------------------------
 					h2 Latest Games
 
-					ul.thumbnails.tables
-						li.span4(ng-repeat='table in latestGames', tb-768-980='span6')
-							.thumbnail
-								img(src='{{table.url_backglass_medium}}')
-								hr
-								.thumbnail-content
+					div(ng-controller='LatestGamesCtrl')
+						ul.thumbnails.tables(ng-controller='DataCtrl', resource="Table.GetAll")
+							li.span4(ng-repeat='table in data', tb-768-980='span6')
+								.thumbnail
+									img(ng-src='{{table.url_backglass_medium}}')
+									hr
+									.thumbnail-content
 
-									h3 {{table.name}}
-									p {{table.manufacturer}} - {{table.year}}
+										h3 {{table.name}}
+										p {{table.manufacturer}} - {{table.year}}
 
 
-					//- LATEST HISCORES
+					//- HISCORES
 					//---------------------------------------------------------
 					h2 Latest Hiscores
-					ul.thumbnails.hiscores(ng-controller='HiscoresCtrl')
-						li.span4(ng-repeat='table in tables', tb-768-980='span6')
-							.thumbnail
-								img(ng-src='{{table.url_banner_small}}')
-								hr
-								.thumbnail-content
-									h3 {{table.name}}
-									ul.ranking.champ
-										li(ng-repeat="hiscore in getHiscores(table, 'champ')", class="{{hiscore.class}}")
-											span.title Grand Champion
-											span.player {{hiscore.player}}
-											span.score {{hiscore.score}}
-									ul.ranking.hiscore
-										li(ng-repeat="hiscore in getHiscores(table, 'hiscore')", class="{{hiscore.class}}")
-											span.rank {{hiscore.rank}}
-											span.player {{hiscore.player}}
-											span.score {{hiscore.score}}
+					div(ng-controller='LatestHiscoresCtrl')
+						div(ng-controller='HiscoresCtrl')
+							ul.thumbnails.hiscores(ng-controller='DataCtrl', resource="Table.GetAll")
+								li.span4(ng-repeat='table in data', tb-768-980='span6')
+									.thumbnail
+										img(ng-src='{{table.url_banner_small}}')
+										hr
+										.thumbnail-content
+											h3 {{table.name}}
+											ul.ranking.champ
+												li(ng-repeat="hiscore in getHiscores(table, 'champ')", class="{{hiscore.class}}")
+													span.title Grand Champion
+													span.player {{hiscore.player}}
+													span.score {{hiscore.score}}
+											ul.ranking.hiscore
+												li(ng-repeat="hiscore in getHiscores(table, 'hiscore')", class="{{hiscore.class}}")
+													span.rank {{hiscore.rank}}
+													span.player {{hiscore.player}}
+													span.score {{hiscore.score}}
 
 				.span3
 
