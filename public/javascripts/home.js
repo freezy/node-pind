@@ -31,6 +31,7 @@ function LatestGamesCtrl($scope) {
 
 function LatestHiscoresCtrl($scope) {
 	$scope.limit = 3;
+	$scope.sort = 'latestHiscores';
 	$scope.filters = [ 'hiscoreAny' ];
 	$scope.fields = [ 'key', 'name', 'year', 'url_banner_small'];
 }

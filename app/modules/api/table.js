@@ -114,6 +114,15 @@ var TableApi = function() {
 					}
 				}
 
+				/**
+				 * order tables by latest hiscore:
+				 *
+				 *		SELECT t.*, h.lastHiscoreAt
+				 *		FROM tables t
+				 *		JOIN (SELECT tableId, MAX(updatedAt) AS lastHiscoreAt FROM hiscores GROUP BY tableId) h ON (h.tableId = t.id)
+				 *		ORDER BY lastHiscoreAt DESC
+				 */
+
 				// trim trailing operator
 				if (p.where && p.where.length > 0) {
 					p.where = p.where.substr(0, p.where.lastIndexOf(')') + 1);
