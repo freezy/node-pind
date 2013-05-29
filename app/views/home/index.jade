@@ -12,14 +12,14 @@ block content
 			h2 Latest Releases
 			div.row-fluid
 
-				.span9
+				.span9(tb-768-980='span8')
 
 					//- RELEASES
 					//---------------------------------------------------------
 
 					div(ng-controller='LatestReleasesCtrl')
 						ul.thumbnails(ng-controller='DataCtrl', resource="VPForums.FindTables")
-							li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}")
+							li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}", tb-768-980='span12')
 								.thumbnail
 									thumb.ng-transclude(fileid="{{row.fileId}}")
 									h3 {{row.title_trimmed}}
@@ -80,7 +80,7 @@ block content
 													span.player {{hiscore.player}}
 													span.score {{hiscore.score}}
 
-				.span3
+				.span3(tb-768-980='span4')
 
 					//- LEADER BOARD
 					//---------------------------------------------------------
@@ -119,8 +119,8 @@ block content
 						img(ng-src='{{table.url_backglass_medium}}')
 						hr
 						.thumbnail-content
-							h3 {{table.name}}
 							p Free Table of the Week
+							h3 {{table.name}}
 						img.table(ng-src='{{table.url_portrait_medium}}')
 
 block inlineScripts

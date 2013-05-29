@@ -72,7 +72,6 @@ var TableApi = function() {
 			};
 			if (!search) {
 				p = {
-					order: params.order ? params.order.replace(/[^\w\s]*/g, '') : 'name ASC',
 					offset: params.offset ? parseInt(params.offset) : 0,
 					limit: params.limit ? parseInt(params.limit) : 0
 				};
@@ -114,27 +113,21 @@ var TableApi = function() {
 							break;
 					}
 				}
+
 				// trim trailing operator
 				if (p.where && p.where.length > 0) {
 					p.where = p.where.substr(0, p.where.lastIndexOf(')') + 1);
+					console.log('Condition: WHERE %s', p.where);
 				} else {
 					delete p.where;
 				}
-
-
-				// add search condition
-/*				if (params.search && params.search.length > 1) {
-					var where = 'LOWER(`name`) LIKE "%' + params.search + '%"';
-					if (p.where) {
-						where = '(' + p.where + ') AND (' + where + ')';
-					}
-					p.where = where;
-				}*/
-
-				if (p.where) {
-					console.log('Condition: WHERE %s', p.where);
+				switch (params.search) {
+					case 'latest':
+						p.order = 'createdAt DESC';
+						break;
+					default:
+						p.order = 'name ASC';
 				}
-
 			}
 			schema.Table.all(p).success(function(rows) {
 

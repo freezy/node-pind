@@ -21,6 +21,7 @@ function HomeCtrl($scope, Jsonrpc) {
 
 function LatestReleasesCtrl($scope) {
 	$scope.limit = 4;
+	$scope.sort = 'latest'
 }
 
 function LatestGamesCtrl($scope) {
