@@ -130,30 +130,6 @@ var TableApi = function() {
 				if (search) {
 					// needs to have fuzzyExtract in the model!
 					return schema.Table.fuzzySearch(rows, params, callback);
-
-
-/*					console.log('Fuzzy-filtering ' + rows.length + ' rows...');
-					var options = {
-						pre: '<b>',
-						post: '</b>',
-						extract: function(el) { return el.name; }
-					};
-					var hits = fuzzy.filter(params.search, rows, options);
-					console.log('Fuzzy-filtered ' + hits.length + ' hits.');
-					var results = [];
-					_.each(hits, function(hit) {
-						var result = fields(hit.original);
-						result.name_match = hit.string;
-						results.push(result);
-					});
-
-					var offset = params.offset ? parseInt(params.offset) : 0;
-					var limit = params.limit ? parseInt(params.limit) : 0;
-					if (offset || limit) {
-						return callback({ rows : results.slice(offset, offset + limit), count: results.length });
-					} else {
-						return callback({ rows : results, count: results.length });
-					}*/
 				}
 
 				delete p.limit;

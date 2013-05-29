@@ -19,18 +19,16 @@ block content
 				//- search box
 				searchbox(value='search', wait='300')
 
-				//- sort pills
-				ul.nav.nav-pills.pull-left.sort(sort, value='sort')
+				//- filter pills
+				ul.nav.nav-pills.pull-left.filter(filters, value='filters')
 					li
 						.icon
-							i.icon.sort(title="Sort results by")
-					li.current(data-sort="latest")
-						a(href="#") Latest
-					li(data-sort="downloads")
-						a(href="#") By Downloads
-					li(data-sort="views")
-						a(href="#") By Views
-			.clearfix
+							i.icon.filter(title="Filter high scores by")
+					li(data-filter="user")
+						a(href="#") Mine
+					li(data-filter="rom")
+						a(href="#") Users
+				.clearfix
 
 			//- data
 			div.data.ng-cloak(style="display:none")
@@ -52,7 +50,6 @@ block content
 										span.player {{hiscore.player}}
 										span.score {{hiscore.score}}
 			.clear-fix
-
 
 block inlineScripts
 	script
