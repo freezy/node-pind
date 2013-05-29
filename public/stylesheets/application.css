@@ -50,6 +50,9 @@ body {
   -ms-transition: all 0.3s ease !important;
   transition: all 0.3s ease !important;
 }
+.username {
+  text-transform: uppercase;
+}
 .hidden {
   display: none;
 }

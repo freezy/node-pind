@@ -1,7 +1,7 @@
 function HiscoresCtrl($scope, Jsonrpc) {
 
 	$scope.hiscores = {};
-	$scope.filters = [ 'hiscore' ];
+	$scope.filters = [ 'hiscoreAny' ];
 	$scope.fields = [ 'key', 'name', 'year', 'url_banner_small'];
 
 	$scope.postDataFn = function(scope, result, callback) {

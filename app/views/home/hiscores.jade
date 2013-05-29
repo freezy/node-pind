@@ -14,7 +14,7 @@ block content
 				pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
 
 				//- number of rows
-				numrows.numrows.input-mini.pull-right(selection='[12, 24, 36]', value='limit')
+				numrows.numrows.input-mini.pull-right(selection='[6, 12, 24, 36]', value='limit')
 
 				//- search box
 				searchbox(value='search', wait='300')
@@ -24,9 +24,9 @@ block content
 					li
 						.icon
 							i.icon.filter(title="Filter high scores by")
-					li(data-filter="user")
-						a(href="#") Mine
-					li(data-filter="rom")
+					li(data-filter="hiscoreUser")
+						a.username(href="#") &quot;#{user.user}&quot;
+					li(data-filter="hiscoreUsers")
 						a(href="#") Users
 				.clearfix
 

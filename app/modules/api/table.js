@@ -101,15 +101,26 @@ var TableApi = function() {
 								p.where += '(NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel` OR NOT `media_video`) OR ';
 							}
 							break;
-						case 'hiscore':
-							p.where += '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores`)) OR ';
+						case 'hiscoreAny':
+							p.where = '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores`)) OR ';
+							break;
+
+						case 'hiscoreUsers':
+							p.where = '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores` WHERE `userId` IS NOT NULL)) OR ';
+							break;
+
+						case 'hiscoreUser':
+							p.where = '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores` WHERE `userId` = ' + req.session.user.id + ')) OR ';
 							break;
 					}
 				}
 				// trim trailing operator
-				if (p.where) {
+				if (p.where && p.where.length > 0) {
 					p.where = p.where.substr(0, p.where.lastIndexOf(')') + 1);
+				} else {
+					delete p.where;
 				}
+
 
 				// add search condition
 /*				if (params.search && params.search.length > 1) {
