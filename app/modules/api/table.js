@@ -127,6 +127,7 @@ var TableApi = function() {
 						break;
 					default:
 						p.order = 'name ASC';
+						break;
 				}
 			}
 			schema.Table.all(p).success(function(rows) {
