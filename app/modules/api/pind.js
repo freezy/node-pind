@@ -55,7 +55,7 @@ var PindApi = function() {
 				'JOIN tables t ON t.id = h.tableId ' +
 				'LEFT JOIN users u ON u.id = h.userId ';
 
-			if (params.tableIds) {
+			if (_.isArray(params.tableIds) && params.tableIds.length > 0) {
 				_.map(params.tableIds, function(id) {
 					return id.replace(/[^a-z\d]+/gi, '');
 				});

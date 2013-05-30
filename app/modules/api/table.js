@@ -130,14 +130,16 @@ var TableApi = function() {
 				} else {
 					delete p.where;
 				}
-				switch (params.search) {
-					case 'latest':
-						p.order = 'createdAt DESC';
-						break;
-					default:
-						p.order = 'name ASC';
-						break;
-				}
+			}
+
+			// sorting
+			switch (params.sort) {
+				case 'latest':
+					p.order = 'createdAt DESC';
+					break;
+				default:
+					p.order = 'name ASC';
+					break;
 			}
 			schema.Table.all(p).success(function(rows) {
 
@@ -153,7 +155,6 @@ var TableApi = function() {
 
 					// if fields are specified, strip non-specificed fields.
 					if (params.fields && params.fields instanceof Array) {
-						console.log('stripping fields..');
 						var rs = [];
 						for (var i = 0; i < rows.length; i++) {
 							rs.push(fields(rows[i]));
