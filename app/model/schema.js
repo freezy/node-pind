@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var path = require('path');
 var fuzzy = require('fuzzy');
 var Sequelize = require('sequelize');
 
@@ -66,7 +67,14 @@ if (settings.pind.database.engine == 'mysql') {
 
 } else if (settings.pind.database.engine == 'sqlite') {
 	config.dialect = 'sqlite';
-	config.storage = settings.pind.database.database + '.db';
+	if (settings.pind.database.database.indexOf(':') > 0) {
+		// path was provided
+		config.storage = settings.pind.database.database + '.db';
+	} else {
+		config.storage = path.normalize(__dirname + '../../../' + settings.pind.database.database + '.db');
+	}
+	console.log('SQLite storage file at %s.', config.storage);
+
 } else {
 	throw new Error('Unknown database engine (' + settings.pind.database.engine + ').');
 }
@@ -93,12 +101,13 @@ Table.hasMany(Hiscore);
 Hiscore.belongsTo(User);
 Hiscore.belongsTo(Table);
 
-
+/*
 sequelize.sync().on('success', function() {
 	console.log('Connected to %s.', settings.pind.database.engine == 'mysql' ? "MySQL" : "SQLite");
 }).error(function(err){
 	console.log('Error connecting to SQLite: ' + err);
 });
+*/
 
 create = function(next){
 	sequelize.sync({force: true}).on('success', function() {

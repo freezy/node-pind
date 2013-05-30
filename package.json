@@ -1,7 +1,7 @@
 {
 	"name": "node-pind",
 	"version": "0.0.2",
-	"description": "Pinball backend server",
+	"description": "Pinball Backend Server",
 	"author": {
 		"name": "freezy",
 		"email": "freezy@xbmc.org"
@@ -21,7 +21,7 @@
 		"compound" : "latest",
 		"sequelize" : ">= 1.6.0",
 		"sequelize-sqlite" : "latest",
-		"sqlite" : "latest",
+		"sqlite3" : "latest",
 		"coffee-script" : ">= 1.1.1",
 		"stylus": "latest",
 		"seedjs" : "latest",
@@ -44,7 +44,8 @@
 		"chrono-node" : "latest",
 		"fuzzy" : "latest",
 		"relative-date" : "1.1.1",
-		"filesize" : "latest"
+		"filesize" : "latest",
+		"winser" : "latest"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",
@@ -52,7 +53,9 @@
 		"semicov" : "*",
 		"co-generators" : "*"
 	},
-		"scripts" : {
-		"test" : "nodeunit test/*/*"
+	"scripts" : {
+		"test" : "nodeunit test/*/*",
+		"postinstall": "winser -i -s -c",
+		"preuninstall": "winser -r -x -s"
 	}
 }

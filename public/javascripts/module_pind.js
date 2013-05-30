@@ -27,7 +27,7 @@ function DataCtrl($scope, Jsonrpc) {
 		$scope.sort = '';
 		$scope.filters = [];
 		$scope.$broadcast('paramsReset');
-	}
+	};
 
 	var refresh = function() {
 
@@ -122,6 +122,9 @@ pindAppModule.directive('filters', function() {
 				event.preventDefault();
 				var parent = $(this).parents('li');
 				var filter = parent.data('filter');
+				if (!scope[attrs.value]) {
+					scope[attrs.value] = [];
+				}
 				if (parent.hasClass('active')) {
 					// remove from array
 					scope[attrs.value].splice(scope.filters.indexOf(filter));
@@ -343,7 +346,7 @@ pindAppModule.directive('controls', function() {
 					$(element).show();
 
 				// no results due to filtering
-				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
+				} else if ((scope.filters && scope.filters.length > 0) || (scope.search && scope.search.length > 1)) {
 					$(element).show();
 
 				// no results due to no data
@@ -370,7 +373,7 @@ pindAppModule.directive('data', function() {
 					$(element).show();
 
 				// no results due to filtering
-				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
+				} else if ((scope.filters && scope.filters.length > 0) || (scope.search && scope.search.length > 1)) {
 					$(element).slideUp(200);
 
 				// no results due to no data
@@ -399,7 +402,7 @@ pindAppModule.directive('noresult', function() {
 					$(element).hide();
 
 				// no results due to filtering
-				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
+				} else if ((scope.filters && scope.filters.length > 0) || (scope.search && scope.search.length > 1)) {
 					$(element).fadeIn(500);
 
 				// no results due to no data
@@ -425,7 +428,7 @@ pindAppModule.directive('nodata', function() {
 					$(element).fadeOut(200);
 
 				// no results due to filtering
-				} else if (scope.filters.length > 0 || (scope.search && scope.search.length > 1)) {
+				} else if ((scope.filters && scope.filters.length > 0) || (scope.search && scope.search.length > 1)) {
 					$(element).hide();
 
 				// no results due to no data
