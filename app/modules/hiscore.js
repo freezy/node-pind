@@ -173,10 +173,12 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 				player: hiscore.player
 			}).success(function(row) {
 					//noinspection JSUnresolvedFunction
-                    row.setTable(hiscore.table).success(function(row) {
+					row.setTable(hiscore.table).success(function(row) {
 						if (hiscore.user) {
 							//noinspection JSUnresolvedFunction
-                            row.setUser(hiscore.user).success(next);
+							row.setUser(hiscore.user).success(function() {
+								next();
+							}).error(next);
 						} else {
 							next();
 						}
@@ -195,9 +197,8 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 				points: points(hiscore),
 				player: hiscore.player
 			}).success(function(row) {
-
 					//noinspection JSUnresolvedFunction
-                    row.setUser(hiscore.user).success(function() {
+					row.setUser(hiscore.user).success(function() {
 						next();
 					}).error(next);
 				}).error(next);
@@ -230,7 +231,7 @@ Hiscore.prototype._matchHiscore = function(tables, users, rom, next) {
 		} else {
 			console.log('[%s] Fetched, checking..', rom);
 			var hiscores = [];
-            var user, hs, i;
+			var user, hs, i;
 
 			// grand champion
 			if (hiscore.grandChampion) {
@@ -350,7 +351,9 @@ Hiscore.prototype.linkNewUser = function(user, callback) {
 	schema.Hiscore.all({ where: [ 'lower(player) = ?', user.user.toLowerCase() ]}).success(function(rows) {
 		async.eachSeries(rows, function(row, next) {
 			//noinspection JSUnresolvedFunction
-            row.setUser(user).done(next);
+			row.setUser(user).success(function() {
+				next();
+			}).error(next);
 		}, callback);
 	});
 };
@@ -424,7 +427,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 				blocks = blocks.replace(m[0].trim(), '');
 				block = m[0];
 				//noinspection JSValidateTypes
-                regex = new RegExp(/#?(\d+).?\s([\w\s+]{3})\s+([\d',]+)/gi);
+				regex = new RegExp(/#?(\d+).?\s([\w\s+]{3})\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
 					if (m[2].trim().length > 0) {
 						scores.highest.push({ rank: m[1], player: player(m[2]), score: num(m[3]) });
@@ -437,7 +440,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 				if (m = blocks.match(/([\w\s\-\.']+(#\d|\d.)\s+[\w\s+]{3}\s+[\d',]+\s+){4,}/m)) {
 					blocks = blocks.replace(m[0].trim(), '');
 					//noinspection JSValidateTypes
-                    regex = new RegExp(/([\w\s\-\.']+)#?(\d)\)?\s+([\w\s+]{3})\s+([\d',]+)/g);
+					regex = new RegExp(/([\w\s\-\.']+)#?(\d)\)?\s+([\w\s+]{3})\s+([\d',]+)/g);
 					block = m[0];
 					n = 0;
 					while (m = regex.exec(block)) {
@@ -458,7 +461,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 				if (m = blocks.match(/([\w\s\-\.]+\s+[\w\s+]{3}\s+[\d',]+\s+){4,}/m)) {
 					blocks = blocks.replace(m[0].trim(), '');
 					//noinspection JSValidateTypes
-                    regex = new RegExp(/([\w\s\-\.]+)\s{2,}([\w\s+]{3})\s{2,}([\d',]+)/g);
+					regex = new RegExp(/([\w\s\-\.]+)\s{2,}([\w\s+]{3})\s{2,}([\d',]+)/g);
 					block = m[0];
 					n = 0;
 					while (m = regex.exec(block)) {
@@ -486,7 +489,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 				blocks = blocks.replace(m[0].trim(), '');
 				block = m[0];
 				//noinspection JSValidateTypes
-                regex = new RegExp(/(\d+).?\s(\w+)\s+([\d',]+)/gi);
+				regex = new RegExp(/(\d+).?\s(\w+)\s+([\d',]+)/gi);
 				while (m = regex.exec(block)) {
 					scores.buyin.push({ rank: m[1], player: player(m[2]), score: num(m[3]) });
 				}
@@ -705,10 +708,10 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 					 * ...
 					 */
 					if (m = block.match(/nba team champions([\s\S]+)/i)) {
-                        ret = [];
-                        var b = m[1];
+						ret = [];
+						var b = m[1];
 						//noinspection JSValidateTypes
-                        var regex = new RegExp(/(\w+)\s+(\w+)\s+(.+)/g);
+						var regex = new RegExp(/(\w+)\s+(\w+)\s+(.+)/g);
 						while (m = regex.exec(b)) {
 							ret.push({ title: 'NBA Team Champion', player: m[2], info: tidy(m[1]), info2: tidy(m[3])});
 						}
@@ -1173,7 +1176,7 @@ var listNameScore = function(block, str, title) {
 		var b = m[1];
 		var ret = [];
 		//noinspection JSValidateTypes
-        var regex = new RegExp(/([\w\s+]{3})\s+([\d',]+)/g);
+		var regex = new RegExp(/([\w\s+]{3})\s+([\d',]+)/g);
 		while (m = regex.exec(b)) {
 			ret.push({ title: title, player: player(m[1]), score: num(m[2]) });
 		}
@@ -1205,7 +1208,7 @@ var listRankNameScore = function(block, str, title) {
 		var b = m[1];
 		var ret = [];
 		//noinspection JSValidateTypes
-        var regex = new RegExp(/#?(\d).?\s+([\w\s+]{3})\s+(\$\s+)?([\d',]+)/g);
+		var regex = new RegExp(/#?(\d).?\s+([\w\s+]{3})\s+(\$\s+)?([\d',]+)/g);
 		while (m = regex.exec(b)) {
 			ret.push({ title: title, rank: m[1], player: player(m[2]), score: num(m[4]) });
 		}
@@ -1237,7 +1240,7 @@ var listRankName = function(block, str, title) {
 		var b = m[1];
 		var ret = [];
 		//noinspection JSValidateTypes
-        var regex = new RegExp(/#?(\d).?\s+([\w\s+]{3})/g);
+		var regex = new RegExp(/#?(\d).?\s+([\w\s+]{3})/g);
 		while (m = regex.exec(b)) {
 			ret.push({ title: title, rank: m[1], player: player(m[2]) });
 		}
@@ -1272,7 +1275,7 @@ var listRankNameInfo2 = function(block, str, title) {
 		var b = m[1];
 		var ret = [];
 		//noinspection JSValidateTypes
-        var regex = new RegExp(/(\d).?\s+([\w\s+]{3})\s+(.+[\n\r]+.+)/g);
+		var regex = new RegExp(/(\d).?\s+([\w\s+]{3})\s+(.+[\n\r]+.+)/g);
 		var i = 0;
 		while (m = regex.exec(b)) {
 			ret.push({ title: title, rank: m[1], player: player(m[2]), info: tidy(m[3]) });
