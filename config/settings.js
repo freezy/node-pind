@@ -11,24 +11,29 @@ module.exports = {
 		 * Where the HTTP server listens; 80 is the default port.
 		 */
 		port: 80,
+
 		/**
 		 * Session timeout in milliseconds.
 		 */
 		sessionTimeout: 3600000,
+
 		/**
 		 * Interval for download updates on the downloads page for the progress bars.
 		 */
 		downloaderRefreshRate: 3000,
+
 		/**
 		 * If true, queueing will automatically start the download queue. Same when
 		 * application starts and there are still items in the queue.
 		 * If false, download queue must be started manually.
 		 */
 		startDownloadsAutomatically: true,
+
 		/**
 		 * Secret for hashing stuff. Create something long here: http://strongpasswordgenerator.com/
 		 */
 		secret: 'alongsecret',
+
 		/**
 		 * A temp folder for extracting stuff. No trailing slash!
 		 */
@@ -55,31 +60,45 @@ module.exports = {
 			 * Which database engine to use. Either sqlite (default) or mysql.
 			 */
 			engine: 'sqlite',
+
 			/**
 			 * When using MySQL, this is the name of the database, which must exist already.
 			 * When using SQLite, it's the name of the file (without extension).
 			 */
 			database: 'pind',
+
 			/**
 			 * MySQL host.
 			 * Ignore this if you're using SQLite.
 			 */
 			host: 'localhost',
+
 			/**
 			 * MySQL port.
 			 * Ignore this if you're using SQLite.
 			 */
 			port: 3306,
+
 			/**
 			 * MySQL user. When using MySQL, you'll have to create this user manually before.
 			 * Ignore this if you're using SQLite.
 			 */
 			user: 'pind',
+
 			/**
 			 * MySQL password.
 			 * Ignore this if you're using SQLite.
 			 */
 			pass: ''
+		},
+
+		/**
+		 * Where to update the application from. Provide your GitHub fork here if necessary.
+		 * Default is https://github.com/freezy/node-pind
+		 */
+		repository: {
+			user: 'freezy',
+			repo: 'node-pind'
 		}
 	},
 	/**

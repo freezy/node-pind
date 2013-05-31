@@ -1,5 +1,20 @@
 var app = require('./server')();
 
+var au = require('./app/modules/autoupdate')();
+
+git();
+
+function git() {
+	au.updateAvailable(function(err, result) {
+		if (err) {
+			console.log("ERROR: " + err);
+		} else {
+			console.log("Done, got: %j", result);
+		}
+	});
+}
+
+
 app.compound.on('ready', function() {
 
 	var fs = require('fs');
@@ -13,11 +28,14 @@ app.compound.on('ready', function() {
 	var trns = require('./app/modules/transfer')(app);
 	var extr = require('./app/modules/extract')(app);
 
+
 	var log = require('winston');
 	log.cli();
 
+
+
 //	cacheAllTableDownloads();
-	nextDownload();
+//	nextDownload();
 
 //	assertHiscores();
 //	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.rar');
@@ -194,5 +212,7 @@ app.compound.on('ready', function() {
 		});
 	}
 
-});
 
+
+
+});
