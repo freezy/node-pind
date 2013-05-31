@@ -1,19 +1,25 @@
 {
-	"name": "node-pind",
-	"version": "0.0.2",
-	"description": "Pinball Backend Server",
-	"author": {
-		"name": "freezy",
-		"email": "freezy@xbmc.org"
+	"name" : "pind",
+	"version" : "0.0.3",
+	"description" : "Pinball Daemon",
+	"license" : "GPLv2",
+	"author" : {
+		"name" : "freezy",
+		"email" : "freezy@xbmc.org"
 	},
 	"repository": {
-		"type": "git",
-		"url": "git://github.com/freezy/node-pind"
+		"type" : "git",
+		"url" : "git://github.com/freezy/node-pind"
+	},
+	"bugs" : {
+		"url" : "https://github.com/freezy/node-pind/issues"
 	},
 	"engines" : ["node >= 0.8.0"],
+	"os" : [ "win32" ],
 	"main" : "server.js",
-	"private": true,
-	"dependencies": {
+	"keywords" : [ "pinball", "visual pinball", "future pinball", "hyperpin", "cabinet" ],
+	"private": false,
+	"dependencies" : {
 		"jade": "0.27.7",
 		"jade-ext" : "latest",
 		"express": "~3.x",
@@ -44,8 +50,7 @@
 		"chrono-node" : "latest",
 		"fuzzy" : "latest",
 		"relative-date" : "1.1.1",
-		"filesize" : "latest",
-		"winser" : "latest"
+		"filesize" : "latest"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",
@@ -54,8 +59,6 @@
 		"co-generators" : "*"
 	},
 	"scripts" : {
-		"test" : "nodeunit test/*/*",
-		"postinstall": "winser -i -s -c",
-		"preuninstall": "winser -r -x -s"
+		"test" : "nodeunit test/*/*"
 	}
 }
