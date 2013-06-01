@@ -60,14 +60,8 @@ AutoUpdate.prototype.initAnnounce = function(app) {
 AutoUpdate.prototype.initVersion = function(callback) {
 
 	var that = this;
-	var versionPath = path.normalize(__dirname + '../../../version.json');
-	var packageVersion = semver.clean(JSON.parse(fs.readFileSync(__dirname + '../../../package.json')).version);
+	var packageVersion = this._getPackageVersion();
 	var gitVersion = null;
-
-	var write = function(version) {
-		fs.writeFileSync(versionPath, JSON.stringify(version));
-		console.log('[autoupdate] Created version.json at %s', versionPath);
-	}
 
 	// retrieve version from local git repo first (hash from .git, version from package.json)
 	if (fs.existsSync(__dirname + '../../../.git')) {
@@ -83,7 +77,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
 	if (fs.existsSync(__dirname + '../../../version.json')) {
 		if (gitVersion) {
 			version = gitVersion;
-			write(version);
+			that._writeVersion(version);
 		} else {
 			version = JSON.parse(fs.readFileSync(versionPath));
 		}
@@ -95,7 +89,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
 		if (gitVersion) {
 			console.log('[autoupdate] No version.json found, retrieving data from git repository.');
 			version = gitVersion
-			write(version);
+			that._writeVersion(version);
 			callback(null, version);
 
 		// if not, read version from package.json and retrieve hash and date from GitHub.
@@ -146,7 +140,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
 						sha: commit.sha,
 						version: packageVersion
 					};
-					write(version);
+					that._writeVersion(version);
 					callback(null, version);
 				});
 			});
@@ -182,21 +176,8 @@ AutoUpdate.prototype.newVersionAvailable = function(callback) {
 AutoUpdate.prototype.update = function(commit, callback) {
 
 	var that = this;
-	var beingKilled = false;
 
-	// catch kill signal from nodemon and treat correctly.
-	process.once('SIGUSR2', function () {
-		console.log('[autoupdate] Ignoring kill signal.');
-		beingKilled = true;
-	});
-
-	that.once('updateCompleted', function() {
-		if (beingKilled) {
-			console.log('[autoupdate] Restarting process.');
-			process.kill(process.pid, 'SIGUSR2');
-		}
-	});
-
+	that.on('updateCompleted', this._updateCompleted);
 	that.emit('updateStarted');
 
 	// if git repo is available, update via git
@@ -219,21 +200,21 @@ AutoUpdate.prototype.update = function(commit, callback) {
 					return callback(err);
 				}
 				console.log('[autoupdate] Update complete.');
-				that.emit('updateCompleted');
+				that.emit('updateCompleted', commit);
 				callback();
 			}
 
 			// fetches and rebases from remote repository
 			var update = function(callback) {
-				console.log('[autoupdate] Fetching update from GitHub...');
+				console.log('[autoupdate] Fetching update from GitHub');
 				repo.remote_fetch('origin master', function(err) {
 					if (err) {
 						that.emit('updateFailed', { error: err });
 						return callback(err);
 					}
 
-					console.log('[autoupdate] Rebasing...');
-					repo.git('rebase', function(err) {
+					console.log('[autoupdate] Rebasing to ' + commit.sha);
+					repo.git('rebase ' + commit.sha, function(err) {
 						if (err) {
 							that.emit('updateFailed', { error: err });
 							return callback(err);
@@ -241,7 +222,7 @@ AutoUpdate.prototype.update = function(commit, callback) {
 
 						// if stashed, re-apply changes.
 						if (trackedFiles.length > 0) {
-							console.log('[autoupdate] Re-applying stash...');
+							console.log('[autoupdate] Re-applying stash');
 							repo.git('stash', {}, ['apply'], done);
 						} else {
 							done();
@@ -282,6 +263,16 @@ AutoUpdate.prototype.update = function(commit, callback) {
 
 	}
 };
+
+AutoUpdate.prototype._updateCompleted = function(commit) {
+
+	version = {
+		date: new Date(Date.parse(commit.commit.committer.date)),
+		sha: commit.sha,
+		version: this._getPackageVersion()
+	};
+	this._writeVersion(version);
+}
 
 /**
  * Checks if a new commit is available.
@@ -411,5 +402,20 @@ AutoUpdate.prototype._getCommit = function(url, callback) {
 		callback(null, JSON.parse(body));
 	});
 };
+
+AutoUpdate.prototype._getPackageVersion = function() {
+	return semver.clean(JSON.parse(fs.readFileSync(__dirname + '../../../package.json')).version);
+};
+
+AutoUpdate.prototype._writeVersion = function(version) {
+	var versionPath = path.normalize(__dirname + '../../../version.json');
+	if (fs.existsSync(versionPath)) {
+		console.log('[autoupdate] Created version.json at %s', versionPath);
+	} else {
+		console.log('[autoupdate] Updated version.json at %s', versionPath);
+	}
+	fs.writeFileSync(versionPath, JSON.stringify(version));
+};
+
 
 module.exports = AutoUpdate;
