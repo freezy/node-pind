@@ -3,10 +3,12 @@
  * you'll have to edit.
  */
 module.exports = {
+
 	/**
 	 * Application-specific settings.
 	 */
 	pind: {
+
 		/**
 		 * Where the HTTP server listens; 80 is the default port.
 		 */
@@ -99,17 +101,27 @@ module.exports = {
 		repository: {
 			user: 'freezy',
 			repo: 'node-pind'
-		}
+		},
+
+		/**
+		 * If set to true, the auto-updater will not only retrieve latest releases but
+		 * every commit that is pushed to the repository. Only recommended when
+		 * developing.
+		 */
+		updateToBleedingEdge: false
 	},
+
 	/**
 	 * HyperPin-specifc settings.
 	 */
 	hyperpin : {
+
 		/**
 		 * Path to installation folder. No trailing slash!
 		 */
 		path: 'C:/Games/HyperPin'
 	},
+
 	/**
 	 * Visual Pinball-specifc settings.
 	 */
@@ -119,6 +131,7 @@ module.exports = {
 		 */
 		path: 'C:/Games/Visual Pinball'
 	},
+
 	/**
 	 * Future Pinball-specifc settings.
 	 */
@@ -128,34 +141,41 @@ module.exports = {
 		 */
 		path: 'C:/Games/Future Pinball'
 	},
+
 	/**
 	 * VPinMame-specifc settings.
 	 */
 	vpinmame : {
+
 		/**
 		 * Path to installation folder. No trailing slash!
 		 */
 		path: 'C:/Games/Visual Pinball/VPinMame',
+
 		/**
 		 * When bulk-applying rotation settings on tables, this indicates how to set the "rol" setting.
 		 * If set to true, the DMD will be rotated 90°, otherwise it will have the same orientation as
 		 * the playfield.
 		 */
 		rotate: false,
+
 		/**
 		 * Watches for the ROM's data container for file changes. Set this to true if you want to get
 		 * your high scores updated automatically.
 		 */
 		watchNvrams: true
 	},
+
 	/**
 	 * VPForums.org-specific settings.
 	 */
 	vpforums: {
+
 		/**
 		 * VPForums.org credentials. Needed for automatic downloads.
 		 */
 		user: '', pass: '',
+
 		/**
 		 * Number of concurrent downloads allowed.
 		 */

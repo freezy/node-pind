@@ -6,8 +6,8 @@ var semver = require('semver');
 var github = require('octonode');
 var request = require('request');
 
-var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
+var settings = require('../../config/settings-mine');
 var version = null;
 
 /**
@@ -162,7 +162,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
  * 	                 <tt>commit</tt> - commit object from GitHub.
  * 	    </li></ol>
  */
-AutoUpdate.prototype.newCommitAvailable = function(callback) {
+AutoUpdate.prototype.newHeadAvailable = function(callback) {
 
 	if (!version) {
 		return callback('Could not find current version. version.json available?');
@@ -194,7 +194,7 @@ AutoUpdate.prototype.newCommitAvailable = function(callback) {
 			});
 		});
 	});
-}
+};
 
 /**
  * Checks if a new version is available. A new version is a commit that has a valid
@@ -208,7 +208,7 @@ AutoUpdate.prototype.newCommitAvailable = function(callback) {
  * 	                 <tt>commit</tt> - commit object from GitHub.
  * 	    </li></ol>
  */
-AutoUpdate.prototype.newVersionAvailable = function(callback) {
+AutoUpdate.prototype.newTagAvailable = function(callback) {
 
 	if (!version) {
 		return callback('Could not find current version. version.json available?');
@@ -257,7 +257,6 @@ AutoUpdate.prototype.newVersionAvailable = function(callback) {
 			callback();
 		}
 	});
-
 };
 
 /**
