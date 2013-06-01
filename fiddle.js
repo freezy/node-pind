@@ -1,3 +1,7 @@
+var fs = require('fs');
+var util = require('util');
+var async = require('async');
+
 var app = require('./server')();
 
 var au = require('./app/modules/autoupdate')();
@@ -9,7 +13,7 @@ function git() {
 		if (err) {
 			console.log("ERROR: " + err);
 		} else {
-			console.log("Done, got: %j", result);
+			console.log("Done, got: %s", util.inspect(result));
 		}
 	});
 }
@@ -17,9 +21,6 @@ function git() {
 
 app.compound.on('ready', function() {
 
-	var fs = require('fs');
-	var util = require('util');
-	var async = require('async');
 	var ipdb = require('./app/modules/ipdb')(app);
 	var vp = require('./app/modules/visualpinball')(app);
 	var hp = require('./app/modules/hyperpin')(app);
@@ -207,7 +208,7 @@ app.compound.on('ready', function() {
 			if (err) {
 				console.log("ERROR: " + err);
 			} else {
-				console.log("Done, got: %j", result);
+				console.log("Done, got: %s", util.inspect(result));
 			}
 		});
 	}

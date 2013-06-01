@@ -4,6 +4,7 @@ var path = require('path');
 var events = require('events');
 var semver = require('semver');
 var github = require('octonode');
+var request = require('request');
 
 var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
@@ -38,14 +39,11 @@ AutoUpdate.prototype.updateAvailable = function(callback) {
 	repo.tags(function(err, tags) {
 		if (err) {
 			return callback(err);
-		};
-
-		var newerVersions = [];
+		}
 		var versions = {};
+		var newerVersions = [];
 		for (var i = 0; i < tags.length; i++) {
 			var tag = tags[i];
-			console.log('GOT TAG: %j', tag);
-			console.log('version: %s', semver.clean(tag.name));
 			if (semver.valid(tag.name)) {
 				var tagVersion = semver.clean(tag.name);
 				if (semver.gt(tagVersion, currentVersion)) {
@@ -56,7 +54,24 @@ AutoUpdate.prototype.updateAvailable = function(callback) {
 		}
 		if (newerVersions.length > 0) {
 			newerVersions.sort(semver.rcompare);
-			callback(null, versions[newerVersions[0]]);
+			var lastTag = versions[newerVersions[0]];
+			request({
+				url: lastTag.commit.url,
+				headers: {
+					'User-Agent' : 'node-pind ' + currentVersion + ' auto-updater'
+				}
+			}, function(err, response, body) {
+				if (err) {
+					return callback(err);
+				}
+				var commit = JSON.parse(body);
+				callback(null, {
+					version: lastTag.name,
+					date: new Date(Date.parse(commit.commit.committer.date)),
+					tag: lastTag,
+					commit: commit
+				});
+			});
 		} else {
 			callback();
 		}
