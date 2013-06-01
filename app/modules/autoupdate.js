@@ -178,9 +178,39 @@ AutoUpdate.prototype.update = function(commit, callback) {
 	// if git repo is available, update via git
 	if (fs.existsSync(__dirname + '../../../.git')) {
 
-		exec('git status', { cwd: path.normalize(__dirname + '../../../') }, function (err, stdout, stderr) {
-			console.log('***** %s\n%s', path.normalize(__dirname + '../../../'), stdout);
-		});
+		var git = require('gift');
+		var repo = git(path.normalize(__dirname + '../../../'));
+
+		repo.status(function(err, status) {
+			if (err) {
+				return callback(err);
+			}
+
+			// if changes, stash first
+			var stash = false;
+/*			if (msg.match(/changes not staged for commit/i)) {
+				stash = true;
+			}*/
+			console.log('STATUS = %s', util.inspect(status));
+		})
+
+/*		var gitwrapper = require('git-wrapper');
+		var git = new gitwrapper({ 'git-dir': path.normalize(__dirname + '../../../.git') });
+
+		// if .git exists, we assume the git binary is installed and in PATH.
+		git.exec('status', function(err, msg) {
+			if (err) {
+				return callback(err);
+			}
+			
+			// if changes, stash first
+			var stash = false;
+			if (msg.match(/changes not staged for commit/i)) {
+				stash = true;
+			}
+			console.log('STATUS = %s', msg);
+			
+		});*/
 
 	// otherwise, update via zipball
 	} else {
