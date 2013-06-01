@@ -6,9 +6,9 @@ block inner-content
 	- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.colorbox-min'))
 	- contentFor('javascripts', javascriptIncludeTag('admin_sources'))
 
-	h2 VPForums.org
+	.inner(ng-controller='DataCtrl')
 
-	div(ng-controller='DataCtrl')
+		h2 VPForums.org
 
 		//- control bar
 		div.controls(style='display:none')

@@ -1,0 +1,29 @@
+extends layout
+
+block inner-content
+	- contentFor('javascripts', javascriptIncludeTag('admin_global'))
+
+	div(ng-controller='GlobalCtrl')
+
+		.inner.middle
+			h2 Check for Updates
+
+		.center.ng-cloak
+			h3 Now running at
+			div.dmd
+				span {{version}}
+			p.lbl From {{date}}
+
+			button.btn.fat.small
+				i.icon.refresh
+				span Check
+
+		.inner
+
+
+block inlineScripts
+	script
+		$(document).ready(function() {
+			menu('settings');
+			submenu('global');
+		});

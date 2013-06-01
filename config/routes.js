@@ -36,6 +36,7 @@ exports.routes = function (map) {
 	map.get('admin/sources', 'settings#sources', { as: 'admin_sources' });
 	map.get('admin/transfers', 'settings#transfers', { as: 'admin_transfers' });
 	map.get('admin/users', 'settings#users', { as: 'admin_users' });
+	map.get('admin/global', 'settings#global', { as: 'admin_global' });
 
 	// Generic routes. Add all your routes below this line
 	// feel free to remove generic routes

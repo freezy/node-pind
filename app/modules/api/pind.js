@@ -1,13 +1,15 @@
 var _ = require('underscore');
-var async = require('async');
 var util = require('util');
+var async = require('async');
+var relativeDate = require('relative-date');
 
 error = require('../error');
 var schema = require('../../model/schema');
 
-var ipdb, vpm, hs, api, tableApi, pathTo;
+var ipdb, vpm, hs, au, api, tableApi, pathTo;
 
 module.exports = function(app) {
+	au = require('../autoupdate')();
 	hs = require('../hiscore')(app);
 	vpm = require('../vpinmame')(app);
 	ipdb = require('../ipdb')(app);
@@ -85,6 +87,13 @@ var PindApi = function() {
 			}).error(function(err) {
 				throw new Error(err);
 			});
+		},
+
+		GetVersion : function(req, params, callback) {
+			var version = au.getVersion();
+			version.date = Date.parse(version.date);
+			version.dateSince = relativeDate(version.date);
+			callback(version);
 		}
 	};
 };

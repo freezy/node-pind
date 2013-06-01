@@ -1,7 +1,3 @@
-$(document).ready(function() {
-
-});
-
 function TransferCtrl($scope) {
 
 	$scope.$watch('status', function() {

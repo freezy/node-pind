@@ -4,7 +4,7 @@ block inner-content
 	- contentFor('javascripts', '<script type="text/javascript" src="/socket.io/socket.io.js"></script>')
 	- contentFor('javascripts', javascriptIncludeTag('admin_tables'))
 
-	div(ng-controller='DataCtrl')
+	.inner(ng-controller='DataCtrl')
 
 		//- control bar
 		div.controls(style='display:none')

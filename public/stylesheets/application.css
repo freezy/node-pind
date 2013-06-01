@@ -97,6 +97,11 @@ footer a:hover {
   color: #9d9e9e;
   margin-bottom: 20px;
 }
+.center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
 h1,
 h2 {
   font-family: 'Arvo', serif;
@@ -119,7 +124,6 @@ h4 {
   font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
   font-weight: 800;
   text-transform: uppercase;
-font-
 }
 form {
   margin: 0;
@@ -696,8 +700,15 @@ td > .progress {
   box-shadow: 0 1px 3px rgba(0,0,0,0.5);
   padding: 0px;
 }
-.content > section {
-  padding: 30px;
+.content > section .page-header,
+.content > section .nav,
+.content > section .inner {
+  margin: 30px;
+}
+.content > section .page-header.middle,
+.content > section .nav.middle,
+.content > section .inner.middle {
+  margin-bottom: 0;
 }
 .dark {
   background-color: rgba(0,0,0,0.05);
@@ -1647,6 +1658,11 @@ hr {
   text-shadow: 0 0 7px #ff2d2d;
   -webkit-box-shadow: 0px -3px 10px -2px #000;
   box-shadow: 0px -3px 10px -2px #000;
+}
+.dmd + .lbl,
+#console + .lbl {
+  margin-top: -20px;
+  margin-bottom: 20px;
 }
 #console {
   padding: 0;

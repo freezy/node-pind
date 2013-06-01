@@ -134,6 +134,17 @@ AutoUpdate.prototype.initVersion = function(callback) {
 	});
 };
 
+/**
+ * Returns the current version of Pind.
+ * @returns {Object} Version, containing <tt>version</tt>, <tt>date</tt> and <tt>sha</tt>
+ */
+AutoUpdate.prototype.getVersion = function() {
+	if (!version) {
+		version = this._readVersion();
+	}
+	return version;
+}
+
 
 /**
  * Checks if a version is availbale, depending on update settings.
@@ -287,7 +298,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 			return callback(err);
 		}
 		var commit = JSON.parse(body)[0];
-		var dateHead = Date.parse(commit.commit.committer.date));
+		var dateHead = Date.parse(commit.commit.committer.date);
 		var dateCurrent = Date.parse(version.date);
 
 		// no update if head is older
@@ -429,9 +440,9 @@ AutoUpdate.prototype._getPackageVersion = function() {
 AutoUpdate.prototype._writeVersion = function(version) {
 	var versionPath = path.normalize(__dirname + '../../../version.json');
 	if (fs.existsSync(versionPath)) {
-		console.log('[autoupdate] Created version.json at %s', versionPath);
-	} else {
 		console.log('[autoupdate] Updated version.json at %s', versionPath);
+	} else {
+		console.log('[autoupdate] Created version.json at %s', versionPath);
 	}
 	fs.writeFileSync(versionPath, JSON.stringify(version));
 };

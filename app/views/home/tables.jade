@@ -7,15 +7,16 @@ block content
 			.page-header
 				h1 Tables
 
-			ul.thumbnails.tables
-				li.span4(ng-repeat='table in tables', tb-768-980='span6')
-					.thumbnail
-						img(src='{{table.url_backglass_medium}}')
-						hr
-						.thumbnail-content
+			.inner
+				ul.thumbnails.tables
+					li.span4(ng-repeat='table in tables', tb-768-980='span6')
+						.thumbnail
+							img(src='{{table.url_backglass_medium}}')
+							hr
+							.thumbnail-content
 
-							h3 {{table.name}}
-							p {{table.manufacturer}} - {{table.year}}
+								h3 {{table.name}}
+								p {{table.manufacturer}} - {{table.year}}
 		.clear-fix
 
 

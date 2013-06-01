@@ -48,3 +48,8 @@ action('users', function(context) {
 	this.title = 'Settings :: Users';
 	render();
 });
+
+action('global', function(context) {
+	this.title = 'Settings :: Global';
+	render();
+});

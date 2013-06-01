@@ -2,49 +2,51 @@ extends layout
 
 block inner-content
 	- contentFor('javascripts', javascriptIncludeTag('admin_users'))
-	div.data.users(style='display:none')
 
-		.pagination.pagination-small.pull-right
-			ul(data-page="1")
-				li.first.disabled
-					a
-						i.icon.arrow-left
-				li.p1.current
-					a 1
-				li.last
-					a
-						i.icon.arrow-right
+	.inner
+		div.data.users(style='display:none')
 
-		select.numrows.input-mini.pull-right
-			option(selected="selected") 10
-			option 20
-			option 50
-			option 100
+			.pagination.pagination-small.pull-right
+				ul(data-page="1")
+					li.first.disabled
+						a
+							i.icon.arrow-left
+					li.p1.current
+						a 1
+					li.last
+						a
+							i.icon.arrow-right
 
-		ul.nav.nav-pills.pull-left.filter
-			li(data-filter="neverlogged")
-				a(href="#") Never logged
-			li(data-filter="nocredits")
-				a(href="#") No credits
+			select.numrows.input-mini.pull-right
+				option(selected="selected") 10
+				option 20
+				option 50
+				option 100
 
-		.clearfix
-		.wrapper(style='display:none')
-			table.table
-				thead
-					tr
-						th Login
-						th(style='width: 100px') Credits
-				tbody
+			ul.nav.nav-pills.pull-left.filter
+				li(data-filter="neverlogged")
+					a(href="#") Never logged
+				li(data-filter="nocredits")
+					a(href="#") No credits
 
-		div.noresult(style='display:none')
-			p No users found.
-			button.btn.fat.small Clear Filters
+			.clearfix
+			.wrapper(style='display:none')
+				table.table
+					thead
+						tr
+							th Login
+							th(style='width: 100px') Credits
+					tbody
 
-	div.empty(style='display:none')
-		p No users in database.
-		button.btn.fat
-			i.icon.refresh
-			span Load from HyperPin
+			div.noresult(style='display:none')
+				p No users found.
+				button.btn.fat.small Clear Filters
+
+		div.empty(style='display:none')
+			p No users in database.
+			button.btn.fat
+				i.icon.refresh
+				span Load from HyperPin
 
 	.clearfix
 

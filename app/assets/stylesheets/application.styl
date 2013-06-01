@@ -120,10 +120,13 @@ footer
 .help-block
 	font-size 11px
 	line-height 16px
-	color color-medium
-	
+	color color-medium	
 	margin-bottom 20px
 
+.center
+	text-align center
+	margin-left auto
+	margin-right auto
 
 h1, h2
 	font-family font-serif
@@ -144,7 +147,7 @@ h4
 	font-family font-sans
 	font-weight 800
 	text-transform uppercase
-	font-
+
 
 // :forms
 // ============================================================================
@@ -625,8 +628,13 @@ td > .progress
 	box-shadow 0 1px 3px rgba(0,0,0,0.5)
 	padding 0px
 
-	& > section
-		padding 30px
+	& > section 
+		.page-header, .nav, .inner
+			margin 30px
+		
+			&.middle
+				margin-bottom 0
+
 
 .dark
 	background-color rgba(0,0,0,0.05)
@@ -1437,6 +1445,9 @@ hr
 		font-size 36px
 		text-shadow 0 0 7px #ff2d2d
 		box-shadow 0px -3px 10px -2px black
+	& + .lbl
+		margin-top -20px
+		margin-bottom 20px
 
 #console 
 	padding 0
