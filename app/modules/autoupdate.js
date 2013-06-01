@@ -10,6 +10,26 @@ var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 var version = null;
 
+/**
+ * Manages the application self-updates.
+ *
+ * Notes about versioning. Releases are tagged via git. Once tag has been set,
+ * the next versions will be named as the next release with the "-pre" suffix.
+ * The release procedure is hence as follows:
+ *
+ * 		1. Commit what's to be the next version.
+ * 		2. Update package.json with the next version, e.g. "0.0.6"
+ * 		3. Commit the version bump:
+ * 		   > git commit -a -m "New version: v0.0.6"
+ * 		4. Tag the version (in the future, use an annotated tag with changelog)
+ * 	 	   > git tag "v0.0.6"
+ * 	 	5. Push the new version with the new tag
+ *		   > git push origin master --tags
+ *		6. Update package.json with next working version: "0.0.7-pre"
+ *
+ * @returns {AutoUpdate}
+ * @constructor
+ */
 function AutoUpdate() {
 	if ((this instanceof AutoUpdate) === false) {
 		return new AutoUpdate();
