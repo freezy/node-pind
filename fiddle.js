@@ -6,10 +6,10 @@ var app = require('./server')();
 
 var au = require('./app/modules/autoupdate')();
 
-git();
+//git();
 
 function git() {
-	au.newCommitAvailable(function(err, result) {
+	au.initVersion(function(err, result) {
 		if (err) {
 			console.log("ERROR: " + err);
 		} else {
