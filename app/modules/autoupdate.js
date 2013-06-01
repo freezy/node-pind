@@ -1,6 +1,7 @@
 var fs = require('fs');
 var util = require('util');
 var path = require('path');
+var exec = require('child_process').exec;
 var events = require('events');
 var semver = require('semver');
 var github = require('octonode');
@@ -154,10 +155,44 @@ AutoUpdate.prototype.initVersion = function(callback) {
 
 
 /**
+ * Checks if a version is availbale, depending on update settings.
+ *
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 	    <li>{Object} <tt>version</tt> - Version of last commit,
+ * 	                 <tt>date</tt> - Date of last commit,
+ * 	                 <tt>tag</tt> - tag object from GitHub,
+ * 	                 <tt>commit</tt> - commit object from GitHub (only if not bleeding edge).
+ * 	    </li></ol>
+ */
+AutoUpdate.prototype.newVersionAvailable = function(callback) {
+	if (settings.pind.updateToBleedingEdge) {
+		this.newHeadAvailable(callback);
+	} else {
+		this.newTagAvailable(callback);
+	}
+};
+
+AutoUpdate.prototype.update = function(commit, callback) {
+
+	// if git repo is available, update via git
+	if (fs.existsSync(__dirname + '../../../.git')) {
+
+		exec('git status', { cwd: path.normalize(__dirname + '../../../') }, function (err, stdout, stderr) {
+			console.log('***** %s\n%s', path.normalize(__dirname + '../../../'), stdout);
+		});
+
+	// otherwise, update via zipball
+	} else {
+
+	}
+};
+
+/**
  * Checks if a new commit is available.
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
- * 		<li>{Object} <tt>version</tt> - Version of last commit,
+ * 	    <li>{Object} <tt>version</tt> - Version of last commit,
  * 	                 <tt>date</tt> - Date of last commit,
  * 	                 <tt>commit</tt> - commit object from GitHub.
  * 	    </li></ol>
@@ -202,7 +237,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
  *
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
- * 		<li>{Object} <tt>version</tt> - Version of last commit,
+ * 	    <li>{Object} <tt>version</tt> - Version of last commit,
  * 	                 <tt>date</tt> - Date of last commit,
  * 	                 <tt>tag</tt> - tag object from GitHub,
  * 	                 <tt>commit</tt> - commit object from GitHub.
@@ -265,7 +300,7 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
  * @param url API URL of the commit.
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
- * 		<li>{Object} Commit object</li></ol>
+ * 	    <li>{Object} Commit object</li></ol>
  * @private
  */
 AutoUpdate.prototype._getCommit = function(url, callback) {

@@ -6,10 +6,10 @@ var app = require('./server')();
 
 var au = require('./app/modules/autoupdate')();
 
-//git();
+git();
 
 function git() {
-	au.initVersion(function(err, result) {
+	au.update(function(err, result) {
 		if (err) {
 			console.log("ERROR: " + err);
 		} else {
@@ -17,7 +17,6 @@ function git() {
 		}
 	});
 }
-
 
 app.compound.on('ready', function() {
 
