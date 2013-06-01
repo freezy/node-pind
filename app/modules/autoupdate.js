@@ -59,32 +59,40 @@ AutoUpdate.prototype.initVersion = function(callback) {
 
 	var that = this;
 	var versionPath = path.normalize(__dirname + '../../../version.json');
+	var packageVersion = semver.clean(JSON.parse(fs.readFileSync(__dirname + '../../../package.json')).version);
+	var gitVersion = null;
 
 	var write = function(version) {
 		fs.writeFileSync(versionPath, JSON.stringify(version));
 		console.log('[autoupdate] Created version.json at %s', versionPath);
 	}
 
+	// retrieve version from local git repo first (hash from .git, version from package.json)
+	if (fs.existsSync(__dirname + '../../../.git')) {
+		var masterHead = __dirname + '../../../.git/refs/heads/master';
+		gitVersion = {
+			date: new Date(fs.fstatSync(fs.openSync(masterHead, 'r')).mtime),
+			sha: fs.readFileSync(masterHead).toString().trim(),
+			version: packageVersion
+		}
+	}
+
 	// check if version.json is available.
 	if (fs.existsSync(__dirname + '../../../version.json')) {
-		version = JSON.parse(fs.readFileSync(versionPath));
+		if (gitVersion) {
+			version = gitVersion;
+			write(version);
+		} else {
+			version = JSON.parse(fs.readFileSync(versionPath));
+		}
 		return callback(null, version);
 
 	} else {
 
-		// retrieve version string from package.json
-		var packageVersion = semver.clean(JSON.parse(fs.readFileSync(__dirname + '../../../package.json')).version);
-
 		// check if we're in a git repo already
-		if (fs.existsSync(__dirname + '../../../.git')) {
-
+		if (gitVersion) {
 			console.log('[autoupdate] No version.json found, retrieving data from git repository.');
-			var masterHead = __dirname + '../../../.git/refs/heads/master';
-			version = {
-				date: new Date(fs.fstatSync(fs.openSync(masterHead, 'r')).mtime),
-				sha: fs.readFileSync(masterHead).toString().trim(),
-				version: packageVersion
-			}
+			version = gitVersion
 			write(version);
 			callback(null, version);
 

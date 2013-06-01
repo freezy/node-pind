@@ -1,6 +1,6 @@
 module.exports = function(compound) {
     return typeof window === 'undefined' ? [
-        'jugglingdb',
+//        'jugglingdb',
         'co-assets-compiler',
 		'co-nib'
     ].concat('development' == compound.app.get('env') ? [
