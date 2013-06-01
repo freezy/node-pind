@@ -163,8 +163,12 @@ VPForums.prototype._watchDownload = function(filename, contentLength, reference)
 	if (!this.watches) {
 		this.watches = {};
 	}
+	if (!this.openFiles) {
+		this.openFiles = {};
+	}
 	var that = this;
 	var fd = fs.openSync(filename, 'r');
+	this.openFiles[filename] = fd;
 	this.watches[filename] = setInterval(function() {
 		var size = fs.fstatSync(fd).size;
 		that.emit('downloadWatch', { size: size, contentLength: contentLength, reference: reference });
@@ -174,7 +178,9 @@ VPForums.prototype._watchDownload = function(filename, contentLength, reference)
 
 VPForums.prototype._unWatchDownload = function(filename) {
 	clearInterval(this.watches[filename]);
+	fs.closeSync(this.openFiles[filename]);
 	delete this.watches[filename];
+	delete this.openFiles[filename];
 };
 
 /**
@@ -216,7 +222,9 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 							console.log('[vpf] Downloading %s at %s...', filename, downloadUrl);
 							var stream = fs.createWriteStream(dest);
 							stream.on('close', function() {
-								var size = fs.fstatSync(fs.openSync(dest, 'r')).size;
+								var fd = fs.openSync(dest, 'r');
+								var size = fs.fstatSync(fd).size;
+								fs.closeSync(fd);
 								that.emit('downloadCompleted', { size: size, reference: reference });
 								console.log('[vpf] Downloaded %d bytes to %s.', size, dest);
 								that._unWatchDownload(dest);

@@ -283,10 +283,13 @@ Transfer.prototype.next = function(callback) {
 									}
 
 									// otherwise, update db with success and extract
+									var fd = fs.openSync(filepath, 'r');
+									var size = fs.fstatSync(fd).size;
+									fs.closeSync(fd);
 									row.updateAttributes({
 										completedAt: new Date(),
 										result: JSON.stringify({ extracting: filepath }),
-										size: fs.fstatSync(fs.openSync(filepath, 'r')).size
+										size: size
 
 									}).success(function() {
 										that.emit('transferCompleted', { file: filepath, transfer: row });

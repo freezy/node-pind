@@ -65,11 +65,13 @@ AutoUpdate.prototype.initVersion = function(callback) {
 	// retrieve version from local git repo first (hash from .git, version from package.json)
 	if (fs.existsSync(__dirname + '../../../.git')) {
 		var masterHead = __dirname + '../../../.git/refs/heads/master';
+		var fd = fs.openSync(masterHead, 'r');
 		version = {
-			date: new Date(fs.fstatSync(fs.openSync(masterHead, 'r')).mtime),
+			date: new Date(fs.fstatSync(fd).mtime),
 			sha: fs.readFileSync(masterHead).toString().trim(),
 			version: packageVersion
 		}
+		fs.closeSync(fd);
 
 		// stuff has probably been updated (during dev), so update version.json anyway.
 		that._writeVersion(version);

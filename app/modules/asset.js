@@ -119,7 +119,9 @@ var asset = function(context, path, process) {
 	if (path && fs.existsSync(path)) {
 
 		// caching
-		var modified = new Date(fs.fstatSync(fs.openSync(path, 'r')).mtime);
+		var fd = fs.openSync(path, 'r');
+		var modified = new Date(fs.fstatSync(fd).mtime);
+		fs.closeSync(fd);
 		var ifmodifiedsince = new Date(context.req.headers['if-modified-since']);
 		if (modified.getTime() >= ifmodifiedsince.getTime() && !disableCache) {
 			context.res.writeHead(304);
@@ -152,7 +154,9 @@ var asset = function(context, path, process) {
 
 var file = function(context, path) {
 	// caching
-	var modified = new Date(fs.fstatSync(fs.openSync(path, 'r')).mtime);
+	var fd = fs.openSync(path, 'r');
+	var modified = new Date(fs.fstatSync(fd).mtime);
+	fs.closeSync(fd);
 	var ifmodifiedsince = new Date(context.req.headers['if-modified-since']);
 	if (modified.getTime() >= ifmodifiedsince.getTime()) {
 		context.res.writeHead(304);

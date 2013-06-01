@@ -291,6 +291,7 @@ VisualPinball.prototype.getScriptFromTable = function(tablePath, callback) {
         buf = new Buffer(scriptEnd - scriptStart);
 		log.debug('[vp] [script] Found positions ' + scriptStart + ' and ' + scriptEnd + ' in ' + (new Date().getTime() - now) + ' ms.');
 		fs.readSync(fd, buf, 0, buf.length, scriptStart);
+		fs.closeSync(fd);
 		callback(null, buf.toString());
 	});
 };

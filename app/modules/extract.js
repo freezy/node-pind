@@ -184,12 +184,12 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 
 			// VP tables
 			} else if (_.contains(['.vpt', '.vbs', '.exe'], ext)) {
-				add(settings.visualpinball.path + '/Tables/' + filename);
+				add(settings.visualpinball.path + '/Tables/' + filename, filepath);
 
 			// Music
 			} else if (_.contains(['.mp3', '.wma'], ext)) {
 				if (fs.existsSync(settings.visualpinball.path + '/Tables/Music')) {
-					add(settings.visualpinball.path + '/Tables/Music/' + filename);
+					add(settings.visualpinball.path + '/Tables/Music/' + filename, filepath);
 				} else {
 					mapping.ignore.push(filepath);
 				}
@@ -250,6 +250,7 @@ Extract.prototype.zipExtract = function(zipfile, mapping, callback) {
  */
 Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 
+	console.log('[extract] mapping:\n%j', mapping.extract);
 	async.eachSeries(_.values(mapping.extract),
 		function(map, next) {
 			var dstFolder = map.dst.substr(0, map.dst.lastIndexOf('/'));
