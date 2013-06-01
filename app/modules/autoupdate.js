@@ -174,26 +174,52 @@ AutoUpdate.prototype.newVersionAvailable = function(callback) {
 	}
 };
 
+/**
+ * Updates the code base from GitHub.
+ * @param commit
+ * @param callback
+ */
 AutoUpdate.prototype.update = function(commit, callback) {
+
+	var that = this;
+	var beingKilled = false;
+
+	// catch kill signal from nodemon and treat correctly.
+	process.once('SIGUSR2', function () {
+		console.log('[autoupdate] Ignoring kill signal.');
+		beingKilled = true;
+	});
+
+	that.once('updateCompleted', function() {
+		if (beingKilled) {
+			console.log('[autoupdate] Restarting process.');
+			process.kill(process.pid, 'SIGUSR2');
+		}
+	});
+
+	that.emit('updateStarted');
 
 	// if git repo is available, update via git
 	if (fs.existsSync(__dirname + '../../../.git')) {
-
 
 		var repo = git(path.normalize(__dirname + '../../../'));
 
 		// look for modified files via status
 		repo.status(function(err, status) {
 			if (err) {
+				that.emit('updateFailed', { error: err });
 				return callback(err);
 			}
 
 			var done = function(err) {
+
 				if (err) {
 					console.log('[autoupdate] ERROR: ' + err);
+					that.emit('updateFailed', { error: err });
 					return callback(err);
 				}
 				console.log('[autoupdate] Update complete.');
+				that.emit('updateCompleted');
 				callback();
 			}
 
@@ -201,11 +227,17 @@ AutoUpdate.prototype.update = function(commit, callback) {
 			var update = function(callback) {
 				console.log('[autoupdate] Fetching update from GitHub...');
 				repo.remote_fetch('origin master', function(err) {
-					if (err) return callback(err);
+					if (err) {
+						that.emit('updateFailed', { error: err });
+						return callback(err);
+					}
 
 					console.log('[autoupdate] Rebasing...');
 					repo.git('rebase', function(err) {
-						if (err) return callback(err);
+						if (err) {
+							that.emit('updateFailed', { error: err });
+							return callback(err);
+						}
 
 						// if stashed, re-apply changes.
 						if (trackedFiles.length > 0) {
@@ -222,7 +254,10 @@ AutoUpdate.prototype.update = function(commit, callback) {
 			var trackedFiles = [];
 			for (var filename in status.files) {
 				if (status.files[filename].tracked) {
-					if (err) return callback(err);
+					if (err) {
+						that.emit('updateFailed', { error: err });
+						return callback(err);
+					}
 					trackedFiles.push(filename);
 				}
 			}
@@ -231,7 +266,10 @@ AutoUpdate.prototype.update = function(commit, callback) {
 			if (trackedFiles.length > 0) {
 				console.log('[autoupdate] Detected changed files: [' + trackedFiles.join(', ') + '], stashing changes first.');
 				repo.git('stash', {}, ['save'], function(err) {
-					if (err) return callback(err);
+					if (err) {
+						that.emit('updateFailed', { error: err });
+						return callback(err);
+					}
 					update(callback);
 				});
 			} else {
