@@ -61,91 +61,77 @@ AutoUpdate.prototype.initVersion = function(callback) {
 
 	var that = this;
 	var packageVersion = this._getPackageVersion();
-	var gitVersion = null;
 
 	// retrieve version from local git repo first (hash from .git, version from package.json)
 	if (fs.existsSync(__dirname + '../../../.git')) {
 		var masterHead = __dirname + '../../../.git/refs/heads/master';
-		gitVersion = {
+		version = {
 			date: new Date(fs.fstatSync(fs.openSync(masterHead, 'r')).mtime),
 			sha: fs.readFileSync(masterHead).toString().trim(),
 			version: packageVersion
 		}
+
+		// stuff has probably been updated (during dev), so update version.json anyway.
+		that._writeVersion(version);
+		return callback(null, version);
 	}
 
-	// check if version.json is available.
-	if (fs.existsSync(__dirname + '../../../version.json')) {
-		if (gitVersion) {
-			version = gitVersion;
-			that._writeVersion(version);
-		} else {
-			version = JSON.parse(fs.readFileSync(versionPath));
-		}
+	// no git, so check if version.json is available.
+	version = this._readVersion();
+	if (version) {
 		return callback(null, version);
+	}
 
-	} else {
+	// no git and no version.json, so let's retrieve commit data from github.
+	console.log('[autoupdate] No version.json found, retrieving data from package.json and GitHub.');
+	var client = github.client();
+	var repo = client.repo(settings.pind.repository.user + '/' + settings.pind.repository.repo);
 
-		// check if we're in a git repo already
-		if (gitVersion) {
-			console.log('[autoupdate] No version.json found, retrieving data from git repository.');
-			version = gitVersion
+	// retrieve all tags from node-pind repo
+	repo.tags(function(err, tagArray) {
+		if (err) {
+			return callback(err);
+		}
+
+		// loop through tags and try to match the one from package.json
+		var tags = {};
+		var olderTags = [];
+		var matchedTag;
+		var cleanPackageVer = semver.clean(packageVersion);
+		for (var i = 0; i < tagArray.length; i++) {
+			var tag = tagArray[i];
+			if (semver.valid(tag.name)) {
+				var cleanTagVer = semver.clean(tag.name);
+				if (cleanTagVer == cleanPackageVer) {
+					matchedTag = tag;
+					break;
+				}
+				if (semver.lt(cleanTagVer, cleanPackageVer)) {
+					olderTags.push(cleanTagVer);
+				}
+				tags[cleanTagVer] = tag;
+			}
+		}
+
+		// no match. that means, the local copy isn't a tagged version
+		// but something like 0.0.3-pre. in this case, get the previous
+		// tagged version, which would be 0.0.2.
+		if (!matchedTag) {
+			olderTags.sort(semver.rcompare);
+			matchedTag = tags[olderTags[0]];
+		}
+
+		// retrieve commit
+		that._getCommit(matchedTag.commit.url, function(err, commit) {
+			version = {
+				date: new Date(Date.parse(commit.commit.committer.date)),
+				sha: commit.sha,
+				version: packageVersion
+			};
 			that._writeVersion(version);
 			callback(null, version);
-
-		// if not, read version from package.json and retrieve hash and date from GitHub.
-		} else {
-
-			console.log('[autoupdate] No version.json found, retrieving data from package.json and GitHub.');
-			var client = github.client();
-			var repo = client.repo(settings.pind.repository.user + '/' + settings.pind.repository.repo);
-
-			// retrieve all tags from node-pind repo
-			repo.tags(function(err, tagArray) {
-				if (err) {
-					return callback(err);
-				}
-
-				// loop through versions and try to match the one from package.json
-				var tags = {};
-				var olderTags = [];
-				var matchedTag;
-				var cleanPackageVer = semver.clean(packageVersion);
-				for (var i = 0; i < tagArray.length; i++) {
-					var tag = tagArray[i];
-					if (semver.valid(tag.name)) {
-						var cleanTagVer = semver.clean(tag.name);
-						if (cleanTagVer == cleanPackageVer) {
-							matchedTag = tag;
-							break;
-						}
-						if (semver.lt(cleanTagVer, cleanPackageVer)) {
-							olderTags.push(cleanTagVer)
-						}
-						tags[cleanTagVer] = tag;
-					}
-				}
-
-				// no match. that means, the local copy isn't a tagged version,
-				// but something like 0.0.3-pre. in this case, get the previous
-				// tagged version, in this case 0.0.2.
-				if (!matchedTag) {
-					olderTags.sort(semver.rcompare);
-					matchedTag = tags[olderTags[0]];
-				}
-
-				// retrieve commit
-				that._getCommit(matchedTag.commit.url, function(err, commit) {
-					version = {
-						date: new Date(Date.parse(commit.commit.committer.date)),
-						sha: commit.sha,
-						version: packageVersion
-					};
-					that._writeVersion(version);
-					callback(null, version);
-				});
-			});
-		}
-	}
+		});
+	});
 };
 
 
@@ -170,12 +156,23 @@ AutoUpdate.prototype.newVersionAvailable = function(callback) {
 
 /**
  * Updates the code base from GitHub.
+ *
+ * If a .git folder exists, update goes via "git fetch", otherwise the zipball
+ * is downloaded and extracted to the installation folder.
+ *
  * @param commit
  * @param callback
  */
 AutoUpdate.prototype.update = function(commit, callback) {
 
 	var that = this;
+
+	var v = this._readVersion();
+	if (Date.parse(commit.commit.committer.date) < Date.parse(v.date)) {
+		var err = 'Not downgrading current version (' + v.date + ') to older commit (' + commit.commit.committer.date + ').';
+		console.log('[autoupdate] ERROR: ' + err);
+		return callback(err);
+	}
 
 	that.on('updateCompleted', this._updateCompleted);
 	that.emit('updateStarted');
@@ -264,16 +261,6 @@ AutoUpdate.prototype.update = function(commit, callback) {
 	}
 };
 
-AutoUpdate.prototype._updateCompleted = function(commit) {
-
-	version = {
-		date: new Date(Date.parse(commit.commit.committer.date)),
-		sha: commit.sha,
-		version: this._getPackageVersion()
-	};
-	this._writeVersion(version);
-}
-
 /**
  * Checks if a new commit is available.
  * @param callback Function to execute after completion, invoked with two arguments:
@@ -300,8 +287,15 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 			return callback(err);
 		}
 		var commit = JSON.parse(body)[0];
+		var dateHead = Date.parse(commit.commit.committer.date));
+		var dateCurrent = Date.parse(version.date);
 
-		// retrieve last package.json for version
+		// no update if head is older
+		if (dateCurrent >= dateHead) {
+			return callback();
+		}
+
+		// otherwise, retrieve last package.json for version
 		request({
 			url: 'https://raw.github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/master/package.json',
 			headers: { 'User-Agent': userAgent }
@@ -310,7 +304,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 
 			callback(null, {
 				version: pak.version,
-				date: new Date(Date.parse(commit.commit.committer.date)),
+				date: new Date(dateHead),
 				commit: commit
 			});
 		});
@@ -403,10 +397,35 @@ AutoUpdate.prototype._getCommit = function(url, callback) {
 	});
 };
 
+/**
+ * Updates version.json after successful update.
+ * @param commit
+ * @private
+ */
+AutoUpdate.prototype._updateCompleted = function(commit) {
+
+	version = {
+		date: new Date(Date.parse(commit.commit.committer.date)),
+		sha: commit.sha,
+		version: this._getPackageVersion()
+	};
+	this._writeVersion(version);
+}
+
+/**
+ * Reads package.json and returns defined version.
+ * @returns {String} Version in package.json
+ * @private
+ */
 AutoUpdate.prototype._getPackageVersion = function() {
 	return semver.clean(JSON.parse(fs.readFileSync(__dirname + '../../../package.json')).version);
 };
 
+/**
+ * Updates version.json on the file system.
+ * @param version Un-serialized object
+ * @private
+ */
 AutoUpdate.prototype._writeVersion = function(version) {
 	var versionPath = path.normalize(__dirname + '../../../version.json');
 	if (fs.existsSync(versionPath)) {
@@ -415,6 +434,19 @@ AutoUpdate.prototype._writeVersion = function(version) {
 		console.log('[autoupdate] Updated version.json at %s', versionPath);
 	}
 	fs.writeFileSync(versionPath, JSON.stringify(version));
+};
+
+/**
+ * Reads and returns version.json as an object.
+ * @returns {Object} Parsed version object
+ * @private
+ */
+AutoUpdate.prototype._readVersion = function() {
+	var versionPath = __dirname + '../../../version.json';
+	if (fs.existsSync(versionPath)) {
+		return JSON.parse(fs.readFileSync(versionPath));
+	}
+	return null;
 };
 
 
