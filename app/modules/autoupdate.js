@@ -1,4 +1,5 @@
 var fs = require('fs');
+var git = require('gift');
 var util = require('util');
 var path = require('path');
 var exec = require('child_process').exec;
@@ -178,39 +179,65 @@ AutoUpdate.prototype.update = function(commit, callback) {
 	// if git repo is available, update via git
 	if (fs.existsSync(__dirname + '../../../.git')) {
 
-		var git = require('gift');
+
 		var repo = git(path.normalize(__dirname + '../../../'));
 
+		// look for modified files via status
 		repo.status(function(err, status) {
 			if (err) {
 				return callback(err);
 			}
 
-			// if changes, stash first
-			var stash = false;
-/*			if (msg.match(/changes not staged for commit/i)) {
-				stash = true;
-			}*/
-			console.log('STATUS = %s', util.inspect(status));
-		})
-
-/*		var gitwrapper = require('git-wrapper');
-		var git = new gitwrapper({ 'git-dir': path.normalize(__dirname + '../../../.git') });
-
-		// if .git exists, we assume the git binary is installed and in PATH.
-		git.exec('status', function(err, msg) {
-			if (err) {
-				return callback(err);
+			var done = function(err) {
+				if (err) {
+					console.log('[autoupdate] ERROR: ' + err);
+					return callback(err);
+				}
+				console.log('[autoupdate] Update complete.');
+				callback();
 			}
-			
-			// if changes, stash first
-			var stash = false;
-			if (msg.match(/changes not staged for commit/i)) {
-				stash = true;
+
+			// fetches and rebases from remote repository
+			var update = function(callback) {
+				console.log('[autoupdate] Fetching update from GitHub...');
+				repo.remote_fetch('origin master', function(err) {
+					if (err) return callback(err);
+
+					console.log('[autoupdate] Rebasing...');
+					repo.git('rebase', function(err) {
+						if (err) return callback(err);
+
+						// if stashed, re-apply changes.
+						if (trackedFiles.length > 0) {
+							console.log('[autoupdate] Re-applying stash...');
+							repo.git('stash', {}, ['apply'], done);
+						} else {
+							done();
+						}
+					});
+				});
 			}
-			console.log('STATUS = %s', msg);
-			
-		});*/
+
+			// check for tracked changed files
+			var trackedFiles = [];
+			for (var filename in status.files) {
+				if (status.files[filename].tracked) {
+					if (err) return callback(err);
+					trackedFiles.push(filename);
+				}
+			}
+
+			// if found, stash changes
+			if (trackedFiles.length > 0) {
+				console.log('[autoupdate] Detected changed files: [' + trackedFiles.join(', ') + '], stashing changes first.');
+				repo.git('stash', {}, ['save'], function(err) {
+					if (err) return callback(err);
+					update(callback);
+				});
+			} else {
+				update(callback);
+			}
+		});
 
 	// otherwise, update via zipball
 	} else {
