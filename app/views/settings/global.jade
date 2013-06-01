@@ -12,8 +12,8 @@ block inner-content
 			h3 Now running at
 			div.dmd
 				span {{version}}
-			p.lbl From {{date}} - See&nbsp;
-				a.sha(href="{{url}}", target="_blank") {{sha}}
+			p.lbl From {{date}}, see&nbsp;
+				a.sha(href="{{url}}", target="_blank") {{sha}}.
 
 			button.btn.fat.small(ng-click='checkVersionUpdate()', ng-disabled='checking')
 				i.icon.refresh(ng-class='checkBtnClass')

@@ -93,7 +93,7 @@ var PindApi = function() {
 		GetVersion : function(req, params, callback) {
 			var version = au.getVersion();
 			version.dateSince = relativeDate(version.date);
-			version.url = 'https://github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.user + '/commit/' + version.sha;
+			version.url = 'https://github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commit/' + version.sha;
 			callback(version);
 		},
 
