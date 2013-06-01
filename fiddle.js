@@ -9,7 +9,7 @@ var au = require('./app/modules/autoupdate')();
 git();
 
 function git() {
-	au.updateAvailable(function(err, result) {
+	au.newCommitAvailable(function(err, result) {
 		if (err) {
 			console.log("ERROR: " + err);
 		} else {

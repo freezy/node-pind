@@ -8,6 +8,7 @@ var request = require('request');
 
 var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
+var currentVersion = semver.clean(JSON.parse(fs.readFileSync(__dirname + '../../../package.json')).version);
 
 function AutoUpdate() {
 	if ((this instanceof AutoUpdate) === false) {
@@ -27,19 +28,48 @@ AutoUpdate.prototype.initAnnounce = function(app) {
 	an.forward('updateAvailable');
 };
 
-AutoUpdate.prototype.updateAvailable = function(callback) {
-	var currentVersion = semver.clean(JSON.parse(fs.readFileSync(__dirname + '../../../package.json')).version);
+AutoUpdate.prototype.newCommitAvailable = function(callback) {
+
+	var userAgent = 'node-pind ' + currentVersion + ' auto-updater';
+
+	// retrieve last commit
+	request({
+		url: 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits?per_page=1',
+		headers: { 'User-Agent' : userAgent }
+	}, function(err, response, body) {
+		if (err) {
+			return callback(err);
+		}
+		var commit = JSON.parse(body)[0];
+
+		// retrieve last package.json for version
+		request({
+			url: 'https://raw.github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/master/package.json',
+			headers: { 'User-Agent': userAgent }
+		}, function(err, response, body) {
+			var pak = JSON.parse(body);
+
+			callback(null, {
+				version: pak.version,
+				date: new Date(Date.parse(commit.commit.committer.date)),
+				commit: commit
+			});
+		});
+	});
+}
+
+AutoUpdate.prototype.newVersionAvailable = function(callback) {
 
 	var client = github.client();
 	var repo = client.repo(settings.pind.repository.user + '/' + settings.pind.repository.repo);
 
-	console.log('Current version is %s', currentVersion);
-	console.log('Retrieving tags...');
-
+	// retrieve all tags from node-pind repso
 	repo.tags(function(err, tags) {
 		if (err) {
 			return callback(err);
 		}
+
+		// loop through versions and collect those later than current
 		var versions = {};
 		var newerVersions = [];
 		for (var i = 0; i < tags.length; i++) {
@@ -52,9 +82,13 @@ AutoUpdate.prototype.updateAvailable = function(callback) {
 				versions[tagVersion] = tag;
 			}
 		}
+
+		// sort and pop the latest
 		if (newerVersions.length > 0) {
 			newerVersions.sort(semver.rcompare);
 			var lastTag = versions[newerVersions[0]];
+
+			// retrieve commit date
 			request({
 				url: lastTag.commit.url,
 				headers: {
