@@ -12,14 +12,41 @@ block inner-content
 			h3 Now running at
 			div.dmd
 				span {{version}}
-			p.lbl From {{date}}
+			p.lbl From {{date}} - See&nbsp;
+				a.sha(href="{{url}}", target="_blank") {{sha}}
 
-			button.btn.fat.small
-				i.icon.refresh
+			button.btn.fat.small(ng-click='checkVersionUpdate()', ng-disabled='checking')
+				i.icon.refresh(ng-class='checkBtnClass')
 				span Check
 
 		.inner
 
+block modals
+	.modal-alert.modal.hide.fade.update-found
+		button.close(data-dismiss="modal") &times;
+		div.modal-header
+			h2
+				img
+				i.icon.refresh
+				span Update found!
+		.clearfix
+		div.modal-body
+			dl.dl-horizontal
+				dt Version
+				dd 0.0.0
+				dt Committed
+				dd just now
+				dt By
+				dd freezy
+				dt Details
+				dd
+					i.icon.github-alt
+					span &nbsp;
+					a 12345
+
+		div.modal-footer
+			button.download.btn.btn-warning.fat.right(data-dismiss="modal") Update
+			a.cancel.btn.fatlink(href='#') Cancel
 
 block inlineScripts
 	script

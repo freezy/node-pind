@@ -281,6 +281,7 @@ AutoUpdate.prototype.update = function(commit, callback) {
  * 	    <li>{Object} <tt>version</tt> - Version of last commit,
  * 	                 <tt>date</tt> - Date of last commit,
  * 	                 <tt>commit</tt> - commit object from GitHub.
+ * 	                 or <tt>noUpdates</tt> if no updates available.
  * 	    </li></ol>
  */
 AutoUpdate.prototype.newHeadAvailable = function(callback) {
@@ -292,6 +293,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 	var userAgent = 'node-pind ' + version.version + ' auto-updater';
 
 	// retrieve last commit
+	console.log('[autoupdate] Retrieving last commit');
 	request({
 		url: 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits?per_page=1',
 		headers: { 'User-Agent' : userAgent }
@@ -303,9 +305,10 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 		var dateHead = Date.parse(commit.commit.committer.date);
 		var dateCurrent = Date.parse(version.date);
 
-		// no update if head is older
+		// no update if head is older or equal
 		if (dateCurrent >= dateHead) {
-			return callback();
+			console.log('[autoupdate] No newer HEAD found at GitHub.');
+			return callback({ noUpdates: true });
 		}
 
 		// otherwise, retrieve last package.json for version

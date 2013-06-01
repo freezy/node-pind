@@ -53,6 +53,13 @@ body {
 .username {
   text-transform: uppercase;
 }
+a.sha {
+  font-family: Inconsolata, Consolas, 'Courier New', Fixed, monospace;
+}
+a.sha:hover {
+  text-decoration: none;
+  color: #000;
+}
 .hidden {
   display: none;
 }

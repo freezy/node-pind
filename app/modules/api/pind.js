@@ -3,8 +3,9 @@ var util = require('util');
 var async = require('async');
 var relativeDate = require('relative-date');
 
-error = require('../error');
+var error = require('../error');
 var schema = require('../../model/schema');
+var settings = require('../../../config/settings-mine');
 
 var ipdb, vpm, hs, au, api, tableApi, pathTo;
 
@@ -91,9 +92,19 @@ var PindApi = function() {
 
 		GetVersion : function(req, params, callback) {
 			var version = au.getVersion();
-			version.date = Date.parse(version.date);
 			version.dateSince = relativeDate(version.date);
+			version.url = 'https://github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.user + '/commit/' + version.sha;
 			callback(version);
+		},
+
+		GetAvailableUpdate : function(req, params, callback) {
+			au.newVersionAvailable(function(err, version) {
+				if (err) {
+					return callback(error.api(err));
+				}
+				console.log('Available version: %j', version);
+				callback(version);
+			});
 		}
 	};
 };

@@ -521,7 +521,7 @@ pindAppModule.factory('Jsonrpc', function($http) {
 			}).success(function(ret) {
 				if (ret.error) {
 					callback(ret.error.message, ret.error);
-				} else if (ret.result.error) {
+				} else if (ret.result && ret.result.error) {
 					callback(typeof ret.result.error.message === 'object' ? JSON.stringify(ret.result.error.message) : ret.result.error.message, ret.result.error);
 				} else {
 					callback(null, ret.result);
