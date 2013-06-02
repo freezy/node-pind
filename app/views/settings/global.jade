@@ -9,7 +9,7 @@ block inner-content
 			h2 Check for Updates
 
 		.center.ng-cloak
-			h3 Now running at
+			h3 Now Running
 			div.dmd
 				span {{version}}
 			p.lbl From {{date}}, see&nbsp;
@@ -21,32 +21,31 @@ block inner-content
 
 		.inner
 
-block modals
-	.modal-alert.modal.hide.fade.update-found
-		button.close(data-dismiss="modal") &times;
-		div.modal-header
-			h2
-				img
-				i.icon.refresh
-				span Update found!
-		.clearfix
-		div.modal-body
-			dl.dl-horizontal
-				dt Version
-				dd 0.0.0
-				dt Committed
-				dd just now
-				dt By
-				dd freezy
-				dt Details
-				dd
-					i.icon.github-alt
-					span &nbsp;
-					a 12345
+		//- MODAL: update found
+		.modal-alert.modal.hide.fade.update-found
+			button.close(data-dismiss="modal") &times;
+			div.modal-header
+				h2
+					i.icon.pd-round.big
+					span Update found!
+			.clearfix
+			div.modal-body
+				dl.dl-horizontal
+					dt Version
+					dd {{updateVersion}}
+					dt Committed
+					dd {{updateSince}}
+					dt By
+					dd {{updateAuthor}}
+					dt Details
+					dd
+						i.icon.github-alt
+						span &nbsp;
+						a(href="{{updateLink}}", target='_blank') {{sha}}
 
-		div.modal-footer
-			button.download.btn.btn-warning.fat.right(data-dismiss="modal") Update
-			a.cancel.btn.fatlink(href='#') Cancel
+			div.modal-footer
+				button.download.btn.btn-warning.fat.right(data-dismiss="modal") Update
+				a.cancel.btn.fatlink(href='#') Cancel
 
 block inlineScripts
 	script

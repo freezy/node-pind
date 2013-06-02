@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	//$('.modal.update-found').modal('show');
 });
 
 function GlobalCtrl($scope, Jsonrpc) {
@@ -10,6 +9,12 @@ function GlobalCtrl($scope, Jsonrpc) {
 	$scope.sha;
 	$scope.checkBtnClass = '';
 	$scope.checking = false;
+
+	$scope.updateVersion = '1.1.1';
+	$scope.updateSince = 'just now';
+	$scope.updateAuthor = 'freezy';
+	$scope.updateLink = 'https://github.com/freezy/node-pind';
+	$scope.updateSha = 'HEAD';
 
 	$scope.checkVersionUpdate = function() {
 		$scope.checkBtnClass = 'spin';
@@ -23,13 +28,18 @@ function GlobalCtrl($scope, Jsonrpc) {
 			if (version.noUpdates) {
 				alert('No updates found.');
 			} else {
-				alert(version);
+				$scope.updateVersion = version.version;
+				$scope.updateSince = version.dateSince;
+				$scope.updateAuthor = version.commit.commit.author.name;
+				$scope.updateLink = version.commit.html_url;
+				$scope.updateSha = version.commit.sha.substr(0, 0);
+				$('.modal.update-found').modal('show');
 			}
 		});
 	}
 
 	Jsonrpc.call('Pind.GetVersion', {}, function(err, version) {
-		$scope.version = version.version;
+		$scope.version = version.version.toUpperCase();
 		$scope.date = version.dateSince;
 		$scope.sha = version.sha.substr(0, 8);
 		$scope.url = version.url;

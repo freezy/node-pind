@@ -7,6 +7,7 @@ var events = require('events');
 var semver = require('semver');
 var github = require('octonode');
 var request = require('request');
+var relativedate = require('relative-date');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
@@ -306,7 +307,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 		var dateCurrent = Date.parse(version.date);
 
 		// no update if head is older or equal
-		if (dateCurrent >= dateHead) {
+		if (false && dateCurrent >= dateHead) {
 			console.log('[autoupdate] No newer HEAD found at GitHub.');
 			return callback({ noUpdates: true });
 		}
@@ -321,6 +322,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 			callback(null, {
 				version: pak.version,
 				date: new Date(dateHead),
+				dateSince: relativedate(new Date(dateHead)),
 				commit: commit
 			});
 		});
