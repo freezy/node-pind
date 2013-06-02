@@ -13,7 +13,8 @@ var relativeDate = require('relative-date');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 var version = null;
-var dryRun = true;
+
+var dryRun = false;
 
 /**
  * Manages the application self-updates.
