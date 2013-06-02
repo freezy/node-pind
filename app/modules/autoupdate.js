@@ -13,6 +13,7 @@ var relativeDate = require('relative-date');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 var version = null;
+var dryRun = true;
 
 /**
  * Manages the application self-updates.
@@ -201,6 +202,7 @@ AutoUpdate.prototype.newVersionAvailable = function(callback) {
  */
 AutoUpdate.prototype.update = function(sha, callback) {
 
+
 	var that = this;
 	that._getCommit('https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits/' + sha, function(err, commit) {
 
@@ -210,7 +212,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 		}
 
 		var v = that._readVersion();
-		if (Date.parse(commit.commit.committer.date) < Date.parse(v.date)) {
+		if (!dryRun && Date.parse(commit.commit.committer.date) < Date.parse(v.date)) {
 			var err = 'Not downgrading current version (' + v.date + ') to older commit (' + commit.commit.committer.date + ').';
 			console.log('[autoupdate] ERROR: ' + err);
 			return callback(err);
@@ -245,12 +247,21 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 					console.log('[autoupdate] Update complete.');
 					that.emit('updateCompleted', commit);
+					console.log('[autoupdate] Killing process in 2 seconds.');
+					setTimeout(function() {
+						console.log('[autoupdate] kthxbye');
+//						process.emit('SIGUSR2');
+						process.kill(process.pid, 'SIGTERM');
+					}, 2000);
 					callback(null, version);
-				}
+				};
 
-				// @debug skip update, just run done after 5s
-				console.log('[autoupdate] Simulating update...');
-				setTimeout(done, 5000);return;
+				// skip update, just run done after 5s
+				if (dryRun) {
+					console.log('[autoupdate] Simulating update...');
+					setTimeout(done, 5000);
+					return;
+				}
 
 				// fetches and rebases from remote repository
 				var update = function(callback) {
@@ -357,7 +368,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 		var dateCurrent = Date.parse(version.date);
 
 		// no update if head is older or equal
-		if (dateCurrent >= dateHead) {
+		if (!dryRun && dateCurrent >= dateHead) {
 			console.log('[autoupdate] No newer HEAD found at GitHub.');
 			return callback(null, { noUpdates: true });
 		}
