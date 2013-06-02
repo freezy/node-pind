@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var fs = require('fs');
 var git = require('gift');
 var util = require('util');
@@ -174,105 +175,113 @@ AutoUpdate.prototype.newVersionAvailable = function(callback) {
  * If a .git folder exists, update goes via "git fetch", otherwise the zipball
  * is downloaded and extracted to the installation folder.
  *
- * @param commit
+ * @param sha SHA hash for the commit used for the update.
  * @param callback
  */
-AutoUpdate.prototype.update = function(commit, callback) {
+AutoUpdate.prototype.update = function(sha, callback) {
 
 	var that = this;
+	that._getCommit('https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits/' + sha, function(err, commit) {
 
-	var v = this._readVersion();
-	if (Date.parse(commit.commit.committer.date) < Date.parse(v.date)) {
-		var err = 'Not downgrading current version (' + v.date + ') to older commit (' + commit.commit.committer.date + ').';
-		console.log('[autoupdate] ERROR: ' + err);
-		return callback(err);
-	}
+		if (err) {
+			console.error('[autoupdate] Cannot retrieve commit for revision %s: %s', sha, err);
+			return callback('Cannot retrieve commit for revision "' + sha + '": ' + err);
+		}
 
-	that.on('updateCompleted', this._updateCompleted);
-	that.emit('updateStarted');
+		var v = this._readVersion();
+		if (Date.parse(commit.commit.committer.date) < Date.parse(v.date)) {
+			var err = 'Not downgrading current version (' + v.date + ') to older commit (' + commit.commit.committer.date + ').';
+			console.log('[autoupdate] ERROR: ' + err);
+			return callback(err);
+		}
 
-	// if git repo is available, update via git
-	if (fs.existsSync(__dirname + '../../../.git')) {
+		that.on('updateCompleted', this._updateCompleted);
+		that.emit('updateStarted');
 
-		var repo = git(path.normalize(__dirname + '../../../'));
+		// if git repo is available, update via git
+		if (fs.existsSync(__dirname + '../../../.git')) {
 
-		// look for modified files via status
-		repo.status(function(err, status) {
-			if (err) {
-				that.emit('updateFailed', { error: err });
-				return callback(err);
-			}
+			var repo = git(path.normalize(__dirname + '../../../'));
 
-			var done = function(err) {
-
+			// look for modified files via status
+			repo.status(function(err, status) {
 				if (err) {
-					console.log('[autoupdate] ERROR: ' + err);
 					that.emit('updateFailed', { error: err });
 					return callback(err);
 				}
-				console.log('[autoupdate] Update complete.');
-				that.emit('updateCompleted', commit);
-				callback();
-			}
 
-			// fetches and rebases from remote repository
-			var update = function(callback) {
-				console.log('[autoupdate] Fetching update from GitHub');
-				repo.remote_fetch('origin master', function(err) {
+				var done = function(err) {
+
 					if (err) {
+						console.log('[autoupdate] ERROR: ' + err);
 						that.emit('updateFailed', { error: err });
 						return callback(err);
 					}
+					console.log('[autoupdate] Update complete.');
+					that.emit('updateCompleted', commit);
+					callback(null, { success: true });
+				}
 
-					console.log('[autoupdate] Rebasing to ' + commit.sha);
-					repo.git('rebase ' + commit.sha, function(err) {
+				// fetches and rebases from remote repository
+				var update = function(callback) {
+					console.log('[autoupdate] Fetching update from GitHub');
+					repo.remote_fetch('origin master', function(err) {
 						if (err) {
 							that.emit('updateFailed', { error: err });
 							return callback(err);
 						}
 
-						// if stashed, re-apply changes.
-						if (trackedFiles.length > 0) {
-							console.log('[autoupdate] Re-applying stash');
-							repo.git('stash', {}, ['apply'], done);
-						} else {
-							done();
-						}
+						console.log('[autoupdate] Rebasing to ' + commit.sha);
+						repo.git('rebase ' + commit.sha, function(err) {
+							if (err) {
+								that.emit('updateFailed', { error: err });
+								return callback(err);
+							}
+
+							// if stashed, re-apply changes.
+							if (trackedFiles.length > 0) {
+								console.log('[autoupdate] Re-applying stash');
+								repo.git('stash', {}, ['apply'], done);
+							} else {
+								done();
+							}
+						});
 					});
-				});
-			}
-
-			// check for tracked changed files
-			var trackedFiles = [];
-			for (var filename in status.files) {
-				if (status.files[filename].tracked) {
-					if (err) {
-						that.emit('updateFailed', { error: err });
-						return callback(err);
-					}
-					trackedFiles.push(filename);
 				}
-			}
 
-			// if found, stash changes
-			if (trackedFiles.length > 0) {
-				console.log('[autoupdate] Detected changed files: [' + trackedFiles.join(', ') + '], stashing changes first.');
-				repo.git('stash', {}, ['save'], function(err) {
-					if (err) {
-						that.emit('updateFailed', { error: err });
-						return callback(err);
+				// check for tracked changed files
+				var trackedFiles = [];
+				for (var filename in status.files) {
+					if (status.files[filename].tracked) {
+						if (err) {
+							that.emit('updateFailed', { error: err });
+							return callback(err);
+						}
+						trackedFiles.push(filename);
 					}
+				}
+
+				// if found, stash changes
+				if (trackedFiles.length > 0) {
+					console.log('[autoupdate] Detected changed files: [' + trackedFiles.join(', ') + '], stashing changes first.');
+					repo.git('stash', {}, ['save'], function(err) {
+						if (err) {
+							that.emit('updateFailed', { error: err });
+							return callback(err);
+						}
+						update(callback);
+					});
+				} else {
 					update(callback);
-				});
-			} else {
-				update(callback);
-			}
-		});
+				}
+			});
 
-	// otherwise, update via zipball
-	} else {
+		// otherwise, update via zipball
+		} else {
 
-	}
+		}
+
+	});
 };
 
 /**
@@ -302,14 +311,25 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 		if (err) {
 			return callback(err);
 		}
-		var commit = JSON.parse(body)[0];
+		try {
+			var commits = JSON.parse(body);
+		} catch (err) {
+			console.error('[autoupdate] Could not parse JSON return, got:\n%s', body);
+			return callback('Could not parse JSON return for last commit at GitHub.');
+		}
+
+		if (!_.isArray(commits)) {
+			console.error('[autoupdate] Expected array of commits from GitHub, got:\n%s', body);
+			return callback('Could not retrieve last commit from GitHub.');
+		}
+		var commit = commits[0];
 		var dateHead = Date.parse(commit.commit.committer.date);
 		var dateCurrent = Date.parse(version.date);
 
 		// no update if head is older or equal
-		if (false && dateCurrent >= dateHead) {
+		if (dateCurrent >= dateHead) {
 			console.log('[autoupdate] No newer HEAD found at GitHub.');
-			return callback({ noUpdates: true });
+			return callback(null, { noUpdates: true });
 		}
 
 		// otherwise, retrieve last package.json for version
@@ -317,8 +337,12 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 			url: 'https://raw.github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/master/package.json',
 			headers: { 'User-Agent': userAgent }
 		}, function(err, response, body) {
-			var pak = JSON.parse(body);
-
+			try {
+				var pak = JSON.parse(body);
+			} catch (err) {
+				console.error('[autoupdate] [autoupdate] Could not parse JSON return, got:\n%s', body);
+				return callback('Could not parse JSON return for package.json at GitHub.');
+			}
 			callback(null, {
 				version: pak.version,
 				date: new Date(dateHead),

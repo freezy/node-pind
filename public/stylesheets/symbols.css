@@ -1,34 +1,30 @@
 @font-face {
 	font-family: 'pind-symbols';
-	src:url('../fonts/pind-symbols.eot?67733');
-	src:url('../fonts/pind-symbols.eot?67733') format('embedded-opentype'),
-		url('../fonts/pind-symbols.woff?67733') format('woff'),
-		url('../fonts/pind-symbols.ttf?67733') format('truetype'),
-		url('../fonts/pind-symbols.svg?67733#pind-symbols') format('svg');
+	src:url('../fonts/pind-symbols.eot?1886');
+	src:url('../fonts/pind-symbols.eot?1886') format('embedded-opentype'),
+		url('../fonts/pind-symbols.woff?1886') format('woff'),
+		url('../fonts/pind-symbols.ttf?1886') format('truetype'),
+		url('../fonts/pind-symbols.svg?1886#pind-symbols') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
 
 @-moz-keyframes spin {
-	0% { -moz-transform: rotate(0deg); }
-	100% { -moz-transform: rotate(359deg); }
+	0% { -moz-transform: rotate(0deg); transform-origin: 50% 53%  }
+	100% { -moz-transform: rotate(359deg); transform-origin: 50% 53% }
 }
 @-webkit-keyframes spin {
-	0% { -webkit-transform: rotate(0deg); }
-	100% { -webkit-transform: rotate(359deg); }
+	0% { -webkit-transform: rotate(0deg); transform-origin: 0% 0% }
+	100% { -webkit-transform: rotate(359deg); transform-origin: 0% 0% }
 }
 @-o-keyframes spin {
-	0% { -o-transform: rotate(0deg); }
-	100% { -o-transform: rotate(359deg); }
+	0% { -o-transform: rotate(0deg); transform-origin: 50% 53% }
+	100% { -o-transform: rotate(359deg); transform-origin: 50% 53% }
 }
 @-ms-keyframes spin {
-	0% { -ms-transform: rotate(0deg); }
-	100% { -ms-transform: rotate(359deg); }
-}
-@keyframes spin {
-	0% { transform: rotate(0deg); }
-	100% { transform: rotate(359deg); }
+	0% { -ms-transform: rotate(0deg); transform-origin: 50% 53% }
+	100% { -ms-transform: rotate(359deg); transform-origin: 50% 53% }
 }
 
 

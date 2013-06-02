@@ -102,7 +102,18 @@ var PindApi = function() {
 				if (err) {
 					return callback(error.api(err));
 				}
-				console.log('Available version: %j', version);
+				callback(version);
+			});
+		},
+
+		UpdatePind : function(req, params, callback) {
+			if (!params.sha) {
+				return callback(error.api('Must specify SHA to which revision to update.'));
+			}
+			au.update(params.sha, function(err, version) {
+				if (err) {
+					return callback(error.api(err));
+				}
 				callback(version);
 			});
 		}

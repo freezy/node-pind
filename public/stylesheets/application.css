@@ -419,6 +419,12 @@ button[type="submit"].small span,
 .icon.refresh:before {
   content: "\f01e";
 }
+.icon.spinner:before {
+  content: "\e00c";
+}
+.icon.spinner2:before {
+  content: "\f110";
+}
 .icon.file:before {
   content: "\e003";
 }
@@ -529,6 +535,13 @@ button[type="submit"].small span,
   animation: spin 2s infinite linear;
   text-shadow: none;
 }
+.icon.spin.slow {
+  -webkit-animation: spin 5s infinite linear;
+  -moz-animation: spin 5s infinite linear;
+  -o-animation: spin 5s infinite linear;
+  -ms-animation: spin 5s infinite linear;
+  animation: spin 5s infinite linear;
+}
 .icon.inputhint {
   width: 46px;
   height: 35px;
@@ -555,12 +568,14 @@ button[type="submit"].small span,
   margin-top: -53px;
   position: absolute;
 }
+.icon.big {
+  font-size: 90px;
+}
 .modal-header .icon {
   padding-bottom: 30px;
   color: #473522;
 }
 .modal-header .icon.big {
-  font-size: 90px;
   margin-right: 30px;
   margin-top: -30px;
 }
@@ -1548,6 +1563,11 @@ tr.newblock td {
 }
 .modal.update-found .modal-body {
   padding-top: 0;
+}
+.modal.update-progressing .modal-body .icon {
+  margin-top: -30px;
+  font-size: 120px;
+  color: rgba(0,0,0,0.25);
 }
 .thumbnail {
   background-color: rgba(255,255,255,0.5);

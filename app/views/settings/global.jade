@@ -47,6 +47,20 @@ block inner-content
 				button.download.btn.btn-warning.fat.right(data-dismiss="modal") Update
 				a.cancel.btn.fatlink(href='#') Cancel
 
+		//- MODAL: update found
+		.modal-alert.modal.hide.fade.no-update
+			button.close(data-dismiss="modal") &times;
+			div.modal-header
+				h2
+					i.icon.pd-round.big
+					span No update found.
+			.clearfix
+			div.modal-body
+				p.center Check back later.
+
+			div.modal-footer
+				button.download.btn.btn-warning.fat.right(data-dismiss="modal") Okay
+
 block inlineScripts
 	script
 		$(document).ready(function() {
