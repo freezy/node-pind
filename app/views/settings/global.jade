@@ -17,7 +17,7 @@ block inner-content
 
 			button.btn.fat.small(ng-click='checkVersionUpdate()', ng-disabled='checking')
 				i.icon.refresh(ng-class='checkBtnClass')
-				span Check
+				span Check for Update
 
 		.inner
 
@@ -44,10 +44,10 @@ block inner-content
 						a(href="{{updateLink}}", target='_blank') {{sha}}
 
 			div.modal-footer
-				button.download.btn.btn-warning.fat.right(data-dismiss="modal") Update
+				button.download.btn.btn-warning.fat.right(data-dismiss="modal", ng-click="updatePind()") Update
 				a.cancel.btn.fatlink(href='#') Cancel
 
-		//- MODAL: update found
+		//- MODAL: no update
 		.modal-alert.modal.hide.fade.no-update
 			button.close(data-dismiss="modal") &times;
 			div.modal-header

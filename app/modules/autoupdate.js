@@ -188,7 +188,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 			return callback('Cannot retrieve commit for revision "' + sha + '": ' + err);
 		}
 
-		var v = this._readVersion();
+		var v = that._readVersion();
 		if (Date.parse(commit.commit.committer.date) < Date.parse(v.date)) {
 			var err = 'Not downgrading current version (' + v.date + ') to older commit (' + commit.commit.committer.date + ').';
 			console.log('[autoupdate] ERROR: ' + err);

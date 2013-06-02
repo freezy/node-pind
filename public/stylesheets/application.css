@@ -1679,6 +1679,7 @@ hr {
   padding-bottom: 12px;
   -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
   box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+  cursor: default;
 }
 .dmd span,
 #console span {
@@ -1692,6 +1693,7 @@ hr {
   -webkit-border-radius: 3px;
   border-radius: 3px;
   color: #fff187;
+  cursor: default;
   font-family: ozoneregular;
   font-size: 36px;
   text-shadow: 0 0 7px #ff2d2d;
