@@ -16,29 +16,29 @@ of neat stuff. Particularly it should be able to:
   based on achievements.
 * Provide a voting system for new tables to install.
 * Administer HyperPin's tables. This includes:
-  * Automatically download missing artwork [done]
-  * Easily (fuzzy-) search, download and add new tables [done]
-  * Automatically download missing ROMs [done]
+  * Automatically download missing artwork `done`
+  * Easily (fuzzy-) search, download and add new tables `done`
+  * Automatically download missing ROMs `done`
   * Automatically search, download and patch table for DirectB2S backglasses
-  * Bulk-update VPinMAME rotation settings in tables [done]
-  * Match tables on IPDB.org for additional meta data [done]
-  * Support for Visual Pinball and Future Pinball [VP - done]
-  * Receive real-time status updates during processing [done]
+  * Bulk-update VPinMAME rotation settings in tables `done`
+  * Match tables on IPDB.org for additional meta data `done`
+  * Support for Visual Pinball and Future Pinball `VP - done`
+  * Receive real-time status updates during processing `done`
 * Manage users:
-  * Anyone can sign up individually using high score initials as user name [done]
-  * Administrator can manage credits for each user [done]
+  * Anyone can sign up individually using high score initials as user name `done`
+  * Administrator can manage credits for each user `done`
   * Credits allow users to insert coins via web app or Android client (using
-    NFC where supported) [done]
+    NFC where supported) `done`
   * Users can be notified by mail when someone beats a high score
-* Include a download manager for assets and tables [done]
-* Provide an API for all features (JSON-RPC 2.0) [done]
+* Include a download manager for assets and tables `done`
+* Provide an API for all features (JSON-RPC 2.0) `done`
 * Provide an Android app for some features (such as inserting a coin, browsing
-  tables and high scores). [inserting coin - done]
+  tables and high scores). `inserting coin - done`
 * Implement reasonable security. Passwords are salted and strongly hashed, 
   auto-login uses a random token, CSRF protection, SSL connections should be
-  enforced when transferring sensitive data. [done]
-* Provide an automatic update procedure. [done]
-* Be usable on a phone (responsive layout). [done]
+  enforced when transferring sensitive data. `done`
+* Provide an automatic update procedure. `done`
+* Be usable on a phone (responsive layout). `done`
 
 Note that for a single user cab, pind is mainly useful for managing tables, 
 which is a major PITA to do manually. Most of the other features however are
@@ -48,10 +48,10 @@ about multiple players using the same cab.
 Development Principles
 ======================
 
-* Get up and running with the least possible effort (not there yet).
-* Be as lightweight as possible - it's for running on a cab (check).
-* Be responsive - nobody likes slow applications (check).
-* Be beautiful - minimal yet elegant (check).
+* Get up and running with the least possible effort.
+* Be as lightweight as possible - it's for running on a cab.
+* Be responsive - nobody likes slow applications.
+* Be beautiful - minimal yet elegant.
 
 
 Platforms
