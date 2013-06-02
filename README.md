@@ -16,28 +16,29 @@ of neat stuff. Particularly it should be able to:
   based on achievements.
 * Provide a voting system for new tables to install.
 * Administer HyperPin's tables. This includes:
-  * Automatically download missing artwork
-  * Easily (fuzzy-) search, download and add new tables
-  * Automatically download missing ROMs
+  * Automatically download missing artwork [done]
+  * Easily (fuzzy-) search, download and add new tables [done]
+  * Automatically download missing ROMs [done]
   * Automatically search, download and patch table for DirectB2S backglasses
-  * Bulk-update VPinMAME rotation settings in tables
-  * Match tables on IPDB.org for additional meta data
-  * Support for Visual Pinball and Future Pinball
-  * Receive real-time status updates during processing
+  * Bulk-update VPinMAME rotation settings in tables [done]
+  * Match tables on IPDB.org for additional meta data [done]
+  * Support for Visual Pinball and Future Pinball [VP - done]
+  * Receive real-time status updates during processing [done]
 * Manage users:
-  * Anyone can sign up individually using high score initials as user name
-  * Administrator can manage credits for each user
+  * Anyone can sign up individually using high score initials as user name [done]
+  * Administrator can manage credits for each user [done]
   * Credits allow users to insert coins via web app or Android client (using
-    NFC where supported)
+    NFC where supported) [done]
   * Users can be notified by mail when someone beats a high score
-* Include a download manager for assets and tables
-* Provide an API for all features (JSON-RPC 2.0)
+* Include a download manager for assets and tables [done]
+* Provide an API for all features (JSON-RPC 2.0) [done]
 * Provide an Android app for some features (such as inserting a coin, browsing
-  tables and high scores).
+  tables and high scores). [inserting coin - done]
 * Implement reasonable security. Passwords are salted and strongly hashed, 
   auto-login uses a random token, CSRF protection, SSL connections should be
-  enforced when transferring sensitive data.
-* Be usable on a phone (responsive layout).
+  enforced when transferring sensitive data. [done]
+* Provide an automatic update procedure. [done]
+* Be usable on a phone (responsive layout). [done]
 
 Note that for a single user cab, pind is mainly useful for managing tables, 
 which is a major PITA to do manually. Most of the other features however are
@@ -85,34 +86,8 @@ Visual Studio is needed for compiling the dependencies, notably sqlite3, the
 database engine. This concerns only Windows, but then all the pinball stuff
 doesn't run on other platforms.
 
-
-Status
-======
-
-Working
--------
-
-* Register user via web
-* High score listing for all tables
-* Table manager
-* User manager
-* Trigger coin drop via API and web app
-* Parse HyperPin "database" and store locally
-* Scrape ipdb.org for additional meta data
-* Rudimentary access to HyperPin media via API
-* Parse game ROM name from .vpt
-* Get structured high-scores (incl. additional achievements) for a .vpt
-* Link users to high-scores
-* Super fast real-time fuzzy search on VPF
-* Queue downloads from VPF
-
-TODO
-----
-* Web table browser
-* Look for another DB engine (sqlite is major PITA to compile).
-* Browsing features
-
-More to come. Still under heavy development.
+In order to support restart after auto-update, run via `node prod`. Instructions
+how to best install it as a Windows service on a cab are coming up soon.
 
 
 Technologies
