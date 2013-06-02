@@ -8,7 +8,7 @@ var events = require('events');
 var semver = require('semver');
 var github = require('octonode');
 var request = require('request');
-var relativedate = require('relative-date');
+var relativeDate = require('relative-date');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
@@ -68,22 +68,16 @@ AutoUpdate.prototype.initVersion = function(callback) {
 	if (fs.existsSync(__dirname + '../../../.git')) {
 		var masterHead = __dirname + '../../../.git/refs/heads/master';
 		var fd = fs.openSync(masterHead, 'r');
-		version = {
-			date: new Date(fs.fstatSync(fd).mtime),
-			sha: fs.readFileSync(masterHead).toString().trim(),
-			version: packageVersion
-		}
+		that.setVersion(fs.readFileSync(masterHead).toString().trim(), new Date(fs.fstatSync(fd).mtime), packageVersion);
 		fs.closeSync(fd);
 
-		// stuff has probably been updated (during dev), so update version.json anyway.
-		that._writeVersion(version);
 		return callback(null, version);
 	}
 
 	// no git, so check if version.json is available.
-	version = this._readVersion();
-	if (version) {
-		return callback(null, version);
+	var v = that._readVersion();
+	if (v) {
+		return callback(null, v);
 	}
 
 	// no git and no version.json, so let's retrieve commit data from github.
@@ -127,12 +121,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
 
 		// retrieve commit
 		that._getCommit(matchedTag.commit.url, function(err, commit) {
-			version = {
-				date: new Date(Date.parse(commit.commit.committer.date)),
-				sha: commit.sha,
-				version: packageVersion
-			};
-			that._writeVersion(version);
+			that.setVersion(commit, packageVersion);
 			callback(null, version);
 		});
 	});
@@ -146,9 +135,41 @@ AutoUpdate.prototype.getVersion = function() {
 	if (!version) {
 		version = this._readVersion();
 	}
+	version.dateSince = relativeDate(version.date);
+	version.url = 'https://github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commit/' + version.sha;
 	return version;
 }
 
+/**
+ * Writes version.json based on a commit and package version (optional)
+ * @param commitSha Commit object from GitHub API | SHA hash
+ * @param packageVersionDate (optional) Package version, otherwise reread from package.json. | Date
+ * @param packageVersion | Package version
+ * @returns {Object} Version object
+ */
+AutoUpdate.prototype.setVersion = function(commitSha, packageVersionDate, packageVersion) {
+
+	// three params: sha / date / package version
+	if (packageVersion) {
+		version = {
+			date: packageVersionDate,
+			sha: commitSha,
+			version: packageVersion
+		};
+
+	// two/one params: commit / package version
+	} else {
+		packageVersionDate = packageVersionDate ? packageVersionDate : this._getPackageVersion();
+		version = {
+			date: new Date(Date.parse(commitSha.commit.committer.date)),
+			sha: commitSha.sha,
+			version: packageVersionDate
+		};
+	}
+
+	this._writeVersion(version);
+	return this.getVersion();
+}
 
 /**
  * Checks if a version is availbale, depending on update settings.
@@ -195,7 +216,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 			return callback(err);
 		}
 
-		that.on('updateCompleted', this._updateCompleted);
+		that.on('updateCompleted', that._updateCompleted);
 		that.emit('updateStarted');
 
 		// if git repo is available, update via git
@@ -210,6 +231,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 					return callback(err);
 				}
 
+				// ran when update was completed.
 				var done = function(err) {
 
 					if (err) {
@@ -217,10 +239,18 @@ AutoUpdate.prototype.update = function(sha, callback) {
 						that.emit('updateFailed', { error: err });
 						return callback(err);
 					}
+
+					// update version.json
+					that.setVersion(commit);
+
 					console.log('[autoupdate] Update complete.');
 					that.emit('updateCompleted', commit);
-					callback(null, { success: true });
+					callback(null, version);
 				}
+
+				// @debug skip update, just run done after 5s
+				console.log('[autoupdate] Simulating update...');
+				setTimeout(done, 5000);return;
 
 				// fetches and rebases from remote repository
 				var update = function(callback) {
@@ -278,7 +308,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 		// otherwise, update via zipball
 		} else {
-
+			callback('Non-git installations not yet supported.');
 		}
 
 	});
@@ -346,7 +376,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 			callback(null, {
 				version: pak.version,
 				date: new Date(dateHead),
-				dateSince: relativedate(new Date(dateHead)),
+				dateSince: relativeDate(new Date(dateHead)),
 				commit: commit
 			});
 		});
@@ -446,12 +476,7 @@ AutoUpdate.prototype._getCommit = function(url, callback) {
  */
 AutoUpdate.prototype._updateCompleted = function(commit) {
 
-	version = {
-		date: new Date(Date.parse(commit.commit.committer.date)),
-		sha: commit.sha,
-		version: this._getPackageVersion()
-	};
-	this._writeVersion(version);
+
 }
 
 /**

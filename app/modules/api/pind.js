@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var util = require('util');
 var async = require('async');
-var relativeDate = require('relative-date');
 
 var error = require('../error');
 var schema = require('../../model/schema');
@@ -92,8 +91,6 @@ var PindApi = function() {
 
 		GetVersion : function(req, params, callback) {
 			var version = au.getVersion();
-			version.dateSince = relativeDate(version.date);
-			version.url = 'https://github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commit/' + version.sha;
 			callback(version);
 		},
 
