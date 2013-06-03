@@ -68,12 +68,14 @@ AutoUpdate.prototype.initVersion = function(callback) {
 
 	// retrieve version from local git repo first (hash from .git, version from package.json)
 	if (fs.existsSync(__dirname + '../../../.git')) {
-		var masterHead = __dirname + '../../../.git/refs/heads/master';
-		var fd = fs.openSync(masterHead, 'r');
-		that.setVersion(fs.readFileSync(masterHead).toString().trim(), new Date(fs.fstatSync(fd).mtime), packageVersion);
-		fs.closeSync(fd);
 
-		return callback(null, version);
+		var repo = git(path.normalize(__dirname + '../../../'));
+		repo.commits('master', 1, function(err, commits) {
+			var commit = commits[0];
+			that.setVersion(commit.id, commit.committed_date, packageVersion);
+			callback(null, version);
+		});
+		return;
 	}
 
 	// no git, so check if version.json is available.
@@ -369,7 +371,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 
 		// no update if head is older or equal
 		if (!dryRun && dateCurrent >= dateHead) {
-			console.log('[autoupdate] No newer HEAD found at GitHub.');
+			console.log('[autoupdate] No newer HEAD found at GitHub - local: %s, remote: %s.', new Date(dateCurrent), new Date(dateHead));
 			return callback(null, { noUpdates: true });
 		}
 
