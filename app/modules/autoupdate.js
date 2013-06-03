@@ -140,7 +140,7 @@ AutoUpdate.prototype.getVersion = function() {
 	version.dateSince = relativeDate(version.date);
 	version.url = 'https://github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commit/' + version.sha;
 	return version;
-}
+};
 
 /**
  * Writes version.json based on a commit and package version (optional)
@@ -171,7 +171,7 @@ AutoUpdate.prototype.setVersion = function(commitSha, packageVersionDate, packag
 
 	this._writeVersion(version);
 	return this.getVersion();
-}
+};
 
 /**
  * Checks if a version is availbale, depending on update settings.
@@ -214,12 +214,11 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 		var v = that._readVersion();
 		if (!dryRun && Date.parse(commit.commit.committer.date) < Date.parse(v.date)) {
-			var err = 'Not downgrading current version (' + v.date + ') to older commit (' + commit.commit.committer.date + ').';
+			err = 'Not downgrading current version (' + v.date + ') to older commit (' + commit.commit.committer.date + ').';
 			console.log('[autoupdate] ERROR: ' + err);
 			return callback(err);
 		}
 
-		that.on('updateCompleted', that._updateCompleted);
 		that.emit('updateStarted');
 
 		// if git repo is available, update via git
@@ -289,12 +288,12 @@ AutoUpdate.prototype.update = function(sha, callback) {
 							}
 						});
 					});
-				}
+				};
 
 				// check for tracked changed files
 				var trackedFiles = [];
 				for (var filename in status.files) {
-					if (status.files[filename].tracked) {
+					if (status.files.hasOwnProperty(filename) && status.files[filename].tracked) {
 						if (err) {
 							that.emit('updateFailed', { error: err });
 							return callback(err);
@@ -480,16 +479,6 @@ AutoUpdate.prototype._getCommit = function(url, callback) {
 		callback(null, JSON.parse(body));
 	});
 };
-
-/**
- * Updates version.json after successful update.
- * @param commit
- * @private
- */
-AutoUpdate.prototype._updateCompleted = function(commit) {
-
-
-}
 
 /**
  * Reads package.json and returns defined version.
