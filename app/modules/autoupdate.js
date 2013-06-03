@@ -4,10 +4,13 @@ var git = require('gift');
 var util = require('util');
 var path = require('path');
 var exec = require('child_process').exec;
+var unzip = require('unzip');
 var events = require('events');
 var semver = require('semver');
 var github = require('octonode');
+var mkdirp = require('mkdirp');
 var request = require('request');
+var filesize = require('filesize');
 var relativeDate = require('relative-date');
 
 var schema = require('../model/schema');
@@ -223,10 +226,34 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 		that.emit('updateStarted');
 
-		// if git repo is available, update via git
-		if (fs.existsSync(__dirname + '../../../.git')) {
+		// ran when update was completed.
+		var done = function(err) {
 
-			var repo = git(path.normalize(__dirname + '../../../'));
+			if (err) {
+				console.log('[autoupdate] ERROR: ' + err);
+				that.emit('updateFailed', { error: err });
+				return callback(err);
+			}
+
+			// update version.json
+			that.setVersion(commit);
+
+			console.log('[autoupdate] Update complete.');
+			that.emit('updateCompleted', commit);
+			console.log('[autoupdate] Killing process in 2 seconds.');
+			setTimeout(function() {
+				console.log('[autoupdate] kthxbye');
+				process.kill(process.pid, 'SIGTERM');
+			}, 2000);
+			callback(null, version);
+		};
+
+		var pindPath = path.normalize(__dirname + '../../../');
+
+		// if git repo is available, update via git
+		if (false && fs.existsSync(__dirname + '../../../.git')) {
+
+			var repo = git(pindPath);
 
 			// look for modified files via status
 			repo.status(function(err, status) {
@@ -234,29 +261,6 @@ AutoUpdate.prototype.update = function(sha, callback) {
 					that.emit('updateFailed', { error: err });
 					return callback(err);
 				}
-
-				// ran when update was completed.
-				var done = function(err) {
-
-					if (err) {
-						console.log('[autoupdate] ERROR: ' + err);
-						that.emit('updateFailed', { error: err });
-						return callback(err);
-					}
-
-					// update version.json
-					that.setVersion(commit);
-
-					console.log('[autoupdate] Update complete.');
-					that.emit('updateCompleted', commit);
-					console.log('[autoupdate] Killing process in 2 seconds.');
-					setTimeout(function() {
-						console.log('[autoupdate] kthxbye');
-//						process.emit('SIGUSR2');
-						process.kill(process.pid, 'SIGTERM');
-					}, 2000);
-					callback(null, version);
-				};
 
 				// skip update, just run done after 5s
 				if (dryRun) {
@@ -321,7 +325,58 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 		// otherwise, update via zipball
 		} else {
-			callback('Non-git installations not yet supported.');
+			// download zipball
+			var url = 'https://github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/archive/' + sha + '.zip';
+			var dest = settings.pind.tmp + '/node-pind-' + sha + '.zip';
+			var stream = fs.createWriteStream(dest);
+			var failed = false;
+
+			// when download completed
+			stream.on('close', function() {
+				if (failed) {
+					return callback('Download of zipball from GitHub failed (see logs).');
+				}
+				console.log('[autoupdate] Done, extracting now...');
+				// unzip each entry, trimming the first level of the folder structure.
+				fs.createReadStream(dest).pipe(unzip.Parse())
+				.on('entry', function(entry) {
+					if (entry.type == 'File') {
+						var entryDest = path.normalize(pindPath + entry.path.substr(entry.path.indexOf('/') + 1));
+						var dir = path.dirname(entryDest);
+						if (!fs.existsSync(dir)) {
+							mkdirp.sync(dir);
+						}
+
+						if (dryRun) {
+							console.log('[autoupdate] (Not) extracting %s', entryDest);
+							entry.autodrain();
+						} else {
+							console.log('[autoupdate] Extracting %s', entryDest);
+							entry.pipe(fs.createWriteStream(entryDest));
+						}
+					} else {
+						entry.autodrain();
+					}
+				}).on('close', function() {
+					console.log('[autoupdate] Done, cleaning up %s', dest);
+					fs.unlinkSync(dest);
+					done();
+				});
+
+			});
+			request(url).on('response', function(response) {
+
+				if (response.statusCode != 200) {
+					failed = true;
+					console.error('[autoupdate] Failed downloading zip file at %s with code %s.', url, response.statusCode);
+					return;
+				}
+				if (response.headers['content-length']) {
+					console.log('[autoupdate] Downloading %s of zipball to %s...', filesize(response.headers['content-length'], true), dest);
+				} else {
+					console.log('[autoupdate] Downloading zipball to %s...', dest);
+				}
+			}).pipe(stream);
 		}
 
 	});

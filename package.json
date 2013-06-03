@@ -53,7 +53,8 @@
 		"filesize" : "latest",
 		"octonode" : "0.3.1",
 		"gift" : "0.0.5",
-		"semver" : "1.1.4"
+		"semver" : "1.1.4",
+		"mkdirp" : "latest"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",
