@@ -44,6 +44,7 @@ VPForums.prototype.initAnnounce = function(app) {
 	an.notice('downloadPreparing', 'VPF: Preparing download', 60000);
 	an.notice('downloadStarted', 'VPF: Downloading "{{filename}}"', 300000);
 	an.notice('downloadCompleted', 'VPF: {{size}} bytes downloaded.');
+	an.notice('downloadFailed', 'VPF: Download failed: {{message}}');
 
 	// login()
 	an.notice('loginStarted', 'VPF: Logging in as "{{user}}"', 30000);
@@ -177,6 +178,9 @@ VPForums.prototype._watchDownload = function(filename, contentLength, reference)
 };
 
 VPForums.prototype._unWatchDownload = function(filename) {
+	if (!this.watches[filename]) {
+		return;
+	}
 	clearInterval(this.watches[filename]);
 	fs.closeSync(this.openFiles[filename]);
 	delete this.watches[filename];
@@ -218,30 +222,57 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 							var downloadUrl = m[1].replace(/&amp;/g, '&');
 							var filename = m[2].trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
 							var dest = folder + '/' + filename;
+							var failed = false;
+
 							that.emit('downloadStarted', { filename: filename, destpath: dest, reference: reference });
 							console.log('[vpf] Downloading %s at %s...', filename, downloadUrl);
 							var stream = fs.createWriteStream(dest);
 							stream.on('close', function() {
+
 								var fd = fs.openSync(dest, 'r');
 								var size = fs.fstatSync(fd).size;
 								fs.closeSync(fd);
-								that.emit('downloadCompleted', { size: size, reference: reference });
-								console.log('[vpf] Downloaded %d bytes to %s.', size, dest);
-								that._unWatchDownload(dest);
 
-								if (size < 64000) {
+								// check for failed flags
+								if (failed || size < 128000) {
 									var data = fs.readFileSync(dest, 'utf8');
 									if (data.match(/You have exceeded the maximum number of downloads allotted to you for the day/i)) {
 										console.log('[vpf] Download data is error message, quitting.', size, dest);
-										return callback('Number of downloads exceeded at VPF.');
+										err = 'Number of daily downloads exceeded at VPF.';
+										that.emit('downloadFailed', { message: err });
+										return callback(err);
+									}
+									if (data.match(/You may not download any more files until your other downloads are complete/i)) {
+										console.log('[vpf] Too many simulataneous downloads, quitting.', size, dest);
+										err = 'Number of concurrent downloads exceeded at VPF.';
+										that.emit('downloadFailed', { message: err });
+										return callback(err);
+									}
+									if (failed) {
+										console.log('[vpf] Download failed, see %s what went wrong.', dest);
+										err = 'Download failed.';
+										that.emit('downloadFailed', { message: err });
+										return callback(err);
 									}
 								}
+
+								that.emit('downloadCompleted', { size: size, reference: reference });
+								console.log('[vpf] Downloaded %d bytes to %s.', size, dest);
+
+								that._unWatchDownload(dest);
 								callback(null, dest);
 							});
 							request(downloadUrl).on('response', function(response) {
-								console.log('[vpf] Got headers: %j', response.headers);
-								that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: reference });
-								that._watchDownload(dest, response.headers['content-length'], reference);
+
+								if (response.statusCode != 200) {
+									failed = true;
+									console.error('[vpf] Download failed with status code %s.', response.statusCode);
+									return;
+								}
+								if (response.headers['content-length']) {
+									that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: reference });
+									that._watchDownload(dest, response.headers['content-length'], reference);
+								}
 							}).pipe(stream);
 
 						} else {
