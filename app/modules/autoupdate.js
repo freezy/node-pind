@@ -251,7 +251,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 		var pindPath = path.normalize(__dirname + '../../../');
 
 		// if git repo is available, update via git
-		if (false && fs.existsSync(__dirname + '../../../.git')) {
+		if (fs.existsSync(__dirname + '../../../.git')) {
 
 			var repo = git(pindPath);
 
@@ -338,7 +338,8 @@ AutoUpdate.prototype.update = function(sha, callback) {
 				}
 				console.log('[autoupdate] Done, extracting now...');
 				// unzip each entry, trimming the first level of the folder structure.
-				fs.createReadStream(dest).pipe(unzip.Parse())
+				fs.createReadStream(dest)
+				.pipe(unzip.Parse())
 				.on('entry', function(entry) {
 					if (entry.type == 'File') {
 						var entryDest = path.normalize(pindPath + entry.path.substr(entry.path.indexOf('/') + 1));
