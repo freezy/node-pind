@@ -252,13 +252,18 @@ Transfer.prototype.next = function(callback) {
 										schema.Transfer.find(data.reference.id).success(function(row) {
 											if (row) {
 												row.updateAttributes({ size: data.contentLength });
+												console.log('[transfer] Updating size of transfer %s to %s.', data.reference.id, data.contentLength);
+												that.emit('transferSizeKnown', {
+													id: data.reference.id,
+													size: data.contentLength,
+													displaySize: filesize(data.contentLength, true)
+												});
+
+											} else {
+												console.error('[transfer] Could not find transfer with id %s for updating size to %s.', data.reference.id, data.contentLength);
 											}
 										});
-										that.emit('transferSizeKnown', {
-											id: data.reference.id,
-											size: data.contentLength,
-											displaySize: filesize(data.contentLength, true)
-										});
+
 									}
 								});
 

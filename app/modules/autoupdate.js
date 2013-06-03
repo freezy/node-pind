@@ -417,6 +417,7 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 	var repo = client.repo(settings.pind.repository.user + '/' + settings.pind.repository.repo);
 
 	// retrieve all tags from node-pind repo
+	console.log('[autoupdate] Retrieving tags from GitHub');
 	repo.tags(function(err, tagArray) {
 		if (err) {
 			return callback(err);
@@ -425,17 +426,18 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 		// loop through versions and collect those later than current
 		var tags = {};
 		var newerTags = [];
-		var clearVer = semver.clean(version.version);
+		var cleanVer = semver.clean(version.version);
 		for (var i = 0; i < tagArray.length; i++) {
 			var tag = tagArray[i];
 			if (semver.valid(tag.name)) {
 				var cleanTagVer = semver.clean(tag.name);
-				if (semver.gt(cleanTagVer, clearVer)) {
+				if (semver.gt(cleanTagVer, cleanVer)) {
 					newerTags.push(cleanTagVer)
 				}
 				tags[cleanTagVer] = tag;
 			}
 		}
+		console.log('[autoupdate] Found %d tags, getting latest.', tagArray.length);
 
 		// sort and pop the latest
 		if (newerTags.length > 0) {
@@ -443,6 +445,7 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 			var lastTag = tags[newerTags[0]];
 
 			// retrieve commit date
+			console.log('[autoupdate] Getting commit data for release %s', lastTag.name);
 			that._getCommit(lastTag.commit.url, function(err, commit) {
 				callback(null, {
 					version: lastTag.name,
@@ -452,7 +455,8 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 				});
 			});
 		} else {
-			callback();
+			console.log('[autoupdate] No later tags than %s found.', cleanVer);
+			callback(null, { noUpdates: true });
 		}
 	});
 };
@@ -516,6 +520,5 @@ AutoUpdate.prototype._readVersion = function() {
 	}
 	return null;
 };
-
 
 module.exports = AutoUpdate;

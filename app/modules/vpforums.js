@@ -239,6 +239,7 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 								callback(null, dest);
 							});
 							request(downloadUrl).on('response', function(response) {
+								console.log('[vpf] Got headers: %j', response.headers);
 								that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: reference });
 								that._watchDownload(dest, response.headers['content-length'], reference);
 							}).pipe(stream);
