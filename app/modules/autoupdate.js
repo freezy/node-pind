@@ -3,7 +3,9 @@ var fs = require('fs');
 var git = require('gift');
 var util = require('util');
 var path = require('path');
+var diff = require('diff');
 var exec = require('child_process').exec;
+var async = require('async');
 var unzip = require('unzip');
 var events = require('events');
 var semver = require('semver');
@@ -17,7 +19,7 @@ var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 var version = null;
 
-var dryRun = false;
+var dryRun = true;
 
 /**
  * Manages the application self-updates.
@@ -208,8 +210,15 @@ AutoUpdate.prototype.newVersionAvailable = function(callback) {
  */
 AutoUpdate.prototype.update = function(sha, callback) {
 
-
 	var that = this;
+
+	// save current package.json and settings.js
+	var oldConfig = {
+		packageJson: JSON.parse(fs.readFileSync(__dirname + '../../../package.json').toString()),
+		settingsJs: fs.readFileSync(__dirname + '../../../config/settings.js').toString()
+	};
+
+	// retrieve commit
 	that._getCommit('https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits/' + sha, function(err, commit) {
 
 		if (err) {
@@ -225,28 +234,6 @@ AutoUpdate.prototype.update = function(sha, callback) {
 		}
 
 		that.emit('updateStarted');
-
-		// ran when update was completed.
-		var done = function(err) {
-
-			if (err) {
-				console.log('[autoupdate] ERROR: ' + err);
-				that.emit('updateFailed', { error: err });
-				return callback(err);
-			}
-
-			// update version.json
-			that.setVersion(commit);
-
-			console.log('[autoupdate] Update complete.');
-			that.emit('updateCompleted', commit);
-			console.log('[autoupdate] Killing process in 2 seconds.');
-			setTimeout(function() {
-				console.log('[autoupdate] kthxbye');
-				process.kill(process.pid, 'SIGTERM');
-			}, 2000);
-			callback(null, version);
-		};
 
 		var pindPath = path.normalize(__dirname + '../../../');
 
@@ -265,7 +252,9 @@ AutoUpdate.prototype.update = function(sha, callback) {
 				// skip update, just run done after 5s
 				if (dryRun) {
 					console.log('[autoupdate] Simulating update...');
-					setTimeout(done, 5000);
+					setTimeout(function() {
+						that._postExtract(err, oldConfig, commit, callback);
+					}, 5000);
 					return;
 				}
 
@@ -290,7 +279,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 								console.log('[autoupdate] Re-applying stash');
 								repo.git('stash', {}, ['apply'], done);
 							} else {
-								done();
+								that._postExtract(err, oldConfig, commit, callback);
 							}
 						});
 					});
@@ -361,7 +350,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 				}).on('close', function() {
 					console.log('[autoupdate] Done, cleaning up %s', dest);
 					fs.unlinkSync(dest);
-					done();
+						that._postExtract(err, oldConfig, commit, callback);
 				});
 
 			});
@@ -381,6 +370,89 @@ AutoUpdate.prototype.update = function(sha, callback) {
 		}
 
 	});
+};
+
+/**
+ * Executed once extraction has been completed.
+ *
+ *    - Compares package.json and runs npm install if necessary
+ *    - Compares settings.js and patches settings-mine.js if necessary
+ *    - Checks for database migrations and runs them if necessary
+ *    - Kills node process
+ *
+ * @param err Error message if error while extracting.
+ * @param oldConfig Object containing <tt>packageJson</tt> (object) and <tt>settingsJs</tt> (String) of the original configuration
+ * @param newCommit Commit object from GitHub of the new version.
+ * @param callback
+ * @returns {*}
+ * @private
+ */
+AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback) {
+
+	// check for errors
+	var that = this;
+	if (err) {
+		console.log('[autoupdate] ERROR: ' + err);
+		that.emit('updateFailed', { error: err });
+		return callback(err);
+	}
+	var oldVersion = that.getVersion();
+	var pindPath = path.normalize(__dirname + '../../../');
+
+	// read updated package and settings
+	var newConfig = {
+		packageJson: JSON.parse(fs.readFileSync(__dirname + '../../../package.json').toString()),
+		settingsJs: fs.readFileSync(__dirname + '../../../config/settings-new.js').toString()
+	};
+
+	var checkNewDependencies = function(next) {
+		var newPackages = _.difference(_.keys(oldConfig.packageJson.dependencies), _.keys(newConfig.packageJson.dependencies));
+		if (newPackages.length > 0) {
+			console.log('[autoupdate] Found new dependencies: [' + newPackages.join(' ') + '], running `npm install`.');
+			exec('npm install', { cwd: pindPath }, next);
+		} else {
+			console.log('[autoupdate] No new dependencies found.');
+			next();
+		}
+	};
+
+	var checkNewSettings = function(next) {
+		if (oldConfig.settingsJs != newConfig.settingsJs) {
+			console.log('[autoupdate] Different settings.js detected, patching settings-mine.js...');
+
+			var normalize = function(text) {
+				return text.replace(/([a-z][a-z\d]+\s*:\s*')([^']+)(')/gi, '\$1\$3');
+			};
+
+			var patch = diff.createPatch('settings.js', normalize(oldConfig.settingsJs), normalize(newConfig.settingsJs));
+			var settingsMine = normalize(fs.readFileSync(__dirname + '../../../config/settings-mine.js').toString());
+			var patchedSettingsMine = diff.applyPatch(settingsMine, patch);
+			console.log('\n===================================\nBEFORE = \n%s', settingsMine);
+			console.log('\n===================================\nDIFF = \n%s', patch);
+			console.log('\n===================================\nAFTER = \n%s', patchedSettingsMine);
+
+		} else {
+			console.log('[autoupdate] Settings are identical, moving on.');
+			next();
+		}
+	};
+
+	var updateAndRestart = function(next) {
+		// update version.json
+		that.setVersion(newCommit);
+
+		console.log('[autoupdate] Update complete.');
+		that.emit('updateCompleted', newCommit);
+		console.log('[autoupdate] Killing process in 2 seconds.');
+		setTimeout(function() {
+			console.log('[autoupdate] kthxbye');
+			process.kill(process.pid, 'SIGTERM');
+		}, 2000);
+		next(null, version);
+	};
+
+	async.series([ checkNewDependencies, checkNewSettings ], callback);
+//	async.series([ checkNewDependencies, checkNewSettings ], updateAndRestart);
 };
 
 /**

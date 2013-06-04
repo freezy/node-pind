@@ -7,6 +7,7 @@ var app = require('./server')();
 var au = require('./app/modules/autoupdate')();
 
 //git();
+postExtract();
 
 function git() {
 	au.update({ sha: '8721605a0fd32594dea1fb53f60c4cca363daf1a', commit: { committer: { date: '2013-06-01T10:31:10Z' }}}, function(err, result) {
@@ -16,6 +17,22 @@ function git() {
 			console.log("Done, got: %s", util.inspect(result));
 		}
 	});
+}
+
+function postExtract() {
+
+	var newConfig = {
+		packageJson: JSON.parse(fs.readFileSync(__dirname + '/package.json').toString()),
+		settingsJs: fs.readFileSync(__dirname + '/config/settings.js').toString()
+	};
+	au._postExtract(null, newConfig, null, function() {
+		if (err) {
+			console.log("****** all done (%s)", err);
+		} else {
+			console.log("****** all done.");
+		}
+	})
+
 }
 
 app.compound.on('ready', function() {
@@ -32,13 +49,11 @@ app.compound.on('ready', function() {
 	var log = require('winston');
 	log.cli();
 
-
-
 //	cacheAllTableDownloads();
 //	nextDownload();
 
 //	assertHiscores();
-	extractMedia('E:/tmp/Party.Animal.FS.rar');
+//	extractMedia('E:/tmp/Party.Animal.FS.rar');
 //	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.zip');
 //	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
 //	vpParse();
