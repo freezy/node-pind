@@ -181,7 +181,7 @@ module.exports = {
 		 * Comment child
 		 * @type {String}
 		 */
-		foo: 'bar';
+		foo: 'bar'
 	},
 
 	/**
