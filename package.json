@@ -55,7 +55,8 @@
 		"gift" : "0.0.5",
 		"semver" : "1.1.4",
 		"mkdirp" : "latest",
-		"diff" : "latest"
+		"diff" : "latest",
+		"uglify-js2" : "2.1.11"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",

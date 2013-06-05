@@ -3,7 +3,6 @@ var fs = require('fs');
 var git = require('gift');
 var util = require('util');
 var path = require('path');
-var diff = require('diff');
 var exec = require('child_process').exec;
 var async = require('async');
 var unzip = require('unzip');
@@ -11,6 +10,7 @@ var events = require('events');
 var semver = require('semver');
 var github = require('octonode');
 var mkdirp = require('mkdirp');
+var uglify = require('uglify-js2');
 var request = require('request');
 var filesize = require('filesize');
 var relativeDate = require('relative-date');
@@ -70,11 +70,12 @@ AutoUpdate.prototype.initVersion = function(callback) {
 
 	var that = this;
 	var packageVersion = this._getPackageVersion();
+	var repo;
 
 	// retrieve version from local git repo first (hash from .git, version from package.json)
 	if (fs.existsSync(__dirname + '../../../.git')) {
 
-		var repo = git(path.normalize(__dirname + '../../../'));
+		repo = git(path.normalize(__dirname + '../../../'));
 		repo.commits('master', 1, function(err, commits) {
 			var commit = commits[0];
 			that.setVersion(commit.id, commit.committed_date, packageVersion);
@@ -92,7 +93,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
 	// no git and no version.json, so let's retrieve commit data from github.
 	console.log('[autoupdate] No version.json found, retrieving data from package.json and GitHub.');
 	var client = github.client();
-	var repo = client.repo(settings.pind.repository.user + '/' + settings.pind.repository.repo);
+	repo = client.repo(settings.pind.repository.user + '/' + settings.pind.repository.repo);
 
 	// retrieve all tags from node-pind repo
 	repo.tags(function(err, tagArray) {
@@ -396,7 +397,6 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		that.emit('updateFailed', { error: err });
 		return callback(err);
 	}
-	var oldVersion = that.getVersion();
 	var pindPath = path.normalize(__dirname + '../../../');
 
 	// read updated package and settings
@@ -418,18 +418,110 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 
 	var checkNewSettings = function(next) {
 		if (oldConfig.settingsJs != newConfig.settingsJs) {
-			console.log('[autoupdate] Different settings.js detected, patching settings-mine.js...');
 
-			var normalize = function(text) {
-				return text.replace(/([a-z][a-z\d]+\s*:\s*')([^']+)(')/gi, '\$1\$3');
+			/**
+			 * Returns an array of path names (sepearted separated by ".") for all
+			 * attributes in newTree that are not in oldTree.
+			 *
+			 * @param oldTree Settings object before
+			 * @param newTree Settings object after
+			 * @param parent Parent path, only needed when called recursively.
+			 * @returns {Array}
+			 */
+			var diff = function(oldTree, newTree, parent) {
+				parent = parent ? parent : '';
+				var newProps = _.difference(_.keys(newTree), _.keys(oldTree));
+				var comProps = _.intersection(_.keys(newTree), _.keys(oldTree));
+				var newValues = _.map(newProps, function(key) {
+					return parent ? parent + '.' + key : key;
+				});
+				for (var i = 0; i < comProps.length; i++) {
+					var prop = oldTree[comProps[i]];
+					if (_.isObject(prop)) {
+						var p = parent ? parent + '.' + comProps[i] : comProps[i];
+						newValues = newValues.concat(diff(oldTree[comProps[i]], newTree[comProps[i]], p));
+					}
+				}
+				return newValues;
 			};
 
-			var patch = diff.createPatch('settings.js', normalize(oldConfig.settingsJs), normalize(newConfig.settingsJs));
-			var settingsMine = normalize(fs.readFileSync(__dirname + '../../../config/settings-mine.js').toString());
-			var patchedSettingsMine = diff.applyPatch(settingsMine, patch);
-			console.log('\n===================================\nBEFORE = \n%s', settingsMine);
-			console.log('\n===================================\nDIFF = \n%s', patch);
-			console.log('\n===================================\nAFTER = \n%s', patchedSettingsMine);
+			/**
+			 * Takes the AST object and hacks it into sub-objects per property. Returns
+			 * a dictionary with path separated by "." as key, and sub-tree as value.
+			 *
+			 * Since this is a recursive function, only the first parameter must be
+			 * provided at first run.
+			 *
+			 * @param tree Current subtree
+			 * @param path Current path
+			 * @param node If property found, this is the subtree
+			 * @returns {Object}
+			 */
+			var analyze = function(tree, path, node) {
+				var nodes = {};
+				if (node) {
+					nodes[path] = node;
+				}
+				var i;
+				if (tree.right) {
+					_.extend(nodes, analyze(tree.right, path, false));
+				} else if (tree.properties) {
+					for (i = 0; i < tree.properties.length; i++) {
+						var nextPath = (path ? path + '.' : '') + tree.properties[i].key;
+						_.extend(nodes, analyze(tree.properties[i].value, nextPath, tree.properties[i]));
+					}
+				} else if (tree.body) {
+					if (_.isArray(tree.body)) {
+						for (i = 0; i < tree.body.length; i++) {
+							_.extend(nodes, analyze(tree.body[i], path, false));
+						}
+					} else {
+						_.extend(nodes, analyze(tree.body, path, false));
+					}
+				}
+				return nodes;
+			};
+
+			var inject = function(settingsPatched, codeBlock, pos, parentPath) {
+				var before = settingsPatched.substr(0, pos);
+				var after = settingsPatched.substr(pos);
+				var level = parentPath ? parentPath.split('.').length : 0;
+				var indent = '';
+				for (var i = 0; i < level; i++) {
+					indent += '\t';
+				}
+				return before.trim() + ',\n\t' + indent + codeBlock.trim() + '\n' + indent + after.trim();
+			};
+
+			// 1. retrieve added properties
+			var oldTree = {};
+			var newTree = {};
+			eval(oldConfig.settingsJs.replace(/module\.exports\s*=\s*\{/, 'oldTree = {'));
+			eval(newConfig.settingsJs.replace(/module\.exports\s*=\s*\{/, 'newTree = {'));
+			var newProps = diff(oldTree, newTree);
+
+			// 2. retrieve code blocks of added properties
+			var nodesNew = analyze(uglify.parse(newConfig.settingsJs));
+
+			// 3. inject code blocks into old config
+			var settingsPatched = oldConfig.settingsJs.trim();
+			_.each(_.pick(nodesNew, newProps), function(node, path) {
+				var start = node.start.comments_before.length > 0 ? node.start.comments_before[0].pos : node.start.pos;
+				var codeBlock = newConfig.settingsJs.substr(start - 2, node.end.endpos - start + 2);
+
+				// inject at the end of an element
+				if (path.indexOf('.') > 0) {
+					var parentPath = path.substr(0, path.lastIndexOf('.'));
+					var ast = analyze(uglify.parse(settingsPatched));
+					settingsPatched = inject(settingsPatched, codeBlock, ast[parentPath].end.pos, parentPath);
+
+				// inject the end of the file.
+				} else {
+					settingsPatched = inject(settingsPatched, codeBlock, settingsPatched.length - 2);
+				}
+
+			});
+			console.log(settingsPatched);
 
 		} else {
 			console.log('[autoupdate] Settings are identical, moving on.');
