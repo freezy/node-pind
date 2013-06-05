@@ -121,7 +121,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
 			}
 		}
 
-		// no match. that means, the local copy isn't a tagged version
+		// no match. that means the local copy isn't a tagged version
 		// but something like 0.0.3-pre. in this case, get the previous
 		// tagged version, which would be 0.0.2.
 		if (!matchedTag) {
@@ -227,6 +227,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 			return callback('Cannot retrieve commit for revision "' + sha + '": ' + err);
 		}
 
+		// make sure we're not downgrading
 		var v = that._readVersion();
 		if (!dryRun && Date.parse(commit.commit.committer.date) < Date.parse(v.date)) {
 			err = 'Not downgrading current version (' + v.date + ') to older commit (' + commit.commit.committer.date + ').';
@@ -260,7 +261,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 				}
 
 				// fetches and rebases from remote repository
-				var update = function(callback) {
+				var update = function(popStash, callback) {
 					console.log('[autoupdate] Fetching update from GitHub');
 					repo.remote_fetch('origin master', function(err) {
 						if (err) {
@@ -276,9 +277,11 @@ AutoUpdate.prototype.update = function(sha, callback) {
 							}
 
 							// if stashed, re-apply changes.
-							if (trackedFiles.length > 0) {
+							if (popStash) {
 								console.log('[autoupdate] Re-applying stash');
-								repo.git('stash', {}, ['apply'], done);
+								repo.git('stash', {}, ['apply'], function() {
+									that._postExtract(err, oldConfig, commit, callback);
+								});
 							} else {
 								that._postExtract(err, oldConfig, commit, callback);
 							}
@@ -306,15 +309,16 @@ AutoUpdate.prototype.update = function(sha, callback) {
 							that.emit('updateFailed', { error: err });
 							return callback(err);
 						}
-						update(callback);
+						update(true, callback);
 					});
 				} else {
-					update(callback);
+					update(false, callback);
 				}
 			});
 
 		// otherwise, update via zipball
 		} else {
+
 			// download zipball
 			var url = 'https://github.com/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/archive/' + sha + '.zip';
 			var dest = settings.pind.tmp + '/node-pind-' + sha + '.zip';
@@ -464,7 +468,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 				}
 				var i;
 				if (tree.right) {
-					_.extend(nodes, analyze(tree.right, path, false));
+					_.extend(nodes, analyze(tree.right, path));
 				} else if (tree.properties) {
 					for (i = 0; i < tree.properties.length; i++) {
 						var nextPath = (path ? path + '.' : '') + tree.properties[i].key;
@@ -473,10 +477,10 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 				} else if (tree.body) {
 					if (_.isArray(tree.body)) {
 						for (i = 0; i < tree.body.length; i++) {
-							_.extend(nodes, analyze(tree.body[i], path, false));
+							_.extend(nodes, analyze(tree.body[i], path));
 						}
 					} else {
-						_.extend(nodes, analyze(tree.body, path, false));
+						_.extend(nodes, analyze(tree.body, path));
 					}
 				}
 				return nodes;
