@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var fs = require('fs');
+var npm = require('npm');
 var git = require('gift');
 var util = require('util');
 var path = require('path');
@@ -19,7 +20,7 @@ var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 var version = null;
 
-var dryRun = true;
+var dryRun = false;
 
 /**
  * Manages the application self-updates.
@@ -410,15 +411,35 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 	};
 
 	// use another file to compare for dry runs if available.
-	if (dryRun && fs.existsSync(__dirname + '../../../config/settings-new.js')) {
-		newConfig.settingsJs = fs.readFileSync(__dirname + '../../../config/settings-new.js').toString().replace(/\x0D\x0A/gi, '\n');
+	if (dryRun) {
+		if (fs.existsSync(__dirname + '../../../package-new.json')) {
+			newConfig.packageJson = JSON.parse(fs.readFileSync(__dirname + '../../../package-new.json').toString());
+		}
+		if (fs.existsSync(__dirname + '../../../config/settings-new.js')) {
+			newConfig.settingsJs = fs.readFileSync(__dirname + '../../../config/settings-new.js').toString().replace(/\x0D\x0A/gi, '\n');
+		}
 	}
 
 	var checkNewDependencies = function(next) {
-		var newPackages = _.difference(_.keys(oldConfig.packageJson.dependencies), _.keys(newConfig.packageJson.dependencies));
+		var newPackages = _.difference(_.keys(newConfig.packageJson.dependencies), _.keys(oldConfig.packageJson.dependencies));
 		if (newPackages.length > 0) {
 			console.log('[autoupdate] Found new dependencies: [' + newPackages.join(' ') + '], running `npm install`.');
-			exec('npm install', { cwd: pindPath }, next);
+			npm.load({}, function(err) {
+				if (err) {
+					return next(err);
+				}
+				npm.on('log', function(message) {
+					console.log('[autoupdate] [npm] ' + message);
+				});
+				npm.commands.install([], function(err) {
+					if (err) {
+						console.log('[autoupdate] Error updating dependencies: ' + err);
+						return next(err);
+					}
+					console.log('[autoupdate] NPM update successful.');
+					next();
+				});
+			});
 		} else {
 			console.log('[autoupdate] No new dependencies found.');
 			next();
@@ -569,6 +590,11 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		}
 	};
 
+	var checkNewMigration = function(next) {
+		// TODO
+		next();
+	}
+
 	var updateAndRestart = function(next) {
 		// update version.json
 		if (!dryRun) {
@@ -585,13 +611,12 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		next(null, version);
 	};
 
-	async.series([ checkNewDependencies, checkNewSettings ], function(err) {
+	async.series([ checkNewDependencies, checkNewSettings, checkNewMigration ], function(err) {
 		if (err) {
 			return callback(err);
 		}
 		updateAndRestart(callback);
 	});
-//	async.series([ checkNewDependencies, checkNewSettings ], updateAndRestart);
 };
 
 /**

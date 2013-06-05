@@ -2,6 +2,8 @@
 app/server/modules/email-settings-mine.js
 bin/pinemhi.ini
 settings-mine.js
+settings-new.js
+package-new.json
 version.json
 test*.js
 *.db

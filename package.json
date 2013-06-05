@@ -56,7 +56,8 @@
 		"semver" : "1.1.4",
 		"mkdirp" : "latest",
 		"diff" : "latest",
-		"uglify-js2" : "2.1.11"
+		"uglify-js2" : "2.1.11",
+		"npm": "1.2.25"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",
