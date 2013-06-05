@@ -100,7 +100,13 @@ module.exports = {
 		 */
 		repository: {
 			user: 'freezy',
-			repo: 'node-pind'
+			repo: 'node-pind',
+			/**
+			 * This should be injected into settings-mine.js.
+			 * At the correct place obviously.
+			 * @type {String}
+			 */
+			fakeSetting: 'deletmeAfter'
 		},
 
 		/**
@@ -167,6 +173,18 @@ module.exports = {
 	},
 
 	/**
+	 * Comment root
+	 * @type {Object}
+	 */
+	newFakeRootSetting: {
+		/**
+		 * Comment child
+		 * @type {String}
+		 */
+		foo: 'bar';
+	},
+
+	/**
 	 * VPForums.org-specific settings.
 	 */
 	vpforums: {
@@ -179,6 +197,7 @@ module.exports = {
 		/**
 		 * Number of concurrent downloads allowed.
 		 */
-		numConcurrentDownloads: 3
+		numConcurrentDownloads: 3,
+		anotherFakeSetting: 'fooobar.'
 	}
 };
