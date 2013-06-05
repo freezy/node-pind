@@ -559,12 +559,8 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 					console.log('[autoupdate] settings-mine.js already contains "' + path + '", skipping.');
 				}
 			}
-			if (!dryRun) {
-				fs.writeFileSync(settingsMinePath, settingsPatched);
-				console.log('[autoupdate] Updated settings-mine.js.');
-			} else {
-				console.log(settingsPatched);
-			}
+			fs.writeFileSync(settingsMinePath, settingsPatched);
+			console.log('[autoupdate] Updated settings-mine.js.');
 			next();
 
 		} else {
