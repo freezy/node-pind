@@ -25,9 +25,9 @@ function postExtract() {
 		packageJson: JSON.parse(fs.readFileSync(__dirname + '/package.json').toString()),
 		settingsJs: fs.readFileSync(__dirname + '/config/settings.js').toString()
 	};
-	au._postExtract(null, newConfig, null, function() {
+	au._postExtract(null, newConfig, null, function(err) {
 		if (err) {
-			console.log("****** all done (%s)", err);
+			console.log("****** ERROR: %s", err);
 		} else {
 			console.log("****** all done.");
 		}

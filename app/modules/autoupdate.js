@@ -216,7 +216,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 	// save current package.json and settings.js
 	var oldConfig = {
 		packageJson: JSON.parse(fs.readFileSync(__dirname + '../../../package.json').toString()),
-		settingsJs: fs.readFileSync(__dirname + '../../../config/settings.js').toString()
+		settingsJs: fs.readFileSync(__dirname + '../../../config/settings.js').toString().replace(/\x0D\x0A/gi, '\n')
 	};
 
 	// retrieve commit
@@ -406,8 +406,13 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 	// read updated package and settings
 	var newConfig = {
 		packageJson: JSON.parse(fs.readFileSync(__dirname + '../../../package.json').toString()),
-		settingsJs: fs.readFileSync(__dirname + '../../../config/settings-new.js').toString()
+		settingsJs: fs.readFileSync(__dirname + '../../../config/settings.js').toString().replace(/\x0D\x0A/gi, '\n')
 	};
+
+	// use another file to compare for dry runs if available.
+	if (dryRun && fs.existsSync(__dirname + '../../../config/settings-new.js')) {
+		newConfig.settingsJs = fs.readFileSync(__dirname + '../../../config/settings-new.js').toString().replace(/\x0D\x0A/gi, '\n');
+	}
 
 	var checkNewDependencies = function(next) {
 		var newPackages = _.difference(_.keys(oldConfig.packageJson.dependencies), _.keys(newConfig.packageJson.dependencies));
@@ -488,7 +493,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 				return nodes;
 			};
 
-			var inject = function(settingsPatched, codeBlock, pos, parentPath) {
+			var patch = function(settingsPatched, codeBlock, pos, parentPath) {
 				var before = settingsPatched.substr(0, pos);
 				var after = settingsPatched.substr(pos);
 				var level = parentPath ? parentPath.split('.').length : 0;
@@ -496,7 +501,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 				for (var i = 0; i < level; i++) {
 					indent += '\t';
 				}
-				return before.trim() + ',\n\t' + indent + codeBlock.trim() + '\n' + indent + after.trim();
+				return before.trim() + ',\n\t' + indent + codeBlock.trim().replace(/,$/, '') + '\n' + indent + after.trim();
 			};
 
 			// 1. retrieve added properties
@@ -514,38 +519,53 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			// 2. retrieve code blocks of added properties
 			var nodesNew = analyze(uglify.parse(newConfig.settingsJs));
 
-			// 3. inject code blocks into old config
-
-
+			// 3. inject code blocks into settings-mine.js
 			var settingsMinePath = __dirname + '../../../config/settings-mine.js';
-			var settingsPatched = fs.readFileSync(settingsMinePath).toString().trim();
-			_.each(_.pick(nodesNew, newProps), function(node, path) {
-				var ast = analyze(uglify.parse(settingsPatched));
+			var settingsPatched = fs.readFileSync(settingsMinePath).toString().trim().replace(/\x0D\x0A/gi, '\n');
+			var settingsNew = _.pick(nodesNew, newProps);
+			var settingsNewKeys = _.keys(settingsNew);
+			for (var i = 0; i < settingsNewKeys.length; i++) {
+				var path = settingsNewKeys[i]; // path in settings to be added
+				var node = settingsNew[path];  // ast node corresponding to the setting to be added
+				try {
+					// analyze current settings-mine, so we know where to inject
+					var ast = analyze(uglify.parse(settingsPatched));
+				} catch(err) {
+					console.error('[autoupdate] Error parsing patched file: ' + err);
+					return next('Error patching settings-mine.js.');
+				}
 
 				// check if not already available
 				if (!ast[path]) {
-					console.log('[autoupdate] Patching settings-mine.js with "' + path + '"');
-					var start = node.start.comments_before.length > 0 ? node.start.comments_before[0].pos : node.start.pos;
-					var codeBlock = newConfig.settingsJs.substr(start - 2, node.end.endpos - start + 2);
+					console.log('[autoupdate] Patching settings-mine.js with setting "' + path + '"');
+
+					var comment = node.start.comments_before.length > 0;
+					var start = comment ? node.start.comments_before[0].pos - 2 : node.start.pos;
+					var len = comment ? node.end.endpos - start + 2 : node.end.endpos - start;
+					var codeBlock = newConfig.settingsJs.substr(start, len).trim();
+//					console.log('\n===============\n%s\n===============\n', util.inspect(node, false, 10, true));
 
 					// inject at the end of an element
 					if (path.indexOf('.') > 0) {
 						var parentPath = path.substr(0, path.lastIndexOf('.'));
-						settingsPatched = inject(settingsPatched, codeBlock, ast[parentPath].end.pos, parentPath);
+						settingsPatched = patch(settingsPatched, codeBlock, ast[parentPath].end.pos, parentPath);
 
 					// inject the end of the file.
 					} else {
-						settingsPatched = inject(settingsPatched, codeBlock, settingsPatched.length - 2);
+						settingsPatched = patch(settingsPatched, codeBlock, settingsPatched.length - 2);
 					}
 
 				} else {
 					console.log('[autoupdate] settings-mine.js already contains "' + path + '", skipping.');
 				}
-			});
-			fs.writeFileSync(settingsMinePath, settingsPatched);
-			console.log('[autoupdate] Updated settings-mine.js.');
-
-			console.log(settingsPatched);
+			}
+			if (!dryRun) {
+				fs.writeFileSync(settingsMinePath, settingsPatched);
+				console.log('[autoupdate] Updated settings-mine.js.');
+			} else {
+				console.log(settingsPatched);
+			}
+			next();
 
 		} else {
 			console.log('[autoupdate] Settings are identical, moving on.');
@@ -555,7 +575,9 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 
 	var updateAndRestart = function(next) {
 		// update version.json
-		that.setVersion(newCommit);
+		if (!dryRun) {
+			that.setVersion(newCommit);
+		}
 
 		console.log('[autoupdate] Update complete.');
 		that.emit('updateCompleted', newCommit);
@@ -567,7 +589,12 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		next(null, version);
 	};
 
-	async.series([ checkNewDependencies, checkNewSettings ], callback);
+	async.series([ checkNewDependencies, checkNewSettings ], function(err) {
+		if (err) {
+			return callback(err);
+		}
+		updateAndRestart(callback);
+	});
 //	async.series([ checkNewDependencies, checkNewSettings ], updateAndRestart);
 };
 
