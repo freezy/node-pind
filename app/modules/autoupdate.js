@@ -421,7 +421,9 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 	};
 
 	var checkNewSettings = function(next) {
+
 		if (oldConfig.settingsJs != newConfig.settingsJs) {
+			console.log('[autoupdate] Checking for new settings.');
 
 			/**
 			 * Returns an array of path names (sepearted separated by ".") for all
@@ -503,28 +505,46 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			eval(oldConfig.settingsJs.replace(/module\.exports\s*=\s*\{/, 'oldTree = {'));
 			eval(newConfig.settingsJs.replace(/module\.exports\s*=\s*\{/, 'newTree = {'));
 			var newProps = diff(oldTree, newTree);
+			if (newProps.length == 0) {
+				console.log('[autoupdate] No new settings found.');
+				return next();
+			}
+			console.log('[autoupdate] Found new settings: [' + newProps.join(', ') + ']');
 
 			// 2. retrieve code blocks of added properties
 			var nodesNew = analyze(uglify.parse(newConfig.settingsJs));
 
 			// 3. inject code blocks into old config
-			var settingsPatched = oldConfig.settingsJs.trim();
+
+
+			var settingsMinePath = __dirname + '../../../config/settings-mine.js';
+			var settingsPatched = fs.readFileSync(settingsMinePath).toString().trim();
 			_.each(_.pick(nodesNew, newProps), function(node, path) {
-				var start = node.start.comments_before.length > 0 ? node.start.comments_before[0].pos : node.start.pos;
-				var codeBlock = newConfig.settingsJs.substr(start - 2, node.end.endpos - start + 2);
+				var ast = analyze(uglify.parse(settingsPatched));
 
-				// inject at the end of an element
-				if (path.indexOf('.') > 0) {
-					var parentPath = path.substr(0, path.lastIndexOf('.'));
-					var ast = analyze(uglify.parse(settingsPatched));
-					settingsPatched = inject(settingsPatched, codeBlock, ast[parentPath].end.pos, parentPath);
+				// check if not already available
+				if (!ast[path]) {
+					console.log('[autoupdate] Patching settings-mine.js with "' + path + '"');
+					var start = node.start.comments_before.length > 0 ? node.start.comments_before[0].pos : node.start.pos;
+					var codeBlock = newConfig.settingsJs.substr(start - 2, node.end.endpos - start + 2);
 
-				// inject the end of the file.
+					// inject at the end of an element
+					if (path.indexOf('.') > 0) {
+						var parentPath = path.substr(0, path.lastIndexOf('.'));
+						settingsPatched = inject(settingsPatched, codeBlock, ast[parentPath].end.pos, parentPath);
+
+					// inject the end of the file.
+					} else {
+						settingsPatched = inject(settingsPatched, codeBlock, settingsPatched.length - 2);
+					}
+
 				} else {
-					settingsPatched = inject(settingsPatched, codeBlock, settingsPatched.length - 2);
+					console.log('[autoupdate] settings-mine.js already contains "' + path + '", skipping.');
 				}
-
 			});
+			fs.writeFileSync(settingsMinePath, settingsPatched);
+			console.log('[autoupdate] Updated settings-mine.js.');
+
 			console.log(settingsPatched);
 
 		} else {
