@@ -25,7 +25,7 @@
 		"express": "~3.x",
 		"socket.io": "latest",
 		"compound" : "latest",
-		"sequelize" : ">= 1.6.0",
+		"sequelize" : "2.0.0-alpha1",
 		"sequelize-sqlite" : "latest",
 		"sqlite3" : "latest",
 		"coffee-script" : ">= 1.1.1",
