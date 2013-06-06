@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 "use strict";
 
+var path = require('path');
 var util = require('util');
 var childProcess = require('child_process');
 var spawn = childProcess.spawn;
@@ -14,7 +15,8 @@ var start = function() {
 	util.log('\x1B[32m[pind] Starting server\x1B[0m');
 
 	lastStart = +new Date();
-	child = spawn('node', ['server.js'], {
+	var server = path.normalize( __dirname + '/server.js' );
+	child = spawn('node', [server], {
 		stdio: ['pipe', process.stdout, process.stderr]
 	});
 
