@@ -1588,7 +1588,7 @@ hr {
 .thumbnail-content {
   position: relative;
   overflow: hidden;
-  height: 250px;
+  height: 340px;
 }
 .thumbnail-content h3 {
   font-weight: 700;
@@ -1596,19 +1596,44 @@ hr {
   margin-bottom: 25px;
   line-height: 24px;
 }
-.thumbnail-content .thumbnail-inner {
+.thumbnail-content .slide-top {
   padding: 15px;
+  height: 250px;
+  overflow: hidden;
 }
-.thumbnail-content .top {
+.thumbnail-content .slide-bottom {
+  padding: 15px;
+  height: 250px;
+  overflow: hidden;
+}
+.thumbnail-content .slider {
   width: 100%;
   position: absolute;
   overflow: hidden;
-  top: -255px;
+  top: -286px;
 }
-.thumbnail-content .bottom {
-  width: 100%;
-  position: absolute;
-  overflow: hidden;
+.thumbnail-content .slider > img {
+  cursor: pointer;
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -webkit-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.thumbnail-content .slider > img.bottom {
+  -moz-border-radius-topleft: 0px;
+  -webkit-border-top-left-radius: 0px;
+  border-top-left-radius: 0px;
+  -moz-border-radius-topright: 0px;
+  -webkit-border-top-right-radius: 0px;
+  border-top-right-radius: 0px;
+  -moz-border-radius-bottomleft: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 .thumbnails.tables li {
   text-align: center;

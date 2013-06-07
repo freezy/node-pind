@@ -1390,7 +1390,7 @@ hr
 .thumbnail-content
 	position relative
 	overflow hidden
-	height 250px
+	height 340px
 
 	h3
 		font-weight 700
@@ -1398,18 +1398,29 @@ hr
 		margin-bottom 25px
 		line-height 24px	
 	
-	.thumbnail-inner
+	.slide-top
 		padding 15px
+		height 250px
+		overflow hidden
+	.slide-bottom
+		padding 15px
+		height 250px
+		overflow hidden
 
-	.top
+	.slider
 		width 100%
 		position absolute
 		overflow hidden
-		top -255px
-	.bottom
-		width 100%
-		position absolute
-		overflow hidden		
+		top -286px
+		& > img 
+			cursor pointer
+			border-radius-topleft 3px
+			border-radius-topright 3px
+		& > img.bottom	
+			border-radius-topleft 0px
+			border-radius-topright 0px
+			border-radius-bottomleft 3px
+			border-radius-bottomright 3px
 
 
 .thumbnails

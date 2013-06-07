@@ -53,36 +53,28 @@ pindAppModule.directive('slider', function() {
 		link: function(scope, element, attrs) {
 
 			var running = false;
+			var down = false;
 			var duration = parseInt(attrs['slider']);
-			var top = element.find('.thumbnail-content .top');
-			var bottom = element.find('.thumbnail-content .bottom');
+			var slider = element.find('.thumbnail-content .slider');
 
-			element.find('.thumbnail > img').mouseenter(function() {
+			element.find('.slider > img').click(function() {
 
+				var img = $(this);
 				if (running) {
-					top.stop();
-					bottom.stop();
+					slider.stop();
 				}
+				var pos = down ? { top: '-286px' } : { top : (54 - img.height()) + 'px' };
 				running = true;
-				top.animate({ top : '0px' }, duration, function() {
+				down = !down;
+				slider.animate(pos, duration, function() {
 					running = false;
-				});
-				bottom.animate({ top : '250px' }, duration, function() {
-					running = false;
+					if (down) {
+						img.addClass('bottom');
+					} else {
+						img.removeClass('bottom');
+					}
 				});
 
-			}).mouseleave(function() {
-				if (running) {
-					top.stop();
-					bottom.stop();
-				}
-				running = true;
-				top.animate({ top: '-250px' }, duration, function() {
-					running = false;
-				});
-				bottom.animate({ top: '0px' }, duration, function() {
-					running = false;
-				});
 			});
 		}
 	}

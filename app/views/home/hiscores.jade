@@ -36,20 +36,19 @@ block content
 					ul.thumbnails.hiscores
 						li.span4(ng-repeat='table in data', slider='200', tb-768-980='span6')
 							.thumbnail
-								img(ng-src='{{table.url_banner_small}}')
 								.thumbnail-content
-									.top
-										hr
-										.thumbnail-inner
+									.slider
+										.slide-top
 											h3 {{table.name}}
 											ul.ranking.champ
 												li(ng-repeat="hiscore in getHiscores(table, 'special')", class="{{hiscore.class}}")
 													span.title {{hiscore.title}}
 													span.player {{hiscore.player}}
 													span.score {{hiscore.score}}
-									.bottom
 										hr
-										.thumbnail-inner
+										img(ng-src='{{table.url_banner_small}}')
+										hr
+										.slide-bottom
 											h3 {{table.name}}
 											ul.ranking.champ
 												li(ng-repeat="hiscore in getHiscores(table, 'champ')", class="{{hiscore.class}}")
