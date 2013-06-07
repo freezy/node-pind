@@ -1,3 +1,7 @@
+$(document).ready(function() {
+});
+
+
 function HiscoresCtrl($scope, Jsonrpc) {
 
 	$scope.hiscores = {};
@@ -24,6 +28,10 @@ function HiscoresCtrl($scope, Jsonrpc) {
 
 	$scope.getHiscores = function(table, type) {
 		var hiscores = [];
+		if (!table) {
+			alert('table not set ('  + type + ')');
+			return [];
+		}
 		for (var i = 0; i < $scope.hiscores[table.key].length; i++) {
 			var hiscore = $scope.hiscores[table.key][i];
 			if (hiscore.type == type) {
@@ -33,3 +41,49 @@ function HiscoresCtrl($scope, Jsonrpc) {
 		return hiscores;
 	};
 }
+
+
+/*
+ * Enables the hiscore flipper that shows extended high scores when
+ * hovering over the image.
+ */
+pindAppModule.directive('flipper', function() {
+	return {
+		restrict: 'A',
+		link: function(scope, element) {
+
+			var running = false;
+			var duration = 200;
+			var top = element.find('.thumbnail-content .top');
+			var bottom = element.find('.thumbnail-content .bottom');
+
+			element.find('.thumbnail > img').mouseenter(function() {
+
+				if (running) {
+					top.stop();
+					bottom.stop();
+				}
+				running = true;
+				top.animate({ top : '0px' }, duration, function() {
+					running = false;
+				});
+				bottom.animate({ top : '250px' }, duration, function() {
+					running = false;
+				});
+
+			}).mouseleave(function() {
+				if (running) {
+					top.stop();
+					bottom.stop();
+				}
+				running = true;
+				top.animate({ top: '-250px' }, duration, function() {
+					running = false;
+				});
+				bottom.animate({ top: '0px' }, duration, function() {
+					running = false;
+				});
+			});
+		}
+	}
+});

@@ -1586,13 +1586,29 @@ hr {
   margin: 0;
 }
 .thumbnail-content {
-  padding: 15px;
+  position: relative;
+  overflow: hidden;
+  height: 250px;
 }
 .thumbnail-content h3 {
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 25px;
   line-height: 24px;
+}
+.thumbnail-content .thumbnail-inner {
+  padding: 15px;
+}
+.thumbnail-content .top {
+  width: 100%;
+  position: absolute;
+  overflow: hidden;
+  top: -255px;
+}
+.thumbnail-content .bottom {
+  width: 100%;
+  position: absolute;
+  overflow: hidden;
 }
 .thumbnails.tables li {
   text-align: center;
