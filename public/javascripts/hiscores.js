@@ -47,13 +47,13 @@ function HiscoresCtrl($scope, Jsonrpc) {
  * Enables the hiscore flipper that shows extended high scores when
  * hovering over the image.
  */
-pindAppModule.directive('flipper', function() {
+pindAppModule.directive('slider', function() {
 	return {
 		restrict: 'A',
-		link: function(scope, element) {
+		link: function(scope, element, attrs) {
 
 			var running = false;
-			var duration = 200;
+			var duration = parseInt(attrs['slider']);
 			var top = element.find('.thumbnail-content .top');
 			var bottom = element.find('.thumbnail-content .bottom');
 
