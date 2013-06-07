@@ -1,18 +1,14 @@
 ![pind](app/_public/img/logo.png)
 
-===================
-Node Pinball Daemon
-===================
-
 Installation
 ============
 
 1. Install Node.js
 ------------------
 Since pind is running on top of Node.js, there is no need of an additional
-HTTP server, since node will take care of that directly. For the dependencies
-used in the project, [NPM](https://github.com/isaacs/npm) will take care of 
-downloading and compiling all the necessary libraries.
+HTTP server. Node will do that. For the dependencies used in the project,
+[NPM](https://github.com/isaacs/npm) will take care of downloading and 
+compiling all the necessary libraries.
 
 Download and install Node.js from [here](http://nodejs.org/). Also, make sure
 `node.exe` and `npm.cmd` are in your `PATH` (per default at `C:\Program Files\nodejs`).
@@ -45,26 +41,25 @@ that, the following software is needed:
 
 1. Download and install [GraphicsMagick](http://www.graphicsmagick.org/download.html)
    and verify that the installer adds the directory to your `PATH`.
-2. Download and install [Unrar](http://gnuwin32.sourceforge.net/downlinks/unrar.php) and 
-   add it's *bin* path to the Windows `PATH` environment variable. This is needed for 
-   automatic extraction of downloaded files.
+2. Download and install [Unrar](http://gnuwin32.sourceforge.net/downlinks/unrar.php).
 
 
 5. Install Pind
 ---------------
-1. Open a command line prompt (Win+R, "`cmd`", enter).
-2. Go to where you want to install Pind (`cd C:\Games\`)
-3. Clone the repository (`git clone git://github.com/freezy/node-pind.git`)
-4. Install dependencies (`npm install -d`)
+1. Open a command line prompt - Win+R, `cmd`, enter.
+2. Go to where you want to install Pind  - `cd C:\Games\`
+3. Clone the repository - `git clone git://github.com/freezy/node-pind.git`
+4. Install dependencies - `npm install -d`
 
-Keep your shell open.
+Don't close the command line window just yet.
 
 
 6. Configure Pind
 -----------------
-1. Copy `config/settings.json` to `config/settings-mine.json` and update it.
-2. Create database schema via command prompt (`node create-schema`)
-3. Start Pind for a first test run (`node server`) and open a browser at
+1. Copy `config/settings.json` to `config/settings-mine.json` and open it in a text editor.
+2. Go through every option and update it if necessary.
+3. Initialize database schema via command prompt - `node create-schema`
+4. Start Pind for a first test run (`node server`) and open a browser at
    `http://localhost`.
 
 
@@ -72,5 +67,8 @@ Keep your shell open.
 ---------------------------------
 
 1. Download and install [NSSM](http://nssm.cc/)
-2. On the command line prompt install Pind as a service (`nssm install "Pinball Daemon" "C:\Program Files\nodejs\node.exe" C:\Games\node-pind\prod.js`) - with path names
+2. On the command line prompt install Pind as a service - `nssm install "Pinball Daemon" "C:\Program Files\nodejs\node.exe" C:\Games\node-pind\prod.js` - with path names
 of your installation.
+
+
+If shit crashes, open up an issue. :)
