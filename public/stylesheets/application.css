@@ -1600,7 +1600,7 @@ hr {
   padding: 30px 15px 0px;
   height: 250px;
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .thumbnail-content .slide-bottom {
   padding: 15px;
