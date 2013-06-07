@@ -69,7 +69,7 @@ try to fix them (or even better, submit a PR).
 Installation
 ============
 
-See [INSTALL.md](blob/master/INSTALL.md).
+See [INSTALL.md](https://github.com/freezy/node-pind/blob/master/INSTALL.md).
 
 
 Technologies
