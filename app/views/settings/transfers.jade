@@ -73,7 +73,7 @@ block inner-content
 		//- empty search result
 		div.noresult(style='display:none')
 			p No results found.
-			button.btn.fat.small Clear Filters
+			button.btn.submit.small Clear Filters
 
 		//- no data
 		div.nodata(style='display:none')
@@ -87,24 +87,24 @@ block inner-footer
 		.span4.action
 			h3 Control Panel
 			p Manually start, resume, pause or stop the queue.
-			button.btn.fat.small.more(ng-disabled='startDisabled', ng-click='start()')
+			button.btn.submit.small.more(ng-disabled='startDisabled', ng-click='start()')
 				i.icon.play
-			button.btn.fat.small.more(ng-disabled='pauseDisabled', ng-click='pause()')
+			button.btn.submit.small.more(ng-disabled='pauseDisabled', ng-click='pause()')
 				i.icon.pause
-			button.btn.fat.small.more(ng-disabled='stopDisabled', ng-click='stop()')
+			button.btn.submit.small.more(ng-disabled='stopDisabled', ng-click='stop()')
 				i.icon.stop
 			span#status.ng-cloak 
 				strong.status {{status}}
 		.span4.action
 			h3 Clear downloaded
 			p Remove all completed transfers from the database.
-			button.btn.fat.small
+			button.btn.submit.small
 				i.icon.trash
 				span Clear
 		.span4.action
 			h3 Reset failed
 			p Clear and re-add all failed transfers to the queue.
-			button.btn.fat.small(ng-click='resetFailed()')
+			button.btn.submit.small(ng-click='resetFailed()')
 				i.icon.refresh
 				span Reset
 		

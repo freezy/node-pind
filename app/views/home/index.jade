@@ -52,10 +52,10 @@ block content
 									.thumbnail
 										img(ng-src='{{table.url_backglass_medium}}')
 										hr
-										.thumbnail-content
-
-											h3 {{table.name}}
-											p {{table.manufacturer}} - {{table.year}}
+										.thumbnail-content.game
+											.thumbnail-content-centered
+												h3 {{table.name}}
+												p {{table.manufacturer}} - {{table.year}}
 
 
 						//- HISCORES
@@ -64,7 +64,7 @@ block content
 						div(ng-controller='LatestHiscoresCtrl')
 							div(ng-controller='HiscoresCtrl')
 								ul.thumbnails.hiscores(ng-controller='DataCtrl', resource="Table.GetAll")
-									li.span4(ng-repeat='table in data', tb-768-980='span6')
+									li.span4(ng-repeat='table in data', slider='200', tb-768-980='span6')
 										include ../layouts/snippets/hiscore
 
 					.span3(tb-768-980='span4')

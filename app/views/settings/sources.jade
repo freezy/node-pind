@@ -65,14 +65,14 @@ block inner-content
 		//- empty search result
 		div.noresult(style="display:none")
 			p No results found.
-			button.btn.fat.small Clear Filters
+			button.btn.submit.small Clear Filters
 
 		//- no data
 		div.nodata(style="display:none")
 			p
 				| No index found. Click below to fetch the file index which takes a few minutes. <br>
 				| Data will be automatically refreshed when done.
-			button.btn.fat(data-processing="#{isDownloadingIndex}")
+			button.btn.submit(data-processing="#{isDownloadingIndex}")
 				i.icon.refresh
 				span Download index
 
@@ -87,7 +87,7 @@ block inner-footer
 		.span4.action
 			h3 Refresh
 			p Download the latest index from VPF in order to get the lastest tables.
-			button.btn.fat.small(ng-click="updateIndex()")
+			button.btn.submit.small(ng-click="updateIndex()")
 				i.icon.refresh
 				span Refresh
 		.span4
@@ -119,7 +119,7 @@ block append modals
 						input.btn(type="checkbox", name="addtohp")
 						| Add table to HyperPin
 		div.modal-footer
-			button.download.btn.btn-warning.fat.right(data-dismiss="modal") Download
+			button.download.btn.btn-warning.submit.right(data-dismiss="modal") Download
 			a.cancel.btn.fatlink(href='#') Cancel
 
 block inlineScripts

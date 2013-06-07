@@ -67,12 +67,12 @@ block inner-content
 		//- empty search result
 		div.noresult(style='display:none')
 			p No results found.
-			button.btn.fat.small Clear Filters
+			button.btn.submit.small Clear Filters
 
 		//- no data
 		div.nodata(style='display:none')
 			p No tables in database.
-			button.btn.fat
+			button.btn.submit
 				i.icon.refresh
 				span Load from HyperPin
 	.clearfix
@@ -83,32 +83,32 @@ block inner-footer
 		.span4.action#hpsync(data-exclusive='#ipdbsync, #dlrom, #dlmedia, #fetchhs', data-processing='#{processing.hpsync}')
 			h3 Resync with HyperPin
 			p Read HyperPin's XML, analyze table files and update the local database.
-			button.btn.fat.small
+			button.btn.submit.small
 				i.icon.refresh
 				span Resync
 		.span4.action#ipdbsync(data-exclusive='#hpsync, #dlrom', data-processing='#{processing.ipdbsync}')
 			h3 Match with IPDB.org
 			p Match re-creations with IPDB and fetch additional data.
-			button.btn.fat.small
+			button.btn.submit.small
 				i.icon.refresh
 				span Match
 		.span4.action#dlrom(data-exclusive='#hpsync, #ipdbsync', data-processing='#{processing.dlrom}')
 			h3 Retrieve game ROMs
 			p Try to retrieve needed ROMs from IPDB.org or vpforums.org.
-			button.btn.fat.small
+			button.btn.submit.small
 				i.icon.refresh
 				span Download
 	.row-fluid
 		.span4.action#dlmedia(data-exclusive='#hpsync', data-processing='#{processing.dlmedia}')
 			h3 Find Missing Media
 			p Check vpforums.org for available media packs.
-			button.btn.fat.small
+			button.btn.submit.small
 				i.icon.refresh
 				span Find
 		.span4.action#fetchhs(data-exclusive='#hpsync', data-processing='#{processing.fetchhs}')
 			h3 Update High Scores
 			p Read Highscores from tables and update stats.
-			button.btn.fat.small
+			button.btn.submit.small
 				i.icon.refresh
 				span Update
 		.span4

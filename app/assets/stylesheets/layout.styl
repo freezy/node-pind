@@ -1,0 +1,114 @@
+@import('lib')
+@import('nib')
+@import('def')
+
+// :global layout
+// ============================================================================
+
+selection(#000, rgba(224,157,85,0.25))
+
+body
+	background-image url('../images/bg_striped.png')
+	font-family font-sans
+	text-shadow 1px 1px 0 white
+
+footer
+	text-align center
+	position relative
+	top -25px
+	margin-bottom 10px
+	
+	& > a
+		color #dbd9d7
+		text-shadow 0px 1px 0 black
+		font-family font-serif
+		font-size 16px
+		transition all animation-fast ease
+
+		&:hover
+			text-decoration none
+			color white	
+
+		& > i.icon
+			font-size 30px
+			margin-right 10px
+			line-height 50px
+
+		& > span
+			position relative
+			bottom 3px	
+form
+	margin 0
+
+// :typography
+// ============================================================================
+
+.subheading
+	font-size 11px
+	line-height 16px
+	color color-dark
+
+.help-block
+	font-size 11px
+	line-height 16px
+	color color-medium	
+	margin-bottom 20px
+
+.center
+	text-align center
+	margin-left auto
+	margin-right auto
+
+h1, h2
+	font-family font-serif
+	font-weight 700
+h3
+	font-family font-serif
+	font-weight 400
+
+h1
+	font-size 32px
+
+h2
+	font-size 25px
+
+h3
+	font-size 22px
+h4
+	font-family font-sans
+	font-weight 800
+	text-transform uppercase
+
+
+// :box layout
+// ============================================================================
+
+// background gradient
+.boxglow
+	margin 60px auto
+	width 600px
+	height 600px
+	background-image url('../images/gradient.png')
+	background-repeat no-repeat
+
+// box styling	
+.singlebox, .modal
+	background color-lighter
+	border 1px solid #fff
+	border-radius 5px
+	box-shadow 0 1px 3px rgba(0,0,0,0.5)
+
+// box dimensions / position
+.singlebox
+	width 300px
+	margin 0 auto
+	position relative
+
+	// animation
+	input, button, a, .button, .register
+		transition all animation-fast ease !important
+
+.username
+	text-transform uppercase
+
+

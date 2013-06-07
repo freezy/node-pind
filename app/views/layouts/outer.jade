@@ -4,7 +4,8 @@ html
 		title= title
 		meta(name='viewport', content='width=device-width', initial-scale='1.0')
 		meta(name='login', content=pathTo.login)
-		!= stylesheetLinkTag('vendor/bootstrap/bootstrap', 'vendor/colorbox/colorbox', 'symbols', 'fonts', 'application')
+		!= stylesheetLinkTag('vendor/bootstrap/bootstrap', 'vendor/colorbox/colorbox')
+		!= stylesheetLinkTag('symbols', 'fonts', 'application', 'layout', 'element')
 		!= csrfMetaTag()
 		- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery-2.0.0.min'))
 		- contentFor('javascripts', javascriptIncludeTag('vendor/jquery/jquery.form'))

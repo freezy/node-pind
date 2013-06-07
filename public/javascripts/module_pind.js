@@ -488,44 +488,6 @@ pindAppModule.directive('thumb', function() {
 	}
 });
 
-/**
- * Enables the hiscore flipper that shows extended high scores when
- * hovering over the image.
- */
-pindAppModule.directive('slider', function() {
-	return {
-		restrict: 'A',
-		link: function(scope, element, attrs) {
-
-			var running = false;
-			var down = false;
-			var duration = parseInt(attrs['slider']);
-			var slider = element.find('.thumbnail-content .slider');
-
-			element.find('.slider > img').click(function() {
-
-				var img = $(this);
-				if (running) {
-					slider.stop();
-				}
-				var pos = down ? { top: '-286px' } : { top : (54 - img.height()) + 'px' };
-				running = true;
-				down = !down;
-				slider.animate(pos, duration, function() {
-					running = false;
-					if (down) {
-						img.addClass('bottom');
-					} else {
-						img.removeClass('bottom');
-					}
-				});
-
-			});
-		}
-	}
-});
-
-
 pindAppModule.filter('groupdigit', function() {
 	return function(nStr) {
 		nStr += '';

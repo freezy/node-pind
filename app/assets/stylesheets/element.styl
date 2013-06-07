@@ -1,0 +1,91 @@
+@import('lib')
+@import('nib')
+@import('def')
+
+// link with a fixed-width label
+a.tt
+	font-family font-fixed
+	&:hover
+		text-decoration none
+		color black
+
+// text boxes
+input[type='text'], input[type='password']
+	height initial
+	font-family font-sans
+	font-weight 400
+	font-size 14px
+	text-shadow 1px 1px 0 white
+	color color-medium
+	background #fff
+	border 1px solid #fff
+	border-radius corner-size
+	box-shadow inset 0 1px 3px rgba(0,0,0,0.50)
+	transition all animation-fast ease
+	&:hover 
+		background color-bg-focus 
+		color color-darker
+	&:focus
+		background color-bg-focus 
+		color color-darker
+		box-shadow inset 0 1px 2px rgba(0,0,0,0.25)
+	
+	&[disabled]
+		background color-lighter
+		box-shadow none
+		border 1px solid color-light
+		&:hover 
+			background color-lighter
+			color color-medium
+
+	&.input
+		padding 10px 15px 8px
+
+// submit button
+button[type="submit"], .btn.submit
+
+		transition all animation-fast ease !important
+		
+		&.right
+			float right
+
+		padding 11px 25px
+		font-family font-serif
+		font-weight 700
+		font-size 18px
+		color #fff
+		text-shadow 0px 1px 0 rgba(0,0,0,0.25)
+		background color-btn-light
+		border 1px solid color-btn-border
+		border-radius corner-size
+		cursor pointer
+		box-shadow inset 0 0 2px rgba(256,256,256,0.75)
+
+		&:hover
+			background color-btn-dark
+			border 1px solid rgba(256,256,256,0.75)
+			box-shadow inset 0 1px 3px rgba(0,0,0,0.5)
+			color #fff
+		
+		&:focus
+			position relative
+			bottom -1px
+			background color-btn-light
+			box-shadow inset 0 1px 6px rgba(256,256,256,0.75)
+
+		&[disabled="disabled"]
+			cursor default
+
+			&:hover
+				background color-btn-light
+				border 1px solid color-btn-border
+				box-shadow inset 0 0 2px rgba(256,256,256,0.75)
+				color #fff
+		span
+			margin-left 15px
+
+		&.small
+			font-size 15px
+			padding 5px 10px
+			span
+				margin-left 7px	

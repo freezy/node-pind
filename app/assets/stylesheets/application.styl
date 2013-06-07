@@ -1,246 +1,23 @@
 @import('lib')
 @import('nib')
-
-// :variables
-// ============================================================================
-
-color-darkest     = #3e3429  // nearly-black background
-color-darker      = #473522  // text and foreground glyphes
-color-dark        = #625648	// slightly lighter text and foreground glyphes
-color-dark-noise  = url('../images/bg_brown_noise.png')
-color-medium      = #9d9e9e  // text in blurred input fields or less important
-
-color-lightish    = rgba(81,67,54,0.30)           // darker than highlighted background
-color-light       = rgba(81,67,54,0.15)           // highlighted background, or rgba(126,111,99,0.28)
-color-lighter     = url('../images/bg_redox_01.png') // standard background (#f0f0f0)
-color-lighter-rgb = #f3f3f3 // same tone as above.
-
-color-btn-light  = #e09d55  // default button background
-color-btn-light1 = #bf813f  // color 1 for gradient 3d buttons
-color-btn-light2 = #d99b59  // color 2 for gradient 3d buttons
-color-btn-light3 = #ab7337  // color 3 for gradient 3d buttons
-color-btn-light4 = #9c6224  // color 4 for gradient 3d buttons
-color-btn-dark   = #b87d3e  // typically when pushed
-color-btn-border = #d48f46  // default button border
-
-color-bg-focus   = #f1ede8  // background in focused input fields
-
-color-red = #b94a48
-
-corner-size = 20px
-
-animation-faster = 0.1s
-animation-fast = 0.3s
-animation-slow = 0.5s
-
-
-// :fonts
-// ============================================================================
-
-font-serif = 'Arvo', serif
-font-sans = 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif
-font-fixed = Inconsolata, Consolas, 'Courier New', Fixed, monospace
-font-dmd = ozoneregular
-font-console = BPdotsBold
-
+@import('def')
 
 // :global stuff
 // ============================================================================
 
-selection(#000, rgba(224,157,85,0.25))
-
-body
-	background-image url('../images/bg_striped.png')
-	font-family font-sans
-	text-shadow 1px 1px 0 white
-
-// background gradient
-.boxglow
-	margin 60px auto
-	width 600px
-	height 600px
-	background-image url('../images/gradient.png')
-	background-repeat no-repeat
-
-// box styling	
-.singlebox, .modal
-	background color-lighter
-	border 1px solid #fff
-	border-radius 5px
-	box-shadow 0 1px 3px rgba(0,0,0,0.5)
-
-// box dimensions / position
-.singlebox
-	width 300px
-	margin 0 auto
-	position relative
-
-	// animation
-	input, button, a, .button, .register
-		transition all animation-fast ease !important
-
-.username
-	text-transform uppercase
-a.sha
-	font-family font-fixed
-	&:hover
-		text-decoration none
-		color black
-
 .hidden
 	display none
-
-footer
-	text-align center
-	position relative
-	top -25px
-	margin-bottom 10px
-	i.icon
-		font-size 30px
-		margin-right 10px
-		line-height 50px
-	span
-		position relative
-		bottom 3px
-	a
-		color #dbd9d7
-		text-shadow 0px 1px 0 black
-		font-family font-serif
-		font-size 16px
-		transition all animation-fast ease
-
-		&:hover
-			text-decoration none
-			color white
-
-
-// :typography
-// ============================================================================
-
-.subheading
-	font-size 11px
-	line-height 16px
-	color color-dark
-
-.help-block
-	font-size 11px
-	line-height 16px
-	color color-medium	
-	margin-bottom 20px
-
-.center
-	text-align center
-	margin-left auto
-	margin-right auto
-
-h1, h2
-	font-family font-serif
-	font-weight 700
-h3
-	font-family font-serif
-	font-weight 400
-
-h1
-	font-size 32px
-
-h2
-	font-size 25px
-
-h3
-	font-size 22px
-h4
-	font-family font-sans
-	font-weight 800
-	text-transform uppercase
-
 
 // :forms
 // ============================================================================
 
-form
-	margin 0	
 
-// text boxes
-input[type='text'], input[type='password']
-	padding 10px 15px 8px
-	height initial
-	font-family font-sans
-	font-weight 400
-	font-size 14px
-	text-shadow 1px 1px 0 white
-	color color-medium
-	background #fff
-	border 1px solid #fff
-	border-radius corner-size
-	box-shadow inset 0 1px 3px rgba(0,0,0,0.50)
-	transition all animation-fast ease
-	&:hover 
-		background color-bg-focus 
-		color color-darker
-	&:focus
-		background color-bg-focus 
-		color color-darker
-		box-shadow inset 0 1px 2px rgba(0,0,0,0.25)
-	
-	&[disabled]
-		background color-lighter
-		box-shadow none
-		border 1px solid color-light
-		&:hover 
-			background color-lighter
-			color color-medium
-	
+
+
 .input-micro
 	width 35px
 
-// submit button
-button[type="submit"], .btn.fat
 
-		transition all animation-fast ease !important
-		
-		&.right
-			float right
-
-		padding 11px 25px
-		font-family font-serif
-		font-weight 700
-		font-size 18px
-		color #fff
-		text-shadow 0px 1px 0 rgba(0,0,0,0.25)
-		background color-btn-light
-		border 1px solid color-btn-border
-		border-radius corner-size
-		cursor pointer
-		box-shadow inset 0 0 2px rgba(256,256,256,0.75)
-
-		&:hover
-			background color-btn-dark
-			border 1px solid rgba(256,256,256,0.75)
-			box-shadow inset 0 1px 3px rgba(0,0,0,0.5)
-			color #fff
-		
-		&:focus
-			position relative
-			bottom -1px
-			background color-btn-light
-			box-shadow inset 0 1px 6px rgba(256,256,256,0.75)
-
-		&[disabled="disabled"]
-			cursor default
-
-			&:hover
-				background color-btn-light
-				border 1px solid color-btn-border
-				box-shadow inset 0 0 2px rgba(256,256,256,0.75)
-				color #fff
-		span
-			margin-left 15px
-
-		&.small
-			font-size 15px
-			padding 5px 10px
-			span
-				margin-left 7px
 
 .input-prepend
 	.add-on + input[type='text']
@@ -1390,7 +1167,20 @@ hr
 .thumbnail-content
 	position relative
 	overflow hidden
-	height 340px
+
+	&.hiscores
+		height 340px
+	&.game
+		height 120px
+		display table
+		width 100%
+		& > .thumbnail-content-centered
+			display table-cell
+			vertical-align middle
+			text-align center
+			padding 0 10px
+			width 100%
+
 
 	h3
 		font-weight 700

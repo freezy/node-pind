@@ -13,9 +13,9 @@ block inner-content
 			div.dmd
 				span {{version}}
 			p.lbl From {{date}}, see&nbsp;
-				a.sha(href="{{url}}", target="_blank") {{sha}}.
+				a.tt(href="{{url}}", target="_blank") {{sha}}.
 
-			button.btn.fat.small(ng-click='checkVersionUpdate()', ng-disabled='checking')
+			button.btn.submit.small(ng-click='checkVersionUpdate()', ng-disabled='checking')
 				i.icon.refresh(ng-class='checkBtnClass')
 				span Check for Update
 
@@ -44,7 +44,7 @@ block inner-content
 						a(href="{{updateLink}}", target='_blank') {{sha}}
 
 			div.modal-footer
-				button.download.btn.btn-warning.fat.right(data-dismiss="modal", ng-click="updatePind()") Update
+				button.download.btn.btn-warning.submit.right(data-dismiss="modal", ng-click="updatePind()") Update
 				a.cancel.btn.fatlink(href='#') Cancel
 
 		//- MODAL: no update
@@ -59,7 +59,7 @@ block inner-content
 				p.center Check back later.
 
 			div.modal-footer
-				button.download.btn.btn-warning.fat.right(data-dismiss="modal") Okay
+				button.download.btn.btn-warning.submit.right(data-dismiss="modal") Okay
 
 block inlineScripts
 	script

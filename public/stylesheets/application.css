@@ -3,251 +3,11 @@ grayscale {
   filter: #808080;
   -webkit-filter: grayscale(100%);
 }
-::-moz-selection {
-  color: #000;
-  background: rgba(224,157,85,0.25);
-  text-shadow: none;
-}
-::selection {
-  color: #000;
-  background: rgba(224,157,85,0.25);
-  text-shadow: none;
-}
-body {
-  background-image: url("../images/bg_striped.png");
-  font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-  text-shadow: 1px 1px 0 #fff;
-}
-.boxglow {
-  margin: 60px auto;
-  width: 600px;
-  height: 600px;
-  background-image: url("../images/gradient.png");
-  background-repeat: no-repeat;
-}
-.singlebox,
-.modal {
-  background: url("../images/bg_redox_01.png");
-  border: 1px solid #fff;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-}
-.singlebox {
-  width: 300px;
-  margin: 0 auto;
-  position: relative;
-}
-.singlebox input,
-.singlebox button,
-.singlebox a,
-.singlebox .button,
-.singlebox .register {
-  -webkit-transition: all 0.3s ease !important;
-  -moz-transition: all 0.3s ease !important;
-  -o-transition: all 0.3s ease !important;
-  -ms-transition: all 0.3s ease !important;
-  transition: all 0.3s ease !important;
-}
-.username {
-  text-transform: uppercase;
-}
-a.sha {
-  font-family: Inconsolata, Consolas, 'Courier New', Fixed, monospace;
-}
-a.sha:hover {
-  text-decoration: none;
-  color: #000;
-}
 .hidden {
   display: none;
 }
-footer {
-  text-align: center;
-  position: relative;
-  top: -25px;
-  margin-bottom: 10px;
-}
-footer i.icon {
-  font-size: 30px;
-  margin-right: 10px;
-  line-height: 50px;
-}
-footer span {
-  position: relative;
-  bottom: 3px;
-}
-footer a {
-  color: #dbd9d7;
-  text-shadow: 0px 1px 0 #000;
-  font-family: 'Arvo', serif;
-  font-size: 16px;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-}
-footer a:hover {
-  text-decoration: none;
-  color: #fff;
-}
-.subheading {
-  font-size: 11px;
-  line-height: 16px;
-  color: #625648;
-}
-.help-block {
-  font-size: 11px;
-  line-height: 16px;
-  color: #9d9e9e;
-  margin-bottom: 20px;
-}
-.center {
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-h1,
-h2 {
-  font-family: 'Arvo', serif;
-  font-weight: 700;
-}
-h3 {
-  font-family: 'Arvo', serif;
-  font-weight: 400;
-}
-h1 {
-  font-size: 32px;
-}
-h2 {
-  font-size: 25px;
-}
-h3 {
-  font-size: 22px;
-}
-h4 {
-  font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-form {
-  margin: 0;
-}
-input[type='text'],
-input[type='password'] {
-  padding: 10px 15px 8px;
-  height: initial;
-  font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  text-shadow: 1px 1px 0 #fff;
-  color: #9d9e9e;
-  background: #fff;
-  border: 1px solid #fff;
-  -webkit-border-radius: 20px;
-  border-radius: 20px;
-  -webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-}
-input[type='text']:hover,
-input[type='password']:hover {
-  background: #f1ede8;
-  color: #473522;
-}
-input[type='text']:focus,
-input[type='password']:focus {
-  background: #f1ede8;
-  color: #473522;
-  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
-}
-input[type='text'][disabled],
-input[type='password'][disabled] {
-  background: url("../images/bg_redox_01.png");
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border: 1px solid rgba(81,67,54,0.15);
-}
-input[type='text'][disabled]:hover,
-input[type='password'][disabled]:hover {
-  background: url("../images/bg_redox_01.png");
-  color: #9d9e9e;
-}
 .input-micro {
   width: 35px;
-}
-button[type="submit"],
-.btn.fat {
-  -webkit-transition: all 0.3s ease !important;
-  -moz-transition: all 0.3s ease !important;
-  -o-transition: all 0.3s ease !important;
-  -ms-transition: all 0.3s ease !important;
-  transition: all 0.3s ease !important;
-  padding: 11px 25px;
-  font-family: 'Arvo', serif;
-  font-weight: 700;
-  font-size: 18px;
-  color: #fff;
-  text-shadow: 0px 1px 0 rgba(0,0,0,0.25);
-  background: #e09d55;
-  border: 1px solid #d48f46;
-  -webkit-border-radius: 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  -webkit-box-shadow: inset 0 0 2px rgba(255,255,255,0.75);
-  box-shadow: inset 0 0 2px rgba(255,255,255,0.75);
-}
-button[type="submit"].right,
-.btn.fat.right {
-  float: right;
-}
-button[type="submit"]:hover,
-.btn.fat:hover {
-  background: #b87d3e;
-  border: 1px solid rgba(255,255,255,0.75);
-  -webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-  color: #fff;
-}
-button[type="submit"]:focus,
-.btn.fat:focus {
-  position: relative;
-  bottom: -1px;
-  background: #e09d55;
-  -webkit-box-shadow: inset 0 1px 6px rgba(255,255,255,0.75);
-  box-shadow: inset 0 1px 6px rgba(255,255,255,0.75);
-}
-button[type="submit"][disabled="disabled"],
-.btn.fat[disabled="disabled"] {
-  cursor: default;
-}
-button[type="submit"][disabled="disabled"]:hover,
-.btn.fat[disabled="disabled"]:hover {
-  background: #e09d55;
-  border: 1px solid #d48f46;
-  -webkit-box-shadow: inset 0 0 2px rgba(255,255,255,0.75);
-  box-shadow: inset 0 0 2px rgba(255,255,255,0.75);
-  color: #fff;
-}
-button[type="submit"] span,
-.btn.fat span {
-  margin-left: 15px;
-}
-button[type="submit"].small,
-.btn.fat.small {
-  font-size: 15px;
-  padding: 5px 10px;
-}
-button[type="submit"].small span,
-.btn.fat.small span {
-  margin-left: 7px;
 }
 .input-prepend .add-on + input[type='text'] {
   -moz-border-radius-topleft: 0;
@@ -1588,7 +1348,21 @@ hr {
 .thumbnail-content {
   position: relative;
   overflow: hidden;
+}
+.thumbnail-content.hiscores {
   height: 340px;
+}
+.thumbnail-content.game {
+  height: 120px;
+  display: table;
+  width: 100%;
+}
+.thumbnail-content.game > .thumbnail-content-centered {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0 10px;
+  width: 100%;
 }
 .thumbnail-content h3 {
   font-weight: 700;
