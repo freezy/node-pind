@@ -26,7 +26,7 @@ block content
 							.icon
 								i.icon.filter(title="Filter high scores by")
 						li(data-filter="hiscoreUser")
-							a.username(href="#") &quot;#{user.user}&quot;
+							a.username(href="#") #{user.user}
 						li(data-filter="hiscoreUsers")
 							a(href="#") Registered
 					.clearfix
@@ -35,31 +35,7 @@ block content
 				div.data.ng-cloak(style="display:none")
 					ul.thumbnails.hiscores
 						li.span4(ng-repeat='table in data', slider='200', tb-768-980='span6')
-							.thumbnail
-								.thumbnail-content
-									.slider
-										.slide-top
-											h3 {{table.name}}
-											ul.ranking.champ
-												li(ng-repeat="hiscore in getHiscores(table, 'special')", class="{{hiscore.class}}")
-													span.title {{hiscore.title}}
-													span.player {{hiscore.player}}
-													span.score {{hiscore.score}}
-										hr
-										img(ng-src='{{table.url_banner_small}}')
-										hr
-										.slide-bottom
-											h3 {{table.name}}
-											ul.ranking.champ
-												li(ng-repeat="hiscore in getHiscores(table, 'champ')", class="{{hiscore.class}}")
-													span.title Grand Champion
-													span.player {{hiscore.player}}
-													span.score {{hiscore.score}}
-											ul.ranking.hiscore
-												li(ng-repeat="hiscore in getHiscores(table, 'hiscore')", class="{{hiscore.class}}")
-													span.rank {{hiscore.rank}}
-													span.player {{hiscore.player}}
-													span.score {{hiscore.score}}
+							include ../layouts/snippets/hiscore
 				.clearfix
 
 block inlineScripts

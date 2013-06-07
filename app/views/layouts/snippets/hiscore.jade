@@ -1,0 +1,25 @@
+.thumbnail
+	.thumbnail-content
+		.slider
+			.slider-top
+				h3 {{table.name}}
+				ul.ranking.champ
+					li(ng-repeat="hiscore in getHiscores(table, 'special')", class="{{hiscore.class}}")
+						span.title {{hiscore.title}}
+						span.player {{hiscore.player}}
+						span.score {{hiscore.score}}
+			hr
+			img(ng-src='{{table.url_banner_small}}')
+			hr
+			.slider-bottom
+				h3 {{table.name}}
+				ul.ranking.champ
+					li(ng-repeat="hiscore in getHiscores(table, 'champ')", class="{{hiscore.class}}")
+						span.title Grand Champion
+						span.player {{hiscore.player}}
+						span.score {{hiscore.score}}
+				ul.ranking.hiscore
+					li(ng-repeat="hiscore in getHiscores(table, 'hiscore')", class="{{hiscore.class}}")
+						span.rank {{hiscore.rank}}
+						span.player {{hiscore.player}}
+						span.score {{hiscore.score}}
