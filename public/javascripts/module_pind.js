@@ -182,9 +182,9 @@ pindAppModule.directive('searchbox', function() {
 		restrict: 'E',
 		replace: true,
 		template:
-			'<div class="input-prepend input-pill">' +
+			'<div class="input-prepend top-pill">' +
 				'<span class="add-on"><i class="icon search"></i></span>' +
-				'<input type="text" class="search input-medium" placeholder="keywords">' +
+				'<input type="text" class="search input-medium input-pill" placeholder="keywords">' +
 			'</div>',
 		link: function(scope, element, attrs) {
 			scope.$on('paramsReset', function() {

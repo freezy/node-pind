@@ -6,35 +6,6 @@ grayscale {
 .hidden {
   display: none;
 }
-.input-micro {
-  width: 35px;
-}
-.input-prepend .add-on + input[type='text'] {
-  -moz-border-radius-topleft: 0;
-  -webkit-border-top-left-radius: 0;
-  border-top-left-radius: 0;
-  -moz-border-radius-bottomleft: 0;
-  -webkit-border-bottom-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.input-prepend .add-on:first-child {
-  -moz-border-radius-topleft: 20px;
-  -webkit-border-top-left-radius: 20px;
-  border-top-left-radius: 20px;
-  -moz-border-radius-bottomleft: 20px;
-  -webkit-border-bottom-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  background-color: rgba(0,0,0,0.07);
-  text-shadow: 0px 1px 0 rgba(255,255,255,0.8);
-  border: solid 1px rgba(0,0,0,0.15);
-}
-.btn.icn.btn-small {
-  padding: 2px 6px;
-  margin-right: 10px;
-}
-.btn.icn.btn-small i {
-  font-size: 16px;
-}
 .modal-header {
   padding: 30px 30px 0px 30px;
   background-repeat: no-repeat;
@@ -775,16 +746,8 @@ ul.nav.nav-pills li a {
 .pagination {
   margin: 0px 0px 20px 20px;
 }
-.input-pill {
+.top-pill {
   margin-top: 0px;
-}
-.input-pill input {
-  padding: 5px 10px 3px;
-}
-.input-pill.input-prepend .add-on {
-  height: 18px;
-  margin-top: 1px;
-  padding: 2px 5px 6px 7px;
 }
 ul.nav.nav-tabs {
   border-color: #9d9e9e;
