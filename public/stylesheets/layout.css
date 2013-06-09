@@ -221,7 +221,7 @@ input:focus + div.inputhint {
 .modal-footer {
   padding: 30px;
 }
-.modal-footer .fatlink {
+.modal-footer .link-big {
   padding: 12px 0px 8px;
 }
 .modal-footer a.cancel {

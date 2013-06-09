@@ -74,18 +74,16 @@ block content
 						.thumbnail
 							img(src='/images/header-crowd.png')
 							hr
-							.thumbnail-content
+							.thumbnail-content.leaderboard
 								h3 Leaderboard
-								table.table
-									thead
-										tr
-											th Name
-											th(style='width:30px') Points
-									tbody
-										for hiscore in hiscores
-											tr
-												td= hiscore.user
-												td.text-right= hiscore.totalPoints
+
+								.dmd.leaderboard
+									table.table
+										tbody
+											for hiscore in hiscores
+												tr
+													td= hiscore.user
+													td.text-right= hiscore.totalPoints
 						p
 
 						//- QUICK COIN DROP

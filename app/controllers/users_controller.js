@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var util = require('util');
 var settings = require('./config/settings-mine');
 var schema = require('./app/model/schema');
@@ -90,10 +91,12 @@ action('login', function() {
 action('signup', function () {
 
 	this.title = 'Signup';
+	this.hasValidationErrors = false;
 
 	// check if data was posted.
 	if (req.method == 'POST') {
 		if (req.body.user && req.body.pass) {
+			console.log('[user controller] Registering user...');
 			var now = new Date().getTime();
 			var that = this;
 			schema.User.count().success(function(num) {
@@ -105,27 +108,37 @@ action('signup', function () {
 							admin: num == 0
 						});
 						that.validationErrors = user.validate();
+						delete that.validationErrors.fct
+						that.hasValidationErrors = !_.isEmpty(that.validationErrors);
 
-						if (!that.validationErrors) {
-							schema.User.build(user).beforeCreate().save().success(function(user) {
-								console.log('all good, user created.');
-								that.validationErrors = null;
+						if (!that.hasValidationErrors) {
+							console.error('[user controller] Creating user "%s"', user.user);
+							user.beforeCreate().save().success(function(user) {
+								console.log('[user controller] All good, user created.');
+								that.validationErrors = {};
 								that.alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
 								render('login');
-								hs.linkNewUser(user, function() {
-									console.log('User successfully linked to high scores.');
+								hs.linkNewUser(user, function(err) {
+									if (err) {
+										return console.error('[user controller] Error linking user to high scores: ' + err);
+									}
+									console.log('[user controller] User successfully linked to high scores.');
 								});
 
 							}).error(function(err) {
 								that.alert = { title: 'Ooops. Looks like a user creation problem.', message: err };
-								console.log('alert: %s', err);
-								console.log('validations: %j', user.errors);
+								console.error('[user controller] alert: %s', err);
+								console.error('[user controller] validations: %j', user.errors);
 								render({user : req.body});
+							}).done(function() {
+								console.log('duh.');
 							});
 						} else {
+							console.error('[user controller] There were validation errors: %j', that.validationErrors);
 							render({user : req.body});
 						}
 					} else {
+						that.hasValidationErrors = true;
 						that.validationErrors = { user: 'This username is already taken.' };
 						render({user : req.body});
 					}
@@ -143,12 +156,12 @@ action('signup', function () {
 
 		} else {
 			this.alert = { title: 'Mind reading problem.', message: 'You must provide both username and password.' };
-			this.validationErrors = null;
+			this.validationErrors = {};
 			render();
 		}
 	} else {
 		this.alert = null;
-		this.validationErrors = null;
+		this.validationErrors = {};
 		render();
 	}
 

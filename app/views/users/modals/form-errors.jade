@@ -1,6 +1,6 @@
-- validationErrors = typeof(validationErrors) != 'undefined' ? validationErrors : null
+- hasValidationErrors = typeof(hasValidationErrors) != 'undefined' ? hasValidationErrors : false
 
-if validationErrors != null
+if hasValidationErrors
 	.modal-form-errors.modal.hide.fade
 		button.close(data-dismiss='modal') &times;
 		div.modal-header
@@ -8,7 +8,7 @@ if validationErrors != null
 		div.modal-body
 			p It looks like there was a problem.
 			ul
-			if validationErrors != null
+			if hasValidationErrors
 				each msg, field in validationErrors
 					- if (typeof msg != 'function')
 						li.error(data-field='#{field}') #{msg}

@@ -37,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
 				l: function(value) {
 					var len = value.trim().length;
 					if (len < 2 || len > 3 ) {
-						throw new Error('User name must be either two or tree characters.');
+						return 'User name must be either two or tree characters.';
 					}
 				}
 			}
@@ -48,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
 			validate: {
 				l: function(value) {
 					if (value.trim().length < 6) {
-						throw new Error('Password must be at least six characters.');
+						return 'Password must be at least six characters.';
 					}
 				}
 			}

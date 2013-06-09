@@ -321,20 +321,24 @@ ul.badge-group
 .thumbnail-content
 	position relative
 	overflow hidden
+	width 100%
 
 	&.hiscores
 		height 340px
 	&.game
 		height 120px
 		display table
-		width 100%
-		& > .thumbnail-content-centered
+	&.leaderboard
+		h3
+			margin-left 15px
+			margin-top 15px
+		
+	& > .thumbnail-content-centered
 			display table-cell
 			vertical-align middle
 			text-align center
 			padding 0 10px
 			width 100%
-
 
 	h3
 		font-weight 700
@@ -609,21 +613,15 @@ vpf-padding-small = 10px
 
 
 
-// :coin drop
+// :coin drop / hiscores
 // ============================================================================
 
 .dmd, #console
-	margin-top -10px
-	margin-bottom 25px
-	text-align center
 	background url('../images/bg_dark_wood.png')
-	padding-top 20px
-	padding-bottom 12px
 	box-shadow 0px 2px 5px 0px rgba(0,0,0,0.3)
 	cursor default
-	span
+	& > span, & > table
 		background linear-gradient(bottom, 0% #6b4b3b, 75% #7d4e45, 100% #4a3429);
-		padding 2px 20px
 		border-radius 3px
 		color #fff187
 		cursor default
@@ -634,6 +632,30 @@ vpf-padding-small = 10px
 	& + .lbl
 		margin-top -20px
 		margin-bottom 20px
+
+.dmd
+	&.coindrop
+		text-align center
+		margin -10px 0 25px 0
+		padding 20px 0 12px 0
+
+		& > span
+			padding 2px 20px
+
+	&.leaderboard
+		padding 10px
+		border-radius-bottomleft 3px
+		border-radius-bottomright 3px
+
+		& > table
+			font-size 24px
+			font-family font-console
+			text-transform uppercase
+			margin 0
+			td 
+				border none
+
+
 
 
 // :console
