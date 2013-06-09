@@ -1,0 +1,216 @@
+@import('lib')
+@import('nib')
+@import('values')
+
+/* Large desktop */
+@media (min-width: 1200px)
+	.visible-desktop-small
+		display none !important
+
+/* Small desktop */
+@media(min-width: 980px) and (max-width: 1199px)
+	.visible-desktop-small
+		display inherit  !important
+	.hidden-desktop-small
+		display none !important
+
+/* Portrait tablet to landscape and desktop */		
+@media (min-width: 768px) and (max-width: 979px)
+	.visible-desktop-small
+		display none !important
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px)
+	.visible-desktop-small
+		display none !important
+
+/* Landscape phones and down */		
+@media (max-width: 480px)
+	.visible-desktop-small, .hidden-phone-small
+		display none !important
+
+
+// :icons		
+// ============================================================================
+
+.icon
+
+	font-family 'pind-symbols'
+	speak none
+	font-style normal
+	font-weight normal
+	font-variant normal
+	text-transform none
+	line-height 1
+	-webkit-font-smoothing antialiased
+	
+
+	&.swords:before
+		content "\61"
+
+	&.rope:before
+		content "\62"
+
+	&.pen:before
+		content "\63"
+		font-size 153px
+
+	&.key:before
+		content "\64"
+		font-size 74px
+
+
+	&.user:before
+		content "\21"
+	&.locked:before
+		content "\22"
+	&.exit:before
+		content "\24"
+		margin-right -3px
+	&.settings:before
+		content "\25"
+	&.refresh:before
+		content "\f01e"
+	&.spinner:before
+		content "\e00c"
+	&.spinner2:before
+		content "\f110"
+
+
+	&.file:before
+		content "\e003"
+	&.chip:before
+		content "\e002"
+
+
+	&.video:before
+		content: "\f03d"
+	&.camera:before
+		content "\f030"
+	&.logo:before
+		content "\f024"
+	&.ipad:before
+		content "\e001"
+
+	&.ok:before
+		content "\f00c";
+	&.remove:before
+		content "\f00d";
+	&.pencil:before
+		content "\f040";
+	&.search:before
+		content "\f002"
+	
+
+	&.pind:before
+		content "\23"		
+	&.pd-round:before
+		content "\e006"
+
+	&.github:before
+		content "\f09b"			
+	&.github-alt:before
+		content "\f113"		
+	
+
+	&.arrow-right:before
+		content "\e004"
+	&.arrow-left:before
+		content "\e005"
+	&.filter:before
+		content "\f0b0"
+	&.sort:before
+		content "\f0dc"
+
+	&.zoom-in:before
+		content "\f00e"
+	&.zoom-out:before
+		content "\f010"
+
+	&.download-alt:before
+		content "\f019"
+
+	&.star:before
+		content "\e008"
+	&.star-2:before
+		content "\e009"
+
+	&.eye:before
+		content "\e00a"
+		font-size 110%
+	&.circle-arrow-down:before
+		content "\f0ab"
+	&.link:before
+		content "\f0c1"
+
+	&.trash:before
+		content "\e007"
+
+	&.info:before
+		content "\e00b"
+
+	&.pause:before
+		content "\f04c"
+	&.stop:before
+		content "\f04d"
+	&.play:before
+		content "\f04b"
+
+
+	&.image:before
+		content "\e00c"
+
+	&.cabinet:before
+		content "\e00d"
+		font-size 120%
+
+	&.spin
+		display inline-block
+		animation spin 2s infinite linear
+		text-shadow none
+		&.slow
+			animation spin 5s infinite linear
+
+	&.inputhint
+		width 46px
+		height 35px
+		display block
+		left 0px
+		padding-top 12px
+		padding-left 15px
+		z-index -1
+		border-radius-topleft corner-size
+		border-radius-bottomleft corner-size
+		font-size 21px
+		color white
+		text-shadow none
+		background color-darkest
+		transition all animation-fast ease !important
+		margin-top -53px
+		position absolute
+
+	&.big 
+		font-size 90px
+
+.modal-header .icon
+	padding-bottom 30px
+	color color-darker
+	&.big
+		margin-right 30px
+		margin-top -30px
+		& + span
+			position relative
+			top -20px
+
+
+// bootstrap hacks
+.row-fluid ul.thumbnails li.span12 + li { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span6:nth-child(2n + 3) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span4:nth-child(3n + 4) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span3:nth-child(4n + 5) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span1:nth-child(12n + 13) { margin-left: 0px; clear: left }
+
+// angular stuff
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
+	display none

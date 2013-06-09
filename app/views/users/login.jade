@@ -14,13 +14,13 @@ block body
 				input.input(name="pass", type="password", placeholder="Password").input-large
 				.icon.inputhint.locked
 			.modal-footer
-				button(name="submit", type="submit").right Login
-				a(href="#{pathTo.signup}")#create-account.fatlink Register
+				button.right(name="submit", type="submit") Login
+				a#create-account.link-big(href="#{pathTo.signup}") Register
 
 			.modal-subfooter.lastfooter
-				input(name="rememberme", type="checkbox", checked="checked")#remember-me-checkbox
-				label(for="remember-me-checkbox")#remember-me.checkbox.slimlink Remember Me
-				a(href="#")#forgot-password.slimlink Forgot password?
+				input#remember-me-checkbox(name="rememberme", type="checkbox", checked="checked")
+				label#remember-me.checkbox.link-small(for="remember-me-checkbox") Remember Me
+				a#forgot-password.link-small(href="#") Forgot password?
 		!= formTagEnd()
 
 block append modals
