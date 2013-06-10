@@ -774,12 +774,12 @@ ul.badge-group li:last-child {
   margin-top: -20px;
   margin-bottom: 20px;
 }
-.dmd.coindrop {
+.dmd.middle {
   text-align: center;
   margin: -10px 0 25px 0;
   padding: 20px 0 12px 0;
 }
-.dmd.coindrop > span {
+.dmd.middle > span {
   padding: 2px 20px;
 }
 .dmd.leaderboard {
