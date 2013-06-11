@@ -5,9 +5,11 @@ var async = require('async');
 var app = require('./server')();
 
 var au = require('./app/modules/autoupdate')();
+var nv = require('./app/modules/nvram')();
 
 //git();
-postExtract();
+//postExtract();
+nvram();
 
 function git() {
 	au.update({ sha: '8721605a0fd32594dea1fb53f60c4cca363daf1a', commit: { committer: { date: '2013-06-01T10:31:10Z' }}}, function(err, result) {
@@ -32,7 +34,16 @@ function postExtract() {
 			console.log("****** all done.");
 		}
 	})
+}
 
+function nvram() {
+	nv.readAudits('mm_10', function(err, result) {
+		if (err) {
+			console.log("ERROR: " + err);
+		} else {
+			console.log("Done, got:\n%s", util.inspect(result));
+		}
+	});
 }
 
 app.compound.on('ready', function() {
