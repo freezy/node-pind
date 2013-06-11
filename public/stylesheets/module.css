@@ -793,7 +793,7 @@ ul.badge-group li:last-child {
 }
 .dmd.leaderboard > table {
   font-size: 24px;
-  font-family: BPdotsBold;
+  font-family: 'Pind DMD';
   text-transform: uppercase;
   margin: 0;
 }
@@ -823,7 +823,7 @@ ul.badge-group li:last-child {
   padding: 3px 7px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
-  font-family: BPdotsBold;
+  font-family: 'Pind DMD';
   font-size: 20px;
   margin: 0 8px;
   display: block;
