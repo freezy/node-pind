@@ -33,14 +33,14 @@ function WPC() {
  * 	      { duration: 900, num: 37 } ],
  * 	  match: 1 }
  * </pre>
- * @param data
- * @param name
+ * @param data Buffer containing the contents of the nvram file
+ * @param name Name of the ROM
  * @param callback
  */
 WPC.prototype.readAudits = function(data, name, callback) {
 	ram = data;
 	rom = name;
-	async.series([this._readMainAudits, this._readStandardAudits, this._readHistograms], function(err, auditArray) {
+	async.series([this._isValid, this._readMainAudits, this._readStandardAudits, this._readHistograms], function(err, auditArray) {
 		if (err) {
 			return callback(err);
 		}
@@ -54,10 +54,10 @@ WPC.prototype.readAudits = function(data, name, callback) {
 		var ttl = 0;
 		var fnd = 0;
 		for (var key in audits) {
-			if (!audits.hasOwnProperty(key)) {
+			if (!audits.hasOwnProperty(key) || key == 'isValid') {
 				continue;
 			}
-			if (audits[key] === false) {
+			if (!audits[key]) {
 				delete audits[key];
 			} else {
 				fnd++;
@@ -69,6 +69,17 @@ WPC.prototype.readAudits = function(data, name, callback) {
 	});
 };
 
+WPC.prototype._isValid = function(next) {
+
+	next(null, {
+		isValid: WPC.prototype._readHexWithChecksum(0x1883, 3) !== false // gamesStarted
+	});
+
+/*	next(null,  {
+		isValid : ram.readUInt32BE(0) == 0 && ram.readUInt32BE(4) == 0
+			&& ram.readUInt32BE(20) == 0xffff0000
+	});*/
+}
 
 /**
  * Reads the following from main audits:
@@ -125,6 +136,10 @@ WPC.prototype._readHistograms = function(next) {
 				score: scores[i],
 				num: WPC.prototype._readHexWithChecksum(0x191f + (i * 6), 3)
 			});
+			if (histogram[0].num === false) {
+				histogram = false;
+				break;
+			}
 		}
 		audits.scoreHistogram = histogram;
 	}
@@ -137,6 +152,10 @@ WPC.prototype._readHistograms = function(next) {
 				duration: durations[i],
 				num: WPC.prototype._readHexWithChecksum(0x196d + (i * 6), 3)
 			});
+			if (histogram[0].num === false) {
+				histogram = false;
+				break;
+			}
 		}
 		audits.playtimeHistogram = histogram;
 	}

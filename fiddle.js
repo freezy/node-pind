@@ -9,7 +9,8 @@ var nv = require('./app/modules/nvram')();
 
 //git();
 //postExtract();
-nvram();
+//readAudits();
+readAllAudits();
 
 function git() {
 	au.update({ sha: '8721605a0fd32594dea1fb53f60c4cca363daf1a', commit: { committer: { date: '2013-06-01T10:31:10Z' }}}, function(err, result) {
@@ -36,8 +37,18 @@ function postExtract() {
 	})
 }
 
-function nvram() {
-	nv.readAudits('mm_10', function(err, result) {
+function readAudits() {
+	nv.readAudits('bbb109', function(err, result) {
+		if (err) {
+			console.log("ERROR: " + err);
+		} else {
+			console.log("Done, got:\n%s", util.inspect(result));
+		}
+	});
+}
+
+function readAllAudits() {
+	nv.readAll(0, function(err, result) {
 		if (err) {
 			console.log("ERROR: " + err);
 		} else {

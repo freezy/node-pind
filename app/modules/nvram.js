@@ -29,7 +29,7 @@ NvRam.prototype.initAnnounce = function(app) {
 //	var an = require('./announce')(app, this);
 };
 
-NvRam.prototype.readAllStandardAudits = function(startWith, callback) {
+NvRam.prototype.readAll = function(startWith, callback) {
 
 	if (!startWith) {
 		startWith = '0';
@@ -54,11 +54,23 @@ NvRam.prototype.readAllStandardAudits = function(startWith, callback) {
 		that.readAudits(nvram, function(err, audit) {
 			if (!err) {
 				if (audit.match == 1) {
-					console.log('Full match: %s', nvram);
+					if (!audit.isValid) {
+						console.log('INVALID but full match: %s', nvram);
+					} else {
+						console.log('Full match: %s', nvram);
+					}
 					m1++;
 				} else if (audit.match > 0) {
-					console.log('Partial match: %s (%s%)', nvram, Math.round(audit.match * 1000) / 10);
+					if (!audit.isValid) {
+						console.log('INVALID but Partial match: %s (%s%)', nvram, Math.round(audit.match * 1000) / 10);
+					} else {
+						console.log('Partial match: %s (%s%)', nvram, Math.round(audit.match * 1000) / 10);
+					}
 					m2++;
+				} else {
+					if (audit.isValid) {
+						console.log('VALID but no match: %s', nvram);
+					}
 				}
 			}
 			next(err);
@@ -87,9 +99,7 @@ NvRam.prototype.readAudits = function(rom, callback) {
 	if (ram.length < 0x1883) {
 		return callback(null, { match: 0 });
 	}
-
 	wpc.readAudits(ram, rom, callback);
-
 };
 
 

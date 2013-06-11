@@ -57,7 +57,8 @@
 		"mkdirp" : "latest",
 		"diff" : "latest",
 		"uglify-js2" : "2.1.11",
-		"npm": "1.2.25"
+		"npm": "1.2.25",
+		"duration" : "latest"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",
