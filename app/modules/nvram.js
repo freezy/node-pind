@@ -6,7 +6,7 @@ var events = require('events');
 var Buffer = require('buffer').Buffer;
 var Duration = require('duration');
 
-var WPC = require('./rom/wpc');
+var wpc = require('./rom/wpc')();
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
@@ -88,8 +88,7 @@ NvRam.prototype.readAudits = function(rom, callback) {
 		return callback(null, { match: 0 });
 	}
 
-	var wpc = new WPC(ram, rom);
-	wpc.readAudit(callback);
+	wpc.readAudits(ram, rom, callback);
 
 };
 
