@@ -71,8 +71,31 @@ NvRam.prototype.readTables = function(callback) {
 					logger.log('error', '[nvram] [%s] Error reading audit: %s', rom, err);
 					return next(err);
 				}
-				logger.log('info', '[nvram] [%s] Got audit:', rom, audit);
-				next();
+//				logger.log('info', '[nvram] [%s] Got audit:', rom, audit);
+				schema.Rom.find({ where: { name: rom }}).success(function(row) {
+					var attrs = {
+						name: rom,
+						extraBalls: audit.extraBalls,
+						gamesStarted: audit.gamesStarted,
+						gamesPlayed: audit.gamesPlayed,
+						playTime: audit.playTime,
+						runningTime: audit.runningTime,
+						ballsPlayed: audit.ballsPlayed,
+						scoreHistogram: JSON.stringify(audit.scoreHistogram),
+						playtimeHistogram: JSON.stringify(audit.playtimeHistogram)
+					};
+					if (row) {
+						row.updateAttributes(attrs).success(function(row) {
+							logger.log('info', '[nvram] Successfully updated rom "%s".', row.name);
+							next();
+						});
+					} else {
+						schema.Rom.create(attrs).success(function(row) {
+							logger.log('info', '[nvram] Successfully created rom "%s".', row.name);
+							next();
+						});
+					}
+				});
 			})
 		}, function(err) {
 			logger.log('info', '[nvram] Reading done.');

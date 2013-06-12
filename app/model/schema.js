@@ -90,6 +90,7 @@ var sequelize = new Sequelize(
 // retrieve base definitions
 User = sequelize.import(__dirname + '/user');
 Table = sequelize.import(__dirname + '/table');
+Rom = sequelize.import(__dirname + '/rom');
 Hiscore = sequelize.import(__dirname + '/hiscore');
 Transfer = sequelize.import(__dirname + '/transfer');
 VpfFile = sequelize.import(__dirname + '/vpf_file');
@@ -101,13 +102,12 @@ Table.hasMany(Hiscore);
 Hiscore.belongsTo(User);
 Hiscore.belongsTo(Table);
 
-/*
+
 sequelize.sync().on('success', function() {
 	console.log('Connected to %s.', settings.pind.database.engine == 'mysql' ? "MySQL" : "SQLite");
 }).error(function(err){
 	console.log('Error connecting to SQLite: ' + err);
 });
-*/
 
 create = function(next){
 	sequelize.sync({force: true}).on('success', function() {
@@ -121,6 +121,7 @@ module.exports = {
 	sequelize: sequelize,
 	create: create,
 	Table: Table,
+	Rom: Rom,
 	User: User,
 	Hiscore: Hiscore,
 	Transfer: Transfer,
