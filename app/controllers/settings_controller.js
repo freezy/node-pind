@@ -15,7 +15,7 @@ action('tables', function(context) {
 		hpsync: hp.isSyncing(),
 		dlrom: vpm.isFetchingRoms(),
 		dlmedia: false,
-		fetchhs: hs.isFetchingHiscores(),
+		fetchhs: hs.isFetching(),
 		ipdbsync: ipdb.isSyncing()
 	}
 	this.title = 'Settings :: Tables';

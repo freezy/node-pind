@@ -11,6 +11,8 @@ var wpc = require('./rom/wpc')();
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
+var isFetching;
+
 function NvRam(app) {
 	if ((this instanceof NvRam) === false) {
 		return new NvRam(app);
@@ -28,6 +30,59 @@ util.inherits(NvRam, events.EventEmitter);
 NvRam.prototype.initAnnounce = function(app) {
 //	var an = require('./announce')(app, this);
 };
+
+
+/**
+ * Updates data from .nv RAM files.
+ *
+ * Loops through available tables
+ *
+ * @param callback Function to execute after completion, invoked with one argument:
+ * 	<ol><li>{String} Error message on error</li></ol>
+ */
+NvRam.prototype.readTables = function(callback) {
+
+	if (isFetching) {
+		return callback('Fetching process already running. Wait until complete.');
+	}
+	var that = this;
+	isFetching = true;
+	that.emit('processingStarted');
+
+	// fetch all VP table and store them into a dictionary
+	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL', order: 'name DESC' }).success(function(rows) {
+		var roms = [];
+		var tables = {};
+
+		// only retrieve roms that actually have an .nv file.
+		for (var i = 0; i < rows.length; i++) {
+			if (fs.existsSync(settings.vpinmame.path + '/nvram/' + rows[i].rom + '.nv')) {
+				roms.push(rows[i].rom);
+				tables[rows[i].rom] = rows[i];
+			}
+		}
+		roms = _.uniq(roms);
+		logger.log('info', '[nvram] Found %d VP tables with ROM and a nvram.', roms.length);
+
+		async.eachSeries(roms, function(rom, next){
+
+			NvRam.prototype.readAudits(rom, function(err, audit) {
+				if (err) {
+					logger.log('error', '[nvram] [%s] Error reading audit: %s', rom, err);
+					return next(err);
+				}
+				logger.log('info', '[nvram] [%s] Got audit:', rom, audit);
+				next();
+			})
+		}, function(err) {
+			logger.log('info', '[nvram] Reading done.');
+		});
+
+
+
+	}).error(callback);
+};
+
 
 NvRam.prototype.readAll = function(startWith, callback) {
 

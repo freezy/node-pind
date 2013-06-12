@@ -9,7 +9,7 @@ var logger = require('winston');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
-var isFetchingHiscores = false;
+var isFetching = false;
 
 function Hiscore(app) {
 	if ((this instanceof Hiscore) === false) {
@@ -43,8 +43,8 @@ Hiscore.prototype.initAnnounce = function(app) {
 	an.data('nvramChangeProcessed', { id: '#fetchhs' }, 'processingCompleted');
 };
 
-Hiscore.prototype.isFetchingHiscores = function() {
-	return isFetchingHiscores;
+Hiscore.prototype.isFetching = function() {
+	return isFetching;
 };
 
 
@@ -77,17 +77,17 @@ Hiscore.prototype.initConfig = function() {
  */
 Hiscore.prototype.fetchHighscores = function(callback) {
 
-	if (isFetchingHiscores) {
+	if (isFetching) {
 		return callback('Fetching process already running. Wait until complete.');
 	}
 	var that = this;
-	isFetchingHiscores = true;
+	isFetching = true;
 	that.emit('processingStarted');
 
 //	var now = new Date();
 
 	// fetch all VP table and store them into a dictionary
-	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL' }).success(function(rows) {
+	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL', order: 'name DESC' }).success(function(rows) {
 		var roms = [];
 		var tables = {};
 		// only retrieve roms that actually have an .nv file.
@@ -97,6 +97,7 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 				tables[rows[i].rom] = rows[i];
 			}
 		}
+		roms = _.uniq(roms);
 		logger.log('info', '[hiscore] Found %d VP tables with ROM and a nvram.', roms.length);
 
 		// cache users to avoid re-quering
@@ -112,7 +113,7 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 			async.eachSeries(roms, function(rom, next) {
 				that._matchHiscore(tables, users, rom, next);
 			}, function(err) {
-				isFetchingHiscores = false;
+				isFetching = false;
 				that.emit('processingCompleted');
 				if (err) {
 					that.emit('processingFailed', { err:  err });
@@ -120,13 +121,9 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 				callback(err);
 			});
 
-		}).error(function(err) {
-				throw Error(err);
-			});
+		}).error(callback);
 
-	}).error(function(err) {
-			throw Error(err);
-		});
+	}).error(callback);
 };
 
 /**
@@ -305,10 +302,10 @@ Hiscore.prototype._matchHiscore = function(tables, users, rom, next) {
  * @param filename Changed file
  */
 Hiscore.prototype.watchHighscores = function(event, filename) {
-	if (isFetchingHiscores) {
+	if (isFetching) {
 		return;
 	}
-	isFetchingHiscores = true;
+	isFetching = true;
 	if (!filename) {
 		return;
 	}
@@ -331,7 +328,7 @@ Hiscore.prototype.watchHighscores = function(event, filename) {
 				var tables = {};
 				tables[romname] = table;
 				Hiscore.prototype._matchHiscore(tables, users, romname, function() {
-					isFetchingHiscores = false;
+					isFetching = false;
 					logger.log('info', '[hiscore] High score for ROM "' + romname + '" updated successfully.');
 					Hiscore.prototype.emit('nvramChangeProcessed', { name: table.name });
 				});
