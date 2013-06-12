@@ -789,7 +789,7 @@ ul.badge-group li:last-child {
   border-bottom-right-radius: 3px;
 }
 .dmd.leaderboard > table {
-  font-size: 24px;
+  font-size: 22px;
   font-family: 'Pind DMD';
   text-transform: uppercase;
   margin: 0;
@@ -817,11 +817,11 @@ ul.badge-group li:last-child {
 }
 #console .inner span {
   text-align: left;
-  padding: 3px 7px;
+  padding: 2px 7px 1px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
   font-family: 'Pind DMD';
-  font-size: 20px;
+  font-size: 22px;
   margin: 0 8px;
   display: block;
   cursor: default;

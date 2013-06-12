@@ -1,5 +1,4 @@
 var fs = require('fs');
-var log = require('winston');
 var ocd = require('ole-doc').OleCompoundDoc;
 var util = require('util');
 var async = require('async');
@@ -241,7 +240,7 @@ VisualPinball.prototype.getTableSetting = function(storageName, streamName, call
 				var stream = storage.stream(streamName);
 				stream.on('data', function(buf) {
 					var data = buf.toString();
-					log.debug('[vp] [ole] Got buffer at ' + buf.length + ' bytes length: ' + data);
+					logger.debug('[vp] [ole] Got buffer at ' + buf.length + ' bytes length: ' + data);
 					callback(null, parseInt(data.replace(/\0+/g, '')));
 				});
 			} catch(err) {
@@ -275,7 +274,7 @@ VisualPinball.prototype.getScriptFromTable = function(tablePath, callback) {
 		var stat = fs.fstatSync(fd);
 		//noinspection JSUnresolvedFunction
         var buf = new Buffer(8);
-		log.debug('[vp] [script] Found ' + tablePath + ' at ' + stat.size + ' bytes.');
+		logger.debug('[vp] [script] Found ' + tablePath + ' at ' + stat.size + ' bytes.');
 		var scriptStart, scriptEnd;
 		for (var i = stat.size; i > 0; i--) {
 			fs.readSync(fd, buf, 0, buf.length, i - buf.length);
@@ -290,7 +289,7 @@ VisualPinball.prototype.getScriptFromTable = function(tablePath, callback) {
 		}
 		//noinspection JSUnresolvedFunction
         buf = new Buffer(scriptEnd - scriptStart);
-		log.debug('[vp] [script] Found positions ' + scriptStart + ' and ' + scriptEnd + ' in ' + (new Date().getTime() - now) + ' ms.');
+		logger.debug('[vp] [script] Found positions ' + scriptStart + ' and ' + scriptEnd + ' in ' + (new Date().getTime() - now) + ' ms.');
 		fs.readSync(fd, buf, 0, buf.length, scriptStart);
 		fs.closeSync(fd);
 		callback(null, buf.toString());
@@ -336,7 +335,7 @@ VisualPinball.prototype.updateTableData = function(callback) {
 			// skip if file doesn't exist.
 			var tablePath = settings.visualpinball.path + '/tables/' + row.filename + '.vpt';
 			if (!fs.existsSync(tablePath)) {
-				log.warn('Table file "' + tablePath + '" does not exist.');
+				logger.warn('[vp] Table file "' + tablePath + '" does not exist.');
 				return next();
 			}
 

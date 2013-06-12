@@ -1,6 +1,7 @@
 .idea
 app/server/modules/email-settings-mine.js
 bin/pinemhi.ini
+logs/*
 settings-mine.js
 settings-new.js
 package-new.json

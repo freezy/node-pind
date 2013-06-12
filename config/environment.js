@@ -7,6 +7,7 @@ module.exports = function(compound) {
 
 	var app = compound.app;
 	var io = require('socket.io').listen(compound.server);
+	io.set('log level', 2);
 
 	app.configure(function(){
 		app.locals.pretty = false;

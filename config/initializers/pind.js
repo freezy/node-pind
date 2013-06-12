@@ -1,6 +1,6 @@
 var fs = require('fs');
-var logger = require('winston');
 var path = require('path');
+var logger = require('winston');
 
 module.exports = function(compound) {
 	var hs = require(compound.root + '/app/modules/hiscore')(compound.app);
