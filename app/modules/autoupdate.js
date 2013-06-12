@@ -422,7 +422,8 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 
 	var checkNewDependencies = function(next) {
 		var newPackages = _.difference(_.keys(newConfig.packageJson.dependencies), _.keys(oldConfig.packageJson.dependencies));
-		if (newPackages.length > 0) {
+		var newPackageVersions = _.difference(_.values(newConfig.packageJson.dependencies), _.values(oldConfig.packageJson.dependencies));
+		if (newPackages.length > 0 || newPackageVersions.length > 0) {
 			console.log('[autoupdate] Found new dependencies: [' + newPackages.join(' ') + '], running `npm install`.');
 			npm.load({}, function(err) {
 				if (err) {
@@ -593,7 +594,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 	var checkNewMigration = function(next) {
 		// TODO
 		next();
-	}
+	};
 
 	var updateAndRestart = function(next) {
 		// update version.json

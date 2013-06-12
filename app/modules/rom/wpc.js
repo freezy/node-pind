@@ -79,7 +79,7 @@ WPC.prototype._isValid = function(next) {
 		isValid : ram.readUInt32BE(0) == 0 && ram.readUInt32BE(4) == 0
 			&& ram.readUInt32BE(20) == 0xffff0000
 	});*/
-}
+};
 
 /**
  * Reads the following from main audits:
@@ -142,7 +142,7 @@ WPC.prototype._readHistograms = function(next) {
 			}
 		}
 		audits.scoreHistogram = histogram;
-	}
+	};
 
 	var readTimeHistogram = function() {
 		var durations = [ 0, 60, 90, 120, 150, 180, 240, 300, 360, 480, 600, 900 ];
@@ -158,7 +158,7 @@ WPC.prototype._readHistograms = function(next) {
 			}
 		}
 		audits.playtimeHistogram = histogram;
-	}
+	};
 
 	function is(prefix) {
 		return rom.substr(0, prefix.length).toLowerCase() == prefix.toLowerCase();
@@ -206,7 +206,7 @@ WPC.prototype._readHexWithChecksum = function(pos, len) {
 			c += ram.readUInt8(pos + i);
 		}
 		return 255 - (c % 256);
-	}
+	};
 	var value = this._readHex(pos, len);
 	var valueCheck = ram.readUInt8(pos + len + 2);
 	if (valueCheck == checksum(pos, 3)) {
