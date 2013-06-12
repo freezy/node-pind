@@ -4,6 +4,7 @@ var util = require('util');
 var exec = require('child_process').exec;
 var async = require('async');
 var events = require('events');
+var logger = require('winston');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
@@ -96,7 +97,7 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 				tables[rows[i].rom] = rows[i];
 			}
 		}
-		console.log('Found %d VP tables with ROM and a nvram.', roms.length);
+		logger.log('info', '[hiscore] Found %d VP tables with ROM and a nvram.', roms.length);
 
 		// cache users to avoid re-quering
 		schema.User.all().success(function(rows) {
@@ -105,7 +106,7 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 				users[tr(rows[i].user)] = rows[i];
 			}
 
-			console.log('Found %d users to match against the %d roms...', rows.length, roms.length);
+			logger.log('info', '[hiscore] Found %d users to match against the %d roms...', rows.length, roms.length);
 
 			// for every rom, get high scores and try to match against the 2 dictionaries
 			async.eachSeries(roms, function(rom, next) {
@@ -162,7 +163,7 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 
 		// if not, add new entry
 		if (!row) {
-			//console.log('No current entry found, adding new highscore.');
+			//log.log('info', 'No current entry found, adding new highscore.');
 			schema.Hiscore.create({
 				type: hiscore.type,
 				score: hiscore.score,
@@ -184,13 +185,13 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 						}
 					}).error(next);
 				}).error(function(err) {
-					console.log('ERROR: ' + err);
+					logger.log('error', '[hiscore] ERROR: ' + err);
 					next(err);
 				});
 
 		// if so, update entry
 		} else {
-			//console.log('Found entry %s, updating', row.id);
+			//log.log('info', '[hiscore] Found entry %s, updating', row.id);
 			row.updateAttributes({
 				score: hiscore.score,
 				info: hiscore.info,
@@ -220,16 +221,16 @@ Hiscore.prototype._matchHiscore = function(tables, users, rom, next) {
 
 	var that = this;
 	if (!tables[rom]) {
-		console.log('[%s] Error: ROM is not in provided tables array.', rom);
+		logger.log('info', '[hiscore] [%s] Error: ROM is not in provided tables array.', rom);
 		return next();
 	}
 
 	that.getHighscore(rom, function(err, hiscore) {
 		if (err || !hiscore) {
-			console.log('[%s] Error: %s', rom, err ? err : 'Unsupported ROM.');
+			logger.log('info', '[hiscore] [%s] Error: %s', rom, err ? err : 'Unsupported ROM.');
 			next();
 		} else {
-			console.log('[%s] Fetched, checking..', rom);
+			logger.log('info', '[hiscore] [%s] Fetched, checking..', rom);
 			var hiscores = [];
 			var user, hs, i;
 
@@ -237,7 +238,7 @@ Hiscore.prototype._matchHiscore = function(tables, users, rom, next) {
 			if (hiscore.grandChampion) {
 				user = users[tr(hiscore.grandChampion.player)];
 				if (user) {
-					console.log('[%s] Matched grand champion: %s (%s)', rom, hiscore.grandChampion.player, hiscore.grandChampion.score);
+					logger.log('info', '[hiscore] [%s] Matched grand champion: %s (%s)', rom, hiscore.grandChampion.player, hiscore.grandChampion.score);
 				}
 				hiscores.push({
 					type: 'champ',
@@ -254,7 +255,7 @@ Hiscore.prototype._matchHiscore = function(tables, users, rom, next) {
 					hs = hiscore.highest[i];
 					user = users[tr(hs.player)];
 					if (user) {
-						console.log('[%s] Matched high score %s: %s (%s)', rom, hs.rank, hs.player, hs.score);
+						logger.log('info', '[hiscore] [%s] Matched high score %s: %s (%s)', rom, hs.rank, hs.player, hs.score);
 					}
 					hiscores.push({
 						type: 'hiscore',
@@ -273,7 +274,7 @@ Hiscore.prototype._matchHiscore = function(tables, users, rom, next) {
 					hs = hiscore.other[i];
 					user = users[tr(hs.player)];
 					if (user) {
-						console.log('[%s] Matched %s: %s', rom, hs.title, hs.player);
+						logger.log('info', '[hiscore] [%s] Matched %s: %s', rom, hs.title, hs.player);
 					}
 					hiscores.push({
 						type: 'special',
@@ -311,14 +312,14 @@ Hiscore.prototype.watchHighscores = function(event, filename) {
 	if (!filename) {
 		return;
 	}
-	console.log('File change detected.');
+	logger.log('info', '[hiscore] File change detected.');
 	var ext = filename.substr(filename.lastIndexOf('.')).toLowerCase();
 	if (ext != '.nv') {
 		return;
 	}
 	var romname = filename.substr(0, filename.lastIndexOf('.'));
 
-	console.log('File change detected for ROM "' + romname + '".');
+	logger.log('info', '[hiscore] File change detected for ROM "' + romname + '".');
 	Hiscore.prototype.emit('nvramChangeDetected', { rom: romname });
 	schema.Table.find({ where: { platform: 'VP', rom: romname }}).success(function(table) {
 		if (table) {
@@ -331,12 +332,12 @@ Hiscore.prototype.watchHighscores = function(event, filename) {
 				tables[romname] = table;
 				Hiscore.prototype._matchHiscore(tables, users, romname, function() {
 					isFetchingHiscores = false;
-					console.log('High score for ROM "' + romname + '" updated successfully.');
+					logger.log('info', '[hiscore] High score for ROM "' + romname + '" updated successfully.');
 					Hiscore.prototype.emit('nvramChangeProcessed', { name: table.name });
 				});
 			});
 		} else {
-			console.log('No table found for ROM "' + romname + '".');
+			logger.log('info', '[hiscore] No table found for ROM "' + romname + '".');
 			Hiscore.prototype.emit('nvramChangeProcessed', { name: "unregistered" });
 		}
 	});
@@ -374,11 +375,11 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 			return callback();
 		}
 		if (stdout.match(/^no such file/i)) {
-			console.log(stdout);
+			logger.log('debug', stdout);
 			return callback('PINemHi could not find the .nv file. Check your paths.');
 		}
 		if (error !== null) {
-			console.log(error);
+			logger.log('error', '[hiscore] ', error);
 		} else {
 			var m, n, regex, titles, block, blocks = stdout;
 			var scores = {};
@@ -861,13 +862,13 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 					}
 				} else if (b[i].trim().length > 0) {
 
-					console.log('\n===================================================================');
-					console.log(romname);
-					console.log('===================================================================');
-					console.log(stdout);
-					console.log('-------------------------------------------------------------------');
-					console.log('Unknown block: \n' + b[i] + '\n');
-					console.log('===================================================================');
+					logger.log('info', '\n===================================================================');
+					logger.log('info', romname);
+					logger.log('info', '===================================================================');
+					logger.log('info', stdout);
+					logger.log('info', '-------------------------------------------------------------------');
+					logger.log('info', 'Unknown block: \n' + b[i] + '\n');
+					logger.log('info', '===================================================================');
 					scores.raw = stdout;
 					callback(b[i], scores);
 					return;
@@ -907,8 +908,7 @@ Hiscore.prototype.assertAll = function(startWith) {
 			if (!err) {
 				if (result != null) {
 					delete result.raw;
-					console.log('\n' + nvram);
-					console.log(util.inspect(result));
+					logger.log('info', '\n' + nvram, result);
 				}
 			}
 			callback(err, result);

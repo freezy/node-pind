@@ -2,12 +2,13 @@ var fs = require('fs');
 var sys = require('sys');
 var util = require('util');
 var async = require('async');
-var events = require('events');
-var request = require('request');
-var natural = require('natural');
 var jsdom = require('jsdom').jsdom;
+var events = require('events');
 var jquery = require('jquery');
 var chrono = require('chrono-node');
+var logger = require('winston');
+var request = require('request');
+var natural = require('natural');
 
 var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
@@ -74,7 +75,7 @@ VPForums.prototype.isDownloadingIndex = false;
 VPForums.prototype._findMedia = function(table, cat, callback) {
 
 	var that = this;
-	console.log('[vpf] Searching media pack for "' + table.name + '"...');
+	logger.log('info', '[vpf] Searching media pack for "%s"...', table.name);
 	this._fetchDownloads(35, table.name, {}, function(err, results) {
 		if (err) {
 			return callback(err);
@@ -87,10 +88,10 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
 		}
 		that.download(match, settings.pind.tmp, null, function(err, filename) {
 			if (err) {
-				console.log('[vpf] Error downloading: %s', err);
+				logger.log('error', '[vpf] Error downloading: %s', err);
 				return callback(err);
 			}
-			console.log('[vpf] Downloaded file to: %s', filename);
+			logger.log('info', '[vpf] Downloaded file to: %s', filename);
 			callback(null, filename);
 		});
 	});
@@ -136,7 +137,7 @@ VPForums.prototype.findTableVideo = function(table, callback) {
 VPForums.prototype.getRomLinks = function(table, callback) {
 
 	var that = this;
-	console.log('[vpf] Searching ROM for "' + table.name + '"...');
+	logger.log('info', '[vpf] Searching ROM for "%s"...', table.name);
 	this.emit('romSearchStarted', { name: table.name });
 	that._fetchDownloads(9, table.name, {}, function(err, results) {
 		if (err) {
@@ -211,7 +212,7 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 			var m;
 			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
 				var confirmUrl = m[1].replace(/&amp;/g, '&');
-				console.log('[vpf] Getting confirmation page at %s...', confirmUrl);
+				logger.log('info', '[vpf] Getting confirmation page at %s...', confirmUrl);
 				// fetch the "confirm" page, where the actual link is
 				request(confirmUrl, function(err, response, body) {
 
@@ -225,7 +226,7 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 							var failed = false;
 
 							that.emit('downloadStarted', { filename: filename, destpath: dest, reference: reference });
-							console.log('[vpf] Downloading %s at %s...', filename, downloadUrl);
+							logger.log('info', '[vpf] Downloading %s at %s...', filename, downloadUrl);
 							var stream = fs.createWriteStream(dest);
 							stream.on('close', function() {
 
@@ -237,19 +238,19 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 								if (failed || size < 128000) {
 									var data = fs.readFileSync(dest, 'utf8');
 									if (data.match(/You have exceeded the maximum number of downloads allotted to you for the day/i)) {
-										console.log('[vpf] Download data is error message, quitting.', size, dest);
+										logger.log('info', '[vpf] Download data is error message, quitting.', { size: size, dest: dest });
 										err = 'Number of daily downloads exceeded at VPF.';
 										that.emit('downloadFailed', { message: err });
 										return callback(err);
 									}
 									if (data.match(/You may not download any more files until your other downloads are complete/i)) {
-										console.log('[vpf] Too many simulataneous downloads, quitting.', size, dest);
+										logger.log('info', '[vpf] Too many simulataneous downloads, quitting.', { size: size, dest: dest });
 										err = 'Number of concurrent downloads exceeded at VPF.';
 										that.emit('downloadFailed', { message: err });
 										return callback(err);
 									}
 									if (failed) {
-										console.log('[vpf] Download failed, see %s what went wrong.', dest);
+										logger.log('info', '[vpf] Download failed, see %s what went wrong.', dest);
 										err = 'Download failed.';
 										that.emit('downloadFailed', { message: err });
 										return callback(err);
@@ -257,7 +258,7 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 								}
 
 								that.emit('downloadCompleted', { size: size, reference: reference });
-								console.log('[vpf] Downloaded %d bytes to %s.', size, dest);
+								logger.log('info', '[vpf] Downloaded %d bytes to %s.', size, dest);
 
 								that._unWatchDownload(dest);
 								callback(null, dest);
@@ -266,7 +267,7 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 
 								if (response.statusCode != 200) {
 									failed = true;
-									console.error('[vpf] Download failed with status code %s.', response.statusCode);
+									logger.log('error', '[vpf] Download failed with status code %s.', response.statusCode);
 									return;
 								}
 								if (response.headers['content-length']) {
@@ -289,9 +290,9 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 		if (body.match(/<a href='[^']+' title='Sign In' id='sign_in'>Sign In/i)) {
 
 			if (loggingIn) {
-				console.log('[vpf] Waiting for current login to complete...');
+				logger.log('info', '[vpf] Waiting for current login to complete...');
 				that.once('loginCompleted', function() {
-					console.log('[vpf] Login completed, let\'s go!');
+					logger.log('info', '[vpf] Login completed, let\'s go!');
 					download(body);
 				});
 				that.once('loginFailed', function(result) {
@@ -299,7 +300,7 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 				});
 
 			} else {
-				console.log('[vpf] Seems we need to login first.');
+				logger.log('info', '[vpf] Seems we need to login first.');
 				that._login(function(err) {
 					if (err) {
 						return callback(err);
@@ -310,7 +311,7 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 
 
 		} else {
-			console.log('[vpf] Looks like we\'re already logged in.');
+			logger.log('info', '[vpf] Looks like we\'re already logged in.');
 			download(body);
 		}
 	});
@@ -334,7 +335,7 @@ VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance
 		var result = results[i];
 		var name = trimFct(result.title);
 		var d = natural.LevenshteinDistance(title.toLowerCase(), name.toLowerCase());
-		//console.log('%s %s - %s', d, title, name);
+		//logger.log('info', '%s %s - %s', d, title, name);
 		if (d < distance) {
 			matches = [ result ];
 			distance = d;
@@ -355,7 +356,7 @@ VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance
 VPForums.prototype._matchResult = function(results, title, trimFct, strategy) {
 	//noinspection JSCheckFunctionSignatures
     var matches = this._matchResults(results, title, trimFct);
-	console.log('Got matches: %j', matches);
+	logger.log('info', 'Got matches: %j', matches, {});
 	matches.sort(function(a, b) {
 		var x;
 		//noinspection FallthroughInSwitchStatementJS
@@ -423,9 +424,9 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 
 		// update cache
 		if (letter) {
-			console.log('[vpf] Updating cache for letter "%s"...', letter);
+			logger.log('info', '[vpf] Updating cache for letter "%s"...', letter);
 		} else {
-			console.log('[vpf] Updating cache...');
+			logger.log('info', '[vpf] Updating cache...');
 		}
 		var results = [];
 		async.eachSeries(items, function(item, next) {
@@ -452,7 +453,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 
 			var done = function(err, r) {
 				if (err) {
-					console.log('%j', obj);
+					logger.log('info', '%j', obj, {});
 					return next(err);
 				}
 				results.push(r);
@@ -468,7 +469,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			if (err) {
 				return cb(err);
 			}
-			console.log('[vpf] Saved %d results to cache in %s seconds.', results.length, Math.round((new Date().getTime() - cacheStarted) / 100) / 10);
+			logger.log('info', '[vpf] Saved %d results to cache in %s seconds.', results.length, Math.round((new Date().getTime() - cacheStarted) / 100) / 10);
 			cb(null, results);
 		});
 
@@ -490,15 +491,15 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 		var sortOrder = 'sort_order=' + (options.sortOrder ? options.sortOrder : 'ASC');
 		if (letter) {
 			url = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=categoryletters&cat=' + cat + '&letter=' + letter + '&' + sortOrder + '&' + sortKey + '&num=' + num + '&st=' + ((page - 1) * num);
-			console.log('[vpf] Fetching page ' + page + ' for category ' + cat + ' and letter "' + letter + '".');
+			logger.log('info', '[vpf] Fetching page %d for category %s and letter "%s".', page, cat, letter);
 		} else {
 			url = 'http://www.vpforums.org/index.php?app=downloads&showcat=' + cat + '&' + sortOrder + '&' + sortKey + '&num=' + num + '&st=' + ((page - 1) * num);
-			console.log('[vpf] Fetching page ' + page + ' for category ' + cat + '.');
+			logger.log('info', '[vpf] Fetching page %d for category %s.', page, cat);
 		}
 
 		request(url, function(err, response, body) {
 			if (err) {
-				console.log('[vpf] Error retrieving ' + url + ': ' + err);
+				logger.log('error', '[vpf] Error retrieving %s: %s', url, err);
 				return callback('Error retrieving ' + url + ': ' + err);
 			}
 			var m;
@@ -506,8 +507,8 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 				numPages = m[1];
 			} else {
 				//var debugFile = error.dumpDebugData('vpf', 'no-numpage', body, 'html');
-				//console.log('[vpf] Could not parse number of pages at ' + url + '. See ' + debugFile);
-				console.log('[vpf] Could not parse number of pages, assuming one page only.');
+				//logger.log('info', '[vpf] Could not parse number of pages at ' + url + '. See ' + debugFile);
+				logger.log('info', '[vpf] Could not parse number of pages, assuming one page only.');
 				numPages = 1;
 			}
 
@@ -536,13 +537,13 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 					});
 					next();
 				} else {
-					console.log('ERROR: Could not parse file ID from %s.', url);
+					logger.log('error', 'ERROR: Could not parse file ID from %s.', url);
 					next('Could not parse file ID from ' + url);
 				}
 
 			}, function() {
 				if (firstPageOnly || options.firstPageOnly || page >= numPages) {
-					console.log('[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
+					logger.log('info', '[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
 					saveToCache(cat, letter, currentResult, callback);
 				} else {
 					that.emit('downloadProgressUpdated', { progress: page / numPages });
@@ -577,7 +578,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 		}
 
 		if (words[0] == 'the' && words[0][0] != words[1][0]) {
-			console.log('[vpf] Title starts with "The", let\'s fetch also letter "%s" for second word.', words[1][0]);
+			logger.log('info', '[vpf] Title starts with "The", let\'s fetch also letter "%s" for second word.', words[1][0]);
 
 			// check cache first.
 			schema.VpfFile.all({ where: { category: cat, letter: words[1][0] }}).success(function(rows) {
@@ -615,13 +616,13 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			}
 
 			if (options.forceUpdate) {
-				console.log('[vpf] Force-refreshing category %d.', cat);
+				logger.log('info', '[vpf] Force-refreshing category %d.', cat);
 				fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
 			} else {
 				if (title) {
-					console.log('[vpf] Returning cached letter "%s" for category %d.', title[0], cat);
+					logger.log('info', '[vpf] Returning cached letter "%s" for category %d.', title[0], cat);
 				} else {
-					console.log('[vpf] Returning all cached letters for category %d.', cat);
+					logger.log('info', '[vpf] Returning all cached letters for category %d.', cat);
 				}
 				goAgainOrCallback(null, rows);
 			}
@@ -640,7 +641,7 @@ VPForums.prototype._login = function(callback) {
 		return callback('Need valid credentials for vpforums.org. Please update settings-mine.js.');
 	}
 	loggingIn = true;
-	console.log('[vpf] Logging in...');
+	logger.log('info', '[vpf] Logging in...');
 	var that = this;
 	that.emit('loginStarted', { user: settings.vpforums.user });
 
@@ -654,7 +655,7 @@ VPForums.prototype._login = function(callback) {
 		if (!m) {
 			callback('Cannot find auth key in index page.');
 		} else {
-			console.log('[vpf] Got auth key: ' + m[1]);
+			logger.log('info', '[vpf] Got auth key: %s', m[1]);
 
 			// post credentials
 			request.post({
@@ -675,7 +676,7 @@ VPForums.prototype._login = function(callback) {
 
 				// redirect means all ok.
 				if (response.statusCode == 302) {
-					console.log('[vpf] Login successful.');
+					logger.log('info', '[vpf] Login successful.');
 					that.emit('loginCompleted', { user: settings.vpforums.user });
 					return callback();
 				}
@@ -702,7 +703,7 @@ VPForums.prototype._login = function(callback) {
  */
 VPForums.prototype.logout = function(callback) {
 	// fetch another damn id
-	console.log('[vpf] Logging out...');
+	logger.log('info', '[vpf] Logging out...');
 	request('http://www.vpforums.org/index.php', function(err, response, body) {
 		if (err) {
 			return callback(err);
@@ -713,7 +714,7 @@ VPForums.prototype.logout = function(callback) {
 				if (err) {
 					callback(err);
 				} else {
-					console.log('[vpf] Logout successful.');
+					logger.log('info', '[vpf] Logout successful.');
 					callback();
 				}
 			});
@@ -745,7 +746,7 @@ VPForums.prototype.cacheAllTableDownloads = function(callback) {
 		if (err) {
 			that.emit('downloadIndexFailed', { error: err });
 			callback(err);
-			return console.log('ERROR: %s', err);
+			return logger.log('error', 'ERROR: %s', err);
 		}
 		that.emit('downloadIndexCompleted');
 		callback(null, results);
@@ -777,7 +778,7 @@ VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 		if (err) {
 			that.emit('refreshIndexFailed', { error: err });
 			callback(err);
-			return console.log('ERROR: %s', err);
+			return logger.log('error', 'ERROR: %s', err);
 		}
 		that.emit('refreshIndexCompleted');
 		callback(null, results);

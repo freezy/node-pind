@@ -3,6 +3,7 @@ var fs = require('fs');
 var util = require('util');
 var async = require('async');
 var events = require('events');
+var logger = require('winston');
 var filesize = require('filesize');
 
 var settings = require('../../config/settings-mine');
@@ -161,7 +162,7 @@ Transfer.prototype.queue = function(transfer, callback) {
 				callback(null, 'Download successfully added to queue.');
 				if (settings.pind.startDownloadsAutomatically) {
 					that.start(function() {
-						console.log('[transfer] Download queue finished.');
+						logger.log('info', '[transfer] Download queue finished.');
 					});
 				}
 			};
@@ -191,20 +192,20 @@ Transfer.prototype.start = function(callback) {
 	var first = false;
 	var cb = function(err, result) {
 		if (err) {
-			console.log('[transfer] ERROR: ' + err);
+			logger.log('error', '[transfer] ERROR: ' + err);
 			if (first && callback) {
 				return callback(err);
 			}
 
 		} else {
 			if (result.emptyQueue) {
-				console.log('[transfer] Queue is empty, returning.');
+				logger.log('info', '[transfer] Queue is empty, returning.');
 				if (first && callback) {
 					callback(null, result);
 				}
 				return;
 			}
-			console.log('[transfer] Next download is ready, starting.');
+			logger.log('info', '[transfer] Next download is ready, starting.');
 
 			// still announce that we've started, but not every item.
 			if (first && callback) {
@@ -216,7 +217,7 @@ Transfer.prototype.start = function(callback) {
 			that.next(cb);
 		}
 	};
-	console.log('[transfer] Kicking off download queue.');
+	logger.log('info', '[transfer] Kicking off download queue.');
 	that.next(cb);
 };
 
@@ -243,7 +244,7 @@ Transfer.prototype.next = function(callback) {
 							downloadStarted = true;
 
 							// update "started" clock..
-							console.log('[transfer] Starting download of %s', transfer.url);
+							logger.log('info', '[transfer] Starting download of %s', transfer.url);
 							transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
 
 								// update file size as soon as we receive the content length.
@@ -252,7 +253,7 @@ Transfer.prototype.next = function(callback) {
 										schema.Transfer.find(data.reference.id).success(function(row) {
 											if (row) {
 												row.updateAttributes({ size: data.contentLength });
-												console.log('[transfer] Updating size of transfer %s to %s.', data.reference.id, data.contentLength);
+												logger.log('info', '[transfer] Updating size of transfer %s to %s.', data.reference.id, data.contentLength);
 												that.emit('transferSizeKnown', {
 													id: data.reference.id,
 													size: data.contentLength,
@@ -260,7 +261,7 @@ Transfer.prototype.next = function(callback) {
 												});
 
 											} else {
-												console.error('[transfer] Could not find transfer with id %s for updating size to %s.', data.reference.id, data.contentLength);
+												logger.log('error', '[transfer] Could not find transfer with id %s for updating size to %s.', data.reference.id, data.contentLength);
 											}
 										});
 
@@ -333,7 +334,7 @@ Transfer.prototype.next = function(callback) {
 					}
 					break;
 					default: {
-						console.log('[transfer] Skipping unsupported engine "' + transfer.engine + '".');
+						logger.log('info', '[transfer] Skipping unsupported engine "%s".', transfer.engine);
 					}
 				}
 			}
@@ -380,7 +381,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 					if (err) {
 						return next(err);
 					}
-					console.log('[transfer] Added ' + downloadedRoms.length + ' ROMs to the download queue.');
+					logger.log('info', '[transfer] Added %d ROMs to the download queue.', downloadedRoms.length);
 					next();
 				});
 			}
@@ -395,7 +396,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						if (err) {
 							return next(err);
 						}
-						console.log('[transfer] Successfully extracted ' + files.length + ' media files.');
+						logger.log('info', '[transfer] Successfully extracted %d media files.', files.length);
 						fs.unlinkSync(filepath);
 						next();
 					});
@@ -404,7 +405,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 
 			// otherwise just continue
 			else {
-				console.log('[transfer] Unimplemented action: %s', action);
+				logger.log('info', '[transfer] Unimplemented action: %s', action);
 				next();
 			}
 		}, callback);

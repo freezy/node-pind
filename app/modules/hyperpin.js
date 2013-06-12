@@ -1,12 +1,11 @@
 var fs = require('fs');
-
-var log = require('winston');
 var path = require('path');
 var util = require('util');
 var exec = require('child_process').exec;
 var async = require('async');
 var events = require('events');
 var xml2js = require('xml2js');
+var logger = require('winston');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
@@ -64,22 +63,21 @@ HyperPin.prototype.syncTablesWithData = function(callback) {
 	isSyncing = true;
 
 	this.syncTables(function(err) {
+		that.emit('syncCompleted');
 		if (err) {
-			console.log("ERROR: " + err);
-			throw new Error(err);
-		} else {
-			that.emit('syncCompleted');
-
-			vp.updateTableData(function(err) {
-				if (err) {
-					throw new Error(err);
-				}
-				that.emit('analysisCompleted', 5000);
-				isSyncing = false;
-				that.emit('processingCompleted');
-				callback();
-			});
+			logger.log('error', '[hyperpin] ERROR: ' + err);
+			return callback(err);
 		}
+
+		vp.updateTableData(function(err) {
+			if (err) {
+				throw new Error(err);
+			}
+			that.emit('analysisCompleted', 5000);
+			isSyncing = false;
+			that.emit('processingCompleted');
+			callback();
+		});
 	});
 };
 
@@ -97,28 +95,28 @@ HyperPin.prototype.syncTables = function(callback) {
 	var process = function(platform, callback) {
 
 		var dbfile = settings.hyperpin.path + '/Databases/' + platforms[platform] + '/' + platforms[platform] + '.xml';
-		log.info('[hyperpin] [' + platform + '] Reading games from ' + dbfile);
+		logger.log('info', '[hyperpin] [' + platform + '] Reading games from ' + dbfile);
 
 		fs.readFile(dbfile, function(err, data) {
 
 			if (err) {
-				log.error('[hyperpin] [' + platform + '] ' + err);
-                return callback('error reading file: ' + err);
+				logger.log('error', '[hyperpin] [' + platform + '] ' + err);
+                return callback('Error reading file: ' + err);
 			}
 
 			var parser = new xml2js.Parser();
 			parser.parseString(data, function (err, result) {
 
 				if (err) {
-					log.error('[hyperpin] [' + platform + '] ' + err);
+					logger.log('error', '[hyperpin] [' + platform + '] ' + err);
                     return callback('error parsing file: ' + err);
 				}
 				if (!result.menu) {
-					log.error('[hyperpin] [' + platform + '] Root element "menu" not found, aborting.');
+					logger.log('error', '[hyperpin] [' + platform + '] Root element "menu" not found, aborting.');
                     return callback('weird xml file, root element "menu" not found.');
 				}
 				if (!result.menu['game']) {
-					log.warn('[hyperpin] [' + platform + '] XML database is empty.');
+					logger.log('warn', '[hyperpin] [' + platform + '] XML database is empty.');
                     return callback(null, []);
 				}
 
@@ -143,7 +141,7 @@ HyperPin.prototype.syncTables = function(callback) {
 						};
 					}
 					if (!g.$ || !g.$.name) {
-						log.error('[hyperpin] [' + platform + '] Cannot find "name" attribute for "' + table.name + '".');
+						logger.log('error', '[hyperpin] [' + platform + '] Cannot find "name" attribute for "' + table.name + '".');
 						callback('error parsing game "' + table.name + '", XML must contain "name" attribute.');
 						return;
 					}
@@ -166,7 +164,7 @@ HyperPin.prototype.syncTables = function(callback) {
 
 					tables.push(table);
 				}
-				log.info('[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
+				logger.log('info', '[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
 				that.emit('xmlParsed', { num: tables.length, platform: platforms[platform] });
 
 				schema.Table.updateAll(tables, now, function(err, tables) {
@@ -216,7 +214,7 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 				if (err) {
 					return next(err);
 				}
-				console.log('Successfully extracted ' + files.length + ' media files.');
+				logger.log('info', '[hyperpin] Successfully extracted %d media files.', files.length);
 				if (files.length > 0) {
 					that.emit('tableUpdated', { key: row.key });
 				}
@@ -268,19 +266,19 @@ HyperPin.prototype.findMissingMedia = function(callback) {
  * @param callback
  */
 HyperPin.prototype.insertCoin = function(user, slot, callback) {
-	console.log('checking amount of credits..');
+	logger.log('info', '[hyperpin] Checking amount of credits');
 	if (user.credits > 0) {
-		console.log(user.credits + ' > 0, all good, inserting coin.');
+		logger.log('info', '[hyperpin] %d > 0, all good, inserting coin.', user.credits);
 		//noinspection JSUnresolvedVariable
         var binPath = fs.realpathSync(__dirname + '../../../bin');
 		exec(binPath + '/Keysender.exe', function(error) {
 			if (error !== null) {
 				callback(error);
 			} else {
-				console.log('coin inserted, updating user credits.');
+				logger.log('info', '[hyperpin] Coin inserted, updating user credits.');
 				user.credits--;
 				user.save(['credits']).success(function(u) {
-					console.log('user credits updated to ' + u.credits + ', calling callback.');
+					logger.log('info', '[hyperpin] User credits updated to %d, calling callback.', u.credits);
 					callback(null, {
 						message : 'Coin inserted successfully!',
 						credits : u.credits

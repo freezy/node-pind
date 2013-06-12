@@ -1,5 +1,6 @@
 var fs = require('fs');
 var gm = require('gm');
+var logger = require('winston');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
@@ -17,7 +18,7 @@ exports.banner = function(context, key, size) {
 			callback(gm);
 		});
 	}).error(function(err) {
-			console.log('Error retrieving table for banner ' + key + ': ' + err);
+			logger.log('error', '[asset] Error retrieving table for banner ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
 };
@@ -32,7 +33,7 @@ exports.table = function(context, key, size) {
 			callback(gm);
 		});
 	}).error(function(err) {
-			console.log('Error retrieving table for table image ' + key + ': ' + err);
+			logger.log('error', '[asset] Error retrieving table for table image ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
 };
@@ -42,7 +43,7 @@ exports.logo = function(context, key) {
 		file(context, getPath('Wheel Images', row));
 
 	}).error(function(err) {
-			console.log('Error retrieving table for logo ' + key + ': ' + err);
+			logger.log('error', '[asset] Error retrieving table for logo ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
 };
@@ -58,7 +59,7 @@ exports.square = function(context, key, size) {
 			callback(gm);
 		});
 	}).error(function(err) {
-			console.log('Error retrieving table for square ' + key + ': ' + err);
+			logger.log('error', '[asset] Error retrieving table for square ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
 };
@@ -81,7 +82,7 @@ exports.widescreen = function(context, key, size) {
 			})
 		});
 	}).error(function(err) {
-			console.log('Error retrieving table for square ' + key + ': ' + err);
+			logger.log('error', '[asset] Error retrieving table for square ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
 
@@ -95,7 +96,7 @@ exports.widescreen = function(context, key, size) {
 	 callback(gm);
 	 });
 	 }).error(function(err) {
-	 console.log('Error retrieving table for square ' + key + ': ' + err);
+	 logger.log('error', '[asset] Error retrieving table for square ' + key + ': ' + err);
 	 context.res.writeHead(500);
 	 });*/
 };
@@ -109,7 +110,7 @@ exports.backglass = function(context, key, size) {
 			callback(gm);
 		});
 	}).error(function(err) {
-			console.log('Error retrieving table for backglass ' + key + ': ' + err);
+			logger.log('error', '[asset] Error retrieving table for backglass ' + key + ': ' + err);
 			context.res.writeHead(500);
 		});
 };
@@ -134,7 +135,7 @@ var asset = function(context, path, process) {
 		process(gm(path), function(gm) {
 			gm.stream(function (err, stream) {
 				if (err) {
-                    console.log('ERROR streaming image: ' + err);
+					logger.log('error', '[asset] ERROR streaming image: ' + err);
                     return context.res.writeHead(500);
                 }
 				context.res.writeHead(200, {

@@ -4,6 +4,7 @@ var ocd = require('ole-doc').OleCompoundDoc;
 var util = require('util');
 var async = require('async');
 var events = require('events');
+var logger = require('winston');
 
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
@@ -344,26 +345,26 @@ VisualPinball.prototype.updateTableData = function(callback) {
 			// read script from table
 			that.getScriptFromTable(tablePath, function(err, script) {
 				if (err) {
-					console.log('Error getting script: ' + err);
+					logger.log('error', '[vp] Error getting script: ' + err);
 					return next(err);
 				}
 
 				// parse rom name
 				that.getRomName(script, function(err, rom) {
 					if (err) {
-						console.log('Error reading ROM name: ' + err);
+						logger.log('error', '[vp] Error reading ROM name: ' + err);
 						rom = null;
 					}
 
 					that.getDmdOrientation(script, function(err, rotation) {
 						if (err) {
-							console.log('Error reading DMD rotation: ' + err);
+							logger.log('error', '[vp] Error reading DMD rotation: ' + err);
 							rotation = null;
 						}
 
 						that.getController(script, function(err, controller) {
 							if (err) {
-								console.log('Error reading controller: ' + err);
+								logger.log('error', '[vp] Error reading controller: ' + err);
 								controller = null;
 							}
 

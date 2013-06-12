@@ -68,7 +68,7 @@ app.compound.on('ready', function() {
 	var extr = require('./app/modules/extract')(app);
 
 
-	var log = require('winston');
+	var log = require('log');
 	log.cli();
 
 //	cacheAllTableDownloads();

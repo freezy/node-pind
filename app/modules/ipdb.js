@@ -1,7 +1,7 @@
-var log = require('winston');
 var util = require('util');
 var async = require('async');
 var events = require('events');
+var logger = require('winston');
 var natural = require('natural');
 var request = require('request');
 
@@ -86,8 +86,7 @@ Ipdb.prototype.syncAll = function(callback) {
 	// sync with local database (aka HyperPin)
 	hp.syncTables(function(err, tables) {
 		if (err) {
-			log.error('[ipdb] ' + err);
-			return;
+			return logger.log('error', '[ipdb] ' + err);
 		}
 
 		// fetch data from ipdb.org
@@ -100,9 +99,8 @@ Ipdb.prototype.enrichAll = function(tables, callback) {
 	async.eachLimit(tables, 3, this.enrich, function(err) {
 
 		if (err) {
-			log.error('[ipdb] ' + err);
-			callback(err);
-			return;
+			logger.log('error', '[ipdb] ' + err);
+			return callback(err);
 		}
 		that.emit('fetchingCompleted', { num: tables.length });
 
@@ -114,26 +112,25 @@ Ipdb.prototype.enrichAll = function(tables, callback) {
 			}).error(cb);
 
 		}, function(err) {
-
+			that.emit('updateCompleted', { num: tables.length });
 			if (err) {
-				log.error('[ipdb] ' + err);
-				callback(err);
-			} else {
-				that.emit('updateCompleted', { num: tables.length });
-				log.info('[ipdb] ' + tables.length + ' games updated.');
-
-				// update ranking from top 300 list
-				that.syncTop300(function(err, games) {
-					if (err) {
-						log.error('[ipdb] ' + err);
-						callback(err);
-					} else {
-						that.emit('top300Completed', { num: games.length });
-						log.info('[ipdb] Top 300 synced (' + games.length + ' games).');
-						callback();
-					}
-				});
+				logger.log('error', '[ipdb] ' + err);
+				return callback(err);
 			}
+
+			logger.log('info', '[ipdb] %d games updated.', tables.length);
+
+			// update ranking from top 300 list
+			that.syncTop300(function(err, games) {
+				if (err) {
+					logger.log('error', '[ipdb] ' + err);
+					callback(err);
+				} else {
+					that.emit('top300Completed', { num: games.length });
+					logger.log('info', '[ipdb] Top 300 synced (%d games).', games.length);
+					callback();
+				}
+			});
 		});
 	});
 };
@@ -201,7 +198,7 @@ Ipdb.prototype.enrich = function(game, callback) {
 	}
 
 	ipdb.emit('searchStarted', { name: game.name });
-	log.info('[ipdb] Fetching data for ' + game.name);
+	logger.log('info', '[ipdb] Fetching data for %s', game.name);
 	var url;
 	if (game.ipdb_no && !forceSearch) {
 		url = 'http://www.ipdb.org/machine.cgi?id=' + game.ipdb_no;
@@ -209,7 +206,7 @@ Ipdb.prototype.enrich = function(game, callback) {
 		// advanced search: var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
 		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(fixName(game.name)) + '&searchtype=quick';
 	}
-	log.debug('[ipdb] Requesting ' + url);
+	logger.log('debug', '[ipdb] Requesting %s', url);
 	request(url, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
 
@@ -218,7 +215,7 @@ Ipdb.prototype.enrich = function(game, callback) {
 			// check if multiple matches
 			m = body.match(/(\d+) records match/i);
 			if (m && m[1] > 1) {
-				log.debug('[ipdb] Found ' + m[1] + ' hits for "' + game.name + '".');
+				logger.log('debug', '[ipdb] Found %d hits for "%s".', m[1], game.name);
 
 				// parse the matches
 				var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"\s+href="#(\d+)">([^<]+)/ig;
@@ -229,13 +226,13 @@ Ipdb.prototype.enrich = function(game, callback) {
 
 				// figure out best match
 				var match = findBestMatch(matches, game);
-				log.info('[ipdb] Figured best match is "' + match.name + '" (' + match.ipdbid + ')');
+				logger.log('info', '[ipdb] Figured best match is "%s" (%s)', match.name, match.ipdbid);
 
 				// strip off non-matches from body
 				regex =  new RegExp('<table border=0 width="100%"><tr><td><font[^>]*><B><a name="' + match.ipdbid + '">[.\\s\\S]*?<hr width="80', 'gi');
 				m = body.match(regex);
 				if (!m) {
-					callback('Cannot find matched game "' + match.name + '" in body.');
+					callback('Cannot find matched game "%s" in body.', match.name );
 					return;
 				}
 				body = m[0];
@@ -251,11 +248,11 @@ Ipdb.prototype.enrich = function(game, callback) {
 				game.short = firstMatch(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i);
 
 				var distance = natural.LevenshteinDistance(game.name, m[2]);
-				log.debug('[ipdb] Found title "' + game.name + '" as #' + m[1] + ' (distance ' + distance + ')');
+				logger.log('debug', '[ipdb] Found title "%s" as #%d (distance %d)', game.name, m[1], distance);
 				callback(null, game);
 
 			} else {
-				log.warn('[ipdb] Game "' + game.name + '" not found in HTTP body.');
+				logger.log('warn', '[ipdb] Game "%s" not found in HTTP body.', game.name);
 				callback(null, game);
 			}
 		}
@@ -273,7 +270,7 @@ Ipdb.prototype.enrich = function(game, callback) {
 Ipdb.prototype.syncTop300 = function(callback) {
 	var that = this;
 	var url = 'http://www.ipdb.org/lists.cgi?anonymously=true&list=top300&submit=No+Thanks+-+Let+me+access+anonymously';
-	log.info('[ipdb] Fetching top 300 list from ipdb.org');
+	logger.log('info', '[ipdb] Fetching top 300 list from ipdb.org');
 	request(url, function (error, response, body) {
 		var regex = /<td align=right nowrap>(\d+)[^<]*<\/td>\s*<td[^>]*>[^<]*<font[^>]*>[^<]*<\/font>\s*<img[^>]*>[^<]*<\/td>\s*<td><font[^>]*>(\d+)<\/font>\s*<B>([^<]+)<\/B>/gi;
 		var match;
@@ -305,7 +302,7 @@ Ipdb.prototype.syncTop300 = function(callback) {
 					// could be multiple hits (vp and fp version, for instance)
 					async.eachSeries(rows, function(row, cb) {
 						that.emit('top300Matched', { name: row.name, platform: row.platform, rank: table.ipdb_rank });
-						log.debug('[ipdb] Matched ' + row.name + ' (' + row.platform + ')');
+						logger.log('debug', '[ipdb] Matched %s (%s)', row.name, row.platform);
 						row.updateAttributes({ ipdb_rank: table.ipdb_rank }).success(function(table) {
 							updatedTables.push(table);
 							cb();
@@ -315,7 +312,7 @@ Ipdb.prototype.syncTop300 = function(callback) {
 					next();
 				}
 			}).error(function(err){
-				log.error('[ipdb] ' + err);
+				logger.log('error', '[ipdb] ' + err);
 				next(err);
 			});
 		};
@@ -324,7 +321,7 @@ Ipdb.prototype.syncTop300 = function(callback) {
 			if (!err) {
 				callback(null, updatedTables);
 			}
-			log.error('[ipdb] Done, returning found games.');
+			logger.log('info', '[ipdb] Done, returning found games.');
 		});
 	});
 };
@@ -338,7 +335,7 @@ Ipdb.prototype.syncTop300 = function(callback) {
  */
 Ipdb.prototype.getRomLinks = function(ipdbId, callback) {
 	var url = 'http://www.ipdb.org/machine.cgi?id=' + ipdbId;
-	log.info('[ipdb] Fetching details for game ID ' + ipdbId);
+	logger.log('info', '[ipdb] Fetching details for game ID %s', ipdbId);
 	request(url, function (error, response, body) {
 		var regex = /ZIP<\/a>&nbsp;<\/td><td[^>]+><a href="([^"]+)"\s*>([^<]+rom[^<]+)/gi;
 		var match;
@@ -404,7 +401,7 @@ var findBestMatch = function(matches, game) {
 		}
 		return 0;
 	});
-	console.log('matches are now sorted: %j', bestMatches);
+	logger.log('info', '[ipdb] Matches are now sorted:', bestMatches);
 
 	return bestMatches[0];
 };

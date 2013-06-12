@@ -12,6 +12,7 @@ var semver = require('semver');
 var github = require('octonode');
 var mkdirp = require('mkdirp');
 var uglify = require('uglify-js2');
+var logger = require('winston');
 var request = require('request');
 var filesize = require('filesize');
 var relativeDate = require('relative-date');
@@ -92,7 +93,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
 	}
 
 	// no git and no version.json, so let's retrieve commit data from github.
-	console.log('[autoupdate] No version.json found, retrieving data from package.json and GitHub.');
+	logger.log('info', '[autoupdate] No version.json found, retrieving data from package.json and GitHub.');
 	var client = github.client();
 	repo = client.repo(settings.pind.repository.user + '/' + settings.pind.repository.repo);
 
@@ -224,7 +225,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 	that._getCommit('https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits/' + sha, function(err, commit) {
 
 		if (err) {
-			console.error('[autoupdate] Cannot retrieve commit for revision %s: %s', sha, err);
+			logger.log('error', '[autoupdate] Cannot retrieve commit for revision %s: %s', sha, err);
 			return callback('Cannot retrieve commit for revision "' + sha + '": ' + err);
 		}
 
@@ -232,7 +233,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 		var v = that._readVersion();
 		if (!dryRun && Date.parse(commit.commit.committer.date) < Date.parse(v.date)) {
 			err = 'Not downgrading current version (' + v.date + ') to older commit (' + commit.commit.committer.date + ').';
-			console.log('[autoupdate] ERROR: ' + err);
+			logger.log('info', '[autoupdate] ERROR: ' + err);
 			return callback(err);
 		}
 
@@ -254,7 +255,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 				// skip update, just run done after 5s
 				if (dryRun) {
-					console.log('[autoupdate] Simulating update...');
+					logger.log('info', '[autoupdate] Simulating update...');
 					setTimeout(function() {
 						that._postExtract(err, oldConfig, commit, callback);
 					}, 5000);
@@ -263,14 +264,14 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 				// fetches and rebases from remote repository
 				var update = function(popStash, callback) {
-					console.log('[autoupdate] Fetching update from GitHub');
+					logger.log('info', '[autoupdate] Fetching update from GitHub');
 					repo.remote_fetch('origin master', function(err) {
 						if (err) {
 							that.emit('updateFailed', { error: err });
 							return callback(err);
 						}
 
-						console.log('[autoupdate] Rebasing to ' + commit.sha);
+						logger.log('info', '[autoupdate] Rebasing to ' + commit.sha);
 						repo.git('rebase ' + commit.sha, function(err) {
 							if (err) {
 								that.emit('updateFailed', { error: err });
@@ -279,7 +280,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 							// if stashed, re-apply changes.
 							if (popStash) {
-								console.log('[autoupdate] Re-applying stash');
+								logger.log('info', '[autoupdate] Re-applying stash');
 								repo.git('stash', {}, ['apply'], function() {
 									that._postExtract(err, oldConfig, commit, callback);
 								});
@@ -304,7 +305,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 				// if found, stash changes
 				if (trackedFiles.length > 0) {
-					console.log('[autoupdate] Detected changed files: [' + trackedFiles.join(', ') + '], stashing changes first.');
+					logger.log('info', '[autoupdate] Detected changed files: [' + trackedFiles.join(', ') + '], stashing changes first.');
 					repo.git('stash', {}, ['save'], function(err) {
 						if (err) {
 							that.emit('updateFailed', { error: err });
@@ -331,7 +332,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 				if (failed) {
 					return callback('Download of zipball from GitHub failed (see logs).');
 				}
-				console.log('[autoupdate] Done, extracting now...');
+				logger.log('info', '[autoupdate] Done, extracting now...');
 				// unzip each entry, trimming the first level of the folder structure.
 				fs.createReadStream(dest)
 				.pipe(unzip.Parse())
@@ -344,17 +345,17 @@ AutoUpdate.prototype.update = function(sha, callback) {
 						}
 
 						if (dryRun) {
-							console.log('[autoupdate] (Not) extracting %s', entryDest);
+							logger.log('info', '[autoupdate] (Not) extracting %s', entryDest);
 							entry.autodrain();
 						} else {
-							console.log('[autoupdate] Extracting %s', entryDest);
+							logger.log('info', '[autoupdate] Extracting %s', entryDest);
 							entry.pipe(fs.createWriteStream(entryDest));
 						}
 					} else {
 						entry.autodrain();
 					}
 				}).on('close', function() {
-					console.log('[autoupdate] Done, cleaning up %s', dest);
+						logger.log('info', '[autoupdate] Done, cleaning up %s', dest);
 					fs.unlinkSync(dest);
 						that._postExtract(err, oldConfig, commit, callback);
 				});
@@ -364,13 +365,13 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 				if (response.statusCode != 200) {
 					failed = true;
-					console.error('[autoupdate] Failed downloading zip file at %s with code %s.', url, response.statusCode);
+					logger.log('error', '[autoupdate] Failed downloading zip file at %s with code %s.', url, response.statusCode);
 					return;
 				}
 				if (response.headers['content-length']) {
-					console.log('[autoupdate] Downloading %s of zipball to %s...', filesize(response.headers['content-length'], true), dest);
+					logger.log('info', '[autoupdate] Downloading %s of zipball to %s...', filesize(response.headers['content-length'], true), dest);
 				} else {
-					console.log('[autoupdate] Downloading zipball to %s...', dest);
+					logger.log('info', '[autoupdate] Downloading zipball to %s...', dest);
 				}
 			}).pipe(stream);
 		}
@@ -398,7 +399,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 	// check for errors
 	var that = this;
 	if (err) {
-		console.log('[autoupdate] ERROR: ' + err);
+		logger.log('error', '[autoupdate] ERROR: ' + err);
 		that.emit('updateFailed', { error: err });
 		return callback(err);
 	}
@@ -424,25 +425,25 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		var newPackages = _.difference(_.keys(newConfig.packageJson.dependencies), _.keys(oldConfig.packageJson.dependencies));
 		var newPackageVersions = _.difference(_.values(newConfig.packageJson.dependencies), _.values(oldConfig.packageJson.dependencies));
 		if (newPackages.length > 0 || newPackageVersions.length > 0) {
-			console.log('[autoupdate] Found new dependencies: [' + newPackages.join(' ') + '], running `npm install`.');
+			logger.log('info', '[autoupdate] Found new dependencies: [' + newPackages.join(' ') + '], running `npm install`.');
 			npm.load({}, function(err) {
 				if (err) {
 					return next(err);
 				}
 				npm.on('log', function(message) {
-					console.log('[autoupdate] [npm] ' + message);
+					logger.log('info', '[autoupdate] [npm] ' + message);
 				});
 				npm.commands.install([], function(err) {
 					if (err) {
-						console.log('[autoupdate] Error updating dependencies: ' + err);
+						logger.log('info', '[autoupdate] Error updating dependencies: ' + err);
 						return next(err);
 					}
-					console.log('[autoupdate] NPM update successful.');
+					logger.log('info', '[autoupdate] NPM update successful.');
 					next();
 				});
 			});
 		} else {
-			console.log('[autoupdate] No new dependencies found.');
+			logger.log('info', '[autoupdate] No new dependencies found.');
 			next();
 		}
 	};
@@ -450,7 +451,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 	var checkNewSettings = function(next) {
 
 		if (oldConfig.settingsJs != newConfig.settingsJs) {
-			console.log('[autoupdate] Checking for new settings.');
+			logger.log('info', '[autoupdate] Checking for new settings.');
 
 			/**
 			 * Returns an array of path names (sepearted separated by ".") for all
@@ -533,10 +534,10 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			eval(newConfig.settingsJs.replace(/module\.exports\s*=\s*\{/, 'newTree = {'));
 			var newProps = diff(oldTree, newTree);
 			if (newProps.length == 0) {
-				console.log('[autoupdate] No new settings found.');
+				logger.log('info', '[autoupdate] No new settings found.');
 				return next();
 			}
-			console.log('[autoupdate] Found new settings: [' + newProps.join(', ') + ']');
+			logger.log('info', '[autoupdate] Found new settings: [' + newProps.join(', ') + ']');
 
 			// 2. retrieve code blocks of added properties
 			var nodesNew = analyze(uglify.parse(newConfig.settingsJs));
@@ -553,19 +554,19 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 					// analyze current settings-mine, so we know where to inject
 					var ast = analyze(uglify.parse(settingsPatched));
 				} catch(err) {
-					console.error('[autoupdate] Error parsing patched file: ' + err);
+					logger.log('error', '[autoupdate] Error parsing patched file: ' + err);
 					return next('Error patching settings-mine.js.');
 				}
 
 				// check if not already available
 				if (!ast[path]) {
-					console.log('[autoupdate] Patching settings-mine.js with setting "' + path + '"');
+					logger.log('info', '[autoupdate] Patching settings-mine.js with setting "' + path + '"');
 
 					var comment = node.start.comments_before.length > 0;
 					var start = comment ? node.start.comments_before[0].pos - 2 : node.start.pos;
 					var len = comment ? node.end.endpos - start + 2 : node.end.endpos - start;
 					var codeBlock = newConfig.settingsJs.substr(start, len).trim();
-//					console.log('\n===============\n%s\n===============\n', util.inspect(node, false, 10, true));
+//					logger.log('info', '\n===============\n%s\n===============\n', util.inspect(node, false, 10, true));
 
 					// inject at the end of an element
 					if (path.indexOf('.') > 0) {
@@ -578,15 +579,15 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 					}
 
 				} else {
-					console.log('[autoupdate] settings-mine.js already contains "' + path + '", skipping.');
+					logger.log('info', '[autoupdate] settings-mine.js already contains "' + path + '", skipping.');
 				}
 			}
 			fs.writeFileSync(settingsMinePath, settingsPatched);
-			console.log('[autoupdate] Updated settings-mine.js.');
+			logger.log('info', '[autoupdate] Updated settings-mine.js.');
 			next();
 
 		} else {
-			console.log('[autoupdate] Settings are identical, moving on.');
+			logger.log('info', '[autoupdate] Settings are identical, moving on.');
 			next();
 		}
 	};
@@ -602,11 +603,11 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			that.setVersion(newCommit);
 		}
 
-		console.log('[autoupdate] Update complete.');
+		logger.log('info', '[autoupdate] Update complete.');
 		that.emit('updateCompleted', newCommit);
-		console.log('[autoupdate] Killing process in 2 seconds.');
+		logger.log('warn', '[autoupdate] Killing process in 2 seconds.');
 		setTimeout(function() {
-			console.log('[autoupdate] kthxbye');
+			logger.log('err', '[autoupdate] kthxbye');
 			process.kill(process.pid, 'SIGTERM');
 		}, 2000);
 		next(null, version);
@@ -639,7 +640,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 	var userAgent = 'node-pind ' + version.version + ' auto-updater';
 
 	// retrieve last commit
-	console.log('[autoupdate] Retrieving last commit');
+	logger.log('info', '[autoupdate] Retrieving last commit');
 	request({
 		url: 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits?per_page=1',
 		headers: { 'User-Agent' : userAgent }
@@ -650,12 +651,12 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 		try {
 			var commits = JSON.parse(body);
 		} catch (err) {
-			console.error('[autoupdate] Could not parse JSON return, got:\n%s', body);
+			logger.log('error', '[autoupdate] Could not parse JSON return, got:\n%s', body);
 			return callback('Could not parse JSON return for last commit at GitHub.');
 		}
 
 		if (!_.isArray(commits)) {
-			console.error('[autoupdate] Expected array of commits from GitHub, got:\n%s', body);
+			logger.log('error', '[autoupdate] Expected array of commits from GitHub, got:\n%s', body);
 			return callback('Could not retrieve last commit from GitHub.');
 		}
 		var commit = commits[0];
@@ -664,7 +665,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 
 		// no update if head is older or equal
 		if (!dryRun && dateCurrent >= dateHead) {
-			console.log('[autoupdate] No newer HEAD found at GitHub - local: %s, remote: %s.', new Date(dateCurrent), new Date(dateHead));
+			logger.log('info', '[autoupdate] No newer HEAD found at GitHub - local: %s, remote: %s.', new Date(dateCurrent), new Date(dateHead));
 			return callback(null, { noUpdates: true });
 		}
 
@@ -676,7 +677,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 			try {
 				var pak = JSON.parse(body);
 			} catch (err) {
-				console.error('[autoupdate] [autoupdate] Could not parse JSON return, got:\n%s', body);
+				logger.log('error', '[autoupdate] [autoupdate] Could not parse JSON return, got:\n%s', body);
 				return callback('Could not parse JSON return for package.json at GitHub.');
 			}
 			callback(null, {
@@ -712,7 +713,7 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 	var repo = client.repo(settings.pind.repository.user + '/' + settings.pind.repository.repo);
 
 	// retrieve all tags from node-pind repo
-	console.log('[autoupdate] Retrieving tags from GitHub');
+	logger.log('info', '[autoupdate] Retrieving tags from GitHub');
 	repo.tags(function(err, tagArray) {
 		if (err) {
 			return callback(err);
@@ -732,7 +733,7 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 				tags[cleanTagVer] = tag;
 			}
 		}
-		console.log('[autoupdate] Found %d tags, getting latest.', tagArray.length);
+		logger.log('info', '[autoupdate] Found %d tags, getting latest.', tagArray.length);
 
 		// sort and pop the latest
 		if (newerTags.length > 0) {
@@ -740,7 +741,7 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 			var lastTag = tags[newerTags[0]];
 
 			// retrieve commit date
-			console.log('[autoupdate] Getting commit data for release %s', lastTag.name);
+			logger.log('info', '[autoupdate] Getting commit data for release %s', lastTag.name);
 			that._getCommit(lastTag.commit.url, function(err, commit) {
 				callback(null, {
 					version: lastTag.name,
@@ -750,7 +751,7 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 				});
 			});
 		} else {
-			console.log('[autoupdate] No later tags than %s found.', cleanVer);
+			logger.log('info', '[autoupdate] No later tags than %s found.', cleanVer);
 			callback(null, { noUpdates: true });
 		}
 	});
@@ -796,9 +797,9 @@ AutoUpdate.prototype._getPackageVersion = function() {
 AutoUpdate.prototype._writeVersion = function(version) {
 	var versionPath = path.normalize(__dirname + '../../../version.json');
 	if (fs.existsSync(versionPath)) {
-		console.log('[autoupdate] Updated version.json at %s', versionPath);
+		logger.log('info', '[autoupdate] Updated version.json at %s', versionPath);
 	} else {
-		console.log('[autoupdate] Created version.json at %s', versionPath);
+		logger.log('info', '[autoupdate] Created version.json at %s', versionPath);
 	}
 	fs.writeFileSync(versionPath, JSON.stringify(version));
 };

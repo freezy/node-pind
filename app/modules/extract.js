@@ -5,9 +5,9 @@ var exec = require('child_process').exec;
 var async = require('async');
 var unzip = require('unzip');
 var events = require('events');
+var logger = require('winston');
 
 var settings = require('../../config/settings-mine');
-
 
 function Extract(app) {
 	if ((this instanceof Extract) === false) {
@@ -38,7 +38,7 @@ Extract.prototype.extract = function(filepath, renameTo, callback) {
 		if (err) {
 			return callback(err);
 		}
-		console.log('[extract] Got %d entries, preparing extraction...', files.length);
+		logger.log('info', '[extract] Got %d entries, preparing extraction...', files.length);
 
 		// 2. figure out what to extract
 		that.prepareExtract(files, renameTo, function(err, mapping) {
@@ -138,7 +138,7 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 				mapping.extract[filepath] = { src: filepath, dst: dst };
 			} else {
 				mapping.skip[filepath] = { src: filepath, dst: dst };
-				console.log('[extract] "%s" already exists, skipping.', dst);
+				logger.log('info', '[extract] "%s" already exists, skipping.', dst);
 			}
 		}
 
@@ -197,7 +197,7 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 				mapping.ignore.push(filepath);
 			}
 		} else {
-			console.log('Ignoring %s', filepath);
+			logger.log('info', '[extract] Ignoring %s', filepath);
 		}
 	}
 	callback(null, mapping);
@@ -220,11 +220,11 @@ Extract.prototype.zipExtract = function(zipfile, mapping, callback) {
 		try {
 			var map = mapping.extract[entry.path];
 			if (map) {
-				console.log('[unzip] Extracting "%s" to "%s"...', entry.path, map.dst);
+				logger.log('info', '[extract] [unzip] Extracting "%s" to "%s"...', entry.path, map.dst);
 				map.extracted = true;
 				entry.pipe(fs.createWriteStream(map.dst));
 			} else {
-				console.log('[unzip] Skipping "%s".', entry.path);
+				logger.log('info', '[extract] [unzip] Skipping "%s".', entry.path);
 				entry.autodrain();
 			}
 		} catch (err) {
@@ -250,16 +250,16 @@ Extract.prototype.zipExtract = function(zipfile, mapping, callback) {
  */
 Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 
-	console.log('[extract] mapping:\n%j', mapping.extract);
+	logger.log('info', '[extract] Got mapping:', mapping.extract);
 	async.eachSeries(_.values(mapping.extract),
 		function(map, next) {
 			var dstFolder = map.dst.substr(0, map.dst.lastIndexOf('/'));
 			var dstFilename = map.dst.substr(map.dst.lastIndexOf('/') + 1);
 			var srcFilename = map.src.substr(map.src.lastIndexOf('/') + 1);
-			console.log('[unrar] Extracting "%s" to "%s"...', map.src, map.dst);
+			logger.log('info', '[extract] [unrar] Extracting "%s" to "%s"...', map.src, map.dst);
 			// TODO extract to tmp if to be renamed so there are no name conflicts.
 			var cmd = '"' + settings.pind.unrar + '" x -ep -y "' + rarfile + '" "' + map.src.replace(/\//g, '\\') + '" "' + dstFolder.replace(/\//g, '\\') + '"';
-			console.log('[unrar] > %s', cmd);
+			logger.log('info', '[extract] [unrar] # %s', cmd);
 			exec(cmd, function (err, stdout, stderr) {
 				if (err) {
 					return next(err);
@@ -272,7 +272,7 @@ Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 				}
 				map.extracted = true;
 				if (dstFilename != srcFilename) {
-					console.log('[unrar] Renaming "%s" to "%s"', dstFolder + '/' + srcFilename, map.dst);
+					logger.log('info', '[extract] [unrar] Renaming "%s" to "%s"', dstFolder + '/' + srcFilename, map.dst);
 					fs.rename(dstFolder + '/' + srcFilename, map.dst, next);
 				} else {
 					next();

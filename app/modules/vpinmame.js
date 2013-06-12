@@ -2,8 +2,8 @@ var fs = require('fs');
 var util = require('util');
 var async = require('async');
 var events = require('events');
+var logger = require('winston');
 var request = require('request');
-
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
@@ -65,7 +65,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 					next();
 				});
 			} else {
-				console.log('ROM %s already available, skipping.', link.filename);
+				logger.log('info', '[vpm] ROM %s already available, skipping.', link.filename);
 				next();
 			}
 		}, callback);
@@ -78,7 +78,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	 */
 	var checkSuccess = function(row, next) {
 		if (row.rom) {
-			console.log('Updating table row with new ROM status...');
+			logger.log('info', '[vpm] Updating table row with new ROM status...');
 			row.updateAttributes({
 				rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + row.rom + '.zip')
 			}).success(function() {
@@ -99,15 +99,15 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	 */
 	var download = function(link, folder, next) {
 		that.emit('ipdbDownloadStarted', { filename: link.filename });
-		console.log('Downloading %s at %s...', link.title, link.url);
+		logger.log('info', '[vpm] Downloading %s at %s...', link.title, link.url);
 		var filepath = folder + '/' + link.filename;
 		var stream = fs.createWriteStream(filepath);
 		stream.on('close', function() {
-			console.log('Download complete, saved to %s.', filepath);
+			logger.log('info', '[vpm] Download complete, saved to %s.', filepath);
 			next(null, filepath);
 		});
 		stream.on('error', function(err) {
-			console.log('Error downloading %s: %s', link.url, err);
+			logger.log('error', '[vpm] Error downloading %s: %s', link.url, err);
 		});
 		request(link.url).pipe(stream);
 	};
@@ -120,7 +120,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	var downloadVPF = function(table, next) {
 		vpf.getRomLinks(table, function(err, links) {
 			if (err) {
-				console.log('ERROR: ' + err);
+				logger.log('error', '[vpm] ERROR: ' + err);
 				return next(err);
 			}
 			checkAndDownload(links, vpf.download, function(err) {
@@ -141,9 +141,9 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	var downloadIPDB = function(table, next) {
 		that.emit('ipdbSearchStarted', { name: table.name });
 		ipdb.getRomLinks(table.ipdb_no, function(err, links) {
-			console.log('IPDB ROMS: %s', util.inspect(links));
+			logger.log('info', '[vpm] IPDB ROMS: %s', util.inspect(links));
 			if (err) {
-				console.log('ERROR: ' + err);
+				logger.log('error', '[vpm] ERROR: ' + err);
 				return next(err);
 			}
 			checkAndDownload(links, download, function(err) {
@@ -158,7 +158,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	if (table.ipdb_no) {
 		downloadIPDB(table, callback);
 	} else {
-		console.log('WARNING: ROM file found in table but no IPDB ID. Maybe try matching IPDB.org first?');
+		logger.log('warn', '[vpm] WARNING: ROM file found in table but no IPDB ID. Maybe try matching IPDB.org first?');
 		downloadVPF(table, callback);
 	}
 
@@ -180,7 +180,7 @@ VPinMAME.prototype.fetchMissingRoms = function(callback) {
 	isFetchingRoms = true;
 	var downloadedRoms = [];
 
-	console.log('Fetching tables with no ROM file...')
+	logger.log('info', '[vpm] Fetching tables with no ROM file...');
 	schema.Table.findAll({ where: 'NOT `rom_file` AND rom IS NOT NULL' }).success(function(rows) {
 		async.eachSeries(rows, function(row, next) {
 			that.fetchMissingRom(row, function(err, dlRoms) {

@@ -3,13 +3,13 @@ var fs = require('fs');
 var util = require('util');
 var async = require('async');
 var events = require('events');
+var logger = require('winston');
 var Buffer = require('buffer').Buffer;
 var Duration = require('duration');
 
 var wpc = require('./rom/wpc')();
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
-
 
 function NvRam(app) {
 	if ((this instanceof NvRam) === false) {
@@ -55,32 +55,32 @@ NvRam.prototype.readAll = function(startWith, callback) {
 			if (!err) {
 				if (audit.match == 1) {
 					if (!audit.isValid) {
-						console.log('INVALID but full match: %s', nvram);
+						logger.log('debug', 'INVALID but full match: %s', nvram);
 					} else {
-						console.log('Full match: %s', nvram);
+						logger.log('debug', 'Full match: %s', nvram);
 					}
 					m1++;
 				} else if (audit.match > 0) {
 					if (!audit.isValid) {
-						console.log('INVALID but Partial match: %s (%s%)', nvram, Math.round(audit.match * 1000) / 10);
+						logger.log('debug', 'INVALID but Partial match: %s (%s%)', nvram, Math.round(audit.match * 1000) / 10);
 					} else {
-						console.log('Partial match: %s (%s%)', nvram, Math.round(audit.match * 1000) / 10);
+						logger.log('debug', 'Partial match: %s (%s%)', nvram, Math.round(audit.match * 1000) / 10);
 					}
 					m2++;
 				} else {
 					if (audit.isValid) {
-						console.log('VALID but no match: %s', nvram);
+						logger.log('debug', 'VALID but no match: %s', nvram);
 					}
 				}
 			}
 			next(err);
 		});
 	}, function(err) {
-		console.log('====================================================');
-		console.log('Number of ROMs: %d', nvrams.length);
-		console.log('Full match: %d (%s%)', m1, Math.round(m1 / nvrams.length * 100));
-		console.log('Partial match: %d (%s%)', m2, Math.round(m2 / nvrams.length * 100));
-		console.log('No match: %d (%s%)', nvrams.length - m1 - m2, Math.round((nvrams.length - m1 - m2) / nvrams.length * 100));
+		logger.log('info', '====================================================');
+		logger.log('info', 'Number of ROMs: %d', nvrams.length);
+		logger.log('info', 'Full match: %d (%s%)', m1, Math.round(m1 / nvrams.length * 100));
+		logger.log('info', 'Partial match: %d (%s%)', m2, Math.round(m2 / nvrams.length * 100));
+		logger.log('info', 'No match: %d (%s%)', nvrams.length - m1 - m2, Math.round((nvrams.length - m1 - m2) / nvrams.length * 100));
 		callback(err);
 	});
 };
@@ -115,26 +115,26 @@ NvRam.prototype.diff = function() {
 	var ram3 = fs.readFileSync(file3);
 
 	if (ram1.length != ram2.length) {
-		return console.log('Files must be the same size (%s vs %s).', ram1.length, ram2.length);
+		return logger.log('error', 'Files must be the same size (%s vs %s).', ram1.length, ram2.length);
 	}
 
 	if (ram2.length != ram3.length) {
-		return console.log('Files must be the same size (%s vs %s).', ram2.length, ram3.length);
+		return logger.log('error', 'Files must be the same size (%s vs %s).', ram2.length, ram3.length);
 	}
 
 	var len = ram1.length;
 
-	console.log('Comparing...');
+	logger.log('debug', 'Comparing...');
 	for (var i = 0; i < len; i++) {
 		var b1 = wpcReadHex(ram1, i, 1);
 		var b2 = wpcReadHex(ram2, i, 1);
 		var b3 = wpcReadHex(ram3, i, 1);
 
 		if (Math.abs(b1 - b2) == 2 && Math.abs(b1 - b3) == 5) {
-			console.log('Found diff at %s', i.toString(16));
+			logger.log('debug', 'Found diff at %s', i.toString(16));
 		}
 	}
-	console.log('Done!');
+	logger.log('debug', 'Done!');
 };
 
 module.exports = NvRam;
