@@ -14,10 +14,13 @@ Stern.prototype.isValid = function(buf) {
 Stern.prototype.readAudits = function(buf, rom, callback) {
 
 	var audits = {
-		ballsPlayed: Stern.prototype._readHexAsDec(buf, 0x1830, 4), // 01 Total Balls Played
-		extraBalls: Stern.prototype._readHexAsDec(buf, 0x182c, 4),  // 02 Total Extra Balls
-		gamesPlayed: Stern.prototype._readHexAsDec(buf, 0x17f8, 4), // 14 Total Plays
-		scoreHistogram: Stern.prototype._readScoreHistograms(buf, rom) // 15 - 31 Standard Audit
+		ballsPlayed: Stern.prototype._readHexAsDec(buf, 0x1830, 4),     // 01 Total Balls Played
+		extraBalls: Stern.prototype._readHexAsDec(buf, 0x182c, 4),      // 02 Total Extra Balls
+		gamesPlayed: Stern.prototype._readHexAsDec(buf, 0x17f8, 4),     // 14 Total Plays
+		scoreHistogram: Stern.prototype._readScoreHistograms(buf, rom), // 15 - 31 Standard Audit
+		leftFlipper: Stern.prototype._readHexAsDec(buf, 0x191e, 4),     // 51 Left Flipper Used
+		rightFlipper: Stern.prototype._readHexAsDec(buf, 0x1922, 4),     // 52 Right Flipper Used
+		playtimeHistogram: Stern.prototype._readPlaytimeHistograms(buf, rom) // 55 - 31 Standard Audit
 	};
 
 	callback(null, audits);
@@ -51,7 +54,17 @@ Stern.prototype._readScoreHistograms = function(buf, rom) {
 	return false;
 };
 
-
+Stern.prototype._readPlaytimeHistograms = function(buf, rom) {
+	var durations = [ 0, 60, 90, 120, 150, 180, 210, 240, 300, 360, 480, 600, 900 ];
+	var histogram = [];
+	for (var i = 0; i < durations.length; i++) {
+		histogram.push({
+			duration: durations[i],
+			num: Stern.prototype._readHexAsDec(buf, 0x18ca + (i * 4), 4)
+		});
+	}
+	return histogram;
+};
 
 /**
  * Reads n bytes from RAM into a number and verifies the checksum. On
@@ -69,7 +82,8 @@ Stern.prototype._readHexAsDec = function(buf, pos, len) {
 		var n = buf.readUInt8(pos + i).toString(16);
 		num += n.length == 1 ? '0' + n : n;
 	}
-	return parseInt(num);
+	num = num.replace(/^0+/g, '');
+	return num ? parseInt(num) : 0;
 }
 
 module.exports = Stern;

@@ -186,8 +186,8 @@ NvRam.prototype.readAudits = function(rom, callback) {
 	if (stern.isValid(ram)) {
 		stern.readAudits(ram, rom, callback);
 	} else if (wpc.isValid(ram)) {
-		//wpc.readAudits(ram, rom, callback);
-		callback();
+		wpc.readAudits(ram, rom, callback);
+		//callback();
 	} else {
 		logger.log('warn', '[nvram] No valid parser found for ROM "%s".', rom);
 		callback();
