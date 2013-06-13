@@ -1,8 +1,6 @@
 var _ = require('underscore');
 var async = require('async');
 
-var ram, rom;
-
 function WPC() {
 	if ((this instanceof WPC) === false) {
 		return new WPC();
@@ -33,14 +31,22 @@ function WPC() {
  * 	      { duration: 900, num: 37 } ],
  * 	  match: 1 }
  * </pre>
- * @param data Buffer containing the contents of the nvram file
- * @param name Name of the ROM
+ * @param ram Buffer containing the contents of the nvram file
+ * @param rom Name of the ROM
  * @param callback
  */
-WPC.prototype.readAudits = function(data, name, callback) {
-	ram = data;
-	rom = name;
-	async.series([this._isValid, this._readMainAudits, this._readStandardAudits, this._readHistograms], function(err, auditArray) {
+WPC.prototype.readAudits = function(ram, rom, callback) {
+
+	var params = {
+		rom: rom,
+		ram: ram
+	};
+	async.series([
+		this._isValid.bind(params),
+		this._readMainAudits.bind(params),
+		this._readStandardAudits.bind(params),
+		this._readHistograms.bind(params)
+	], function(err, auditArray) {
 		if (err) {
 			return callback(err);
 		}
@@ -69,10 +75,15 @@ WPC.prototype.readAudits = function(data, name, callback) {
 	});
 };
 
+WPC.prototype.isValid = function(buf) {
+	// gamesStarted
+	return WPC.prototype._readHexWithChecksum(buf, 0x1883, 3) !== false;
+};
+
 WPC.prototype._isValid = function(next) {
 
 	next(null, {
-		isValid: WPC.prototype._readHexWithChecksum(0x1883, 3) !== false // gamesStarted
+		isValid: WPC.prototype.isValid(this.ram)
 	});
 
 /*	next(null,  {
@@ -90,7 +101,7 @@ WPC.prototype._isValid = function(next) {
  */
 WPC.prototype._readMainAudits = function(next) {
 	next(null, {
-		extraBalls: WPC.prototype._readHexWithChecksum(0x18b3, 3)
+		extraBalls: WPC.prototype._readHexWithChecksum(this.ram, 0x18b3, 3)
 	});
 };
 
@@ -106,11 +117,11 @@ WPC.prototype._readMainAudits = function(next) {
  */
 WPC.prototype._readStandardAudits = function(next) {
 	next(null, {
-		gamesStarted: WPC.prototype._readHexWithChecksum(0x1883, 3),
-		gamesPlayed: WPC.prototype._readHexWithChecksum(0x1889, 3),
-		playTime: WPC.prototype._readHexWithChecksum(0x18b9, 3) * 10000,
-		runningTime: WPC.prototype._readHexWithChecksum(0x18bf, 3) * 60000,
-		ballsPlayed: WPC.prototype._readHexWithChecksum(0x18c5, 3)
+		gamesStarted: WPC.prototype._readHexWithChecksum(this.ram, 0x1883, 3),
+		gamesPlayed: WPC.prototype._readHexWithChecksum(this.ram, 0x1889, 3),
+		playTime: WPC.prototype._readHexWithChecksum(this.ram, 0x18b9, 3) * 10000,
+		runningTime: WPC.prototype._readHexWithChecksum(this.ram, 0x18bf, 3) * 60000,
+		ballsPlayed: WPC.prototype._readHexWithChecksum(this.ram, 0x18c5, 3)
 	});
 };
 
@@ -123,6 +134,7 @@ WPC.prototype._readStandardAudits = function(next) {
  */
 WPC.prototype._readHistograms = function(next) {
 
+	var that = this;
 	var histoScores = {
 		afm_ :   ['0M', '200M', '400M', '600M', '800M', '1B', '1.5B', '2B', '3B', '4B', '5B', '7B', '9B'],
 		br_ :    ['0M', '2M', '5M', '10M', '20M', '30M', '40M', '50M', '70M', '100M', '150M', '200M', '300M'],
@@ -149,7 +161,7 @@ WPC.prototype._readHistograms = function(next) {
 		for (var i = 0; i < scores.length; i++) {
 			histogram.push({
 				score: scores[i],
-				num: WPC.prototype._readHexWithChecksum(0x191f + (i * 6), 3)
+				num: WPC.prototype._readHexWithChecksum(that.ram, 0x191f + (i * 6), 3)
 			});
 			if (histogram[0].num === false) {
 				histogram = false;
@@ -165,7 +177,7 @@ WPC.prototype._readHistograms = function(next) {
 		for (var i = 0; i < durations.length; i++) {
 			histogram.push({
 				duration: durations[i],
-				num: WPC.prototype._readHexWithChecksum(0x196d + (i * 6), 3)
+				num: WPC.prototype._readHexWithChecksum(that.ram, 0x196d + (i * 6), 3)
 			});
 			if (histogram[0].num === false) {
 				histogram = false;
@@ -176,7 +188,7 @@ WPC.prototype._readHistograms = function(next) {
 	};
 
 	function is(prefix) {
-		return rom.substr(0, prefix.length).toLowerCase() == prefix.toLowerCase();
+		return that.rom.substr(0, prefix.length).toLowerCase() == prefix.toLowerCase();
 	}
 
 	_.each(histoScores, function(scores, prefix) {
@@ -192,15 +204,17 @@ WPC.prototype._readHistograms = function(next) {
 
 /**
  * Reads n bytes from RAM into a number
+ *
+ * @param buf Buffer to read from
  * @param pos Start position
  * @param len Length to read
  * @returns {number}
  * @private
  */
-WPC.prototype._readHex = function(pos, len) {
+WPC.prototype._readHex = function(buf, pos, len) {
 	var num = 0;
 	for (var i = 0; i < len; i++) {
-		num += ram.readUInt8(pos + i) * Math.pow(256, len - i - 1);
+		num += buf.readUInt8(pos + i) * Math.pow(256, len - i - 1);
 	}
 	return num;
 };
@@ -209,21 +223,22 @@ WPC.prototype._readHex = function(pos, len) {
  * Reads n bytes from RAM into a number and verifies the checksum. On
  * failure, return false.
  *
+ * @param buf Buffer to read from
  * @param pos Start position
  * @param len Length to read
  * @returns {number|false}
  * @private
  */
-WPC.prototype._readHexWithChecksum = function(pos, len) {
+WPC.prototype._readHexWithChecksum = function(buf, pos, len) {
 	var checksum = function(pos, len) {
 		var c = 0;
 		for (var i = 0; i < len; i++) {
-			c += ram.readUInt8(pos + i);
+			c += buf.readUInt8(pos + i);
 		}
 		return 255 - (c % 256);
 	};
-	var value = this._readHex(pos, len);
-	var valueCheck = ram.readUInt8(pos + len + 2);
+	var value = this._readHex(buf, pos, len);
+	var valueCheck = buf.readUInt8(pos + len + 2);
 	if (valueCheck == checksum(pos, 3)) {
 		return value;
 	} else {

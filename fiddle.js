@@ -13,6 +13,8 @@ var nv = require('./app/modules/nvram')();
 //readAllAudits();
 readAvailableAudits();
 
+//nv.diff();
+
 function git() {
 	au.update({ sha: '8721605a0fd32594dea1fb53f60c4cca363daf1a', commit: { committer: { date: '2013-06-01T10:31:10Z' }}}, function(err, result) {
 		if (err) {

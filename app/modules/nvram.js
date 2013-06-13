@@ -8,6 +8,7 @@ var Buffer = require('buffer').Buffer;
 var Duration = require('duration');
 
 var wpc = require('./rom/wpc')();
+var stern = require('./rom/stern')();
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
@@ -70,6 +71,10 @@ NvRam.prototype.readTables = function(callback) {
 				if (err) {
 					logger.log('error', '[nvram] [%s] Error reading audit: %s', rom, err);
 					return next(err);
+				}
+				if (audit == null) {
+					logger.log('warn', '[nvram] [%s] Could not read nvram data.', rom);
+					return next();
 				}
 //				logger.log('info', '[nvram] [%s] Got audit:', rom, audit);
 				schema.Rom.find({ where: { name: rom }}).success(function(row) {
@@ -177,16 +182,27 @@ NvRam.prototype.readAudits = function(rom, callback) {
 	if (ram.length < 0x1883) {
 		return callback(null, { match: 0 });
 	}
-	wpc.readAudits(ram, rom, callback);
+
+	if (stern.isValid(ram)) {
+		stern.readAudits(ram, rom, callback);
+	} else if (wpc.isValid(ram)) {
+		//wpc.readAudits(ram, rom, callback);
+		callback();
+	} else {
+		logger.log('warn', '[nvram] No valid parser found for ROM "%s".', rom);
+		callback();
+	}
+
+
 };
 
 
 
 NvRam.prototype.diff = function() {
 
-	var file1 = settings.vpinmame.path + '/nvram/mm_109c - 02-00.nv';
-	var file2 = settings.vpinmame.path + '/nvram/mm_109c - 02-02.nv';
-	var file3 = settings.vpinmame.path + '/nvram/mm_109c - v1.nv';
+	var file1 = settings.vpinmame.path + '/nvram/ripleys 0 balls.nv';
+	var file2 = settings.vpinmame.path + '/nvram/ripleys 3 balls.nv';
+	var file3 = settings.vpinmame.path + '/nvram/ripleys 7 balls.nv';
 
 	var ram1 = fs.readFileSync(file1);
 	var ram2 = fs.readFileSync(file2);
@@ -202,17 +218,17 @@ NvRam.prototype.diff = function() {
 
 	var len = ram1.length;
 
-	logger.log('debug', 'Comparing...');
-	for (var i = 0; i < len; i++) {
-		var b1 = wpcReadHex(ram1, i, 1);
-		var b2 = wpcReadHex(ram2, i, 1);
-		var b3 = wpcReadHex(ram3, i, 1);
+	logger.log('info', 'Comparing...');
+	for (var i = 0; i < len - 1; i++) {
+		var b1 = ram1.readUInt8(i);
+		var b2 = ram2.readUInt8(i);
+		var b3 = ram3.readUInt8(i);
 
-		if (Math.abs(b1 - b2) == 2 && Math.abs(b1 - b3) == 5) {
-			logger.log('debug', 'Found diff at %s', i.toString(16));
+		if (Math.abs(b1 - b2) == 3 && Math.abs(b1 - b3) == 7) {
+			logger.log('info', 'Found diff at %s', i.toString(16));
 		}
 	}
-	logger.log('debug', 'Done!');
+	logger.log('info', 'Done!');
 };
 
 module.exports = NvRam;
