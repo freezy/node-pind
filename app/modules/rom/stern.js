@@ -29,7 +29,8 @@ Stern.prototype.readAudits = function(buf, rom, callback) {
 Stern.prototype._readScoreHistograms = function(buf, rom) {
 
 	var histoScores = {
-		ripleys : ['0M', '500K', '1M', '2M', '3M', '4M', '6M', '8M', '10M', '12M', '14M', '16M', '18M', '20M', '25M', '30M', '40M']
+		ripleys : ['0M', '500K', '1M', '2M', '3M', '4M', '6M', '8M', '10M', '12M', '14M', '16M', '18M', '20M', '25M', '30M', '40M'],
+		lotr : ['0M', '2M', '4M', '6M', '8M', '10M', '12.5M', '15M', '17.5M', '20M', '22.5M', '25M', '35M', '50M', '75M', '100M', '150M']
 	};
 	var readScoreHistogram = function(scores) {
 		var histogram = [];
