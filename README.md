@@ -12,6 +12,8 @@ of neat stuff. Particularly it should be able to:
   * Define filters based on table attributes
   * Mark tables as favorite for faster access
   * Make use of available artwork using realtime image processing and caching
+  * Get status out of VPM tables, such as total number of games, score/playtime
+    histogram etc `done`
 * List high scores of all tables for a given user, including a "global" score
   based on achievements.
 * Provide a voting system for new tables to install.
