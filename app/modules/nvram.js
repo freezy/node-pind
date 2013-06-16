@@ -200,9 +200,9 @@ NvRam.prototype.readAudits = function(rom, callback) {
 
 NvRam.prototype.diff = function() {
 
-	var file1 = settings.vpinmame.path + '/nvram/ripleys 0 balls.nv';
-	var file2 = settings.vpinmame.path + '/nvram/ripleys 3 balls.nv';
-	var file3 = settings.vpinmame.path + '/nvram/ripleys 7 balls.nv';
+	var file1 = settings.vpinmame.path + '/nvram/ripleys.nv';
+	var file2 = settings.vpinmame.path + '/nvram/elvis.nv';
+	var file3 = settings.vpinmame.path + '/nvram/lotr.nv';
 
 	var ram1 = fs.readFileSync(file1);
 	var ram2 = fs.readFileSync(file2);
@@ -219,13 +219,16 @@ NvRam.prototype.diff = function() {
 	var len = ram1.length;
 
 	logger.log('info', 'Comparing...');
-	for (var i = 0; i < len - 1; i++) {
-		var b1 = ram1.readUInt8(i);
-		var b2 = ram2.readUInt8(i);
-		var b3 = ram3.readUInt8(i);
+	for (var i = 0; i < len - 3; i++) {
+//		var b1 = ram1.readUInt32LE(i);
+//		var b2 = ram2.readUInt32LE(i);
+//		var b3 = ram3.readUInt32LE(i);
+		var b1 = readHexAsDec(ram1, i, 4);
+		var b2 = readHexAsDec(ram2, i, 4);
+		var b3 = readHexAsDec(ram3, i, 4);
 
-		if (Math.abs(b1 - b2) == 3 && Math.abs(b1 - b3) == 7) {
-			logger.log('info', 'Found diff at %s', i.toString(16));
+		if (Math.abs(b1 - b2) == 0x2a && Math.abs(b1 - b3) == 0x27) {
+			logger.log('info', 'Found diff at 0x%s', i.toString(16));
 		}
 	}
 	logger.log('info', 'Done!');
