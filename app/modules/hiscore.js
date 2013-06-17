@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var fs = require('fs');
 var util = require('util');
+var path = require('path');
 var exec = require('child_process').exec;
 var async = require('async');
 var events = require('events');
@@ -62,8 +63,9 @@ Hiscore.prototype.initConfig = function() {
 
 	// enable nvram watching
 	if (settings.vpinmame.watchNvrams) {
-		logger.log('info', '[hiscore] Watching .nv files at %s for new high scores...', settings.vpinmame.path + '/nvram');
-		fs.watch(settings.vpinmame.path + '/nvram', this.watchHighscores);
+		var nvPath = path.normalize(settings.vpinmame.path + '/nvram');
+		logger.log('info', '[hiscore] Watching .nv files at %s for new high scores...', nvPath);
+		fs.watch(nvPath, this.watchHighscores);
 	}
 };
 

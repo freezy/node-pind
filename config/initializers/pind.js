@@ -44,6 +44,6 @@ module.exports = function(compound) {
 	trns.initTransfers();
 	// initialize version
 	au.initVersion(function(err, version) {
-		logger.log('info', '[init] Running Pind %s from %s', version.version, version.date, {});
+		logger.log('info', '[init] Running Pind %s (%s) from %s', version.version, version.sha ? version.sha.substr(0, 8) : 'unknown', version.date, {});
 	});
 };
