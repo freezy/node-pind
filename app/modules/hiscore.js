@@ -62,6 +62,7 @@ Hiscore.prototype.initConfig = function() {
 
 	// enable nvram watching
 	if (settings.vpinmame.watchNvrams) {
+		logger.log('info', '[hiscore] Watching .nv files at %s for new high scores...', settings.vpinmame.path + '/nvram');
 		fs.watch(settings.vpinmame.path + '/nvram', this.watchHighscores);
 	}
 };
