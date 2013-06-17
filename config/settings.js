@@ -1,6 +1,12 @@
 /**
- * Global settings file for pind. This is the only configuration setting
+ * Global settings file for Pind. This is the only configuration setting
  * you'll have to edit.
+ *
+ * !!! Copy this file to settings-mine.js so Pind takes it into account. !!!
+ *                  (and then remove these two lines.)
+ *
+ * Take special care of @important settings. For the others, the default
+ * value probably works okay.
  */
 module.exports = {
 
@@ -33,11 +39,13 @@ module.exports = {
 
 		/**
 		 * Secret for hashing stuff. Create something long here: http://strongpasswordgenerator.com/
+		 * @important
 		 */
 		secret: 'alongsecret',
 
 		/**
 		 * A temp folder for extracting stuff. No trailing slash!
+		 * @important
 		 */
 		tmp: 'C:/temp',
 
@@ -45,6 +53,7 @@ module.exports = {
 		 * Absolute path to where unrar.exe is located.
 		 * You can download it here:
 		 * 		http://sourceforge.net/projects/gnuwin32/files/unrar/3.4.3/unrar-3.4.3.exe/download
+		 * @important
 		 */
 		unrar: 'C:/Program Files (x86)/GnuWin32/bin/unrar.exe',
 
@@ -95,7 +104,7 @@ module.exports = {
 		},
 
 		/**
-		 * Where to update the application from. Provide your GitHub fork here if necessary.
+		 * Where to update Pind from. Provide your GitHub fork here if requested.
 		 * Default is https://github.com/freezy/node-pind
 		 */
 		repository: {
@@ -118,6 +127,7 @@ module.exports = {
 
 		/**
 		 * Path to installation folder. No trailing slash!
+		 * @important
 		 */
 		path: 'C:/Games/HyperPin'
 	},
@@ -126,8 +136,10 @@ module.exports = {
 	 * Visual Pinball-specifc settings.
 	 */
 	visualpinball : {
+
 		/**
 		 * Path to installation folder. No trailing slash!
+		 * @important
 		 */
 		path: 'C:/Games/Visual Pinball'
 	},
@@ -136,8 +148,10 @@ module.exports = {
 	 * Future Pinball-specifc settings.
 	 */
 	futurepinball : {
+		
 		/**
 		 * Path to installation folder. No trailing slash!
+		 * @important
 		 */
 		path: 'C:/Games/Future Pinball'
 	},
@@ -149,12 +163,13 @@ module.exports = {
 
 		/**
 		 * Path to installation folder. No trailing slash!
+		 * @important
 		 */
 		path: 'C:/Games/Visual Pinball/VPinMame',
 
 		/**
 		 * When bulk-applying rotation settings on tables, this indicates how to set the "rol" setting.
-		 * If set to true, the DMD will be rotated 90°, otherwise it will have the same orientation as
+		 * If set to true, the DMD will be rotated 270°, otherwise it will have the same orientation as
 		 * the playfield.
 		 */
 		rotate: false,
