@@ -403,7 +403,6 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		that.emit('updateFailed', { error: err });
 		return callback(err);
 	}
-	var pindPath = path.normalize(__dirname + '../../../');
 
 	// read updated package and settings
 	var newConfig = {
@@ -597,12 +596,18 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		next();
 	};
 
-	var updateAndRestart = function(next) {
+	var finishAndRestart = function(next) {
 		// update version.json
 		if (!dryRun) {
 			that.setVersion(newCommit);
 		}
 
+		// compute and save update result.
+		var result = {
+			version: version
+		};
+
+		// reboot
 		logger.log('info', '[autoupdate] Update complete.');
 		that.emit('updateCompleted', newCommit);
 		logger.log('warn', '[autoupdate] Killing process in 2 seconds.');
@@ -617,7 +622,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		if (err) {
 			return callback(err);
 		}
-		updateAndRestart(callback);
+		finishAndRestart(result);
 	});
 };
 
