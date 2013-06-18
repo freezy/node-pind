@@ -1,0 +1,78 @@
+!!! 5
+html
+	head
+		title Pind - A Pinball Daemon
+		meta(name="viewport", content="width=device-width, initial-scale = 1.0, user-scalable = no")
+		meta(http-equiv="Content-Type", content="text/html; charset=utf-8")
+		link(href="http://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic|Open+Sans:800,600,400", rel="stylesheet", type="text/css")
+		link(href="css/bootstrap.min.css", rel="stylesheet", type="text/css", media="screen")
+		link(href="css/bootstrap-responsive.min.css", rel="stylesheet", type="text/css", media="screen")
+		link(href="css/pind.css", rel="stylesheet", type="text/css", media="screen")
+		<!-- <link rel="stylesheet" href="css/style.min.css" type="text/css" media="screen"> -->
+		<!--[if IE]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	
+	body
+		.navbar.navbar-fixed-top
+			.navbar-inner
+				.container
+					ul.nav.pull-right
+						li(data-slide="1").active
+							a(href="#") Home
+						li(data-slide="2")
+							a(href="#") Design
+						li(data-slide="3")
+							a(href="#") Features
+						li(data-slide="4")
+							a(href="#") Technologies
+						li(data-slide="5")
+							a(href="#") About
+
+		hr
+		#slide1.slide(data-stellar-background-ratio="0.5", data-slide="1")
+			.row
+				.header-logo
+					.header-glow
+						img(src="img/header-logo.png")
+		hr
+		#slide2(data-stellar-background-ratio="0.5")
+			.container
+				.row
+					.span6
+						.header-dictionary
+							h1 <strong>dae&bull;mon</strong> [dee-muhn]
+							h2 noun
+							p A program that is not invoked explicitly, but lies dormant waiting for some condition(s) to occur.
+
+					.span6
+						.header-dictionary
+							h1 <strong>condition to occur</strong>
+							h2 &nbsp;
+							p A high score, a new table release, missing artwork or ROM file or just a user browsing tables.
+
+		hr
+		#slide3.slide(data-stellar-background-ratio="0.5", data-slide="2")
+			.container
+				h1 
+					span Design
+				.header-line
+
+				ul.thumbnails
+					li.span4
+						img(src="img/design_login.png")
+						p Simple design based on Twitter Bootstrap.
+					li.span4
+						img(src="img/design_vector.png")
+						p Vector icons make sure everything is looking crispy at any resolution or zoom setting.
+					li.span4
+						img(src="img/design_buttons.png")
+						p CSS for realistic DMD and buttons.
+			
+
+
+
+
+	script(type="text/javascript", src="js/jquery-2.0.2.min.js")
+	script(type="text/javascript", src="js/jquery.stellar-0.6.2.min.js")
+	script(type="text/javascript", src="js/jquery.waypoints-2.0.2.min.js")
+	script(type="text/javascript", src="js/jquery.easing-1.3.min.js")
+	script(type="text/javascript", src="js/pind.js")

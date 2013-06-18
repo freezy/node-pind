@@ -1,0 +1,90 @@
+body {
+  padding-top: 40px;
+  color: rgba(0,0,0,0.7);
+  font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
+}
+p {
+  font-size: 17px;
+}
+hr {
+  border: 3px solid #e09d55;
+  margin: 0;
+}
+.navbar {
+  background: #fff;
+}
+.header-logo {
+  height: 500px;
+  background-image: url("../img/dark_wood.png");
+  background-position: center;
+}
+.header-logo > .header-glow {
+  height: 100%;
+  width: 100%;
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4zIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjIlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMyIvPgogICAgPHN0b3Agb2Zmc2V0PSIyNSUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4zIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMCIvPgogIDwvcmFkaWFsR3JhZGllbnQ+CiAgPHJlY3QgeD0iLTUwIiB5PSItNTAiIHdpZHRoPSIxMDEiIGhlaWdodD0iMTAxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=");
+  background: -moz-radial-gradient(center, ellipse cover, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.2) 2%, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(255,255,255,0.2)), color-stop(2%, rgba(255,255,255,0.2)), color-stop(25%, rgba(255,255,255,0.2)), color-stop(100%, rgba(0,0,0,0)));
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.2) 2%, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 100%);
+  background: -o-radial-gradient(center, ellipse cover, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.2) 2%, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 100%);
+  background: -ms-radial-gradient(center, ellipse cover, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.2) 2%, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 100%);
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.2) 2%, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 100%);
+}
+.header-logo > .header-glow > img {
+  top: 100px;
+  position: relative;
+  display: block;
+  margin: auto;
+}
+.header-dictionary {
+  padding: 50px 0;
+}
+.header-dictionary h1,
+.header-dictionary h2,
+.header-dictionary p {
+  margin: 0;
+  font-family: "Libre Baskerville", "Garamond", "Times", "Times New Roman", serif;
+  font-weight: normal;
+  text-transform: none;
+  text-align: left;
+}
+.header-dictionary h1 strong,
+.header-dictionary h2 strong,
+.header-dictionary p strong {
+  font-weight: bold;
+}
+.header-dictionary h1 {
+  font-size: 32px;
+}
+.header-dictionary h2 {
+  font-size: 26px;
+  font-style: italic;
+}
+.header-dictionary p {
+  font-size: 18px;
+  line-height: 32px;
+  font-style: italic;
+}
+h1 {
+  margin-top: 50px;
+  margin-bottom: 20px;
+  font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-align: center;
+}
+h1 > span {
+  padding: 0 15px;
+  background-color: #fff;
+}
+.header-line {
+  border-top: 1px solid rgba(0,0,0,0.7);
+  margin-bottom: 48px;
+  margin-top: -37px;
+  width: 100%;
+}
+#slide2 {
+  background-image: url("../img/pw_maze_white.png");
+}
+ul.thumbnails img + p {
+  margin-top: 15px;
+}
