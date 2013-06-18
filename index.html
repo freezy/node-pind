@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pind by freezy</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Pind</h1>
+        <p>A lightweight webserver that runs on a virtual cab, serving all kinds of neat stuff.</p>
+
+        <p class="view"><a href="https://github.com/freezy/node-pind">View the Project on GitHub <small>freezy/node-pind</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/freezy/node-pind/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/freezy/node-pind/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/freezy/node-pind">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><img src="https://raw.github.com/freezy/node-pind/master/public/images/logo.png" alt="pind"></p>
+
+<h1></h1>
+
+<h1>
+<a name="node-pinball-daemon" class="anchor" href="#node-pinball-daemon"><span class="octicon octicon-link"></span></a>Node Pinball Daemon</h1>
+
+<p>A lightweight web server that runs on a virtual pinball cab, doing all kinds
+of neat stuff. Particularly it should be able to:</p>
+
+<ul>
+<li>Browse through HyperPin's tables in a fast and visually pleasing way with
+the ability to:
+
+<ul>
+<li>Define filters based on table attributes</li>
+<li>Mark tables as favorite for faster access</li>
+<li>Make use of available artwork using realtime image processing and caching</li>
+<li>Get status out of VPM tables, such as total number of games, score/playtime
+histogram etc <code>done</code>
+</li>
+</ul>
+</li>
+<li>List high scores of all tables for a given user, including a "global" score
+based on achievements.</li>
+<li>Provide a voting system for new tables to install.</li>
+<li>Administer HyperPin's tables. This includes:
+
+<ul>
+<li>Automatically download missing artwork <code>done</code>
+</li>
+<li>Easily (fuzzy-) search, download and add new tables <code>done</code>
+</li>
+<li>Automatically download missing ROMs <code>done</code>
+</li>
+<li>Automatically search, download and patch table for DirectB2S backglasses</li>
+<li>Bulk-update VPinMAME rotation settings in tables <code>done</code>
+</li>
+<li>Match tables on IPDB.org for additional meta data <code>done</code>
+</li>
+<li>Support for Visual Pinball and Future Pinball <code>VP - done</code>
+</li>
+<li>Receive real-time status updates during processing <code>done</code>
+</li>
+</ul>
+</li>
+<li>Manage users:
+
+<ul>
+<li>Anyone can sign up individually using high score initials as user name <code>done</code>
+</li>
+<li>Administrator can manage credits for each user <code>done</code>
+</li>
+<li>Credits allow users to insert coins via web app or Android client (using
+NFC where supported) <code>done</code>
+</li>
+<li>Users can be notified by mail when someone beats a high score</li>
+</ul>
+</li>
+<li>Include a download manager for assets and tables <code>done</code>
+</li>
+<li>Provide an API for all features (JSON-RPC 2.0) <code>done</code>
+</li>
+<li>Provide an Android app for some features (such as inserting a coin, browsing
+tables and high scores). <code>inserting coin - done</code>
+</li>
+<li>Implement reasonable security. Passwords are salted and strongly hashed,
+auto-login uses a random token, CSRF protection, SSL connections should be
+enforced when transferring sensitive data. <code>done</code>
+</li>
+<li>Provide an automatic update procedure. <code>done</code>
+</li>
+<li>Be usable on a phone (responsive layout). <code>done</code>
+</li>
+</ul><p>Note that for a single user cab, pind is mainly useful for managing tables,
+which is a major PITA to do manually. Most of the other features however are
+about multiple players using the same cab.</p>
+
+<h1>
+<a name="development-principles" class="anchor" href="#development-principles"><span class="octicon octicon-link"></span></a>Development Principles</h1>
+
+<ul>
+<li>Get up and running with the least possible effort.</li>
+<li>Be as lightweight as possible - it's for running on a cab.</li>
+<li>Be responsive - nobody likes slow applications.</li>
+<li>Be beautiful - minimal yet elegant.</li>
+</ul><h1>
+<a name="platforms" class="anchor" href="#platforms"><span class="octicon octicon-link"></span></a>Platforms</h1>
+
+<p>If you've read as far as this, you already know that all the stuff mentioned
+above runs on Windows and Windows only. I'm currently testing this on XP,
+Windows 7 and Windows 8.</p>
+
+<p>However, I'm open to add support for other platforms if that's your
+development environment. If there are particular problems, let me know and I'll
+try to fix them (or even better, submit a PR).</p>
+
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<p>See <a href="https://github.com/freezy/node-pind/blob/master/INSTALL.md">INSTALL.md</a>.</p>
+
+<h1>
+<a name="technologies" class="anchor" href="#technologies"><span class="octicon octicon-link"></span></a>Technologies</h1>
+
+<p>Besides obviously <a href="http://nodejs.org/">NodeJS</a> on server side, there are a few
+more technologies used:</p>
+
+<ul>
+<li>
+<a href="http://twitter.github.io/bootstrap/">Twitter Bootstrap</a> for client side CSS</li>
+<li>Vector icons from <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>,
+assembled by <a href="http://icomoon.io/">IcoMoon</a> (along with some custom icons).</li>
+<li>
+<a href="http://jquery.com/">jQuery</a> for all our JS needs.</li>
+<li>
+<a href="http://socket.io/">Socket.IO</a> for the real-time features.</li>
+<li>
+<a href="http://angularjs.org/">AngularJS</a> for client side development.</li>
+</ul><h1>
+<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h1>
+
+<ul>
+<li>Full credits for the high score features go to Dna Disturber's <a href="http://www.pinemhi.com/">PINemHi</a>,
+along with a big thanks for the permission to redistribute the binary. Looking
+forward to even more features!</li>
+<li>Thanks to Sacha Greif for the nice <a href="http://sachagreif.com/bootstrap/">3D buttons</a>.</li>
+<li>Thanks to Andreas Nylin for the DMD font and his permission to use it freely.</li>
+</ul><h1>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h1>
+
+<p>Licensed under GPLv2. See LICENSE.txt.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/freezy">freezy</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
