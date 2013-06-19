@@ -1,3 +1,4 @@
+rgba(224,157,85,0.25)
 body {
   padding-top: 40px;
   color: rgba(0,0,0,0.7);
@@ -9,6 +10,23 @@ p {
 hr {
   border: 3px solid #e09d55;
   margin: 0;
+}
+.light p,
+.light h1,
+.light h2 {
+  text-shadow: 0 1px rgba(255,255,255,0.75);
+}
+.light img {
+  border: 1px solid rgba(0,0,0,0.7);
+}
+.dark p,
+.dark h1,
+.dark h2 {
+  color: rgba(255,255,255,0.6);
+  text-shadow: 0 1px rgba(0,0,0,0.75);
+}
+.dark img {
+  border: 1px solid rgba(255,255,255,0.6);
 }
 .navbar {
   background: #fff;
@@ -74,7 +92,6 @@ h1 {
 }
 h1 > span {
   padding: 0 15px;
-  background-color: #fff;
 }
 .header-line {
   border-top: 1px solid rgba(0,0,0,0.7);
@@ -82,9 +99,48 @@ h1 > span {
   margin-top: -37px;
   width: 100%;
 }
-#slide2 {
+.dark .header-line {
+  border-top: 1px solid rgba(255,255,255,0.6);
+}
+#slide-dictionary {
   background-image: url("../img/pw_maze_white.png");
+}
+#slide-design {
+  background-image: url("../img/debut_light.png");
+}
+#slide-design h1 > span {
+  background-image: url("../img/debut_light.png");
+}
+#slide-features {
+  background-image: url("../img/grey_wash_wall.png");
+}
+#slide-features h1 > span {
+  background-image: url("../img/grey_wash_wall.png");
 }
 ul.thumbnails img + p {
   margin-top: 15px;
+}
+.row-fluid ul.thumbnails li.span12 + li {
+  margin-left: 0px;
+  clear: left;
+}
+.row-fluid ul.thumbnails li.span6:nth-child(2n + 3) {
+  margin-left: 0px;
+  clear: left;
+}
+.row-fluid ul.thumbnails li.span4:nth-child(3n + 4) {
+  margin-left: 0px;
+  clear: left;
+}
+.row-fluid ul.thumbnails li.span3:nth-child(4n + 5) {
+  margin-left: 0px;
+  clear: left;
+}
+.row-fluid ul.thumbnails li.span2:nth-child(6n + 7) {
+  margin-left: 0px;
+  clear: left;
+}
+.row-fluid ul.thumbnails li.span1:nth-child(12n + 13) {
+  margin-left: 0px;
+  clear: left;
 }

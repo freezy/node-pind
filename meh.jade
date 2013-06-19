@@ -28,54 +28,70 @@ html
 							a(href="#") About
 
 		hr
-		#slide1.slide(data-slide="1")
+		#slide-header.slide(data-slide="1")
 			.row
 				.header-logo(data-stellar-background-ratio="0.5")
 					.header-glow
 						img(src="img/header-logo.png")
 		hr
-		#slide2
+		#slide-dictionary.light
 			.container
 				.row
-					.span6
+					.span5.offset1
 						.header-dictionary
 							h1 <strong>dae&bull;mon</strong> [dee-muhn]
 							h2 noun
 							p A program that is not invoked explicitly, but lies dormant waiting for some condition(s) to occur.
 
-					.span6
+					.span5
 						.header-dictionary
 							h1 <strong>condition to occur</strong>
 							h2 &nbsp;
 							p A high score, a new table release, missing artwork or ROM file or just a user browsing tables.
 
 		hr
-		#slide3.slide(data-stellar-background-ratio="0.5", data-slide="2")
+		#slide-design.light.slide(data-stellar-background-ratio="0.5", data-slide="2")
 			.container
-				h1 
-					span Design
-				.header-line
+				.row-fluid
+					.span10.offset1
+						h1 
+							span Design
+						.header-line
 
-				ul.thumbnails
-					li.span4
-						img(src="img/design_login.png")
-						p Simple design based on Twitter Bootstrap.
-					li.span4
-						img(src="img/design_vector.png")
-						p Vector icons make sure everything is looking crispy at any resolution or zoom setting.
-					li.span4
-						img(src="img/design_buttons.png")
-						p CSS for realistic DMD and buttons.
+						ul.thumbnails
+							li.span6
+								img(src="img/design_login.png")
+								p Simple design based on Twitter Bootstrap.
+							li.span6
+								img(src="img/design_vector.png")
+								p Vector icons make sure everything is looking crispy at any resolution or zoom setting.
+							li.span6
+								img(src="img/design_buttons.png")
+								p CSS for realistic DMD and buttons.
 		
 		hr
-		#slide4.slide(data-stellar-background-ratio="0.5", data-slide="3")
+		#slide-features.dark.slide(data-slide="3")
 			.container
-				h1 
-					span Features
-				.header-line
+				.row-fluid
+					.span10.offset1
+						h1 
+							span Features
+						.header-line
 
-				
-
+						ul.thumbnails
+							li.span12
+								img(src="img/features_admin_sources.png")
+								p Real-time fuzzy search on VPF’s cabinet downloads. See results popping up while typing.
+						ul.thumbnails
+							li.span6
+								img(src="img/features_admin_download.png")
+								p Queue downloads and let pind automatically search for ROMs, media packs and table videos.
+							li.span6
+								img(src="img/features_admin_transfers.png")
+								p Manage and monitor downloads in real-time. Everything stays in sync in all your browser windows.
+							li.span6
+								img(src="img/features_hiscores.png")
+								p List high scores of all tables on one single page.
 
 
 

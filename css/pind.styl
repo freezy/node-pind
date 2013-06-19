@@ -1,9 +1,12 @@
 @import 'nib'
 
 foreground = rgba(0,0,0,0.7)
+foreground-light = rgba(255,255,255,0.6)
 color-btn-light  = #e09d55
 font-serif = "Libre Baskerville", "Garamond", "Times", "Times New Roman", serif
 font-sans = "Open Sans", "Helvetica", "Arial", sans-serif
+
+selection(#000, rgba(224,157,85,0.25))
 
 body
 	padding-top 40px
@@ -15,6 +18,19 @@ p
 hr 
 	border 3px solid color-btn-light
 	margin 0
+
+.light
+	p, h1, h2
+		text-shadow 0 1px rgba(255,255,255, 0.75)
+	img
+		border 1px solid foreground
+
+.dark
+	p, h1, h2
+		color foreground-light
+		text-shadow 0 1px rgba(0,0,0, 0.75)	
+	img
+		border 1px solid foreground-light
 
 .navbar
 	background white
@@ -72,18 +88,37 @@ h1
 	text-align center
 	& > span
 		padding 0 15px
-		background-color white
 
 .header-line
 	border-top 1px solid foreground
 	margin-bottom 48px
 	margin-top -37px
 	width 100%
+.dark
+	.header-line
+		border-top 1px solid foreground-light
 
-
-#slide2
+#slide-dictionary
 	background-image url("../img/pw_maze_white.png")
+
+#slide-design
+	background-image url("../img/debut_light.png")
+	h1 > span
+		background-image url("../img/debut_light.png")
+
+#slide-features
+	background-image url("../img/grey_wash_wall.png")
+	h1 > span
+		background-image url("../img/grey_wash_wall.png")
 
 
 ul.thumbnails img + p
 	margin-top 15px
+
+// bootstrap hacks
+.row-fluid ul.thumbnails li.span12 + li { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span6:nth-child(2n + 3) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span4:nth-child(3n + 4) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span3:nth-child(4n + 5) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left: 0px; clear: left }
+.row-fluid ul.thumbnails li.span1:nth-child(12n + 13) { margin-left: 0px; clear: left }	
