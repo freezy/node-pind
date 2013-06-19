@@ -192,8 +192,6 @@ NvRam.prototype.readAudits = function(rom, callback) {
 		logger.log('warn', '[nvram] No valid parser found for ROM "%s".', rom);
 		callback();
 	}
-
-
 };
 
 

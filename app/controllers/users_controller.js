@@ -108,7 +108,7 @@ action('signup', function () {
 							admin: num == 0
 						});
 						that.validationErrors = user.validate();
-						delete that.validationErrors.fct
+						delete that.validationErrors.fct;
 						that.hasValidationErrors = !_.isEmpty(that.validationErrors);
 
 						if (!that.hasValidationErrors) {

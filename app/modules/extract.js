@@ -42,7 +42,6 @@ Extract.prototype.extract = function(filepath, renameTo, callback) {
 
 		// 2. figure out what to extract
 		that.prepareExtract(files, renameTo, function(err, mapping) {
-
 			if (err) {
 				return callback(err);
 			}
@@ -82,7 +81,7 @@ Extract.prototype.getFiles = function(filepath, callback) {
 			if (stderr) {
 				return callback(stderr);
 			}
-			var regex = new RegExp('\\s*([^\\r\\n]+)[\\r\\n]\\s*\\d+\\s+\\d+\\s+\\d+%\\s+[^\\s]+\\s+[^\\s]+\\s+([^\\s]+)\\s+\\d+', 'g');
+			var regex = new RegExp('\\s*([^\\r\\n]+)[\\r\\n]\\s*\\d+\\s+\\d+\\s+\\d+%\\s+[^\\s]+\\s+[^\\s]+\\s+([^\\s]+)\\s+[\\da-f]+', 'gi');
 			var m;
 			var filenames = [];
 			while (m = regex.exec(stdout)) {
@@ -113,6 +112,8 @@ Extract.prototype.getFiles = function(filepath, callback) {
 
 /**
  * Loops through a given number of files from an archive and determines where to extract them.
+ * This already checks if the destination file is already available. If that's the case, the
+ * item is added to the "skip" array which is returned in the callback.
  *
  * @param files Array containing path names within the archive (in no particular order)
  * @param renameTo If provided, rename use this as destination file name (extension will be kept, don't provide).
@@ -126,11 +127,18 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 
 	var mapping = { extract: {}, skip: {}, ignore: [] };
 
+	// check if any table file in the archive
+	var hasVptTable = _.reject(files, function(filename){
+		var ext = filename.substr(filename.lastIndexOf('.')).toLowerCase();
+		return ext == '.vpt';
+	}).length > 0;
+
 	for (var i = 0; i < files.length; i++) {
-		const filepath = files[i];
-        const dirnames = filepath.split('/');
-        const filename = dirnames.pop();
-        const l = dirnames.length - 1;
+		var filepath = files[i];
+		var dirnames = filepath.split('/');
+		var filename = dirnames.pop();
+
+        var l = dirnames.length - 1;
 
 		// adds it to the queue if not already exists
 		function add(dst, filepath) {
@@ -144,19 +152,43 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 
 		// adds it to the queue using the typical
 		function asMedia(depth, filename, filepath, dirnames) {
-            const ext = filename.substr(filename.lastIndexOf('.'));
-            const dst = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + (renameTo ? renameTo + ext : filename);
-			add(dst, filepath);
+			var ext = filename.substr(filename.lastIndexOf('.'));
+			var dst = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + (renameTo ? renameTo + ext : filename);
+			if (!fs.existsSync(dst)) {
+				add(dst, filepath);
+			} else {
+				mapping.skip[filepath] = { src: filepath, dst: dst };
+				logger.log('info', '[extract] "%s" already exists, skipping.', dst);
+			}
 		}
 
 		if (filename) {
-            const ext = filename.substr(filename.lastIndexOf('.'));
+            var ext = filename.substr(filename.lastIndexOf('.')).toLowerCase();
 
 			// VP/FP-specific artwork
 			if (_.contains(['Visual Pinball', 'Future Pinball'], dirnames[l - 1])) {
 				if (_.contains(['Backglass Images', 'Table Images', 'Table Videos', 'Wheel Images'], dirnames[l])) {
 					asMedia(2, filename, filepath, dirnames);
 				} else {
+					mapping.ignore.push(filepath);
+				}
+
+			// For .pngs that come with a table, we assume that they're artwork.
+			} else if (hasVptTable && (ext == '.png' || ext == '.jpg')) {
+
+				// wheel images
+				if (filename.match(/wheel/i)) {
+					asMedia(2, filename, filepath, [ 'Visual Pinball', 'Wheel Images' ]);
+				}
+				// backbox images
+				else if (filename.match(/backbox|static/i)) {
+					asMedia(2, filename, filepath, [ 'Visual Pinball', 'Backglass Images' ]);
+				}
+				// table images
+				else if (filename.match(/\s\(([^\)]+\)\s*)?\([^\)]+\)\.png/i)) {
+					asMedia(2, filename, filepath, [ 'Visual Pinball', 'Table Images' ]);
+				}
+				else {
 					mapping.ignore.push(filepath);
 				}
 
@@ -238,6 +270,8 @@ Extract.prototype.zipExtract = function(zipfile, mapping, callback) {
 	});
 };
 
+module.exports = Extract;
+
 /**
  * Extracts a given number of files of a rar archive to a given destination for each file.
  *
@@ -250,7 +284,7 @@ Extract.prototype.zipExtract = function(zipfile, mapping, callback) {
  */
 Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 
-	logger.log('info', '[extract] Got mapping:', mapping.extract);
+	logger.log('info', '[extract] Got %d entries mapped to extract: %j', _.keys(mapping.extract).length, mapping, {});
 	async.eachSeries(_.values(mapping.extract),
 		function(map, next) {
 			var dstFolder = map.dst.substr(0, map.dst.lastIndexOf('/'));
@@ -280,6 +314,7 @@ Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 			});
 
 		}, function(err) {
+			logger.log('info', '[extract] Done extracting.');
 			if (err) {
 				return callback(err);
 			}
@@ -287,5 +322,3 @@ Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 		}
 	);
 };
-
-module.exports = Extract;
