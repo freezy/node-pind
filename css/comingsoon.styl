@@ -1,0 +1,77 @@
+
+
+body
+	background-image url("../img/pw_maze_black.png")
+	background-position center
+
+
+	& > .gradient
+		padding 0
+		position absolute
+		display table
+		top 0px 
+		left 0px
+		height 100%
+		width 100%
+		background url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMC42NSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+")
+		background -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%)
+		background -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65)))
+		background -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%)
+		background -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%)
+		background -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%)
+		background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%)
+	
+		& > .center
+			position relative
+			display table-cell
+			vertical-align middle
+
+			& > .content
+				text-align center
+				width 200px
+				margin 0 auto
+				text-align left
+				padding 10px
+				cursor default
+							
+				& > i.icon
+					font-size 200px
+					text-shadow 0 0 400px rgba(255, 255, 255, 0.8)
+				& > p
+					font-family "Open Sans", "Helvetica", "Arial", sans-serif
+					font-size 20px
+					font-weight 800
+					text-transform uppercase
+
+				& > p, & > i
+					text-align center
+
+
+
+
+.icon
+
+	font-family 'pind-symbols'
+	speak none
+	font-style normal
+	font-weight normal
+	font-variant normal
+	text-transform none
+	line-height 1
+	-webkit-font-smoothing antialiased
+	
+
+	&.pd-round:before
+		content "\e006"
+
+
+@font-face {
+	font-family: 'pind-symbols';
+	src:url('../fonts/pind-symbols.eot?93108');
+	src:url('../fonts/pind-symbols.eot?93108') format('embedded-opentype'),
+		url('../fonts/pind-symbols.woff?93108') format('woff'),
+		url('../fonts/pind-symbols.ttf?93108') format('truetype'),
+		url('../fonts/pind-symbols.svg?93108#pind-symbols') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
