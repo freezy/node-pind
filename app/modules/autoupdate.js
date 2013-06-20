@@ -604,7 +604,10 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 
 		// compute and save update result.
 		var result = {
-			version: version
+			updatedTo: version,
+			commits: [],
+			tags: [],
+			actions: []
 		};
 
 		// reboot
@@ -615,7 +618,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			logger.log('err', '[autoupdate] kthxbye');
 			process.kill(process.pid, 'SIGTERM');
 		}, 2000);
-		next(null, version);
+		next(null, result);
 	};
 
 	async.series([ checkNewDependencies, checkNewSettings, checkNewMigration ], function(err) {
