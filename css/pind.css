@@ -2,6 +2,7 @@ body {
   padding-top: 40px;
   color: rgba(0,0,0,0.7);
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding: 0;
 }
 p {
   font-size: 17px;
@@ -9,6 +10,9 @@ p {
 hr {
   border: 3px solid #e09d55;
   margin: 0;
+}
+hr.first {
+  margin-top: 40px;
 }
 .light p,
 .light h1,
@@ -43,8 +47,8 @@ hr {
   background: #444;
   text-shadow: none;
 }
-.navbar {
-  background: #fff;
+.navbar .navbar-inner {
+  background: rgba(255,255,255,0.95);
 }
 .navbar .nav li a {
   margin-bottom: -6px;
@@ -53,7 +57,7 @@ hr {
   -webkit-box-shadow: none;
   box-shadow: none;
   background-color: rgba(0,0,0,0.1);
-  border-bottom: 6px solid #e09d55;
+  border-bottom: 4px solid #e09d55;
 }
 .header-logo {
   height: 500px;
@@ -144,6 +148,41 @@ h1 > span {
 ul.thumbnails img + p {
   margin-top: 15px;
 }
+ul.bubbles li .bubble {
+  height: 200px;
+  width: 200px;
+  margin: 0 auto 20px;
+  background-image: url("../img/debut_light.png");
+  -webkit-border-radius: 100px;
+  border-radius: 100px;
+  text-align: center;
+}
+ul.bubbles li .bubble > i.icon {
+  display: block;
+  text-align: center;
+  cursor: default;
+}
+ul.bubbles li .bubble > i.icon.vpf {
+  padding-top: 45px;
+  font-size: 100px;
+}
+ul.bubbles li .bubble > i.icon.ipdb {
+  padding-top: 64px;
+  font-size: 70px;
+}
+ul.bubbles li .bubble > span.dmd {
+  font-family: ozoneregular;
+  font-size: 50px;
+  text-transform: uppercase;
+  line-height: 28px;
+  position: relative;
+  top: 50px;
+  left: 2px;
+  cursor: default;
+}
+ul.bubbles p {
+  text-align: center;
+}
 .row-fluid ul.thumbnails li.span12 + li {
   margin-left: 0px;
   clear: left;
@@ -168,7 +207,74 @@ ul.thumbnails img + p {
   margin-left: 0px;
   clear: left;
 }
-/**
- * defines selected text.
- * ex.: selection(red, white)
- */
+@font-face {
+  font-family: 'ozoneregular';
+  src: url("../fonts/ozone-webfont.eot");
+  src: url("../fonts/ozone-webfont.eot?#iefix") format('embedded-opentype'), url("../fonts/ozone-webfont.woff") format('woff'), url("../fonts/ozone-webfont.ttf") format('truetype'), url("../fonts/ozone-webfont.svg#ozoneregular") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'pind-symbols';
+  src: url("../fonts/pind-symbols.eot?72455");
+  src: url("../fonts/pind-symbols.eot?72455") format('embedded-opentype'), url("../fonts/pind-symbols.woff?72455") format('woff'), url("../fonts/pind-symbols.ttf?72455") format('truetype'), url("../fonts/pind-symbols.svg?72455#pind-symbols") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.icon {
+  font-family: 'pind-symbols';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+.icon.ipdb:before {
+  content: "\e00c";
+}
+.icon.vpf:before {
+  content: "\e00d";
+}
+@media (max-width: 480px) {
+  .header-logo {
+    height: 300px;
+  }
+  .header-logo .header-glow img {
+    top: 80px;
+    width: 70%;
+  }
+}
+@media (max-width: 767px) {
+  section .container {
+    padding: 0 40px;
+  }
+  .navbar {
+    margin-bottom: -6px;
+  }
+  .navbar .navbar-inner {
+    padding: 0 40px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding-top: 0;
+  }
+}
+@media (min-width: 768px) and (max-width: 979px) {
+  .navbar {
+    margin-bottom: -6px;
+  }
+  .navbar .navbar-inner {
+    padding-top: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding: 0 40px;
+  }
+}
+.navbar-fixed-top {
+  left: 0;
+  margin-bottom: 0;
+  position: fixed;
+  right: 0;
+  z-index: 1030;
+}

@@ -11,12 +11,15 @@ body
 	padding-top 40px
 	color foreground
 	font-family font-sans
+	padding 0
 p
 	font-size 17px
 
 hr 
 	border 3px solid color-btn-light
 	margin 0
+	&.first
+		margin-top 40px
 
 .light
 	p, h1, h2
@@ -45,13 +48,14 @@ hr
 		text-shadow none		
 
 .navbar
-	background white
+	.navbar-inner
+		background rgba(255,255,255,0.95)
 	.nav li a
 		margin-bottom -6px
 	.nav > .active a
 		box-shadow none
 		background-color rgba(0,0,0,0.1)
-		border-bottom 6px solid color-btn-light
+		border-bottom 4px solid color-btn-light
 
 .header-logo
 	t = 0.2
@@ -133,6 +137,41 @@ h1
 ul.thumbnails img + p
 	margin-top 15px
 
+ul.bubbles
+	li .bubble
+		height 200px
+		width 200px
+		margin 0 auto 20px
+		background-image url("../img/debut_light.png")
+		border-radius 100px
+		text-align center
+		& > i.icon
+			display block
+			text-align center
+			cursor default
+
+			&.vpf
+				padding-top 45px
+				font-size 100px
+			&.ipdb
+				padding-top 64px
+				font-size 70px
+		& > span.dmd
+			font-family ozoneregular
+			font-size 50px
+			text-transform uppercase
+			line-height 28px
+			position relative
+			top 50px
+			left 2px
+			cursor default
+
+	p
+		text-align center
+
+
+	
+
 // bootstrap hacks
 .row-fluid ul.thumbnails li.span12 + li { margin-left: 0px; clear: left }
 .row-fluid ul.thumbnails li.span6:nth-child(2n + 3) { margin-left: 0px; clear: left }
@@ -141,16 +180,76 @@ ul.thumbnails img + p
 .row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left: 0px; clear: left }
 .row-fluid ul.thumbnails li.span1:nth-child(12n + 13) { margin-left: 0px; clear: left }	
 
-/**
- * defines selected text.
- * ex.: selection(red, white)
- */
-selection(fg, bg)
-	::-moz-selection
-		color fg
-		background bg
-		text-shadow none
-	::selection
-		color fg
-		background bg
-		text-shadow none
+
+@font-face {
+	font-family: 'ozoneregular';
+	src:url('../fonts/ozone-webfont.eot');
+	src:url('../fonts/ozone-webfont.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/ozone-webfont.woff') format('woff'),
+		url('../fonts/ozone-webfont.ttf') format('truetype'),
+		url('../fonts/ozone-webfont.svg#ozoneregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'pind-symbols';
+	src:url('../fonts/pind-symbols.eot?72455');
+	src:url('../fonts/pind-symbols.eot?72455') format('embedded-opentype'),
+		url('../fonts/pind-symbols.woff?72455') format('woff'),
+		url('../fonts/pind-symbols.ttf?72455') format('truetype'),
+		url('../fonts/pind-symbols.svg?72455#pind-symbols') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.icon
+
+	font-family 'pind-symbols'
+	speak none
+	font-style normal
+	font-weight normal
+	font-variant normal
+	text-transform none
+	line-height 1
+	-webkit-font-smoothing antialiased
+	
+	&.ipdb:before
+		content "\e00c"
+
+	&.vpf:before
+		content: "\e00d"
+
+@media (max-width: 480px)
+	.header-logo
+		height 300px
+		.header-glow
+			img
+				top 80px
+				width 70%
+
+@media (max-width: 767px)
+	section .container
+		padding 0 40px
+	.navbar
+		margin-bottom -6px
+		.navbar-inner
+			padding 0 40px
+			box-shadow none
+			padding-top 0
+
+@media (min-width: 768px) and (max-width: 979px)
+	.navbar
+		margin-bottom -6px
+		.navbar-inner
+			padding-top 0
+			box-shadow none
+			padding 0 40px
+
+
+.navbar-fixed-top
+	left 0
+	margin-bottom 0
+	position fixed
+	right 0
+	z-index 1030
