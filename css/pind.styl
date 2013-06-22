@@ -3,10 +3,9 @@
 foreground = rgba(0,0,0,0.7)
 foreground-light = rgba(255,255,255,0.6)
 color-btn-light  = #e09d55
-font-serif = "Libre Baskerville", "Garamond", "Times", "Times New Roman", serif
-font-sans = "Open Sans", "Helvetica", "Arial", sans-serif
 
-selection(#000, rgba(224,157,85,0.25))
+font-serif = "Libre Baskerville", "Garamond", "Times", "Times New Roman", serif
+font-sans = "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
 
 body
 	padding-top 40px
@@ -24,6 +23,13 @@ hr
 		text-shadow 0 1px rgba(255,255,255, 0.75)
 	img
 		border 1px solid foreground
+	::-moz-selection
+		background #ccc
+		text-shadow none
+	::selection
+		background #ccc
+		text-shadow none
+
 
 .dark
 	p, h1, h2
@@ -31,9 +37,21 @@ hr
 		text-shadow 0 1px rgba(0,0,0, 0.75)	
 	img
 		border 1px solid foreground-light
+	::-moz-selection
+		background #444
+		text-shadow none
+	::selection
+		background #444
+		text-shadow none		
 
 .navbar
 	background white
+	.nav li a
+		margin-bottom -6px
+	.nav > .active a
+		box-shadow none
+		background-color rgba(0,0,0,0.1)
+		border-bottom 6px solid color-btn-light
 
 .header-logo
 	t = 0.2
@@ -122,3 +140,17 @@ ul.thumbnails img + p
 .row-fluid ul.thumbnails li.span3:nth-child(4n + 5) { margin-left: 0px; clear: left }
 .row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left: 0px; clear: left }
 .row-fluid ul.thumbnails li.span1:nth-child(12n + 13) { margin-left: 0px; clear: left }	
+
+/**
+ * defines selected text.
+ * ex.: selection(red, white)
+ */
+selection(fg, bg)
+	::-moz-selection
+		color fg
+		background bg
+		text-shadow none
+	::selection
+		color fg
+		background bg
+		text-shadow none
