@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var ent = require('ent');
 var util = require('util');
 var fuzzy = require('fuzzy');
 
@@ -148,6 +149,15 @@ function fields(row, params) {
 	var hasField = function(field) {
 		return !fieldsProvided || params.fields.indexOf(field) > -1;
 	}
+
+	var htmlEncode = function(attr) {
+		if (r[attr]) {
+			r[attr] = ent.encode(r[attr]);
+		}
+	}
+	htmlEncode('features');
+	htmlEncode('notes');
+	htmlEncode('toys');
 
 	// additional attributes
 	if (hasField('url')) {

@@ -58,7 +58,8 @@
 		"diff" : "latest",
 		"uglify-js2" : "2.1.11",
 		"npm": "1.2.25",
-		"duration" : "latest"
+		"duration" : "latest",
+		"ent" : "latest"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",

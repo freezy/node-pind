@@ -2,12 +2,32 @@ extends ../layouts/inner
 
 block content
 	- contentFor('javascripts', javascriptIncludeTag('table'))
-	div.span10.offset1.content(ng-app)
 
-		div.ng-cloak(ng-controller="TableCtrl", data-id="#{id}")
-			h1 {{table.name}}
+	div.span10.offset1.content
+		section(ng-controller="TableCtrl", data-id="#{id}")
+			.row-fluid
+				.span6.offset3
+					h1 {{table.name}}
+			.row-fluid
+				.span3.content
+					img(ng-src="{{table.url_backglass_medium}}")
+					hr
+					img(ng-src="{{table.url_portrait_medium}}")
+				.span6
+					h2 {{table.manufacturer}} {{table.year}}
 
-		.clear-fix
+					h5 Statistics
+					hr
+
+					span.num 3'231
+					span.lbl Games played
+
+					span.num 23
+					span.lbl Extra balls
+
+				.span3
+					p Other info
+	.clearfix
 
 
 block inlineScripts

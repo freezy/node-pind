@@ -1,3 +1,4 @@
+var ent = require('ent');
 var util = require('util');
 var async = require('async');
 var events = require('events');
@@ -159,6 +160,10 @@ Ipdb.prototype.enrich = function(game, callback) {
 
 	var forceSearch = false;
 
+/*	if (game.key != 'czz') {
+		return callback(null, game);
+	}
+*/
 	/**
 	 * ipdb.org is quite picky about names and spelling errors etc will
 	 * result in empty search results.
@@ -244,8 +249,31 @@ Ipdb.prototype.enrich = function(game, callback) {
 				game.ipdb_no = m[1];
 				game.modelno = firstMatch(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
 				game.ipdb_mfg = firstMatch(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
-				game.rating = firstMatch(body, /<b>Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
-				game.short = firstMatch(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i);
+				game.rating = firstMatch(body, /Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
+				game.short = firstMatch(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
+					return m.replace(', ', ',');
+				});
+				game.units = firstMatch(body, /Production:\s*<\/b><\/td><td[^>]*>([\d,]+)\s*units/i, function(m) {
+					return m.replace(/,/g, '');
+				});
+				game.theme = firstMatch(body, /Theme:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
+					return m.replace(/\s+-\s+/gi, ',');
+				});
+				game.designer = firstMatch(body, /Design by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
+					return ent.decode(m);
+				});
+				game.artist = firstMatch(body, /Art by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
+					return ent.decode(m);
+				});
+				var tidyText = function(m) {
+					m = m.replace(/<br>/gi, '\n');
+					m = m.replace(/<[^>]+>/gi, '');
+					return ent.decode(m.trim());
+				};
+				game.features = firstMatch(body, /Notable Features:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
+				game.notes = firstMatch(body, /Notes:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
+				game.toys = firstMatch(body, /Toys:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
+				game.slogans = firstMatch(body, /Marketing Slogans:\s*<\/b><\/td><td[^>]*>([\s\S]*?)<\/td>/i, tidyText);
 
 				var distance = natural.LevenshteinDistance(game.name, m[2]);
 				logger.log('debug', '[ipdb] Found title "%s" as #%d (distance %d)', game.name, m[1], distance);
@@ -355,9 +383,15 @@ Ipdb.prototype.isSyncing = function() {
 	return isSyncing;
 };
 
-var firstMatch = function(str, regex) {
+var firstMatch = function(str, regex, postFn) {
 	var m = str.match(regex);
-	return m ? m[1] : null;
+	if (m && postFn) {
+		return postFn(m[1].replace(/&nbsp;/gi, ' '));
+	} else if (m) {
+		return m[1].replace(/&nbsp;/gi, ' ');
+	} else {
+		return null;
+	}
 };
 
 var trim = function(str) {

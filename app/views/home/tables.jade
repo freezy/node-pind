@@ -2,7 +2,7 @@ extends ../layouts/inner
 
 block content
 	- contentFor('javascripts', javascriptIncludeTag('tables'))
-	div.span10.offset1.content(ng-app)
+	div.span10.offset1.content
 		section(ng-controller='DataCtrl', resource="Table.GetAll")
 			.page-header
 				h1 Tables
@@ -54,8 +54,7 @@ block content
 				div.nodata(style='display:none')
 					p No tables in database.
 
-
-		.clear-fix
+		.clearfix
 
 
 block inlineScripts
