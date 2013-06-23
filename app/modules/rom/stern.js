@@ -1,6 +1,28 @@
 var _ = require('underscore');
 var async = require('async');
 
+/**
+ * Findings so far:
+ *
+ * High score initials start at 0x161d for all ROMs. After that, it's kind
+ * of unclear. Right now, I assume:
+ *
+ *    0x161d Highscore initials - 5 x 10 bytes
+ *    0x164f [ A ] (variable length)
+ *           Coder credentials - 295 bytes
+ *           [ B ] mostly 12 bytes (all 0x00), except ripleys and nascar
+ *           Audit start, first value is Total paid credits.
+ *
+ *    [ A ] seems to be: [ a ] [ X ] [ b ] [ X ] 0x01 [ c ]
+ *    where
+ *       [ a ] is mostly 7 bytes (except lotr)
+ *       [ X ] is 10 bytes
+ *       [ b ] is 10 bytes (all 0x0)
+ *       [ c ] is between 26 and 30 bytes, no idea what that is.
+ *
+ * @returns {Stern}
+ * @constructor
+ */
 function Stern() {
 	if ((this instanceof Stern) === false) {
 		return new Stern();
@@ -22,6 +44,11 @@ Stern.prototype.readAudits = function(buf, rom, callback) {
 		rightFlipper: Stern.prototype._readHexAsDec(buf, 0x1922, 4),     // 52 Right Flipper Used
 		playtimeHistogram: Stern.prototype._readPlaytimeHistograms(buf, rom) // 55 - 31 Standard Audit
 	};
+	// ripleys: Total Plays -> 0x17f8 - Total Paid Credits  0x18f0 (12 + 44 bytes after coder creds)
+	// elvis:   Total Plays -> 0x17ca                       0x17c6 (12 bytes after coder creds)
+	// lotr:    Total Plays -> 0x17cd                       0x17c9 (12 bytes after coder creds)
+	// sopranos                0x17ce                       0x17c6 (12 bytes after coder creds)
+	// nascar                  0x17eb                       0x18df (12 + 56 bytes after coder creds)
 
 	callback(null, audits);
 };

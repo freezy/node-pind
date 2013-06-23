@@ -15,9 +15,9 @@ var hs = require('./app/modules/hiscore')(app);
 //readAllAudits();
 //readAvailableAudits();
 
-assertHiscores('w');
+//assertHiscores('w');
 
-//nv.diff();
+nv.diff();
 
 function git() {
 	au.update({ sha: '8721605a0fd32594dea1fb53f60c4cca363daf1a', commit: { committer: { date: '2013-06-01T10:31:10Z' }}}, function(err, result) {

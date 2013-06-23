@@ -215,17 +215,22 @@ NvRam.prototype.diff = function() {
 	}
 
 	var len = ram1.length;
+	var read = function(buf, offset) {
+//		return buf.readUInt8(offset);
+//		return buf.readUInt16LE(offset);
+		return buf.readUInt16BE(offset);
+//		return buf.readUInt32LE(offset);
+//		return buf.readUInt32BE(offset);
+//		return readHexAsDec(buf, offset, 4);
+	}
 
 	logger.log('info', 'Comparing...');
 	for (var i = 0; i < len - 3; i++) {
-//		var b1 = ram1.readUInt32LE(i);
-//		var b2 = ram2.readUInt32LE(i);
-//		var b3 = ram3.readUInt32LE(i);
-		var b1 = readHexAsDec(ram1, i, 4);
-		var b2 = readHexAsDec(ram2, i, 4);
-		var b3 = readHexAsDec(ram3, i, 4);
+		var b1 = read(ram1, i);
+		var b2 = read(ram2, i);
+		var b3 = read(ram3, i);
 
-		if (Math.abs(b1 - b2) == 0x2a && Math.abs(b1 - b3) == 0x27) {
+		if (Math.abs(b1 - b2) == 3 && Math.abs(b1 - b3) == 1) {
 			logger.log('info', 'Found diff at 0x%s', i.toString(16));
 		}
 	}
