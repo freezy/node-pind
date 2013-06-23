@@ -160,10 +160,6 @@ Ipdb.prototype.enrich = function(game, callback) {
 
 	var forceSearch = false;
 
-/*	if (game.key != 'czz') {
-		return callback(null, game);
-	}
-*/
 	/**
 	 * ipdb.org is quite picky about names and spelling errors etc will
 	 * result in empty search results.

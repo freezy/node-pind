@@ -5,7 +5,7 @@ block content
 
 	div.span10.offset1.content
 		section(ng-controller="TableCtrl", data-id="#{id}")
-			.row-fluid
+			.row-fluid.row-header
 				.span6.offset3
 					h1 {{table.name}}
 			.row-fluid
@@ -14,18 +14,48 @@ block content
 					hr
 					img(ng-src="{{table.url_portrait_medium}}")
 				.span6
-					h2 {{table.manufacturer}} {{table.year}}
+					h3.pull-top {{table.manufacturer}}, {{table.year}}
 
 					h5 Statistics
 					hr
 
-					span.num 3'231
-					span.lbl Games played
+					.row-fluid.row-header
+						.stats.span6
+							span.num 3'231
+							span.lbl Games played
 
-					span.num 23
-					span.lbl Extra balls
+						.stats.span6
+							span.num 2'322
+							span.lbl Games started
 
-				.span3
+					.row-fluid.row-header
+						.stats.span6
+							span.num 9'554
+							span.lbl Balls played
+
+						.stats.span6
+							span.num 12
+							span.lbl Extra balls
+
+					.stats
+						span.num 1D 2H 30s
+						span.lbl Play time
+
+					.stats
+						span.num 54W 3D 1H 39s
+						span.lbl Running time
+
+					p &nbsp;
+
+					h5 High Scores
+					hr
+					p Some scores here
+
+					h5 Game Information
+					hr
+					p Some game data here.
+
+		.span3
 					p Other info
 	.clearfix
 

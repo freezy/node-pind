@@ -826,3 +826,19 @@ ul.badge-group li:last-child {
   display: block;
   cursor: default;
 }
+.stats {
+  position: relative;
+  margin-top: 20px;
+}
+.stats > .num {
+  font-size: 26px;
+  font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+  font-weight: 800;
+}
+.stats > .lbl {
+  font-size: 11px;
+  text-transform: uppercase;
+  position: absolute;
+  top: 21px;
+  left: 0px;
+}

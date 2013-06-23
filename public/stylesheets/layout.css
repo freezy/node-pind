@@ -17,6 +17,7 @@ body {
   background-image: url("../images/bg_striped.png");
   font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
   text-shadow: 1px 1px 0 #fff;
+  color: rgba(0,0,0,0.65);
 }
 footer {
   text-align: center;
@@ -51,8 +52,14 @@ footer > a > span {
 form {
   margin: 0;
 }
+.pull-top {
+  margin-top: -10px;
+}
 .row-fluid > div {
   margin-bottom: 20px;
+}
+.row-header > div {
+  margin-bottom: 0;
 }
 .content {
   background: url("../images/bg_redox_01.png");
