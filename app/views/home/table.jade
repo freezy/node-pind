@@ -1,0 +1,17 @@
+extends ../layouts/inner
+
+block content
+	- contentFor('javascripts', javascriptIncludeTag('data'))
+	div.span10.offset1.content(ng-app)
+
+		h1 table #{id}
+
+
+		.clear-fix
+
+
+block inlineScripts
+	script
+		$(document).ready(function() {
+			menu('tables');
+		});

@@ -4,7 +4,7 @@ var schema = require('./app/model/schema');
 load('application');
 before(use('requireUser'));
 
-action('index', function (context) {
+action('index', function(context) {
 	var that = this;
 	that.title = 'Welcome!';
 	schema.sequelize.query(
@@ -35,5 +35,12 @@ action('hiscores', function (context) {
 action('tables', function(context) {
 	this.title = 'Tables';
 	this.user = context.req.session.user;
+	render();
+})
+
+action('table', function(context) {
+	this.title = 'Table';
+	this.user = context.req.session.user;
+	this.id = params.id;
 	render();
 })

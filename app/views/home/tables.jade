@@ -40,7 +40,8 @@ block content
 								hr
 								.thumbnail-content.game
 									.thumbnail-content-centered
-										h3 {{table.name}}
+										h3
+											a(href="{{table.url}}") {{table.name}}
 										p {{table.manufacturer}} - {{table.year}}
 				.clearfix
 

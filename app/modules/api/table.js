@@ -36,6 +36,9 @@ var TableApi = function() {
 				}
 
 				// additional attributes
+				if (hasField('url')) {
+					r.url = pathTo.table(row.key);
+				}
 				if (hasField('url_logo')) {
 					r.url_logo = pathTo.asset_logo(row.key);
 				}
