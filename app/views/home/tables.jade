@@ -1,7 +1,7 @@
 extends ../layouts/inner
 
 block content
-	- contentFor('javascripts', javascriptIncludeTag('data', 'tables'))
+	- contentFor('javascripts', javascriptIncludeTag('tables'))
 	div.span10.offset1.content(ng-app)
 		section(ng-controller='DataCtrl', resource="Table.GetAll")
 			.page-header

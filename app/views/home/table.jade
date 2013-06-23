@@ -1,11 +1,11 @@
 extends ../layouts/inner
 
 block content
-	- contentFor('javascripts', javascriptIncludeTag('data'))
+	- contentFor('javascripts', javascriptIncludeTag('table'))
 	div.span10.offset1.content(ng-app)
 
-		h1 table #{id}
-
+		div.ng-cloak(ng-controller="TableCtrl", data-id="#{id}")
+			h1 {{table.name}}
 
 		.clear-fix
 

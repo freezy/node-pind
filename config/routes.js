@@ -14,7 +14,7 @@ exports.routes = function (map) {
 	map.get('coin', 'home#coin');
 	map.get('hiscores', 'home#hiscores');
 	map.get('tables', 'home#tables');
-	map.get('table/:id', 'home#table');
+	map.get('tables/:id', 'home#table', { as: 'table'});
 
 	// media
 	map.get('asset/hp/logo/:id.png', 'asset#logo', { as: 'asset_logo'});

@@ -263,11 +263,11 @@ pindAppModule.directive('pager', function() {
 		template:
 			'<div>' +
 				'<ul>' +
-				'<li class="first disabled"><a><i class="icon arrow-left"></i></a></li>' +
-				'<li class="current"><a>1</a></li>' +
-				'<li class="last disabled"><a><i class="icon arrow-right"></i></a></li>' +
+					'<li class="first disabled"><a><i class="icon arrow-left"></i></a></li>' +
+					'<li class="current"><a>1</a></li>' +
+					'<li class="last disabled"><a><i class="icon arrow-right"></i></a></li>' +
 				'</ul>' +
-				'</div>',
+			'</div>',
 		replace: true,
 		link: function(scope, element, attrs) {
 			var render = function() {
@@ -455,7 +455,7 @@ pindAppModule.directive('thumb', function() {
 			'<div class="pull-left thumb-wrapper"><a href="#">' +
 				'<div class="thumb"></div>' +
 				'<div class="thumb-placeholder"></div>' +
-				'</a></div>',
+			'</a></div>',
 		link: function(scope, element, attrs) {
 
 			attrs.$observe('fileid', function(value) {
