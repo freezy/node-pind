@@ -6,12 +6,16 @@ var app = require('./server')();
 
 var au = require('./app/modules/autoupdate')();
 var nv = require('./app/modules/nvram')();
+var hs = require('./app/modules/hiscore')(app);
+
 
 //git();
 //postExtract();
 //readAudits();
 //readAllAudits();
 //readAvailableAudits();
+
+assertHiscores('w');
 
 //nv.diff();
 
@@ -70,11 +74,22 @@ function readAvailableAudits() {
 	});
 }
 
+function assertHiscores(startWith) {
+	hs.assertAll(startWith, function(err) {
+		if (err) {
+			console.log("ERROR: " + err);
+		} else {
+			console.log("All done!");
+		}
+	});
+}
+
 app.compound.on('ready', function() {
 
 	var ipdb = require('./app/modules/ipdb')(app);
 	var vp = require('./app/modules/visualpinball')(app);
 	var hp = require('./app/modules/hyperpin')(app);
+
 	var vpm = require('./app/modules/vpinmame')(app);
 	var vpf = require('./app/modules/vpforums')(app);
 	var trns = require('./app/modules/transfer')(app);
@@ -87,7 +102,7 @@ app.compound.on('ready', function() {
 //	cacheAllTableDownloads();
 //	nextDownload();
 
-//	assertHiscores();
+
 //	extractMedia('E:/tmp/Party.Animal.FS.rar');
 //	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.zip');
 //	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
@@ -216,16 +231,6 @@ app.compound.on('ready', function() {
 
 	function vpParse() {
 		vpf.findMediaPack({ name : 'Elvira and the Party Monsters' }, function(err, whatever) {
-			if (err) {
-				console.log("ERROR: " + err);
-			} else {
-				console.log("All done!");
-			}
-		});
-	};
-
-	function assertHiscores(startWith) {
-		vpm.assertAllNvRams(startWith, function(err) {
 			if (err) {
 				console.log("ERROR: " + err);
 			} else {

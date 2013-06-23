@@ -401,7 +401,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 				'five star general', 'super hero', 'the master', 'tee.d off leader', 'world champion',
 				'master magician', 'psycho skier', 'river master', 'welt rekord', 'greatest time lord',
 				'regular game\\s+grand champion', 'boss of bosses', 'high score', 'most scored',
-				'top cops\\s+commander', 'the best dude', 'top spy', 'hippest shooter' ];
+				'top cops\\s+commander', 'the best dude', 'top spy', 'hippest shooter'];
 
 			regex = new RegExp('^(' + titles.join('|') + ')\\s+(\\d.?\\s+|#\\d\\s+)?([\\w\\s]{3})\\s+(\\$\\s+)?([\\d\',]+)', 'im');
 			if (m = regex.exec(blocks)) {
@@ -546,7 +546,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 				if (is('agsoccer')) { // agsoccer
 					add(listRankNameScore, 'Most Valuable Player');
 				}
-				if (is('apollo13')) { // apollo13
+				if (is('apollo1')) { // apollo13
 					add(nameTitle, 'Played 13-ball Multiball');
 				}
 				if (is('andrett')) { // andretti
@@ -784,6 +784,9 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 				if (is('starga')) { // stargate
 					add(nameScore, 'high combos by', 'High Combos');
 				}
+				if (is('startrp')) {
+					add(nameTitle, 'Conquered Klendathu');
+				}
 				if (is('sttng')) { // sttng_s7
 					/* STTNG ranking list types:
 					 *     Grand Champion  0 or 1 Buy-Ins
@@ -795,6 +798,9 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 				}
 				if (is('surfnsaf')) { // surfnsaf
 					add(nameDashScore, 'Rapids Record');
+				}
+				if (is('tagteam')) {
+					add(listRankNameScore, 'Top Tag Teams');
 				}
 				if (is('teedoff')) { // teedoff
 					add(nameScore, 'the most holes in one', 'The Most Holes-In-One');
@@ -897,7 +903,8 @@ Hiscore.prototype.assertAll = function(startWith) {
 		startWith = '0';
 	}
 	var that = this;
-	var skip = [ 'mm_109c', 'punchy', 'rct600', 'trucksp2', 'trucksp3', 'wcsoccd2', 'wd_03r' ];
+	var skip = [ 'elvis', 'lotr', 'ripleys', 'punchy', 'wcsoccd2' ];
+//	var skip = [ 'mm_109c', 'punchy', 'rct600', 'trucksp2', 'trucksp3', 'wcsoccd2', 'wd_03r' ];
 	var files = fs.readdirSync(settings.vpinmame.path + '/nvram');
 	var nvrams = [];
 	for (var i = 0; i < files.length; i++) {
@@ -1113,6 +1120,10 @@ var infoEqualsScoreName = function(block, str, title) {
  *
  *  JEK
  *  PLAYED 13-BALL MULTIBALL
+ *
+ *  or
+ *
+ *  ION   CONQUERED KLENDATHU
  *
  * @param block
  * @param str
