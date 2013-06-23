@@ -59,6 +59,13 @@ Hiscore.prototype.initConfig = function() {
 	var pinemhiConfig = '[paths]\r\n';
 	pinemhiConfig += 'VP=' + fs.realpathSync(settings.vpinmame.path + '/nvram') + '\\\r\n';
 	pinemhiConfig += 'FP=' + fs.realpathSync(settings.futurepinball.path + '/fpRAM') + '\\\r\n';
+
+	pinemhiConfig += '[options]\r\n';
+	pinemhiConfig += 'replays=0\r\n';
+	pinemhiConfig += 'hiscores=1\r\n';
+	pinemhiConfig += 'buyins=1\r\n';
+
+
 	fs.writeFileSync(pinemhiConfigPath, pinemhiConfig);
 
 	// enable nvram watching
