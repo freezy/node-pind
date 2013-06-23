@@ -148,7 +148,7 @@ module.exports = {
 	 * Future Pinball-specifc settings.
 	 */
 	futurepinball : {
-		
+
 		/**
 		 * Path to installation folder. No trailing slash!
 		 * @important

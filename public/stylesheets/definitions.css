@@ -184,6 +184,12 @@ grayscale {
   content: "\e00d";
   font-size: 120%;
 }
+.icon.ipdb:before {
+  content: "\e00c";
+}
+.icon.vpf:before {
+  content: "\e00d";
+}
 .icon.spin {
   display: inline-block;
   -webkit-animation: spin 2s infinite linear;
