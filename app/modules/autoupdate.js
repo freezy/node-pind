@@ -425,7 +425,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		var newPackageVersions = _.difference(_.values(newConfig.packageJson.dependencies), _.values(oldConfig.packageJson.dependencies));
 		if (newPackages.length > 0 || newPackageVersions.length > 0) {
 			logger.log('info', '[autoupdate] Found new dependencies: [' + newPackages.join(' ') + '], running `npm install`.');
-			npm.load({}, function(err) {
+			npm.load({ prefix: path.normalize(__dirname + '../../../') }, function(err) {
 				if (err) {
 					return next(err);
 				}
@@ -625,7 +625,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		if (err) {
 			return callback(err);
 		}
-		finishAndRestart(result);
+		finishAndRestart(callback);
 	});
 };
 
