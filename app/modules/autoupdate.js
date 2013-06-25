@@ -22,7 +22,7 @@ var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 var version = null;
 
-var dryRun = false;
+var dryRun = true;
 
 /**
  * Manages the application self-updates.
@@ -40,6 +40,10 @@ var dryRun = false;
  * 	 	5. Push the new version with the new tag
  *		   > git push origin master --tags
  *		6. Update package.json with next working version: "0.0.7-pre"
+ *
+ * When writing migration scripts, name them YYYYMMDDHHmmss-sha1-migration-name.js.
+ * Get the timestamp by running
+ * 	php -r "date_default_timezone_set('UTC');echo date('YmdHis', trim(`git diff-tree -s --pretty=%at sha1`));"
  *
  * @returns {AutoUpdate}
  * @constructor
@@ -592,7 +596,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		}
 	};
 
-	var checkNewMigration = function(next) {
+	var checkNewMigrations = function(next) {
 		logger.log('info', '[autoupdate] Checking for new migrations.');
 
 		var scripts = {};
@@ -602,6 +606,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 				if (parts.length >= 3) {
 					scripts[parts[1]] = {
 						filename: filename,
+						path: path.normalize(__dirname + '../../../migrations/' + filename),
 						num: parts[0],
 						sha1: parts[1],
 						description: path.basename(parts.slice(2).join(' '), '.js')
@@ -613,32 +618,13 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 				logger.log('warn', '[autoupdate] Weird extension: %s', filename.substr(filename.lastIndexOf('.')));
 			}
 		});
-		return next();
-/*
-		var chainer = new Sequelize.Utils.QueryChainer();
-		_.each(scripts, function(script, sha1) {
 
-			var migration = require((__dirname + '../../../migrations/' + script.filename));
-			chainer.add(migration, 'execute', [{ method: 'up' }], {
-				before: function(migration) {
-					logger.log('info', '[autoupdate] Preparing migration %s', util.inspect(migration));
-				},
-				after: function(migration) {
-					logger.log('info', '[autoupdate] Finished migration %s', util.inspect(migration));
-				},
-				success: function(migration, callback) {
-					logger.log('info', '[autoupdate] Successfully executed migration %s', util.inspect(migration));
-					callback();
-				}
-			});
-		});
-
-		chainer.runSerially().success(function() {
+		var migrator = schema.sequelize.getMigrator();
+		migrator.execute(_.values(scripts)[0].path).success(function() {
+			logger.log('info', '[autoupdate] Migrations executed successfully.');
 			next();
-		}).error(function(err) {
-			logger.log('error', '[autoupdate] Error migrating: %s', err);
-			next(err);
-		});*/
+		}).error(next);
+
 	};
 
 	var finishAndRestart = function(next) {
@@ -666,7 +652,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		next(null, result);
 	};
 
-	async.series([ checkNewDependencies, checkNewSettings, checkNewMigration ], function(err) {
+	async.series([ checkNewDependencies, checkNewSettings, checkNewMigrations ], function(err) {
 		if (err) {
 			return callback(err);
 		}
