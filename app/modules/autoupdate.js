@@ -15,6 +15,7 @@ var uglify = require('uglify-js2');
 var logger = require('winston');
 var request = require('request');
 var filesize = require('filesize');
+var Sequelize = require('sequelize');
 var relativeDate = require('relative-date');
 
 var schema = require('../model/schema');
@@ -592,8 +593,52 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 	};
 
 	var checkNewMigration = function(next) {
-		// TODO
-		next();
+		logger.log('info', '[autoupdate] Checking for new migrations.');
+
+		var scripts = {};
+		_.each(fs.readdirSync(__dirname + '../../../migrations/'), function(filename) {
+			if (path.extname(filename) == '.js') {
+				var parts = filename.split('-');
+				if (parts.length >= 3) {
+					scripts[parts[1]] = {
+						filename: filename,
+						num: parts[0],
+						sha1: parts[1],
+						description: path.basename(parts.slice(2).join(' '), '.js')
+					}
+				} else {
+					logger.log('warn', '[autoupdate] Unexpected file name: %s', filename);
+				}
+			} else {
+				logger.log('warn', '[autoupdate] Weird extension: %s', filename.substr(filename.lastIndexOf('.')));
+			}
+		});
+		return next();
+/*
+		var chainer = new Sequelize.Utils.QueryChainer();
+		_.each(scripts, function(script, sha1) {
+
+			var migration = require((__dirname + '../../../migrations/' + script.filename));
+			chainer.add(migration, 'execute', [{ method: 'up' }], {
+				before: function(migration) {
+					logger.log('info', '[autoupdate] Preparing migration %s', util.inspect(migration));
+				},
+				after: function(migration) {
+					logger.log('info', '[autoupdate] Finished migration %s', util.inspect(migration));
+				},
+				success: function(migration, callback) {
+					logger.log('info', '[autoupdate] Successfully executed migration %s', util.inspect(migration));
+					callback();
+				}
+			});
+		});
+
+		chainer.runSerially().success(function() {
+			next();
+		}).error(function(err) {
+			logger.log('error', '[autoupdate] Error migrating: %s', err);
+			next(err);
+		});*/
 	};
 
 	var finishAndRestart = function(next) {
