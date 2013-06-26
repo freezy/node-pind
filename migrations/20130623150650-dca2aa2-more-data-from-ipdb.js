@@ -3,7 +3,7 @@ var async = require('async');
 module.exports = {
 
 	up: function(migration, DataTypes, done) {
-		async.each([
+		async.series([
 			function(next) {
 				migration.addColumn('tables', 'units', DataTypes.INTEGER).complete(next);
 			},

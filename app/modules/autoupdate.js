@@ -620,10 +620,17 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		});
 
 		var migrator = schema.sequelize.getMigrator();
-		migrator.execute(_.values(scripts)[0].path).success(function() {
+		migrator.exec(_.values(scripts)[0].path, {
+			before: function(migration) {
+				logger.log('info', '[autoupdate] Starting migration at "%s"', migration.filename);
+			}
+		}).success(function() {
 			logger.log('info', '[autoupdate] Migrations executed successfully.');
 			next();
-		}).error(next);
+		}).error(function(err) {
+			logger.log('error', '[autoupdate] Migrations went wrong, see logfile: ', err, {});
+			next(err);
+		});
 
 	};
 
