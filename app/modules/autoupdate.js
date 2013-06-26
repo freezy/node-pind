@@ -656,7 +656,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 						filename: filename,
 						path: path.normalize(__dirname + '../../../migrations/' + filename),
 						num: parts[0],
-						sha1: parts[1],
+						sha: parts[1],
 						description: path.basename(parts.slice(2).join(' '), '.js')
 					}
 				} else {
@@ -668,22 +668,32 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		});
 
 		// read commits
-
-
-		// check which to run
 		var migrator = schema.sequelize.getMigrator();
-		migrator.exec(_.values(scripts)[0].path, {
-			before: function(migration) {
-				logger.log('info', '[autoupdate] Starting migration at "%s"', migration.filename);
+		that._getCommits(version.sha, newCommit.sha, function(err, commits) {
+			if (err) {
+				return next(commits);
 			}
-		}).success(function() {
-			logger.log('info', '[autoupdate] Migrations executed successfully.');
-			next();
-		}).error(function(err) {
-			logger.log('error', '[autoupdate] Migrations went wrong, see logfile: ', err, {});
-			next(err);
-		});
+			_.each(commits, function(commit) {
 
+				var sha = commit.sha.substr(0, 7);
+				if (scripts[sha]) {
+					logger.log('info', 'Running script "%s"', scripts[sha].description);
+					migrator.exec(scripts[sha].path, {
+						before: function(migration) {
+							logger.log('info', '[autoupdate] Starting migration for "%s"', migration.filename);
+						}
+					}).success(function() {
+						logger.log('info', '[autoupdate] Migrations executed successfully.');
+						next();
+					}).error(function(err) {
+						logger.log('error', '[autoupdate] Migrations went wrong, see logfile: ', err, {});
+						next(err);
+					});
+				} else {
+					logger.log('info', 'Skipping script "%s"', scripts[sha].description);
+				}
+			});
+		});
 	};
 
 	var finishAndRestart = function(next) {
@@ -856,7 +866,8 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 };
 
 AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
-	if (false && localRepo) {
+	if (localRepo) {
+		logger.log('info', 'Retrieving commits between "%s" and "%s" from local Git repository.', fromSha, toSha);
 		if (!result) {
 			result = {
 				page: 0,
@@ -865,7 +876,7 @@ AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 				commits: []
 			};
 		}
-		localRepo.commits('master', 10, result.page * 10, function(err, commits) {
+		localRepo.commits('master', 100, result.page * 10, function(err, commits) {
 			for (var i = 0; i < commits.length; i++) {
 				var sha = commits[i].id;
 				if (sha == fromSha) {
@@ -896,6 +907,8 @@ AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 		});
 
 	} else {
+
+		logger.log('info', 'Retrieving commits between "%s" and "%s" from GitHub.', fromSha, toSha);
 		var fromUrl = 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/git/commits/' + fromSha;
 		var toUrl = 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/git/commits/' + toSha;
 
