@@ -865,6 +865,18 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 	});
 };
 
+/**
+ * Retrieves commits between two given SHAs (those inclusively). If local Git repository is available, they're
+ * retrieved from there, otherwise GitHub is queried.
+ *
+ * @param fromSha Starting hash
+ * @param toSha Ending hash
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 	    <li>{Array} Commits. Objects containing <tt>sha</tt> {String} and <tt>date</tt> {Date} as properties.</li></ol>
+ * @param result For recursive calling, this is the current result when paginating.
+ * @private
+ */
 AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 	if (localRepo) {
 		logger.log('info', 'Retrieving commits between "%s" and "%s" from local Git repository.', fromSha, toSha);
