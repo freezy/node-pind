@@ -22,6 +22,7 @@ var relativeDate = require('relative-date');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 var version = null;
+var localRepo = null;
 
 var dryRun = true;
 
@@ -54,6 +55,9 @@ function AutoUpdate() {
 		return new AutoUpdate();
 	}
 	events.EventEmitter.call(this);
+	if (fs.existsSync(__dirname + '../../../.git')) {
+		localRepo = git(path.normalize(__dirname + '../../../'));
+	}
 }
 util.inherits(AutoUpdate, events.EventEmitter);
 
@@ -78,13 +82,10 @@ AutoUpdate.prototype.initVersion = function(callback) {
 
 	var that = this;
 	var packageVersion = this._getPackageVersion();
-	var repo;
 
 	// retrieve version from local git repo first (hash from .git, version from package.json)
-	if (fs.existsSync(__dirname + '../../../.git')) {
-
-		repo = git(path.normalize(__dirname + '../../../'));
-		repo.commits('master', 1, function(err, commits) {
+	if (localRepo) {
+		localRepo.commits('master', 1, function(err, commits) {
 			var commit = commits[0];
 			that.setVersion(commit.id, commit.committed_date, packageVersion);
 			callback(null, version);
@@ -101,7 +102,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
 	// no git and no version.json, so let's retrieve commit data from github.
 	logger.log('info', '[autoupdate] No version.json found, retrieving data from package.json and GitHub.');
 	var client = github.client();
-	repo = client.repo(settings.pind.repository.user + '/' + settings.pind.repository.repo);
+	var repo = client.repo(settings.pind.repository.user + '/' + settings.pind.repository.repo);
 
 	// retrieve all tags from node-pind repo
 	repo.tags(function(err, tagArray) {
@@ -152,7 +153,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
 				time = +new Date(entry.stat.mtime);
 				if (time > lastModifiedTime) {
 					lastModifiedTime = time;
-					lastModifiedFile = entry.fullPath;
+					lastModifiedFile = entry.path;
 				}
 			}).on('end', function(err) {
 				if (err) {
@@ -161,32 +162,32 @@ AutoUpdate.prototype.initVersion = function(callback) {
 				var lastModifiedDate = new Date(lastModifiedTime);
 				logger.log('info', '[autoupdate] Last modified file is "%s", changed: %s.', lastModifiedFile, lastModifiedDate, {});
 				logger.log('info', '[autoupdate] Finding nearest commit..');
-			});
 
-			repo.commits(function(err, commits) {
-				var commit, commitTime, lastCommit;
-				var found = false;
-				for (var i = 0; i < commits.length; i++) {
-					commit = commits[i];
-					commitTime = +new Date(commit.commit.committer.date);
-					if (commitTime < lastModifiedTime) {
-						if (!lastCommit) {
-							lastCommit = commit;
+				repo.commits(function(err, commits) {
+					var commit, commitTime, lastCommit;
+					var found = false;
+					for (var i = 0; i < commits.length; i++) {
+						commit = commits[i];
+						commitTime = +new Date(commit.commit.committer.date);
+						if (commitTime < lastModifiedTime) {
+							if (!lastCommit) {
+								lastCommit = commit;
+							}
+							found = true;
+							break;
 						}
-						found = true;
-						break;
+						lastCommit = commit;
 					}
-					lastCommit = commit;
-				}
-				if (found) {
-					logger.log('info', '[autoupdate] Found commit "%s" from %s.', lastCommit.sha.substr(0, 7), new Date(commitTime), {});
-					that.setVersion(lastCommit, packageVersion);
-					callback(null, version);
-				} else {
-					logger.log('error', '[autoupdate] More than 30 new commits, please update and try again.');
-					logger.log('info', 'Goodbye, killing myself.');
-					process.kill(process.pid, 'SIGTERM');
-				}
+					if (found) {
+						logger.log('info', '[autoupdate] Found commit "%s" from %s.', lastCommit.sha.substr(0, 7), new Date(commitTime), {});
+						that.setVersion(lastCommit, packageVersion);
+						callback(null, version);
+					} else {
+						logger.log('error', '[autoupdate] More than 30 new commits, please update and try again.');
+						logger.log('info', 'Goodbye, killing myself.');
+						process.kill(process.pid, 'SIGTERM');
+					}
+				});
 			});
 		}
 	});
@@ -295,12 +296,10 @@ AutoUpdate.prototype.update = function(sha, callback) {
 		var pindPath = path.normalize(__dirname + '../../../');
 
 		// if git repo is available, update via git
-		if (fs.existsSync(__dirname + '../../../.git')) {
-
-			var repo = git(pindPath);
+		if (localRepo) {
 
 			// look for modified files via status
-			repo.status(function(err, status) {
+			localRepo.status(function(err, status) {
 				if (err) {
 					that.emit('updateFailed', { error: err });
 					return callback(err);
@@ -318,14 +317,14 @@ AutoUpdate.prototype.update = function(sha, callback) {
 				// fetches and rebases from remote repository
 				var update = function(popStash, callback) {
 					logger.log('info', '[autoupdate] Fetching update from GitHub');
-					repo.remote_fetch('origin master', function(err) {
+					localRepo.remote_fetch('origin master', function(err) {
 						if (err) {
 							that.emit('updateFailed', { error: err });
 							return callback(err);
 						}
 
 						logger.log('info', '[autoupdate] Rebasing to ' + commit.sha);
-						repo.git('rebase ' + commit.sha, function(err) {
+						localRepo.git('rebase ' + commit.sha, function(err) {
 							if (err) {
 								that.emit('updateFailed', { error: err });
 								return callback(err);
@@ -334,7 +333,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 							// if stashed, re-apply changes.
 							if (popStash) {
 								logger.log('info', '[autoupdate] Re-applying stash');
-								repo.git('stash', {}, ['apply'], function() {
+								localRepo.git('stash', {}, ['apply'], function() {
 									that._postExtract(err, oldConfig, commit, callback);
 								});
 							} else {
@@ -359,7 +358,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 				// if found, stash changes
 				if (trackedFiles.length > 0) {
 					logger.log('info', '[autoupdate] Detected changed files: [' + trackedFiles.join(', ') + '], stashing changes first.');
-					repo.git('stash', {}, ['save'], function(err) {
+					localRepo.git('stash', {}, ['save'], function(err) {
 						if (err) {
 							that.emit('updateFailed', { error: err });
 							return callback(err);
@@ -647,6 +646,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 	var checkNewMigrations = function(next) {
 		logger.log('info', '[autoupdate] Checking for new migrations.');
 
+		// read scripts
 		var scripts = {};
 		_.each(fs.readdirSync(__dirname + '../../../migrations/'), function(filename) {
 			if (path.extname(filename) == '.js') {
@@ -667,6 +667,10 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			}
 		});
 
+		// read commits
+
+
+		// check which to run
 		var migrator = schema.sequelize.getMigrator();
 		migrator.exec(_.values(scripts)[0].path, {
 			before: function(migration) {
@@ -851,6 +855,131 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
 	});
 };
 
+AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
+	if (false && localRepo) {
+		if (!result) {
+			result = {
+				page: 0,
+				started: false,
+				ended: false,
+				commits: []
+			};
+		}
+		localRepo.commits('master', 10, result.page * 10, function(err, commits) {
+			for (var i = 0; i < commits.length; i++) {
+				var sha = commits[i].id;
+				if (sha == fromSha) {
+					result.started = true;
+				}
+				if (result.started) {
+					result.commits.push({
+						sha: sha,
+						date: commits[i].committed_date
+					});
+				}
+				if (sha == toSha) {
+					result.ended = true;
+					break;
+				}
+			}
+			if (!result.ended) {
+				if (commits.length > 0) {
+					result.page++;
+					AutoUpdate.prototype._getCommits(fromSha, toSha, callback, result);
+				} else {
+					logger.log('error', 'Ran through all commits but could not find commit with SHA %s.', toSha);
+					callback('Ran through all commits but could not find commit with SHA ' + toSha + '.');
+				}
+			} else {
+				callback(null, result.commits);
+			}
+		});
+
+	} else {
+		var fromUrl = 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/git/commits/' + fromSha;
+		var toUrl = 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/git/commits/' + toSha;
+
+		AutoUpdate.prototype._getCommit(fromUrl, function(err, commitFrom) {
+			if (err) {
+				return callback(err);
+			}
+			if (!commitFrom.sha) {
+				logger.log('error', 'Could not find starting commit %s on GitHub.', toSha);
+				return callback('Could not find starting commit ' + toSha + ' on GitHub.');
+			}
+
+			AutoUpdate.prototype._getCommit(toUrl, function(err, commitTo) {
+				if (err) {
+					return callback(err);
+				}
+				if (!commitTo.sha) {
+					logger.log('error', 'Could not find ending commit %s on GitHub.', toSha);
+					return callback('Could not find ending commit ' + toSha + ' on GitHub.');
+				}
+
+				var result = [];
+				var fetchCommits = function(url) {
+					if (!url) {
+						url = 'https://api.github.com/repos/'
+						+ settings.pind.repository.user + '/'
+						+ settings.pind.repository.repo + '/commits'
+						+ '?since=' + commitTo.committer.date
+						+ '&until=' + commitFrom.committer.date
+						+ '&per_page=100';
+					}
+					logger.log('info', '[autoupdate] Fetching %s', url);
+					request({
+						url: url,
+						headers: {
+							'User-Agent' : AutoUpdate.prototype._getUserAgent()
+						}
+					}, function(err, response, body) {
+						if (err) {
+							return callback(err);
+						}
+						var commits = JSON.parse(body);
+						if (!_.isArray(commits)) {
+							logger.log('error', '[autoupdate] Expected an array in return but got this: %s', body);
+							return callback('Unexpected return from GitHub, check logs.');
+						}
+						if (commits.length == 0) {
+							logger.log('error', '[autoupdate] Got an empty list, that should not have happened. Either provided wrong SHAs (unlikely) or missed the end SHA.');
+							return callback('Unexpected return from GitHub, check logs.');
+						}
+
+						for (var i = 0; i < commits.length; i++) {
+							result.push({
+								sha: commits[i].sha,
+								date: new Date(commits[i].commit.committer.date)
+							});
+						}
+						// next page is in header, see http://developer.github.com/v3/#pagination
+						if (response.headers.link) {
+							var links = response.headers.link.split(',');
+							var foundNext = false;
+							for (i = 0; i < links.length; i++) {
+								var link = links[i].split(';');
+								if (link[1].trim().match(/rel\s*=\s*["']next["']/i)) {
+									fetchCommits(link[0].trim().replace(/^<|>$/g, ''));
+									foundNext = true;
+									break;
+								}
+							}
+							if (!foundNext) {
+								callback(null, result);
+							}
+						} else {
+							callback(null, result);
+						}
+					});
+				};
+				logger.log('info', '[autoupdate] Found both commits on Github, now fetching commits in between.');
+				fetchCommits();
+			});
+		});
+	}
+};
+
 /**
  * Retrieves the commit object from GitHub.
  *
@@ -864,7 +993,7 @@ AutoUpdate.prototype._getCommit = function(url, callback) {
 	request({
 		url: url,
 		headers: {
-			'User-Agent' : 'node-pind ' + (version ? version.version + ' ' : '') + 'auto-updater'
+			'User-Agent' : AutoUpdate.prototype._getUserAgent()
 		}
 	}, function(err, response, body) {
 		if (err) {
@@ -872,6 +1001,10 @@ AutoUpdate.prototype._getCommit = function(url, callback) {
 		}
 		callback(null, JSON.parse(body));
 	});
+};
+
+AutoUpdate.prototype._getUserAgent = function() {
+	return 'node-pind ' + (version ? version.version + ' ' : '') + 'auto-updater';
 };
 
 /**

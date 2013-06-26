@@ -9,7 +9,7 @@ var nv = require('./app/modules/nvram')();
 var hs = require('./app/modules/hiscore')(app);
 
 
-//git();
+git();
 //postExtract();
 //readAudits();
 //readAllAudits();
@@ -19,12 +19,15 @@ var hs = require('./app/modules/hiscore')(app);
 
 //nv.diff();
 
+
+
 function git() {
-	au.update({ sha: '8721605a0fd32594dea1fb53f60c4cca363daf1a', commit: { committer: { date: '2013-06-01T10:31:10Z' }}}, function(err, result) {
+//	au.update({ sha: '8721605a0fd32594dea1fb53f60c4cca363daf1a', commit: { committer: { date: '2013-06-01T10:31:10Z' }}}, function(err, result) {
+	au._getCommits('50ae29ca2ed56bff86dc6da959957ef22e7b722f', '191e0e7564188957f9556ed5732f0c4d02c57767', function(err, result) {
 		if (err) {
 			console.log("ERROR: " + err);
 		} else {
-			console.log("Done, got: %s", util.inspect(result));
+			console.log("Got %d results: %s", result.length, util.inspect(result));
 		}
 	});
 }
@@ -103,7 +106,7 @@ app.compound.on('ready', function() {
 //	nextDownload();
 
 
-	extractMedia('C:/temp/NBA_Fastbreak__Midaway_1997_.zip');
+//	extractMedia('C:/temp/NBA_Fastbreak__Midaway_1997_.zip');
 //	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.zip');
 //	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
 //	vpParse();
