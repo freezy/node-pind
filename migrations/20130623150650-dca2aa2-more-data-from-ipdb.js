@@ -32,7 +32,7 @@ module.exports = {
 	},
 
 	down: function(migration, DataTypes, done) {
-		async.each([
+		async.series([
 			function(next) {
 				migration.removeColumn('tables', 'slogans').complete(next);
 			},

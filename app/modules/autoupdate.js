@@ -15,6 +15,7 @@ var uglify = require('uglify-js2');
 var logger = require('winston');
 var request = require('request');
 var filesize = require('filesize');
+var readdirp = require('readdirp');
 var Sequelize = require('sequelize');
 var relativeDate = require('relative-date');
 
@@ -128,19 +129,66 @@ AutoUpdate.prototype.initVersion = function(callback) {
 			}
 		}
 
-		// no match. that means the local copy isn't a tagged version
-		// but something like 0.0.3-pre. in this case, get the previous
-		// tagged version, which would be 0.0.2.
-		if (!matchedTag) {
-			olderTags.sort(semver.rcompare);
-			matchedTag = tags[olderTags[0]];
-		}
+		if (matchedTag) {
+			// retrieve commit
+			that._getCommit(matchedTag.commit.url, function(err, commit) {
+				that.setVersion(commit, packageVersion);
+				callback(null, version);
+			});
 
-		// retrieve commit
-		that._getCommit(matchedTag.commit.url, function(err, commit) {
-			that.setVersion(commit, packageVersion);
-			callback(null, version);
-		});
+		// no match. that means the local copy isn't a tagged version
+		// but something like 0.0.3-pre. in this case, find the last
+		// modified file and retrieve the first commit after.
+		} else {
+
+			logger.log('info', '[autoupdate] Local copy is not a tagged version (%s), trying to match a commit on GitHub.', packageVersion);
+			var lastModifiedTime = 0;
+			var lastModifiedFile, time;
+			readdirp({
+				root: path.normalize(__dirname + '../../../'),
+				directoryFilter: [ '!.git', '!node_modules', '!.idea' ],
+				fileFilter: [ '!pinemhi.ini', '!*.log' ]
+			}).on('data', function(entry) {
+				time = +new Date(entry.stat.mtime);
+				if (time > lastModifiedTime) {
+					lastModifiedTime = time;
+					lastModifiedFile = entry.fullPath;
+				}
+			}).on('end', function(err) {
+				if (err) {
+					return callback(err);
+				}
+				var lastModifiedDate = new Date(lastModifiedTime);
+				logger.log('info', '[autoupdate] Last modified file is "%s", changed: %s.', lastModifiedFile, lastModifiedDate, {});
+				logger.log('info', '[autoupdate] Finding nearest commit..');
+			});
+
+			repo.commits(function(err, commits) {
+				var commit, commitTime, lastCommit;
+				var found = false;
+				for (var i = 0; i < commits.length; i++) {
+					commit = commits[i];
+					commitTime = +new Date(commit.commit.committer.date);
+					if (commitTime < lastModifiedTime) {
+						if (!lastCommit) {
+							lastCommit = commit;
+						}
+						found = true;
+						break;
+					}
+					lastCommit = commit;
+				}
+				if (found) {
+					logger.log('info', '[autoupdate] Found commit "%s" from %s.', lastCommit.sha.substr(0, 7), new Date(commitTime), {});
+					that.setVersion(lastCommit, packageVersion);
+					callback(null, version);
+				} else {
+					logger.log('error', '[autoupdate] More than 30 new commits, please update and try again.');
+					logger.log('info', 'Goodbye, killing myself.');
+					process.kill(process.pid, 'SIGTERM');
+				}
+			});
+		}
 	});
 };
 

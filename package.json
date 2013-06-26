@@ -59,7 +59,8 @@
 		"uglify-js2" : "2.1.11",
 		"npm": "1.2.25",
 		"duration" : "latest",
-		"ent" : "latest"
+		"ent" : "latest",
+		"readdirp" : "0.3.x"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",
