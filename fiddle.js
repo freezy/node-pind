@@ -103,7 +103,7 @@ app.compound.on('ready', function() {
 //	nextDownload();
 
 
-//	extractMedia('E:/tmp/Party.Animal.FS.rar');
+	extractMedia('C:/temp/NBA_Fastbreak__Midaway_1997_.zip');
 //	extractMedia('E:/tmp/Getaway-HighSpeed2Williams1992HPMEDIAPACKflyerfix.zip');
 //	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
 //	vpParse();
@@ -116,7 +116,7 @@ app.compound.on('ready', function() {
 //	getRomNames();
 //	updateRomNames();
 
-	extractMedia('C:/Temp/Cactus.Canyon.High.Noon.Night.Mod.rar');
+//	extractMedia('C:/Temp/Cactus.Canyon.High.Noon.Night.Mod.rar');
 
 	//getRomName('BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.0FSHPTEAM.vpt');
 	//getRomName('Monster Bash.VP9.V1.1.uw.FS.vpt');

@@ -16,16 +16,18 @@ var error = require('./error');
 
 var loggingIn = false;
 
+var _app;
+
 function VPForums(app) {
 	if ((this instanceof VPForums) === false) {
 		return new VPForums(app);
 	}
 	events.EventEmitter.call(this);
 	this.initAnnounce(app);
+
+	_app = app;
 }
 sys.inherits(VPForums, events.EventEmitter);
-
-
 
 /**
  * Sets up event listener for realtime updates via Socket.IO.
@@ -74,25 +76,30 @@ VPForums.prototype.isDownloadingIndex = false;
  */
 VPForums.prototype._findMedia = function(table, cat, callback) {
 
-	var that = this;
 	logger.log('info', '[vpf] Searching media pack for "%s"...', table.name);
 	this._fetchDownloads(35, table.name, {}, function(err, results) {
 		if (err) {
 			return callback(err);
 		}
-		var match = this._matchResult(results, table.name, function(str) {
+		var match = VPForums.prototype._matchResult(results, table.name, function(str) {
 			return str.replace(/[\[\(].*/, '').trim();
 		}, 'intelligent');
 		if (!match) {
 			return callback('Cannot find any media with name similar to "' + table.name + '".');
 		}
-		that.download(match, settings.pind.tmp, null, function(err, filename) {
+		var transfer = require('./transfer')(_app);
+		transfer.queue({
+			title: match.title,
+			url: 'http://www.vpforums.org/index.php?app=downloads&showfile=' + match.fileId,
+			type: 'mediapack',
+			engine: 'vpf',
+			reference: match.id
+		}, function(err, msg) {
 			if (err) {
-				logger.log('error', '[vpf] Error downloading: %s', err);
+				logger.log('error', '[vpf] Error querying item "%s".', match.titl);
 				return callback(err);
 			}
-			logger.log('info', '[vpf] Downloaded file to: %s', filename);
-			callback(null, filename);
+			callback(null, msg);
 		});
 	});
 };
@@ -106,9 +113,9 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
  */
 VPForums.prototype.findMediaPack = function(table, callback) {
 	if (table.platform == 'VP') {
-		this._findMedia(table, 35, callback);
+		VPForums.prototype._findMedia(table, 35, callback);
 	} else {
-		this._findMedia(table, 36, callback);
+		VPForums.prototype._findMedia(table, 36, callback);
 	}
 };
 
@@ -144,7 +151,7 @@ VPForums.prototype.getRomLinks = function(table, callback) {
 			return callback(err);
 		}
 		//noinspection JSCheckFunctionSignatures
-        var matches = that._matchResults(results, table.name, function(str) {
+        var matches = VPForums.prototype._matchResults(results, table.name, function(str) {
 			return str.replace(/[\[\(\-].*/, '').trim();
 		});
 		var links = [];
@@ -190,18 +197,18 @@ VPForums.prototype._unWatchDownload = function(filename) {
 
 /**
  * Downloads a file from vpforums.org.
- * @param link
+ * @param vpffile
  * @param folder
  * @param reference A reference passed to the event emitter.
  * @param callback
  */
-VPForums.prototype.download = function(link, folder, reference, callback) {
+VPForums.prototype.download = function(vpffile, folder, reference, callback) {
 	var that = this;
 
-	that.emit('downloadInitializing', { reference: reference, fileinfo: link.filename ? ' for "' + link.filename + '"' : '' });
+	that.emit('downloadInitializing', { reference: reference, fileinfo: vpffile.filename ? ' for "' + vpffile.filename + '"' : '' });
 
 	// fetch the "overview" page
-	request(link.url, function(err, response, body) {
+	request(vpffile.url, function(err, response, body) {
 		if (err) {
 			return callback(err);
 		}
@@ -277,12 +284,12 @@ VPForums.prototype.download = function(link, folder, reference, callback) {
 							}).pipe(stream);
 
 						} else {
-							callback('Cannot find file download button at ' + link);
+							callback('Cannot find file download button at ' + vpffile);
 						}
 					}
 				});
 			} else {
-				callback('Cannot find confirmation download button at ' + link);
+				callback('Cannot find confirmation download button at ' + vpffile);
 			}
 		};
 

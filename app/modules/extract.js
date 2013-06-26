@@ -133,6 +133,7 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 		return ext == '.vpt';
 	}).length > 0;
 
+	var dst;
 	for (var i = 0; i < files.length; i++) {
 		var filepath = files[i];
 		var dirnames = filepath.split('/');
@@ -170,7 +171,52 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 				if (_.contains(['Backglass Images', 'Table Images', 'Table Videos', 'Wheel Images'], dirnames[l])) {
 					asMedia(2, filename, filepath, dirnames);
 				} else {
+					logger.log('warn', '[extract] Unknown FP/VP specfic file: "%s"', filepath);
 					mapping.ignore.push(filepath);
+				}
+
+			// HyperPin-specific artwork
+			} else if (_.contains(['HyperPin'], dirnames[l - 2])) {
+
+				// flyers seem to have a naming convention problem..
+				if (dirnames[l - 1] == 'Flyers') {
+					dirnames[l - 1] = 'Flyer Images';
+				}
+
+				if (_.contains(['Flyer Images'], dirnames[l - 1])) {
+					asMedia(3, filename, filepath, dirnames);
+				} else {
+					logger.log('warn', '[extract] Unknown HyperPin file(1): "%s"', filepath);
+					mapping.ignore.push(filepath);
+				}
+
+			} else if (_.contains(['HyperPin'], dirnames[l - 1])) {
+
+				if (_.contains(['Instruction Cards'], dirnames[l])) {
+					asMedia(2, filename, filepath, dirnames);
+				} else {
+					logger.log('warn', '[extract] Unknown HyperPin file(1): "%s"', filepath);
+					mapping.ignore.push(filepath);
+				}
+
+			// VP tables
+			} else if (_.contains(['.vpt', '.vbs', '.exe'], ext)) {
+				dst = settings.visualpinball.path + '/Tables/' + filename;
+				if (!fs.existsSync(dst)) {
+					add(dst, filepath);
+				} else {
+					logger.log('info', '[extract] "%s" already exists, skipping.', dst);
+					mapping.skip[filepath] = { src: filepath, dst: dst };
+				}
+
+			// Music
+			} else if (_.contains(['.mp3', '.wma'], ext)) {
+				dst = settings.visualpinball.path + '/Tables/Music/' + filename;
+				if (!fs.existsSync(dst)) {
+					add(dst, filepath);
+				} else {
+					logger.log('info', '[extract] "%s" already exists, skipping.', dst);
+					mapping.skip[filepath] = { src: filepath, dst: dst };
 				}
 
 			// For .pngs that come with a table, we assume that they're artwork.
@@ -189,47 +235,15 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 					asMedia(2, filename, filepath, [ 'Visual Pinball', 'Table Images' ]);
 				}
 				else {
+					logger.log('warn', '[extract] Unknown file along with .vpt, ignoring: "%s"', filepath);
 					mapping.ignore.push(filepath);
 				}
 
-			// HyperPin-specific artwork
-			} else if (_.contains(['HyperPin'], dirnames[l - 2])) {
-
-				// flyers seem to have a naming convention problem..
-				if (dirnames[l - 1] == 'Flyers') {
-					dirnames[l - 1] = 'Flyer Images';
-				}
-
-				if (_.contains(['Flyer Images'], dirnames[l - 1])) {
-					asMedia(3, filename, filepath, dirnames);
-				} else {
-					mapping.ignore.push(filepath);
-				}
-
-			} else if (_.contains(['HyperPin'], dirnames[l - 1])) {
-
-				if (_.contains(['Instruction Cards'], dirnames[l])) {
-					asMedia(2, filename, filepath, dirnames);
-				} else {
-					mapping.ignore.push(filepath);
-				}
-
-			// VP tables
-			} else if (_.contains(['.vpt', '.vbs', '.exe'], ext)) {
-				add(settings.visualpinball.path + '/Tables/' + filename, filepath);
-
-			// Music
-			} else if (_.contains(['.mp3', '.wma'], ext)) {
-				if (fs.existsSync(settings.visualpinball.path + '/Tables/Music')) {
-					add(settings.visualpinball.path + '/Tables/Music/' + filename, filepath);
-				} else {
-					mapping.ignore.push(filepath);
-				}
+			// otherwise, ignore
 			} else {
+				logger.log('warn', '[extract] No idea where "%s" belongs to.', filepath);
 				mapping.ignore.push(filepath);
 			}
-		} else {
-			logger.log('info', '[extract] Ignoring %s', filepath);
 		}
 	}
 	callback(null, mapping);

@@ -145,6 +145,12 @@ Transfer.prototype.delete = function(id, callback) {
  */
 Transfer.prototype.queue = function(transfer, callback) {
 	var that = this;
+	if (!transfer.type || !transfer.engine || !transfer.reference || !transfer.url || !transfer.title) {
+		throw new Error('The following fields of a transfer must be set: "type", "engine", "reference", "url" and "title".');
+	}
+	if (!transfer.postAction) {
+		transfer.postAction = {};
+	}
 	schema.Transfer.all({ where: {
 		type: transfer.type,
 		engine: transfer.engine,
@@ -158,22 +164,10 @@ Transfer.prototype.queue = function(transfer, callback) {
 
 			that.emit('transferAdded', { transfer: row });
 
-			var startDownload = function() {
-				callback(null, 'Download successfully added to queue.');
-				if (settings.pind.startDownloadsAutomatically) {
-					that.start(function() {
-						logger.log('info', '[transfer] Download queue finished.');
-					});
-				}
-			};
-
-			if (row.engine == 'vpf') {
-				schema.VpfFile.find(row.reference).success(function(row) {
-					if (row) {
-						row.updateAttributes({ downloadQueuedAt: new Date() }).done(startDownload);
-					} else {
-						startDownload();
-					}
+			callback(null, 'Added "' + transfer.title + '" successfully to queue.');
+			if (settings.pind.startDownloadsAutomatically) {
+				that.start(function() {
+					logger.log('info', '[transfer] Download queue finished.');
 				});
 			}
 		});
@@ -334,7 +328,7 @@ Transfer.prototype.next = function(callback) {
 					}
 					break;
 					default: {
-						logger.log('info', '[transfer] Skipping unsupported engine "%s".', transfer.engine);
+						logger.log('warn', '[transfer] Skipping unsupported engine "%s".', transfer.engine);
 					}
 				}
 			}
