@@ -33,9 +33,10 @@ block content
 
 				//- data
 				div.data.ng-cloak(style="display:none")
-					ul.thumbnails.hiscores
-						li.span4(ng-repeat='table in data', slider='200', tb-768-980='span6')
-							include ../layouts/snippets/hiscore
+					.row-fluid
+						ul.thumbnails.hiscores
+							li.span4(ng-repeat='table in data', slider='200', tb-768-980='span6')
+								include ../layouts/snippets/hiscore
 				.clearfix
 
 block inlineScripts

@@ -2,7 +2,9 @@ extends ../layouts/inner
 
 block content
 	- contentFor('javascripts', javascriptIncludeTag('tables'))
+
 	div.span10.offset1.content
+
 		section(ng-controller='DataCtrl', resource="Table.GetAll")
 			.page-header
 				h1 Tables
@@ -32,7 +34,7 @@ block content
 					.clearfix
 
 				//- data
-				div.data.ng-cloak(style="display:none")
+				div.ng-cloak.row-fluid
 					ul.thumbnails.tables
 						li.span4(ng-repeat='table in data', tb-768-980='span6')
 							.thumbnail

@@ -17,7 +17,7 @@ body
 footer
 	text-align center
 	position relative
-	top -25px
+	top -5px
 	margin-bottom 10px
 	
 	& > a
@@ -48,8 +48,10 @@ form
 .row-fluid > div
 	margin-bottom 20px
 
-.row-header > div
-	margin-bottom 0
+.row-topleft
+	padding 20px 0 0 20px
+.row-topright
+	padding 20px 20px 0 0
 
 .content
 	background color-lighter
@@ -65,10 +67,10 @@ form
 			&.middle
 				margin-bottom 0
 .page-header
-	border-bottom 1px solid #ddd		
+	border-bottom 1px solid rgba(0,0,0,.25)
 
 // "actions" footer
-.row-fluid.footer
+.row.footer
 	h2
 		margin-left 30px
 		padding-top 15px
@@ -81,7 +83,7 @@ form
 			padding-right 30px
 
 @media(max-width: 767px)			
-	.row-fluid.footer
+	.row.footer
 		.span3, .span4
 			padding-left 30px
 	
@@ -188,7 +190,8 @@ input:focus + div.inputhint
 	.alert
 		margin: 10px 0 0 0
 
-.modal-footer, .row-fluid.footer	
+.modal-footer, .row.footer
+	margin-left 0
 	overflow auto
 	background color-light
 	border-top 1px solid #fff

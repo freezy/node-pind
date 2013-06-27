@@ -235,6 +235,9 @@ grayscale {
 .icon.big {
   font-size: 90px;
 }
+.icon.big.ipdb {
+  font-size: 75px;
+}
 .modal-header .icon {
   padding-bottom: 30px;
   color: #473522;

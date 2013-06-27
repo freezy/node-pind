@@ -22,7 +22,7 @@ body {
 footer {
   text-align: center;
   position: relative;
-  top: -25px;
+  top: -5px;
   margin-bottom: 10px;
 }
 footer > a {
@@ -58,8 +58,11 @@ form {
 .row-fluid > div {
   margin-bottom: 20px;
 }
-.row-header > div {
-  margin-bottom: 0;
+.row-topleft {
+  padding: 20px 0 0 20px;
+}
+.row-topright {
+  padding: 20px 20px 0 0;
 }
 .content {
   background: url("../images/bg_redox_01.png");
@@ -81,27 +84,27 @@ form {
   margin-bottom: 0;
 }
 .page-header {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
 }
-.row-fluid.footer h2 {
+.row.footer h2 {
   margin-left: 30px;
   padding-top: 15px;
 }
-.row-fluid.footer .span3 h3,
-.row-fluid.footer .span4 h3 {
+.row.footer .span3 h3,
+.row.footer .span4 h3 {
   line-height: 28px;
 }
-.row-fluid.footer .span3:first-child,
-.row-fluid.footer .span4:first-child {
+.row.footer .span3:first-child,
+.row.footer .span4:first-child {
   padding-left: 30px;
 }
-.row-fluid.footer .span3:last-child,
-.row-fluid.footer .span4:last-child {
+.row.footer .span3:last-child,
+.row.footer .span4:last-child {
   padding-right: 30px;
 }
 @media (max-width: 767px) {
-  .row-fluid.footer .span3,
-  .row-fluid.footer .span4 {
+  .row.footer .span3,
+  .row.footer .span4 {
     padding-left: 30px;
   }
 }
@@ -213,7 +216,8 @@ input:focus + div.inputhint {
   margin: 10px 0 0 0;
 }
 .modal-footer,
-.row-fluid.footer {
+.row.footer {
+  margin-left: 0;
   overflow: auto;
   background: rgba(81,67,54,0.15);
   border-top: 1px solid #fff;
@@ -222,7 +226,7 @@ input:focus + div.inputhint {
   text-shadow: 1px 1px 0 rgba(255,255,255,0.75);
 }
 .modal-footer .action button.more,
-.row-fluid.footer .action button.more {
+.row.footer .action button.more {
   margin-right: 10px;
 }
 .modal-footer {

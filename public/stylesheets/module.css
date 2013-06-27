@@ -828,17 +828,29 @@ ul.badge-group li:last-child {
 }
 .stats {
   position: relative;
-  margin-top: 20px;
+  margin-bottom: 20px !important;
+  margin-top: 20px !important;
 }
-.stats > .num {
-  font-size: 26px;
+.stats > big {
+  font-size: 34px;
   font-family: 'Open Sans', 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
   font-weight: 800;
 }
-.stats > .lbl {
+.stats > big.bigger {
+  font-size: 52px;
+  margin-top: 20px;
+  display: block;
+}
+.stats > big + small {
+  position: absolute;
+  top: 26px;
+  left: 0px;
+}
+.stats > small {
   font-size: 11px;
   text-transform: uppercase;
-  position: absolute;
-  top: 21px;
+}
+.stats > small.top {
+  top: -10px;
   left: 0px;
 }

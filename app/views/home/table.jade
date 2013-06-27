@@ -3,60 +3,123 @@ extends ../layouts/inner
 block content
 	- contentFor('javascripts', javascriptIncludeTag('table'))
 
-	div.span10.offset1.content
-		section(ng-controller="TableCtrl", data-id="#{id}")
-			.row-fluid.row-header
-				.span6.offset3
-					h1 {{table.name}}
-			.row-fluid
-				.span3.content
-					img(ng-src="{{table.url_backglass_medium}}")
-					hr
-					img(ng-src="{{table.url_portrait_medium}}")
-				.span6
-					h3.pull-top {{table.manufacturer}}, {{table.year}}
+	.container.content
+		div(ng-controller="TableCtrl", data-id="#{id}")
+			.row
+				.span4
+					.row-topleft
+						img.thumbnail(ng-src="{{table.url_backglass_medium}}")
+						small Backglass
+
+						img.thumbnail(ng-src="{{table.url_portrait_medium}}")
+						small Playfield
+
+				.span5
+					.page-header
+						h1 {{table.name}}
+						h3.pull-top {{table.manufacturer}}, {{table.year}}
 
 					h5 Statistics
-					hr
+					.row
+						.stats.span2
+							big 3'231
+							small Games played
+						.stats.span3
+							big 2'322
+							small Games started
 
-					.row-fluid.row-header
-						.stats.span6
-							span.num 3'231
-							span.lbl Games played
-
-						.stats.span6
-							span.num 2'322
-							span.lbl Games started
-
-					.row-fluid.row-header
-						.stats.span6
-							span.num 9'554
-							span.lbl Balls played
-
-						.stats.span6
-							span.num 12
-							span.lbl Extra balls
-
+					.row
+						.stats.span2
+							big 9'554
+							small Balls played
+						.stats.span3
+							big 12
+							small Extra balls
 					.stats
-						span.num 1D 2H 30s
-						span.lbl Play time
-
+						big 1D 2H 30s
+						small Play time
 					.stats
-						span.num 54W 3D 1H 39s
-						span.lbl Running time
-
+						big 54W 3D 1H 39s
+						small Running time
 					p &nbsp;
 
 					h5 High Scores
-					hr
 					p Some scores here
 
 					h5 Game Information
-					hr
 					p Some game data here.
+				.span3
+					.row-topright
+						i.icon.ipdb.big
 
-		.span3
-					p Other info
+						.row
+							.stats.span1
+								big.bigger 13
+								small.top Rank
+
+							.stats.span1
+								big.bigger 8.1
+								small.top Rating
+
+
+
+	//div.span10.offset1.content
+		section(ng-controller="TableCtrl", data-id="#{id}")
+			.row
+				.span3
+
+					img.thumbnail(ng-src="{{table.url_backglass_medium}}")
+					span.lbl Backglass
+
+					img.thumbnail(ng-src="{{table.url_portrait_medium}}")
+					span.lbl Playfield
+				.span6
+					.page-header
+						h1 {{table.name}}
+						h3.pull-top {{table.manufacturer}}, {{table.year}}
+
+					.inner
+						h5 Statistics
+						hr
+
+						.row-fluid.row-header
+							.stats.span6
+								span.num 3'231
+								span.lbl Games played
+
+							.stats.span6
+								span.num 2'322
+								span.lbl Games started
+
+						.row-fluid.row-header
+							.stats.span6
+								span.num 9'554
+								span.lbl Balls played
+
+							.stats.span6
+								span.num 12
+								span.lbl Extra balls
+
+						.stats
+							span.num 1D 2H 30s
+							span.lbl Play time
+
+						.stats
+							span.num 54W 3D 1H 39s
+							span.lbl Running time
+
+						p &nbsp;
+
+						h5 High Scores
+						hr
+						p Some scores here
+
+						h5 Game Information
+						hr
+						p Some game data here.
+
+				.span3
+					p IPDB info
 	.clearfix
 
 

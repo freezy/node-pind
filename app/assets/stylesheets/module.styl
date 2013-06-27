@@ -685,16 +685,26 @@ vpf-padding-small = 10px
 
 .stats
 	position relative
-	margin-top 20px
-	& > .num
-		font-size 26px
+	margin-bottom 20px !important
+	margin-top 20px !important
+	& > big
+		font-size 34px
 		font-family font-sans
 		font-weight 800
+		&.bigger
+			font-size 52px
+			margin-top 20px
+			display block
 
+		& + small
+			position absolute
+			top 26px
+			left 0px		
 
-	& > .lbl
+	& > small
 		font-size 11px
 		text-transform uppercase
-		position absolute
-		top 21px
-		left 0px
+		&.top
+			top -10px
+			left 0px		
+

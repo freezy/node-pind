@@ -4,7 +4,7 @@ block body
 	div.navbar.navbar-static-top
 		div.navbar-inner.mainmenu
 			a(href='#{pathTo.root}').icon.pind
-			div.container-fluid
+			div.container
 				ul#global-nav.nav
 					li.home
 						a(href='#{pathTo.root}') Home
@@ -24,7 +24,7 @@ block body
 
 	div.container(ng-app='pind')
 		- var ngc = typeof(ngController) === 'undefined' ? null : ngController;
-		div.row-fluid(ng-controller=ngc)
+		div.row(ng-controller=ngc)
 			block content
 		
 	footer
