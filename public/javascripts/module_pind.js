@@ -502,6 +502,16 @@ pindAppModule.filter('groupdigit', function() {
 	}
 });
 
+pindAppModule.filter('duration', function() {
+	return function(dStr) {
+		var dStr = Math.floor(dStr / 1000);
+		if (!dStr) {
+			return dStr;
+		}
+		return juration.stringify(dStr, { format: 'micro' });
+	}
+});
+
 /*
  * Simple JSON-RPC 2 implementation using Angular's $http service.
  */

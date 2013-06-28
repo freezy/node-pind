@@ -22,24 +22,24 @@ block content
 					h5 Statistics
 					.row
 						.stats.span2
-							big 3'231
+							big {{ table.audits.gamesPlayed|groupdigit }}
 							small Games played
 						.stats.span2
-							big 2'322
+							big {{ table.audits.gamesStarted | groupdigit }}
 							small Games started
 
 					.row
 						.stats.span2
-							big 9'554
+							big {{ table.audits.ballsPlayed | groupdigit }}
 							small Balls played
 						.stats.span2
-							big 12
+							big {{ table.audits.extraBalls | groupdigit }}
 							small Extra balls
 					.stats
-						big 1D 2H 30s
+						big {{ table.audits.playTime | duration }}
 						small Play time
 					.stats
-						big 54W 3D 1H 39s
+						big {{ table.audits.runningTime | duration }}
 						small Running time
 					p &nbsp;
 
