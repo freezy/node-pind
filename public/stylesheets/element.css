@@ -59,11 +59,11 @@ h6 {
   margin-left: -10px;
 }
 img.detached {
-  -webkit-box-shadow: inset 20px 20px 2px #f00;
-  box-shadow: inset 20px 20px 2px #f00;
   border: 1px solid rgba(0,0,0,0.75);
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-box-shadow: 0 2px 1px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 1px rgba(0,0,0,0.25);
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
 }
 img + small {
   text-transform: uppercase;
