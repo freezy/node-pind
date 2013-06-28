@@ -115,6 +115,20 @@ exports.backglass = function(context, key, size) {
 		});
 };
 
+exports.flyer = function(context, key, which, size) {
+	schema.Table.find({ where: { key : key }}).success(function(row) {
+		asset(context, getHyperPinPath('Flyer Images/' + which, row), function(gm, callback) {
+			if (size != null) {
+				gm.resize(size, size);
+			}
+			callback(gm);
+		});
+	}).error(function(err) {
+		logger.log('error', '[asset] Error retrieving table for flyer ' + key + ': ' + err);
+		context.res.writeHead(500);
+	});
+};
+
 
 var asset = function(context, path, process) {
 	if (path && fs.existsSync(path)) {
@@ -179,4 +193,11 @@ function getPath(what, table) {
 		return null;
 	}
 	return settings.hyperpin.path + '/Media/' + (table.platform == 'FP' ? 'Future' : 'Visual') + ' Pinball/' + what + '/' + table.hpid + '.png';
+}
+
+function getHyperPinPath(what, table) {
+	if (table == null) {
+		return null;
+	}
+	return settings.hyperpin.path + '/Media/HyperPin/' + what + '/' + table.hpid + '.jpg';
 }

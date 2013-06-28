@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var fs = require('fs');
 var ent = require('ent');
 var util = require('util');
 var fuzzy = require('fuzzy');
@@ -19,9 +20,9 @@ var TableApi = function() {
 		name : 'Table',
 
 		Get : function(req, params, callback) {
-			schema.Table.find({ where: { key : params.id }}).success(function(row) {
+			schema.Table.find({ where : { key : params.id }}).success(function(row) {
 				if (row) {
-					callback(fields(row, params));
+					details(fields(row, params), callback);
 				} else {
 					callback(error.api('Cannot find table with ID "' + params.id + '".'));
 				}
@@ -34,8 +35,8 @@ var TableApi = function() {
 
 			if (!search) {
 				p = {
-					offset: params.offset ? parseInt(params.offset) : 0,
-					limit: params.limit ? parseInt(params.limit) : 0
+					offset : params.offset ? parseInt(params.offset) : 0,
+					limit : params.limit ? parseInt(params.limit) : 0
 				};
 			}
 			if (params.filters && Array.isArray(params.filters)) {
@@ -79,10 +80,10 @@ var TableApi = function() {
 				/**
 				 * order tables by latest hiscore:
 				 *
-				 *		SELECT t.*, h.lastHiscoreAt
-				 *		FROM tables t
-				 *		JOIN (SELECT tableId, MAX(updatedAt) AS lastHiscoreAt FROM hiscores GROUP BY tableId) h ON (h.tableId = t.id)
-				 *		ORDER BY lastHiscoreAt DESC
+				 *        SELECT t.*, h.lastHiscoreAt
+				 *        FROM tables t
+				 *        JOIN (SELECT tableId, MAX(updatedAt) AS lastHiscoreAt FROM hiscores GROUP BY tableId) h ON (h.tableId = t.id)
+				 *        ORDER BY lastHiscoreAt DESC
 				 */
 
 				// trim trailing operator
@@ -121,15 +122,15 @@ var TableApi = function() {
 					}
 					rows = rs;
 					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
-					callback({ rows : rows, count: num });
+					callback({ rows : rows, count : num });
 
 				}).error(function(err) {
-					throw new Error(err);
-				});
+						throw new Error(err);
+					});
 
 			}).error(function(err) {
-				throw Error(err);
-			});
+					throw Error(err);
+				});
 		}
 	};
 };
@@ -198,5 +199,34 @@ function fields(row, params) {
 	}
 	return r;
 };
+
+function details(r, callback) {
+
+	var prefix = settings.hyperpin.path + '/Media/HyperPin';
+	if (fs.existsSync(prefix + '/Flyer Images/Front/' + r.hpid + '.jpg')) {
+		r.url_flyer_front_medium = pathTo.asset_flyer_front_medium(r.key);
+	}
+	if (fs.existsSync(prefix + '/Flyer Images/Front/' + r.hpid + '.jpg')) {
+		r.url_flyer_back_medium = pathTo.asset_flyer_back_medium(r.key);
+	}
+
+
+	if (r.rom) {
+		schema.Rom.find({ where : { name : r.rom }}).success(function(rom) {
+			if (rom) {
+				r.audits = rom;
+				if (rom.scoreHistogram) {
+					r.audits.scoreHistogram = JSON.parse(rom.scoreHistogram);
+				}
+				if (rom.playtimeHistogram) {
+					r.audits.playtimeHistogram = JSON.parse(rom.playtimeHistogram);
+				}
+			}
+			callback(r);
+		});
+	} else {
+		callback(r);
+	}
+}
 
 exports.api = new TableApi();

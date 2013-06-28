@@ -29,6 +29,9 @@ exports.routes = function (map) {
 	map.get('asset/hp/backglass/:id.small.png', 'asset#backglass_small', { as: 'asset_backglass_small'});
 	map.get('asset/hp/backglass/:id.medium.png', 'asset#backglass_medium', { as: 'asset_backglass_medium'});
 
+	map.get('asset/hp/flyer/front/:id.medium.png', 'asset#flyer_front_medium', { as: 'asset_flyer_front_medium'});
+	map.get('asset/hp/flyer/back/:id.medium.png', 'asset#flyer_back_medium', { as: 'asset_flyer_back_medium'});
+
 	// api
 	map.post('api', 'api#handle');
 

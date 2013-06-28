@@ -47,3 +47,11 @@ action('backglass_small', function(context) {
 action('backglass_medium', function(context) {
 	asset.backglass(context, params.id, 600);
 });
+
+action('flyer_front_medium', function(context) {
+	asset.flyer(context, params.id, 'Front', 300);
+});
+
+action('flyer_back_medium', function(context) {
+	asset.flyer(context, params.id, 'Back', 300);
+});
