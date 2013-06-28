@@ -5,7 +5,7 @@ block content
 
 	.container.content.span10.offset1
 		div(ng-controller="TableCtrl", data-id="#{id}")
-			.row
+			.row.ng-cloak
 				.span3
 					.row-topleft
 						img.thumbnail(ng-src="{{table.url_backglass_medium}}")
@@ -42,6 +42,12 @@ block content
 						big {{ table.audits.runningTime | duration }}
 						small Running time
 					p &nbsp;
+
+					h6 Score Histogram
+					.graph.graph-score-histogram
+
+					h6 Play Time Histogram
+					.graph.graph-playtime-histogram
 
 					h5 High Scores
 					p Some scores here

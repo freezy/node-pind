@@ -108,6 +108,9 @@ form {
     padding-left: 30px;
   }
 }
+.graph {
+  height: 200px;
+}
 .subheading {
   font-size: 11px;
   line-height: 16px;
