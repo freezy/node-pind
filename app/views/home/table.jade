@@ -3,10 +3,10 @@ extends ../layouts/inner
 block content
 	- contentFor('javascripts', javascriptIncludeTag('table'))
 
-	.container.content
+	.container.content.span10.offset1
 		div(ng-controller="TableCtrl", data-id="#{id}")
 			.row
-				.span4
+				.span3
 					.row-topleft
 						img.thumbnail(ng-src="{{table.url_backglass_medium}}")
 						small Backglass
@@ -14,7 +14,7 @@ block content
 						img.thumbnail(ng-src="{{table.url_portrait_medium}}")
 						small Playfield
 
-				.span5
+				.span4
 					.page-header
 						h1 {{table.name}}
 						h3.pull-top {{table.manufacturer}}, {{table.year}}
@@ -24,7 +24,7 @@ block content
 						.stats.span2
 							big 3'231
 							small Games played
-						.stats.span3
+						.stats.span2
 							big 2'322
 							small Games started
 
@@ -32,7 +32,7 @@ block content
 						.stats.span2
 							big 9'554
 							small Balls played
-						.stats.span3
+						.stats.span2
 							big 12
 							small Extra balls
 					.stats
@@ -61,65 +61,6 @@ block content
 								big.bigger 8.1
 								small.top Rating
 
-
-
-	//div.span10.offset1.content
-		section(ng-controller="TableCtrl", data-id="#{id}")
-			.row
-				.span3
-
-					img.thumbnail(ng-src="{{table.url_backglass_medium}}")
-					span.lbl Backglass
-
-					img.thumbnail(ng-src="{{table.url_portrait_medium}}")
-					span.lbl Playfield
-				.span6
-					.page-header
-						h1 {{table.name}}
-						h3.pull-top {{table.manufacturer}}, {{table.year}}
-
-					.inner
-						h5 Statistics
-						hr
-
-						.row-fluid.row-header
-							.stats.span6
-								span.num 3'231
-								span.lbl Games played
-
-							.stats.span6
-								span.num 2'322
-								span.lbl Games started
-
-						.row-fluid.row-header
-							.stats.span6
-								span.num 9'554
-								span.lbl Balls played
-
-							.stats.span6
-								span.num 12
-								span.lbl Extra balls
-
-						.stats
-							span.num 1D 2H 30s
-							span.lbl Play time
-
-						.stats
-							span.num 54W 3D 1H 39s
-							span.lbl Running time
-
-						p &nbsp;
-
-						h5 High Scores
-						hr
-						p Some scores here
-
-						h5 Game Information
-						hr
-						p Some game data here.
-
-				.span3
-					p IPDB info
 	.clearfix
 
 
