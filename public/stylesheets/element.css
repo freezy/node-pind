@@ -58,6 +58,13 @@ h6 {
   padding: 5px 7px;
   margin-left: -10px;
 }
+img.detached {
+  -webkit-box-shadow: inset 20px 20px 2px #f00;
+  box-shadow: inset 20px 20px 2px #f00;
+  border: 1px solid rgba(0,0,0,0.75);
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
 img + small {
   text-transform: uppercase;
   font-weight: 400;

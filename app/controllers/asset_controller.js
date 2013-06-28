@@ -49,9 +49,9 @@ action('backglass_medium', function(context) {
 });
 
 action('flyer_front_medium', function(context) {
-	asset.flyer(context, params.id, 'Front', 300);
+	asset.flyer(context, params.id, 'Front', 350);
 });
 
 action('flyer_back_medium', function(context) {
-	asset.flyer(context, params.id, 'Back', 300);
+	asset.flyer(context, params.id, 'Back', 350);
 });

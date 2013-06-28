@@ -8,10 +8,10 @@ block content
 			.row.ng-cloak
 				.span3
 					.row-topleft
-						img.thumbnail(ng-src="{{table.url_backglass_medium}}")
+						img.detached(ng-src="{{table.url_backglass_medium}}")
 						small Backglass
 
-						img.thumbnail(ng-src="{{table.url_portrait_medium}}")
+						img.detached(ng-src="{{table.url_portrait_medium}}")
 						small Playfield
 
 				.span4
@@ -66,6 +66,13 @@ block content
 							.stats.span1
 								big.bigger 8.1
 								small.top Rating
+
+						p &nbsp;
+						img(ng-src="{{table.url_logo}}")
+						p &nbsp;
+						img(ng-src="{{table.url_flyer_front_medium}}")
+						p &nbsp;
+						img(ng-src="{{table.url_flyer_back_medium}}")
 
 	.clearfix
 
