@@ -713,18 +713,30 @@ table.stats
 	margin-top 20px
 	box-shadow 0 2px 1px rgba(0,0,0,0.1)
 	background-color white
-	td
+	tr td
 		text-align center
-		border solid 2px #C0C0C0
-		&.big
-			padding 10px
+	tr:first-child td:first-child
+		border-radius-topleft 3px
+	tr:first-child td:last-child
+		border-radius-topright 3px
+	tr:last-child td:first-child
+		border-radius-bottomleft 3px
+	tr:last-child td:last-child
+		border-radius-bottomright 3px
+
+	tr.big 
+		border-top 2px solid color-btn-light
+		td
+			padding 10px 15px 15px
 			font-size 34px
 			font-family font-sans
 			font-weight 800
-		&.small
-			padding 0
+			
+	tr.small
+		td
+			padding 1px
 			font-size 11px
 			text-transform uppercase
-			background-color #c0c0c0
+			background-color rgba(0,0,0,0.18)
 			text-shadow 1px 1px 0 rgba(255,255,255,0.5)
 			color black

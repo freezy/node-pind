@@ -21,26 +21,30 @@ block content
 
 					h5 Stats
 					table.stats(cellspacing="0", cellpadding="0", border="0")
-						tr
-							td.small Games played
-							td.small Games started
-						tr
-							td.big {{ table.audits.gamesPlayed | groupdigit }}
-							td.big {{ table.audits.gamesStarted | groupdigit }}
-						tr
-							td.small Balls played
-							td.small Extra balls
-						tr
-							td.big {{ table.audits.ballsPlayed | groupdigit }}
-							td.big {{ table.audits.extraBalls | groupdigit }}
-						tr
-							td.small(colspan="2") Play time
-						tr
-							td.big(colspan="2") {{ table.audits.playTime | duration }}
-						tr
-							td.small(colspan="2") Running time
-						tr
-							td.big(colspan="2") {{ table.audits.runningTime | duration }}
+						colgroup
+							col(width="50%")
+							col(width="50%")
+						tbody
+							tr.small
+								td Games played
+								td Games started
+							tr.big
+								td {{ table.audits.gamesPlayed | groupdigit }}
+								td {{ table.audits.gamesStarted | groupdigit }}
+							tr.small
+								td Balls played
+								td Extra balls
+							tr.big
+								td {{ table.audits.ballsPlayed | groupdigit }}
+								td {{ table.audits.extraBalls | groupdigit }}
+							tr.small
+								td(colspan="2") Play time
+							tr.big
+								td(colspan="2") {{ table.audits.playTime | duration }}
+							tr.small
+								td(colspan="2") Running time
+							tr.big
+								td(colspan="2") {{ table.audits.runningTime | duration }}
 					p &nbsp;
 
 					h6 Score Histogram
