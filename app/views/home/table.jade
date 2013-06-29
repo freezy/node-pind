@@ -19,28 +19,28 @@ block content
 						h1 {{table.name}}
 						h3.pull-top {{table.manufacturer}}, {{table.year}}
 
-					h5 Statistics
-					.row
-						.stats.span2
-							big {{ table.audits.gamesPlayed|groupdigit }}
-							small Games played
-						.stats.span2
-							big {{ table.audits.gamesStarted | groupdigit }}
-							small Games started
-
-					.row
-						.stats.span2
-							big {{ table.audits.ballsPlayed | groupdigit }}
-							small Balls played
-						.stats.span2
-							big {{ table.audits.extraBalls | groupdigit }}
-							small Extra balls
-					.stats
-						big {{ table.audits.playTime | duration }}
-						small Play time
-					.stats
-						big {{ table.audits.runningTime | duration }}
-						small Running time
+					h5 Stats
+					table.stats(cellspacing="0", cellpadding="0", border="0")
+						tr
+							td.small Games played
+							td.small Games started
+						tr
+							td.big {{ table.audits.gamesPlayed | groupdigit }}
+							td.big {{ table.audits.gamesStarted | groupdigit }}
+						tr
+							td.small Balls played
+							td.small Extra balls
+						tr
+							td.big {{ table.audits.ballsPlayed | groupdigit }}
+							td.big {{ table.audits.extraBalls | groupdigit }}
+						tr
+							td.small(colspan="2") Play time
+						tr
+							td.big(colspan="2") {{ table.audits.playTime | duration }}
+						tr
+							td.small(colspan="2") Running time
+						tr
+							td.big(colspan="2") {{ table.audits.runningTime | duration }}
 					p &nbsp;
 
 					h6 Score Histogram
@@ -60,11 +60,11 @@ block content
 
 						.row
 							.stats.span1
-								big.bigger 13
+								big.bigger {{ table.ipdb_rank }}
 								small.top Rank
 
 							.stats.span1
-								big.bigger 8.1
+								big.bigger {{ table.rating }}
 								small.top Rating
 
 						p &nbsp;

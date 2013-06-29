@@ -683,7 +683,7 @@ vpf-padding-small = 10px
 // :stats
 // ============================================================================
 
-.stats
+div.stats
 	position relative
 	margin-bottom 20px !important
 	margin-top 20px !important
@@ -708,4 +708,23 @@ vpf-padding-small = 10px
 			top -10px
 			left 0px		
 
-		
+table.stats
+	width 100%
+	margin-top 20px
+	box-shadow 0 2px 1px rgba(0,0,0,0.1)
+	background-color white
+	td
+		text-align center
+		border solid 2px #C0C0C0
+		&.big
+			padding 10px
+			font-size 34px
+			font-family font-sans
+			font-weight 800
+		&.small
+			padding 0
+			font-size 11px
+			text-transform uppercase
+			background-color #c0c0c0
+			text-shadow 1px 1px 0 rgba(255,255,255,0.5)
+			color black
