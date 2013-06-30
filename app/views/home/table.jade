@@ -62,14 +62,17 @@ block content
 					.row-topright
 						i.icon.ipdb.big
 
-						.row
-							.stats.span1
-								big.bigger {{ table.ipdb_rank }}
-								small.top Rank
-
-							.stats.span1
-								big.bigger {{ table.rating }}
-								small.top Rating
+						table.stats(cellspacing="0", cellpadding="0", border="0")
+							colgroup
+								col(width="50%")
+								col(width="50%")
+							tbody
+								tr.small
+									td Rank
+									td Rating
+								tr.bigger
+									td {{ table.ipdb_rank }}
+									td {{ table.rating }}
 
 						p &nbsp;
 						img(ng-src="{{table.url_logo}}")

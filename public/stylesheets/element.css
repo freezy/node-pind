@@ -42,6 +42,7 @@ h5 {
   border-radius: 20px;
   padding: 5px 10px;
   margin-left: -10px;
+  margin-right: -10px;
 }
 h6 {
   font-family: 'Arvo', serif;
@@ -57,6 +58,7 @@ h6 {
   border-radius: 20px;
   padding: 5px 7px;
   margin-left: -10px;
+  margin-right: -10px;
 }
 img.detached {
   border: 1px solid rgba(0,0,0,0.75);
