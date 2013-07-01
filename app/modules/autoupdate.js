@@ -24,7 +24,7 @@ var settings = require('../../config/settings-mine');
 var version = null;
 var localRepo = null;
 
-var dryRun = true;
+var dryRun = false;
 
 /**
  * Manages the application self-updates.
