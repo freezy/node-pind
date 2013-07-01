@@ -448,6 +448,18 @@ AutoUpdate.prototype.update = function(sha, callback) {
  */
 AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback) {
 
+	var result = {
+		updatedTo: version,
+		commits: [],
+		packages: {
+			added: [],
+			updated: [],
+			removed: []
+		},
+		tags: [],
+		actions: []
+	};
+
 	// check for errors
 	var that = this;
 	if (err) {
@@ -476,6 +488,41 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		var newPackages = _.difference(_.keys(newConfig.packageJson.dependencies), _.keys(oldConfig.packageJson.dependencies));
 		var newPackageVersions = _.difference(_.values(newConfig.packageJson.dependencies), _.values(oldConfig.packageJson.dependencies));
 		if (newPackages.length > 0 || newPackageVersions.length > 0) {
+			// check what has changed for log
+			if (newPackages.length > 0) {
+				_.each(newPackages, function(p) {
+					if (newConfig.packageJson.dependencies[p]) {
+						result.packages.added.push({
+							name: p,
+							version: newConfig.packageJson.dependencies[p]
+						});
+					} else {
+						result.packages.removed.push({
+							name: p,
+							version: oldConfig.packageJson.dependencies[p]
+						});
+					}
+				});
+			}
+			if (newPackageVersions.length > 0) {
+				_.each(oldConfig.packageJson.dependencies, function(ver, dep) {
+					if (oldConfig.packageJson.dependencies[dep] != newConfig.packageJson.dependencies[dep]) {
+						if (newConfig.packageJson.dependencies[dep]) {
+							result.packages.updated.push({
+								name: dep,
+								from: oldConfig.packageJson.dependencies[dep],
+								version: newConfig.packageJson.dependencies[dep]
+							});
+						} else {
+							result.packages.removed.push({
+								name: dep,
+								version: oldConfig.packageJson.dependencies[dep]
+							});
+						}
+					}
+				})
+			}
+			console.log(util.inspect(result, { depth: 10 }));
 			logger.log('info', '[autoupdate] Found new dependencies: [' + newPackages.join(' ') + '], running `npm install`.');
 			npm.load({ prefix: path.normalize(__dirname + '../../../') }, function(err) {
 				if (err) {
@@ -690,7 +737,8 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 						next(err);
 					});
 				} else {
-					logger.log('info', 'Skipping script "%s"', scripts[sha].description);
+					logger.log('info', 'Skipping script "%s"', scripts[sha] ? scripts[sha].description : sha);
+					next();
 				}
 			});
 		});
@@ -703,15 +751,10 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		}
 
 		// compute and save update result.
-		var result = {
-			updatedTo: version,
-			commits: [],
-			tags: [],
-			actions: []
-		};
+		result.updatedTo = version;
 
 		// reboot
-		logger.log('info', '[autoupdate] Update complete.');
+		logger.log('info', '[autoupdate] Update complete. ', result, {});
 		that.emit('updateCompleted', newCommit);
 		logger.log('warn', '[autoupdate] Killing process in 2 seconds.');
 		setTimeout(function() {
