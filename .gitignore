@@ -4,6 +4,8 @@ bin/pinemhi.ini
 logs/*
 settings-mine.js
 settings-new.js
+settings-patched.js
+settings-err.js
 package-new.json
 version.json
 test*.js

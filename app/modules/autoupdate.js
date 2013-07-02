@@ -451,13 +451,15 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 	var result = {
 		updatedTo: version,
 		commits: [],
-		packages: {
+		dependencies: {
 			added: [],
 			updated: [],
 			removed: []
 		},
+		settings: [],
 		tags: [],
-		actions: []
+		actions: [],
+		errors: []
 	};
 
 	// check for errors
@@ -492,12 +494,12 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			if (newPackages.length > 0) {
 				_.each(newPackages, function(p) {
 					if (newConfig.packageJson.dependencies[p]) {
-						result.packages.added.push({
+						result.dependencies.added.push({
 							name: p,
 							version: newConfig.packageJson.dependencies[p]
 						});
 					} else {
-						result.packages.removed.push({
+						result.dependencies.removed.push({
 							name: p,
 							version: oldConfig.packageJson.dependencies[p]
 						});
@@ -508,13 +510,13 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 				_.each(oldConfig.packageJson.dependencies, function(ver, dep) {
 					if (oldConfig.packageJson.dependencies[dep] != newConfig.packageJson.dependencies[dep]) {
 						if (newConfig.packageJson.dependencies[dep]) {
-							result.packages.updated.push({
+							result.dependencies.updated.push({
 								name: dep,
 								from: oldConfig.packageJson.dependencies[dep],
 								version: newConfig.packageJson.dependencies[dep]
 							});
 						} else {
-							result.packages.removed.push({
+							result.dependencies.removed.push({
 								name: dep,
 								version: oldConfig.packageJson.dependencies[dep]
 							});
@@ -526,15 +528,24 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			logger.log('info', '[autoupdate] Found new dependencies: [' + newPackages.join(' ') + '], running `npm install`.');
 			npm.load({ prefix: path.normalize(__dirname + '../../../') }, function(err) {
 				if (err) {
-					return next(err);
+					logger.log('error', '[autoupdate] Error loading npm: ' + err);
+					result.errors.push({
+						when: 'dependencies',
+						message: err
+					});
+					return next();
 				}
 				npm.on('log', function(message) {
 					logger.log('info', '[autoupdate] [npm] ' + message);
 				});
 				npm.commands.install([], function(err) {
 					if (err) {
-						logger.log('info', '[autoupdate] Error updating dependencies: ' + err);
-						return next(err);
+						logger.log('error', '[autoupdate] Error updating dependencies: ' + err);
+						result.errors.push({
+							when: 'dependencies',
+							message: err
+						});
+						return next();
 					}
 					logger.log('info', '[autoupdate] NPM update successful.');
 					next();
@@ -615,6 +626,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			};
 
 			var patch = function(settingsPatched, codeBlock, pos, parentPath) {
+				//console.log('PATCHING:\n------\n%s\n------ at pos %d below %s', codeBlock, pos, parentPath);
 				var before = settingsPatched.substr(0, pos);
 				var after = settingsPatched.substr(pos);
 				var level = parentPath ? parentPath.split('.').length : 0;
@@ -653,7 +665,14 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 					var ast = analyze(uglify.parse(settingsPatched));
 				} catch(err) {
 					logger.log('error', '[autoupdate] Error parsing patched file: ' + err);
-					return next('Error patching settings-mine.js.');
+					result.errors.push({
+						when: 'settings',
+						message: err.message,
+						obj: err
+					});
+					fs.writeFileSync(__dirname + '../../../config/settings-err.js', settingsPatched);
+					logger.log('info', '[autoupdate] File dumped to config/settings-err.js.');
+					return next();
 				}
 
 				// check if not already available
@@ -661,10 +680,10 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 					logger.log('info', '[autoupdate] Patching settings-mine.js with setting "' + path + '"');
 
 					var comment = node.start.comments_before.length > 0;
-					var start = comment ? node.start.comments_before[0].pos - 2 : node.start.pos;
-					var len = comment ? node.end.endpos - start + 2 : node.end.endpos - start;
-					var codeBlock = newConfig.settingsJs.substr(start, len).trim();
-//					logger.log('info', '\n===============\n%s\n===============\n', util.inspect(node, false, 10, true));
+					var start = comment ? node.start.comments_before[0].pos : node.start.pos;
+					var len = comment ? node.end.endpos - start : node.end.endpos - start;
+					var codeBlock = newConfig.settingsJs.substr(start, len).trim().replace(/\x0D\x0A/gi, '\n');
+					//logger.log('info', '\n===============\n%s\n===============\n', util.inspect(node, false, 10, true));
 
 					// inject at the end of an element
 					if (path.indexOf('.') > 0) {
@@ -676,12 +695,37 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 						settingsPatched = patch(settingsPatched, codeBlock, settingsPatched.length - 2);
 					}
 
+					// add message to result
+					var descr = node.start.comments_before[0] ? node.start.comments_before[0].value.trim() : null;
+					var important = false;
+					if (descr) {
+
+						if (descr.match(/\*\s*@important/i)) {
+							descr = descr.replace(/\s*\*\s*@important\s*/g, '');
+							important = true;
+						}
+						descr = descr.replace(/\s*\*\s+\*\s*/g, '\n');
+						descr = descr.replace(/\s*\*\s*/g, ' ').trim();
+
+					}
+					result.settings.push({
+						parent: parentPath ? parentPath : null,
+						name: node.start.value,
+						description: descr,
+						important: important
+					});
+
 				} else {
 					logger.log('info', '[autoupdate] settings-mine.js already contains "' + path + '", skipping.');
 				}
 			}
-			fs.writeFileSync(settingsMinePath, settingsPatched);
-			logger.log('info', '[autoupdate] Updated settings-mine.js.');
+			if (!dryRun) {
+				fs.writeFileSync(settingsMinePath, settingsPatched);
+				logger.log('info', '[autoupdate] Updated settings-mine.js.');
+			} else {
+				logger.log('info', '[autoupdate] Updated settings-patched.js.');
+				fs.writeFileSync(__dirname + '../../../config/settings-patched.js', settingsPatched);
+			}
 			next();
 
 		} else {
@@ -716,9 +760,20 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 
 		// read commits
 		var migrator = schema.sequelize.getMigrator();
+		if (!version || !version.sha) {
+			result.errors.push({
+				when: 'settings',
+				message: 'version object not set.',
+			});
+			return next();
+		}
 		that._getCommits(version.sha, newCommit.sha, function(err, commits) {
 			if (err) {
-				return next(commits);
+				result.errors.push({
+					when: 'migrations',
+					message: err,
+				});
+				return next();
 			}
 			_.each(commits, function(commit) {
 
@@ -734,7 +789,11 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 						next();
 					}).error(function(err) {
 						logger.log('error', '[autoupdate] Migrations went wrong, see logfile: ', err, {});
-						next(err);
+						result.errors.push({
+							when: 'migrations',
+							message: err
+						});
+						next();
 					});
 				} else {
 					logger.log('info', 'Skipping script "%s"', scripts[sha] ? scripts[sha].description : sha);
@@ -754,7 +813,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		result.updatedTo = version;
 
 		// reboot
-		logger.log('info', '[autoupdate] Update complete. ', result, {});
+		logger.log('info', '[autoupdate] Update complete: %s', util.inspect(result, false, 10, false)); // last is color
 		that.emit('updateCompleted', newCommit);
 		logger.log('warn', '[autoupdate] Killing process in 2 seconds.');
 		setTimeout(function() {

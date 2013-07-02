@@ -9,8 +9,8 @@ var nv = require('./app/modules/nvram')();
 var hs = require('./app/modules/hiscore')(app);
 
 
-git();
-//postExtract();
+//git();
+postExtract();
 //readAudits();
 //readAllAudits();
 //readAvailableAudits();
