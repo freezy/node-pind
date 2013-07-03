@@ -763,7 +763,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		if (!version || !version.sha) {
 			result.errors.push({
 				when: 'settings',
-				message: 'version object not set.',
+				message: 'version object not set.'
 			});
 			return next();
 		}
@@ -771,7 +771,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			if (err) {
 				result.errors.push({
 					when: 'migrations',
-					message: err,
+					message: err
 				});
 				return next();
 			}
