@@ -457,8 +457,8 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			removed: []
 		},
 		settings: [],
+		migrations: [],
 		tags: [],
-		actions: [],
 		errors: []
 	};
 
@@ -784,6 +784,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 				result.commits.push(commit);
 				var sha = commit.sha.substr(0, 7);
 				if (scripts[sha] && !dryRun) {
+					result.migrations.push(scripts[sha]);
 					logger.log('info', '[autoupdate] Running script "%s"', scripts[sha].description);
 					migrator.exec(scripts[sha].path, {
 						before: function(migration) {
@@ -795,7 +796,8 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 						logger.log('error', '[autoupdate] Migration went wrong, see logfile: ', err, {});
 						result.errors.push({
 							when: 'migrations',
-							message: err
+							message: err,
+							script: scripts[sha]
 						});
 					});
 				}
