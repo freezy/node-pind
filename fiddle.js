@@ -40,7 +40,7 @@ function postExtract() {
 	};
 	au._postExtract(null, newConfig, null, function(err) {
 		if (err) {
-			console.log("****** ERROR: %s", err);
+			console.log("****** ERROR: %s", util.inspect(err));
 		} else {
 			console.log("****** all done.");
 		}

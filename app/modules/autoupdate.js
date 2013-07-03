@@ -24,7 +24,7 @@ var settings = require('../../config/settings-mine');
 var version = null;
 var localRepo = null;
 
-var dryRun = false;
+var dryRun = true;
 
 /**
  * Manages the application self-updates.
@@ -524,7 +524,6 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 					}
 				})
 			}
-			console.log(util.inspect(result, { depth: 10 }));
 			logger.log('info', '[autoupdate] Found new dependencies: [' + newPackages.join(' ') + '], running `npm install`.');
 			npm.load({ prefix: path.normalize(__dirname + '../../../') }, function(err) {
 				if (err) {
@@ -538,6 +537,10 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 				npm.on('log', function(message) {
 					logger.log('info', '[autoupdate] [npm] ' + message);
 				});
+				if (dryRun) {
+					logger.log('info', '[autoupdate] Skipping `npm install`.');
+					return next();
+				}
 				npm.commands.install([], function(err) {
 					if (err) {
 						logger.log('error', '[autoupdate] Error updating dependencies: ' + err);
@@ -759,7 +762,6 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 		});
 
 		// read commits
-		var migrator = schema.sequelize.getMigrator();
 		if (!version || !version.sha) {
 			result.errors.push({
 				when: 'settings',
@@ -767,7 +769,9 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			});
 			return next();
 		}
-		that._getCommits(version.sha, newCommit.sha, function(err, commits) {
+		var migrator = schema.sequelize.getMigrator();
+		var oldCommit = dryRun ? 'f079931cb3ae97f7e9d5f9ac621d836d7fcfa0b6' : version.sha;
+		that._getCommits(oldCommit, newCommit.sha, function(err, commits) {
 			if (err) {
 				result.errors.push({
 					when: 'migrations',
@@ -777,29 +781,28 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			}
 			_.each(commits, function(commit) {
 
+				result.commits.push(commit);
 				var sha = commit.sha.substr(0, 7);
-				if (scripts[sha]) {
-					logger.log('info', 'Running script "%s"', scripts[sha].description);
+				if (scripts[sha] && !dryRun) {
+					logger.log('info', '[autoupdate] Running script "%s"', scripts[sha].description);
 					migrator.exec(scripts[sha].path, {
 						before: function(migration) {
 							logger.log('info', '[autoupdate] Starting migration for "%s"', migration.filename);
 						}
 					}).success(function() {
-						logger.log('info', '[autoupdate] Migrations executed successfully.');
-						next();
+						logger.log('info', '[autoupdate] Migration executed successfully.');
 					}).error(function(err) {
-						logger.log('error', '[autoupdate] Migrations went wrong, see logfile: ', err, {});
+						logger.log('error', '[autoupdate] Migration went wrong, see logfile: ', err, {});
 						result.errors.push({
 							when: 'migrations',
 							message: err
 						});
-						next();
 					});
 				} else {
 					logger.log('info', 'Skipping script "%s"', scripts[sha] ? scripts[sha].description : sha);
-					next();
 				}
 			});
+			next();
 		});
 	};
 
@@ -981,7 +984,7 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
  */
 AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 	if (localRepo) {
-		logger.log('info', 'Retrieving commits between "%s" and "%s" from local Git repository.', fromSha, toSha);
+		logger.log('info', 'Retrieving commits %s..%s from local Git repository.', fromSha.substr(0,7), toSha.substr(0,7));
 		if (!result) {
 			result = {
 				page: 0,
@@ -991,18 +994,27 @@ AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 			};
 		}
 		localRepo.commits('master', 100, result.page * 10, function(err, commits) {
+			if (err) {
+				return callback(err);
+			}
+			logger.log('info', 'Fetched %d commits', commits.length);
+			_.sortBy(commits, function(commit) {
+				return -commit.committed_date.getTime();
+			});
 			for (var i = 0; i < commits.length; i++) {
 				var sha = commits[i].id;
-				if (sha == fromSha) {
+				if (sha == toSha) {
 					result.started = true;
+				} else if (!result.started) {
 				}
 				if (result.started) {
 					result.commits.push({
 						sha: sha,
-						date: commits[i].committed_date
+						date: commits[i].committed_date,
+						message: commits[i].message
 					});
 				}
-				if (sha == toSha) {
+				if (sha == fromSha) {
 					result.ended = true;
 					break;
 				}
@@ -1016,15 +1028,21 @@ AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 					callback('Ran through all commits but could not find commit with SHA ' + toSha + '.');
 				}
 			} else {
-				callback(null, result.commits);
+				if (result.commits.length == 0) {
+					logger.log('error', 'Ending commit %s seems to be before starting commit %s.', fromSha, toSha);
+					callback('Ending commit ' + fromSha + ' seems to be before starting commit ' + toSha + '.');
+				} else {
+					logger.log('info', 'Done, returning list of %d commits', result.commits.length);
+					callback(null, result.commits);
+				}
 			}
 		});
 
 	} else {
 
 		logger.log('info', 'Retrieving commits between "%s" and "%s" from GitHub.', fromSha, toSha);
-		var fromUrl = 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/git/commits/' + fromSha;
-		var toUrl = 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/git/commits/' + toSha;
+		var fromUrl = 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits/' + fromSha;
+		var toUrl = 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits/' + toSha;
 
 		AutoUpdate.prototype._getCommit(fromUrl, function(err, commitFrom) {
 			if (err) {
@@ -1077,7 +1095,8 @@ AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 						for (var i = 0; i < commits.length; i++) {
 							result.push({
 								sha: commits[i].sha,
-								date: new Date(commits[i].commit.committer.date)
+								date: new Date(commits[i].commit.committer.date),
+								message: commits[i].commit.message
 							});
 						}
 						// next page is in header, see http://developer.github.com/v3/#pagination
