@@ -24,7 +24,7 @@ var settings = require('../../config/settings-mine');
 var version = null;
 var localRepo = null;
 
-var dryRun = true;
+var dryRun = false;
 
 /**
  * Manages the application self-updates.
@@ -798,8 +798,6 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 							message: err
 						});
 					});
-				} else {
-					logger.log('info', 'Skipping script "%s"', scripts[sha] ? scripts[sha].description : sha);
 				}
 			});
 			next();
@@ -984,7 +982,7 @@ AutoUpdate.prototype.newTagAvailable = function(callback) {
  */
 AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 	if (localRepo) {
-		logger.log('info', 'Retrieving commits %s..%s from local Git repository.', fromSha.substr(0,7), toSha.substr(0,7));
+		logger.log('info', '[autoupdate] Retrieving commits %s..%s from local Git repository.', fromSha.substr(0,7), toSha.substr(0,7));
 		if (!result) {
 			result = {
 				page: 0,
@@ -997,7 +995,6 @@ AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 			if (err) {
 				return callback(err);
 			}
-			logger.log('info', 'Fetched %d commits', commits.length);
 			_.sortBy(commits, function(commit) {
 				return -commit.committed_date.getTime();
 			});
@@ -1024,15 +1021,15 @@ AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 					result.page++;
 					AutoUpdate.prototype._getCommits(fromSha, toSha, callback, result);
 				} else {
-					logger.log('error', 'Ran through all commits but could not find commit with SHA %s.', toSha);
+					logger.log('error', '[autoupdate] Ran through all commits but could not find commit with SHA %s.', toSha);
 					callback('Ran through all commits but could not find commit with SHA ' + toSha + '.');
 				}
 			} else {
 				if (result.commits.length == 0) {
-					logger.log('error', 'Ending commit %s seems to be before starting commit %s.', fromSha, toSha);
+					logger.log('error', '[autoupdate] Ending commit %s seems to be before starting commit %s.', fromSha, toSha);
 					callback('Ending commit ' + fromSha + ' seems to be before starting commit ' + toSha + '.');
 				} else {
-					logger.log('info', 'Done, returning list of %d commits', result.commits.length);
+					logger.log('info', '[autoupdate] Done, returning list of %d commits', result.commits.length);
 					callback(null, result.commits);
 				}
 			}
@@ -1040,7 +1037,7 @@ AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 
 	} else {
 
-		logger.log('info', 'Retrieving commits between "%s" and "%s" from GitHub.', fromSha, toSha);
+		logger.log('info', '[autoupdate] Retrieving commits %s..%s from GitHub.', fromSha.substr(0,7), toSha.substr(0,7));
 		var fromUrl = 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits/' + fromSha;
 		var toUrl = 'https://api.github.com/repos/' + settings.pind.repository.user + '/' + settings.pind.repository.repo + '/commits/' + toSha;
 
@@ -1049,7 +1046,7 @@ AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 				return callback(err);
 			}
 			if (!commitFrom.sha) {
-				logger.log('error', 'Could not find starting commit %s on GitHub.', toSha);
+				logger.log('error', '[autoupdate] Could not find starting commit %s on GitHub.', toSha);
 				return callback('Could not find starting commit ' + toSha + ' on GitHub.');
 			}
 
@@ -1058,7 +1055,7 @@ AutoUpdate.prototype._getCommits = function(fromSha, toSha, callback, result) {
 					return callback(err);
 				}
 				if (!commitTo.sha) {
-					logger.log('error', 'Could not find ending commit %s on GitHub.', toSha);
+					logger.log('error', '[autoupdate] Could not find ending commit %s on GitHub.', toSha);
 					return callback('Could not find ending commit ' + toSha + ' on GitHub.');
 				}
 
