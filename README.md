@@ -16,6 +16,8 @@ of neat stuff. Particularly it should be able to:
     histogram etc `done`
 * List high scores of all tables for a given user, including a "global" score
   based on achievements.
+* List audit data from tables. Use a graphical representation for histogram data
+  pulled from the table's NVRAM `done`
 * Provide a voting system for new tables to install.
 * Administer HyperPin's tables. This includes:
   * Automatically download missing artwork `done`
