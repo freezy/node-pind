@@ -268,6 +268,7 @@ AutoUpdate.prototype.newVersionAvailable = function(callback) {
 AutoUpdate.prototype.update = function(sha, callback) {
 
 	var that = this;
+	var startedAt = new Date();
 
 	// save current package.json and settings.js
 	var oldConfig = {
@@ -1187,6 +1188,22 @@ AutoUpdate.prototype._readVersion = function() {
 		return JSON.parse(fs.readFileSync(versionPath));
 	}
 	return null;
+};
+
+AutoUpdate.prototype._logResult = function(startedAt, toSha, result, callback) {
+	schema.Upgrade.create({
+		fromSha: version.sha,
+		toSha: toSha,
+		status: 'success',
+		result: JSON.stringify(result),
+		startedAt: startedAt,
+		completedAt: new Date()
+	}).done(function(err) {
+		if (err) {
+			logger.log('error', '[autoupdate] Error updating database: ' + err);
+		}
+		callback(null, result);
+	});
 };
 
 module.exports = AutoUpdate;

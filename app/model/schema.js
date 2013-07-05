@@ -94,6 +94,7 @@ Rom = sequelize.import(__dirname + '/rom');
 Hiscore = sequelize.import(__dirname + '/hiscore');
 Transfer = sequelize.import(__dirname + '/transfer');
 VpfFile = sequelize.import(__dirname + '/vpf_file');
+Upgrade = sequelize.import(__dirname + '/upgrade');
 
 
 // setup associations
@@ -125,5 +126,6 @@ module.exports = {
 	User: User,
 	Hiscore: Hiscore,
 	Transfer: Transfer,
-	VpfFile: VpfFile
+	VpfFile: VpfFile,
+	Upgrade: Upgrade
 };
