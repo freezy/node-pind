@@ -24,7 +24,7 @@ var settings = require('../../config/settings-mine');
 var version = null;
 var localRepo = null;
 
-var dryRun = false;
+var dryRun = true;
 
 /**
  * Manages the application self-updates.
@@ -272,6 +272,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 	// save current package.json and settings.js
 	var oldConfig = {
+		startedAt: startedAt,
 		packageJson: JSON.parse(fs.readFileSync(__dirname + '../../../package.json').toString()),
 		settingsJs: fs.readFileSync(__dirname + '../../../config/settings.js').toString().replace(/\x0D\x0A/gi, '\n')
 	};
@@ -281,7 +282,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 		if (err) {
 			logger.log('error', '[autoupdate] Cannot retrieve commit for revision %s: %s', sha, err);
-			return callback('Cannot retrieve commit for revision "' + sha + '": ' + err);
+			return that._logResult('Cannot retrieve commit for revision "' + sha + '": ' + err, startedAt, sha, null, callback);
 		}
 
 		// make sure we're not downgrading
@@ -289,7 +290,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 		if (!dryRun && Date.parse(commit.commit.committer.date) < Date.parse(v.date)) {
 			err = 'Not downgrading current version (' + v.date + ') to older commit (' + commit.commit.committer.date + ').';
 			logger.log('info', '[autoupdate] ERROR: ' + err);
-			return callback(err);
+			return that._logResult(err, startedAt, sha, null, callback);
 		}
 
 		that.emit('updateStarted');
@@ -302,8 +303,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 			// look for modified files via status
 			localRepo.status(function(err, status) {
 				if (err) {
-					that.emit('updateFailed', { error: err });
-					return callback(err);
+					return that._logResult(err, startedAt, sha, null, callback);
 				}
 
 				// skip update, just run done after 5s
@@ -320,15 +320,13 @@ AutoUpdate.prototype.update = function(sha, callback) {
 					logger.log('info', '[autoupdate] Fetching update from GitHub');
 					localRepo.remote_fetch('origin master', function(err) {
 						if (err) {
-							that.emit('updateFailed', { error: err });
-							return callback(err);
+							return that._logResult(err, startedAt, sha, null, callback);
 						}
 
 						logger.log('info', '[autoupdate] Rebasing to ' + commit.sha);
 						localRepo.git('rebase ' + commit.sha, function(err) {
 							if (err) {
-								that.emit('updateFailed', { error: err });
-								return callback(err);
+								return that._logResult(err, startedAt, sha, null, callback);
 							}
 
 							// if stashed, re-apply changes.
@@ -349,8 +347,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 				for (var filename in status.files) {
 					if (status.files.hasOwnProperty(filename) && status.files[filename].tracked) {
 						if (err) {
-							that.emit('updateFailed', { error: err });
-							return callback(err);
+							return that._logResult(err, startedAt, sha, null, callback);
 						}
 						trackedFiles.push(filename);
 					}
@@ -361,8 +358,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 					logger.log('info', '[autoupdate] Detected changed files: [' + trackedFiles.join(', ') + '], stashing changes first.');
 					localRepo.git('stash', {}, ['save'], function(err) {
 						if (err) {
-							that.emit('updateFailed', { error: err });
-							return callback(err);
+							return that._logResult(err, startedAt, sha, null, callback);
 						}
 						update(true, callback);
 					});
@@ -383,7 +379,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 			// when download completed
 			stream.on('close', function() {
 				if (failed) {
-					return callback('Download of zipball from GitHub failed (see logs).');
+					return that._logResult('Download of zipball from GitHub failed (see logs).', startedAt, sha, null, callback);
 				}
 				logger.log('info', '[autoupdate] Done, extracting now...');
 				// unzip each entry, trimming the first level of the folder structure.
@@ -467,8 +463,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 	var that = this;
 	if (err) {
 		logger.log('error', '[autoupdate] ERROR: ' + err);
-		that.emit('updateFailed', { error: err });
-		return callback(err);
+		return that._logResult(err, oldConfig.startedAt, newCommit.sha, null, callback);
 	}
 
 	// read updated package and settings
@@ -815,21 +810,23 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 
 		// compute and save update result.
 		result.updatedTo = version;
+		that._logResult(null, oldConfig.startedAt, newCommit.sha, result, function(err, result) {
 
-		// reboot
-		logger.log('info', '[autoupdate] Update complete: %s', util.inspect(result, false, 10, false)); // last is color
-		that.emit('updateCompleted', newCommit);
-		logger.log('warn', '[autoupdate] Killing process in 2 seconds.');
-		setTimeout(function() {
-			logger.log('err', '[autoupdate] kthxbye');
-			process.kill(process.pid, 'SIGTERM');
-		}, 2000);
-		next(null, result);
+			// reboot
+			logger.log('info', '[autoupdate] Update complete: %s', util.inspect(result, false, 10, false)); // last is color
+			logger.log('warn', '[autoupdate] Killing process in 2 seconds.');
+			setTimeout(function() {
+				logger.log('err', '[autoupdate] kthxbye');
+				process.kill(process.pid, 'SIGTERM');
+			}, 2000);
+			next(null, result);
+
+		});
 	};
 
 	async.series([ checkNewDependencies, checkNewSettings, checkNewMigrations ], function(err) {
 		if (err) {
-			return callback(err);
+			return that._logResult(err, oldConfig.startedAt, newCommit.sha, null, callback);
 		}
 		finishAndRestart(callback);
 	});
@@ -1190,20 +1187,47 @@ AutoUpdate.prototype._readVersion = function() {
 	return null;
 };
 
-AutoUpdate.prototype._logResult = function(startedAt, toSha, result, callback) {
-	schema.Upgrade.create({
-		fromSha: version.sha,
-		toSha: toSha,
-		status: 'success',
-		result: JSON.stringify(result),
-		startedAt: startedAt,
-		completedAt: new Date()
-	}).done(function(err) {
-		if (err) {
-			logger.log('error', '[autoupdate] Error updating database: ' + err);
-		}
-		callback(null, result);
-	});
+/**
+ * Adds an upgrade entry to the database and calls the provided callback.
+ * @param err If set, an error status will be created.
+ * @param startedAt Date the update was started
+ * @param toSha Sha of the version to update
+ * @param result Update result
+ * @param callback Callback, called with err and result.
+ * @private
+ */
+AutoUpdate.prototype._logResult = function(err, startedAt, toSha, result, callback) {
+	if (err) {
+		this.emit('updateFailed', { error: err });
+		schema.Upgrade.create({
+			fromSha: version.sha,
+			toSha: toSha,
+			status: 'error',
+			result: JSON.stringify({ errors: { message: err }}),
+			startedAt: startedAt,
+			completedAt: new Date()
+		}).done(function(err) {
+			if (err) {
+				logger.log('error', '[autoupdate] Error updating database: ' + err);
+			}
+			callback(err);
+		});
+	} else {
+		this.emit('updateCompleted', result);
+		schema.Upgrade.create({
+			fromSha: version.sha,
+			toSha: toSha,
+			status: 'success',
+			result: JSON.stringify(result),
+			startedAt: startedAt,
+			completedAt: new Date()
+		}).done(function(err) {
+			if (err) {
+				logger.log('error', '[autoupdate] Error updating database: ' + err);
+			}
+			callback(null, result);
+		});
+	}
 };
 
 module.exports = AutoUpdate;
