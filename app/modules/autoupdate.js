@@ -270,6 +270,9 @@ AutoUpdate.prototype.update = function(sha, callback) {
 	var that = this;
 	var startedAt = new Date();
 
+	// separate log
+	logger.add(logger.transports.Memory);
+
 	// save current package.json and settings.js
 	var oldConfig = {
 		startedAt: startedAt,
@@ -311,7 +314,7 @@ AutoUpdate.prototype.update = function(sha, callback) {
 					logger.log('info', '[autoupdate] Simulating update...');
 					setTimeout(function() {
 						that._postExtract(err, oldConfig, commit, callback);
-					}, 5000);
+					}, 3000);
 					return;
 				}
 
@@ -1203,9 +1206,15 @@ AutoUpdate.prototype._logResult = function(err, startedAt, toSha, result, callba
 			toSha: toSha,
 			status: 'error',
 			result: JSON.stringify({ errors: { message: err }}),
+			log: JSON.stringify({
+				out: logger['default'].transports['memory'].writeOutput,
+				err: logger['default'].transports['memory'].errorOutput
+			}),
 			startedAt: startedAt,
 			completedAt: new Date()
 		}).done(function(err) {
+				logger['default'].transports['memory'].clearLogs();
+				logger.remove(logger.transports.Memory);
 			if (err) {
 				logger.log('error', '[autoupdate] Error updating database: ' + err);
 			}
@@ -1218,10 +1227,16 @@ AutoUpdate.prototype._logResult = function(err, startedAt, toSha, result, callba
 			toSha: toSha,
 			status: 'success',
 			result: JSON.stringify(result),
+			log: JSON.stringify({
+				out: logger['default'].transports['memory'].writeOutput,
+				err: logger['default'].transports['memory'].errorOutput
+			}),
 			repo: settings.pind.repository.user + '/' + settings.pind.repository.repo,
 			startedAt: startedAt,
 			completedAt: new Date()
 		}).done(function(err) {
+			logger['default'].transports['memory'].clearLogs();
+			logger.remove(logger.transports.Memory);
 			if (err) {
 				logger.log('error', '[autoupdate] Error updating database: ' + err);
 			}
