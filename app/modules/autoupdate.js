@@ -404,9 +404,9 @@ AutoUpdate.prototype.update = function(sha, callback) {
 						entry.autodrain();
 					}
 				}).on('close', function() {
-						logger.log('info', '[autoupdate] Done, cleaning up %s', dest);
+					logger.log('info', '[autoupdate] Done, cleaning up %s', dest);
 					fs.unlinkSync(dest);
-						that._postExtract(err, oldConfig, commit, callback);
+					that._postExtract(err, oldConfig, commit, callback);
 				});
 
 			});
@@ -446,7 +446,8 @@ AutoUpdate.prototype.update = function(sha, callback) {
 AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback) {
 
 	var result = {
-		updatedTo: version,
+		updatedFrom: version,
+		updatedTo: null,
 		commits: [],
 		dependencies: {
 			added: [],
@@ -804,9 +805,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 
 	var finishAndRestart = function(next) {
 		// update version.json
-		if (!dryRun) {
-			that.setVersion(newCommit);
-		}
+		that.setVersion(newCommit);
 
 		// compute and save update result.
 		result.updatedTo = version;
@@ -1219,6 +1218,7 @@ AutoUpdate.prototype._logResult = function(err, startedAt, toSha, result, callba
 			toSha: toSha,
 			status: 'success',
 			result: JSON.stringify(result),
+			repo: settings.pind.repository.user + '/' + settings.pind.repository.repo,
 			startedAt: startedAt,
 			completedAt: new Date()
 		}).done(function(err) {

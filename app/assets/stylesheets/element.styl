@@ -7,11 +7,11 @@
 // ============================================================================
 
 // link with a fixed-width label
-a.tt
-	font-family font-fixed
-	&:hover
+a.tt &:hover
 		text-decoration none
 		color black
+.tt
+	font-family font-fixed
 a
 	color color-darker
 a:hover
@@ -65,6 +65,9 @@ img + small
 	font-weight 400
 	display block
 	margin-bottom 20px
+
+span[data-toggle="tooltip"]
+	cursor default
 
 // :form elements
 // ============================================================================
@@ -434,3 +437,9 @@ select.numrows
 	border-radius corner-size
 	background-color #e3e3e3
 	text-shadow 0px 1px 0 rgba(255,255,255,0.8)
+
+.tooltip-inner
+	background-color rgba(0,0,0,0.75)
+	text-shadow 1px 1px 0 black
+.tooltip.top .tooltip-arrow
+	border-top-color rgba(0,0,0,0.75)

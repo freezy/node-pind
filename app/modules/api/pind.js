@@ -113,6 +113,24 @@ var PindApi = function() {
 				}
 				callback(version);
 			});
+		},
+
+		GetPreviousUpdates: function(req, params, callback) {
+			var p = {
+				offset : params.offset ? parseInt(params.offset) : 0,
+				limit : params.limit ? parseInt(params.limit) : 0,
+				order : 'completedAt DESC'
+			};
+			schema.Upgrade.all(p).success(function(rows) {
+				schema.Upgrade.count().success(function(num) {
+					var rs = [];
+					_.each(rows, function(row) {
+						rs.push(row.map());
+					});
+					rows = rs;
+					callback({ rows: rows, count: num });
+				});
+			});
 		}
 	};
 };

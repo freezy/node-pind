@@ -19,7 +19,46 @@ block inner-content
 				i.icon.refresh(ng-class='checkBtnClass')
 				span Check for Update
 
-		.inner
+		.inner(ng-controller='DataCtrl')
+			h2 Previous Updates
+
+			//- control bar
+			div.controls(style='display:none')
+
+				//- pager
+				pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
+
+				//- number of rows
+				numrows.numrows.input-mini.pull-right(selection='[10, 20, 50, 100]', value='limit')
+
+			.clearfix
+
+			//- data
+			div.data.ng-cloak(resource='Pind.GetPreviousUpdates', style='display:none')
+				table.table
+					thead
+						tr
+							th(style='width:14px')
+							th(style='width:70px') From
+							th(style='width:70px') To
+							th(style='width:120px') When
+							th(style='width:55px') Revisions
+							th More
+					tbody
+						tr(ng-repeat='upgrade in data', ng-controller='UpgradeRowController')
+							td
+								i.icon(class="{{ statusIcon }}")
+							td {{ fromVersion }}
+							td {{ toVersion }}
+							td
+								span(data-toggle='tooltip', data-original-title='{{ upgrade.completedAt | date:"medium" }}') {{ upgrade.completedSince }}
+							td(ng-bind-html="upgrade | githubRange")
+							td
+
+
+			//- no data
+			div.nodata(style='display:none')
+				p No previous updates yet.
 
 		//- MODAL: update found
 		.modal-alert.modal.hide.fade.update-found

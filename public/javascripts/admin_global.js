@@ -70,5 +70,21 @@ function GlobalCtrl($scope, Jsonrpc) {
 		$scope.sha = version.sha.substr(0, 8);
 		$scope.url = version.url;
 	}
-
 }
+
+function UpgradeRowController($scope, $element) {
+
+	$scope.statusIcon = $scope.upgrade.status == 'success' ? 'ok' : 'remove';
+	$scope.fromVersion = $scope.upgrade.result.updatedFrom ? $scope.upgrade.result.updatedFrom.version : 'n/a';
+	$scope.toVersion = $scope.upgrade.result.updatedTo ? $scope.upgrade.result.updatedTo.version : 'n/a';
+
+	$element.find('span[data-toggle="tooltip"]').tooltip();
+}
+
+pindAppModule.filter('githubRange', function() {
+	return function(result) {
+		var from = result.fromSha.substr(0, 7);
+		var to = result.toSha.substr(0, 7);
+		return '<a href="https://github.com/' + result.repo + '/compare/' + from + '...' + to + '" target="_blank" class="tt">' + from + '...' + to + '</a>';
+	}
+});

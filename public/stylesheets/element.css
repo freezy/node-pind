@@ -3,12 +3,12 @@ grayscale {
   filter: #808080;
   -webkit-filter: grayscale(100%);
 }
-a.tt {
-  font-family: Inconsolata, Consolas, 'Courier New', Fixed, monospace;
-}
-a.tt:hover {
+a.tt &:hover {
   text-decoration: none;
   color: #000;
+}
+.tt {
+  font-family: Inconsolata, Consolas, 'Courier New', Fixed, monospace;
 }
 a {
   color: #473522;
@@ -72,6 +72,9 @@ img + small {
   font-weight: 400;
   display: block;
   margin-bottom: 20px;
+}
+span[data-toggle="tooltip"] {
+  cursor: default;
 }
 input[type='text'],
 input[type='password'] {
@@ -517,4 +520,11 @@ select.numrows {
   border-radius: 20px;
   background-color: #e3e3e3;
   text-shadow: 0px 1px 0 rgba(255,255,255,0.8);
+}
+.tooltip-inner {
+  background-color: rgba(0,0,0,0.75);
+  text-shadow: 1px 1px 0 #000;
+}
+.tooltip.top .tooltip-arrow {
+  border-top-color: rgba(0,0,0,0.75);
 }
