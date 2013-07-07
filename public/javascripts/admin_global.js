@@ -101,16 +101,14 @@ function UpgradeRowController($scope, $element) {
 	if ($scope.upgrade.result.settings && $scope.upgrade.result.settings.length > 0) {
 		var importantSettings = [];
 		_.each($scope.upgrade.result.settings, function(setting) {
+			setting.warning = '';
+			setting.p = '';
 			if (setting.important) {
 				importantSettings.push(setting);
 				setting.warning = '<br><br><div class="alert alert-warning"><i class="icon warning-sign"></i>&nbsp;<strong>Update this setting.</strong> Default value is probably not appropriate.</div>';
-			} else {
-				setting.warning = '';
 			}
 			if (setting.parent) {
 				setting.p = setting.parent.split(/\./).join(' / ') + ' / ';
-			} else {
-				setting.p = '';
 			}
 			var e = setting.valuetype == 'string' ? '"' : '';
 			setting.v = e + setting.value + e;
@@ -123,26 +121,53 @@ function UpgradeRowController($scope, $element) {
 		}
 		$scope.newSettings = $scope.upgrade.result.settings;
 		$scope.settings = importantIcon + $scope.upgrade.result.settings.length + ' new setting' + ($scope.upgrade.result.settings.length == 1 ? '' : 's');
-		$scope.settingsTitle = 'New Settings';
+		$element.find('span[ng-bind-html="settings"]').attr('data-toggle', 'popover');
 	} else if ($scope.upgrade.result.settings) {
-		$scope.settings = 'none';
+		$scope.settings = '<i>Nothing new.</i>';
 		$scope.settingsInfo = '';
 		$scope.newSettings = [];
 	} else {
-		$scope.settings = 'n/a';
+		$scope.settings = '';
 		$scope.newSettings = [];
 	}
 
 	// deps
 	if ($scope.upgrade.result.dependencies) {
-		$scope.dependencies = 'none';
+		var deps = $scope.upgrade.result.dependencies;
+		var t = [];
+		var i = [];
+		var linkName = function(dep) {
+			if (dep.url) {
+				dep.linkedName = '<a href="' + dep.url + '" target="_blank">' + dep.name + '</a>';
+			} else {
+				dep.linkedName = dep.name;
+			}
+		}
+		if (deps.added.length > 0) {
+			t.push(deps.added.length + ' added');
+			_.each(deps.added, linkName);
+		}
+		if (deps.updated.length > 0) {
+			t.push(deps.updated.length + ' updated');
+			_.each(deps.updated, linkName);
+		}
+		if (deps.removed.length > 0) {
+			t.push(deps.removed.length + ' removed');
+			_.each(deps.removed, linkName);
+		}
+
+		if (t.length > 0) {
+			$scope.dependencies = t.join(', ') + '.';
+			$element.find('span[ng-bind-html="dependencies"]').attr('data-toggle', 'popover');
+		} else {
+			$scope.dependencies = '<i>No changes.</i>';
+		}
+
 		$scope.dependenciesInfo = 'List here.';
 
-	} else if ($scope.upgrade.result.dependencies) {
-		$scope.dependencies = 'none';
-		$scope.dependenciesInfo = '';
 	} else {
-		$scope.dependencies = 'n/a';
+		$scope.dependencies = '';
+		$scope.dependenciesInfo = '';
 	}
 
 	// migrations

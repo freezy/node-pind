@@ -20,7 +20,7 @@ block inner-content
 				span Check for Update
 
 		.inner(ng-controller='DataCtrl')
-			h2 Previous Updates
+			h2 Upgrade History
 
 			//- control bar
 			div.controls(style='display:none')
@@ -58,7 +58,7 @@ block inner-content
 							td
 								span(ng-bind-html="upgrade | githubRange", data-toggle='tooltip', data-original-title='{{ commitInfo }}')
 							td
-								span(ng-bind-html="settings", data-toggle='popover', data-original-title='{{ settingsTitle }}')
+								span(ng-bind-html="settings", data-original-title='New Settings')
 								span.popover(style='display:none')
 									table
 										tr
@@ -71,7 +71,23 @@ block inner-content
 												span(ng-bind-html="setting.warning")
 											td(ng-bind-html="setting.d")
 							td
-								span(ng-bind-html="dependencies", data-toggle='tooltip', data-original-title='{{ dependenciesInfo }}')
+								span(ng-bind-html="dependencies", data-original-title='Dependencies')
+								span.popover(style='display:none')
+									h4 Added
+									ul
+										li(ng-repeat='a in upgrade.result.dependencies.added')
+											span(ng-bind-html='a.linkedName')
+											| &nbsp;&nbsp;<tt>{{ a.version }}</tt>
+									h4 Updated
+									ul
+										li(ng-repeat='u in upgrade.result.dependencies.updated')
+											span(ng-bind-html='u.linkedName')
+											| &nbsp;&nbsp;<tt>{{ u.from }}</tt> &rarr; <tt>{{ u.version }}</tt>
+									h4 Removed
+									ul
+										li(ng-repeat='r in upgrade.result.dependencies.removed')
+											span(ng-bind-html='r.linkedName')
+											| &nbsp;&nbsp;<tt>{{ r.version }}</tt>
 							td
 								span(ng-bind-html="migrations", data-toggle='tooltip', data-original-title='{{ migrationsInfo }}')
 
@@ -103,7 +119,7 @@ block inner-content
 						a(href="{{updateLink}}", target='_blank') {{sha}}
 
 			div.modal-footer
-				button.download.btn.btn-warning.submit.right(data-dismiss="modal", ng-click="updatePind()") Update
+				button.download.btn.btn-warning.submit.right(data-dismiss="modal", ng-click="updatePind()") Upgrade
 				a.cancel.btn.link-big(href='#') Cancel
 
 		//- MODAL: no update

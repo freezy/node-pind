@@ -537,8 +537,26 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 				npm.on('log', function(message) {
 					logger.log('info', '[autoupdate] [npm] ' + message);
 				});
+				var getUrls = function(deps) {
+					var p;
+					_.each(deps, function(dep) {
+						if (fs.existsSync(__dirname + '../../../node_modules/' + dep.name + '/package.json')) {
+							try {
+								p = JSON.parse(fs.readFileSync(__dirname + '../../../node_modules/' + dep.name + '/package.json').toString());
+								if (p.homepage) {
+									dep.url = p.homepage;
+								} else if (p.repository && p.repository.url) {
+									dep.url = p.repository.url.replace(/^git:/i, 'https:');
+								}
+							} catch (err) {}
+						}
+					});
+				};
 				if (dryRun) {
 					logger.log('info', '[autoupdate] Skipping `npm install`.');
+					getUrls(result.dependencies.added);
+					getUrls(result.dependencies.updated);
+					getUrls(result.dependencies.removed);
 					return next();
 				}
 				npm.commands.install([], function(err) {
@@ -551,6 +569,9 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 						return next();
 					}
 					logger.log('info', '[autoupdate] NPM update successful.');
+					getUrls(result.dependencies.added);
+					getUrls(result.dependencies.updated);
+					getUrls(result.dependencies.removed);
 					next();
 				});
 			});
