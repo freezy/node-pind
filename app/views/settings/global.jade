@@ -46,11 +46,18 @@ block inner-content
 							th Settings
 							th Deps
 							th Migrations
+							th(style='width:14px')
 					tbody
 						tr(ng-repeat='upgrade in data', ng-controller='UpgradeRowController')
 							td
-								span(data-toggle='tooltip', data-original-title='{{ statusInfo }}')
+								span.status(data-original-title='{{ statusInfo }}')
 									i.icon(class="{{ statusIcon }}")
+								span.popover(style='display:none')
+									ul
+										li(ng-repeat='e in upgrade.result.errors')
+											span.label {{ e.when }}
+											| {{ e.message }}
+
 							td {{ fromVersion }}
 							td {{ toVersion }}
 							td
@@ -90,7 +97,12 @@ block inner-content
 											| &nbsp;&nbsp;<tt>{{ r.version }}</tt>
 							td
 								span(ng-bind-html="migrations", data-toggle='tooltip', data-original-title='{{ migrationsInfo }}')
-
+							td
+								span(data-toggle='popover', data-original-title='Upgrade Log', data-placement='left')
+									i.icon.file
+								span.popover(style='display:none')
+									ul
+										li(ng-repeat='r in upgrade.log.out') {{ r }}
 
 			//- no data
 			div.nodata

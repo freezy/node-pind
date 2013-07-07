@@ -25,6 +25,7 @@ module.exports = function(sequelize, DataTypes) {
 			map: function() {
 				var result = this.values;
 				result.result = JSON.parse(result.result);
+				result.log = JSON.parse(result.log);
 				result.startedSince = relativeDate(result.startedAt);
 				result.completedSince = relativeDate(result.completedAt);
 				return result;

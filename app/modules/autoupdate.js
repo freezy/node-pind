@@ -564,7 +564,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 						logger.log('error', '[autoupdate] Error updating dependencies: ' + err);
 						result.errors.push({
 							when: 'dependencies',
-							message: err
+							message: err.toString()
 						});
 						return next();
 					}

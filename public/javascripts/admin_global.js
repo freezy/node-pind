@@ -87,11 +87,17 @@ function UpgradeRowController($scope, $element) {
 	}
 
 	// status
-	if ($scope.upgrade.status == 'success') {
+	if ($scope.upgrade.result.errors && $scope.upgrade.result.errors.length > 0) {
+		$scope.statusIcon = 'warning-sign';
+		$scope.statusInfo = 'Errors while post-processing upgrade'
+		$element.find('span.status').attr('data-toggle', 'popover');
+
+	} else if ($scope.upgrade.status == 'success') {
 		$scope.statusIcon = 'ok';
 
 		var duration = new Date($scope.upgrade.completedAt).getTime() - new Date($scope.upgrade.startedAt).getTime();
 		$scope.statusInfo = 'Successfully updated in ' + juration.stringify(duration / 1000) + '.';
+		$element.find('span.status').attr('data-toggle', 'tooltip');
 	} else {
 		$scope.statusIcon = 'remove';
 		$scope.statusInfo = 'Error updating: ' + $scope.upgrade.error.message;
