@@ -69,6 +69,11 @@ img + small
 span[data-toggle="tooltip"]
 	cursor default
 
+span[data-toggle="popover"]
+	cursor pointer
+	&:hover
+		color black
+
 // :form elements
 // ============================================================================
 
@@ -443,3 +448,11 @@ select.numrows
 	text-shadow 1px 1px 0 black
 .tooltip.top .tooltip-arrow
 	border-top-color rgba(0,0,0,0.75)
+
+.popover
+	max-width 376px
+.popover > h3
+	font-size 17px
+	font-weight 600
+	padding 11px 14px
+	background-color color-light

@@ -714,6 +714,8 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 					result.settings.push({
 						parent: parentPath ? parentPath : null,
 						name: node.start.value,
+						value: node.end.value,
+						valuetype: node.end.type,
 						description: descr,
 						important: important
 					});
@@ -1205,7 +1207,7 @@ AutoUpdate.prototype._logResult = function(err, startedAt, toSha, result, callba
 			fromSha: version.sha,
 			toSha: toSha,
 			status: 'error',
-			result: JSON.stringify({ errors: { message: err }}),
+			result: JSON.stringify({ error: { message: err }}),
 			log: JSON.stringify({
 				out: logger['default'].transports['memory'].writeOutput,
 				err: logger['default'].transports['memory'].errorOutput

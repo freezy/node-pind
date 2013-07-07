@@ -42,22 +42,42 @@ block inner-content
 							th(style='width:70px') From
 							th(style='width:70px') To
 							th(style='width:120px') When
-							th(style='width:55px') Revisions
-							th More
+							th(style='width:55px') Commits
+							th Settings
+							th Deps
+							th Migrations
 					tbody
 						tr(ng-repeat='upgrade in data', ng-controller='UpgradeRowController')
 							td
-								i.icon(class="{{ statusIcon }}")
+								span(data-toggle='tooltip', data-original-title='{{ statusInfo }}')
+									i.icon(class="{{ statusIcon }}")
 							td {{ fromVersion }}
 							td {{ toVersion }}
 							td
 								span(data-toggle='tooltip', data-original-title='{{ upgrade.completedAt | date:"medium" }}') {{ upgrade.completedSince }}
-							td(ng-bind-html="upgrade | githubRange")
 							td
+								span(ng-bind-html="upgrade | githubRange", data-toggle='tooltip', data-original-title='{{ commitInfo }}')
+							td
+								span(ng-bind-html="settings", data-toggle='popover', data-original-title='{{ settingsTitle }}')
+								span.popover(style='display:none')
+									table
+										tr
+											th Setting
+											th Description
+										tr(ng-repeat='setting in newSettings')
+											td
+												| {{ setting.p }} <strong>{{ setting.name }}</strong>
+												| = {{ setting.v}}
+												span(ng-bind-html="setting.warning")
+											td(ng-bind-html="setting.d")
+							td
+								span(ng-bind-html="dependencies", data-toggle='tooltip', data-original-title='{{ dependenciesInfo }}')
+							td
+								span(ng-bind-html="migrations", data-toggle='tooltip', data-original-title='{{ migrationsInfo }}')
 
 
 			//- no data
-			div.nodata(style='display:none')
+			div.nodata
 				p No previous updates yet.
 
 		//- MODAL: update found

@@ -76,6 +76,12 @@ img + small {
 span[data-toggle="tooltip"] {
   cursor: default;
 }
+span[data-toggle="popover"] {
+  cursor: pointer;
+}
+span[data-toggle="popover"]:hover {
+  color: #000;
+}
 input[type='text'],
 input[type='password'] {
   height: initial;
@@ -527,4 +533,13 @@ select.numrows {
 }
 .tooltip.top .tooltip-arrow {
   border-top-color: rgba(0,0,0,0.75);
+}
+.popover {
+  max-width: 376px;
+}
+.popover > h3 {
+  font-size: 17px;
+  font-weight: 600;
+  padding: 11px 14px;
+  background-color: rgba(81,67,54,0.15);
 }
