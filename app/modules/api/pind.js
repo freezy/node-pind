@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var util = require('util');
 var async = require('async');
+var logger = require('winston');
 
 var error = require('../error');
 var schema = require('../../model/schema');
@@ -131,6 +132,14 @@ var PindApi = function() {
 					callback({ rows: rows, count: num });
 				});
 			});
+		},
+
+		Restart: function(req, params, callback) {
+			callback({ message: 'Got it, will kill myself in two seconds.' });
+			setTimeout(function() {
+				logger.log('err', '[api] [pind] Killing myself in hope for a respawn.');
+				process.kill(process.pid, 'SIGTERM');
+			}, 2000);
 		}
 	};
 };

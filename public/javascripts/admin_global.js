@@ -198,6 +198,15 @@ function UpgradeRowController($scope, $element) {
 	});
 }
 
+function AdminFooterCtrl($scope, Jsonrpc) {
+
+	$scope.restart = function() {
+		Jsonrpc.call('Pind.GetVersion', {}, function(err, version) {
+			updateVersion(version);
+		});
+	}
+}
+
 pindAppModule.filter('githubRange', function() {
 	return function(result) {
 		var from = result.fromSha.substr(0, 7);

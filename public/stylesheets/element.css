@@ -73,6 +73,13 @@ img + small {
   display: block;
   margin-bottom: 20px;
 }
+tt {
+  font-family: Inconsolata, Consolas, 'Courier New', Fixed, monospace;
+  background-color: rgba(255,255,255,0.5);
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 2px;
+}
 span[data-toggle="tooltip"] {
   cursor: default;
 }

@@ -148,6 +148,16 @@ block inner-content
 			div.modal-footer
 				button.download.btn.btn-warning.submit.right(data-dismiss="modal") Okay
 
+block inner-footer
+	h2 Available Actions:
+	.row-fluid
+		.span4.action#restart
+			h3 Restart Pind
+			p Kills the Node.js process. Use this if you've updated <tt>settings-mine.js</tt>.
+			button.btn.submit.small(ng-click="restart()")
+				i.icon.off
+				span Restart
+
 block inlineScripts
 	script
 		$(document).ready(function() {

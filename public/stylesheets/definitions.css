@@ -193,6 +193,9 @@ grayscale {
 .icon.warning-sign:before {
   content: "\f071";
 }
+.icon.off:before {
+  content: "\f011";
+}
 .icon.spin {
   display: inline-block;
   -webkit-animation: spin 2s infinite linear;

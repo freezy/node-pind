@@ -244,6 +244,11 @@ function api(method, params, callback) {
 		}
 	});
 }
+
+function AdminFooterCtrl() {
+
+}
+
 /*
 function ngApi($http, method, params, callback) {
 	$http({
