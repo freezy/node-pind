@@ -131,7 +131,7 @@ block inner-content
 						a(href="{{updateLink}}", target='_blank') {{sha}}
 
 			div.modal-footer
-				button.download.btn.btn-warning.submit.right(data-dismiss="modal", ng-click="updatePind()") Upgrade
+				button.btn.btn-warning.submit.right(data-dismiss="modal", ng-click="updatePind()") Upgrade
 				a.cancel.btn.link-big(href='#') Cancel
 
 		//- MODAL: no update
@@ -146,7 +146,7 @@ block inner-content
 				p.center Check back later.
 
 			div.modal-footer
-				button.download.btn.btn-warning.submit.right(data-dismiss="modal") Okay
+				button.btn.btn-warning.submit.right(data-dismiss="modal") Okay
 
 block inner-footer
 	h2 Available Actions:
@@ -154,9 +154,34 @@ block inner-footer
 		.span4.action#restart
 			h3 Restart Pind
 			p Kills the Node.js process. Use this if you've updated <tt>settings-mine.js</tt>.
-			button.btn.submit.small(ng-click="restart()")
+			button.btn.submit.small(ng-click="restartDialog()")
 				i.icon.off
 				span Restart
+
+	//- MODAL: restart?
+	.modal-alert.modal.hide.fade.restart
+		button.close(data-dismiss="modal") &times;
+		div.modal-header
+			h2
+				i.icon.off.big
+				span Restart Pind?
+		.clearfix
+		.modal-footer
+			button.btn.btn-warning.submit.right(data-dismiss="modal", ng-click="restart()") Restart
+			a.cancel.btn.link-big(href='#') Cancel
+
+	//- MODAL: restarting
+	.modal-alert.modal.hide.fade.restarting
+		div.modal-header
+			h2
+				i.icon.off.big
+				span Restarting Pind...
+		.clearfix
+		div.modal-body.center
+			i.icon.spinner2.updating.spin.slow
+		div.modal-footer
+			p
+
 
 block inlineScripts
 	script
