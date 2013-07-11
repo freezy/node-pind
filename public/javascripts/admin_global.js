@@ -57,6 +57,7 @@ function GlobalCtrl($scope, Jsonrpc) {
 				return alert('ERROR: ' + err);
 			}
 			updateVersion(version);
+			location.reload();
 		});
 	};
 
