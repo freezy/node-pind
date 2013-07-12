@@ -34,10 +34,12 @@ module.exports = function(sequelize, DataTypes) {
 			unique: true,
 			allowNull: false,
 			validate: {
-				l: function(value) {
+				l: function(value, next) {
 					var len = value.trim().length;
 					if (len < 2 || len > 3 ) {
-						return 'User name must be either two or tree characters.';
+						next('User name must be either two or tree characters.');
+					} else {
+						next();
 					}
 				}
 			}
@@ -46,9 +48,11 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
-				l: function(value) {
+				l: function(value, next) {
 					if (value.trim().length < 6) {
-						return 'Password must be at least six characters.';
+						next('Password must be at least six characters.');
+					} else {
+						next();
 					}
 				}
 			}
