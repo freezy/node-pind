@@ -797,6 +797,13 @@ ul.badge-group li:last-child {
 .dmd.leaderboard > table td {
   border: none;
 }
+.dmd.leaderboard > table td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.dmd.leaderboard > table tr:first-child > td {
+  padding-top: 10px;
+}
 #console {
   padding: 0;
   margin: -1px;

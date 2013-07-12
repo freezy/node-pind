@@ -54,7 +54,7 @@ block inner-content
 							.progress.progress-striped(class='{{progressBarClass}}')
 								.bar(style="width: {{progress}}%;")
 						td.size {{transfer.displaySize}}
-						td 
+						td
 							i.icon(class='{{icon}}')
 						td
 							span(ng-bind-html="displayName")
@@ -83,8 +83,8 @@ block inner-content
 
 block inner-footer
 	h2 Available Actions:
-	.row
-		.span3.action
+	.row-fluid
+		.span4.action
 			h3 Control Panel
 			p Manually start, resume, pause or stop the queue.
 			button.btn.submit.small.more(ng-disabled='startDisabled', ng-click='start()')
@@ -95,19 +95,19 @@ block inner-footer
 				i.icon.stop
 			span.transfer-status.ng-cloak
 				strong.status {{status}}
-		.span3.action
+		.span4.action
 			h3 Clear downloaded
 			p Remove all completed transfers from the database.
 			button.btn.submit.small
 				i.icon.trash
 				span Clear
-		.span3.action
+		.span4.action
 			h3 Reset failed
 			p Clear and re-add all failed transfers to the queue.
 			button.btn.submit.small(ng-click='resetFailed()')
 				i.icon.refresh
 				span Reset
-		
+
 
 block inlineScripts
 	script
