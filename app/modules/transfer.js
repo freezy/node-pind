@@ -145,8 +145,8 @@ Transfer.prototype.delete = function(id, callback) {
  */
 Transfer.prototype.queue = function(transfer, callback) {
 	var that = this;
-	if (!transfer.type || !transfer.engine || !transfer.reference || !transfer.url || !transfer.title) {
-		throw new Error('The following fields of a transfer must be set: "type", "engine", "reference", "url" and "title".');
+	if (!transfer.type || !transfer.engine || !transfer.url || !transfer.title) {
+		throw new Error('The following fields of a transfer must be set: "type", "engine", "url" and "title", got: ' + util.inspect(transfer));
 	}
 	if (!transfer.postAction) {
 		transfer.postAction = {};

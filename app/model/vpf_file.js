@@ -61,6 +61,7 @@ module.exports = function(sequelize, DataTypes) {
 					} else {
 						result.downloadStatus = 'none'
 					}
+					result.url = 'http://www.vpforums.org/index.php?app=downloads&showfile=' + result.fileId;
 
 					return result;
 				}

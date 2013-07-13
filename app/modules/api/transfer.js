@@ -34,7 +34,7 @@ var TransferApi = function() {
 				console.log('Reorder: %j', params);
 
 				schema.Transfer.all({ where: { id: ids }}).success(function(rows) {
-					
+
 					// item has been dropped between 2 rows: easy
 					if (params.between.prev && params.between.next) {
 						if (rows.length != 2) {
@@ -45,7 +45,7 @@ var TransferApi = function() {
 						row.updateAttributes({
 							sort: Math.round((prev.sort + next.sort) / 2)
 						});
-					} 
+					}
 					// item has been dropped on top of the list (could be page 2+ though)
 					if (!params.between.prev && params.between.next) {
 						var next = rows[0];
@@ -121,9 +121,10 @@ var TransferApi = function() {
 		AddVPFTable : function(req, params, callback) {
 			schema.VpfFile.find(params.id).success(function(row) {
 				if (row) {
+					row = row.map();
 					transfer.queue({
 						title: row.title,
-						url: 'http://www.vpforums.org/index.php?app=downloads&showfile=' + row.fileId,
+						url: row.url,
 						type: 'table',
 						engine: 'vpf',
 						reference: row.id,
@@ -167,7 +168,7 @@ var TransferApi = function() {
 				// completed
 				+ 'SELECT *, 4 AS s, 1 as sAsc, completedAt as sDesc FROM transfers WHERE completedAt IS NOT NULL'
 				+ p2 + ' ORDER BY s ASC, sAsc ASC, sDesc DESC'
-			
+
 			// pagination
 			if (!search) {
 				query += ' LIMIT ' + (params.limit ? parseInt(params.limit) : 0);

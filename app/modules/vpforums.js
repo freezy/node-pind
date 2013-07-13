@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var fs = require('fs');
 var sys = require('sys');
 var util = require('util');
@@ -463,7 +464,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 					logger.log('info', '%j', obj, {});
 					return next(err);
 				}
-				results.push(r);
+				results.push(r.map());
 				next();
 			};
 			if (currentCache[item.fileId]) {
@@ -593,6 +594,9 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 					// if empty, launch fetch.
 					fetch(cat, words[1][0], result, 1, callback);
 				} else {
+					_.map(rows, function(row) {
+						return row.map();
+					});
 					callback(null, result.concat(rows));
 				}
 			});
@@ -616,6 +620,10 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			// if empty, launch fetch.
 			fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
 		} else {
+
+			_.map(rows, function(row) {
+				return row.map();
+			});
 
 			// update "cached cache"
 			for (var i = 0; i < rows.length; i++) {

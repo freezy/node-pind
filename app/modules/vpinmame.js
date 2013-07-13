@@ -7,7 +7,7 @@ var request = require('request');
 var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
-var ipdb, vpf;
+var ipdb, vpf, _app;
 
 var isFetchingRoms = false;
 
@@ -21,6 +21,14 @@ function VPinMAME(app) {
 
 	ipdb = require('./ipdb')(app);
 	vpf = require('./vpforums')(app);
+
+	// transfer needs to be initialized later, otherwise we'll get
+	// path.js:163
+	// resolvedTail = normalizeArray(resolvedTail.split(/[\\\/]+/).filter(f),
+	// 	^
+	//	RangeError: Maximum call stack size exceeded
+	// no idea WTF that's supposed to mean.
+	_app = app;
 }
 util.inherits(VPinMAME, events.EventEmitter);
 
@@ -54,13 +62,13 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	 * function.
 	 *
 	 * @param links List of download links
-	 * @param downloadFct Download function. Args are link object, destination folder and callback
+	 * @param engine How to download. "vpf" or "ipdb" for now.
 	 * @param callback Callback function
 	 */
-	var checkAndDownload = function(links, downloadFct, callback) {
+	var checkAndDownload = function(links, engine, callback) {
 		async.eachSeries(links, function(link, next) {
 			if (!fs.existsSync(settings.vpinmame.path + '/roms/' + link.filename)) {
-				downloadFct(link, settings.vpinmame.path + '/roms', function(err, filepath) {
+				queue(link, settings.vpinmame.path + '/roms', engine, link.id, function(err, filepath) {
 					downloadedRoms.push(filepath);
 					next();
 				});
@@ -98,6 +106,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	 * @param next Callback. Second argument is filename where saved.
 	 */
 	var download = function(link, folder, next) {
+
 		that.emit('ipdbDownloadStarted', { filename: link.filename });
 		logger.log('info', '[vpm] Downloading %s at %s...', link.title, link.url);
 		var filepath = folder + '/' + link.filename;
@@ -112,6 +121,23 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 		request(link.url).pipe(stream);
 	};
 
+	var queue = function(link, folder, engine, reference, next) {
+		var transfer = require('./transfer')(_app);
+		transfer.queue({
+			title: link.title,
+			url: link.url,
+			type: 'rom',
+			engine: engine,
+			reference: table.ipdb_no
+		}, function(err, msg) {
+			if (err) {
+				logger.log('error', '[vpm] Error querying item "%s".', link.title);
+				return next(err);
+			}
+			next(null, msg);
+		});
+	}
+
 	/**
 	 * Downloads all ROMs from vpforums.org (that don't exist already).
 	 * @param table Tables row from database
@@ -123,7 +149,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 				logger.log('error', '[vpm] ERROR: ' + err);
 				return next(err);
 			}
-			checkAndDownload(links, vpf.download, function(err) {
+			checkAndDownload(links, 'vpf', function(err) {
 				if (err) {
 					return next(err);
 				}
@@ -146,7 +172,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 				logger.log('error', '[vpm] ERROR: ' + err);
 				return next(err);
 			}
-			checkAndDownload(links, download, function(err) {
+			checkAndDownload(links, 'ipdb', function(err) {
 				if (err) {
 					return next(err);
 				}
