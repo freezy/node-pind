@@ -621,6 +621,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
 		} else {
 
+			// adding additional fields
 			_.map(rows, function(row) {
 				return row.map();
 			});
