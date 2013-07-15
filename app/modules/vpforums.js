@@ -594,10 +594,11 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 					// if empty, launch fetch.
 					fetch(cat, words[1][0], result, 1, callback);
 				} else {
-					_.map(rows, function(row) {
-						return row.map();
+					var returnedRows = [];
+					_.each(rows, function(row) {
+						returnedRows.push(schema.VpfFile.map(row));
 					});
-					callback(null, result.concat(rows));
+					callback(null, result.concat(returnedRows));
 				}
 			});
 		} else {
@@ -622,14 +623,11 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 		} else {
 
 			// adding additional fields
-			_.map(rows, function(row) {
-				return row.map();
+			var returnedRows = [];
+			_.each(rows, function(row) {
+				returnedRows.push(schema.VpfFile.map(row));
+				currentCache[row.fileId] = row;
 			});
-
-			// update "cached cache"
-			for (var i = 0; i < rows.length; i++) {
-				currentCache[rows[i].fileId] = rows[i];
-			}
 
 			if (options.forceUpdate) {
 				logger.log('info', '[vpf] Force-refreshing category %d.', cat);
@@ -640,7 +638,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 				} else {
 					logger.log('info', '[vpf] Returning all cached letters for category %d.', cat);
 				}
-				goAgainOrCallback(null, rows);
+				goAgainOrCallback(null, returnedRows);
 			}
 		}
 	});

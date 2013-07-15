@@ -128,7 +128,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 			url: link.url,
 			type: 'rom',
 			engine: engine,
-			reference: table.ipdb_no
+			reference: reference
 		}, function(err, msg) {
 			if (err) {
 				logger.log('error', '[vpm] Error querying item "%s".', link.title);

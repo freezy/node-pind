@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
 				primaryKey: true
 			},
 			title: DataTypes.STRING,
+			filename: DataTypes.STRING,
 			url: DataTypes.STRING,
 			type: DataTypes.ENUM('rom', 'table', 'mediapack', 'video'),
 			engine: DataTypes.ENUM('vpf', 'ipdb'),

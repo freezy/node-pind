@@ -10,7 +10,7 @@ var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 
 var vpf, vpm, extr;
-var transferring = { vpf: [] };
+var transferring = { vpf: [], ipdb: [] };
 var progress = { };
 
 function Transfer(app) {
@@ -149,7 +149,10 @@ Transfer.prototype.queue = function(transfer, callback) {
 		throw new Error('The following fields of a transfer must be set: "type", "engine", "url" and "title", got: ' + util.inspect(transfer));
 	}
 	if (!transfer.postAction) {
-		transfer.postAction = {};
+		transfer.postAction = '{}';
+	}
+	if (_.isObject(transfer.postAction)) {
+		transfer.postAction = JSON.stringify(transfer.postAction);
 	}
 	schema.Transfer.all({ where: {
 		type: transfer.type,
@@ -238,7 +241,7 @@ Transfer.prototype.next = function(callback) {
 							downloadStarted = true;
 
 							// update "started" clock..
-							logger.log('info', '[transfer] Starting download of %s', transfer.url);
+							logger.log('info', '[transfer] [vpf] Starting download of %s', transfer.url);
 							transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
 
 								// update file size as soon as we receive the content length.
@@ -247,7 +250,7 @@ Transfer.prototype.next = function(callback) {
 										schema.Transfer.find(data.reference.id).success(function(row) {
 											if (row) {
 												row.updateAttributes({ size: data.contentLength });
-												logger.log('info', '[transfer] Updating size of transfer %s to %s.', data.reference.id, data.contentLength);
+												logger.log('info', '[transfer] [vpf] Updating size of transfer %s to %s.', data.reference.id, data.contentLength);
 												that.emit('transferSizeKnown', {
 													id: data.reference.id,
 													size: data.contentLength,
@@ -255,7 +258,7 @@ Transfer.prototype.next = function(callback) {
 												});
 
 											} else {
-												logger.log('error', '[transfer] Could not find transfer with id %s for updating size to %s.', data.reference.id, data.contentLength);
+												logger.log('error', '[transfer] [vpf] Could not find transfer with id %s for updating size to %s.', data.reference.id, data.contentLength);
 											}
 										});
 
@@ -325,6 +328,20 @@ Transfer.prototype.next = function(callback) {
 							transferring.vpf.push(transfer);
 							download(transfer);
 						}
+					}
+					break;
+					case 'ipdb': {
+						logger.log('info', '[transfer] [ipdb] Downloading %s at %s...', link.title, link.url);
+						var filepath = settings.pind.tmp + '/' + link.filename;
+						var stream = fs.createWriteStream(filepath);
+						stream.on('close', function() {
+							logger.log('info', '[transfer] [ipdb] Download complete, saved to %s.', filepath);
+							next(null, filepath);
+						});
+						stream.on('error', function(err) {
+							logger.log('error', '[transfer] [ipdb] Error downloading %s: %s', link.url, err);
+						});
+						request(link.url).pipe(stream);
 					}
 					break;
 					default: {
