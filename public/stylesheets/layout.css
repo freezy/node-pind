@@ -4,13 +4,13 @@ grayscale {
   -webkit-filter: grayscale(100%);
 }
 ::-moz-selection {
-  color: #000;
-  background: rgba(224,157,85,0.25);
+  color: #fff;
+  background: #e09d55;
   text-shadow: none;
 }
 ::selection {
-  color: #000;
-  background: rgba(224,157,85,0.25);
+  color: #fff;
+  background: #e09d55;
   text-shadow: none;
 }
 body {
@@ -110,6 +110,9 @@ form {
 }
 .graph {
   height: 200px;
+}
+tr > td.text-right {
+  text-align: right;
 }
 .subheading {
   font-size: 11px;

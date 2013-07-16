@@ -326,19 +326,27 @@ ul.badge-group
 	&.hiscores
 		height 340px
 	&.game
-		height 120px
+		height 100px
 		display table
+		padding-top 30px
 	&.leaderboard
-		h3
-			margin-left 15px
-			margin-top 15px
-		
-	& > .thumbnail-content-centered
-			display table-cell
-			vertical-align middle
+		& > h3
+			margin-top 10px
+			margin-bottom 10px
 			text-align center
-			padding 0 10px
-			width 100%
+	&.coindrop
+		& > h3
+			margin-top 15px
+			margin-bottom 15px
+			text-align center
+
+	& > .thumbnail-content-centered
+			display table
+			margin-left auto
+			margin-right auto
+
+			& > .fuzzy3d
+				margin-right 0
 
 	h3
 		font-weight 700

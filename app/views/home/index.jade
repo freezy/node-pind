@@ -84,19 +84,20 @@ block content
 												tr
 													td= hiscore.user
 													td.text-right= hiscore.totalPoints
-						p
+						br
 
 						//- QUICK COIN DROP
 						//---------------------------------------------------------
 						.thumbnail
 							img(src='/images/header-coins.png')
 							hr
-							.thumbnail-content
+							.thumbnail-content.coindrop
 								h3 Quick Coin Drop
-								.fuzzy3d
-									button Drop -.20
-								.clearfix
-						p
+								span.thumbnail-content-centered
+									.fuzzy3d
+										button Drop -.20
+							.clearfix
+						br
 
 						//- FREE TABLE OF THE WEEK
 						//---------------------------------------------------------

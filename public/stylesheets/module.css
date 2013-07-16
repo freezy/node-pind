@@ -411,19 +411,27 @@ ul.badge-group li:last-child {
   height: 340px;
 }
 .thumbnail-content.game {
-  height: 120px;
+  height: 100px;
   display: table;
+  padding-top: 30px;
 }
-.thumbnail-content.leaderboard h3 {
-  margin-left: 15px;
+.thumbnail-content.leaderboard > h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.thumbnail-content.coindrop > h3 {
   margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 .thumbnail-content > .thumbnail-content-centered {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-  padding: 0 10px;
-  width: 100%;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+.thumbnail-content > .thumbnail-content-centered > .fuzzy3d {
+  margin-right: 0;
 }
 .thumbnail-content h3 {
   font-weight: 700;
