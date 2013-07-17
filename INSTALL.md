@@ -7,7 +7,7 @@ Installation
 ------------------
 Since Pind is running on top of Node.js, there is no need of an additional
 HTTP server. For the dependencies used in the project, 
-[NPM](https://github.com/isaacs/npm) will take care of downloading and 
+[npm](https://github.com/isaacs/npm) will take care of downloading and
 compiling all the necessary libraries.
 
 Download and install Node.js from [here](http://nodejs.org/). Also, make sure
@@ -50,7 +50,7 @@ that, the following software is needed:
 1. Open a command line prompt - Win+R, `cmd`, enter.
 2. Go to where you want to install Pind  - `cd C:\Games\`
 3. Clone the repository - `git clone git://github.com/freezy/node-pind.git`
-4. Install dependencies - `npm install -d`
+4. Install dependencies - `cd node-pind`, `npm install -d`
 
 Don't close the command line window just yet.
 
@@ -59,6 +59,7 @@ Don't close the command line window just yet.
 -----------------
 1. Copy `config/settings.json` to `config/settings-mine.json` and open it in a text editor.
 2. Go through every option and update it if necessary.
+3. Make sure you got everything by searching "@important" in the file and double-check each value.
 3. Initialize database schema via command prompt - `node create-schema`
 4. Start Pind for a first test run (`node server`) and open a browser at
    `http://localhost`.

@@ -54,13 +54,11 @@ block content
 					.graph.graph-playtime-histogram
 
 					h5 High Scores
-
-					.thumbnails.hiscores
-						ul.ranking.champ
-							li(ng-repeat="hiscore in getHiscores('hiscore')", class="{{hiscore.class}}")
-								span.rank {{hiscore.rank}}
-								span.player {{hiscore.player}}
-								span.score {{hiscore.score}}
+					ul.
+						li(ng-repeat="hiscore in getHiscores('hiscore')", class="{{hiscore.class}}")
+							span.rank {{hiscore.rank}}
+							span.player {{hiscore.player}}
+							span.score {{hiscore.score}}
 
 					h5 Game Information
 					p Some game data here.
