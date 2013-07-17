@@ -26,7 +26,7 @@ function LatestReleasesCtrl($scope) {
 
 function LatestGamesCtrl($scope) {
 	$scope.limit = 3;
-	$scope.fields = ['name', 'year', 'manufacturer', 'url_backglass_medium' ];
+	$scope.fields = ['name', 'year', 'manufacturer', 'url', 'url_backglass_medium' ];
 }
 
 function LatestHiscoresCtrl($scope) {
