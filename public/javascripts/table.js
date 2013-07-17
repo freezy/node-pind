@@ -5,6 +5,7 @@ $(document).ready(function() {
 function TableCtrl($scope, $element, Jsonrpc) {
 
 	$scope.table;
+	$scope.hiscores = [];
 
 	Jsonrpc.call('Table.Get', { id: $element.data('id') }, function(err, result) {
 		$scope.table = result;
@@ -106,4 +107,27 @@ function TableCtrl($scope, $element, Jsonrpc) {
 
 
 	});
+
+	Jsonrpc.call('Pind.GetHiscores', { tableIds: [ $element.data('id') ] }, function(err, hiscores) {
+		for (var i = 0; i < hiscores.rows.length; i++) {
+			var hiscore = hiscores.rows[i];
+
+			if (hiscore.score) {
+				hiscore.score = groupdigit(hiscore.score);
+			}
+			hiscore.class = hiscore.user == null ? 'anon' : '';
+			$scope.hiscores.push(hiscore);
+		}
+	});
+
+	$scope.getHiscores = function(type) {
+		var hiscores = [];
+		for (var i = 0; i < $scope.hiscores.length; i++) {
+			var hiscore = $scope.hiscores[i];
+			if (hiscore.type == type) {
+				hiscores.push(hiscore);
+			}
+		}
+		return hiscores;
+	};
 }
