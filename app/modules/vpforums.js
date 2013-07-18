@@ -53,9 +53,6 @@ VPForums.prototype.initAnnounce = function(app) {
 	// login()
 	an.notice('loginStarted', 'VPF: Logging in as "{{user}}"', 30000);
 
-	// downloadWatcher
-	an.downloadWatch('downloadWatch');
-
 	// index
 	an.data('refreshIndexCompleted', {}, 'downloadIndexUpdated');
 	an.data('downloadIndexCompleted', {}, 'downloadIndexUpdated');
@@ -140,7 +137,7 @@ VPForums.prototype.findTableVideo = function(table, callback) {
  * @param table Row from tables database.
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
- * 		<li>{Array} List of found links. Links are objects with <tt>name</tt> and <tt>url</tt>.</li></ol>
+ * 		<li>{Array} List of found links. Links are objects with <tt>title</tt>, <tt>filename</tt> and <tt>url</tt>.</li></ol>
  */
 VPForums.prototype.getRomLinks = function(table, callback) {
 
@@ -158,6 +155,7 @@ VPForums.prototype.getRomLinks = function(table, callback) {
 		var links = [];
 		for (var i = 0; i < matches.length; i++) {
 			links.push({
+				id: matches[i].id,
 				title: matches[i].title,
 				url:  matches[i].url,
 				filename: matches[i].title.substr(matches[i].title.length - 4).toLowerCase() == '.zip'
@@ -169,54 +167,26 @@ VPForums.prototype.getRomLinks = function(table, callback) {
 	});
 };
 
-VPForums.prototype._watchDownload = function(filename, contentLength, reference) {
-	if (!this.watches) {
-		this.watches = {};
-	}
-	if (!this.openFiles) {
-		this.openFiles = {};
-	}
-	var that = this;
-	var fd = fs.openSync(filename, 'r');
-	this.openFiles[filename] = fd;
-	this.watches[filename] = setInterval(function() {
-		var size = fs.fstatSync(fd).size;
-		that.emit('downloadWatch', { size: size, contentLength: contentLength, reference: reference });
-
-	}, settings.pind.downloaderRefreshRate);
-};
-
-VPForums.prototype._unWatchDownload = function(filename) {
-	if (!this.watches[filename]) {
-		return;
-	}
-	clearInterval(this.watches[filename]);
-	fs.closeSync(this.openFiles[filename]);
-	delete this.watches[filename];
-	delete this.openFiles[filename];
-};
-
 /**
  * Downloads a file from vpforums.org.
- * @param vpffile
- * @param folder
- * @param reference A reference passed to the event emitter.
+ * @param transfer
  * @param callback
+ * @param watcher File watcher. Must implement watch() and unwatch().
  */
-VPForums.prototype.download = function(vpffile, folder, reference, callback) {
+VPForums.prototype.download = function(transfer, callback, watcher) {
 	var that = this;
 
-	that.emit('downloadInitializing', { reference: reference, fileinfo: vpffile.filename ? ' for "' + vpffile.filename + '"' : '' });
+	that.emit('downloadInitializing', { reference: transfer, fileinfo: transfer.filename ? ' for "' + transfer.filename + '"' : '' });
 
 	// fetch the "overview" page
-	request(vpffile.url, function(err, response, body) {
+	request(transfer.url, function(err, response, body) {
 		if (err) {
 			return callback(err);
 		}
 
 		// starts the download, assuming we have a logged session.
 		var download = function(body) {
-			that.emit('downloadPreparing', { reference: reference });
+			that.emit('downloadPreparing', { reference: transfer });
 			var m;
 			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
 				var confirmUrl = m[1].replace(/&amp;/g, '&');
@@ -230,10 +200,10 @@ VPForums.prototype.download = function(vpffile, folder, reference, callback) {
 						if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>\s*Download\s*<\/a>[\s\S]*?<strong\s+class='name'>([^<]+)/i)) {
 							var downloadUrl = m[1].replace(/&amp;/g, '&');
 							var filename = m[2].trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
-							var dest = folder + '/' + filename;
+							var dest = settings.pind.tmp + '/' + filename;
 							var failed = false;
 
-							that.emit('downloadStarted', { filename: filename, destpath: dest, reference: reference });
+							that.emit('downloadStarted', { filename: filename, destpath: dest, reference: transfer });
 							logger.log('info', '[vpf] Downloading %s at %s...', filename, downloadUrl);
 							var stream = fs.createWriteStream(dest);
 							stream.on('close', function() {
@@ -241,6 +211,7 @@ VPForums.prototype.download = function(vpffile, folder, reference, callback) {
 								var fd = fs.openSync(dest, 'r');
 								var size = fs.fstatSync(fd).size;
 								fs.closeSync(fd);
+								watcher.unWatchDownload(dest);
 
 								// check for failed flags
 								if (failed || size < 128000) {
@@ -265,10 +236,9 @@ VPForums.prototype.download = function(vpffile, folder, reference, callback) {
 									}
 								}
 
-								that.emit('downloadCompleted', { size: size, reference: reference });
+								that.emit('downloadCompleted', { size: size, reference: transfer });
 								logger.log('info', '[vpf] Downloaded %d bytes to %s.', size, dest);
 
-								that._unWatchDownload(dest);
 								callback(null, dest);
 							});
 							request(downloadUrl).on('response', function(response) {
@@ -279,18 +249,18 @@ VPForums.prototype.download = function(vpffile, folder, reference, callback) {
 									return;
 								}
 								if (response.headers['content-length']) {
-									that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: reference });
-									that._watchDownload(dest, response.headers['content-length'], reference);
+									that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: transfer });
+									watcher.watchDownload(dest, response.headers['content-length'], transfer);
 								}
 							}).pipe(stream);
 
 						} else {
-							callback('Cannot find file download button at ' + vpffile);
+							callback('Cannot find file download button at ' + transfer);
 						}
 					}
 				});
 			} else {
-				callback('Cannot find confirmation download button at ' + vpffile);
+				callback('Cannot find confirmation download button at ' + transfer);
 			}
 		};
 

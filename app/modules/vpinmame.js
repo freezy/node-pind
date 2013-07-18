@@ -98,34 +98,20 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 		}
 	};
 
-
 	/**
-	 * Downloads a file.
-	 * @param link {Object} Contains: <tt>url</tt>, <tt>filename</tt>, <tt>title</tt>.
-	 * @param folder Destination folder
-	 * @param next Callback. Second argument is filename where saved.
+	 * Queues a file to the transfer table.
+	 * @param link
+	 * @param folder
+	 * @param engine
+	 * @param reference
+	 * @param next
 	 */
-	var download = function(link, folder, next) {
-
-		that.emit('ipdbDownloadStarted', { filename: link.filename });
-		logger.log('info', '[vpm] Downloading %s at %s...', link.title, link.url);
-		var filepath = folder + '/' + link.filename;
-		var stream = fs.createWriteStream(filepath);
-		stream.on('close', function() {
-			logger.log('info', '[vpm] Download complete, saved to %s.', filepath);
-			next(null, filepath);
-		});
-		stream.on('error', function(err) {
-			logger.log('error', '[vpm] Error downloading %s: %s', link.url, err);
-		});
-		request(link.url).pipe(stream);
-	};
-
 	var queue = function(link, folder, engine, reference, next) {
 		var transfer = require('./transfer')(_app);
 		transfer.queue({
 			title: link.title,
 			url: link.url,
+			filename: link.filename,
 			type: 'rom',
 			engine: engine,
 			reference: reference

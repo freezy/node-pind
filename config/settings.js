@@ -195,5 +195,16 @@ module.exports = {
 		 * Number of concurrent downloads allowed.
 		 */
 		numConcurrentDownloads: 3
+	},
+
+	/**
+	 * Ipdb.org-specific settings.
+	 */
+	ipdb: {
+
+		/**
+		 * Number of concurrent downloads allowed.
+		 */
+		numConcurrentDownloads: 3
 	}
 };

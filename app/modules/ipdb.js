@@ -1,3 +1,4 @@
+var fs = require('fs');
 var ent = require('ent');
 var util = require('util');
 var async = require('async');
@@ -7,6 +8,7 @@ var natural = require('natural');
 var request = require('request');
 
 var schema = require('../model/schema');
+var settings = require('../../config/settings-mine');
 
 var hp, ipdb;
 var isSyncing = false;
@@ -354,8 +356,8 @@ Ipdb.prototype.syncTop300 = function(callback) {
  * Returns a list of links to all ROM files for a given table.
  * @param ipdbId IPDB.org ID of the table.
  * @param callback Function to execute after completion, invoked with two arguments:
- * 	<ol><li>{String} Error message on error</li>
- * 		<li>{Array} List of found links. Links are objects with <tt>name</tt> and <tt>url</tt>.</li></ol>
+ * 		<li>{String} Error message on error</li>
+ * 		<li>{Array} List of found links. Links are objects with <tt>title</tt>, <tt>filename</tt> and <tt>url</tt>.</li>
  */
 Ipdb.prototype.getRomLinks = function(ipdbId, callback) {
 	var url = 'http://www.ipdb.org/machine.cgi?id=' + ipdbId;
@@ -363,16 +365,60 @@ Ipdb.prototype.getRomLinks = function(ipdbId, callback) {
 	request(url, function (error, response, body) {
 		var regex = /ZIP<\/a>&nbsp;<\/td><td[^>]+><a href="([^"]+)"\s*>([^<]+rom[^<]+)/gi;
 		var match;
-		var urls = [];
+		var links = [];
 		while (match = regex.exec(body)) {
-			urls.push( {
+			links.push( {
 				title: match[2],
 				url: match[1],
 				filename: match[1].substr(match[1].lastIndexOf('/') + 1).trim()
 			})
 		}
-		callback(null, urls);
+		callback(null, links);
 	});
+};
+
+Ipdb.prototype.download = function(transfer, callback, watcher) {
+
+	var that = this;
+
+	that.emit('downloadInitializing', { reference: transfer, fileinfo: transfer.filename ? ' for "' + transfer.filename + '"' : '' });
+	that.emit('downloadStarted', { filename: transfer.filename, destpath: dest, reference: transfer });
+	logger.log('info', '[ipdb] Downloading %s at %s...', link.title, link.url);
+
+
+	var filepath = settings.pind.tmp + '/' + transfer.filename;
+	var stream = fs.createWriteStream(filepath);
+	var failed = false;
+
+	stream.on('close', function() {
+		watcher.unWatchDownload(dest);
+
+		if (failed) {
+			logger.log('info', '[ipdb] Download failed, see %s what went wrong.', dest);
+			that.emit('downloadFailed', { message: 'Download failed.' });
+			return callback('Download failed.');
+		}
+
+		logger.log('info', '[ipdb] Download complete, saved to %s.', filepath);
+		callback(null, filepath);
+	});
+
+	stream.on('error', function(err) {
+		logger.log('error', '[ipdb] Error downloading %s: %s', transfer.url, err);
+	});
+
+	request(transfer.url).on('response', function(response) {
+
+		if (response.statusCode != 200) {
+			failed = true;
+			logger.log('error', '[ipdb] Download failed with status code %s.', response.statusCode);
+			return;
+		}
+		if (response.headers['content-length']) {
+			that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: transfer });
+			watcher.watchDownload(dest, response.headers['content-length'], transfer);
+		}
+	}).pipe(stream);
 };
 
 Ipdb.prototype.isSyncing = function() {

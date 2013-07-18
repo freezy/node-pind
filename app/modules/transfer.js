@@ -9,7 +9,7 @@ var filesize = require('filesize');
 var settings = require('../../config/settings-mine');
 var schema = require('../model/schema');
 
-var vpf, vpm, extr;
+var vpf, vpm, ipdb, extr;
 var transferring = { vpf: [], ipdb: [] };
 var progress = { };
 
@@ -22,6 +22,7 @@ function Transfer(app) {
 
 	vpf = require('./vpforums')(app);
 	vpm = require('./vpinmame')(app);
+	ipdb = require('./ipdb')(app);
 	extr = require('./extract')(app);
 
 	vpf.on('downloadWatch', function(data) {
@@ -47,6 +48,8 @@ Transfer.prototype.initAnnounce = function(app) {
 	an.forward('transferDeleted');
 	an.forward('transferSizeKnown');
 	an.forward('transferClearedFailed');
+
+	an.downloadWatch('downloadWatch');
 };
 
 /**
@@ -224,10 +227,98 @@ Transfer.prototype.start = function(callback) {
  * @returns {*}
  */
 Transfer.prototype.next = function(callback) {
+
 	var that = this;
 	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'sort ASC' }).success(function(transfers) {
 		if (transfers.length > 0) {
 			var downloadStarted = false;
+
+			var download = function(transfer, modulename, downloadFn) {
+
+				downloadStarted = true;
+
+				// update "started" clock..
+				logger.log('info', '[transfer] [%s] Starting download of %s', modulename, transfer.url);
+				transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
+
+					// update file size as soon as we receive the content length.
+					vpf.on('contentLengthReceived', function(data) {
+						if (data.reference.id) {
+							schema.Transfer.find(data.reference.id).success(function(row) {
+								if (row) {
+									row.updateAttributes({ size: data.contentLength });
+									logger.log('info', '[transfer] [%s] Updating size of transfer %s to %s.', modulename, data.reference.id, data.contentLength);
+									that.emit('transferSizeKnown', {
+										id: data.reference.id,
+										size: data.contentLength,
+										displaySize: filesize(data.contentLength, true)
+									});
+
+								} else {
+									logger.log('error', '[transfer] [%s] Could not find transfer with id %s for updating size to %s.', modulename, data.reference.id, data.contentLength);
+								}
+							});
+
+						}
+					});
+
+					// now start the download at VPF
+					downloadFn(row, function(err, filepath, that) {
+
+						// free up slot
+						transferring[modulename] = _.reject(transferring[modulename], function(t) {
+							return t.id == transfer.id;
+						});
+						delete progress[transfer.id];
+
+						// on error, update db with error and exit
+						if (err) {
+							that.emit('transferFailed', { error: err, transfer: row });
+							return row.updateAttributes({
+								failedAt: new Date(),
+								result: JSON.stringify({ error: err })
+							}).done(function() {
+									callback(err);
+								});
+						}
+
+						// otherwise, update db with success and extract
+						var fd = fs.openSync(filepath, 'r');
+						var size = fs.fstatSync(fd).size;
+						fs.closeSync(fd);
+						row.updateAttributes({
+							completedAt: new Date(),
+							result: JSON.stringify({ extracting: filepath }),
+							size: size
+
+						}).success(function() {
+							that.emit('transferCompleted', { file: filepath, transfer: row });
+
+							// now, extract
+							extr.extract(filepath, null, function(err, extractResult) {
+								// on error, update db with error and exit
+								if (err) {
+									that.emit('extractFailed', { error: err, transfer: row });
+									return row.updateAttributes({
+										failedAt: new Date(),
+										result: err
+									}).success(function() {
+										callback(err);
+									});
+								}
+
+								// update extract result and we're clear.
+								row.updateAttributes({
+									result: JSON.stringify(extractResult)
+								}).success(function(row) {
+									that.emit('extractCompleted', { result: extractResult, transfer: row });
+									callback(null, row);
+								});
+							});
+						});
+					});
+				});
+			};
 
 			// loop through transfers
 			for (var i = 0; i < transfers.length; i++) {
@@ -235,113 +326,20 @@ Transfer.prototype.next = function(callback) {
 				switch (transfer.engine) {
 					case 'vpf': {
 
-						// downloads current transfer
-						var download = function(transfer) {
-
-							downloadStarted = true;
-
-							// update "started" clock..
-							logger.log('info', '[transfer] [vpf] Starting download of %s', transfer.url);
-							transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
-
-								// update file size as soon as we receive the content length.
-								vpf.on('contentLengthReceived', function(data) {
-									if (data.reference.id) {
-										schema.Transfer.find(data.reference.id).success(function(row) {
-											if (row) {
-												row.updateAttributes({ size: data.contentLength });
-												logger.log('info', '[transfer] [vpf] Updating size of transfer %s to %s.', data.reference.id, data.contentLength);
-												that.emit('transferSizeKnown', {
-													id: data.reference.id,
-													size: data.contentLength,
-													displaySize: filesize(data.contentLength, true)
-												});
-
-											} else {
-												logger.log('error', '[transfer] [vpf] Could not find transfer with id %s for updating size to %s.', data.reference.id, data.contentLength);
-											}
-										});
-
-									}
-								});
-
-								// now start the download at VPF
-								vpf.download(row, settings.pind.tmp, row, function(err, filepath) {
-
-									// free up slot
-									transferring.vpf = _.reject(transferring.vpf, function(t) {
-										return t.id == transfer.id;
-									});
-									delete progress[transfer.id];
-
-									// on error, update db with error and exit
-									if (err) {
-										that.emit('transferFailed', { error: err, transfer: row });
-										return row.updateAttributes({
-											failedAt: new Date(),
-											result: JSON.stringify({ error: err })
-										}).done(function() {
-											callback(err);
-										});
-									}
-
-									// otherwise, update db with success and extract
-									var fd = fs.openSync(filepath, 'r');
-									var size = fs.fstatSync(fd).size;
-									fs.closeSync(fd);
-									row.updateAttributes({
-										completedAt: new Date(),
-										result: JSON.stringify({ extracting: filepath }),
-										size: size
-
-									}).success(function() {
-										that.emit('transferCompleted', { file: filepath, transfer: row });
-
-										// now, extract
-										extr.extract(filepath, null, function(err, extractResult) {
-											// on error, update db with error and exit
-											if (err) {
-												that.emit('extractFailed', { error: err, transfer: row });
-												return row.updateAttributes({
-													failedAt: new Date(),
-													result: err
-												}).success(function() {
-													callback(err);
-												});
-											}
-
-											// update extract result and we're clear.
-											row.updateAttributes({
-												result: JSON.stringify(extractResult)
-											}).success(function(row) {
-												that.emit('extractCompleted', { result: extractResult, transfer: row });
-												callback(null, row);
-											});
-										});
-									});
-								});
-							});
-						};
-
 						// found a hit. check if there are download slots available:
 						if (transferring.vpf.length < settings.vpforums.numConcurrentDownloads) {
 							transferring.vpf.push(transfer);
-							download(transfer);
+							download(transfer, 'vpf', vpf.download);
 						}
 					}
 					break;
 					case 'ipdb': {
-						logger.log('info', '[transfer] [ipdb] Downloading %s at %s...', link.title, link.url);
-						var filepath = settings.pind.tmp + '/' + link.filename;
-						var stream = fs.createWriteStream(filepath);
-						stream.on('close', function() {
-							logger.log('info', '[transfer] [ipdb] Download complete, saved to %s.', filepath);
-							next(null, filepath);
-						});
-						stream.on('error', function(err) {
-							logger.log('error', '[transfer] [ipdb] Error downloading %s: %s', link.url, err);
-						});
-						request(link.url).pipe(stream);
+
+						// found a hit. check if there are download slots available:
+						if (transferring.ipdb.length < settings.ipdb.numConcurrentDownloads) {
+							transferring.ipdb.push(transfer);
+							download(transfer, 'ipdb', ipdb.download);
+						}
 					}
 					break;
 					default: {
@@ -424,6 +422,33 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 	} else {
 		callback();
 	}
+};
+
+Transfer.prototype.watchDownload = function(filename, contentLength, reference) {
+	if (!this.watches) {
+		this.watches = {};
+	}
+	if (!this.openFiles) {
+		this.openFiles = {};
+	}
+	var that = this;
+	var fd = fs.openSync(filename, 'r');
+	this.openFiles[filename] = fd;
+	this.watches[filename] = setInterval(function() {
+		var size = fs.fstatSync(fd).size;
+		that.emit('downloadWatch', { size: size, contentLength: contentLength, reference: reference });
+
+	}, settings.pind.downloaderRefreshRate);
+};
+
+Transfer.prototype.unWatchDownload = function(filename) {
+	if (!this.watches[filename]) {
+		return;
+	}
+	clearInterval(this.watches[filename]);
+	fs.closeSync(this.openFiles[filename]);
+	delete this.watches[filename];
+	delete this.openFiles[filename];
 };
 
 module.exports = Transfer;
