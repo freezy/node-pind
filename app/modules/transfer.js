@@ -233,7 +233,7 @@ Transfer.prototype.next = function(callback) {
 		if (transfers.length > 0) {
 			var downloadStarted = false;
 
-			var download = function(transfer, modulename, downloadFn) {
+			var download = function(transfer, modulename, moduleRef) {
 
 				downloadStarted = true;
 
@@ -263,7 +263,7 @@ Transfer.prototype.next = function(callback) {
 					});
 
 					// now start the download at VPF
-					downloadFn(row, function(err, filepath, that) {
+					moduleRef.download.call(moduleRef, row, that, function(err, filepath) {
 
 						// free up slot
 						transferring[modulename] = _.reject(transferring[modulename], function(t) {
@@ -329,7 +329,7 @@ Transfer.prototype.next = function(callback) {
 						// found a hit. check if there are download slots available:
 						if (transferring.vpf.length < settings.vpforums.numConcurrentDownloads) {
 							transferring.vpf.push(transfer);
-							download(transfer, 'vpf', vpf.download);
+							download(transfer, 'vpf', vpf);
 						}
 					}
 					break;
@@ -338,7 +338,7 @@ Transfer.prototype.next = function(callback) {
 						// found a hit. check if there are download slots available:
 						if (transferring.ipdb.length < settings.ipdb.numConcurrentDownloads) {
 							transferring.ipdb.push(transfer);
-							download(transfer, 'ipdb', ipdb.download);
+							download(transfer, 'ipdb', ipdb);
 						}
 					}
 					break;

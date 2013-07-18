@@ -377,17 +377,16 @@ Ipdb.prototype.getRomLinks = function(ipdbId, callback) {
 	});
 };
 
-Ipdb.prototype.download = function(transfer, callback, watcher) {
+Ipdb.prototype.download = function(transfer, watcher, callback) {
 
 	var that = this;
+	var dest = settings.pind.tmp + '/' + transfer.filename;
 
 	that.emit('downloadInitializing', { reference: transfer, fileinfo: transfer.filename ? ' for "' + transfer.filename + '"' : '' });
 	that.emit('downloadStarted', { filename: transfer.filename, destpath: dest, reference: transfer });
-	logger.log('info', '[ipdb] Downloading %s at %s...', link.title, link.url);
+	logger.log('info', '[ipdb] Downloading %s at %s...', transfer.title, transfer.url);
 
-
-	var filepath = settings.pind.tmp + '/' + transfer.filename;
-	var stream = fs.createWriteStream(filepath);
+	var stream = fs.createWriteStream(dest);
 	var failed = false;
 
 	stream.on('close', function() {
@@ -399,8 +398,8 @@ Ipdb.prototype.download = function(transfer, callback, watcher) {
 			return callback('Download failed.');
 		}
 
-		logger.log('info', '[ipdb] Download complete, saved to %s.', filepath);
-		callback(null, filepath);
+		logger.log('info', '[ipdb] Download complete, saved to %s.', dest);
+		callback(null, dest);
 	});
 
 	stream.on('error', function(err) {

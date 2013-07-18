@@ -170,10 +170,10 @@ VPForums.prototype.getRomLinks = function(table, callback) {
 /**
  * Downloads a file from vpforums.org.
  * @param transfer
- * @param callback
  * @param watcher File watcher. Must implement watch() and unwatch().
+ * @param callback
  */
-VPForums.prototype.download = function(transfer, callback, watcher) {
+VPForums.prototype.download = function(transfer, watcher, callback) {
 	var that = this;
 
 	that.emit('downloadInitializing', { reference: transfer, fileinfo: transfer.filename ? ' for "' + transfer.filename + '"' : '' });
