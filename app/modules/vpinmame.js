@@ -42,7 +42,7 @@ VPinMAME.prototype.initAnnounce = function(app) {
 	// fetchHighscores()
 	an.data('processingStarted', { id: '#dlrom' });
 	an.data('processingCompleted', { id: '#dlrom' });
-	an.notice('processingCompleted', 'All done, {{num}} ROMs downloaded.', 5000);
+	an.notice('processingCompleted', 'All done, {{num}} ROMs queued for download.', 5000);
 	an.notice('processingFailed', 'Error downloading ROMs: {{err}}', 3600000);
 
 	// fetchMissingRom() -> download()
