@@ -291,30 +291,9 @@ Transfer.prototype.next = function(callback) {
 							result: JSON.stringify({ extracting: filepath }),
 							size: size
 
-						}).success(function() {
+						}).success(function(row) {
 							that.emit('transferCompleted', { file: filepath, transfer: row });
-
-							// now, extract
-							extr.extract(filepath, null, function(err, extractResult) {
-								// on error, update db with error and exit
-								if (err) {
-									that.emit('extractFailed', { error: err, transfer: row });
-									return row.updateAttributes({
-										failedAt: new Date(),
-										result: err
-									}).success(function() {
-										callback(err);
-									});
-								}
-
-								// update extract result and we're clear.
-								row.updateAttributes({
-									result: JSON.stringify(extractResult)
-								}).success(function(row) {
-									that.emit('extractCompleted', { result: extractResult, transfer: row });
-									callback(null, row);
-								});
-							});
+							that.postDownload(filepath, row, callback);
 						});
 					});
 				});
@@ -356,6 +335,49 @@ Transfer.prototype.next = function(callback) {
 		}
 	});
 };
+
+Transfer.prototype.postDownload = function(filepath, transfer, callback) {
+	var that = this;
+
+	switch (transfer.type) {
+		case 'rom': {
+			var dest = settings.vpinmame.path + '/roms/' + transfer.filename;
+			if (!fs.existsSync(dest)) {
+				logger.log('info', '[transfer] Moving downloaded ROM from %s to %s.', filepath, dest);
+				fs.renameSync(filepath, dest);
+			} else {
+				logger.log('info', '[transfer] ROM at %s already exists, deleting %s.', dest, filepath);
+				fs.unlinkSync(filepath);
+			}
+		}
+		break;
+		case 'table':
+		default: {
+			extr.extract(filepath, null, function(err, extractResult) {
+				// on error, update db with error and exit
+				if (err) {
+					that.emit('extractFailed', { error: err, transfer: row });
+					return transfer.updateAttributes({
+						failedAt: new Date(),
+						result: err
+					}).success(function() {
+						callback(err);
+					});
+				}
+
+				// update extract result and we're clear.
+				transfer.updateAttributes({
+					result: JSON.stringify(extractResult)
+				}).success(function(row) {
+					that.emit('extractCompleted', { result: extractResult, transfer: row });
+					callback(null, row);
+				});
+			});
+		}
+		break;
+	}
+
+}
 
 Transfer.prototype.postProcess = function(transfer, callback) {
 	if (!transfer.postAction) {
