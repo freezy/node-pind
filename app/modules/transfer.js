@@ -288,7 +288,7 @@ Transfer.prototype.next = function(callback) {
 						fs.closeSync(fd);
 						row.updateAttributes({
 							completedAt: new Date(),
-							result: JSON.stringify({ extracting: filepath }),
+							result: JSON.stringify({ downloaded: filepath }),
 							size: size
 
 						}).success(function(row) {
@@ -338,6 +338,7 @@ Transfer.prototype.next = function(callback) {
 
 Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 	var that = this;
+	var result;
 
 	switch (transfer.type) {
 		case 'rom': {
@@ -345,10 +346,19 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 			if (!fs.existsSync(dest)) {
 				logger.log('info', '[transfer] Moving downloaded ROM from %s to %s.', filepath, dest);
 				fs.renameSync(filepath, dest);
+				result = { moved: { src: filepath, dest: dest }};
 			} else {
 				logger.log('info', '[transfer] ROM at %s already exists, deleting %s.', dest, filepath);
 				fs.unlinkSync(filepath);
+				result = { deleted: filepath };
 			}
+
+			// update extract result and we're clear.
+			transfer.updateAttributes({
+				result: JSON.stringify(result)
+			}).success(function(row) {
+				callback(null, row);
+			});
 		}
 		break;
 		case 'table':
