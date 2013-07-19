@@ -11,6 +11,7 @@ var schema = require('../model/schema');
 var settings = require('../../config/settings-mine');
 
 var isFetching = false;
+var nvRamFiles = {};
 
 function Hiscore(app) {
 	if ((this instanceof Hiscore) === false) {
@@ -100,9 +101,12 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL', order: 'name DESC' }).success(function(rows) {
 		var roms = [];
 		var tables = {};
+		var files = that._getNvRams(true);
+
 		// only retrieve roms that actually have an .nv file.
 		for (var i = 0; i < rows.length; i++) {
-			if (fs.existsSync(settings.vpinmame.path + '/nvram/' + rows[i].rom + '.nv')) {
+			var rom = files[path.basename(rows[i].rom.toLowerCase())];
+			if (rom) {
 				roms.push(rows[i].rom);
 				tables[rows[i].rom] = rows[i];
 			}
@@ -134,6 +138,21 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 		}).error(callback);
 
 	}).error(callback);
+};
+
+Hiscore.prototype._getNvRams = function(force) {
+
+	if (_.keys(nvRamFiles).length == 0 || force) {
+		nvRamFiles = {};
+		var nvrams = fs.readdirSync(settings.vpinmame.path + '/nvram/');
+		_.each(nvrams, function(nvramFile) {
+			if (path.extname(nvramFile).toLowerCase() == '.nv') {
+				nvRamFiles[path.basename(nvramFile.toLowerCase(), path.extname(nvramFile))] = nvramFile;
+			}
+		});
+		logger.log('info', '[hiscore] Found %d nvram files.', _.keys(nvRamFiles).length);
+	}
+	return nvRamFiles;
 };
 
 /**
@@ -328,7 +347,7 @@ Hiscore.prototype.watchHighscores = function(event, filename) {
 
 	logger.log('info', '[hiscore] File change detected for ROM "' + romname + '".');
 	Hiscore.prototype.emit('nvramChangeDetected', { rom: romname });
-	schema.Table.find({ where: { platform: 'VP', rom: romname }}).success(function(table) {
+	schema.Table.find({ where: ['platform = "VP" AND lower(rom) = ?', romname.toLowerCase()] }).success(function(table) {
 		if (table) {
 			schema.User.all().success(function(rows) {
 				var users = {};
@@ -376,7 +395,11 @@ Hiscore.prototype.linkNewUser = function(user, callback) {
  */
 Hiscore.prototype.getHighscore = function(romname, callback) {
 	var path = binPath();
-	exec(path + '/PINemHi.exe' + ' ' + romname + ".nv", { cwd: path }, function (error, stdout) {
+	var files = this._getNvRams();
+	if (!files[romname.toLowerCase()]) {
+		return callback('Cannot find romname "' + romname + '" in nvram files list.');
+	}
+	exec(path + '/PINemHi.exe' + ' ' + files[romname.toLowerCase()], { cwd: path }, function (error, stdout) {
 		if (stdout.match(/^not supported rom/i)) {
 			//callback('ROM is not supported by PINemHi.');
 			return callback();
