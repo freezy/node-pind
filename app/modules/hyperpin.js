@@ -205,22 +205,12 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 	 */
 	var process = function(row, what, findFct, next) {
 		that.emit('searchStarted', { what: what, name: row.name });
-		findFct(row, function(err, filename) {
+		findFct(row, function(err, msg) {
 			if (err) {
 				return next(err);
 			}
 			that.emit('searchCompleted');
-			extr.extract(filename, row.hpid, function(err, files) {
-				if (err) {
-					return next(err);
-				}
-				logger.log('info', '[hyperpin] Successfully extracted %d media files.', files.length);
-				if (files.length > 0) {
-					that.emit('tableUpdated', { key: row.key });
-				}
-				fs.unlinkSync(filename);
-				next();
-			});
+			logger.log('info', '[hyperpin] Successfully queued: %s', msg);
 		});
 	};
 

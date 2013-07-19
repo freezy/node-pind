@@ -117,7 +117,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 			reference: reference
 		}, function(err, msg) {
 			if (err) {
-				logger.log('error', '[vpm] Error querying item "%s".', link.title);
+				logger.log('error', '[vpm] Error querying ROM "%s": %s', link.title, err);
 				return next(err);
 			}
 			next(null, msg);

@@ -32,9 +32,9 @@ var VPForumsAPI = function() {
 		},
 
 		FindTables : function(req, params, callback) {
-			
+			var category = 41;
 			var search = params.search && params.search.length > 1;
-			var p = { where: { category: 41 }};
+			var p = { where: { category: category }};
 
 			// pagination
 			if (!search) {
@@ -57,12 +57,13 @@ var VPForumsAPI = function() {
 			} else {
 				p.order = 'lastUpdatedAt DESC';
 			}
-			var query = 
+			var query =
 				'SELECT f.*, t.startedAt, t.failedAt, t.completedAt, t.createdAt AS queuedAt, t.id as transferId FROM vpf_files f ' +
 				'LEFT JOIN transfers t ON t.reference = f.id ' +
+				'WHERE category = ' + category + ' ' +
 				'ORDER BY f.' + p.order;
 			if (!search) {
-				query += ' LIMIT ' + p.limit + ' OFFSET ' + p.offset;				
+				query += ' LIMIT ' + p.limit + ' OFFSET ' + p.offset;
 			}
 			var queryStart = +new Date();
 			schema.sequelize.query(query).success(function(rows) {

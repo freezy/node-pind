@@ -157,26 +157,17 @@ Transfer.prototype.queue = function(transfer, callback) {
 	if (_.isObject(transfer.postAction)) {
 		transfer.postAction = JSON.stringify(transfer.postAction);
 	}
-	schema.Transfer.all({ where: {
-		type: transfer.type,
-		engine: transfer.engine,
-		reference: transfer.reference
-	}}).success(function(rows) {
-		if (rows.length > 0) {
-			return callback('Item already queued.');
+	transfer.sort = +new Date();
+	schema.Transfer.create(transfer).success(function(row) {
+
+		that.emit('transferAdded', { transfer: row });
+
+		callback(null, 'Added "' + transfer.title + '" successfully to queue.');
+		if (settings.pind.startDownloadsAutomatically) {
+			that.start(function() {
+				logger.log('info', '[transfer] Download queue finished.');
+			});
 		}
-		transfer.sort = +new Date();
-		schema.Transfer.create(transfer).success(function(row) {
-
-			that.emit('transferAdded', { transfer: row });
-
-			callback(null, 'Added "' + transfer.title + '" successfully to queue.');
-			if (settings.pind.startDownloadsAutomatically) {
-				that.start(function() {
-					logger.log('info', '[transfer] Download queue finished.');
-				});
-			}
-		});
 	});
 };
 
@@ -242,7 +233,7 @@ Transfer.prototype.next = function(callback) {
 				transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
 
 					// update file size as soon as we receive the content length.
-					vpf.on('contentLengthReceived', function(data) {
+					moduleRef.on('contentLengthReceived', function(data) {
 						if (data.reference.id) {
 							schema.Transfer.find(data.reference.id).success(function(row) {
 								if (row) {
@@ -259,6 +250,19 @@ Transfer.prototype.next = function(callback) {
 								}
 							});
 
+						}
+					});
+
+					moduleRef.on('filenameReceived', function(data) {
+						if (data.reference.id) {
+							schema.Transfer.find(data.reference.id).success(function(row) {
+								if (row) {
+									row.updateAttributes({ filename: data.filename });
+									logger.log('info', '[transfer] [%s] Updating filename of %s to %s.', modulename, row.title, data.filename);
+								} else {
+									logger.log('error', '[transfer] [%s] Could not find transfer with id %s for updating filename to %s.', modulename, data.reference.id, data.filename);
+								}
+							});
 						}
 					});
 

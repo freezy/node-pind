@@ -53,7 +53,7 @@ Extract.prototype.extract = function(filepath, renameTo, callback) {
 			} else if (ext == '.zip') {
 				that.zipExtract(filepath, mapping, callback);
 			} else {
-				callback('Unknown file extension "' + ext + '".');
+				callback('Unknown file extension "' + ext + '", cannot start extraction.');
 			}
 		});
 	});
@@ -106,7 +106,8 @@ Extract.prototype.getFiles = function(filepath, callback) {
 		});
 
 	} else {
-		callback('Unknown file extension "' + ext + '".');
+		callback('Unknown file extension "' + ext + '", cannot read archive directory.');
+		console.log(new Error().stack);
 	}
 };
 

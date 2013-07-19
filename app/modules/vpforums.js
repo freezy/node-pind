@@ -94,7 +94,7 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
 			reference: match.id
 		}, function(err, msg) {
 			if (err) {
-				logger.log('error', '[vpf] Error querying item "%s".', match.titl);
+				logger.log('error', '[vpf] Error querying media "%s": %s', match.title, err);
 				return callback(err);
 			}
 			callback(null, msg);
@@ -251,6 +251,10 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 								if (response.headers['content-length']) {
 									that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: transfer });
 									watcher.watchDownload(dest, response.headers['content-length'], transfer);
+								}
+								if (response.headers['content-disposition']) {
+									var filename = response.headers['content-disposition'].match(/filename="([^"]+)"/i)[1];
+									that.emit('filenameReceived', { filename: filename, reference: transfer });
 								}
 							}).pipe(stream);
 
