@@ -16,13 +16,13 @@ function TransferCtrl($scope) {
 			$scope.$apply();
 			$scope.$broadcast('paramsUpdated');
 		});
-	}
+	};
 	$scope.pause = function() {
 		alert('not yet implemented.');
-	}
+	};
 	$scope.stop = function() {
 		alert('stopped.');
-	}
+	};
 
 	$scope.resetFailed = function() {
 		api('Transfer.ResetFailed', {}, function(err, result) {
@@ -31,7 +31,7 @@ function TransferCtrl($scope) {
 			}
 			$scope.$broadcast('paramsUpdated');
 		});
-	}
+	};
 
 	// ------------------------------------------------------------------------
 	// real time code
@@ -47,7 +47,7 @@ function TransferCtrl($scope) {
 	socket.on('transferUpdated', function(result) {
 		if ($('#transfers tr#' + result.id).length > 0) {
 			$scope.$broadcast('paramsUpdated');
-		};
+		}
 	});
 
 	// size was updated
@@ -59,7 +59,7 @@ function TransferCtrl($scope) {
 	socket.on('transferClearedFailed', function() {
 		if ($('#transfers tr.failed').length > 0) {
 			$scope.$broadcast('paramsUpdated');
-		};
+		}
 	});
 
 	// new transfer added
@@ -102,7 +102,7 @@ function TransferItemCtrl($scope) {
 		rom: 'chip',
 		mediapack: 'image',
 		video: 'video'
-	}
+	};
 	$scope.icon = iconmap[$scope.transfer.type];
 
 	var prev = $scope.data[$scope.$index - 1];
@@ -158,6 +158,6 @@ pindAppModule.directive('deletable', function() {
 		} else {
 			$(element).find('li.link.delete').addClass('disabled');
 		}
-		
+
 	};
 });

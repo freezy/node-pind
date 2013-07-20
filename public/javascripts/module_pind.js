@@ -90,7 +90,7 @@ function DataCtrl($scope, Jsonrpc) {
 
 var pindAppModule = angular.module('pind', ['ngSanitize']);
 
-/*
+/**
  * Defines namespace and method of an api call.
  *
  * Attributes:
