@@ -4,7 +4,7 @@ module.exports = function (module) {
 	/**
 	 *
 	 */
-	module.controller('SSCtrl', ['$scope', '$location', 'pubsub', 'rpc', 'model', 'auth', function ($scope, $location, pubsub, rpc, model, auth) {
+	module.controller('SSCtrl', ['$scope', '$location', 'pubsub', 'rpc', 'model', 'pindAuth', function ($scope, $location, pubsub, rpc, model, pindAuth) {
 		$scope.messages = [];
 		$scope.streaming = false;
 		$scope.status = "";
@@ -34,7 +34,7 @@ module.exports = function (module) {
 		});
 
 		$scope.logout = function () {
-			var promise = auth.logout();
+			var promise = pindAuth.logout();
 			promise.then(function () {
 				$location.path("/");
 			});

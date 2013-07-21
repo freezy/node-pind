@@ -6,10 +6,10 @@ module.exports = function(module) {
 
 	'use strict';
 
-	module.config(['authProvider', '$routeProvider', '$locationProvider', function(authProvider, $routeProvider, $locationProvider) {
+	module.config(['pindAuthProvider', '$routeProvider', '$locationProvider', function(pindAuthProvider, $routeProvider, $locationProvider) {
 
-		authProvider.authServiceModule('auth');
-		authProvider.loginPath('/login');
+		pindAuthProvider.authServiceModule('auth');
+		pindAuthProvider.loginPath('/login');
 
 		// setup routing
 		$routeProvider
