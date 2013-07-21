@@ -1,0 +1,292 @@
+@import('lib')
+@import('nib')
+@import('values')
+
+
+// :global layout
+// ============================================================================
+
+selection(#fff, color-btn-light)
+
+body
+	background-image url('/images/bg_striped.png')
+	font-family font-sans
+	text-shadow 1px 1px 0 white
+	color color-text
+
+footer
+	text-align center
+	position relative
+	top -5px
+	margin-bottom 10px
+
+	& > a
+		color #dbd9d7
+		text-shadow 0px 1px 0 black
+		font-family font-serif
+		font-size 16px
+		transition all animation-fast ease
+
+		&:hover
+			text-decoration none
+			color white
+
+		& > i.icon
+			font-size 30px
+			margin-right 10px
+			line-height 50px
+
+		& > span
+			position relative
+			bottom 3px
+form
+	margin 0
+
+.pull-top
+	margin-top -10px
+
+.row-fluid > div
+	margin-bottom 20px
+
+.row-topleft
+	padding 20px 0 0 20px
+.row-topright
+	padding 20px 20px 0 0
+
+.content
+	background color-lighter
+	border 1px solid #fff
+	border-radius 5px
+	box-shadow 0 1px 3px rgba(0,0,0,0.5)
+	padding 0px
+
+	& > section
+		.page-header, .nav, .inner
+			margin 30px
+
+			&.middle
+				margin-bottom 0
+.page-header
+	border-bottom 1px solid rgba(0,0,0,.25)
+
+// "actions" footer
+.row.footer
+	h2
+		margin-left 30px
+		padding-top 15px
+	.span3, .span4
+		h3
+			line-height 28px
+		&:first-child
+			padding-left 30px
+		&:last-child
+			padding-right 30px
+
+@media(max-width: 767px)
+	.row.footer
+		.span3, .span4
+			padding-left 30px
+
+.graph
+	height 200px
+
+tr > td.text-right
+	text-align right
+
+// :typography
+// ============================================================================
+
+.subheading
+	font-size 11px
+	line-height 16px
+	color color-dark
+
+.help-block
+	font-size 11px
+	line-height 16px
+	color color-medium
+	margin-bottom 20px
+
+.center
+	text-align center
+	margin-left auto
+	margin-right auto
+
+h1, h2
+	font-family font-serif
+	font-weight 700
+h3
+	font-family font-serif
+	font-weight 400
+
+h1
+	font-size 32px
+
+h2
+	font-size 25px
+
+h3
+	font-size 22px
+h4
+	font-family font-sans
+	font-weight 800
+	text-transform uppercase
+
+
+// :box layout
+// ============================================================================
+
+// background gradient
+.boxglow
+	margin 60px auto
+	width 600px
+	height 600px
+	background-image url('/images/gradient.png')
+	background-repeat no-repeat
+
+// box styling
+.singlebox, .modal
+	background color-lighter
+	border 1px solid #fff
+	border-radius 5px
+	box-shadow 0 1px 3px rgba(0,0,0,0.5)
+
+// box dimensions / position
+.singlebox
+	width 300px
+	margin 0 auto
+	position relative
+
+	// animation
+	input, button, a, .button, .register
+		transition all animation-fast ease !important
+
+.username
+	text-transform uppercase
+
+input:focus + div.inputhint
+	margin-left -50px
+
+// :modal layout
+// ============================================================================
+
+.modal-header
+	padding 30px 30px 0px 30px
+	background-repeat no-repeat;
+	background-position right top;
+	border none
+
+	h1, h2, h3, h5
+		font-family font-serif
+		color color-darker
+	h1
+		font-weight 700
+		font-size 28px
+		line-height 34px
+		margin-top 20px
+		margin-bottom 10px
+
+.modal-body
+	padding 30px 30px 20px 30px
+	overflow-y visible
+
+	li
+		color color-dark
+	.alert
+		margin: 10px 0 0 0
+
+.modal-footer, .row.footer
+	margin-left 0
+	overflow auto
+	background color-light
+	border-top 1px solid #fff
+	box-shadow inset 0 1px 0 rgba(0,0,0,0.15)
+	text-shadow 1px 1px 0 rgba(255,255,255,0.75)
+
+	.action button.more
+		margin-right 10px
+
+.modal-footer
+	padding 30px
+
+	.link-big
+		padding 12px 0px 8px
+
+	a.cancel
+		width 150px
+
+.modal-subfooter
+	padding 15px 30px
+	background color-lightish
+	border-top 1px solid #fff
+	box-shadow inset 0 1px 0 rgba(0,0,0,0.15)
+	border-radius none
+
+	label, input[type='checkbox']
+		float right
+		margin-left 10px
+
+.modal-body, .modal-subfooter, .modal-footer, .modal-header
+	border-radius 0
+	&.lastfooter
+		border-radius-bottomleft 4px
+		border-radius-bottomright 4px
+
+.modal button.close
+	margin 15px
+
+.modal
+	&.update-found .modal-body
+		padding-top 0
+	&.update-progressing .modal-body .icon
+		margin-top -30px
+		font-size 120px
+		color rgba(0,0,0,0.25)
+
+
+.modal.download-table
+	.modal-header
+		img
+			width 100px
+			height 100px
+			margin-top -10px
+			border-radius 50px
+			border 2px solid black
+
+			& + i.icon
+				margin-left -76px
+				font-size 55px
+				color color-lighter-rgb
+				text-shadow none
+				cursor default
+
+		h2 span
+			position absolute
+			margin-left 40px
+
+	.modal-body
+		padding-top 0
+		h3
+			line-height 22px
+
+.alert
+	border-radius corner-size-small
+	box-shadow inset 0 0 2px rgba(256,256,256,0.75)
+	&.alert-success
+		background-color rgba(127,191,43,0.2)
+		border-color rgba(127,191,43,0.7)
+
+.alert-danger, .alert-error
+	color #9e441d
+	background-color #e0cac0
+	border-color #c99780
+
+// small boxes
+.singlebox.login, .singlebox.register
+	width 305px
+
+// login box
+.singlebox.login form section.subfooter
+	label, input[type='checkbox']
+		float right
+		margin-left 10px

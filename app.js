@@ -1,51 +1,39 @@
-/**
- * Node.js Pinball Daemon
- * Author : freezy
- */
+// My SocketStream app
 
-var express = require('express');
-var http = require('http');
-var stylus = require('stylus');
-var app = express();
-var nib = require('nib');
+var http = require('http'),
+	ss = require('socketstream');
 
-var httpPort = 80;
-var publicPath = '/app/public';
+// Define a single-page client
+ss.client.define('main', {
+	view: 'index.jade',
+	css: ['libs', 'symbols.css', 'fonts.css', 'definitions.styl', 'layout.styl', 'element.styl', 'module.styl'],
+	code: ['libs', 'app'],
+	tmpl: '*'
+});
 
-function compile(str, path) {
-	return stylus(str)
-		.set('filename', path)
-		.set('compress', false)
-		.use(nib())
-		.import('nib');
+ss.session.options.maxAge = 2.6 * Math.pow(10, 9);
+
+// Serve this client on the root URL
+ss.http.route('/', function(req, res) {
+	res.serveClient('main');
+});
+
+// Code Formatters
+ss.client.formatters.add(require('ss-stylus'));
+ss.client.formatters.add(require('ss-jade'));
+ss.client.templateEngine.use('angular');
+
+// Responders
+ss.responders.add(require('ss-angular'), { pollFreq: 60000 });
+
+// Minimize and pack assets if you type: SS_ENV=production node app.js
+if (ss.env == 'production') {
+	ss.client.packAssets();
 }
 
-app.configure(function() {
-	app.set('port', httpPort);
-	app.set('views', __dirname + '/app/server/views');
-	app.set('view engine', 'jade');
-	app.locals.pretty = true;
-//	app.use(express.favicon());
-//	app.use(express.logger('dev'));
-//	app.use(express.bodyParser());
-	app.use(express.multipart());
-	app.use(express.urlencoded());
-	app.use(express.cookieParser());
-	app.use(express.session({ secret : 'JUc9nUqeRepE9TepEn3xAphasu8AfrAcrecrAstApuDafratrUY86ubrAZU5rETR' }));
-	app.use(express.methodOverride());
-	app.use(require('stylus').middleware({
-		src : __dirname + publicPath,
-		compile : compile
-	}));
-	app.use(express.static(__dirname + publicPath));
-});
+// Start web server
+var server = http.Server(ss.http.middleware);
+server.listen(80);
 
-app.configure('development', function() {
-	app.use(express.errorHandler());
-});
-
-require('./app/server/router')(app);
-
-var server = http.createServer(app).listen(app.get('port'), function() {
-	console.log("Express server listening on port " + app.get('port'));
-})
+// Start SocketStream
+ss.start(server);

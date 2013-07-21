@@ -1,0 +1,19 @@
+div(ng-controller="AuthCtrl")
+	.boxglow
+		form.singlebox.login
+			.modal-header
+				.icon.key
+				h1 Login here!
+				p.subheading If you don't have an account, press the register button to sign up for a new account.
+			.modal-body
+				input.input(name="user", type="text", placeholder="Username").input-large
+				.icon.inputhint.user
+				input.input(name="pass", type="password", placeholder="Password").input-large
+				.icon.inputhint.locked
+			.modal-footer
+				button.right(name="submit", type="submit") Login
+				a#create-account.link-big(href="#") Register
+			.modal-subfooter.lastfooter
+				input#remember-me-checkbox(name="rememberme", type="checkbox", checked="checked")
+				label#remember-me.checkbox.link-small(for="remember-me-checkbox") Remember Me
+				a#forgot-password.link-small(href="#") Forgot password?
