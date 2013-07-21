@@ -4,38 +4,51 @@ exports.actions = function(req, res, ss) {
 	req.use('session');
 
 	return {
-		authenticate: function(username, pass) {
+		authenticate: function(username, pass, rememberMe, authKey) {
 
-			console.log('Checking login credentials.');
-			if (username) {
+			console.log('Checking login credentials. %s %s %s %s', username, pass, rememberMe, authKey);
+			if (username && pass) {
 
 				// authenticate user
 				schema.User.authenticate(username, pass, function(err, user) {
 					if (err) {
 						ss.log("Error authenticating: " + err);
-						res(false);
+						res({ success: false });
 
 					// credentials check out
 					} else if (user) {
+						var result = { success: true };
 
 						// set "remember me" cookie.
-/*						if (req.body.rememberme) {
-							res.cookie('authtoken', user.authtoken, { signed: true });
-							res.cookie('user', user.user, { signed: true });
-						} else {
-							res.clearCookie('authtoken');
-							res.clearCookie('user');
-						}*/
+						if (rememberMe) {
+							result.token = user.authtoken;
+						}
 						req.session.setUserId(user.user);
 						req.session.user = user;
-						res(true);
+						res(result);
 
 					// access denied
 					} else {
 						ss.log("Invalid credentials for " + username + ".");
-						res(false);
+						res({ success: false });
 					}
 				});
+
+			} else if (username && authKey) {
+				schema.User.autologin(username, authKey, function(err, user) {
+					if (user) {
+						req.session.setUserId(user.user);
+						req.session.user = user;
+						res({ success: true });
+
+					} else {
+						ss.log("Invalid auth token for " + username + ".");
+						res({ success: false });
+					}
+				});
+			} else {
+				res({ success: false });
+				ss.log('No credentials nor auth token, ignoring.');
 			}
 
 		},

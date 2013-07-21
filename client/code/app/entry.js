@@ -35,8 +35,6 @@ require('/routes')(app);
 require('/controllers/auth')(app);
 require('/controllers/example')(app);
 
-
-//require('/controllers/controllers');
 ss.server.on('ready', function() {
 
 	jQuery(function() {

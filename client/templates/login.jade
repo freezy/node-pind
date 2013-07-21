@@ -14,6 +14,6 @@ div(ng-controller="AuthCtrl")
 				button.right(name="submit", type="submit", ng-click="processAuth()") Login
 				a#create-account.link-big(href="#") Register
 			.modal-subfooter.lastfooter
-				input#remember-me-checkbox(name="rememberme", type="checkbox", checked="checked")
+				input#remember-me-checkbox(name="rememberme", type="checkbox", ng-model="rememberme")
 				label#remember-me.checkbox.link-small(for="remember-me-checkbox") Remember Me
 				a#forgot-password.link-small(href="#") Forgot password?

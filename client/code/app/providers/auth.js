@@ -41,16 +41,16 @@ module.exports = function(module) {
 			}
 
 			return {
-				login: function(user, password) {
+				login: function(user, password, rememberMe, authKey) {
 					var deferred = $q.defer();
-					ss.rpc(authServiceModule + ".authenticate", user, password, function(response) {
+					ss.rpc(authServiceModule + ".authenticate", user, password, rememberMe, authKey, function(response) {
 						$rootScope.$apply(function(scope) {
-							if (response) {
-								scope.authenticated = response;
+							if (response.success) {
+								scope.authenticated = true;
 								deferred.resolve("Logged in");
-							}
-							else {
-								scope.authenticated = null;
+
+							} else {
+								scope.authenticated = false;
 								deferred.reject("Invalid");
 							}
 						});

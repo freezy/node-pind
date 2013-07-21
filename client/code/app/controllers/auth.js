@@ -5,9 +5,11 @@ module.exports = function(module) {
 	 *
 	 */
 	module.controller('AuthCtrl', ['$scope', '$location', '$log', 'pindAuth', function($scope, $location, $log, pindAuth) {
+		$scope.rememberme = true;
+
 		$scope.processAuth = function() {
 			$scope.showError = false;
-			var promise = pindAuth.login($scope.user, $scope.password);
+			var promise = pindAuth.login($scope.user, $scope.password, $scope.rememberme);
 			promise.then(function(reason) {
 				$log.log(reason);
 				var newPath = '/app';
