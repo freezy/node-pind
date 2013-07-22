@@ -1,0 +1,65 @@
+extends ../layouts/inner
+
+block content
+
+	div.span10.offset1.content
+
+		section(ng-controller='DataCtrl', resource="Table.GetAll")
+			.page-header
+				h1 Tables
+
+			.inner
+				//- control bar
+				div.controls(style='display:none')
+
+					//- pager
+					pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
+
+					//- number of rows
+					numrows.numrows.input-mini.pull-right(selection='[12, 24, 48]', value='limit')
+
+					//- search box
+					searchbox(value='search', wait='300')
+
+					//- filter pills
+					ul.nav.nav-pills.pull-left.filter(filters, value='filters')
+						li
+							.icon
+								i.icon.filter(title="Filter high scores by")
+						li(data-filter="hiscoreUser")
+							a.username(href="#") {{user.user}}
+						li(data-filter="hiscoreUsers")
+							a(href="#") Registered
+					.clearfix
+
+				//- data
+				div.ng-cloak.row-fluid
+					ul.thumbnails.tables
+						li.span4(ng-repeat='table in data', tb-768-980='span6')
+							.thumbnail
+								img(ng-src='{{table.url_backglass_medium}}')
+								hr
+								.thumbnail-content.game
+									.thumbnail-content-centered
+										h3
+											a(href="{{table.url}}") {{table.name}}
+										p {{table.manufacturer}} - {{table.year}}
+				.clearfix
+
+				//- empty search result
+				div.noresult(style='display:none')
+					p No results found.
+					button.btn.submit.small Clear Filters
+
+				//- no data
+				div.nodata(style='display:none')
+					p No tables in database.
+
+		.clearfix
+
+
+block inlineScripts
+	script
+		$(document).ready(function() {
+			menu('tables');
+		});

@@ -1,0 +1,118 @@
+extends layout
+
+block inner-content
+
+	.inner(ng-controller='DataCtrl')
+
+		//- control bar
+		div.controls(style='display:none')
+
+			//- pager
+			pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
+
+			//- number of rows
+			numrows.numrows.input-mini.pull-right(selection='[10, 20, 50, 100]', value='limit')
+
+			//- search box
+			searchbox(value='search', wait='300')
+
+			//- filter pills
+			ul.nav.nav-pills.pull-left.filter(filters, value='filters')
+				li
+					.icon
+						i.icon.filter(title="Filter results by missing")
+				li(data-filter="table")
+					a(href="#") Table
+				li(data-filter="rom")
+					a(href="#") ROM
+				li(data-filter="ipdb")
+					a(href="#") IPDB
+				li(data-filter="media")
+					a(href="#") Media
+		.clearfix
+
+		//- data
+		div.data.ng-cloak(resource='Table.GetAll', style='display:none')
+			table.table
+				thead
+					tr
+						th Name
+						th(style='width:55px') File
+						th(style='width:100px') Media
+						th(style='width:70px') ROM
+				tbody
+					tr(ng-repeat='(idx, table) in data', data-id='{{table.key}}', data-idx="{{idx}}")
+						td(ng-bind-html="table.title")
+						td.nowrap
+							ul.badge-group
+								li.badge(title="Table file", class="badge-{{table.badge_table}}")
+									i.icon.file
+								li.badge(title="ROM", class="badge-{{table.badge_rom}}")
+									i.icon.chip
+						td.nowrap
+							ul.badge-group
+								li.badge(title="Wheel Image", class="badge-{{table.badge_media_wheel}}")
+									i.icon.logo
+								li.badge(title="Backglass Image", class="badge-{{table.badge_media_backglass}}")
+									i.icon.ipad
+								li.badge(title="Table Image", class="badge-{{table.badge_media_table}}")
+									i.icon.camera
+								li.badge(ng-show="{{!ignoreTableVids}}", title="Table Video", class="badge-{{table.badge_media_video}}")
+									i.icon.video
+						td.rom(class="{{table.rom_class}}") {{table.rom_display}}
+
+		//- empty search result
+		div.noresult(style='display:none')
+			p No results found.
+			button.btn.submit.small Clear Filters
+
+		//- no data
+		div.nodata(style='display:none')
+			p No tables in database.
+			button.btn.submit
+				i.icon.refresh
+				span Load from HyperPin
+	.clearfix
+
+block inner-footer
+	h2 Available Actions:
+	.row-fluid
+		.span4.action#hpsync(data-exclusive='#ipdbsync, #dlrom, #dlmedia, #fetchhs', data-processing='{{processing.hpsync}}')
+			h3 Resync with HyperPin
+			p Read HyperPin's XML, analyze table files and update the local database.
+			button.btn.submit.small
+				i.icon.refresh
+				span Resync
+		.span4.action#ipdbsync(data-exclusive='#hpsync, #dlrom', data-processing='{{processing.ipdbsync}}')
+			h3 Match with IPDB.org
+			p Match re-creations with IPDB and fetch additional data.
+			button.btn.submit.small
+				i.icon.refresh
+				span Match
+		.span4.action#dlrom(data-exclusive='#hpsync, #ipdbsync', data-processing='{{processing.dlrom}}')
+			h3 Retrieve game ROMs
+			p Try to retrieve needed ROMs from IPDB.org or vpforums.org.
+			button.btn.submit.small
+				i.icon.refresh
+				span Download
+	.row-fluid
+		.span4.action#dlmedia(data-exclusive='#hpsync', data-processing='{{processing.dlmedia}}')
+			h3 Find Missing Media
+			p Check vpforums.org for available media packs.
+			button.btn.submit.small
+				i.icon.refresh
+				span Find
+		.span4.action#fetchhs(data-exclusive='#hpsync', data-processing='{{processing.fetchhs}}')
+			h3 Update High Scores
+			p Read Highscores from tables and update stats.
+			button.btn.submit.small
+				i.icon.refresh
+				span Update
+		.span4
+
+block inlineScripts
+	script
+		$(document).ready(function() {
+			menu('settings');
+			submenu('tables');
+		});

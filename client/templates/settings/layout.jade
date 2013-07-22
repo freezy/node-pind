@@ -1,0 +1,29 @@
+extends ../layouts/inner
+
+block content
+	div.span10.offset1.content
+		section.admin
+			.page-header
+				h1 Administration
+
+			ul.nav.nav-tabs.submenu
+				li.tables
+					a(href="/admin") Tables
+				li.sources
+					a(href="/admin/tables") Sources
+				li.transfers
+					a(href="/admin/transfers") Downloads
+				li.users
+					a(href="/admin/users") Users
+				li.global
+					a(href="/admin/global") Global
+
+			block inner-content
+
+		.row.footer(ng-controller="AdminFooterCtrl")
+
+			block inner-footer
+
+		#console.dmd(style="display:none")
+			.inner
+				span Console

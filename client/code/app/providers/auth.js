@@ -48,6 +48,9 @@ module.exports = function(module) {
 							if (response.success) {
 								scope.authenticated = true;
 								deferred.resolve("Logged in");
+								if (response.authToken) {
+									$.cookie('authToken', response.authToken, { expires: 365 });
+								}
 
 							} else {
 								scope.authenticated = false;
@@ -62,6 +65,7 @@ module.exports = function(module) {
 					ss.rpc(authServiceModule + ".logout", function() {
 						$rootScope.$apply(function(scope) {
 							scope.authenticated = null;
+							$.removeCookie('authToken');
 							deferred.resolve("Success");
 						});
 					});

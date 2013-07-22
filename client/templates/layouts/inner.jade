@@ -1,0 +1,36 @@
+
+div.navbar.navbar-static-top
+	div.navbar-inner.mainmenu
+		a(href='/').icon.pind
+		div.container
+			ul#global-nav.nav
+				li.home
+					a(href='/') Home
+				li.tables
+					a(href='/tables') Tables
+				li.hiscores
+					a(href='/hiscores') High Scores
+				li.coin
+					a(href='/coin') Coin Drop
+			ul.nav.pull-right
+				li.settings
+					a(href='/admin').icon
+						i.icon.settings
+				li.logout
+					a(href='/logout').icon
+						i.icon.exit
+
+div.container(ng-app='pind')
+	- var ngc = typeof(ngController) === 'undefined' ? null : ngController;
+	div.row(ng-controller=ngc)
+		block content
+
+footer
+	a(href="https://github.com/freezy/node-pind", target="_blank")
+		i.icon.github-alt
+		span <b>Fork me</b> on GitHub
+
+block scripts
+block modals
+	include modals/updating
+block inlineScripts

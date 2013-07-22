@@ -1,0 +1,113 @@
+extends ../layouts/inner
+
+block content
+	div.span12.content(ng-app)
+		section.home(ng-controller='HomeCtrl')
+			.page-header
+				h1 Welcome!
+
+			.inner
+				h2 Latest Releases
+				div.row-fluid
+
+					.span9(tb-768-980='span8')
+
+						//- RELEASES
+						//---------------------------------------------------------
+
+						div(ng-controller='LatestReleasesCtrl')
+							ul.thumbnails(ng-controller='DataCtrl', resource="VPForums.FindTables")
+								li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}", tb-768-980='span12')
+									.thumbnail
+										thumb.ng-transclude(fileid="{{row.fileId}}")
+										h3 {{row.title_trimmed}}
+										p.pull-right.updated.hidden-phone-small {{row.lastUpdatedSince}}
+										h4.hidden-phone-small {{row.info}}
+										ul.pills.small
+											li
+												i.icon.user
+												.author.hidden-phone-small {{row.author}}
+											li
+												i.icon.circle-arrow-down(title="{{row.downloads|groupdigit}}")
+												span.hidden-desktop-small.hidden-phone-small {{row.downloads|groupdigit}}
+											li
+												i.icon.eye(title="{{row.views|groupdigit}}")
+												span.hidden-desktop-small.hidden-phone-small {{row.views|groupdigit}}
+											li.link
+												a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
+													i.icon.link
+										.clearfix
+
+
+						//- GAMES
+						//---------------------------------------------------------
+						h2 Latest Games
+
+						div(ng-controller='LatestGamesCtrl')
+							ul.thumbnails.tables(ng-controller='DataCtrl', resource="Table.GetAll")
+								li.span4(ng-repeat='table in data', tb-768-980='span6')
+									.thumbnail
+										img(ng-src='{{table.url_backglass_medium}}')
+										hr
+										.thumbnail-content.game
+											.thumbnail-content-centered
+												h3
+													a(href="{{table.url}}") {{table.name}}
+												p {{table.manufacturer}} - {{table.year}}
+
+
+						//- HISCORES
+						//---------------------------------------------------------
+						h2 Latest Hiscores
+						div(ng-controller='LatestHiscoresCtrl')
+							div(ng-controller='HiscoresCtrl')
+								ul.thumbnails.hiscores(ng-controller='DataCtrl', resource="Table.GetAll")
+									li.span4(ng-repeat='table in data', slider='200', tb-768-980='span6')
+										include ../layouts/snippets/hiscore
+
+					.span3(tb-768-980='span4')
+
+						//- LEADER BOARD
+						//---------------------------------------------------------
+						.thumbnail
+							img(src='/images/header-crowd.png')
+							hr
+							.thumbnail-content.leaderboard
+								h3 Leaderboard
+
+								.dmd.leaderboard
+									table.table
+										tbody
+											tr(ng-repeat='hiscore in hiscores')
+												td= hiscore.user
+												td.text-right= hiscore.totalPoints
+						br
+
+						//- QUICK COIN DROP
+						//---------------------------------------------------------
+						.thumbnail
+							img(src='/images/header-coins.png')
+							hr
+							.thumbnail-content.coindrop
+								h3 Quick Coin Drop
+								span.thumbnail-content-centered
+									.fuzzy3d
+										button Drop -.20
+							.clearfix
+						br
+
+						//- FREE TABLE OF THE WEEK
+						//---------------------------------------------------------
+						.thumbnail
+							img(ng-src='{{table.url_backglass_medium}}')
+							hr
+							.thumbnail-content
+								p Free Table of the Week
+								h3 {{table.name}}
+							img.table(ng-src='{{table.url_portrait_medium}}')
+
+block inlineScripts
+	script
+		$(document).ready(function() {
+			menu('home');
+		});

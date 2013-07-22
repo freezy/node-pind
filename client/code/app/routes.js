@@ -13,10 +13,10 @@ module.exports = function(module) {
 
 		// setup routing
 		$routeProvider
-			.when('/login', { controller: 'AuthCtrl', templateUrl: 'login.html' })
-			.when('/app', { controller: 'SSCtrl', templateUrl: 'app.html' })
+			.when('/login', { templateUrl: 'auth-login.html' })
+			.when('/app', { templateUrl: 'app.html' })
 			.when('/another', { templateUrl: 'anotherpage.html' })
-	//		.otherwise({redirectTo: '/app'});
+			.otherwise({ redirectTo: '/' });
 
 		// use html5 push state
 		$locationProvider.html5Mode(true);

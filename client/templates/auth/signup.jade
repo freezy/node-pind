@@ -1,0 +1,27 @@
+
+// preset form values if we receive a userdata object //
+.boxglow
+	#account-form-container.singlebox.register
+		form
+			.modal-header
+				.icon.pen
+				h1 Signup
+				p#sub1.subheading Get playing. With balls.
+			fieldset
+				.modal-body
+					#user-cg.control-group
+						.controls
+							input#user-tf.input.input-large.disabled(type='text', name='user', placeholder='Username', value='{{ user.user }}')
+							.icon.inputhint.user
+							span.help-block Your three-letter acronym. Case doesn't matter.
+					#pass-cg.control-group
+						.controls
+							input#pass-tf.input.input-large(type='password', name='pass', , placeholder='Password', value='')
+							.icon.inputhint.locked
+							span.help-block At least six chars.
+				.modal-footer.lastfooter
+					button(type='submit')#account-form-btn2.btn.right Go!
+					a(href='/')#account-form-btn1.btn.link-big Cancel
+
+include modals/form-errors
+include modals/alert
