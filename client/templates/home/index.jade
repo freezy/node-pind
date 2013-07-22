@@ -79,8 +79,8 @@ block content
 									table.table
 										tbody
 											tr(ng-repeat='hiscore in hiscores')
-												td= hiscore.user
-												td.text-right= hiscore.totalPoints
+												td {{ hiscore.user }}
+												td.text-right {{ hiscore.totalPoints }}
 						br
 
 						//- QUICK COIN DROP
