@@ -14,7 +14,7 @@ module.exports = function(module) {
 		// setup routing
 		$routeProvider
 			.when('/login', { templateUrl: 'auth-login.html' })
-			.when('/app', { templateUrl: 'app.html' })
+			.when('/app', { templateUrl: 'home-tables.html' })
 			.when('/another', { templateUrl: 'anotherpage.html' })
 			.otherwise({ redirectTo: '/' });
 

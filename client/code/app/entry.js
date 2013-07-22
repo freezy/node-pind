@@ -33,6 +33,7 @@ require('/routes')(app);
 
 // setup angular controllers
 require('/controllers/auth')(app);
+require('/controllers/data')(app);
 require('/controllers/example')(app);
 
 ss.server.on('ready', function() {

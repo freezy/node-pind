@@ -1,7 +1,7 @@
 module.exports = function (module) {
 	'use strict';
 
-	/*
+	/**
 	 * Renders a thumb that fades in when downloaded.
 	 *
 	 * Attributes:

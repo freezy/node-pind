@@ -36,7 +36,8 @@
 		"insanehash" : "latest",
 		"fuzzy" : "0.1.x",
 		"relative-date" : "1.1.x",
-		"filesize" : "1.10.x"
+		"filesize" : "1.10.x",
+		"ent": "0.0.x"
 	},
 	"devDependencies" : {
 		"nodeunit" : "*",
