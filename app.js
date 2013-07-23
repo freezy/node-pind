@@ -18,6 +18,8 @@ ss.http.route('/', function(req, res) {
 	res.serveClient('main');
 });
 
+ss.http.middleware.prepend(require('./server/middleware/asset.js').middleware());
+
 // Code Formatters
 ss.client.formatters.add(require('ss-stylus'));
 ss.client.formatters.add(require('ss-jade'));

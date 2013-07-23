@@ -33,6 +33,7 @@
 		"winston" : "0.7.x",
 		"async" : "0.2.x",
 
+		"gm": "1.10.x",
 		"insanehash" : "latest",
 		"fuzzy" : "0.1.x",
 		"relative-date" : "1.1.x",

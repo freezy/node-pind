@@ -148,8 +148,13 @@ function fields(row, params) {
 	htmlEncode('features');
 	htmlEncode('notes');
 	htmlEncode('toys');
+	var asset = '/asset';
 
 	// additional attributes
+	if (hasField('url_backglass_medium')) {
+		r.url_backglass_medium = asset + '/backglass/' + row.key + '.medium.png';
+	}
+
 /*	if (hasField('url')) {
 		r.url = pathTo.table(row.key);
 	}
