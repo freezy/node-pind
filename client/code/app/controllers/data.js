@@ -7,7 +7,7 @@ module.exports = function(module) {
 	 * @param Jsonrpc
 	 * @constructor
 	 */
-	module.controller('DataCtrl', ['$scope', 'rpc', function($scope, rpc) {
+	module.controller('DataCtrl', ['$scope', function($scope) {
 
 		$scope.data = [];
 
@@ -55,9 +55,7 @@ module.exports = function(module) {
 				params.order = $scope.sort;
 			}
 
-			window.ss.rpc("table.all", params, function(result) {
-
-				alert('OK');
+			ss.rpc("table.all", params, function(result) {
 
 				// copy rows to result, with mapper function if available.
 				var setData = function($scope, result) {
@@ -68,6 +66,7 @@ module.exports = function(module) {
 					}
 					$scope.numpages = Math.ceil(result.count / $scope.limit);
 					$scope.$broadcast('dataUpdated');
+					$scope.$apply();
 				};
 
 				// do something else first if postDataFn is set.
@@ -78,15 +77,16 @@ module.exports = function(module) {
 				} else {
 					setData($scope, result);
 				}
-			}, function(reason) {
-				alert('Failed: ' + reason);
 			});
 		};
 
 		// refresh on explicit params updated event and as soon as resource is set.
 		$scope.$on('paramsUpdated', refresh);
 		$scope.$on('paramsReset', refresh);
-		refresh();
+		ss.server.on('ready', function() {
+			refresh();
+		});
+
 
 	}]);
 };

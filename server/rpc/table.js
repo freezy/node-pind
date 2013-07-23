@@ -8,6 +8,7 @@ var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
 
 exports.actions = function(req, res, ss) {
+	req.use('session');
 
 	return {
 
