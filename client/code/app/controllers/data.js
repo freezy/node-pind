@@ -55,7 +55,7 @@ module.exports = function(module) {
 				params.order = $scope.sort;
 			}
 
-			rpc("table.all", params).then(function(result) {
+			window.ss.rpc("table.all", params, function(result) {
 
 				alert('OK');
 
