@@ -34,6 +34,11 @@ module.exports = function(module) {
 
 		var refresh = function() {
 
+			if (!$scope.resource) {
+				return alert('Must set "resource" attribute somewhere in scope.');
+			}
+
+
 			var params = {
 				offset: ($scope.page - 1) * $scope.limit,
 				limit: $scope.limit
@@ -55,7 +60,7 @@ module.exports = function(module) {
 				params.order = $scope.sort;
 			}
 
-			ss.rpc("table.all", params, function(result) {
+			ss.rpc($scope.resource, params, function(result) {
 
 				// copy rows to result, with mapper function if available.
 				var setData = function($scope, result) {

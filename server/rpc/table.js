@@ -150,47 +150,44 @@ function fields(row, params) {
 	htmlEncode('toys');
 	var asset = '/asset';
 
-	// additional attributes
+	// urls attributes
+	if (hasField('url')) {
+		r.url = '/table/' + row.key;
+	}
+	if (hasField('url_logo')) {
+		r.url_logo = asset + '/logo/' + row.key + '.png';
+	}
+	if (hasField('url_square_small')) {
+		r.url_square_small = asset + '/square/' + row.key + '.small.png';
+	}
+	if (hasField('url_square_medium')) {
+		r.url_square_medium = asset + '/square/' + row.key + '.medium.png';
+	}
+	if (hasField('url_widescreen_small')) {
+		r.url_widescreen_small = asset + '/widescreen/' + row.key + '.small.png';
+	}
+	if (hasField('url_widescreen_medium')) {
+		r.url_widescreen_medium = asset + '/widescreen/' + row.key + '.medium.png';
+	}
+	if (hasField('url_banner')) {
+		r.url_banner = asset + '/banner/' + row.key + '.png';
+	}
+	if (hasField('url_banner_small')) {
+		r.url_banner_small = asset + '/banner/' + row.key + '.small.png';
+	}
+	if (hasField('url_portrait_small')) {
+		r.url_portrait_small = asset + '/portrait/' + row.key + '.small.png';
+	}
+	if (hasField('url_portrait_medium')) {
+		r.url_portrait_medium = asset + '/portrait/' + row.key + '.medium.png';
+	}
+	if (hasField('url_backglass_small')) {
+		r.url_backglass_small = asset + '/backglass/' + row.key + '.small.png';
+	}
 	if (hasField('url_backglass_medium')) {
 		r.url_backglass_medium = asset + '/backglass/' + row.key + '.medium.png';
 	}
 
-/*	if (hasField('url')) {
-		r.url = pathTo.table(row.key);
-	}
-	if (hasField('url_logo')) {
-		r.url_logo = pathTo.asset_logo(row.key);
-	}
-	if (hasField('url_square_small')) {
-		r.url_square_small = pathTo.asset_square_small(row.key);
-	}
-	if (hasField('url_square_medium')) {
-		r.url_square_medium = pathTo.asset_square_medium(row.key);
-	}
-	if (hasField('url_widescreen_small')) {
-		r.url_widescreen_small = pathTo.asset_widescreen_small(row.key);
-	}
-	if (hasField('url_widescreen_medium')) {
-		r.url_widescreen_medium = pathTo.asset_widescreen_medium(row.key);
-	}
-	if (hasField('url_banner')) {
-		r.url_banner = pathTo.asset_banner(row.key);
-	}
-	if (hasField('url_banner_small')) {
-		r.url_banner_small = pathTo.asset_banner_small(row.key);
-	}
-	if (hasField('url_portrait_small')) {
-		r.url_portrait_small = pathTo.asset_portrait_small(row.key);
-	}
-	if (hasField('url_portrait_medium')) {
-		r.url_portrait_medium = pathTo.asset_portrait_medium(row.key);
-	}
-	if (hasField('url_backglass_small')) {
-		r.url_backglass_small = pathTo.asset_backglass_small(row.key);
-	}
-	if (hasField('url_backglass_medium')) {
-		r.url_backglass_medium = pathTo.asset_backglass_medium(row.key);
-	}*/
 	return r;
 }
 

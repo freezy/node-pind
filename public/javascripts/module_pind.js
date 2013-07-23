@@ -1,22 +1,6 @@
 
 var pindAppModule = angular.module('pind', ['ngSanitize']);
 
-/**
- * Defines namespace and method of an api call.
- *
- * Attributes:
- *   - resource: namespace and method, separated by ".", e.g. "Table.GetAll".
- */
-pindAppModule.directive('resource', function() {
-	return {
-		restrict: 'A',
-		link: function(scope, element, attrs) {
-			scope.resource = attrs.resource;
-		}
-	}
-});
-
-
 /*
  * Simple JSON-RPC 2 implementation using Angular's $http service.
  */
