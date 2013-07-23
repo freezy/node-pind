@@ -32,7 +32,7 @@ block inner-content
 		.clearfix
 
 		//- data
-		div.data.ng-cloak(resource='Table.GetAll', style='display:none')
+		div.data.ng-cloak(resource='table.all', style='display:none')
 			table.table
 				thead
 					tr
@@ -41,7 +41,7 @@ block inner-content
 						th(style='width:100px') Media
 						th(style='width:70px') ROM
 				tbody
-					tr(ng-repeat='(idx, table) in data', data-id='{{table.key}}', data-idx="{{idx}}")
+					tr(ng-repeat='table in data', data-id='{{table.key}}', data-idx="{{idx}}")
 						td(ng-bind-html="table.title")
 						td.nowrap
 							ul.badge-group
@@ -113,6 +113,6 @@ block inner-footer
 block inlineScripts
 	script
 		$(document).ready(function() {
-			menu('settings');
-			submenu('tables');
+			//menu('settings');
+			//submenu('tables');
 		});

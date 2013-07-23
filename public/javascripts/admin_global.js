@@ -199,38 +199,6 @@ function UpgradeRowController($scope, $element) {
 	});
 }
 
-function AdminFooterCtrl($scope, Jsonrpc) {
-
-	$scope.restart = function() {
-
-		Jsonrpc.call('Pind.Restart', {}, function(err) {
-			if (err) {
-				return alert('ERROR: ' + err);
-			}
-			var counting = $('.modal.restarting');
-			counting.modal({
-				show: true,
-				keyboard: false,
-				backdrop: 'static'
-			});
-			var count = 5;
-			var timer = setInterval(function() {
-				counting.find('.modal-footer > p').html('Refreshing in ' + count + ' seconds.');
-				if (count == 0) {
-					clearInterval(timer);
-					counting.modal('hide');
-					location.reload();
-				}
-				count--;
-			}, 1000);
-		});
-	};
-
-	$scope.restartDialog = function() {
-		$('.modal.restart').modal().show();
-	}
-}
-
 pindAppModule.filter('githubRange', function() {
 	return function(result) {
 		var from = result.fromSha.substr(0, 7);

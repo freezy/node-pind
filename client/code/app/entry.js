@@ -3,14 +3,6 @@
 // Make 'ss' available to all modules and the browser console
 window.ss = require('socketstream');
 
-ss.server.on('disconnect', function() {
-	console.log('Connection down :-(');
-});
-
-ss.server.on('reconnect', function() {
-	console.log('Connection back up :-)');
-});
-
 require('ssAngular');
 var directives = angular.module('app.directives', []);
 var filters = angular.module('app.filters', []);
@@ -32,9 +24,11 @@ require('/providers/auth')(app);
 require('/routes')(app);
 
 // setup angular controllers
+require('/controllers/app')(app);
 require('/controllers/auth')(app);
 require('/controllers/data')(app);
 require('/controllers/example')(app);
+require('/controllers/admin/tables')(app);
 
 ss.server.on('ready', function() {
 
