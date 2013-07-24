@@ -1,12 +1,12 @@
 extends ../layouts/inner
 
 block vars
-	- var pageController = 'NoopCtrl'
+	- var pageController = 'HomeCtrl'
 	- var mainMenu = "home"
 
 block content
 	div.span12.content(ng-app)
-		section.home(ng-controller='HomeCtrl')
+		section.home
 			.page-header
 				h1 Welcome!
 
@@ -20,7 +20,7 @@ block content
 						//---------------------------------------------------------
 
 						div(ng-controller='LatestReleasesCtrl')
-							ul.thumbnails(ng-controller='DataCtrl', resource="VPForums.FindTables")
+							ul.thumbnails(ng-controller='DataCtrl', resource="vpforums.tables")
 								li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}", tb-768-980='span12')
 									.thumbnail
 										thumb.ng-transclude(fileid="{{row.fileId}}")
@@ -48,7 +48,7 @@ block content
 						h2 Latest Games
 
 						div(ng-controller='LatestGamesCtrl')
-							ul.thumbnails.tables(ng-controller='DataCtrl', resource="Table.GetAll")
+							ul.thumbnails.tables(ng-controller='DataCtrl', resource="table.all")
 								li.span4(ng-repeat='table in data', tb-768-980='span6')
 									.thumbnail
 										img(ng-src='{{table.url_backglass_medium}}')
@@ -64,8 +64,8 @@ block content
 						//---------------------------------------------------------
 						h2 Latest Hiscores
 						div(ng-controller='LatestHiscoresCtrl')
-							div(ng-controller='HiscoresCtrl')
-								ul.thumbnails.hiscores(ng-controller='DataCtrl', resource="Table.GetAll")
+							div(ng-controller='HiscoreCtrl')
+								ul.thumbnails.hiscores(ng-controller='DataCtrl', resource="table.all")
 									li.span4(ng-repeat='table in data', slider='200', tb-768-980='span6')
 										include ../layouts/snippets/hiscore
 

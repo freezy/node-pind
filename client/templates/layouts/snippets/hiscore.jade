@@ -7,7 +7,7 @@
 					li(ng-repeat="hiscore in getHiscores(table, 'special')", class="{{hiscore.class}}")
 						span.title {{hiscore.title}}
 						span.player {{hiscore.player}}
-						span.score {{hiscore.score}}
+						span.score {{hiscore.score | groupdigit}}
 			hr
 			img(ng-src='{{table.url_banner_small}}')
 			hr
@@ -17,9 +17,9 @@
 					li(ng-repeat="hiscore in getHiscores(table, 'champ')", class="{{hiscore.class}}")
 						span.title Grand Champion
 						span.player {{hiscore.player}}
-						span.score {{hiscore.score}}
+						span.score {{hiscore.score | groupdigit}}
 				ul.ranking.hiscore
 					li(ng-repeat="hiscore in getHiscores(table, 'hiscore')", class="{{hiscore.class}}")
 						span.rank {{hiscore.rank}}
 						span.player {{hiscore.player}}
-						span.score {{hiscore.score}}
+						span.score {{hiscore.score | groupdigit }}

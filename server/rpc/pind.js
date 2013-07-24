@@ -47,7 +47,7 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
-		GetHiscores : function(params) {
+		getHiscores : function(params) {
 			var query =
 				'SELECT h.*, t.key, u.user FROM hiscores h ' +
 				'JOIN tables t ON t.id = h.tableId ' +

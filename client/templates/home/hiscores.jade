@@ -1,12 +1,12 @@
 extends ../layouts/inner
 
 block vars
-	- var pageController = 'NoopCtrl'
+	- var pageController = 'HiscoreCtrl'
 	- var mainMenu = "hiscores"
 
 block content
-	div.span10.offset1.content(ng-controller="HiscoresCtrl")
-		section(ng-controller='DataCtrl', resource="Table.GetAll")
+	div.span10.offset1.content
+		section(ng-controller='DataCtrl', resource="table.all")
 			.page-header
 				h1 High Scores
 

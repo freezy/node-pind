@@ -107,12 +107,12 @@ module.exports = function(module) {
 		$scope.$on('paramsUpdated', $scope.refresh);
 		$scope.$on('paramsReset', $scope.refresh);
 
-		ss.server.on('ready', refreshWhenReady);
+		ss.server.on('ready', $scope.refresh);
 		ss.event.on('dataUpdated', autorefresh);
 
 		// cleanup on exit
 		$scope.$on('$destroy', function() {
-			ss.server.off('ready', refreshWhenReady);
+			ss.server.off('ready', $scope.refresh);
 			ss.event.off('dataUpdated', autorefresh);
 		});
 	}]);

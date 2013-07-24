@@ -26,8 +26,13 @@ require('/routes')(app);
 
 // setup angular controllers
 require('/controllers/app')(app);
-require('/controllers/auth')(app);
 require('/controllers/data')(app);
+
+require('/controllers/home/hiscore')(app);
+require('/controllers/home/home')(app);
+
+require('/controllers/user/auth')(app);
+
 require('/controllers/admin/tables')(app);
 require('/controllers/admin/transfer')(app);
 require('/controllers/admin/sources')(app);
