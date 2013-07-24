@@ -37,4 +37,5 @@ module.exports = function(module) {
 
 	}]);
 
+	module.controller('NoopCtrl', ['$scope', function($scope) { }]);
 };

@@ -1,5 +1,10 @@
 extends layout
 
+block vars
+	- var pageController = 'AdminTableCtrl'
+	- var mainMenu = "admin"
+	- var subMenu = "tables"
+
 block inner-content
 
 	.inner(ng-controller='DataCtrl')

@@ -3,7 +3,7 @@ module.exports = function(module) {
 
 	module.controller('AdminTableCtrl', ['$scope', function($scope) {
 
-		
+
 	}]);
 };
 

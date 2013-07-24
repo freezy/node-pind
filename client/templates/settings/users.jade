@@ -1,5 +1,10 @@
 extends layout
 
+block vars
+	- var pageController = 'NoopCtrl'
+	- var mainMenu = "admin"
+	- var subMenu = "users"
+
 block inner-content
 	.inner
 		div.data.users(style='display:none')

@@ -1,21 +1,27 @@
 extends ../layouts/inner
 
 block content
+
+	- var adminTablesActive = typeof(subMenu) !== 'undefined' && subMenu == "tables" ? "active" : ""
+	- var adminSourcesActive = typeof(subMenu) !== 'undefined' && subMenu == "sources" ? "active" : ""
+	- var adminDownloadsActive = typeof(subMenu) !== 'undefined' && subMenu == "transfers" ? "active" : ""
+	- var adminUsersActive = typeof(subMenu) !== 'undefined' && subMenu == "users" ? "active" : ""
+	- var adminGlobalActive = typeof(subMenu) !== 'undefined' && subMenu == "global" ? "active" : ""
+
 	div.span10.offset1.content
 		section.admin
 			.page-header
 				h1 Administration
-
 			ul.nav.nav-tabs.submenu
-				li.tables
+				li.tables(class=adminTablesActive)
 					a(href="/admin") Tables
-				li.sources
-					a(href="/admin/tables") Sources
-				li.transfers
+				li.sources(class=adminSourcesActive)
+					a(href="/admin/sources") Sources
+				li.transfers(class=adminDownloadsActive)
 					a(href="/admin/transfers") Downloads
-				li.users
+				li.users(class=adminUsersActive)
 					a(href="/admin/users") Users
-				li.global
+				li.global(class=adminGlobalActive)
 					a(href="/admin/global") Global
 
 			block inner-content

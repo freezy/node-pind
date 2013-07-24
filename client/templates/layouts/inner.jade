@@ -1,28 +1,35 @@
+block vars
+	- var pageController = ""
+
+- var homeActive = typeof(mainMenu) !== 'undefined' && mainMenu == "home" ? "active" : ""
+- var tablesActive = typeof(mainMenu) !== 'undefined' && mainMenu == "tables" ? "active" : ""
+- var hiscoresActive = typeof(mainMenu) !== 'undefined' && mainMenu == "hiscores" ? "active" : ""
+- var coinActive = typeof(mainMenu) !== 'undefined' && mainMenu == "coin" ? "active" : ""
+- var adminActive = typeof(mainMenu) !== 'undefined' && mainMenu == "admin" ? "active" : ""
 
 div.navbar.navbar-static-top
 	div.navbar-inner.mainmenu
 		a(href='/').icon.pind
 		div.container
 			ul#global-nav.nav
-				li.home
+				li.home(class=homeActive)
 					a(href='/') Home
-				li.tables
+				li.tables(class=tablesActive)
 					a(href='/tables') Tables
-				li.hiscores
+				li.hiscores(class=hiscoresActive)
 					a(href='/hiscores') High Scores
-				li.coin
+				li.coin(class=coinActive)
 					a(href='/coin') Coin Drop
 			ul.nav.pull-right
-				li.settings
+				li.settings(class=adminActive)
 					a(href='/admin').icon
 						i.icon.settings
 				li.logout
 					a(href='/logout').icon
 						i.icon.exit
 
-div.container(ng-app='pind')
-	- var ngc = typeof(ngController) === 'undefined' ? null : ngController;
-	div.row(ng-controller=ngc)
+div.container
+	div.row(ng-controller="#{pageController}")
 		block content
 
 footer

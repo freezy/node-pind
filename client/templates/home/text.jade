@@ -1,5 +1,9 @@
 extends ../layouts/inner
 
+block vars
+	- var pageController = 'NoopCtrl'
+	- var mainMenu = "text"
+
 block content
 	div.span3.sidebar
 		ul.nav.nav-list.sidenav(data-spy='affix', data-offset-top='47')

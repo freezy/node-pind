@@ -1,5 +1,9 @@
 extends ../layouts/inner
 
+block vars
+	- var pageController = 'NoopCtrl'
+	- var mainMenu = "hiscores"
+
 block content
 	div.span10.offset1.content(ng-controller="HiscoresCtrl")
 		section(ng-controller='DataCtrl', resource="Table.GetAll")
