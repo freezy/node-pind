@@ -13,9 +13,20 @@ module.exports = function(module) {
 
 		// setup routing
 		$routeProvider
+
+			.when('/', { templateUrl: 'home-index.html' })
+			.when('/hiscores', { templateUrl: 'home-hiscores.html' })
+			.when('/tables', { templateUrl: 'home-tables.html' })
+			.when('/coin', { templateUrl: 'home-coin.html' })
+
+			.when('/admin', { templateUrl: 'settings-tables.html' })
+			.when('/admin/sources', { templateUrl: 'settings-sources.html' })
+			.when('/admin/downloads', { templateUrl: 'settings-transfers.html' })
+			.when('/admin/users', { templateUrl: 'settings-users.html' })
+			.when('/admin/global', { templateUrl: 'settings-global.html' })
+
 			.when('/login', { templateUrl: 'auth-login.html' })
-			.when('/app', { templateUrl: 'settings-tables.html' })
-			.when('/another', { templateUrl: 'anotherpage.html' })
+
 			.otherwise({ redirectTo: '/' });
 
 		// use html5 push state

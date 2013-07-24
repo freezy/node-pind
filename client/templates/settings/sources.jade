@@ -1,13 +1,13 @@
 extends layout
 
 block vars
-	- var pageController = 'NoopCtrl'
+	- var pageController = 'AdminSourceCtrl'
 	- var mainMenu = "admin"
 	- var subMenu = "sources"
 
 block inner-content
 
-	.inner(ng-controller='DataCtrl')
+	.inner(ng-controller='DataCtrl', resource="vpforums.tables")
 
 		h2 VPForums.org
 
@@ -37,10 +37,10 @@ block inner-content
 		.clearfix
 
 		//- data
-		div.data.ng-cloak(resource="VPForums.FindTables", style="display:none")
+		div.data.ng-cloak(style="display:none")
 			.row-fluid
 				ul.thumbnails
-					li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}")
+					li.span6.vpf.item(ng-repeat="row in data", data-id="{{row.id}}", data-transferid="{{row.transferId}}")
 						.thumbnail
 							thumb.ng-transclude(fileid="{{row.fileId}}")
 							h3 {{row.title_trimmed}}
@@ -123,10 +123,3 @@ block append modals
 		div.modal-footer
 			button.download.btn.btn-warning.submit.right(data-dismiss="modal") Download
 			a.cancel.btn.link-big(href='#') Cancel
-
-block inlineScripts
-	script
-		$(document).ready(function() {
-			menu('settings');
-			submenu('sources');
-		});

@@ -3,6 +3,7 @@ var logger = require('winston');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
+
 	require('../modules/announce')().registerSocketStream(ss);
 
 	return {

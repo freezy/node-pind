@@ -1,26 +1,34 @@
 module.exports = function(module) {
 	'use strict';
 
-	module.controller('AdminTableCtrl', ['$scope', 'rpc', function($scope, rpc) {
+	var timer;
+	var c = $('#console');
+	var consoleLog = function(notice) {
+		var timeout = notice.timeout ? notice.timeout : 1500;
+		if (!c.is(':visible')) {
+			c.slideDown(200);
+		}
+		$('#console span').html(notice.msg);
+		clearTimeout(timer);
+		timer = setTimeout(function() {
+			c.slideUp(200);
+		}, timeout);
+	};
+
+	module.controller('AdminTableCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
+
+		$log.log('Entered AdminTableCtrl.');
+		$scope.$on('$destroy', function() {
+			$log.log('Exited AdminTableCtrl.');
+			ss.event.off('console', consoleLog);
+		});
 
 		$scope.hpsync = function(event) {
 			event.target.blur();
 			rpc('hyperpin.sync');
 		};
 
-		var timer;
-		var console = $('#console');
-		ss.event.on('console', function(notice) {
-			var timeout = notice.timeout ? notice.timeout : 1500;
-			if (!console.is(':visible')) {
-				console.slideDown(200);
-			}
-			$('#console span').html(notice.msg);
-			clearTimeout(timer);
-			timer = setTimeout(function() {
-				console.slideUp(200);
-			}, timeout);
-		});
+		ss.event.on('console', consoleLog);
 
 		$scope.mapperFn = function(table) {
 

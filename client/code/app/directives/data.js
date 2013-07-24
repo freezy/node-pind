@@ -12,6 +12,7 @@ module.exports = function (module) {
 			restrict: 'A',
 			link: function(scope, element, attrs) {
 				scope.resource = attrs.resource;
+				scope.$broadcast('resourceAvailable');
 			}
 		}
 	});
@@ -349,5 +350,57 @@ module.exports = function (module) {
 				});
 			}
 		}
+	});
+
+
+	module.directive('sortable', function() {
+		return function(scope, element, attrs) {
+			if (scope.$last) {
+				// http://isocra.com/2008/02/table-drag-and-drop-jquery-plugin/
+				$(element).parents('tbody').tableDnD({
+					onDrop: function(table, row) {
+						var next = $(row).next();
+						var prev = $(row).prev();
+						api('Transfer.Reorder', {
+							id: $(row).attr('id'),
+							between: {
+								prev: prev && prev.hasClass('queued') ? prev.attr('id') : 0,
+								next: next && next.hasClass('queued') ? next.attr('id') : 0
+							}
+						}, function(err, result) {
+							if (err) {
+								alert(err);
+							}
+						});
+					},
+					dragHandle: '.dragHandle',
+					onDragClass: 'dragging'
+				});
+			}
+		};
+	});
+
+	module.directive('deletable', function() {
+		return function(scope, element, attrs) {
+			if (!scope.transfer.startedAt || scope.transfer.completedAt || scope.transfer.failedAt) {
+				$(element).find('li.link.delete').click(function() {
+					var id = attrs.id;
+					api('Transfer.Delete', {
+						id: id
+					}, function(err, result) {
+						if (err) {
+							return alert(err);
+						}
+						$(element).fadeOut().promise().done(function() {
+							console.log('DATA should be refreshing now.');
+							scope.$parent.$parent.$broadcast('paramsUpdated');
+						});
+					});
+				});
+			} else {
+				$(element).find('li.link.delete').addClass('disabled');
+			}
+
+		};
 	});
 };

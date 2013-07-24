@@ -10,6 +10,7 @@ var filters = angular.module('app.filters', []);
 // load directives
 require('/directives/global')(directives);
 require('/directives/data')(directives);
+require('/directives/admin')(directives);
 
 // load filters
 require('/filters')(filters);
@@ -27,8 +28,13 @@ require('/routes')(app);
 require('/controllers/app')(app);
 require('/controllers/auth')(app);
 require('/controllers/data')(app);
-require('/controllers/example')(app);
 require('/controllers/admin/tables')(app);
+require('/controllers/admin/transfer')(app);
+require('/controllers/admin/sources')(app);
+require('/controllers/admin/user')(app);
+require('/controllers/admin/global')(app);
+
+require('/controllers/example')(app);
 
 ss.server.on('ready', function() {
 

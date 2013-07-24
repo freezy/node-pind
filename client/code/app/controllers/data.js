@@ -33,7 +33,7 @@ module.exports = function(module) {
 			$scope.$broadcast('paramsReset');
 		};
 
-		var refresh = function() {
+		$scope.refresh = function() {
 
 			if (!$scope.resource) {
 				return alert('Must set "resource" attribute somewhere in scope.');
@@ -85,16 +85,35 @@ module.exports = function(module) {
 			});
 		};
 
-		// refresh on explicit params updated event and as soon as resource is set.
-		$scope.$on('paramsUpdated', refresh);
-		$scope.$on('paramsReset', refresh);
-		ss.server.on('ready', function() {
-			refresh();
-		});
-		ss.event.on('dataUpdated', function(what) {
-			if ($scope.resource && $scope.resource.substr(0, $scope.resource.indexOf('.')) == what) {
-				refresh();
+		var refreshWhenReady = function() {
+			if ($scope.connectionReady) {
+				if (!$scope.resource) {
+					$scope.$on('resourceAvailable', $scope.refresh);
+				} else {
+					$scope.refresh();
+				}
 			}
+		};
+
+		var autorefresh = function(what) {
+			if ($scope.resource && $scope.resource.substr(0, $scope.resource.indexOf('.')) == what) {
+				refreshWhenReady();
+			}
+		};
+
+		refreshWhenReady();
+
+		// refresh on explicit params updated event and as soon as resource is set.
+		$scope.$on('paramsUpdated', $scope.refresh);
+		$scope.$on('paramsReset', $scope.refresh);
+
+		ss.server.on('ready', refreshWhenReady);
+		ss.event.on('dataUpdated', autorefresh);
+
+		// cleanup on exit
+		$scope.$on('$destroy', function() {
+			ss.server.off('ready', refreshWhenReady);
+			ss.event.off('dataUpdated', autorefresh);
 		});
 	}]);
 };

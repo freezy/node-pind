@@ -1,13 +1,13 @@
 extends layout
 
 block vars
-	- var pageController = 'NoopCtrl'
+	- var pageController = 'AdminGlobalCtrl'
 	- var mainMenu = "admin"
 	- var subMenu = "global"
 
 block inner-content
 
-	div(ng-controller='GlobalCtrl')
+	div
 
 		.inner.middle
 			h2 Check for Updates
@@ -15,7 +15,7 @@ block inner-content
 		.center.ng-cloak
 			h3 Now Running
 			div.dmd.middle
-				span {{version}}
+				span {{versionStr}}
 			p.lbl From {{date}}, see&nbsp;
 				a.tt(href="{{url}}", target="_blank") {{sha}}.
 
@@ -38,7 +38,7 @@ block inner-content
 			.clearfix
 
 			//- data
-			div.data.ng-cloak(resource='Pind.GetPreviousUpdates', style='display:none')
+			div.data.ng-cloak(resource='pind.getPreviousUpdates', style='display:none')
 				table.table
 					thead
 						tr
@@ -52,7 +52,7 @@ block inner-content
 							th Migrations
 							th(style='width:14px')
 					tbody
-						tr(ng-repeat='upgrade in data', ng-controller='UpgradeRowController')
+						tr(ng-repeat='upgrade in data', ng-controller='AdminUpgradeRowCtrl')
 							td
 								span.status(data-original-title='{{ statusInfo }}')
 									i.icon(class="{{ statusIcon }}")
@@ -186,10 +186,3 @@ block inner-footer
 		div.modal-footer
 			p
 
-
-block inlineScripts
-	script
-		$(document).ready(function() {
-			menu('settings');
-			submenu('global');
-		});

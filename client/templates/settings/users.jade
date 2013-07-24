@@ -1,61 +1,62 @@
 extends layout
 
 block vars
-	- var pageController = 'NoopCtrl'
+	- var pageController = 'AdminUserCtrl'
 	- var mainMenu = "admin"
 	- var subMenu = "users"
 
 block inner-content
-	.inner
-		div.data.users(style='display:none')
 
-			.pagination.pagination-small.pull-right
-				ul(data-page="1")
-					li.first.disabled
-						a
-							i.icon.arrow-left
-					li.p1.current
-						a 1
-					li.last
-						a
-							i.icon.arrow-right
+	.inner(ng-controller='DataCtrl', resource="user.all")
 
-			select.numrows.input-mini.pull-right
-				option(selected="selected") 10
-				option 20
-				option 50
-				option 100
+		h2 Users
 
-			ul.nav.nav-pills.pull-left.filter
+		//- control bar
+		div.controls(style='display:none')
+
+			//- pager
+			pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
+
+			//- number of rows
+			numrows.numrows.input-mini.pull-right(selection='[10, 20, 50, 100]', value='limit')
+
+			//- search box
+			searchbox(value='search', wait='300')
+
+			//- filter pills
+			ul.nav.nav-pills.pull-left.filter(filters, value='filters')
+				li
+					.icon
+						i.icon.filter(title="Filter high scores by")
 				li(data-filter="neverlogged")
 					a(href="#") Never logged
 				li(data-filter="nocredits")
 					a(href="#") No credits
 
 			.clearfix
-			.wrapper(style='display:none')
-				table.table
-					thead
-						tr
-							th Login
-							th(style='width: 100px') Credits
-					tbody
 
-			div.noresult(style='display:none')
-				p No users found.
-				button.btn.submit.small Clear Filters
+		//- data
+		div.data.ng-cloak(style="display:none")
+			table.table
+				thead
+					tr
+						th Login
+						th(style='width: 100px') Credits
+				tbody
+					tr(ng-repeat='user in data', data-id='{{ user.id ]]')
+						td {{ user.user }}
+						td.nowrap(data-value='{{ user.credits }}')
+							i.icon.pencil.clickable
+							| &nbsp;{{ user.credits }}
+		.clearfix
 
-		div.empty(style='display:none')
+		//- empty search result
+		div.noresult(style='display:none')
+			p No users found.
+			button.btn.submit.small Clear Filters
+
+		//- no data
+		div.nodata(style='display:none')
 			p No users in database.
-			button.btn.submit
-				i.icon.refresh
-				span Load from HyperPin
 
 	.clearfix
-
-block inlineScripts
-	script
-		$(document).ready(function() {
-			menu('settings');
-			submenu('users');
-		});

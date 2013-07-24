@@ -6,6 +6,15 @@ module.exports = function(module) {
 	 */
 	module.controller('AppCtrl', ['$scope', function($scope) {
 
+		$scope.connectionReady = false;
+		ss.server.on('ready', function() {
+			ss.rpc('pind.getVersion', function(v) {
+				$scope.version = v;
+				$scope.connectionReady = true;
+				$scope.$broadcast('connectionReady');
+			});
+		});
+
 		$scope.restart = function() {
 
 			Jsonrpc.call('Pind.Restart', {}, function(err) {

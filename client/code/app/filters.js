@@ -25,4 +25,12 @@ module.exports = function (module) {
 		}
 	});
 
+	module.filter('githubRange', function() {
+		return function(result) {
+			var from = result.fromSha.substr(0, 7);
+			var to = result.toSha.substr(0, 7);
+			return '<a href="https://github.com/' + result.repo + '/compare/' + from + '...' + to + '" target="_blank" class="tt">' + from + '...' + to + '</a>';
+		}
+	});
+
 };
