@@ -19,11 +19,11 @@ module.exports = function(module) {
 			.when('/tables', { templateUrl: 'home-tables.html' })
 			.when('/coin', { templateUrl: 'home-coin.html' })
 
-			.when('/admin', { templateUrl: 'settings-tables.html' })
-			.when('/admin/sources', { templateUrl: 'settings-sources.html' })
-			.when('/admin/downloads', { templateUrl: 'settings-transfers.html' })
-			.when('/admin/users', { templateUrl: 'settings-users.html' })
-			.when('/admin/global', { templateUrl: 'settings-global.html' })
+			.when('/admin', { templateUrl: 'admin-tables.html' })
+			.when('/admin/sources', { templateUrl: 'admin-sources.html' })
+			.when('/admin/downloads', { templateUrl: 'admin-transfers.html' })
+			.when('/admin/users', { templateUrl: 'admin-users.html' })
+			.when('/admin/global', { templateUrl: 'admin-global.html' })
 
 			.when('/login', { templateUrl: 'auth-login.html' })
 

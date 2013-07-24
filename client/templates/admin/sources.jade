@@ -1,0 +1,125 @@
+extends layout
+
+block vars
+	- var pageController = 'AdminSourceCtrl'
+	- var mainMenu = "admin"
+	- var subMenu = "sources"
+
+block inner-content
+
+	.inner(ng-controller='DataCtrl', resource="vpforums.tables")
+
+		h2 VPForums.org
+
+		//- control bar
+		div.controls(style='display:none')
+
+			//- pager
+			pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
+
+			//- number of rows
+			numrows.numrows.input-mini.pull-right(selection='[10, 20, 30]', value='limit')
+
+			//- search box
+			searchbox(value='search', wait='300')
+
+			//- sort pills
+			ul.nav.nav-pills.pull-left.sort(sort, value='sort')
+				li
+					.icon
+						i.icon.sort(title="Sort results by")
+				li.current(data-sort="latest")
+					a(href="#") Latest
+				li(data-sort="downloads")
+					a(href="#") By Downloads
+				li(data-sort="views")
+					a(href="#") By Views
+		.clearfix
+
+		//- data
+		div.data.ng-cloak(style="display:none")
+			.row-fluid
+				ul.thumbnails
+					li.span6.vpf.item(ng-repeat="row in data", data-id="{{row.id}}", data-transferid="{{row.transferId}}")
+						.thumbnail
+							thumb.ng-transclude(fileid="{{row.fileId}}")
+							h3 {{row.title_trimmed}}
+							p.pull-right.updated.hidden-phone-small {{row.lastUpdatedSince}}
+							h4.hidden-phone-small {{row.info}}
+							ul.pills.small
+								li
+									i.icon.user
+									.author.hidden-phone-small {{row.author}}
+								li
+									i.icon.circle-arrow-down(title="{{row.downloads|groupdigit}}")
+									span.hidden-desktop-small.hidden-phone-small {{row.downloads|groupdigit}}
+								li
+									i.icon.eye(title="{{row.views|groupdigit}}")
+									span.hidden-desktop-small.hidden-phone-small {{row.views|groupdigit}}
+								li.link
+									a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
+										i.icon.link
+								li.link.transfer(class="status-{{row.downloadStatus}}")
+									a.downloadLink(href="#")
+										i.icon.download-alt
+							.clearfix
+
+		//- empty search result
+		div.noresult(style="display:none")
+			p No results found.
+			button.btn.submit.small Clear Filters
+
+		//- no data
+		div.nodata(style="display:none")
+			p
+				| No index found. Click below to fetch the file index which takes a few minutes. <br>
+				| Data will be automatically refreshed when done.
+			button.btn.submit(data-processing="{{isDownloadingIndex}}")
+				i.icon.refresh
+				span Download index
+
+			.indexing.progress.progress-striped.active(style="display:none")
+				.bar
+
+		.clearfix
+
+block inner-footer
+	h2 Available Actions:
+	.row-fluid
+		.span4.action
+			h3 Refresh
+			p Download the latest index from VPF in order to get the lastest tables.
+			button.btn.submit.small(ng-click="updateIndex()")
+				i.icon.refresh
+				span Refresh
+		.span4
+		.span4
+
+block append modals
+	.modal-alert.modal.hide.fade.download-table
+		button.close(data-dismiss="modal") &times;
+		div.modal-header
+			h2
+				img
+				i.icon.download-alt
+				span Download Table
+		.clearfix
+		div.modal-body
+			h3 When finished downloading:
+			form
+				fieldset
+					label.checkbox
+						input.btn(type="checkbox", name="dlrom", checked)
+						| Find and download needed ROMs
+					label.checkbox
+						input.btn(type="checkbox", name="dlmedia", checked)
+						| Download media pack
+					label.checkbox
+						input.btn(type="checkbox", name="dlvideo", checked)
+						| Download table video
+					label.checkbox
+						input.btn(type="checkbox", name="addtohp")
+						| Add table to HyperPin
+		div.modal-footer
+			button.download.btn.btn-warning.submit.right(data-dismiss="modal") Download
+			a.cancel.btn.link-big(href='#') Cancel
