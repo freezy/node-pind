@@ -85,23 +85,19 @@ module.exports = function(module) {
 			});
 		};
 
-		var refreshWhenReady = function() {
-			if ($scope.connectionReady) {
-				if (!$scope.resource) {
-					$scope.$on('resourceAvailable', $scope.refresh);
-				} else {
-					$scope.refresh();
-				}
+		$scope.connectionReady(function() {
+			if (!$scope.resource) {
+				$scope.$on('resourceAvailable', $scope.refresh);
+			} else {
+				$scope.refresh();
 			}
-		};
+		});
 
 		var autorefresh = function(what) {
 			if ($scope.resource && $scope.resource.substr(0, $scope.resource.indexOf('.')) == what) {
-				refreshWhenReady();
+				$scope.refresh();
 			}
 		};
-
-		refreshWhenReady();
 
 		// refresh on explicit params updated event and as soon as resource is set.
 		$scope.$on('paramsUpdated', $scope.refresh);

@@ -3,24 +3,6 @@ module.exports = function(module) {
 
 	module.controller('AdminTableCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
 
-		var timer;
-		var c = $('#console');
-		var consoleLog = function(notice) {
-			var timeout = notice.timeout ? notice.timeout : 1500;
-			if (!c.is(':visible')) {
-				c.slideDown(200);
-			}
-			$('#console span').html(notice.msg);
-			clearTimeout(timer);
-			timer = setTimeout(function() {
-				c.slideUp(200);
-			}, timeout);
-		};
-
-		ss.event.on('console', consoleLog);
-		$scope.$on('$destroy', function() {
-			ss.event.off('console', consoleLog);
-		});
 
 		$scope.hpsync = function(event) {
 			event.target.blur();

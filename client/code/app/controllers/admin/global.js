@@ -65,8 +65,8 @@ module.exports = function(module) {
 			$scope.url = $scope.version.url;
 		};
 
-		if (!$scope.connectionReady) {
-			$scope.$on('connectionReady', function() {
+		if (!$scope.versionAvailable) {
+			$scope.$on('versionAvailable', function() {
 				$scope.$apply(setVersion);
 			});
 		} else {

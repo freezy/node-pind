@@ -6,14 +6,28 @@ module.exports = function(module) {
 	 */
 	module.controller('AppCtrl', ['$scope', function($scope) {
 
-		$scope.connectionReady = false;
+		var connectionReady = false;
+		$scope.versionAvailable = false;
 		ss.server.on('ready', function() {
+			connectionReady = true;
 			ss.rpc('pind.getVersion', function(v) {
 				$scope.version = v;
-				$scope.connectionReady = true;
-				$scope.$broadcast('connectionReady');
+				$scope.versionAvailable = true;
+				$scope.$broadcast('versionAvailable');
 			});
 		});
+
+		$scope.connectionReady = function(callback) {
+			if (connectionReady) {
+				callback();
+			} else {
+				var fn = function() {
+					callback();
+					ss.server.off('ready', fn);
+				};
+				ss.server.on('ready', fn);
+			}
+		};
 
 		$scope.restart = function() {
 

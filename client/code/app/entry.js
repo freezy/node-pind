@@ -33,6 +33,7 @@ require('/controllers/home/home')(app);
 
 require('/controllers/user/auth')(app);
 
+require('/controllers/admin/admin')(app);
 require('/controllers/admin/tables')(app);
 require('/controllers/admin/transfer')(app);
 require('/controllers/admin/sources')(app);
