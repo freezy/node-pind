@@ -9,23 +9,24 @@ module.exports = function(module) {
 	 */
 	module.controller('DataCtrl', ['$scope', function($scope) {
 
+		// those can be overloaded by parent scope
+//		$scope.limit = 10;
+//		$scope.filters = [];
+//		$scope.mapperFn = null;
+//		$scope.postDataFn = null;
+
 		$scope.data = [];
 
 		$scope.page = 1;
 		$scope.numpages = 1;
-//		$scope.limit = 10;
 		$scope.resource = null;
 		$scope.search = '';
 		$scope.sort = '';
-//		$scope.filters = [];
 
-//		$scope.mapperFn = null;
-//		$scope.postDataFn = null;
 
 		$scope.reset = function() {
 			$scope.page = 1;
 			$scope.numpages = 1;
-//			$scope.limit = 10;
 			$scope.search = '';
 			$scope.sort = '';
 			$scope.filters = [];
@@ -37,7 +38,6 @@ module.exports = function(module) {
 			if (!$scope.resource) {
 				return alert('Must set "resource" attribute somewhere in scope.');
 			}
-
 
 			var params = {
 				offset: ($scope.page - 1) * $scope.limit,
@@ -91,7 +91,10 @@ module.exports = function(module) {
 		ss.server.on('ready', function() {
 			refresh();
 		});
-
-
+		ss.event.on('dataUpdated', function(what) {
+			if ($scope.resource && $scope.resource.substr(0, $scope.resource.indexOf('.')) == what) {
+				refresh();
+			}
+		});
 	}]);
 };

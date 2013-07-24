@@ -1,53 +1,71 @@
 module.exports = function(module) {
 	'use strict';
 
-	module.controller('AdminTableCtrl', ['$scope', function($scope) {
+	module.controller('AdminTableCtrl', ['$scope', 'rpc', function($scope, rpc) {
 
+		$scope.hpsync = function(event) {
+			event.target.blur();
+			rpc('hyperpin.sync');
+		};
+
+		var timer;
+		var console = $('#console');
+		ss.event.on('console', function(notice) {
+			var timeout = notice.timeout ? notice.timeout : 1500;
+			if (!console.is(':visible')) {
+				console.slideDown(200);
+			}
+			$('#console span').html(notice.msg);
+			clearTimeout(timer);
+			timer = setTimeout(function() {
+				console.slideUp(200);
+			}, timeout);
+		});
+
+		$scope.mapperFn = function(table) {
+
+			if (table.name && table.year && table.manufacturer) {
+				table.title = (table.name_match ? table.name_match : table.name) + ' (' + table.manufacturer + ' ' + table.year + ')';
+			} else {
+				table.title = table.hpid;
+			}
+
+			table.badge_table = table.table_file ? 'success' : 'important';
+			table.badge_rom = table.rom_file ? 'success' : table.rom_file === null ? null : 'important';
+			table.badge_media_wheel = table.media_wheel ? 'success' : 'important';
+			table.badge_media_backglass = table.media_backglass ? 'success' : 'important';
+			table.badge_media_table = table.media_table ? 'success' : 'important';
+			table.badge_media_video = table.media_video ? 'success' : 'important';
+
+			if (table.type != 'OG' && table.platform == 'VP' && table.rom === null) {
+				if (table.table_file) {
+					table.rom_display = 'missing';
+					table.rom_class = ' missing';
+				} else {
+					table.rom_display = '(unknown)';
+					table.rom_class = ' unknown';
+				}
+			} else {
+				if (table.rom) {
+					table.rom_display = table.rom;
+					table.rom_class = '';
+				} else {
+					table.rom_display = '(n/a)';
+					table.rom_class = ' na';
+				}
+			}
+			return table;
+		};
 
 	}]);
+
 };
 
 
 $(document).ready(function() {
+	return false;
 
-	/*
-	 * data mapping
-	 */
-	var scope = angular.element($('.ng-scope[ng-controller="DataCtrl"]')).scope();
-	scope.mapperFn = function(table) {
 
-		if (table.name && table.year && table.manufacturer) {
-			table.title = (table.name_match ? table.name_match : table.name) + ' (' + table.manufacturer + ' ' + table.year + ')';
-		} else {
-			table.title = table.hpid;
-		}
-
-		table.badge_table = table.table_file ? 'success' : 'important';
-		table.badge_rom = table.rom_file ? 'success' : table.rom_file === null ? null : 'important';
-		table.badge_media_wheel = table.media_wheel ? 'success' : 'important';
-		table.badge_media_backglass = table.media_backglass ? 'success' : 'important';
-		table.badge_media_table = table.media_table ? 'success' : 'important';
-		table.badge_media_video = table.media_video ? 'success' : 'important';
-
-		if (table.type != 'OG' && table.platform == 'VP' && table.rom === null) {
-			if (table.table_file) {
-				table.rom_display = 'missing';
-				table.rom_class = ' missing';
-			} else {
-				table.rom_display = '(unknown)';
-				table.rom_class = ' unknown';
-			}
-		} else {
-			if (table.rom) {
-				table.rom_display = table.rom;
-				table.rom_class = '';
-			} else {
-				table.rom_display = '(n/a)';
-				table.rom_class = ' na';
-			}
-		}
-		return table;
-	};
 
 	/*
 	 * bottom actions
@@ -149,17 +167,7 @@ $(document).ready(function() {
 /*	var socket = io.connect('/');
 	var $console = $('#console');
 	var timer;
-	socket.on('notice', function(notice) {
-		var timeout = notice.timeout ? notice.timeout : 1500;
-		if (!$console.is(':visible')) {
-			$console.slideDown(200);
-		}
-		$('#console span').html(notice.msg);
-		clearTimeout(timer);
-		timer = setTimeout(function() {
-			$console.slideUp(200);
-		}, timeout);
-	});
+
 	socket.on('startProcessing', function(msg) {
 		processing(msg.id);
 	});

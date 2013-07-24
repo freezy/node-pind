@@ -9,14 +9,13 @@ var logger = require('winston');
 
 var settings = require('../../config/settings-mine');
 
-function Extract(app) {
+function Extract() {
 	if ((this instanceof Extract) === false) {
-		return new Extract(app);
+		return new Extract();
 	}
 	events.EventEmitter.call(this);
 }
 util.inherits(Extract, events.EventEmitter);
-
 
 /**
  * Extracts files of an archive to the correct location. Currently supported

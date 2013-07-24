@@ -1,52 +1,60 @@
 {
-	"name" : "pind",
-	"version" : "0.0.5-delta",
-	"description" : "Pinball Daemon",
-	"license" : "GPLv2",
-	"author" : {
-		"name" : "freezy",
-		"email" : "freezy@xbmc.org"
+	"name": "pind",
+	"version": "0.0.5-delta",
+	"description": "Pinball Daemon",
+	"license": "GPLv2",
+	"author": {
+		"name": "freezy",
+		"email": "freezy@xbmc.org"
 	},
 	"repository": {
-		"type" : "git",
-		"url" : "git://github.com/freezy/node-pind"
+		"type": "git",
+		"url": "git://github.com/freezy/node-pind"
 	},
-	"bugs" : {
-		"url" : "https://github.com/freezy/node-pind/issues"
+	"bugs": {
+		"url": "https://github.com/freezy/node-pind/issues"
 	},
-	"engines" : ["node >= 0.8.0"],
-	"os" : [ "win32" ],
-	"main" : "server.js",
-	"keywords" : [ "pinball", "visual pinball", "future pinball", "hyperpin", "cabinet" ],
+	"engines": ["node >= 0.8.0"],
+	"os": [ "win32" ],
+	"main": "server.js",
+	"keywords": [ "pinball", "visual pinball", "future pinball", "hyperpin", "cabinet" ],
 	"private": false,
-	"dependencies" : {
+	"dependencies": {
 		"socketstream": "0.3.x",
 		"ss-angular": "0.x.x",
 		"ss-jade": "latest",
 		"ss-stylus": "latest",
 
-		"sequelize" : "2.0.x",
-		"sequelize-sqlite" : "1.7.x",
-		"sqlite3" : "2.1.x",
+		"sequelize": "2.0.x",
+		"sequelize-sqlite": "1.7.x",
+		"sqlite3": "2.1.x",
 
-		"underscore" : "1.5.x",
-		"winston" : "0.7.x",
-		"async" : "0.2.x",
+		"async": "0.2.x",
+		"request": "2.25.x",
+		"underscore": "1.5.x",
+		"winston": "0.7.x",
 
+		"chrono-node": "0.0.x",
+		"ent": "0.0.x",
+		"filesize": "1.10.x",
+		"fuzzy": "0.1.x",
 		"gm": "1.10.x",
-		"insanehash" : "latest",
-		"fuzzy" : "0.1.x",
-		"relative-date" : "1.1.x",
-		"filesize" : "1.10.x",
-		"ent": "0.0.x"
+		"insanehash": "latest",
+		"jquery": "1.8.x",
+		"jsdom": "0.8.x",
+		"natural": "0.1.x",
+		"ole-doc": "0.1.x",
+		"relative-date": "1.1.x",
+		"unzip": "0.1.x",
+		"xml2js": "0.2.x"
 	},
-	"devDependencies" : {
-		"nodeunit" : "*",
-		"sinon" : "*",
-		"semicov" : "*",
-		"co-generators" : "*"
+	"devDependencies": {
+		"nodeunit": "*",
+		"sinon": "*",
+		"semicov": "*",
+		"co-generators": "*"
 	},
-	"scripts" : {
-		"test" : "nodeunit test/*/*"
+	"scripts": {
+		"test": "nodeunit test/*/*"
 	}
 }
