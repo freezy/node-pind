@@ -46,7 +46,7 @@ block inner-content
 						th(style='width:100px') Media
 						th(style='width:70px') ROM
 				tbody
-					tr(ng-repeat='table in data', data-id='{{table.key}}', data-idx="{{idx}}")
+					tr(ng-repeat='table in data', data-id='{{table.key}}', data-idx="{{idx}}", ng-animate="{ enter: 'animated fadeIn' }")
 						td(ng-bind-html-unsafe="table.title")
 						td.nowrap
 							ul.badge-group
