@@ -27,10 +27,11 @@ util.inherits(VPinMAME, events.EventEmitter);
  */
 VPinMAME.prototype.initAnnounce = function() {
 	var an = require('./announce')();
+	var ns = 'vpm';
 
 	// fetchHighscores()
-	an.data(this, 'processingStarted', { id: '#dlrom' });
-	an.data(this, 'processingCompleted', { id: '#dlrom' });
+	an.data(this, 'processingStarted', { id: '#dlrom' }, ns);
+	an.data(this, 'processingCompleted', { id: '#dlrom' }, ns);
 	an.notice(this, 'processingCompleted', 'All done, {{num}} ROMs queued for download.', 5000);
 	an.notice(this, 'processingFailed', 'Error downloading ROMs: {{err}}', 3600000);
 

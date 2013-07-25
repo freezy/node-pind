@@ -1,14 +1,13 @@
 module.exports = function(module) {
 	'use strict';
 
-	module.controller('AdminTableCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
+	module.controller('AdminTableCtrl', ['$scope', '$log', 'pubsub', 'rpc', function($scope, $log, pubsub, rpc) {
 
 
 		$scope.hpsync = function(event) {
 			event.target.blur();
 			rpc('hyperpin.sync');
 		};
-
 
 		$scope.mapperFn = function(table) {
 
@@ -44,6 +43,44 @@ module.exports = function(module) {
 			}
 			return table;
 		};
+
+
+		// ------------------------------------------------------------------------
+		// status handling
+		// ------------------------------------------------------------------------
+
+		var processingStarted = function() {
+			$scope.status.processing.hp = true;
+			$('.row.footer > h2').addClass('disabled');
+			$('.action').addClass('disabled').find('button').attr('disabled', 'disabled');
+		};
+		var processingCompleted = function() {
+			$scope.status.processing.hp = false;
+			$('.row.footer > h2').removeClass('disabled');
+			$('.action').removeClass('disabled').find('button').removeAttr('disabled', 'disabled');
+		};
+
+		var updateStatus = function() {
+			if ($scope.status.processing.hp) {
+				processingStarted();
+			}
+		};
+
+		if (!$scope.statusAvailable) {
+			$scope.$on('statusAvailable', function() {
+				$scope.$apply(updateStatus);
+			});
+		} else {
+			updateStatus();
+		}
+
+		// events
+		ss.event.on('hp.processingStarted', processingStarted);
+		ss.event.on('hp.processingCompleted', processingCompleted);
+		$scope.$on('$destroy', function() {
+			ss.event.off('hp.processingStarted', processingStarted);
+			ss.event.off('hp.processingCompleted', processingCompleted);
+		})
 
 	}]);
 

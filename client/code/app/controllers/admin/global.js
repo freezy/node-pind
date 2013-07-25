@@ -59,14 +59,14 @@ module.exports = function(module) {
 		};
 
 		var setVersion = function() {
-			$scope.versionStr = $scope.version.version.toUpperCase();
-			$scope.date = $scope.version.dateSince;
-			$scope.sha = $scope.version.sha.substr(0, 8);
-			$scope.url = $scope.version.url;
+			$scope.version = $scope.status.version.version.toUpperCase();
+			$scope.date = $scope.status.version.dateSince;
+			$scope.sha = $scope.status.version.sha.substr(0, 8);
+			$scope.url = $scope.status.version.url;
 		};
 
-		if (!$scope.versionAvailable) {
-			$scope.$on('versionAvailable', function() {
+		if (!$scope.statusAvailable) {
+			$scope.$on('statusAvailable', function() {
 				$scope.$apply(setVersion);
 			});
 		} else {

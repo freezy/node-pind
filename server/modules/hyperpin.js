@@ -35,13 +35,14 @@ util.inherits(HyperPin, events.EventEmitter);
  */
 HyperPin.prototype.initAnnounce = function() {
 
+	var ns = 'hp';
 	var an = require('./announce')();
 
 	// syncTablesWithData()
-	an.data(this, 'processingStarted', { id: '#hpsync' });
+	an.data(this, 'processingStarted', { id: '#hpsync' }, ns);
 	an.notice(this, 'syncCompleted', 'Done syncing, starting analysis...');
 	an.notice(this, 'analysisCompleted', 'Finished analyzing tables.', 5000);
-	an.data(this, 'processingCompleted', { id: '#hpsync' });
+	an.data(this, 'processingCompleted', { id: '#hpsync' }, ns);
 
 	// syncTables()
 	an.notice(this, 'xmlParsed', 'Read {{num}} tables from {{platform}}.xml, updating local database...');
@@ -50,7 +51,7 @@ HyperPin.prototype.initAnnounce = function() {
 	// findMissingMedia()
 	an.notice(this, 'searchStarted', 'Searching {{what}} for "{{name}}"', 60000);
 	an.notice(this, 'searchCompleted', 'Download successful, extracting missing media files');
-	an.forward(this, 'tableUpdated');
+	an.forward(this, 'tableUpdated', ns);
 };
 
 HyperPin.prototype.syncTablesWithData = function(callback) {

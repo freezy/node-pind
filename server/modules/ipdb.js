@@ -32,10 +32,11 @@ util.inherits(Ipdb, events.EventEmitter);
  */
 Ipdb.prototype.initAnnounce = function() {
 	var an = require('./announce')();
+	var ns = 'ipdb';
 
 	// syncIPDB()
-	an.data(this, 'processingStarted', { id: '#ipdbsync' });
-	an.data(this, 'processingCompleted', { id: '#ipdbsync' });
+	an.data(this, 'processingStarted', { id: '#ipdbsync' }, ns);
+	an.data(this, 'processingCompleted', { id: '#ipdbsync' }, ns);
 	an.notice(this, 'processingCompleted', 'Finished matching IPDB.', 5000);
 
 	// enrichAll()

@@ -28,10 +28,11 @@ util.inherits(Hiscore, events.EventEmitter);
  */
 Hiscore.prototype.initAnnounce = function() {
 	var an = require('./announce')();
+	var ns = 'hiscore';
 
 	// fetchHighscores()
-	an.data(this, 'processingStarted', { id: '#fetchhs' });
-	an.data(this, 'processingCompleted', { id: '#fetchhs' });
+	an.data(this, 'processingStarted', { id: '#fetchhs' }, ns);
+	an.data(this, 'processingCompleted', { id: '#fetchhs' }, ns);
 	an.notice(this, 'processingCompleted', 'High scores successfully synchronized.', 5000);
 	an.notice(this, 'processingFailed', 'Error synchronizing: {{err}}', 3600000);
 
@@ -40,9 +41,9 @@ Hiscore.prototype.initAnnounce = function() {
 
 	// watchHischores()
 	an.notice(this, 'nvramChangeDetected', 'Updated NVRAM, updating high score for ROM {{rom}}', 60000);
-	an.data(this, 'nvramChangeDetected', { id: '#fetchhs' }, 'processingStarted');
+	an.data(this, 'nvramChangeDetected', { id: '#fetchhs' }, ns, 'processingStarted');
 	an.notice(this, 'nvramChangeProcessed', 'High scores for "{{name}}" updated.', 5000);
-	an.data(this, 'nvramChangeProcessed', { id: '#fetchhs' }, 'processingCompleted');
+	an.data(this, 'nvramChangeProcessed', { id: '#fetchhs' }, ns, 'processingCompleted');
 };
 
 Hiscore.prototype.isFetching = function() {

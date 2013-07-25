@@ -50,7 +50,6 @@ exports.actions = function(req, res, ss) {
 				res({ success: false });
 				ss.log('No credentials nor auth token, ignoring.');
 			}
-
 		},
 		authenticated: function() {
 			console.log('Checking if authenticated (%s)', req.session.userId);

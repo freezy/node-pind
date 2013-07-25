@@ -16,11 +16,12 @@ Announce.prototype.registerSocketStream = function(_ss) {
 	socketstream = _ss;
 };
 
-Announce.prototype._publish = function(event, data) {
+Announce.prototype._publish = function(event, data, ns) {
 	// always emit on self
-	this.emit(event, data);
+	var name = ns ? ns + '.' + event : event;
+	this.emit(name, data);
 	if (socketstream) {
-		socketstream.publish.all(event, data);
+		socketstream.publish.all(name, data);
 	}
 };
 
@@ -28,11 +29,12 @@ Announce.prototype._publish = function(event, data) {
  * Object gets send without change to socket with the same event name.
  * @param emitter Event emitter
  * @param event Name of the event
+ * @param ns Namespace - prefix added to event name, separated by a dot.
  */
-Announce.prototype.forward = function(emitter, event) {
+Announce.prototype.forward = function(emitter, event, ns) {
 	var that = this;
 	emitter.on(event, function(obj) {
-		that._publish(event, obj);
+		that._publish(event, obj, ns);
 	});
 };
 
@@ -66,12 +68,13 @@ Announce.prototype.notice = function(emitter, event, message, timeout) {
  * @param emitter Event emitter
  * @param event Name of the event
  * @param data Data to send
+ * @param ns Namespace - prefix added to event name, separated by a dot.
  * @param eventName If set, change event name to this value instead of original value
  */
-Announce.prototype.data = function(emitter, event, data, eventName) {
+Announce.prototype.data = function(emitter, event, data, ns, eventName) {
 	var that = this;
 	emitter.on(event, function() {
-		that._publish(eventName ? eventName : event, data);
+		that._publish(eventName ? eventName : event, data, ns);
 	});
 };
 

@@ -8,6 +8,7 @@ var settings = require('../../config/settings-mine');
 
 var au = require('../modules/autoupdate')();
 var hs = require('../modules/hiscore')();
+var hp = require('../modules/hyperpin')();
 var vpm = require('../modules/vpinmame')();
 var ipdb = require('../modules/ipdb')();
 var error = require('../modules/error');
@@ -17,6 +18,20 @@ exports.actions = function(req, res, ss) {
 
 	return {
 		name : 'Pind',
+
+		status: function() {
+			var status = {
+				user: req.session.user,
+				version: au.getVersion(),
+				test: 'foobar',
+				processing: {
+					hp: hp.isSyncing()
+				}
+			};
+
+			//console.log('STATUS = %s', util.inspect(req.session, false, 10, true));
+			res(status);
+		},
 
 		FetchIPDB : function(params) {
 			ipdb.syncIPDB(function(err, tables) {

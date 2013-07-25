@@ -4,16 +4,16 @@ module.exports = function(module) {
 	/**
 	 * The global controller that sits on the <body> element.
 	 */
-	module.controller('AppCtrl', ['$scope', function($scope) {
+	module.controller('AppCtrl', ['$scope', 'rpc', function($scope, rpc) {
 
 		var connectionReady = false;
-		$scope.versionAvailable = false;
+		$scope.statusAvailable = false;
 		ss.server.on('ready', function() {
 			connectionReady = true;
-			ss.rpc('pind.getVersion', function(v) {
-				$scope.version = v;
-				$scope.versionAvailable = true;
-				$scope.$broadcast('versionAvailable');
+			ss.rpc('pind.status', function(status) {
+				$scope.status = status;
+				$scope.statusAvailable = true;
+				$scope.$broadcast('statusAvailable');
 			});
 		});
 
@@ -52,6 +52,11 @@ module.exports = function(module) {
 					count--;
 				}, 1000);
 			});
+		};
+
+		$scope.logout = function() {
+			rpc('auth.logout');
+			location.reload();
 		};
 
 		$scope.restartDialog = function() {

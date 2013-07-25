@@ -30,6 +30,7 @@ sys.inherits(VPForums, events.EventEmitter);
  */
 VPForums.prototype.initAnnounce = function() {
 	var an = require('./announce')();
+	var ns = 'vpf';
 
 	// getRomLinks()
 	an.notice(this, 'romSearchStarted', 'VPF: Searching ROM for "{{name}}"', 120000);
@@ -48,8 +49,8 @@ VPForums.prototype.initAnnounce = function() {
 	an.notice(this, 'loginStarted', 'VPF: Logging in as "{{user}}"', 30000);
 
 	// index
-	an.data(this, 'refreshIndexCompleted', {}, 'downloadIndexUpdated');
-	an.data(this, 'downloadIndexCompleted', {}, 'downloadIndexUpdated');
+	an.data(this, 'refreshIndexCompleted', {}, ns, 'downloadIndexUpdated');
+	an.data(this, 'downloadIndexCompleted', {}, ns, 'downloadIndexUpdated');
 	an.notice(this, 'downloadIndexFailed', 'Index download failed: {{error}}');
 	an.notice(this, 'downloadIndexFailed', 'Index update failed: {{error}}');
 };
