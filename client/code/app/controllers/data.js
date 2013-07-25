@@ -35,10 +35,6 @@ module.exports = function(module) {
 
 		$scope.refresh = function() {
 
-			if (!$scope.resource) {
-				return alert('Must set "resource" attribute somewhere in scope.');
-			}
-
 			var params = {
 				offset: ($scope.page - 1) * $scope.limit,
 				limit: $scope.limit
@@ -64,14 +60,15 @@ module.exports = function(module) {
 
 				// copy rows to result, with mapper function if available.
 				var setData = function($scope, result) {
+
 					if ($scope.mapperFn) {
 						$scope.data = _.map(result.rows, $scope.mapperFn);
 					} else {
 						$scope.data = result.rows;
 					}
 					$scope.numpages = Math.ceil(result.count / $scope.limit);
-					$scope.$broadcast('dataUpdated');
 					$scope.$apply();
+					$scope.$broadcast('dataUpdated');
 				};
 
 				// do something else first if postDataFn is set.

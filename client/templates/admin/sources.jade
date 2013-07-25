@@ -40,7 +40,7 @@ block inner-content
 		div.data.ng-cloak(style="display:none")
 			.row-fluid
 				ul.thumbnails
-					li.span6.vpf.item(ng-repeat="row in data", data-id="{{row.id}}", data-transferid="{{row.transferId}}")
+					li.span6.vpf.item(ng-repeat="row in data", data-id="{{row.id}}", data-transferid="{{row.transferId}}", ng-animate="{ enter: 'animated fadeIn' }")
 						.thumbnail
 							thumb.ng-transclude(fileid="{{row.fileId}}")
 							h3 {{row.title_trimmed}}

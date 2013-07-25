@@ -48,3 +48,11 @@
 	0% { background-color: #e8e8e8 }
 	100% { background-color: #b5d3af }
 }
+
+/* see also http://www.yearofmoo.com/nganimate-css3/ */
+.animated {
+	-webkit-animation-duration: 0.7s;
+	-moz-animation-duration: 0.7s;
+	-o-animation-duration: 0.7s;
+	animation-duration: 0.7s;
+}

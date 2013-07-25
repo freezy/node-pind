@@ -43,7 +43,7 @@ block inner-content
 						th Login
 						th(style='width: 100px') Credits
 				tbody
-					tr(ng-repeat='user in data', data-id='{{ user.id ]]')
+					tr(ng-repeat='user in data', data-id='{{ user.id }}', ng-animate="{ enter: 'animated fadeIn' }")
 						td {{ user.user }}
 						td.nowrap(data-value='{{ user.credits }}')
 							i.icon.pencil.clickable
