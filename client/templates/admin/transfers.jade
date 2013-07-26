@@ -84,8 +84,8 @@ block inner-content
 	.clearfix
 
 block inner-footer
-	h2 Available Actions:
-	.row-fluid
+	h2(ng-show="dataLoaded") Available Actions:
+	.row-fluid(ng-show="dataLoaded")
 		.span4.action
 			h3 Control Panel
 			p Manually start, resume, pause or stop the queue.

@@ -153,8 +153,8 @@ block inner-content
 				button.btn.btn-warning.submit.right(data-dismiss="modal") Okay
 
 block inner-footer
-	h2 Available Actions:
-	.row-fluid
+	h2(ng-show="dataLoaded") Available Actions:
+	.row-fluid(ng-show="dataLoaded")
 		.span4.action#restart
 			h3 Restart Pind
 			p Kills the Node.js process. Use this if you've updated <tt>settings-mine.js</tt>.

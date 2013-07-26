@@ -80,8 +80,8 @@ block inner-content
 	.clearfix
 
 block inner-footer
-	h2 Available Actions:
-	.row-fluid
+	h2(ng-show="dataLoaded") Available Actions:
+	.row-fluid(ng-show="dataLoaded")
 		.span4.action#hpsync(data-exclusive='#ipdbsync, #dlrom, #dlmedia, #fetchhs', data-processing='{{processing.hpsync}}')
 			h3 Resync with HyperPin
 			p Read HyperPin's XML, analyze table files and update the local database.
@@ -100,7 +100,7 @@ block inner-footer
 			button.btn.submit.small
 				i.icon.refresh
 				span Download
-	.row-fluid
+	.row-fluid(ng-show="dataLoaded")
 		.span4.action#dlmedia(data-exclusive='#hpsync', data-processing='{{processing.dlmedia}}')
 			h3 Find Missing Media
 			p Check vpforums.org for available media packs.

@@ -23,7 +23,6 @@ module.exports = function(module) {
 		$scope.search = '';
 		$scope.sort = '';
 
-
 		$scope.reset = function() {
 			$scope.page = 1;
 			$scope.numpages = 1;
@@ -67,8 +66,10 @@ module.exports = function(module) {
 						$scope.data = result.rows;
 					}
 					$scope.numpages = Math.ceil(result.count / $scope.limit);
-					$scope.$apply();
+					$scope.$root.dataLoaded = true;
 					$scope.$broadcast('dataUpdated');
+					$scope.$apply();
+					$scope.$broadcast('dataViewUpdated');
 				};
 
 				// do something else first if postDataFn is set.

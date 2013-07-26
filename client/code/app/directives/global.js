@@ -38,6 +38,24 @@ module.exports = function (module) {
 		}
 	});
 
+	module.directive('animresize', function() {
+		return {
+			restrict: 'A',
+			link: function(scope, element) {
+				var oldHeight = 0;
+				scope.$on('dataViewUpdated', function() {
+					var newHeight = element.height();
+					element.height(oldHeight);
+					element.animate({ height: newHeight }, 'slow', function() {
+						element.height('auto');
+					});
+				});
+				scope.$on('dataUpdated', function() {
+					oldHeight = element.height();
+				});
+			}
+		}
+	});
 
 	/**
 	 * Renders a thumb that fades in when downloaded.
