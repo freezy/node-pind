@@ -39,10 +39,10 @@ HyperPin.prototype.initAnnounce = function() {
 	var an = require('./announce')();
 
 	// syncTablesWithData()
-	an.data(this, 'processingStarted', { id: '#hpsync' }, ns);
+	an.data(this, 'processingStarted', { id: 'hpsync' }, ns);
 	an.notice(this, 'syncCompleted', 'Done syncing, starting analysis...');
 	an.notice(this, 'analysisCompleted', 'Finished analyzing tables.', 5000);
-	an.data(this, 'processingCompleted', { id: '#hpsync' }, ns);
+	an.data(this, 'processingCompleted', { id: 'hpsync' }, ns);
 
 	// syncTables()
 	an.notice(this, 'xmlParsed', 'Read {{num}} tables from {{platform}}.xml, updating local database...');

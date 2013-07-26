@@ -1,5 +1,6 @@
 var util = require('util');
 var events = require('events');
+var logger = require('winston');
 
 var defaultTimeout = 2000;
 var socketstream = null;
@@ -21,6 +22,7 @@ Announce.prototype._publish = function(event, data, ns) {
 	var name = ns ? ns + '.' + event : event;
 	this.emit(name, data);
 	if (socketstream) {
+		logger.log('info', '[announce] "%s": %j', name, data, {});
 		socketstream.publish.all(name, data);
 	}
 };

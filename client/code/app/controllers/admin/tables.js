@@ -9,6 +9,11 @@ module.exports = function(module) {
 			rpc('hyperpin.sync');
 		};
 
+		$scope.ipdbsync = function(event) {
+			event.target.blur();
+			rpc('pind.fetchIpdb');
+		};
+
 		$scope.mapperFn = function(table) {
 
 			if (table.name && table.year && table.manufacturer) {
@@ -49,20 +54,40 @@ module.exports = function(module) {
 		// status handling
 		// ------------------------------------------------------------------------
 
-		var processingStarted = function() {
-			$scope.status.processing.hp = true;
+		var processingStarted = function(data) {
+			switch (data.id) {
+				case 'hpsync':
+					$scope.status.processing.hp = true;
+					$('#hpsync > button > i').addClass('spin');
+					break;
+				case 'ipdbsync':
+					$scope.status.processing.ipdb = true;
+					$('#ipdbsync > button > i').addClass('spin');
+					break;
+			}
 			$('.row.footer > h2').addClass('disabled');
 			$('.action').addClass('disabled').find('button').attr('disabled', 'disabled');
 		};
-		var processingCompleted = function() {
-			$scope.status.processing.hp = false;
+		var processingCompleted = function(data) {
+			switch (data.id) {
+				case 'hpsync':
+					$scope.status.processing.hp = false;
+					break;
+				case 'ipdbsync':
+					$scope.status.processing.ipdb = false;
+					break;
+			}
 			$('.row.footer > h2').removeClass('disabled');
 			$('.action').removeClass('disabled').find('button').removeAttr('disabled', 'disabled');
+			$('.action > button > i').removeClass('spin');
 		};
 
 		var updateStatus = function() {
 			if ($scope.status.processing.hp) {
-				processingStarted();
+				processingStarted({ id: 'hpsync' });
+			}
+			if ($scope.status.processing.ipdb) {
+				processingStarted({ id: 'ipdbsync' });
 			}
 		};
 
@@ -77,9 +102,13 @@ module.exports = function(module) {
 		// events
 		ss.event.on('hp.processingStarted', processingStarted);
 		ss.event.on('hp.processingCompleted', processingCompleted);
+		ss.event.on('ipdb.processingStarted', processingStarted);
+		ss.event.on('ipdb.processingCompleted', processingCompleted);
 		$scope.$on('$destroy', function() {
 			ss.event.off('hp.processingStarted', processingStarted);
 			ss.event.off('hp.processingCompleted', processingCompleted);
+			ss.event.off('ipdb.processingStarted', processingStarted);
+			ss.event.off('ipdb.processingCompleted', processingCompleted);
 		})
 
 	}]);

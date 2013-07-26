@@ -91,7 +91,7 @@ block inner-footer
 		.span4.action#ipdbsync(data-exclusive='#hpsync, #dlrom', data-processing='{{processing.ipdbsync}}')
 			h3 Match with IPDB.org
 			p Match re-creations with IPDB and fetch additional data.
-			button.btn.submit.small
+			button.btn.submit.small(ng-click="ipdbsync($event)")
 				i.icon.refresh
 				span Match
 		.span4.action#dlrom(data-exclusive='#hpsync, #ipdbsync', data-processing='{{processing.dlrom}}')

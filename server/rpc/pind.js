@@ -25,7 +25,8 @@ exports.actions = function(req, res, ss) {
 				version: au.getVersion(),
 				test: 'foobar',
 				processing: {
-					hp: hp.isSyncing()
+					hp: hp.isSyncing(),
+					ipdb: ipdb.isSyncing()
 				}
 			};
 
@@ -33,12 +34,14 @@ exports.actions = function(req, res, ss) {
 			res(status);
 		},
 
-		FetchIPDB : function(params) {
-			ipdb.syncIPDB(function(err, tables) {
+		fetchIpdb : function() {
+			ipdb.syncIPDB(function(err) {
 				if (err) {
-					throw new Error(err);
+					logger.log('error', '[rpc] [pind] %s', err);
+					res(error.api(err));
+				} else {
+					res();
 				}
-				tableApi.GetAll(req, params, res);
 			});
 		},
 
