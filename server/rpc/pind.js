@@ -25,8 +25,11 @@ exports.actions = function(req, res, ss) {
 				version: au.getVersion(),
 				test: 'foobar',
 				processing: {
-					hp: hp.isSyncing(),
-					ipdb: ipdb.isSyncing()
+					hpsync: hp.isSyncing(),
+					ipdbsync: ipdb.isSyncing(),
+					dlrom: false,
+					dlmedia: false,
+					fetchhs: false
 				}
 			};
 
