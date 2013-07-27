@@ -7,6 +7,8 @@ var async = require('async');
 var events = require('events');
 var logger = require('winston');
 
+var an = require('./announce');
+
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
 
@@ -14,9 +16,6 @@ var isFetching = false;
 var nvRamFiles = {};
 
 function Hiscore() {
-	if ((this instanceof Hiscore) === false) {
-		return new Hiscore();
-	}
 	events.EventEmitter.call(this);
 	this.initAnnounce();
 }
@@ -27,7 +26,6 @@ util.inherits(Hiscore, events.EventEmitter);
  * @param app Express application
  */
 Hiscore.prototype.initAnnounce = function() {
-	var an = require('./announce')();
 	var ns = 'hiscore';
 
 	// fetchHighscores()
@@ -1328,4 +1326,4 @@ var listRankNameInfo2 = function(block, str, title) {
 	return false;
 };
 
-module.exports = Hiscore;
+module.exports = new Hiscore();

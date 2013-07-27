@@ -9,18 +9,16 @@ var filesize = require('filesize');
 var settings = require('../../config/settings-mine');
 var schema = require('../database/schema');
 
-var vpf = require('./vpforums')();
-var vpm = require('./vpinmame')();
-var extr = require('./extract')();
-var ipdb = require('./ipdb')();
+var an = require('./announce');
+var vpf = require('./vpforums');
+var vpm = require('./vpinmame');
+var extr = require('./extract');
+var ipdb = require('./ipdb');
 
 var transferring = { vpf: [], ipdb: [] };
 var progress = { };
 
 function Transfer() {
-	if ((this instanceof Transfer) === false) {
-		return new Transfer();
-	}
 	events.EventEmitter.call(this);
 	this.initAnnounce();
 
@@ -30,13 +28,12 @@ function Transfer() {
 }
 util.inherits(Transfer, events.EventEmitter);
 
-
 /**
  * Sets up event listener for realtime updates via Socket.IO.
  */
 Transfer.prototype.initAnnounce = function() {
 
-	var an = require('./announce')();
+
 
 	an.transferUpdate(this, 'transferFailed');
 	an.transferUpdate(this, 'transferCompleted');
@@ -486,4 +483,4 @@ Transfer.prototype.unWatchDownload = function(filename) {
 	delete this.openFiles[filename];
 };
 
-module.exports = Transfer;
+module.exports = new Transfer();

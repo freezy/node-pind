@@ -14,12 +14,11 @@ var natural = require('natural');
 var settings = require('../../config/settings-mine');
 var schema = require('../database/schema');
 
+var an = require('./announce');
+
 var loggingIn = false;
 
 function VPForums() {
-	if ((this instanceof VPForums) === false) {
-		return new VPForums();
-	}
 	events.EventEmitter.call(this);
 	this.initAnnounce();
 }
@@ -29,7 +28,7 @@ sys.inherits(VPForums, events.EventEmitter);
  * Sets up event listener for realtime updates via Socket.IO.
  */
 VPForums.prototype.initAnnounce = function() {
-	var an = require('./announce')();
+
 	var ns = 'vpf';
 
 	// getRomLinks()
@@ -65,13 +64,14 @@ VPForums.prototype.isDownloadingIndex = false;
  * @param table Table of the media pack
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
- * 		<li>{String} Absolute file path of the downloaded archive.</li></ol>
+ * 		<li>{String} Success message from transfer.</li></ol>
  */
 VPForums.prototype._findMedia = function(table, cat, callback) {
 
 	logger.log('info', '[vpf] Searching media pack for "%s"...', table.name);
 	this._fetchDownloads(35, table.name, {}, function(err, results) {
 		if (err) {
+			logger.log('error', '[vpf] Error fetching downloads: %s', err);
 			return callback(err);
 		}
 		var match = VPForums.prototype._matchResult(results, table.name, function(str) {
@@ -102,7 +102,7 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
  * @param table Table of the media pack
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
- * 		<li>{String} Absolute file path of the downloaded archive.</li></ol>
+ * 		<li>{String} Success message from transfer.</li></ol>
  */
 VPForums.prototype.findMediaPack = function(table, callback) {
 	if (table.platform == 'VP') {
@@ -499,6 +499,9 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 				var url = $(that).find('h3.ipsType_subtitle a').attr('href').replace(/s=[a-f\d]+&?/gi, '');
 				var dateString = $(that).find('.file_info .date').html().trim().replace(/^added|^updated|,/gi, '').trim();
 				var dateParsed = chrono.parse(dateString, today);
+				if (dateParsed.length == 0) {
+					logger.log('warn', '[vpf] Could not parse date "%s".', dateString);
+				}
 
 				var u = url.match(/showfile=(\d+)/i);
 				// author dom is different when logged in (names are linked)
@@ -768,4 +771,4 @@ VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 	});
 };
 
-module.exports = VPForums;
+module.exports = new VPForums();

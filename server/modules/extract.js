@@ -10,9 +10,6 @@ var logger = require('winston');
 var settings = require('../../config/settings-mine');
 
 function Extract() {
-	if ((this instanceof Extract) === false) {
-		return new Extract();
-	}
 	events.EventEmitter.call(this);
 }
 util.inherits(Extract, events.EventEmitter);
@@ -284,8 +281,6 @@ Extract.prototype.zipExtract = function(zipfile, mapping, callback) {
 	});
 };
 
-module.exports = Extract;
-
 /**
  * Extracts a given number of files of a rar archive to a given destination for each file.
  *
@@ -336,3 +331,5 @@ Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 		}
 	);
 };
+
+module.exports = new Extract();

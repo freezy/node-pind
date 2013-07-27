@@ -6,9 +6,6 @@ var defaultTimeout = 2000;
 var socketstream = null;
 
 function Announce() {
-	if ((this instanceof Announce) === false) {
-		return new Announce();
-	}
 	events.EventEmitter.call(this);
 }
 util.inherits(Announce, events.EventEmitter);
@@ -101,4 +98,4 @@ Announce.prototype.transferUpdate = function(emitter, event) {
 	});
 };
 
-module.exports = Announce;
+module.exports = new Announce();

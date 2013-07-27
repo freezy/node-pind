@@ -5,11 +5,11 @@ var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
 
 var error = require('../modules/error');
-var transfer = require('../modules/transfer')();
+var transfer = require('../modules/transfer');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
-	require('../modules/announce')().registerSocketStream(ss);
+	require('../modules/announce').registerSocketStream(ss);
 
 	return {
 		reorder : function(params) {

@@ -23,6 +23,11 @@ module.exports = function(module) {
 			rpc('pind.fetchMissingRoms');
 		};
 
+		$scope.dlmedia = function(event) {
+			event.target.blur();
+			rpc('hyperpin.findMissingMedia');
+		};
+
 
 		// ------------------------------------------------------------------------
 		// data mapping
@@ -84,22 +89,6 @@ module.exports = function(module) {
 $(document).ready(function() {
 	return false;
 
-
-
-	// enable download missing roms button
-	var downloadRoms = function() {
-		processing('#dlrom');
-
-		api('Pind.FetchMissingRoms', { }, function(err, result) {
-			processed('#dlrom');
-			if (err) {
-				alert('Problem Syncing: ' + err);
-			} else {
-				console.log('Downloaded ROMs: ' + result.filepaths);
-				scope.$broadcast('paramsUpdated');
-			}
-		});
-	};
 
 	// enable download missing media button
 	var downloadMedia = function() {

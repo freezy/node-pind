@@ -6,7 +6,7 @@ var vpf = require('../modules/vpforums');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
-	require('../modules/announce')().registerSocketStream(ss);
+	require('../modules/announce').registerSocketStream(ss);
 
 	return {
 

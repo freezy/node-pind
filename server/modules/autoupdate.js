@@ -19,6 +19,8 @@ var readdirp = require('readdirp');
 var Sequelize = require('sequelize');
 var relativeDate = require('relative-date');
 
+var an = require('./announce');
+
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
 var version = null;
@@ -51,9 +53,6 @@ var dryRun = false;
  * @constructor
  */
 function AutoUpdate() {
-	if ((this instanceof AutoUpdate) === false) {
-		return new AutoUpdate();
-	}
 	events.EventEmitter.call(this);
 	if (fs.existsSync(__dirname + '../../../.git')) {
 		localRepo = git(path.normalize(__dirname + '../../../'));
@@ -66,7 +65,6 @@ util.inherits(AutoUpdate, events.EventEmitter);
  * @param app Express application
  */
 AutoUpdate.prototype.initAnnounce = function(app) {
-	var an = require('./announce')();
 	an.forward(this, 'updateAvailable');
 };
 
@@ -1268,4 +1266,4 @@ AutoUpdate.prototype._logResult = function(err, startedAt, toSha, result, callba
 	}
 };
 
-module.exports = AutoUpdate;
+module.exports = new AutoUpdate();

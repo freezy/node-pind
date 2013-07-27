@@ -8,10 +8,9 @@ var logger = require('winston');
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
 
+var an = require('./announce');
+
 function VisualPinball() {
-	if ((this instanceof VisualPinball) === false) {
-		return new VisualPinball();
-	}
 	events.EventEmitter.call(this);
 	this.initAnnounce();
 }
@@ -23,7 +22,6 @@ util.inherits(VisualPinball, events.EventEmitter);
  * @param app Express application
  */
 VisualPinball.prototype.initAnnounce = function() {
-	var an = require('./announce')();
 
 	// updateTableData()
 	an.notice(this, 'analysisStarted', 'Analyzing {{name}}...');
@@ -382,4 +380,4 @@ VisualPinball.prototype.updateTableData = function(callback) {
 	}).error(callback);
 };
 
-module.exports = VisualPinball;
+module.exports = new VisualPinball();

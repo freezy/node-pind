@@ -9,22 +9,22 @@ var logger = require('winston');
 
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
-var vp, vpf, extr;
+
+var an = require('./announce');
+var vp = require('./visualpinball');
+var vpf = require('./vpforums');
+var extr = require('./extract');
 
 var isSyncing = false;
+var isSearchingMedia = false;
+
 var platforms = {
 	VP: 'Visual Pinball',
 	FP: 'Future Pinball'
 };
 
 function HyperPin() {
-	if ((this instanceof HyperPin) === false) {
-		return new HyperPin();
-	}
 	events.EventEmitter.call(this);
-	vp = require('./visualpinball')();
-	vpf = require('./vpforums')();
-	extr = require('./extract')();
 	this.initAnnounce();
 }
 util.inherits(HyperPin, events.EventEmitter);
@@ -36,7 +36,6 @@ util.inherits(HyperPin, events.EventEmitter);
 HyperPin.prototype.initAnnounce = function() {
 
 	var ns = 'hp';
-	var an = require('./announce')();
 
 	// syncTablesWithData()
 	an.data(this, 'processingStarted', { id: 'hpsync' }, ns);
@@ -49,8 +48,11 @@ HyperPin.prototype.initAnnounce = function() {
 	an.notice(this, 'tablesUpdated', 'Updated {{num}} tables in database.');
 
 	// findMissingMedia()
+	an.data(this, 'mediaSearchStarted', { id: 'dlmedia' }, ns, 'processingStarted');
+	an.data(this, 'mediaSearchCompleted', { id: 'dlmedia' }, ns, 'processingCompleted');
+	an.notice(this, 'mediaSearchSucceeded', 'Successfully added {{count}} media packs to download queue.', 5000);
 	an.notice(this, 'searchStarted', 'Searching {{what}} for "{{name}}"', 60000);
-	an.notice(this, 'searchCompleted', 'Download successful, extracting missing media files');
+	an.notice(this, 'searchCompleted', '{{msg}}');
 	an.forward(this, 'tableUpdated', ns);
 };
 
@@ -102,7 +104,7 @@ HyperPin.prototype.syncTables = function(callback) {
 
 			if (err) {
 				logger.log('error', '[hyperpin] [' + platform + '] ' + err);
-                return callback('Error reading file: ' + err);
+					return callback('Error reading file: ' + err);
 			}
 
 			var parser = new xml2js.Parser();
@@ -118,7 +120,7 @@ HyperPin.prototype.syncTables = function(callback) {
 				}
 				if (!result.menu['game']) {
 					logger.log('warn', '[hyperpin] [' + platform + '] XML database is empty.');
-                    return callback(null, []);
+					return callback(null, []);
 				}
 
 				var l = result.menu['game'].length;
@@ -197,6 +199,12 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 
 	var that = this;
 
+	if (isSearchingMedia) {
+		return callback('Media search process already running. Wait until complete.');
+	}
+	that.emit('mediaSearchStarted');
+	isSearchingMedia = true;
+
 	/**
 	 * Downloads and extracts media file.
 	 * @param row Table row
@@ -206,11 +214,12 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 	 */
 	var process = function(row, what, findFct, next) {
 		that.emit('searchStarted', { what: what, name: row.name });
-		findFct(row, function(err, msg) {
+		findFct.call(vpf, row, function(err, msg) {
 			if (err) {
+				logger.log('error', '[hyperpin] Error searching for media: %s', err);
 				return next(err);
 			}
-			that.emit('searchCompleted');
+			that.emit('searchCompleted', { msg: msg });
 			logger.log('info', '[hyperpin] Successfully queued: %s', msg);
 		});
 	};
@@ -220,8 +229,13 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 			process(row, 'media pack', vpf.findMediaPack, next);
 		}, function(err) {
 			if (err) {
+				logger.log('error', '[hyperpin] Error finding table vids: %s', err);
+				isSearchingMedia = false;
+				that.emit('mediaSearchCompleted');
 				return callback(err);
 			}
+
+			var count = rows.length;
 
 			// TODO: move this up into process and make process public. process also takes a flag for ignoreTableVids.
 			// now, do the same for table video.
@@ -232,22 +246,32 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 						process(row, 'table video', vpf.findTableVideo, next);
 					}, function(err) {
 						if (err) {
+							logger.log('error', '[hyperpin] Error finding table vids: %s', err);
+							isSearchingMedia = false;
+							that.emit('mediaSearchCompleted');
 							return callback(err);
 						}
+						count += rows.length;
 						// long session, logout.
 						vpf.logout(function() {
-							that.syncTables(callback);
+							isSearchingMedia = false;
+							that.emit('mediaSearchCompleted');
+							that.emit('mediaSearchSucceeded', { count: count });
+							callback();
 						});
 					});
 				});
 			} else {
 				// long session, logout.
 				vpf.logout(function() {
-					that.syncTables(callback);
+					isSearchingMedia = false;
+					that.emit('mediaSearchCompleted');
+					that.emit('mediaSearchSucceeded', { count: count });
+					callback();
 				});
 			}
 		});
-	}).error(callback);
+	});
 };
 
 /**
@@ -286,4 +310,8 @@ HyperPin.prototype.isSyncing = function() {
 	return isSyncing;
 };
 
-module.exports = HyperPin;
+HyperPin.prototype.isSearchingMedia = function() {
+	return isSearchingMedia;
+};
+
+module.exports = new HyperPin();

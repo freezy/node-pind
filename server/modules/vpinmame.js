@@ -8,15 +8,13 @@ var request = require('request');
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
 
-var vpf = require('./vpforums')();
-var ipdb = require('./ipdb')();
+var an = require('./announce');
+var vpf = require('./vpforums');
+var ipdb = require('./ipdb');
 
 var isFetchingRoms = false;
 
 function VPinMAME() {
-	if ((this instanceof VPinMAME) === false) {
-		return new VPinMAME();
-	}
 	events.EventEmitter.call(this);
 	this.initAnnounce();
 }
@@ -26,7 +24,7 @@ util.inherits(VPinMAME, events.EventEmitter);
  * Sets up event listener for realtime updates via Socket.IO.
  */
 VPinMAME.prototype.initAnnounce = function() {
-	var an = require('./announce')();
+
 	var ns = 'vpm';
 
 	// fetchHighscores()
@@ -215,5 +213,4 @@ VPinMAME.prototype.isFetchingRoms = function() {
 	return isFetchingRoms;
 };
 
-
-module.exports = VPinMAME;
+module.exports = new VPinMAME();

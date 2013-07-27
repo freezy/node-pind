@@ -6,16 +6,16 @@ var logger = require('winston');
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
 
-var au = require('../modules/autoupdate')();
-var hs = require('../modules/hiscore')();
-var hp = require('../modules/hyperpin')();
-var vpm = require('../modules/vpinmame')();
-var ipdb = require('../modules/ipdb')();
+var au = require('../modules/autoupdate');
+var hs = require('../modules/hiscore');
+var hp = require('../modules/hyperpin');
+var vpm = require('../modules/vpinmame');
+var ipdb = require('../modules/ipdb');
 var error = require('../modules/error');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
-	require('../modules/announce')().registerSocketStream(ss);
+	require('../modules/announce').registerSocketStream(ss);
 
 	return {
 		name : 'Pind',
@@ -29,7 +29,7 @@ exports.actions = function(req, res, ss) {
 					hpsync: hp.isSyncing(),
 					ipdbsync: ipdb.isSyncing(),
 					dlrom: vpm.isFetchingRoms(),
-					dlmedia: false,
+					dlmedia: hp.isSearchingMedia(),
 					fetchhs: false
 				}
 			};
@@ -107,10 +107,6 @@ exports.actions = function(req, res, ss) {
 			}).error(function(err) {
 				throw new Error(err);
 			});
-		},
-
-		getVersion : function() {
-			res(au.getVersion());
 		},
 
 		GetAvailableUpdate : function() {

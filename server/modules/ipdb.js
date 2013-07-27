@@ -11,19 +11,15 @@ var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
 
 var ipdb;
-var hp = require('./hyperpin')();
+var an = require('./announce');
+var hp = require('./hyperpin');
 
 var isSyncing = false;
 
 function Ipdb() {
-	if ((this instanceof Ipdb) === false) {
-		return new Ipdb();
-	}
 	events.EventEmitter.call(this);
 	this.initAnnounce();
-
 	ipdb = this;
-
 }
 util.inherits(Ipdb, events.EventEmitter);
 
@@ -31,7 +27,7 @@ util.inherits(Ipdb, events.EventEmitter);
  * Sets up event listener for realtime updates via Socket.IO.
  */
 Ipdb.prototype.initAnnounce = function() {
-	var an = require('./announce')();
+
 	var ns = 'ipdb';
 
 	// syncIPDB()
@@ -483,4 +479,4 @@ var findBestMatch = function(matches, game) {
 	return bestMatches[0];
 };
 
-module.exports = Ipdb;
+module.exports = new Ipdb();
