@@ -30,10 +30,11 @@ VPinMAME.prototype.initAnnounce = function() {
 	var ns = 'vpm';
 
 	// fetchHighscores()
-	an.data(this, 'processingStarted', { id: '#dlrom' }, ns);
-	an.data(this, 'processingCompleted', { id: '#dlrom' }, ns);
+	an.data(this, 'processingStarted', { id: 'dlrom' }, ns);
+	an.data(this, 'processingCompleted', { id: 'dlrom' }, ns);
+	an.notice(this, 'processingNoRomsFound', 'All tables already seem to have a ROM available.', 5000);
 	an.notice(this, 'processingCompleted', 'All done, {{num}} ROMs queued for download.', 5000);
-	an.notice(this, 'processingFailed', 'Error downloading ROMs: {{err}}', 3600000);
+	an.notice(this, 'processingFailed', 'Error finding ROMs: {{err}}', 3600000);
 
 	// fetchMissingRom() -> download()
 	an.notice(this, 'ipdbDownloadStarted', 'IPDB: Downloading "{{filename}}"', 60000);
@@ -183,6 +184,12 @@ VPinMAME.prototype.fetchMissingRoms = function(callback) {
 
 	logger.log('info', '[vpm] Fetching tables with no ROM file...');
 	schema.Table.findAll({ where: 'NOT `rom_file` AND rom IS NOT NULL' }).success(function(rows) {
+		if (rows.length == 0) {
+			that.emit('processingCompleted', { num: 0 });
+			that.emit('processingNoRomsFound');
+			isFetchingRoms = false;
+			return callback(null, []);
+		}
 		async.eachSeries(rows, function(row, next) {
 			that.fetchMissingRom(row, function(err, dlRoms) {
 				if (err) {
@@ -204,11 +211,9 @@ VPinMAME.prototype.fetchMissingRoms = function(callback) {
 	});
 };
 
-
-
 VPinMAME.prototype.isFetchingRoms = function() {
 	return isFetchingRoms;
-}
+};
 
 
 module.exports = VPinMAME;

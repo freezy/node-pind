@@ -3,6 +3,8 @@ var error = require('../modules/error');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
+	require('../modules/announce')().registerSocketStream(ss);
+
 	return {
 
 		all: function(params) {

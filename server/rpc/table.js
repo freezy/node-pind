@@ -9,6 +9,7 @@ var settings = require('../../config/settings-mine');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
+	require('../modules/announce')().registerSocketStream(ss);
 
 	return {
 

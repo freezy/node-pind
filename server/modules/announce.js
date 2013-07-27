@@ -14,7 +14,10 @@ function Announce() {
 util.inherits(Announce, events.EventEmitter);
 
 Announce.prototype.registerSocketStream = function(_ss) {
-	socketstream = _ss;
+	if (!socketstream) {
+		logger.log('info', '[announce] SocketStream event listener registered.');
+		socketstream = _ss;
+	}
 };
 
 Announce.prototype._publish = function(event, data, ns) {

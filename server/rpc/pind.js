@@ -15,6 +15,7 @@ var error = require('../modules/error');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
+	require('../modules/announce')().registerSocketStream(ss);
 
 	return {
 		name : 'Pind',
@@ -27,7 +28,7 @@ exports.actions = function(req, res, ss) {
 				processing: {
 					hpsync: hp.isSyncing(),
 					ipdbsync: ipdb.isSyncing(),
-					dlrom: false,
+					dlrom: vpm.isFetchingRoms(),
 					dlmedia: false,
 					fetchhs: false
 				}
@@ -48,6 +49,17 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
+		fetchMissingRoms : function() {
+			vpm.fetchMissingRoms(function(err) {
+				if (err) {
+					logger.log('error', '[rpc] [pind] %s', err);
+					res(error.api(err));
+				} else {
+					res();
+				}
+			});
+		},
+
 		FetchHiscores : function() {
 			hs.fetchHighscores(function(err) {
 				if (!err) {
@@ -58,15 +70,6 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
-		FetchMissingRoms : function() {
-			vpm.fetchMissingRoms(function(err, filepaths) {
-				if (!err) {
-					res({ message: 'High scores updated successfully.', filepaths: filepaths });
-				} else {
-					res(error.api(err));
-				}
-			});
-		},
 
 		getHiscores : function(params) {
 			var query =

@@ -3,6 +3,11 @@ module.exports = function(module) {
 
 	module.controller('AdminTableCtrl', ['$scope', '$log', 'pubsub', 'rpc', function($scope, $log, pubsub, rpc) {
 
+
+		// ------------------------------------------------------------------------
+		// actions
+		// ------------------------------------------------------------------------
+
 		$scope.hpsync = function(event) {
 			event.target.blur();
 			rpc('hyperpin.sync');
@@ -12,6 +17,16 @@ module.exports = function(module) {
 			event.target.blur();
 			rpc('pind.fetchIpdb');
 		};
+
+		$scope.dlrom = function(event) {
+			event.target.blur();
+			rpc('pind.fetchMissingRoms');
+		};
+
+
+		// ------------------------------------------------------------------------
+		// data mapping
+		// ------------------------------------------------------------------------
 
 		$scope.mapperFn = function(table) {
 
@@ -70,55 +85,6 @@ $(document).ready(function() {
 	return false;
 
 
-
-	/*
-	 * bottom actions
-	 */
-
-	// enable sync hyperpin button
-	var syncHyperPin = function() {
-		processing('#hpsync');
-		var labels = [];
-		[$('.nodata button'), $('#hpsync button')].forEach(function(btn) {
-			labels.push(btn.find('span').html());
-			btn.attr('disabled', 'disabled');
-			btn.find('.icon.refresh').addClass('spin');
-			btn.find('span').html('Syncing...');
-		});
-
-		var limit = $('select.numrows').val();
-		var offset = ($('.pagination ul').data('page') - 1) * limit;
-
-		api('HyperPin.Sync', { limit: limit, offset: offset }, function(err, result) {
-			processed('#hpsync');
-			if (err) {
-				alert('Problem Syncing: ' + err);
-			} else {
-				[$('.nodata button'), $('#hpsync button')].forEach(function(btn) {
-					btn.removeAttr('disabled');
-					btn.find('.icon.refresh').removeClass('spin');
-					btn.find('span').html(labels.shift());
-				});
-				scope.$broadcast('paramsUpdated');
-			}
-		});
-	};
-
-	// enable sync ipdb button
-	var syncIPDB = function() {
-		processing('#ipdbsync');
-		var limit = $('select.numrows').val();
-		var offset = ($('.pagination ul').data('page') - 1) * limit;
-
-		api('Pind.FetchIPDB', { limit: limit, offset: offset }, function(err, result) {
-			processed('#ipdbsync');
-			if (err) {
-				alert('Problem Syncing: ' + err);
-			} else {
-				scope.$broadcast('paramsUpdated');
-			}
-		});
-	};
 
 	// enable download missing roms button
 	var downloadRoms = function() {
