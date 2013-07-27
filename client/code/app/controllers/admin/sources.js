@@ -3,13 +3,24 @@ module.exports = function(module) {
 
 	module.controller('AdminSourceCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
 
-		$scope.updateIndex = function() {
-			api('VPForums.UpdateIndex', {}, function(err, result) {
-				if (err) {
-					alert('Problem Syncing: ' + err);
-				}
-			});
+
+		// ------------------------------------------------------------------------
+		// actions
+		// ------------------------------------------------------------------------
+
+		$scope.updateIndex = function(event) {
+			event.target.blur();
+			rpc('vpforums.updateIndex');
 		};
+
+		// ------------------------------------------------------------------------
+		// status handling
+		// ------------------------------------------------------------------------
+
+		$scope.registerEvents({
+			dlvpfindex:   [ 'vpf.downloadIndexStarted', 'vpf.downloadIndexUpdated' ]
+		});
+
 
 		// ------------------------------------------------------------------------
 		// real time code
@@ -56,26 +67,6 @@ module.exports = function(module) {
 
 $(document).ready(function() {
 	return false;
-
-	function updateActions() {
-		var $downloadIndexBtn = $('.nodata button');
-		if ($downloadIndexBtn.data('processing')) {
-
-			$('.progress.indexing').slideDown();
-			$downloadIndexBtn.attr('disabled', 'disabled');
-			$downloadIndexBtn.find('.icon.refresh').addClass('spin');
-			$downloadIndexBtn.find('span').html('Downloading index...');
-
-		} else {
-
-			$('.progress.indexing').slideUp();
-			$downloadIndexBtn.removeAttr('disabled');
-			$downloadIndexBtn.find('.icon.refresh').removeClass('spin');
-			$downloadIndexBtn.find('span').html('Download index');
-		}
-	}
-
-	updateActions();
 
 	// enable download index button
 	var downloadIndex = function() {

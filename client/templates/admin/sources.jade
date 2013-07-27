@@ -86,10 +86,10 @@ block inner-content
 block inner-footer
 	h2(ng-show="dataLoaded") Available Actions:
 	.row-fluid(ng-show="dataLoaded")
-		.span4.action
+		.span4.action#dlvpfindex
 			h3 Refresh
 			p Download the latest index from VPF in order to get the lastest tables.
-			button.btn.submit.small(ng-click="updateIndex()")
+			button.btn.submit.small(ng-click="updateIndex($event)")
 				i.icon.refresh
 				span Refresh
 		.span4

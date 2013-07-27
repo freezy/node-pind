@@ -10,6 +10,7 @@ var au = require('../modules/autoupdate');
 var hs = require('../modules/hiscore');
 var hp = require('../modules/hyperpin');
 var vpm = require('../modules/vpinmame');
+var vpf = require('../modules/vpforums');
 var ipdb = require('../modules/ipdb');
 var error = require('../modules/error');
 
@@ -28,7 +29,8 @@ exports.actions = function(req, res, ss) {
 					ipdbsync: ipdb.isSyncing(),
 					dlrom: vpm.isFetchingRoms(),
 					dlmedia: hp.isSearchingMedia(),
-					fetchhs: hs.isFetching()
+					fetchhs: hs.isFetching(),
+					dlvpfindex: vpf.isDownloadingIndex()
 				}
 			};
 

@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var logger = require('winston');
 
 var error = require('../modules/error');
 var schema = require('../database/schema');
@@ -22,10 +23,12 @@ exports.actions = function(req, res, ss) {
 		updateIndex : function() {
 			vpf.cacheLatestTableDownloads(function(err) {
 				if (err) {
-					console.log("ERROR: " + err);
+					logger.log('error', '[rpc] [vpf] [update index] %s', err);
+					res(error.api(err));
+				} else {
+					res('Index update started. Status updates via socket.');
 				}
 			});
-			res('Index update started. Status updates via socket.');
 		},
 
 		tables : function(params) {

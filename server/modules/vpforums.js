@@ -18,6 +18,7 @@ var an = require('./announce');
 var transfer = require('./transfer');
 
 var loggingIn = false;
+var isDownloadingIndex = false;
 
 function VPForums() {
 	events.EventEmitter.call(this);
@@ -49,14 +50,12 @@ VPForums.prototype.initAnnounce = function() {
 	an.notice(this, 'loginStarted', 'VPF: Logging in as "{{user}}"', 30000);
 
 	// index
-	an.data(this, 'refreshIndexCompleted', {}, ns, 'downloadIndexUpdated');
+	an.data(this, 'refreshIndexStarted', { id: 'dlvpfindex' }, ns, 'downloadIndexStarted');
+	an.data(this, 'refreshIndexCompleted', { id: 'dlvpfindex' }, ns, 'downloadIndexUpdated');
 	an.data(this, 'downloadIndexCompleted', {}, ns, 'downloadIndexUpdated');
 	an.notice(this, 'downloadIndexFailed', 'Index download failed: {{error}}');
 	an.notice(this, 'downloadIndexFailed', 'Index update failed: {{error}}');
 };
-
-
-VPForums.prototype.isDownloadingIndex = false;
 
 /**
  * Finds and downloads either a media pack or a table video.
@@ -722,14 +721,14 @@ VPForums.prototype.logout = function(callback) {
  */
 VPForums.prototype.cacheAllTableDownloads = function(callback) {
 
-	if (VPForums.isDownloadingIndex) {
+	if (isDownloadingIndex) {
 		return callback('Fetching process already running. Wait until complete.');
 	}
-	VPForums.isDownloadingIndex = true;
+	isDownloadingIndex = true;
 
 	var that = this;
 	this._fetchDownloads(41, null, {}, function(err, results) {
-		VPForums.isDownloadingIndex = false;
+		isDownloadingIndex = false;
 		if (err) {
 			that.emit('downloadIndexFailed', { error: err });
 			callback(err);
@@ -748,20 +747,20 @@ VPForums.prototype.cacheAllTableDownloads = function(callback) {
  */
 VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 
-
-	if (VPForums.isDownloadingIndex) {
+	if (isDownloadingIndex) {
 		return callback('Fetching process already running. Wait until complete.');
 	}
-	VPForums.isDownloadingIndex = true;
-
 	var that = this;
+	isDownloadingIndex = true;
+	that.emit('refreshIndexStarted');
+
 	this._fetchDownloads(41, null, {
 		forceUpdate : true,
 		firstPageOnly: true,
 		sortKey: 'file_updated',
 		sortOrder: 'desc'
 	}, function(err, results) {
-		VPForums.isDownloadingIndex = false;
+		isDownloadingIndex = false;
 		if (err) {
 			that.emit('refreshIndexFailed', { error: err });
 			callback(err);
@@ -770,6 +769,10 @@ VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 		that.emit('refreshIndexCompleted');
 		callback(null, results);
 	});
+};
+
+VPForums.prototype.isDownloadingIndex = function() {
+	return isDownloadingIndex;
 };
 
 module.exports = new VPForums();
