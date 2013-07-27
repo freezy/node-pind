@@ -75,22 +75,6 @@ module.exports = function(module) {
 		 */
 		$scope.registerEvents = function(events, startedFn, completedFn) {
 
-			// on load, initialize status.
-			var updateStatus = function() {
-				_.each($scope.status.processing, function(value, key) {
-					if (value && _.contains(_.keys(events), key)) {
-						startedFn(key);
-					}
-				});
-			};
-			if (!$scope.statusAvailable) {
-				$scope.$on('statusAvailable', function() {
-					$scope.$apply(updateStatus);
-				});
-			} else {
-				updateStatus();
-			}
-
 			// set default actions
 			if (!startedFn) {
 				startedFn = function(id) {
@@ -106,6 +90,22 @@ module.exports = function(module) {
 					$('.action').removeClass('disabled').find('button').removeAttr('disabled', 'disabled');
 					$('.action > button > i').removeClass('spin');
 				};
+			}
+
+			// on load, initialize status.
+			var updateStatus = function() {
+				_.each($scope.status.processing, function(value, key) {
+					if (value && _.contains(_.keys(events), key)) {
+						startedFn(key);
+					}
+				});
+			};
+			if (!$scope.statusAvailable) {
+				$scope.$on('statusAvailable', function() {
+					$scope.$apply(updateStatus);
+				});
+			} else {
+				updateStatus();
 			}
 
 			// wrap callbacks so we can update the status

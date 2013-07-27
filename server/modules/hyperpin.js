@@ -13,7 +13,6 @@ var settings = require('../../config/settings-mine');
 var an = require('./announce');
 var vp = require('./visualpinball');
 var vpf = require('./vpforums');
-var extr = require('./extract');
 
 var isSyncing = false;
 var isSearchingMedia = false;
@@ -31,7 +30,6 @@ util.inherits(HyperPin, events.EventEmitter);
 
 /**
  * Sets up event listener for realtime updates via Socket.IO.
- * @param app Express application
  */
 HyperPin.prototype.initAnnounce = function() {
 
@@ -221,6 +219,7 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 			}
 			that.emit('searchCompleted', { msg: msg });
 			logger.log('info', '[hyperpin] Successfully queued: %s', msg);
+			next();
 		});
 	};
 

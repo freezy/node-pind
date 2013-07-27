@@ -15,6 +15,7 @@ var settings = require('../../config/settings-mine');
 var schema = require('../database/schema');
 
 var an = require('./announce');
+var transfer = require('./transfer');
 
 var loggingIn = false;
 
@@ -80,7 +81,7 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
 		if (!match) {
 			return callback('Cannot find any media with name similar to "' + table.name + '".');
 		}
-		var transfer = require('./../../app/modules/transfer')(_app);
+
 		transfer.queue({
 			title: match.title,
 			url: 'http://www.vpforums.org/index.php?app=downloads&showfile=' + match.fileId,

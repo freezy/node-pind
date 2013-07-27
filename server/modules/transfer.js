@@ -21,8 +21,7 @@ var progress = { };
 function Transfer() {
 	events.EventEmitter.call(this);
 	this.initAnnounce();
-
-	vpf.on('downloadWatch', function(data) {
+	this.on('downloadWatch', function(data) {
 		progress[data.reference.id] = data.size / data.contentLength;
 	});
 }
@@ -32,8 +31,6 @@ util.inherits(Transfer, events.EventEmitter);
  * Sets up event listener for realtime updates via Socket.IO.
  */
 Transfer.prototype.initAnnounce = function() {
-
-
 
 	an.transferUpdate(this, 'transferFailed');
 	an.transferUpdate(this, 'transferCompleted');

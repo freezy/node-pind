@@ -28,6 +28,11 @@ module.exports = function(module) {
 			rpc('hyperpin.findMissingMedia');
 		};
 
+		$scope.fetchhs = function(event) {
+			event.target.blur();
+			rpc('pind.fetchHiscores');
+		};
+
 
 		// ------------------------------------------------------------------------
 		// data mapping
@@ -78,87 +83,9 @@ module.exports = function(module) {
 			ipdbsync: [ 'ipdb.processingStarted', 'ipdb.processingCompleted' ],
 			dlrom:    [ 'vpm.processingStarted', 'vpm.processingCompleted' ],
 			dlmedia:  [ 'vpf.processingStarted', 'vpf.processingCompleted' ],
-			fetchhs:  [ 'vpm.processingStarted', 'vpm.processingCompleted' ]
+			fetchhs:  [ 'hiscore.processingStarted', 'hiscore.processingCompleted' ]
 		});
 
 	}]);
 
 };
-
-
-$(document).ready(function() {
-	return false;
-
-
-	// enable download missing media button
-	var downloadMedia = function() {
-		processing('#dlmedia');
-
-		api('HyperPin.FindMissingMedia', { }, function(err) {
-			processed('#dlmedia');
-			if (err) {
-				alert('Problem Downloading: ' + err);
-			} else {
-				scope.$broadcast('paramsUpdated');
-			}
-		});
-	};
-
-	// enable fetchHiscores button
-	var fetchHiscores = function() {
-		processing('#fetchhs');
-		api('Pind.FetchHiscores', { }, function(err, result) {
-			processed('#fetchhs');
-			if (err) {
-				alert('Problem Syncing: ' + err);
-			}
-		});
-	};
-
-	$('.nodata button').click(syncHyperPin);
-	$('#hpsync button').click(syncHyperPin);
-	$('#ipdbsync button').click(syncIPDB);
-	$('#dlrom button').click(downloadRoms);
-	$('#dlmedia button').click(downloadMedia);
-	$('#fetchhs button').click(fetchHiscores);
-
-	// real time code
-/*	var socket = io.connect('/');
-	var $console = $('#console');
-	var timer;
-
-	socket.on('startProcessing', function(msg) {
-		processing(msg.id);
-	});
-	socket.on('endProcessing', function(msg) {
-		processed(msg.id);
-	});
-	socket.on('tableUpdate', function(msg) {
-		if ($('tr[data-id="' + msg.key + '"]').length > 0) {
-			scope.$broadcast('paramsUpdated');
-		}
-	});*/
-});
-
-function updateActions() {
-	$('.action').removeClass('disabled').find('button').removeAttr('disabled').find('i').removeClass('spin');
-	$('.action').each(function() {
-		if ($(this).data('processing')) {
-			$($(this).data('exclusive'))
-				.addClass('disabled')
-				.find('button')
-				.attr('disabled', 'disabled');
-			$(this).find('button').attr('disabled', 'disabled').find('i').addClass('spin');
-		}
-	});
-}
-
-function processing(section) {
-	$(section).data('processing', true);
-	updateActions();
-}
-
-function processed(section) {
-	$(section).data('processing', false);
-	updateActions()
-}

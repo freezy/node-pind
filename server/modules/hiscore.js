@@ -29,8 +29,8 @@ Hiscore.prototype.initAnnounce = function() {
 	var ns = 'hiscore';
 
 	// fetchHighscores()
-	an.data(this, 'processingStarted', { id: '#fetchhs' }, ns);
-	an.data(this, 'processingCompleted', { id: '#fetchhs' }, ns);
+	an.data(this, 'processingStarted', { id: 'fetchhs' }, ns);
+	an.data(this, 'processingCompleted', { id: 'fetchhs' }, ns);
 	an.notice(this, 'processingCompleted', 'High scores successfully synchronized.', 5000);
 	an.notice(this, 'processingFailed', 'Error synchronizing: {{err}}', 3600000);
 

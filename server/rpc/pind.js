@@ -16,9 +16,7 @@ var error = require('../modules/error');
 exports.actions = function(req, res, ss) {
 	req.use('session');
 	require('../modules/announce').registerSocketStream(ss);
-
 	return {
-		name : 'Pind',
 
 		status: function() {
 			var status = {
@@ -30,7 +28,7 @@ exports.actions = function(req, res, ss) {
 					ipdbsync: ipdb.isSyncing(),
 					dlrom: vpm.isFetchingRoms(),
 					dlmedia: hp.isSearchingMedia(),
-					fetchhs: false
+					fetchhs: hs.isFetching()
 				}
 			};
 
@@ -41,7 +39,7 @@ exports.actions = function(req, res, ss) {
 		fetchIpdb : function() {
 			ipdb.syncIPDB(function(err) {
 				if (err) {
-					logger.log('error', '[rpc] [pind] %s', err);
+					logger.log('error', '[rpc] [pind] [fetch IPDB] %s', err);
 					res(error.api(err));
 				} else {
 					res();
@@ -52,7 +50,7 @@ exports.actions = function(req, res, ss) {
 		fetchMissingRoms : function() {
 			vpm.fetchMissingRoms(function(err) {
 				if (err) {
-					logger.log('error', '[rpc] [pind] %s', err);
+					logger.log('error', '[rpc] [pind] [fetch ROMs] %s', err);
 					res(error.api(err));
 				} else {
 					res();
@@ -60,12 +58,13 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
-		FetchHiscores : function() {
+		fetchHiscores : function() {
 			hs.fetchHighscores(function(err) {
-				if (!err) {
-					res({ message: 'High scores updated successfully.' });
-				} else {
+				if (err) {
+					logger.log('error', '[rpc] [pind] [fetch hiscores] %s', err);
 					res(error.api(err));
+				} else {
+					res();
 				}
 			});
 		},
