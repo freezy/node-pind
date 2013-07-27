@@ -3,7 +3,6 @@ module.exports = function(module) {
 
 	module.controller('AdminTableCtrl', ['$scope', '$log', 'pubsub', 'rpc', function($scope, $log, pubsub, rpc) {
 
-
 		$scope.hpsync = function(event) {
 			event.target.blur();
 			rpc('hyperpin.sync');
@@ -54,55 +53,13 @@ module.exports = function(module) {
 		// status handling
 		// ------------------------------------------------------------------------
 
-		var processingStarted = function(data) {
-			$scope.status.processing[data.id] = true;
-			$('#' + data.id + ' > button > i').addClass('spin');
-			$('.row.footer > h2').addClass('disabled');
-			$('.action').addClass('disabled').find('button').attr('disabled', 'disabled');
-		};
-
-		var processingCompleted = function(data) {
-			$scope.status.processing[data.id] = false;
-			$('.row.footer > h2').removeClass('disabled');
-			$('.action').removeClass('disabled').find('button').removeAttr('disabled', 'disabled');
-			$('.action > button > i').removeClass('spin');
-		};
-
-		var updateStatus = function() {
-			_.each($scope.status.processing, function(value, key) {
-				if (value) {
-					processingStarted({ id: key });
-				}
-			});
-		};
-
-		if (!$scope.statusAvailable) {
-			$scope.$on('statusAvailable', function() {
-				$scope.$apply(updateStatus);
-			});
-		} else {
-			updateStatus();
-		}
-
-		// events
-		ss.event.on('hp.processingStarted', processingStarted);
-		ss.event.on('hp.processingCompleted', processingCompleted);
-		ss.event.on('ipdb.processingStarted', processingStarted);
-		ss.event.on('ipdb.processingCompleted', processingCompleted);
-		ss.event.on('vpm.processingStarted', processingStarted);
-		ss.event.on('vpm.processingCompleted', processingCompleted);
-		ss.event.on('vpf.processingStarted', processingStarted);
-		ss.event.on('vpf.processingCompleted', processingCompleted);
-		$scope.$on('$destroy', function() {
-			ss.event.off('hp.processingStarted', processingStarted);
-			ss.event.off('hp.processingCompleted', processingCompleted);
-			ss.event.off('ipdb.processingStarted', processingStarted);
-			ss.event.off('ipdb.processingCompleted', processingCompleted);
-			ss.event.off('vpm.processingStarted', processingStarted);
-			ss.event.off('vpm.processingCompleted', processingCompleted);
-			ss.event.off('vpf.processingStarted', processingStarted);
-			ss.event.off('vpf.processingCompleted', processingCompleted);
-		})
+		$scope.registerEvents({
+			hpsync:   [ 'hp.processingStarted', 'hp.processingCompleted' ],
+			ipdbsync: [ 'ipdb.processingStarted', 'ipdb.processingCompleted' ],
+			dlrom:    [ 'vpm.processingStarted', 'vpm.processingCompleted' ],
+			dlmedia:  [ 'vpf.processingStarted', 'vpf.processingCompleted' ],
+			fetchhs:  [ 'vpm.processingStarted', 'vpm.processingCompleted' ]
+		});
 
 	}]);
 
