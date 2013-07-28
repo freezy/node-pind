@@ -14,10 +14,12 @@ exports.actions = function(req, res, ss) {
 		createIndex : function() {
 			vpf.cacheAllTableDownloads(function(err) {
 				if (err) {
-					console.log("ERROR: " + err);
+					logger.log('error', '[rpc] [vpf] [create index] %s', err);
+					res(error.api(err));
+				} else {
+					res('Index creation started. Status updates via socket.');
 				}
 			});
-			res('Index creation started. Status updates via socket.');
 		},
 
 		updateIndex : function() {

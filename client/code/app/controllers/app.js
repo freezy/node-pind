@@ -81,7 +81,6 @@ module.exports = function(module) {
 					$('#' + id + ' > button > i').addClass('spin');
 					$('.row.footer > h2').addClass('disabled');
 					$('.action').addClass('disabled').find('button').attr('disabled', 'disabled');
-
 				};
 			}
 			if (!completedFn) {
@@ -96,7 +95,7 @@ module.exports = function(module) {
 			var updateStatus = function() {
 				_.each($scope.status.processing, function(value, key) {
 					if (value && _.contains(_.keys(events), key)) {
-						startedFn(key);
+						events[key] && _.isFunction(events[key][2]) ? events[key][2](key) : startedFn(key);
 					}
 				});
 			};
@@ -111,11 +110,11 @@ module.exports = function(module) {
 			// wrap callbacks so we can update the status
 			var _startedFn = function(data) {
 				$scope.status.processing[data.id] = true;
-				startedFn(data.id);
+				events[data.id] && _.isFunction(events[data.id][2]) ? events[data.id][2](data.id) : startedFn(data.id);
 			};
 			var _completedFn = function(data) {
 				$scope.status.processing[data.id] = false;
-				completedFn(data.id);
+				events[data.id] && _.isFunction(events[data.id][3]) ? events[data.id][3](data.id) : completedFn(data.id);
 			};
 
 			// events

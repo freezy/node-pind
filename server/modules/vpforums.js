@@ -19,6 +19,7 @@ var transfer = require('./transfer');
 
 var loggingIn = false;
 var isDownloadingIndex = false;
+var isCreatingIndex = false;
 
 function VPForums() {
 	events.EventEmitter.call(this);
@@ -37,7 +38,7 @@ VPForums.prototype.initAnnounce = function() {
 	an.notice(this, 'romSearchStarted', 'VPF: Searching ROM for "{{name}}"', 120000);
 
 	// fetchDownloads()
-	an.forward(this, 'downloadProgressUpdated');
+	an.forward(this, 'downloadProgressUpdated', ns);
 
 	// download()
 	an.notice(this, 'downloadInitializing', 'VPF: Initializing download {{fileinfo}}', 60000);
@@ -50,9 +51,12 @@ VPForums.prototype.initAnnounce = function() {
 	an.notice(this, 'loginStarted', 'VPF: Logging in as "{{user}}"', 30000);
 
 	// index
-	an.data(this, 'refreshIndexStarted', { id: 'dlvpfindex' }, ns, 'downloadIndexStarted');
-	an.data(this, 'refreshIndexCompleted', { id: 'dlvpfindex' }, ns, 'downloadIndexUpdated');
-	an.data(this, 'downloadIndexCompleted', {}, ns, 'downloadIndexUpdated');
+	an.data(this, 'createIndexStarted',    { id: 'crvpfindex' }, ns);
+	an.data(this, 'createIndexCompleted',  { id: 'crvpfindex' }, ns);
+	an.data(this, 'createIndexCompleted',  {}, ns, 'indexUpdated');
+	an.data(this, 'refreshIndexStarted',   { id: 'dlvpfindex' }, ns);
+	an.data(this, 'refreshIndexCompleted', { id: 'dlvpfindex' }, ns);
+	an.data(this, 'refreshIndexCompleted',  {}, ns, 'indexUpdated');
 	an.notice(this, 'downloadIndexFailed', 'Index download failed: {{error}}');
 	an.notice(this, 'downloadIndexFailed', 'Index update failed: {{error}}');
 };
@@ -721,20 +725,21 @@ VPForums.prototype.logout = function(callback) {
  */
 VPForums.prototype.cacheAllTableDownloads = function(callback) {
 
-	if (isDownloadingIndex) {
+	if (isCreatingIndex || isDownloadingIndex) {
 		return callback('Fetching process already running. Wait until complete.');
 	}
-	isDownloadingIndex = true;
-
+	isCreatingIndex = true;
 	var that = this;
+	that.emit('createIndexStarted');
+
 	this._fetchDownloads(41, null, {}, function(err, results) {
-		isDownloadingIndex = false;
+		isCreatingIndex = false;
 		if (err) {
-			that.emit('downloadIndexFailed', { error: err });
+			that.emit('createIndexFailed', { error: err });
 			callback(err);
 			return logger.log('error', 'ERROR: %s', err);
 		}
-		that.emit('downloadIndexCompleted');
+		that.emit('createIndexCompleted');
 		callback(null, results);
 	});
 };
@@ -747,7 +752,7 @@ VPForums.prototype.cacheAllTableDownloads = function(callback) {
  */
 VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 
-	if (isDownloadingIndex) {
+	if (isCreatingIndex || isDownloadingIndex) {
 		return callback('Fetching process already running. Wait until complete.');
 	}
 	var that = this;
@@ -773,6 +778,10 @@ VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 
 VPForums.prototype.isDownloadingIndex = function() {
 	return isDownloadingIndex;
+};
+
+VPForums.prototype.isCreatingIndex = function() {
+	return isCreatingIndex;
 };
 
 module.exports = new VPForums();

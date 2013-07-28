@@ -74,9 +74,9 @@ block inner-content
 			p
 				| No index found. Click below to fetch the file index which takes a few minutes. <br>
 				| Data will be automatically refreshed when done.
-			button.btn.submit(data-processing="{{isDownloadingIndex}}")
+			button.btn.submit(ng-click="createIndex($event)")
 				i.icon.refresh
-				span Download index
+				span(data-active="Downloading index") Download index
 
 			.indexing.progress.progress-striped.active(style="display:none")
 				.bar

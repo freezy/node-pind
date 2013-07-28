@@ -72,9 +72,9 @@ block inner-content
 			button.btn.submit.small Clear Filters
 
 		//- no data
-		div.nodata(style='display:none')
+		div.nodata.action(style='display:none')
 			p No tables in database.
-			button.btn.submit
+			button.btn.submit(ng-click="hpsync($event)")
 				i.icon.refresh
 				span Load from HyperPin
 	.clearfix

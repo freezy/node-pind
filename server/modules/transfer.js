@@ -32,15 +32,17 @@ util.inherits(Transfer, events.EventEmitter);
  */
 Transfer.prototype.initAnnounce = function() {
 
+	var ns = 'transfer';
+
 	an.transferUpdate(this, 'transferFailed');
 	an.transferUpdate(this, 'transferCompleted');
 	an.transferUpdate(this, 'extractFailed');
 	an.transferUpdate(this, 'extractCompleted');
 
-	an.forward(this, 'transferAdded');
-	an.forward(this, 'transferDeleted');
-	an.forward(this, 'transferSizeKnown');
-	an.forward(this, 'transferClearedFailed');
+	an.forward(this, 'transferAdded', ns);
+	an.forward(this, 'transferDeleted', ns);
+	an.forward(this, 'transferSizeKnown', ns);
+	an.forward(this, 'transferClearedFailed', ns);
 
 	an.downloadWatch(this, 'downloadWatch');
 };

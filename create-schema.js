@@ -1,4 +1,4 @@
-schema  = require('./app/model/schema');
+schema  = require('./server/database/schema');
 
 schema.create(function(err){
 	if (err){

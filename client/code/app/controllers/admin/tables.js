@@ -73,6 +73,23 @@ module.exports = function(module) {
 			return table;
 		};
 
+		// ------------------------------------------------------------------------
+		// real time code
+		// ------------------------------------------------------------------------
+
+
+		// hp processing completed
+		var processingCompleted = function() {
+			$scope.$broadcast('paramsUpdated');
+		};
+
+		// hook up events
+		ss.event.on('hp.processingCompleted', processingCompleted);
+
+		// cleanup on destruction
+		$scope.$on('$destroy', function() {
+			ss.event.off('hp.processingCompleted', processingCompleted);
+		});
 
 		// ------------------------------------------------------------------------
 		// status handling

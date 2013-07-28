@@ -8,6 +8,11 @@ module.exports = function(module) {
 		// actions
 		// ------------------------------------------------------------------------
 
+		$scope.createIndex = function(event) {
+			event.target.blur();
+			rpc('vpforums.createIndex');
+		};
+
 		$scope.updateIndex = function(event) {
 			event.target.blur();
 			rpc('vpforums.updateIndex');
@@ -18,70 +23,66 @@ module.exports = function(module) {
 		// ------------------------------------------------------------------------
 
 		$scope.registerEvents({
-			dlvpfindex:   [ 'vpf.downloadIndexStarted', 'vpf.downloadIndexUpdated' ]
+			dlvpfindex: [ 'vpf.refreshIndexStarted', 'vpf.refreshIndexCompleted' ],
+			crvpfindex: [ 'vpf.createIndexStarted', 'vpf.createIndexCompleted', function() {
+				var btn = $('.nodata > button');
+				btn.attr('disabled', 'disabled');
+				btn.find('i.icon').addClass('spin');
+				btn.next('.progress').show();
+				btn.find('span').html(btn.find('span').data('active'));
+				$('.row.footer > h2').addClass('disabled');
+				$('.action').addClass('disabled').find('button').attr('disabled', 'disabled');
+			} ]
 		});
 
 
 		// ------------------------------------------------------------------------
 		// real time code
 		// ------------------------------------------------------------------------
-/*		var socket = io.connect('/');
+
 
 		// index refresh/download has finished
-		socket.on('downloadIndexUpdated', function() {
+		var indexUpdated = function() {
 			$scope.$broadcast('paramsUpdated');
-		});
+		};
 
-		// download progress update
-		socket.on('downloadProgressUpdated', function(msg) {
+		// progress update on initial index download
+		var downloadProgressUpdated = function(msg) {
 			$('.progress.indexing .bar').css('width', (msg.progress * 100) + '%');
-		});
+		};
 
 		// transfer added to queue
-		socket.on('transferAdded', function(data) {
-
+		var transferAdded = function(data) {
 			// add status-queued to download link
-			$('div.data li[data-id="' + data.transfer.reference + '"] ul.pills.small li.link.transfer')
-				.addClass('status-queued');
-
+			$('div.data li[data-id="' + data.transfer.reference + '"] ul.pills.small li.link.transfer').addClass('status-queued');
 			// also add data-transferid to parent
 			$('div.data li[data-id="' + data.transfer.reference + '"]').attr('data-transferid', data.transfer.id);
-		});
+		};
 
 		// transfer removed from queue
-		socket.on('transferDeleted', function(data) {
-
+		var transferDeleted = function(data) {
 			// remove status-* classes
-			$('div.data li[data-transferid="' + data.id + '"] ul.pills.small li.link.transfer')
-				.removeClass(function(index, css) {
-					return (css.match(/\bstatus-\S+/g) || []).join(' ');
-				});
-
+			$('div.data li[data-transferid="' + data.id + '"] ul.pills.small li.link.transfer').removeClass(function(index, css) {
+				return (css.match(/\bstatus-\S+/g) || []).join(' ');
+			});
 			// also remove data-transferid from parent
 			$('div.data li[data-transferid="' + data.id + '"]').removeAttr('data-transferid');
-		});*/
+		};
+
+		// hook up events
+		ss.event.on('vpf.indexUpdated', indexUpdated);
+		ss.event.on('vpf.downloadProgressUpdated', downloadProgressUpdated);
+		ss.event.on('transfer.transferAdded', transferAdded);
+		ss.event.on('transfer.transferDeleted', transferDeleted);
+
+		// cleanup on destruction
+		$scope.$on('$destroy', function() {
+			ss.event.off('vpf.indexUpdated', indexUpdated);
+			ss.event.off('vpf.downloadProgressUpdated', downloadProgressUpdated);
+			ss.event.off('transfer.transferAdded', transferAdded);
+			ss.event.off('transfer.transferDeleted', transferDeleted);
+		});
+
 	}]);
 
 };
-
-
-$(document).ready(function() {
-	return false;
-
-	// enable download index button
-	var downloadIndex = function() {
-
-		$(this).blur();
-		$(this).data('processing', true);
-		updateActions();
-		api('VPForums.CreateIndex', {}, function(err, result) {
-			if (err) {
-				alert('Problem Syncing: ' + err);
-			}
-		});
-	};
-
-	// setup buttons
-	$('.nodata button').click(downloadIndex);
-
-});

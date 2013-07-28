@@ -30,7 +30,8 @@ exports.actions = function(req, res, ss) {
 					dlrom: vpm.isFetchingRoms(),
 					dlmedia: hp.isSearchingMedia(),
 					fetchhs: hs.isFetching(),
-					dlvpfindex: vpf.isDownloadingIndex()
+					dlvpfindex: vpf.isDownloadingIndex(),
+					crvpfindex: vpf.isCreatingIndex()
 				}
 			};
 
