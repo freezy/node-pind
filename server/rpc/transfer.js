@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var util = require('util');
+var logger = require('winston');
 
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
@@ -12,7 +13,7 @@ exports.actions = function(req, res, ss) {
 	require('../modules/announce').registerSocketStream(ss);
 
 	return {
-		reorder : function(params) {
+		reorder: function(params) {
 			if (!params.id) {
 				return res(error.api('Missing parameter: "id".'));
 			}
@@ -71,7 +72,7 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
-		remove : function(params) {
+		remove: function(params) {
 			transfer.delete(params.id, function(err) {
 				if (err) {
 					return res(error.api(err));
@@ -80,7 +81,7 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
-		resetFailed : function() {
+		resetFailed: function() {
 			transfer.resetFailed(function(err) {
 				if (err) {
 					return res(error.api(err));
@@ -89,7 +90,7 @@ exports.actions = function(req, res, ss) {
 			})
 		},
 
-		control : function(params) {
+		control: function(params) {
 			var done = function(result) {
 				transfer.getStatus(function(err, status) {
 					res({ status: status });
@@ -114,7 +115,7 @@ exports.actions = function(req, res, ss) {
 			}
 		},
 
-		addvpt : function(params) {
+		addvpt: function(params) {
 			schema.VpfFile.find(params.id).success(function(row) {
 				if (row) {
 					row = row.map();
@@ -132,9 +133,11 @@ exports.actions = function(req, res, ss) {
 						})
 					}, function(err, msg) {
 						if (err) {
-							return res(error.api(err));
+							logger.log('error', '[rpc] [transfer] [add vpt] %s', err);
+							res(error.api(err));
+						} else {
+							res(msg);
 						}
-						res(msg);
 					});
 				} else {
 					res('Cannot find VPF file with ID "' + params.id + '".');
@@ -143,7 +146,7 @@ exports.actions = function(req, res, ss) {
 		},
 
 
-		all : function(params) {
+		all: function(params) {
 
 			params = params || {};
 			var search = params.search && params.search.length > 1;

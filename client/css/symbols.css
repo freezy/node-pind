@@ -29,24 +29,24 @@
 
 
 @-moz-keyframes pulsegreen {
-	0% { background-color: #e8e8e8 }
-	100% { background-color: #b5d3af }
+	0% { background-color: #126a00 }
+	100% { background-color: #083000 }
 }
 @-webkit-keyframes pulsegreen {
-	0% { background-color: #e8e8e8 }
-	100% { background-color: #b5d3af }
+	0% { background-color: #126a00 }
+	100% { background-color: #083000 }
 }
 @-o-keyframes pulsegreen {
-	0% { background-color: #e8e8e8 }
-	100% { background-color: #b5d3af }
+	0% { background-color: #126a00 }
+	100% { background-color: #083000 }
 }
 @-ms-keyframes pulsegreen {
-	0% { background-color: #e8e8e8 }
-	100% { background-color: #b5d3af }
+	0% { background-color: #126a00 }
+	100% { background-color: #083000 }
 }
 @keyframes pulsegreen {
-	0% { background-color: #e8e8e8 }
-	100% { background-color: #b5d3af }
+	0% { background-color: #126a00 }
+	100% { background-color: #083000 }
 }
 
 /* see also http://www.yearofmoo.com/nganimate-css3/ */

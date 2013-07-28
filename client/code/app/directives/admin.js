@@ -5,14 +5,14 @@ module.exports = function (module) {
 	 * On click, updates the download confirmation dialog and sets up the click
 	 * listener of the dialog's button.
 	 */
-	module.directive('downloadLink', function() {
+	module.directive('downloadLink', ['rpc', function(rpc) {
 		return {
 			restrict: 'C',
 			link: function(scope, element) {
 
 				var queryTransfer = function(id, params) {
 					params.id = id;
-					api('Transfer.AddVPFTable', params, function(err, result) {
+					rpc('transfer.addvpt', params, function(err, result) {
 						if (err) {
 							return alert(err);
 						}
@@ -50,10 +50,12 @@ module.exports = function (module) {
 				// single click
 				$(element).sdclick(function() {
 					showDialog(scope.row);
+					$(this).blur();
 
 				// double click
 				}, function() {
 					var savedOptions = $.cookie('downloadOptions');
+					$(this).blur();
 
 					if (!savedOptions) {
 						showDialog(scope.row);
@@ -64,5 +66,5 @@ module.exports = function (module) {
 				}, 300);
 			}
 		}
-	});
+	}]);
 };
