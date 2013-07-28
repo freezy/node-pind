@@ -96,7 +96,7 @@ block inner-footer
 			button.btn.submit.small.more(ng-disabled='stopDisabled', ng-click='stop()')
 				i.icon.stop
 			span.transfer-status.ng-cloak
-				strong.status {{status}}
+				strong.status {{status.status.transfer}}
 		.span4.action
 			h3 Clear downloaded
 			p Remove all completed transfers from the database.

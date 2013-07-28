@@ -13,6 +13,18 @@ exports.actions = function(req, res, ss) {
 	require('../modules/announce').registerSocketStream(ss);
 
 	return {
+
+		control: function(params) {
+			transfer.control(params.action, function(err) {
+				if (err) {
+					logger.log('error', '[rpc] [transfer] [control] %s', err);
+					res(error.api(err));
+				} else {
+					res();
+				}
+			})
+		},
+
 		reorder: function(params) {
 			if (!params.id) {
 				return res(error.api('Missing parameter: "id".'));
@@ -46,31 +58,6 @@ exports.actions = function(req, res, ss) {
 				}
 				res({ success: true });
 			})
-		},
-
-		control: function(params) {
-			var done = function(result) {
-				transfer.getStatus(function(err, status) {
-					res({ status: status });
-				});
-			};
-			switch (params.action) {
-				case 'start': {
-					transfer.start();
-					done();
-					break;
-				}
-				case 'pause': {
-
-					break;
-				}
-				case 'stop': {
-
-					break;
-				}
-				default:
-					res(error.api('Unknown action: "' + params.action + '".'));
-			}
 		},
 
 		addvpt: function(params) {

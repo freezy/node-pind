@@ -1,6 +1,5 @@
 var _ = require('underscore');
 var fs = require('fs');
-var sys = require('sys');
 var util = require('util');
 var async = require('async');
 var jsdom = require('jsdom').jsdom;
@@ -15,7 +14,6 @@ var settings = require('../../config/settings-mine');
 var schema = require('../database/schema');
 
 var an = require('./announce');
-var transfer = require('./transfer');
 
 var loggingIn = false;
 var isDownloadingIndex = false;
@@ -25,7 +23,7 @@ function VPForums() {
 	events.EventEmitter.call(this);
 	this.initAnnounce();
 }
-sys.inherits(VPForums, events.EventEmitter);
+util.inherits(VPForums, events.EventEmitter);
 
 /**
  * Sets up event listener for realtime updates via Socket.IO.
@@ -59,6 +57,9 @@ VPForums.prototype.initAnnounce = function() {
 	an.data(this, 'refreshIndexCompleted',  {}, ns, 'indexUpdated');
 	an.notice(this, 'downloadIndexFailed', 'Index download failed: {{error}}');
 	an.notice(this, 'downloadIndexFailed', 'Index update failed: {{error}}');
+
+	// "inverse" method calls
+	an.forward(this, 'queueTransfer');
 };
 
 /**
@@ -72,6 +73,7 @@ VPForums.prototype.initAnnounce = function() {
  */
 VPForums.prototype._findMedia = function(table, cat, callback) {
 
+	var that = this;
 	logger.log('info', '[vpf] Searching media pack for "%s"...', table.name);
 	this._fetchDownloads(35, table.name, {}, function(err, results) {
 		if (err) {
@@ -85,19 +87,14 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
 			return callback('Cannot find any media with name similar to "' + table.name + '".');
 		}
 
-		transfer.queue({
+		that.emit('queueTransfer', {
 			title: match.title,
 			url: 'http://www.vpforums.org/index.php?app=downloads&showfile=' + match.fileId,
 			type: 'mediapack',
 			engine: 'vpf',
 			reference: match.id
-		}, function(err, msg) {
-			if (err) {
-				logger.log('error', '[vpf] Error querying media "%s": %s', match.title, err);
-				return callback(err);
-			}
-			callback(null, msg);
 		});
+		callback();
 	});
 };
 

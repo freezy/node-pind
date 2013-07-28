@@ -9,14 +9,7 @@ module.exports = function(module) {
 		// ------------------------------------------------------------------------
 
 		$scope.start = function() {
-			api('Transfer.Control', { action: 'start' }, function(err, result) {
-				if (err) {
-					return alert('Problem Starting: ' + err);
-				}
-				$scope.status = result.status;
-				$scope.$apply();
-				$scope.$broadcast('paramsUpdated');
-			});
+			rpc('transfer.control', { action: 'start' });
 		};
 		$scope.pause = function() {
 			alert('not yet implemented.');
@@ -39,9 +32,11 @@ module.exports = function(module) {
 		// ------------------------------------------------------------------------
 
 		$scope.$watch('status', function() {
-			console.log('Updated status to: ' + $scope.status);
-			$scope.startDisabled = $scope.status == 'idling' || $scope.status == 'transferring';
-			$scope.stopDisabled = $scope.status == 'idling' || $scope.status == 'stopped';
+			var s = $scope.status.status.transfer;
+			console.log('Updated status to: ' + s);
+
+			$scope.startDisabled = s == 'idling' || s == 'transferring';
+			$scope.stopDisabled = s == 'idling' || s == 'stopped';
 			$scope.pauseDisabled = true;
 		});
 
@@ -71,13 +66,13 @@ module.exports = function(module) {
 
 		// transfer order changed
 		var transferOrderChanged = function(result) {
-			var inView = false;
+			var visible = false;
 			_.each(result, function(id) {
 				if ($('table#transfers tr#' + id).length > 0) {
-					inView = true;
+					visible = true;
 				}
 			});
-			if (inView) {
+			if (visible) {
 				$scope.$broadcast('paramsUpdated');
 			}
 		};
@@ -124,6 +119,11 @@ module.exports = function(module) {
 
 
 	module.controller('AdminTransferItemCtrl', ['$scope', 'rpc', function($scope, rpc) {
+
+
+		// ------------------------------------------------------------------------
+		// data mapping
+		// ------------------------------------------------------------------------
 
 		$scope.classes = ['nodrag', 'nodrop'];
 		$scope.progressBarClass = '';

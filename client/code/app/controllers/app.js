@@ -6,6 +6,10 @@ module.exports = function(module) {
 	 */
 	module.controller('AppCtrl', ['$scope', 'rpc', function($scope, rpc) {
 
+		// ------------------------------------------------------------------------
+		// status
+		// ------------------------------------------------------------------------
+
 		var connectionReady = false;
 		$scope.statusAvailable = false;
 		ss.server.on('ready', function() {
@@ -16,6 +20,21 @@ module.exports = function(module) {
 				$scope.$broadcast('statusAvailable');
 			});
 		});
+		var statusUpdated = function() {
+			ss.rpc('pind.status', function(status) {
+				$scope.status = status;
+				$scope.$broadcast('statusUpdated');
+			});
+		};
+		ss.event.on('statusUpdated', statusUpdated);
+		$scope.$on('$destroy', function() {
+			ss.event.off('statusUpdated', statusUpdated);
+		});
+
+
+		// ------------------------------------------------------------------------
+		// global events
+		// ------------------------------------------------------------------------
 
 		$scope.connectionReady = function(callback) {
 			if (connectionReady) {
@@ -62,6 +81,11 @@ module.exports = function(module) {
 		$scope.restartDialog = function() {
 			$('.modal.restart').modal().show();
 		};
+
+
+		// ------------------------------------------------------------------------
+		// helper methods
+		// ------------------------------------------------------------------------
 
 
 		/**

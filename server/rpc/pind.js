@@ -12,6 +12,7 @@ var hp = require('../modules/hyperpin');
 var vpm = require('../modules/vpinmame');
 var vpf = require('../modules/vpforums');
 var ipdb = require('../modules/ipdb');
+var transfer = require('../modules/transfer');
 var error = require('../modules/error');
 
 exports.actions = function(req, res, ss) {
@@ -20,23 +21,29 @@ exports.actions = function(req, res, ss) {
 	return {
 
 		status: function() {
-			var status = {
-				user: req.session.user,
-				version: au.getVersion(),
-				test: 'foobar',
-				processing: {
-					hpsync: hp.isSyncing(),
-					ipdbsync: ipdb.isSyncing(),
-					dlrom: vpm.isFetchingRoms(),
-					dlmedia: hp.isSearchingMedia(),
-					fetchhs: hs.isFetching(),
-					dlvpfindex: vpf.isDownloadingIndex(),
-					crvpfindex: vpf.isCreatingIndex()
-				}
-			};
 
-			//console.log('STATUS = %s', util.inspect(req.session, false, 10, true));
-			res(status);
+			transfer.getStatus(function(err, transferStatus) {
+				var status = {
+					user: req.session.user,
+					version: au.getVersion(),
+					processing: {
+						hpsync: hp.isSyncing(),
+						ipdbsync: ipdb.isSyncing(),
+						dlrom: vpm.isFetchingRoms(),
+						dlmedia: hp.isSearchingMedia(),
+						fetchhs: hs.isFetching(),
+						dlvpfindex: vpf.isDownloadingIndex(),
+						crvpfindex: vpf.isCreatingIndex()
+					},
+					status: {
+						transfer: transferStatus
+					}
+				};
+
+				//console.log('STATUS = %s', util.inspect(req.session, false, 10, true));
+				res(status);
+			})
+
 		},
 
 		fetchIpdb : function() {

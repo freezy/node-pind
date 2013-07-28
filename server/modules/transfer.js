@@ -44,8 +44,19 @@ Transfer.prototype.initAnnounce = function() {
 	an.forward(this, 'transferSizeKnown', ns);
 	an.forward(this, 'transferClearedFailed', ns);
 	an.forward(this, 'transferOrderChanged', ns);
+	an.forward(this, 'statusChanged');
 
 	an.downloadWatch(this, 'downloadWatch');
+	
+	var that = this;
+	vpf.on('queueTransfer', function(transfer) {
+		that.queue(transfer, function(err) {
+			if (err) {
+				return logger.log('error', '[transfer] ERROR: %s', err);
+			}
+			logger.log('info', '[transfer] Received transfer event from VPF and succesfully queued "%s".', transfer.title);
+		});
+	});
 };
 
 /**
@@ -86,6 +97,31 @@ Transfer.prototype.getStatus = function(callback) {
 			callback(null, 'stopped');
 		}
 	});
+};
+
+Transfer.prototype.control = function(action, callback) {
+
+	var that = this;
+	switch (action) {
+		case 'start': {
+			this.start(function(err, result) {
+				if (!err && result.ok) {
+					that.emit('statusChanged');
+				}
+			});
+			break;
+		}
+		case 'pause': {
+
+			break;
+		}
+		case 'stop': {
+
+			break;
+		}
+		default:
+			res(error.api('Unknown action: "' + params.action + '".'));
+	}
 };
 
 /**
@@ -228,8 +264,11 @@ Transfer.prototype.next = function(callback) {
 				logger.log('info', '[transfer] [%s] Starting download of %s', modulename, transfer.url);
 				transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
 
+					console.log("module ref: %s", util.inspect(moduleRef, true, 10, true));
+					console.log("test call: %s", require('./vpforums').isDownloadingIndex());
+
 					// update file size as soon as we receive the content length.
-					moduleRef.on('contentLengthReceived', function(data) {
+					moduleRef.once('contentLengthReceived', function(data) {
 						if (data.reference.id) {
 							schema.Transfer.find(data.reference.id).success(function(row) {
 								if (row) {
@@ -245,11 +284,10 @@ Transfer.prototype.next = function(callback) {
 									logger.log('error', '[transfer] [%s] Could not find transfer with id %s for updating size to %s.', modulename, data.reference.id, data.contentLength);
 								}
 							});
-
 						}
 					});
 
-					moduleRef.on('filenameReceived', function(data) {
+					moduleRef.once('filenameReceived', function(data) {
 						if (data.reference.id) {
 							schema.Transfer.find(data.reference.id).success(function(row) {
 								if (row) {
@@ -308,6 +346,7 @@ Transfer.prototype.next = function(callback) {
 						// found a hit. check if there are download slots available:
 						if (transferring.vpf.length < settings.vpforums.numConcurrentDownloads) {
 							transferring.vpf.push(transfer);
+							console.log("starting download with ref %s", util.inspect(vpf, true, 10, true));
 							download(transfer, 'vpf', vpf);
 						}
 					}
