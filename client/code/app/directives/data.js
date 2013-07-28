@@ -353,7 +353,7 @@ module.exports = function (module) {
 	});
 
 
-	module.directive('sortable', function() {
+	module.directive('sortable', ['rpc', function(rpc) {
 		return function(scope, element, attrs) {
 			if (scope.$last) {
 				// http://isocra.com/2008/02/table-drag-and-drop-jquery-plugin/
@@ -361,15 +361,11 @@ module.exports = function (module) {
 					onDrop: function(table, row) {
 						var next = $(row).next();
 						var prev = $(row).prev();
-						api('Transfer.Reorder', {
+						rpc(attrs.sortable, {
 							id: $(row).attr('id'),
 							between: {
 								prev: prev && prev.hasClass('queued') ? prev.attr('id') : 0,
 								next: next && next.hasClass('queued') ? next.attr('id') : 0
-							}
-						}, function(err, result) {
-							if (err) {
-								alert(err);
 							}
 						});
 					},
@@ -378,29 +374,19 @@ module.exports = function (module) {
 				});
 			}
 		};
-	});
+	}]);
 
-	module.directive('deletable', function() {
+	module.directive('deletable', ['rpc', function(rpc) {
 		return function(scope, element, attrs) {
 			if (!scope.transfer.startedAt || scope.transfer.completedAt || scope.transfer.failedAt) {
 				$(element).find('li.link.delete').click(function() {
 					var id = attrs.id;
-					api('Transfer.Delete', {
-						id: id
-					}, function(err, result) {
-						if (err) {
-							return alert(err);
-						}
-						$(element).fadeOut().promise().done(function() {
-							console.log('DATA should be refreshing now.');
-							scope.$parent.$parent.$broadcast('paramsUpdated');
-						});
-					});
+					rpc(attrs.deletable, { id: id });
 				});
 			} else {
 				$(element).find('li.link.delete').addClass('disabled');
 			}
 
 		};
-	});
+	}]);
 };

@@ -20,55 +20,13 @@ exports.actions = function(req, res, ss) {
 			if (!params.between.prev && !params.between.next) {
 				return res(error.api('Must specify at least previous or next item.'));
 			}
-			schema.Transfer.find(params.id).success(function(row) {
-				if (!row) {
-					return res(error.api('No transfer found with ID "' + params.id + '".'));
+			transfer.reorder(params.id, params.between.prev, params.between.next, function(err) {
+				if (err) {
+					logger.log('error', '[rpc] [transfer] [reorder] %s', err);
+					res(error.api(err));
+				} else {
+					res({ msg: 'Transfer with ID "' + params.id + '" removed.'});
 				}
-				var ids = _.reject(_.values(params.between), function(num) {
-					return num == 0;
-				});
-				console.log('Reorder: %j', params);
-
-				schema.Transfer.all({ where: { id: ids }}).success(function(rows) {
-					var prev, next;
-
-					// item has been dropped between 2 rows: easy
-					if (params.between.prev && params.between.next) {
-						if (rows.length != 2) {
-							return res(error.api('One of ' + ids + ' is not in database.'));
-						}
-						prev = rows[0].id == params.between.prev ? rows[0] : rows[1];
-						next = rows[1].id == params.between.next ? rows[1] : rows[0];
-						row.updateAttributes({
-							sort: Math.round((prev.sort + next.sort) / 2)
-						});
-					}
-					// item has been dropped on top of the list (could be page 2+ though)
-					if (!params.between.prev && params.between.next) {
-						next = rows[0];
-						// find prev item
-						schema.Transfer.find({ where: [ 'sort < ?', next.sort], limit: 1 }).success(function(prev) {
-							var prevSort = prev ? prev.sort : next.sort - 1024;
-							row.updateAttributes({
-								sort: Math.round((prevSort + next.sort) / 2)
-							});
-						});
-					}
-
-					// item has been dropped on bottom of the list (could be more items on next page)
-					if (params.between.prev && !params.between.next) {
-						prev = rows[0];
-						// find prev item
-						schema.Transfer.find({ where: [ 'sort > ?', prev.sort], limit: 1 }).success(function(next) {
-							var nextSort = next ? next.sort : prev.sort + 1024;
-							row.updateAttributes({
-								sort: Math.round((prev.sort + nextSort) / 2)
-							});
-						});
-					}
-					res();
-				});
-
 			});
 		},
 

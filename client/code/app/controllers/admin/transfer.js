@@ -4,17 +4,9 @@ module.exports = function(module) {
 
 	module.controller('AdminTransferCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
 
-		$log.log('Entered AdminTransferCtrl.');
-		$scope.$on('$destroy', function() {
-			$log.log('Exited AdminTransferCtrl.');
-		});
-
-		$scope.$watch('status', function() {
-			console.log('Updated status to: ' + $scope.status);
-			$scope.startDisabled = $scope.status == 'idling' || $scope.status == 'transferring';
-			$scope.stopDisabled = $scope.status == 'idling' || $scope.status == 'stopped';
-			$scope.pauseDisabled = true;
-		});
+		// ------------------------------------------------------------------------
+		// actions
+		// ------------------------------------------------------------------------
 
 		$scope.start = function() {
 			api('Transfer.Control', { action: 'start' }, function(err, result) {
@@ -43,37 +35,75 @@ module.exports = function(module) {
 		};
 
 		// ------------------------------------------------------------------------
+		// status handling
+		// ------------------------------------------------------------------------
+
+		$scope.$watch('status', function() {
+			console.log('Updated status to: ' + $scope.status);
+			$scope.startDisabled = $scope.status == 'idling' || $scope.status == 'transferring';
+			$scope.stopDisabled = $scope.status == 'idling' || $scope.status == 'stopped';
+			$scope.pauseDisabled = true;
+		});
+
+
+		// ------------------------------------------------------------------------
 		// real time code
 		// ------------------------------------------------------------------------
 
-		// download progress bar
-/*		ss.event.on('downloadWatch', function(status) {
-			$('#transfers tr#' + status.id + ' .progress .bar').css('width', (status.downloadedSize / status.totalSize * 100) + '%')
-		});
-
-		// something has changed
-		ss.event.on('transferUpdated', function(result) {
-			if ($('#transfers tr#' + result.id).length > 0) {
+		// transfer deleted
+		var transferDeleted = function(result) {
+			$('table#transfers tr#' + result.id).fadeOut().promise().done(function() {
 				$scope.$broadcast('paramsUpdated');
-			}
-		});
-
-		// size was updated
-		ss.event.on('transferSizeKnown', function(result) {
-			$('#transfers tr#' + result.id + ' td.size').html(result.displaySize);
-		});
-
-		// cleared failed downloads
-		ss.event.on('transferClearedFailed', function() {
-			if ($('#transfers tr.failed').length > 0) {
-				$scope.$broadcast('paramsUpdated');
-			}
-		});
+			});
+		};
 
 		// new transfer added
-		ss.event.on('transferAdded', function() {
+		var transferAdded = function() {
 			$scope.$broadcast('paramsUpdated');
-		});*/
+		};
+
+		// something has changed
+		var transferUpdated = function(result) {
+			if ($('table#transfers tr#' + result.id).length > 0) {
+				$scope.$broadcast('paramsUpdated');
+			}
+		};
+
+		// cleared failed downloads
+		var transferClearedFailed = function() {
+			if ($('table#transfers tr.failed').length > 0) {
+				$scope.$broadcast('paramsUpdated');
+			}
+		};
+
+		// size was updated
+		var transferSizeKnown = function(result) {
+			$('table#transfers tr#' + result.id + ' td.size').html(result.displaySize);
+		};
+
+		// download progress bar
+		var downloadWatch = function(status) {
+			$('table#transfers tr#' + status.id + ' .progress .bar').css('width', (status.downloadedSize / status.totalSize * 100) + '%')
+		};
+
+
+		// hook up events
+		ss.event.on('transfer.transferDeleted', transferDeleted);
+		ss.event.on('transfer.transferAdded', transferAdded);
+		ss.event.on('transfer.transferUpdated', transferUpdated);
+		ss.event.on('transfer.transferClearedFailed', transferClearedFailed);
+		ss.event.on('transfer.transferSizeKnown', transferSizeKnown);
+		ss.event.on('transfer.downloadWatch', downloadWatch);
+
+		// cleanup on destruction
+		$scope.$on('$destroy', function() {
+			ss.event.off('transfer.transferDeleted', transferDeleted);
+			ss.event.off('transfer.transferAdded', transferAdded);
+			ss.event.off('transfer.transferUpdated', transferUpdated);
+			ss.event.off('transfer.transferClearedFailed', transferClearedFailed);
+			ss.event.off('transfer.transferSizeKnown', transferSizeKnown);
+			ss.event.off('transfer.downloadWatch', downloadWatch);
+		});
 
 	}]);
 

@@ -3,7 +3,6 @@ module.exports = function(module) {
 
 	module.controller('AdminSourceCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
 
-
 		// ------------------------------------------------------------------------
 		// actions
 		// ------------------------------------------------------------------------
@@ -35,11 +34,9 @@ module.exports = function(module) {
 			} ]
 		});
 
-
 		// ------------------------------------------------------------------------
 		// real time code
 		// ------------------------------------------------------------------------
-
 
 		// index refresh/download has finished
 		var indexUpdated = function() {

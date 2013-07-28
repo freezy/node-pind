@@ -386,7 +386,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 		break;
 	}
 
-}
+};
 
 Transfer.prototype.postProcess = function(transfer, callback) {
 	if (!transfer.postAction) {
@@ -454,6 +454,60 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 		callback();
 	}
 };
+
+Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
+	schema.Transfer.find(id).success(function(row) {
+
+		if (!row) {
+			return callback('No transfer found with ID "' + id + '".');
+		}
+		var ids = _.reject([nextId, prevId], function(num) {
+			return num == 0;
+		});
+
+		schema.Transfer.all({ where: { id: ids }}).success(function(rows) {
+			var prev, next;
+
+			// item has been dropped between 2 rows: easy
+			if (prevId && nextId) {
+				if (rows.length != 2) {
+					return callback('One of ' + ids + ' is not in database.');
+				}
+				prev = rows[0].id == prevId ? rows[0] : rows[1];
+				next = rows[1].id == nextId ? rows[1] : rows[0];
+				row.updateAttributes({
+					sort: Math.round((prev.sort + next.sort) / 2)
+				});
+			}
+			// item has been dropped on top of the list (could be page 2+ though)
+			if (!prevId && nextId) {
+				next = rows[0];
+				// find prev item
+				schema.Transfer.find({ where: [ 'sort < ?', next.sort], limit: 1 }).success(function(prev) {
+					var prevSort = prev ? prev.sort : next.sort - 1024;
+					row.updateAttributes({
+						sort: Math.round((prevSort + next.sort) / 2)
+					});
+				});
+			}
+
+			// item has been dropped on bottom of the list (could be more items on next page)
+			if (prevId && !nextId) {
+				prev = rows[0];
+				// find prev item
+				schema.Transfer.find({ where: [ 'sort > ?', prev.sort], limit: 1 }).success(function(next) {
+					var nextSort = next ? next.sort : prev.sort + 1024;
+					row.updateAttributes({
+						sort: Math.round((prev.sort + nextSort) / 2)
+					});
+				});
+			}
+			callback();
+		});
+
+	});
+};
+
 
 Transfer.prototype.watchDownload = function(filename, contentLength, reference) {
 	if (!this.watches) {
