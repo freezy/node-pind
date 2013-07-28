@@ -69,6 +69,19 @@ module.exports = function(module) {
 			}
 		};
 
+		// transfer order changed
+		var transferOrderChanged = function(result) {
+			var inView = false;
+			_.each(result, function(id) {
+				if ($('table#transfers tr#' + id).length > 0) {
+					inView = true;
+				}
+			});
+			if (inView) {
+				$scope.$broadcast('paramsUpdated');
+			}
+		};
+
 		// cleared failed downloads
 		var transferClearedFailed = function() {
 			if ($('table#transfers tr.failed').length > 0) {
@@ -93,6 +106,7 @@ module.exports = function(module) {
 		ss.event.on('transfer.transferUpdated', transferUpdated);
 		ss.event.on('transfer.transferClearedFailed', transferClearedFailed);
 		ss.event.on('transfer.transferSizeKnown', transferSizeKnown);
+		ss.event.on('transfer.transferOrderChanged', transferOrderChanged);
 		ss.event.on('transfer.downloadWatch', downloadWatch);
 
 		// cleanup on destruction
@@ -102,6 +116,7 @@ module.exports = function(module) {
 			ss.event.off('transfer.transferUpdated', transferUpdated);
 			ss.event.off('transfer.transferClearedFailed', transferClearedFailed);
 			ss.event.off('transfer.transferSizeKnown', transferSizeKnown);
+			ss.event.off('transfer.transferOrderChanged', transferOrderChanged);
 			ss.event.off('transfer.downloadWatch', downloadWatch);
 		});
 

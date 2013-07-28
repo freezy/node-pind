@@ -43,6 +43,7 @@ Transfer.prototype.initAnnounce = function() {
 	an.forward(this, 'transferDeleted', ns);
 	an.forward(this, 'transferSizeKnown', ns);
 	an.forward(this, 'transferClearedFailed', ns);
+	an.forward(this, 'transferOrderChanged', ns);
 
 	an.downloadWatch(this, 'downloadWatch');
 };
@@ -456,6 +457,8 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 };
 
 Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
+
+	var that = this;
 	schema.Transfer.find(id).success(function(row) {
 
 		if (!row) {
@@ -502,6 +505,7 @@ Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
 					});
 				});
 			}
+			that.emit('transferOrderChanged', ids);
 			callback();
 		});
 
