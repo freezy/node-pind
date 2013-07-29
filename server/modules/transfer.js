@@ -315,9 +315,7 @@ Transfer.prototype.next = function(callback) {
 							return row.updateAttributes({
 								failedAt: new Date(),
 								result: JSON.stringify({ error: err })
-							}).done(function() {
-									callback(err);
-								});
+							}).done(callback);
 						}
 
 						// otherwise, update db with success and extract

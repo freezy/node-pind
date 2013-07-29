@@ -1,3 +1,4 @@
+// COMPOUND LEGACY
 module.exports = function(compound) {
     return typeof window === 'undefined' ? [
 //        'jugglingdb',

@@ -31,6 +31,9 @@ if (ss.env == 'production') {
 	ss.client.packAssets();
 }
 
+// init modules
+require('./server/initializers/pind.js')();
+
 // Start web server
 var server = http.Server(ss.http.middleware);
 server.listen(80);
