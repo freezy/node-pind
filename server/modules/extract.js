@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('underscore');
 var fs = require('fs');
 var util = require('util');
@@ -72,6 +74,7 @@ Extract.prototype.getFiles = function(filepath, callback) {
 
 		exec(cmd, function (err, stdout, stderr) {
 			if (err) {
+				logger.log('error', '[extract] [rar] Error running extract command: ' + err);
 				return callback(err);
 			}
 			if (stderr) {
@@ -90,16 +93,17 @@ Extract.prototype.getFiles = function(filepath, callback) {
 	} else if (ext == '.zip') {
 		var filenames = [];
 		fs.createReadStream(filepath)
-		.pipe(unzip.Parse())
-		.on('entry', function (entry) {
-			filenames.push(entry.path);
-			entry.autodrain();
+			.pipe(unzip.Parse())
+			.on('entry',function(entry) {
+				filenames.push(entry.path);
+				entry.autodrain();
 
-		}).on('close', function() {
-			if (callback) {
+			}).on('close',function() {
 				callback(null, filenames.sort());
-			}
-		});
+			}).on('error', function(err) {
+				logger.log('error', '[extract] [zip] ' + err);
+				callback(err);
+			});
 
 	} else {
 		callback('Unknown file extension "' + ext + '", cannot read archive directory.');
@@ -130,6 +134,28 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 		return ext == '.vpt';
 	}).length > 0;
 
+	// adds it to the queue if not already exists
+	var add = function(dst, filepath) {
+		if (!fs.existsSync(dst)) {
+			mapping.extract[filepath] = { src: filepath, dst: dst };
+		} else {
+			mapping.skip[filepath] = { src: filepath, dst: dst };
+			logger.log('info', '[extract] "%s" already exists, skipping.', dst);
+		}
+	};
+
+	// adds it to the queue using the typical
+	var asMedia = function (depth, filename, filepath, dirnames) {
+		var ext = filename.substr(filename.lastIndexOf('.'));
+		var dst = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + (renameTo ? renameTo + ext : filename);
+		if (!fs.existsSync(dst)) {
+			add(dst, filepath);
+		} else {
+			mapping.skip[filepath] = { src: filepath, dst: dst };
+			logger.log('info', '[extract] "%s" already exists, skipping.', dst);
+		}
+	};
+
 	var dst;
 	for (var i = 0; i < files.length; i++) {
 		var filepath = files[i];
@@ -137,28 +163,6 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 		var filename = dirnames.pop();
 
         var l = dirnames.length - 1;
-
-		// adds it to the queue if not already exists
-		function add(dst, filepath) {
-			if (!fs.existsSync(dst)) {
-				mapping.extract[filepath] = { src: filepath, dst: dst };
-			} else {
-				mapping.skip[filepath] = { src: filepath, dst: dst };
-				logger.log('info', '[extract] "%s" already exists, skipping.', dst);
-			}
-		}
-
-		// adds it to the queue using the typical
-		function asMedia(depth, filename, filepath, dirnames) {
-			var ext = filename.substr(filename.lastIndexOf('.'));
-			var dst = settings.hyperpin.path + '/Media/' + dirnames.slice(dirnames.length - depth, dirnames.length).join('/') + '/' + (renameTo ? renameTo + ext : filename);
-			if (!fs.existsSync(dst)) {
-				add(dst, filepath);
-			} else {
-				mapping.skip[filepath] = { src: filepath, dst: dst };
-				logger.log('info', '[extract] "%s" already exists, skipping.', dst);
-			}
-		}
 
 		if (filename) {
             var ext = filename.substr(filename.lastIndexOf('.')).toLowerCase();
@@ -257,28 +261,33 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
  * 		<li>{Array} List of extracted files.</li></ol>
  */
 Extract.prototype.zipExtract = function(zipfile, mapping, callback) {
+
 	fs.createReadStream(zipfile)
-	.pipe(unzip.Parse())
-	.on('entry', function (entry) {
-		try {
-			var map = mapping.extract[entry.path];
-			if (map) {
-				logger.log('info', '[extract] [unzip] Extracting "%s" to "%s"...', entry.path, map.dst);
-				map.extracted = true;
-				entry.pipe(fs.createWriteStream(map.dst));
-			} else {
-				logger.log('info', '[extract] [unzip] Skipping "%s".', entry.path);
-				entry.autodrain();
+		.pipe(unzip.Parse())
+		.on('entry', function(entry) {
+			try {
+				var map = mapping.extract[entry.path];
+				if (map) {
+					logger.log('info', '[extract] [unzip] Extracting "%s" to "%s"...', entry.path, map.dst);
+					map.extracted = true;
+					entry.pipe(fs.createWriteStream(map.dst));
+				} else {
+					logger.log('info', '[extract] [unzip] Skipping "%s".', entry.path);
+					entry.autodrain();
+				}
+			} catch (err) {
+				logger.log('error', '[extract] [zip] ' + err.message);
+				callback(err.message);
 			}
-		} catch (err) {
-			callback(err.message);
-		}
-	})
-	.on('close', function() {
-		if (callback) {
+		})
+		.on('close', function() {
 			callback(null, mapping);
-		}
-	});
+		})
+		.on('error', function(err) {
+			logger.log('error', '[extract] [zip] ' + err);
+			callback(err);
+		});
+
 };
 
 /**
@@ -305,9 +314,11 @@ Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 			logger.log('info', '[extract] [unrar] # %s', cmd);
 			exec(cmd, function (err, stdout, stderr) {
 				if (err) {
+					logger.log('error', '[extract] [unrar] ' + err);
 					return next(err);
 				}
 				if (stderr) {
+					logger.log('error', '[extract] [unrar] ' + err);
 					return next(stderr);
 				}
 				if (!stdout.match(/all ok/i)) {
@@ -323,10 +334,11 @@ Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 			});
 
 		}, function(err) {
-			logger.log('info', '[extract] Done extracting.');
 			if (err) {
+				logger.log('error', '[extract] Error extracting: ' + err);
 				return callback(err);
 			}
+			logger.log('info', '[extract] Done extracting.');
 			callback(null, mapping);
 		}
 	);

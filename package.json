@@ -35,6 +35,7 @@
 		"winston": "0.7.x",
 
 		"chrono-node": "0.0.x",
+		"duration": "0.1.x",
 		"ent": "0.0.x",
 		"filesize": "1.10.x",
 		"fuzzy": "0.1.x",
