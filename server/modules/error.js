@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs');
 
 exports.api = function(message, code, data) {

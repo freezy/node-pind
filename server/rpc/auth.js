@@ -1,3 +1,5 @@
+'use strict';
+
 var schema = require('../database/schema');
 
 exports.actions = function(req, res, ss) {

@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs');
 var ocd = require('ole-doc').OleCompoundDoc;
 var util = require('util');

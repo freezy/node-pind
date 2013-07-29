@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('underscore');
 var fs = require('fs');
 var util = require('util');
@@ -413,7 +415,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 			var m, n, regex, titles, block, blocks = stdout;
 			var scores = {};
 
-			function is(prefix) {
+			var is = function(prefix) {
 				return romname.substr(0, prefix.length).toLowerCase() == prefix.toLowerCase();
 			}
 
@@ -527,7 +529,7 @@ Hiscore.prototype.getHighscore = function(romname, callback) {
 
 
 			// global data (non-player related)
-			function global(score) {
+			var global = function(score) {
 				if (!scores.global) {
 					scores.global = [];
 				}

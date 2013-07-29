@@ -1,3 +1,5 @@
+'use strict';
+
 var hp = require('../modules/hyperpin');
 var logger = require('winston');
 

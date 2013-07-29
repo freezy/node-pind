@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs');
 var ent = require('ent');
 var util = require('util');

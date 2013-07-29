@@ -1,3 +1,5 @@
+'use strict';
+
 var schema = require('../database/schema');
 var error = require('../modules/error');
 

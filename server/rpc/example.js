@@ -1,3 +1,5 @@
+'use strict';
+
 var intervalId = {};
 var crypto = require('crypto');
 
