@@ -31,10 +31,8 @@ module.exports = function(module) {
 		// status handling
 		// ------------------------------------------------------------------------
 
-		$scope.$watch('status', function() {
+		$scope.$on('statusUpdated', function() {
 			var s = $scope.status.status.transfer;
-			console.log('Updated status to: ' + s);
-
 			$scope.startDisabled = s == 'idling' || s == 'transferring';
 			$scope.stopDisabled = s == 'idling' || s == 'stopped';
 			$scope.pauseDisabled = true;
@@ -90,7 +88,7 @@ module.exports = function(module) {
 		};
 
 		// download progress bar
-		var downloadWatch = function(status) {
+		var transferProgress = function(status) {
 			$('table#transfers tr#' + status.id + ' .progress .bar').css('width', (status.downloadedSize / status.totalSize * 100) + '%')
 		};
 
@@ -102,7 +100,7 @@ module.exports = function(module) {
 		ss.event.on('transfer.transferClearedFailed', transferClearedFailed);
 		ss.event.on('transfer.transferSizeKnown', transferSizeKnown);
 		ss.event.on('transfer.transferOrderChanged', transferOrderChanged);
-		ss.event.on('transfer.downloadWatch', downloadWatch);
+		ss.event.on('transfer.transferProgress', transferProgress);
 
 		// cleanup on destruction
 		$scope.$on('$destroy', function() {
@@ -112,7 +110,7 @@ module.exports = function(module) {
 			ss.event.off('transfer.transferClearedFailed', transferClearedFailed);
 			ss.event.off('transfer.transferSizeKnown', transferSizeKnown);
 			ss.event.off('transfer.transferOrderChanged', transferOrderChanged);
-			ss.event.off('transfer.downloadWatch', downloadWatch);
+			ss.event.off('transfer.transferProgress', transferProgress);
 		});
 
 	}]);

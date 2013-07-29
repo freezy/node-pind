@@ -21,7 +21,7 @@ var progress = { };
 function Transfer() {
 	events.EventEmitter.call(this);
 	this.initAnnounce();
-	this.on('downloadWatch', function(data) {
+	this.on('transferProgress', function(data) {
 		progress[data.reference.id] = data.size / data.contentLength;
 	});
 }
@@ -34,10 +34,10 @@ Transfer.prototype.initAnnounce = function() {
 
 	var ns = 'transfer';
 
-	an.transferUpdate(this, 'transferFailed');
-	an.transferUpdate(this, 'transferCompleted');
-	an.transferUpdate(this, 'extractFailed');
-	an.transferUpdate(this, 'extractCompleted');
+	an.transferUpdate(this, 'transferFailed', ns);
+	an.transferUpdate(this, 'transferCompleted', ns);
+	an.transferUpdate(this, 'extractFailed', ns);
+	an.transferUpdate(this, 'extractCompleted', ns);
 
 	an.forward(this, 'transferAdded', ns);
 	an.forward(this, 'transferDeleted', ns);
@@ -46,8 +46,8 @@ Transfer.prototype.initAnnounce = function() {
 	an.forward(this, 'transferOrderChanged', ns);
 	an.forward(this, 'statusChanged');
 
-	an.downloadWatch(this, 'downloadWatch');
-	
+	an.transferProgress(this, 'transferProgress', ns);
+
 	var that = this;
 	vpf.on('queueTransfer', function(transfer) {
 		that.queue(transfer, function(err) {
@@ -195,6 +195,7 @@ Transfer.prototype.queue = function(transfer, callback) {
 		that.emit('transferAdded', { transfer: row });
 
 		callback(null, 'Added "' + transfer.title + '" successfully to queue.');
+		that.emit('statusChanged');
 		if (settings.pind.startDownloadsAutomatically) {
 			that.start(function() {
 				logger.log('info', '[transfer] Download queue finished.');
@@ -263,9 +264,6 @@ Transfer.prototype.next = function(callback) {
 				// update "started" clock..
 				logger.log('info', '[transfer] [%s] Starting download of %s', modulename, transfer.url);
 				transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
-
-					console.log("module ref: %s", util.inspect(moduleRef, true, 10, true));
-					console.log("test call: %s", require('./vpforums').isDownloadingIndex());
 
 					// update file size as soon as we receive the content length.
 					moduleRef.once('contentLengthReceived', function(data) {
@@ -346,7 +344,6 @@ Transfer.prototype.next = function(callback) {
 						// found a hit. check if there are download slots available:
 						if (transferring.vpf.length < settings.vpforums.numConcurrentDownloads) {
 							transferring.vpf.push(transfer);
-							console.log("starting download with ref %s", util.inspect(vpf, true, 10, true));
 							download(transfer, 'vpf', vpf);
 						}
 					}
@@ -551,7 +548,6 @@ Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
 	});
 };
 
-
 Transfer.prototype.watchDownload = function(filename, contentLength, reference) {
 	if (!this.watches) {
 		this.watches = {};
@@ -564,7 +560,7 @@ Transfer.prototype.watchDownload = function(filename, contentLength, reference) 
 	this.openFiles[filename] = fd;
 	this.watches[filename] = setInterval(function() {
 		var size = fs.fstatSync(fd).size;
-		that.emit('downloadWatch', { size: size, contentLength: contentLength, reference: reference });
+		that.emit('transferProgress', { size: size, contentLength: contentLength, reference: reference });
 
 	}, settings.pind.downloaderRefreshRate);
 };

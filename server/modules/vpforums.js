@@ -14,6 +14,7 @@ var settings = require('../../config/settings-mine');
 var schema = require('../database/schema');
 
 var an = require('./announce');
+var error = require('./error');
 
 var loggingIn = false;
 var isDownloadingIndex = false;
@@ -175,92 +176,109 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 	that.emit('downloadInitializing', { reference: transfer, fileinfo: transfer.filename ? ' for "' + transfer.filename + '"' : '' });
 
 	// fetch the "overview" page
-	request(transfer.url, function(err, response, body) {
+	request({ url: transfer.url, jar: true }, function(err, response, body) {
 		if (err) {
 			return callback(err);
 		}
+		error.dumpDebugData('vpf', '01-first.page', body, 'html');
 
 		// starts the download, assuming we have a logged session.
 		var download = function(body) {
-			that.emit('downloadPreparing', { reference: transfer });
 			var m;
+			if (body.match(/<h1[^>]*>Sorry, you don't have permission for that/i)) {
+				m = body.match(/<p class='ipsType_sectiontitle'>\s*([^<]+)/gi);
+				logger.log('error', '[vpf] Unexpected return while fetching download page: "%s"', m[1]);
+				return callback('Error in download page, see log.');
+			}
+
+			that.emit('downloadPreparing', { reference: transfer });
 			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
 				var confirmUrl = m[1].replace(/&amp;/g, '&');
 				logger.log('info', '[vpf] Getting confirmation page at %s...', confirmUrl);
 				// fetch the "confirm" page, where the actual link is
-				request(confirmUrl, function(err, response, body) {
+				request({ url: confirmUrl, jar: true }, function(err, response, body) {
+					error.dumpDebugData('vpf', '02-confirmation', body, 'html');
 
 					if (err) {
-						callback(err);
+						return callback(err);
+					}
+					// can be multiple, they are sorted by date ascending, so latest is last item.
+					var regex = new RegExp('<a\\s+href=\'([^\']+)\'\\s+class=\'download_button[^\']*\'>\\s*Download\\s*<\\/a>[\\s\\S]*?<strong\\s+class=\'name\'>([^<]+)', 'gi');
+					var link = false;
+					while (m = regex.exec(body)) {
+						link = m;
+					}
+					if (link) {
+						var downloadUrl = link[1].replace(/&amp;/g, '&');
+						var filename = link[2].trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
+						var dest = settings.pind.tmp + '/' + filename;
+						var failed = false;
+
+						that.emit('downloadStarted', { filename: filename, destpath: dest, reference: transfer });
+						logger.log('info', '[vpf] Downloading %s at %s...', filename, downloadUrl);
+						var stream = fs.createWriteStream(dest);
+						stream.on('close', function() {
+
+							var fd = fs.openSync(dest, 'r');
+							var size = fs.fstatSync(fd).size;
+							fs.closeSync(fd);
+							watcher.unWatchDownload(dest);
+
+							// check for failed flags
+							if (failed || size < 128000) {
+								var data = fs.readFileSync(dest, 'utf8');
+								if (data.match(/You have exceeded the maximum number of downloads allotted to you for the day/i)) {
+									logger.log('info', '[vpf] Download data is error message, quitting.', { size: size, dest: dest });
+									err = 'Number of daily downloads exceeded at VPF.';
+									that.emit('downloadFailed', { message: err });
+									return callback(err);
+								}
+								if (data.match(/You may not download any more files until your other downloads are complete/i)) {
+									logger.log('info', '[vpf] Too many simulataneous downloads, quitting.', { size: size, dest: dest });
+									err = 'Number of concurrent downloads exceeded at VPF.';
+									that.emit('downloadFailed', { message: err });
+									return callback(err);
+								}
+								if (failed) {
+									logger.log('info', '[vpf] Download failed, see %s what went wrong.', dest);
+									err = 'Download failed.';
+									that.emit('downloadFailed', { message: err });
+									return callback(err);
+								}
+							}
+
+							that.emit('downloadCompleted', { size: size, reference: transfer });
+							logger.log('info', '[vpf] Downloaded %d bytes to %s.', size, dest);
+
+							callback(null, dest);
+						});
+						request({ url: downloadUrl, jar: true }).on('response', function(response) {
+
+							if (response.statusCode != 200) {
+								failed = true;
+								logger.log('error', '[vpf] Download failed with status code %s.', response.statusCode);
+								return;
+							}
+							if (response.headers['content-length']) {
+								that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: transfer });
+								watcher.watchDownload(dest, response.headers['content-length'], transfer);
+							}
+							if (response.headers['content-disposition']) {
+								var filename = response.headers['content-disposition'].match(/filename="([^"]+)"/i)[1];
+								that.emit('filenameReceived', { filename: filename, reference: transfer });
+							}
+						}).pipe(stream);
+
 					} else {
-						if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>\s*Download\s*<\/a>[\s\S]*?<strong\s+class='name'>([^<]+)/i)) {
-							var downloadUrl = m[1].replace(/&amp;/g, '&');
-							var filename = m[2].trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
-							var dest = settings.pind.tmp + '/' + filename;
-							var failed = false;
-
-							that.emit('downloadStarted', { filename: filename, destpath: dest, reference: transfer });
-							logger.log('info', '[vpf] Downloading %s at %s...', filename, downloadUrl);
-							var stream = fs.createWriteStream(dest);
-							stream.on('close', function() {
-
-								var fd = fs.openSync(dest, 'r');
-								var size = fs.fstatSync(fd).size;
-								fs.closeSync(fd);
-								watcher.unWatchDownload(dest);
-
-								// check for failed flags
-								if (failed || size < 128000) {
-									var data = fs.readFileSync(dest, 'utf8');
-									if (data.match(/You have exceeded the maximum number of downloads allotted to you for the day/i)) {
-										logger.log('info', '[vpf] Download data is error message, quitting.', { size: size, dest: dest });
-										err = 'Number of daily downloads exceeded at VPF.';
-										that.emit('downloadFailed', { message: err });
-										return callback(err);
-									}
-									if (data.match(/You may not download any more files until your other downloads are complete/i)) {
-										logger.log('info', '[vpf] Too many simulataneous downloads, quitting.', { size: size, dest: dest });
-										err = 'Number of concurrent downloads exceeded at VPF.';
-										that.emit('downloadFailed', { message: err });
-										return callback(err);
-									}
-									if (failed) {
-										logger.log('info', '[vpf] Download failed, see %s what went wrong.', dest);
-										err = 'Download failed.';
-										that.emit('downloadFailed', { message: err });
-										return callback(err);
-									}
-								}
-
-								that.emit('downloadCompleted', { size: size, reference: transfer });
-								logger.log('info', '[vpf] Downloaded %d bytes to %s.', size, dest);
-
-								callback(null, dest);
-							});
-							request(downloadUrl).on('response', function(response) {
-
-								if (response.statusCode != 200) {
-									failed = true;
-									logger.log('error', '[vpf] Download failed with status code %s.', response.statusCode);
-									return;
-								}
-								if (response.headers['content-length']) {
-									that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: transfer });
-									watcher.watchDownload(dest, response.headers['content-length'], transfer);
-								}
-								if (response.headers['content-disposition']) {
-									var filename = response.headers['content-disposition'].match(/filename="([^"]+)"/i)[1];
-									that.emit('filenameReceived', { filename: filename, reference: transfer });
-								}
-							}).pipe(stream);
-
-						} else {
-							callback('Cannot find file download button at ' + transfer);
-						}
+						var f = error.dumpDebugData('vpf', 'confirm.page', body, 'html');
+						logger.log('error', '[vpf] Error parsing download button, see %s for content body.', f);
+						callback('Cannot find file download button at ' + confirmUrl);
 					}
 				});
 			} else {
-				callback('Cannot find confirmation download button at ' + transfer);
+				var f = error.dumpDebugData('vpf', 'download.page', body, 'html');
+				logger.log('error', '[vpf] Error parsing download button, see %s for content body.', f);
+				callback('Cannot find confirmation download button at ' + transfer.url);
 			}
 		};
 
@@ -286,7 +304,6 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 					download(body);
 				});
 			}
-
 
 		} else {
 			logger.log('info', '[vpf] Looks like we\'re already logged in.');
@@ -633,7 +650,7 @@ VPForums.prototype._login = function(callback) {
 	that.emit('loginStarted', { user: settings.vpforums.user });
 
 	// just get the index to obtain the damn auth key
-	request('http://www.vpforums.org/index.php', function(err, response, body) {
+	request({ url: 'http://www.vpforums.org/index.php', jar: true }, function(err, response, body) {
 		if (err) {
 			callback(err);
 			return;
@@ -647,6 +664,7 @@ VPForums.prototype._login = function(callback) {
 			// post credentials
 			request.post({
 				url: 'http://www.vpforums.org/index.php?app=core&module=global&section=login&do=process',
+				jar: true,
 				form: {
 					auth_key: m[1],
 					anonymous: '1',
@@ -691,7 +709,7 @@ VPForums.prototype._login = function(callback) {
 VPForums.prototype.logout = function(callback) {
 	// fetch another damn id
 	logger.log('info', '[vpf] Logging out...');
-	request('http://www.vpforums.org/index.php', function(err, response, body) {
+	request({ url: 'http://www.vpforums.org/index.php', jar: true }, function(err, response, body) {
 		if (err) {
 			return callback(err);
 		}

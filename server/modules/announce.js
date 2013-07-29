@@ -80,21 +80,21 @@ Announce.prototype.data = function(emitter, event, data, ns, eventName) {
 	});
 };
 
-Announce.prototype.downloadWatch = function(emitter, event) {
+Announce.prototype.transferProgress = function(emitter, event, ns) {
 	var that = this;
 	emitter.on(event, function(data) {
-		that._publish('downloadWatch', {
+		that._publish(event, {
 			id: data.reference.id,
 			totalSize: data.contentLength,
 			downloadedSize: data.size
-		});
+		}, ns);
 	});
 };
 
-Announce.prototype.transferUpdate = function(emitter, event) {
+Announce.prototype.transferUpdate = function(emitter, event, ns) {
 	var that = this;
 	emitter.on(event, function(data) {
-		that._publish('transferUpdated', { id: data.transfer.id });
+		that._publish('transferUpdated', { id: data.transfer.id }, ns);
 	});
 };
 
