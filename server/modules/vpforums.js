@@ -478,7 +478,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			schema.VpfFile.all({ where: ['id NOT IN (' + ids.join(',') + ') AND lastUpdatedAt > ?', firstUpdated ] }).success(function(rows) {
 				async.eachSeries(rows, function(row, next) {
 					var r = row.map();
-					logger.log('info', '[vpf] Looks like "%s" was removed at VPF, checking...', row.title);
+					logger.log('info', '[vpf] Looks like "%s" was removed at VPF, checking at %s', row.title, r.url);
 					request(r.url, function(err, response, body) {
 						if (body.match(/we could not find the file specified/i)) {
 							logger.log('info', '[vpf] Deleted "%s" from database, confirmed non-existant at VPF.', row.title);
