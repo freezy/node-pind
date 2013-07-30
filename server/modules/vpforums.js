@@ -21,6 +21,7 @@ var error = require('./error');
 var loggingIn = false;
 var isDownloadingIndex = false;
 var isCreatingIndex = false;
+var transferring = [];
 
 function VPForums() {
 	events.EventEmitter.call(this);
@@ -215,6 +216,7 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 						var filename = link[2].trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
 						var dest = settings.pind.tmp + '/' + filename;
 						var failed = false;
+						var req;
 
 						that.emit('downloadStarted', { filename: filename, destpath: dest, reference: transfer });
 						logger.log('info', '[vpf] Downloading %s at %s...', filename, downloadUrl);
@@ -252,9 +254,13 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 							that.emit('downloadCompleted', { size: size, reference: transfer });
 							logger.log('info', '[vpf] Downloaded %d bytes to %s.', size, dest);
 
+							// remove from transferring array
+							transferring.splice(transferring.indexOf(req), 1);
+
 							callback(null, dest);
 						});
-						request({ url: downloadUrl, jar: true }).on('response', function(response) {
+						req = request({ url: downloadUrl, jar: true });
+						req.on('response', function(response) {
 
 							if (response.statusCode != 200) {
 								failed = true;
@@ -270,6 +276,9 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 								that.emit('filenameReceived', { filename: filename, reference: transfer });
 							}
 						}).pipe(stream);
+
+						// add to transferring array so we can stop/pause it
+						transferring.push(req);
 
 					} else {
 						var f = error.dumpDebugData('vpf', 'confirm.page', body, 'html');
@@ -312,6 +321,14 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 			download(body);
 		}
 	});
+};
+
+VPForums.prototype.abortDownloads = function() {
+	logger.log('info', '[vpf] Aborting %d transfer(s).', transferring.length);
+	_.each(transferring, function(req) {
+		req.abort();
+	});
+	transferring = [];
 };
 
 /**

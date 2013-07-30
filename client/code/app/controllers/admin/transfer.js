@@ -15,7 +15,7 @@ module.exports = function(module) {
 			alert('not yet implemented.');
 		};
 		$scope.stop = function() {
-			alert('stopped.');
+			rpc('transfer.control', { action: 'stop' });
 		};
 
 		$scope.resetFailed = function() {
@@ -63,7 +63,7 @@ module.exports = function(module) {
 		};
 
 		// new transfer added
-		var transferAdded = function() {
+		var refreshTransfers = function() {
 			$scope.$broadcast('paramsUpdated');
 		};
 
@@ -107,8 +107,9 @@ module.exports = function(module) {
 
 		// hook up events
 		ss.event.on('transfer.transferDeleted', transferDeleted);
-		ss.event.on('transfer.transferAdded', transferAdded);
+		ss.event.on('transfer.transferAdded', refreshTransfers);
 		ss.event.on('transfer.transferUpdated', transferUpdated);
+		ss.event.on('transfer.transferAborted', transferUpdated);
 		ss.event.on('transfer.transferClearedFailed', transferClearedFailed);
 		ss.event.on('transfer.transferSizeKnown', transferSizeKnown);
 		ss.event.on('transfer.transferOrderChanged', transferOrderChanged);
@@ -117,8 +118,9 @@ module.exports = function(module) {
 		// cleanup on destruction
 		$scope.$on('$destroy', function() {
 			ss.event.off('transfer.transferDeleted', transferDeleted);
-			ss.event.off('transfer.transferAdded', transferAdded);
+			ss.event.off('transfer.transferAdded', refreshTransfers);
 			ss.event.off('transfer.transferUpdated', transferUpdated);
+			ss.event.off('transfer.transferAborted', transferUpdated);
 			ss.event.off('transfer.transferClearedFailed', transferClearedFailed);
 			ss.event.off('transfer.transferSizeKnown', transferSizeKnown);
 			ss.event.off('transfer.transferOrderChanged', transferOrderChanged);

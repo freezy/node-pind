@@ -18,6 +18,7 @@ var extr = require('./extract');
 var ipdb = require('./ipdb');
 
 var transferring = { vpf: [], ipdb: [] };
+var aborting = false;
 var progress = { };
 
 function Transfer() {
@@ -43,6 +44,7 @@ Transfer.prototype.initAnnounce = function() {
 
 	an.forward(this, 'transferAdded', ns);
 	an.forward(this, 'transferDeleted', ns);
+	an.forward(this, 'transferAborted', ns);
 	an.forward(this, 'transferSizeKnown', ns);
 	an.forward(this, 'transferClearedFailed', ns);
 	an.forward(this, 'transferOrderChanged', ns);
@@ -92,6 +94,9 @@ Transfer.prototype.getStatus = function(callback) {
 	if (transferring.vpf.length > 0) {
 		return callback(null, 'transferring');
 	}
+	if (aborting) {
+		return callback(null, 'stopped');
+	}
 	schema.Transfer.count({ where: 'startedAt IS NULL'}).success(function(num) {
 		if (num == 0) {
 			callback(null, 'idling');
@@ -106,6 +111,7 @@ Transfer.prototype.control = function(action, callback) {
 	var that = this;
 	switch (action) {
 		case 'start': {
+			aborting = false;
 			this.start(function(err, result) {
 				if (!err && result.ok) {
 					that.emit('statusUpdated');
@@ -118,7 +124,9 @@ Transfer.prototype.control = function(action, callback) {
 			break;
 		}
 		case 'stop': {
-
+			aborting = true;
+			that.emit('statusUpdated');
+			vpf.abortDownloads();
 			break;
 		}
 		default:
@@ -302,7 +310,7 @@ Transfer.prototype.next = function(callback) {
 						}
 					});
 
-					// now start the download at VPF
+					// now start the download
 					moduleRef.download.call(moduleRef, row, that, function(err, filepath) {
 
 						// free up slot
@@ -310,6 +318,13 @@ Transfer.prototype.next = function(callback) {
 							return t.id == transfer.id;
 						});
 						delete progress[transfer.id];
+
+						// if aborting, reset status and return.
+						if (aborting) {
+							return schema.sequelize.query('UPDATE transfers SET startedAt = null WHERE id = ' + row.id).success(function() {
+								that.emit('transferAborted', { id: row.id });
+							});
+						}
 
 						// on error, update db with error and exit
 						if (err) {
@@ -405,7 +420,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 			extr.extract(filepath, null, function(err, extractResult) {
 				// on error, update db with error and exit
 				if (err) {
-					that.emit('extractFailed', { error: err, transfer: row });
+					that.emit('extractFailed', { error: err, transfer: transfer });
 					return transfer.updateAttributes({
 						failedAt: new Date(),
 						result: err
