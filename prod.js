@@ -16,7 +16,7 @@ var start = function() {
 	logger.log('info', '\x1B[32m[pind] Starting server\x1B[0m');
 
 	lastStart = +new Date();
-	var server = path.normalize( __dirname + '/server.js' );
+	var server = path.normalize( __dirname + '/app.js' );
 	child = spawn('node', [server], {
 		stdio: ['pipe', process.stdout, process.stderr]
 	});
