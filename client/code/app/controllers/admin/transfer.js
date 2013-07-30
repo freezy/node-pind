@@ -31,12 +31,24 @@ module.exports = function(module) {
 		// status handling
 		// ------------------------------------------------------------------------
 
-		$scope.$on('statusUpdated', function() {
-			var s = $scope.status.status.transfer;
-			$scope.startDisabled = s == 'idling' || s == 'transferring';
-			$scope.stopDisabled = s == 'idling' || s == 'stopped';
-			$scope.pauseDisabled = true;
-		});
+		var refreshStatus = function() {
+			if ($scope.status) {
+				var s = $scope.status.status.transfer;
+				$scope.startDisabled = s == 'idling' || s == 'transferring';
+				$scope.stopDisabled = s == 'idling' || s == 'stopped';
+				$scope.pauseDisabled = true;
+			}
+		};
+		var refreshStatusApply = function() {
+			$scope.$apply(function() {
+				refreshStatus();
+			});
+		};
+
+
+		$scope.$on('statusUpdated', refreshStatusApply);
+		$scope.$on('statusAvailable', refreshStatusApply);
+		refreshStatus();
 
 
 		// ------------------------------------------------------------------------

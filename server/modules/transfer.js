@@ -46,7 +46,7 @@ Transfer.prototype.initAnnounce = function() {
 	an.forward(this, 'transferSizeKnown', ns);
 	an.forward(this, 'transferClearedFailed', ns);
 	an.forward(this, 'transferOrderChanged', ns);
-	an.forward(this, 'statusChanged');
+	an.forward(this, 'statusUpdated');
 
 	an.transferProgress(this, 'transferProgress', ns);
 
@@ -108,7 +108,7 @@ Transfer.prototype.control = function(action, callback) {
 		case 'start': {
 			this.start(function(err, result) {
 				if (!err && result.ok) {
-					that.emit('statusChanged');
+					that.emit('statusUpdated');
 				}
 			});
 			break;
@@ -164,6 +164,7 @@ Transfer.prototype.delete = function(id, callback) {
 	schema.Transfer.find(id).success(function(row) {
 		if (row) {
 			row.destroy().success(function() {
+				that.emit('statusUpdated');
 				that.emit('transferDeleted', { id: id });
 				callback();
 			});
@@ -197,7 +198,7 @@ Transfer.prototype.queue = function(transfer, callback) {
 		that.emit('transferAdded', { transfer: row });
 
 		callback(null, 'Added "' + transfer.title + '" successfully to queue.');
-		that.emit('statusChanged');
+		that.emit('statusUpdated');
 		if (settings.pind.startDownloadsAutomatically) {
 			that.start(function() {
 				logger.log('info', '[transfer] Download queue finished.');
@@ -266,6 +267,7 @@ Transfer.prototype.next = function(callback) {
 				// update "started" clock..
 				logger.log('info', '[transfer] [%s] Starting download of %s', modulename, transfer.url);
 				transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
+					that.emit('statusUpdated');
 
 					// update file size as soon as we receive the content length.
 					moduleRef.once('contentLengthReceived', function(data) {
@@ -367,6 +369,7 @@ Transfer.prototype.next = function(callback) {
 				callback(null, { emptyQueue: true });
 			}
 		} else {
+			that.emit('statusUpdated');
 			callback(null, { emptyQueue: true });
 		}
 	});
