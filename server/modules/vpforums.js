@@ -426,6 +426,8 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			logger.log('info', '[vpf] Updating cache...');
 		}
 		var results = [];
+		var ids = [];
+		var firstUpdated = null;
 		async.eachSeries(items, function(item, next) {
 			var l;
 			if (!letter) {
@@ -450,9 +452,13 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 
 			var done = function(err, r) {
 				if (err) {
-					logger.log('info', '%j', obj, {});
+					logger.log('error', '%s: %j', err, obj, {});
 					return next(err);
 				}
+				if (!firstUpdated || firstUpdated.getTime() > new Date(r.lastUpdatedAt).getTime()) {
+					firstUpdated = new Date(r.lastUpdatedAt);
+				}
+				ids.push(r.id);
 				results.push(r.map());
 				next();
 			};
@@ -466,8 +472,27 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			if (err) {
 				return cb(err);
 			}
-			logger.log('info', '[vpf] Saved %d results to cache in %s seconds.', results.length, Math.round((new Date().getTime() - cacheStarted) / 100) / 10);
-			cb(null, results);
+			var cacheFinished = +new Date();
+
+			// check for zombies (i.e. entries that are in the db but have been removed at vpf)
+			schema.VpfFile.all({ where: ['id NOT IN (' + ids.join(',') + ') AND lastUpdatedAt > ?', firstUpdated ] }).success(function(rows) {
+				async.eachSeries(rows, function(row, next) {
+					var r = row.map();
+					logger.log('info', '[vpf] Looks like "%s" was removed at VPF, checking...', row.title);
+					request(r.url, function(err, response, body) {
+						if (body.match(/we could not find the file specified/i)) {
+							logger.log('info', '[vpf] Deleted "%s" from database, confirmed non-existant at VPF.', row.title);
+							row.destroy().success(next);
+						} else {
+							logger.log('info', '[vpf] Unconfirmed, check manually and update regex.', row.title);
+							next();
+						}
+					});
+				}, function() {
+					logger.log('info', '[vpf] Saved %d results to cache in %s seconds.', results.length, Math.round((cacheFinished - cacheStarted) / 100) / 10);
+					cb(null, results);
+				});
+			});
 		});
 
 	};
