@@ -8,23 +8,22 @@ module.exports = function(module) {
 		// actions
 		// ------------------------------------------------------------------------
 
-		$scope.start = function() {
+		$scope.start = function(event) {
+			event.target.blur();
 			rpc('transfer.control', { action: 'start' });
 		};
-		$scope.pause = function() {
+		$scope.pause = function(event) {
+			event.target.blur();
 			alert('not yet implemented.');
 		};
-		$scope.stop = function() {
+		$scope.stop = function(event) {
+			event.target.blur();
 			rpc('transfer.control', { action: 'stop' });
 		};
 
-		$scope.resetFailed = function() {
-			api('Transfer.ResetFailed', {}, function(err, result) {
-				if (err) {
-					return alert('Problem resetting failed: ' + err);
-				}
-				$scope.$broadcast('paramsUpdated');
-			});
+		$scope.resetFailed = function(event) {
+			event.target.blur();
+			rpc('transfer.resetFailed');
 		};
 
 		// ------------------------------------------------------------------------
@@ -114,6 +113,7 @@ module.exports = function(module) {
 		ss.event.on('transfer.transferSizeKnown', transferSizeKnown);
 		ss.event.on('transfer.transferOrderChanged', transferOrderChanged);
 		ss.event.on('transfer.transferProgress', transferProgress);
+		ss.event.on('transfer.dataUpdated', refreshTransfers);
 
 		// cleanup on destruction
 		$scope.$on('$destroy', function() {
@@ -125,6 +125,7 @@ module.exports = function(module) {
 			ss.event.off('transfer.transferSizeKnown', transferSizeKnown);
 			ss.event.off('transfer.transferOrderChanged', transferOrderChanged);
 			ss.event.off('transfer.transferProgress', transferProgress);
+			ss.event.off('transfer.dataUpdated', refreshTransfers);
 		});
 
 	}]);

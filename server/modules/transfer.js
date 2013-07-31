@@ -42,6 +42,7 @@ Transfer.prototype.initAnnounce = function() {
 	an.transferUpdate(this, 'extractFailed', ns);
 	an.transferUpdate(this, 'extractCompleted', ns);
 
+	an.forward(this, 'dataUpdated', ns);
 	an.forward(this, 'transferAdded', ns);
 	an.forward(this, 'transferDeleted', ns);
 	an.forward(this, 'transferAborted', ns);
@@ -156,6 +157,7 @@ Transfer.prototype.resetFailed = function(callback) {
 		if (settings.pind.startDownloadsAutomatically) {
 			that.start(function() {});
 		}
+		that.emit('dataUpdated');
 		that.emit('transferClearedFailed');
 		callback();
 	}).error(callback);

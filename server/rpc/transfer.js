@@ -47,18 +47,22 @@ exports.actions = function(req, res, ss) {
 		remove: function(params) {
 			transfer.delete(params.id, function(err) {
 				if (err) {
-					return res(error.api(err));
+					logger.log('error', '[rpc] [transfer] [delete] %s', err);
+					res(error.api(err));
+				} else {
+					res({ msg: 'Transfer with ID "' + params.id + '" removed.'});
 				}
-				res({ msg: 'Transfer with ID "' + params.id + '" removed.'});
 			});
 		},
 
 		resetFailed: function() {
 			transfer.resetFailed(function(err) {
 				if (err) {
-					return res(error.api(err));
+					logger.log('error', '[rpc] [transfer] [reset failed] %s', err);
+					res(error.api(err));
+				} else {
+					res({ success: true });
 				}
-				res({ success: true });
 			})
 		},
 

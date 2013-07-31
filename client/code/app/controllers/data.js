@@ -59,12 +59,35 @@ module.exports = function(module) {
 
 				// copy rows to result, with mapper function if available.
 				var setData = function($scope, result) {
-
+					var data;
 					if ($scope.mapperFn) {
-						$scope.data = _.map(result.rows, $scope.mapperFn);
+						data = _.map(result.rows, $scope.mapperFn);
 					} else {
-						$scope.data = result.rows;
+						data = result.rows;
 					}
+/*					$scope.$apply(function() {
+						$scope.data = [];
+					});
+
+					var addNext = function(n) {
+						if (data[n]) {
+							$scope.$apply(function() {
+								$scope.data.push(data[n]);
+							});
+							setTimeout(function() {
+								addNext(++n);
+							}, 100);
+						} else {
+							$scope.numpages = Math.ceil(result.count / $scope.limit);
+							$scope.$root.dataLoaded = true;
+							$scope.$broadcast('dataUpdated');
+							$scope.$apply();
+							$scope.$broadcast('dataViewUpdated');
+						}
+					};
+					addNext(0);*/
+					$scope.data = data;
+
 					$scope.numpages = Math.ceil(result.count / $scope.limit);
 					$scope.$root.dataLoaded = true;
 					$scope.$broadcast('dataUpdated');

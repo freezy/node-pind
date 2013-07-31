@@ -19,13 +19,13 @@ module.exports = function(module) {
 			.when('/tables', { templateUrl: 'home-tables.html' })
 			.when('/coin', { templateUrl: 'home-coin.html' })
 
-			.when('/admin', { templateUrl: 'admin-tables.html' })
-			.when('/admin/sources', { templateUrl: 'admin-sources.html' })
-			.when('/admin/downloads', { templateUrl: 'admin-transfers.html' })
-			.when('/admin/users', { templateUrl: 'admin-users.html' })
-			.when('/admin/global', { templateUrl: 'admin-global.html' })
+			.when('/admin', { templateUrl: 'admin-tables.html', adminOnly: true })
+			.when('/admin/sources', { templateUrl: 'admin-sources.html', adminOnly: true })
+			.when('/admin/downloads', { templateUrl: 'admin-transfers.html', adminOnly: true })
+			.when('/admin/users', { templateUrl: 'admin-users.html', adminOnly: true })
+			.when('/admin/global', { templateUrl: 'admin-global.html', adminOnly: true })
 
-			.when('/login', { templateUrl: 'auth-login.html' })
+			.when('/login', { templateUrl: 'auth-login.html', noAuth: true })
 
 			.otherwise({ redirectTo: '/' });
 

@@ -18,6 +18,9 @@ require('/filters')(filters);
 // this is the angular application
 var app = angular.module('app', ['app.filters', 'app.directives', 'ssAngular']);
 
+// load services
+require('/services/user')(app);
+
 // load providers
 require('/providers/auth')(app);
 

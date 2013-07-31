@@ -4,7 +4,7 @@ module.exports = function(module) {
 	/**
 	 * The global controller that sits on the <body> element.
 	 */
-	module.controller('AppCtrl', ['$scope', 'rpc', function($scope, rpc) {
+	module.controller('AppCtrl', ['$scope', 'rpc', 'userService', function($scope, rpc, userService) {
 
 		// ------------------------------------------------------------------------
 		// status
@@ -29,6 +29,21 @@ module.exports = function(module) {
 		ss.event.on('statusUpdated', statusUpdated);
 		$scope.$on('$destroy', function() {
 			ss.event.off('statusUpdated', statusUpdated);
+		});
+
+
+		// ------------------------------------------------------------------------
+		// access "control"
+		// ------------------------------------------------------------------------
+
+		$scope.$root.$on('$routeChangeStart', function(next) {
+			if (!next.noAuth && !userService.isLogged) {
+				console.log('No access, re-routing to /login.');
+				return;
+			}
+			if (next.adminOnly && !user.isAdmin) {
+				console.log('No admin access, re-routing to /.');
+			}
 		});
 
 

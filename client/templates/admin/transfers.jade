@@ -89,24 +89,24 @@ block inner-footer
 		.span4.action
 			h3 Control Panel
 			p Manually start, resume, pause or stop the queue.
-			button.btn.submit.small.more(ng-disabled='startDisabled', ng-click='start()')
+			button.btn.submit.small.more(ng-disabled='startDisabled', ng-click='start($event)')
 				i.icon.play
-			button.btn.submit.small.more(ng-disabled='pauseDisabled', ng-click='pause()')
+			button.btn.submit.small.more(ng-disabled='pauseDisabled', ng-click='pause($event)')
 				i.icon.pause
-			button.btn.submit.small.more(ng-disabled='stopDisabled', ng-click='stop()')
+			button.btn.submit.small.more(ng-disabled='stopDisabled', ng-click='stop($event)')
 				i.icon.stop
 			span.transfer-status.ng-cloak
 				strong.status {{status.status.transfer}}
 		.span4.action
 			h3 Clear downloaded
 			p Remove all completed transfers from the database.
-			button.btn.submit.small
+			button.btn.submit.small(disabled="disabled", ng-click='cleanDownloaded($event)')
 				i.icon.trash
 				span Clear
 		.span4.action
 			h3 Reset failed
 			p Clear and re-add all failed transfers to the queue.
-			button.btn.submit.small(ng-click='resetFailed()')
+			button.btn.submit.small(ng-click='resetFailed($event)')
 				i.icon.refresh
 				span Reset
 
