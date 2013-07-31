@@ -492,7 +492,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			var cacheFinished = +new Date();
 
 			// check for zombies (i.e. entries that are in the db but have been removed at vpf)
-			schema.VpfFile.all({ where: ['id NOT IN (' + ids.join(',') + ') AND lastUpdatedAt > ?', firstUpdated ] }).success(function(rows) {
+			schema.VpfFile.all({ where: ['id NOT IN (' + ids.join(',') + ') AND category = ' + cat + ' AND lastUpdatedAt > ?', firstUpdated ] }).success(function(rows) {
 				async.eachSeries(rows, function(row, next) {
 					var r = row.map();
 					logger.log('info', '[vpf] Looks like "%s" was removed at VPF, checking at %s', row.title, r.url);
