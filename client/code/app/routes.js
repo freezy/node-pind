@@ -26,6 +26,7 @@ module.exports = function(module) {
 			.when('/admin/global', { templateUrl: 'admin-global.html', adminOnly: true })
 
 			.when('/login', { templateUrl: 'auth-login.html', noAuth: true })
+			.when('/signup', { templateUrl: 'auth-signup.html', noAuth: true })
 
 			.otherwise({ redirectTo: '/' });
 

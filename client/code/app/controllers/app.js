@@ -36,7 +36,7 @@ module.exports = function(module) {
 		// access "control"
 		// ------------------------------------------------------------------------
 
-		$scope.$root.$on('$routeChangeStart', function(next) {
+		$scope.$root.$on('$routeChangeStart', function(event, prev, next) {
 			if (!next.noAuth && !userService.isLogged) {
 				console.log('No access, trying autologin..');
 
