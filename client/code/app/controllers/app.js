@@ -4,7 +4,7 @@ module.exports = function(module) {
 	/**
 	 * The global controller that sits on the <body> element.
 	 */
-	module.controller('AppCtrl', ['$scope', 'rpc', 'userService', function($scope, rpc, userService) {
+	module.controller('AppCtrl', ['$scope', '$location', 'rpc', 'userService', 'pindAuth', function($scope, $location, rpc, userService, pindAuth) {
 
 		// ------------------------------------------------------------------------
 		// status
@@ -38,10 +38,20 @@ module.exports = function(module) {
 
 		$scope.$root.$on('$routeChangeStart', function(next) {
 			if (!next.noAuth && !userService.isLogged) {
-				console.log('No access, re-routing to /login.');
-				return;
-			}
-			if (next.adminOnly && !user.isAdmin) {
+				console.log('No access, trying autologin..');
+
+				pindAuth.tryAutologin().then(function(reason) {
+					console.log('autologin succeeded: ' + reason);
+
+				}, function(reason) {
+
+					console.log('autologin failed: ' + reason);
+					console.log('redirecting to /login');
+					userService.redirectPath = $location.path();
+					$location.path('/login');
+				});
+
+			} else if (next.adminOnly && !user.isAdmin) {
 				console.log('No admin access, re-routing to /.');
 			}
 		});
@@ -99,7 +109,7 @@ module.exports = function(module) {
 
 
 		// ------------------------------------------------------------------------
-		// helper methods
+		// helper methods for other controllers
 		// ------------------------------------------------------------------------
 
 

@@ -3,10 +3,9 @@ module.exports = function(module) {
 
 	module.service('userService', function() {
 		return {
+			redirectPath: '/',
 			isLogged: false,
 			user: null
 		};
 	});
 };
-
-
