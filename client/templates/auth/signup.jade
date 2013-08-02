@@ -1,27 +1,23 @@
-
-// preset form values if we receive a userdata object //
-.boxglow
-	#account-form-container.singlebox.register
-		form
+div(ng-controller="AuthCtrl")
+	.boxglow
+		form.singlebox.register
 			.modal-header
 				.icon.pen
 				h1 Signup
-				p#sub1.subheading Get playing. With balls.
-			fieldset
-				.modal-body
-					#user-cg.control-group
-						.controls
-							input#user-tf.input.input-large.disabled(type='text', name='user', placeholder='Username', value='{{ user.user }}')
-							.icon.inputhint.user
-							span.help-block Your three-letter acronym. Case doesn't matter.
-					#pass-cg.control-group
-						.controls
-							input#pass-tf.input.input-large(type='password', name='pass', , placeholder='Password', value='')
-							.icon.inputhint.locked
-							span.help-block At least six chars.
-				.modal-footer.lastfooter
-					button(type='submit')#account-form-btn2.btn.right Go!
-					a(href='/')#account-form-btn1.btn.link-big Cancel
+				p.subheading Get playing. With balls.
+			.modal-body
+				input.input.input-large(name="user", type="text", placeholder="Username", ng-model="user")
+				.icon.inputhint.user
+				span.help-block Your three-letter acronym. Case doesn't matter.
+				input.input.input-large(name="pass", type="password", placeholder="Password", ng-model="password")
+				.icon.inputhint.locked
+				span.help-block At least six chars.
+			.modal-footer
+				button.right(name="submit", type="submit", ng-click="signup()") Go
+				a#create-account.link-big(href="/login") Cancel
 
 include modals/form-errors
 include modals/alert
+
+
+

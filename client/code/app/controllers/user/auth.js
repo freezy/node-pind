@@ -7,7 +7,7 @@ module.exports = function(module) {
 	module.controller('AuthCtrl', ['$scope', '$location', '$log', 'pindAuth', 'userService', function($scope, $location, $log, pindAuth, userService) {
 		$scope.rememberme = true;
 
-		$scope.processAuth = function() {
+		$scope.login = function() {
 			$scope.showError = false;
 			var promise = pindAuth.login($scope.user, $scope.password, $scope.rememberme);
 			promise.then(function(reason) {
@@ -24,6 +24,11 @@ module.exports = function(module) {
 				$scope.errorMsg = "Invalid login. The username and pass for the example app is user/pass";
 			});
 		};
+
+		$scope.register = function() {
+
+		};
+
 	}]);
 
 };
