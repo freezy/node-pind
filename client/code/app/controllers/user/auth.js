@@ -30,7 +30,6 @@ module.exports = function(module) {
 			$('input[name="user"]').focus();
 		});
 
-		var anim = 'pulse';
 		$scope.signup = function() {
 			ss.rpc('auth.register', $scope.user, $scope.password, function(result) {
 				console.log('auth result: %j', result);
@@ -38,19 +37,7 @@ module.exports = function(module) {
 					$location.path('/login');
 				} else {
 					if (result.errors) {
-						$('.control-group').removeClass('error');
-						var n = 0;
-						_.each(result.errors, function(value, key) {
-							if (!n++) {
-								$('.control-group.' + key + ' input').focus().select();
-							}
-							$('.control-group.' + key).addClass('error');
-							$('.control-group.' + key + ' > .help-block').html(value);
-							$('.control-group.' + key + ' > input').addClass('animated ' + anim);
-							setTimeout(function() {
-								$('.control-group.' + key + ' > input').removeClass('animated ' + anim);
-							}, 1000);
-						});
+						$scope.formErrors(result.errors);
 					}
 				}
 				if (result.alert) {

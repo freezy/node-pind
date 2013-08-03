@@ -193,6 +193,28 @@ module.exports = function(module) {
 			});
 		};
 
+
+		/**
+		 * Adds error class and message to a form.
+		 * @param errors
+		 */
+		$scope.formErrors = function(errors) {
+			var anim = 'pulse';
+			$('.control-group').removeClass('error');
+			var n = 0;
+			_.each(errors, function(value, key) {
+				if (!n++) {
+					$('.control-group.' + key + ' input').focus().select();
+				}
+				$('.control-group.' + key).addClass('error');
+				$('.control-group.' + key + ' > .help-block').html(value);
+				$('.control-group.' + key + ' > input').addClass('animated ' + anim);
+				setTimeout(function() {
+					$('.control-group.' + key + ' > input').removeClass('animated ' + anim);
+				}, 1000);
+			});
+		}
+
 	}]);
 
 	module.controller('NoopCtrl', ['$scope', function($scope) { }]);
