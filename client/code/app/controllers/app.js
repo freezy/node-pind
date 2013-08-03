@@ -37,19 +37,19 @@ module.exports = function(module) {
 		// ------------------------------------------------------------------------
 
 		$scope.$root.$on("$routeChangeStart", function(event, next, current) {
-			//next = next || event;
 			if (!next.noAuth && !userService.isLogged) {
 				console.log('No access, trying autologin..');
 
-				pindAuth.tryAutologin(function(err) {
-					if (err) {
-						console.log('Autologin failed.');
-						console.log('Redirecting to /login');
-						userService.redirectPath = $location.path();
-						return $location.path('/login');
-					}
-					console.log('Autologin succeeded.');
-					$scope.user = userService.user;
+				$scope.connectionReady(function() {
+					pindAuth.tryAutologin(function(err) {
+						if (err) {
+							console.log('Autologin failed, redirecting to /login, saving ' + $location.path());
+							userService.redirectPath = $location.path();
+							return $location.path('/login');
+						}
+						console.log('Autologin succeeded.');
+						$scope.user = userService.user;
+					});
 				});
 
 			} else if (next.adminOnly && !user.isAdmin) {
