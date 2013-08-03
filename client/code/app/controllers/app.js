@@ -62,6 +62,19 @@ module.exports = function(module) {
 		// global events
 		// ------------------------------------------------------------------------
 
+		$scope.$root.$on('alert', function(event, alert) {
+			$scope.$apply(function() {
+				$scope.alert = alert;
+				$scope.alert.btn = alert.btn || 'OK';
+			});
+			$('.modal-alert.alert-generic').modal('show');
+		});
+
+		$('.modal-alert').on('hidden', function() {
+			$scope.$broadcast('alertClosed');
+		});
+
+
 		$scope.connectionReady = function(callback) {
 			if (connectionReady) {
 				callback();

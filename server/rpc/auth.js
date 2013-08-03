@@ -70,21 +70,27 @@ exports.actions = function(req, res, ss) {
 			if (username && password) {
 				logger.log('info', '[rpc] [auth] Registering user...');
 				var now = new Date().getTime();
+
+				// count entries to determine if admin or not
 				schema.User.count().success(function(num) {
-					schema.User.find({ where: { user: username }}).success(function(user) {
-						if (!user) {
-							user = schema.User.build({
-								user: username,
-								pass: password,
-								admin: num == 0
-							});
 
-							user.validate().success(function(errors) {
+					var user = schema.User.build({
+						user: username,
+						pass: password,
+						admin: num == 0
+					});
 
-								if (_.keys(errors).length > 0) {
-									logger.log('warning', '[rpc] [auth] There were validation errors: %j', errors, {});
-									return res({ errors: errors, success: false });
-								}
+					// validate before save(), otherwise hash will be validated instead of password.
+					user.validate().success(function(errors) {
+
+						if (errors && _.keys(errors).length > 0) {
+							logger.log('warn', '[rpc] [auth] There were validation errors: %j', errors, {});
+							return res({ errors: errors, success: false });
+						}
+
+						// also check if username if unique.
+						schema.User.find({ where: { user: username }}).success(function(dupeUser) {
+							if (!dupeUser) {
 
 								logger.log('info', '[rpc] [auth] Creating user "%s"', user.user);
 								user.beforeCreate().save().success(function(user) {
@@ -104,15 +110,17 @@ exports.actions = function(req, res, ss) {
 									logger.log('error', '[rpc] [auth] Validations: %js', user.errors, {});
 									res({ alert : alert, success: false });
 								});
-							});
-						} else {
-							res({ errors: { user: 'This username is already taken.' }, success: false });
-						}
+
+							} else {
+								res({ errors: { user: 'This username is already taken.' }, success: false });
+							}
+						});
+
 					});
 				});
 
 			} else {
-				alert = { title: 'Mind reading problem.', message: 'You must provide both username and password.', btn: 'OK, I\'ll try.' };
+				alert = { title: 'Mind reading problem.', message: 'You must provide both username and password.', btn: 'Right.' };
 				res({ alert: alert, success: false });
 			}
 		},
