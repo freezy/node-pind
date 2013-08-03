@@ -36,8 +36,8 @@ module.exports = function(module) {
 		// access "control"
 		// ------------------------------------------------------------------------
 
-		$scope.$root.$on('$routeChangeStart', function(event, prev, next) {
-			next = next || event;
+		$scope.$root.$on("$routeChangeStart", function(event, next, current) {
+			//next = next || event;
 			if (!next.noAuth && !userService.isLogged) {
 				console.log('No access, trying autologin..');
 
@@ -63,10 +63,17 @@ module.exports = function(module) {
 		// ------------------------------------------------------------------------
 
 		$scope.$root.$on('alert', function(event, alert) {
-			$scope.$apply(function() {
+			var apply = function() {
 				$scope.alert = alert;
 				$scope.alert.btn = alert.btn || 'OK';
-			});
+			};
+
+			if (!$scope.$$phase) {
+				$scope.$apply(apply);
+			} else {
+				apply();
+			}
+
 			$('.modal-alert.alert-generic').modal('show');
 		});
 

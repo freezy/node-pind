@@ -11,13 +11,12 @@ exports.actions = function(req, res, ss) {
 
 	return {
 		authenticate: function(username, pass, rememberMe) {
-			console.log('Checking login credentials. %s %s %s %s', username, pass, rememberMe);
 			if (username && pass) {
 
 				// authenticate user
 				schema.User.authenticate(username, pass, function(err, user) {
 					if (err) {
-						logger.log('error', 'Error authenticating: ' + err);
+						logger.log('error', '[rpc] [auth] Error authenticating: ' + err);
 						res({ success: false });
 
 					// credentials check out
@@ -31,20 +30,20 @@ exports.actions = function(req, res, ss) {
 						req.session.setUserId(user.user);
 						req.session.user = user;
 						req.session.save(function() {
-							logger.log('info', 'Logged user saved to session: ', req.session, {});
+							logger.log('info', '[rpc] [auth] Logged user saved to session: ', req.session, {});
 							res(result);
 						});
 
 					// access denied
 					} else {
-						ss.log("Invalid credentials for " + username + ".");
+						logger.log('warn', '[rpc] [auth] Invalid credentials for "%s".', username);
 						res({ success: false });
 					}
 				});
 
 			} else {
 				res({ success: false });
-				ss.log('No credentials, ignoring.');
+				logger.log('warn', '[rpc] [auth] No credentials, ignoring login.');
 			}
 		},
 

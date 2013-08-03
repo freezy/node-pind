@@ -53,7 +53,7 @@ module.exports = function(module) {
 						ss.rpc(authServiceModule + ".authenticate", user, password, rememberMe, function(response) {
 							if (response.success) {
 								userService.isLogged = true;
-								deferred.resolve("Logged in");
+								deferred.resolve("Login successful.");
 								if (response.authToken) {
 									$.cookie(authTokenCookie, response.authToken, { expires: 365 });
 									$.cookie(usernameCookie, user, { expires: 365 });
@@ -61,14 +61,13 @@ module.exports = function(module) {
 
 							} else {
 								userService.isLogged = false;
-								deferred.reject("Invalid");
+								deferred.reject("Login failed.");
 							}
 						});
 					} else {
 						userService.isLogged = false;
-						deferred.reject("Need user and password!");
+						deferred.reject("User and pass not given, not even logging in.");
 					}
-
 					return deferred.promise;
 				},
 
