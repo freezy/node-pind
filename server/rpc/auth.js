@@ -79,27 +79,31 @@ exports.actions = function(req, res, ss) {
 								admin: num == 0
 							});
 
-							logger.log('info', '[rpc] [auth] Creating user "%s"', user.user);
-							user.beforeCreate().save().success(function(user) {
-								logger.log('info', '[rpc] [auth] All good, user created.');
-								alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
-								res({ alert: alert, success: true });
-								hs.linkNewUser(user, function(err) {
-									if (err) {
-										return logger.log('error', '[rpc] [auth] Error linking user to high scores: ' + err);
-									}
-									logger.log('info', '[rpc] [auth] User successfully linked to high scores.');
-								});
+							user.validate().success(function(errors) {
 
-							}).error(function(err) {
-								if (_.isObject(err)) {
-									logger.log('warning', '[rpc] [auth] There were validation errors: %j', err, {});
-									return res({ errors: err, success: false });
+								if (_.keys(errors).length > 0) {
+									logger.log('warning', '[rpc] [auth] There were validation errors: %j', errors, {});
+									return res({ errors: errors, success: false });
 								}
-								alert = { title: 'Ooops. Looks like a user creation problem.', message: err };
-								logger.log('error', '[rpc] [auth] Error creating user: %s', err);
-								logger.log('error', '[rpc] [auth] Validations: %js', user.errors, {});
-								res({ alert : alert, success: false });
+
+								logger.log('info', '[rpc] [auth] Creating user "%s"', user.user);
+								user.beforeCreate().save().success(function(user) {
+									logger.log('info', '[rpc] [auth] All good, user created.');
+									alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
+									res({ alert: alert, success: true });
+									hs.linkNewUser(user, function(err) {
+										if (err) {
+											return logger.log('error', '[rpc] [auth] Error linking user to high scores: ' + err);
+										}
+										logger.log('info', '[rpc] [auth] User successfully linked to high scores.');
+									});
+
+								}).error(function(err) {
+									alert = { title: 'Ooops. Looks like a user creation problem.', message: err };
+									logger.log('error', '[rpc] [auth] Error creating user: %s', err);
+									logger.log('error', '[rpc] [auth] Validations: %js', user.errors, {});
+									res({ alert : alert, success: false });
+								});
 							});
 						} else {
 							res({ errors: { user: 'This username is already taken.' }, success: false });
