@@ -9,6 +9,8 @@ var hs = require('../modules/hiscore');
 exports.actions = function(req, res, ss) {
 	req.use('session');
 
+	var userAttributes = [ 'user', 'admin', 'credits', 'settings' ];
+
 	return {
 		authenticate: function(username, pass, rememberMe) {
 			if (username && pass) {
@@ -21,11 +23,11 @@ exports.actions = function(req, res, ss) {
 
 					// credentials check out
 					} else if (user) {
-						var result = { success: true };
+						var result = { success: true, user: _.pick(user, userAttributes) };
 
 						// set "remember me" cookie.
 						if (rememberMe) {
-							result.token = user.authtoken;
+							result.authToken = user.authtoken;
 						}
 						req.session.setUserId(user.user);
 						req.session.user = user;
@@ -53,12 +55,12 @@ exports.actions = function(req, res, ss) {
 					req.session.setUserId(user.user);
 					req.session.user = user;
 					req.session.save(function(){
-						logger.log('info', 'Autologged user saved to session: ', req.session, {});
-						res({ success: true });
+						logger.log('info', '[rpc] [auth] Autologged user %s: ', user.user);
+						res({ success: true, user: _.pick(user, userAttributes) });
 					});
 
 				} else {
-					ss.log("Invalid auth token for " + username + ".");
+					logger.log('warn', '[rpc] [auth] Invalid auth token for "%s"', username);
 					res({ success: false });
 				}
 			});

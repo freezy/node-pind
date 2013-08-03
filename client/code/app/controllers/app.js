@@ -41,15 +41,15 @@ module.exports = function(module) {
 			if (!next.noAuth && !userService.isLogged) {
 				console.log('No access, trying autologin..');
 
-				pindAuth.tryAutologin().then(function(reason) {
-					console.log('autologin succeeded: ' + reason);
-
-				}, function(reason) {
-
-					console.log('autologin failed: ' + reason);
-					console.log('redirecting to /login');
-					userService.redirectPath = $location.path();
-					$location.path('/login');
+				pindAuth.tryAutologin(function(err) {
+					if (err) {
+						console.log('Autologin failed.');
+						console.log('Redirecting to /login');
+						userService.redirectPath = $location.path();
+						return $location.path('/login');
+					}
+					console.log('Autologin succeeded.');
+					$scope.user = userService.user;
 				});
 
 			} else if (next.adminOnly && !user.isAdmin) {

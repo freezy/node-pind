@@ -1,9 +1,6 @@
 module.exports = function(module) {
 	'use strict';
 
-	/**
-	 *
-	 */
 	module.controller('AuthCtrl', ['$scope', '$location', '$log', 'pindAuth', 'userService', function($scope, $location, $log, pindAuth, userService) {
 		$scope.rememberme = true;
 
@@ -15,20 +12,13 @@ module.exports = function(module) {
 
 
 		$scope.login = function() {
-			pindAuth.login($scope.user, $scope.password, $scope.rememberme)
-				.then(function() {
+			pindAuth.login($scope.user, $scope.password, $scope.rememberme, function(err) {
 
-					var newPath = '/';
-					if (userService.redirectPath && !userService.redirectPath.match(/login/i) && !userService.redirectPath.match(/signup/i)) {
-						newPath = userService.redirectPath;
-					}
-					$location.path(newPath);
-
-				}, function() {
+				if (err) {
 					if (!$scope.user) {
 						$scope.$root.$broadcast('alert', {
 							title: 'Well..',
-							message: 'How to put this... In order to login, you need to put SOMETHING into those fields.',
+							message: 'How to put this... In order to login, you need to put <b>a username</b> into the field.',
 							btn: 'If you say so'
 						});
 					} else {
@@ -38,7 +28,16 @@ module.exports = function(module) {
 							btn: 'Retry'
 						});
 					}
-				});
+					return;
+				}
+
+				var newPath = '/';
+				if (userService.redirectPath && !userService.redirectPath.match(/login/i) && !userService.redirectPath.match(/signup/i)) {
+					newPath = userService.redirectPath;
+				}
+				$location.path(newPath);
+				$scope.user = userService.user;
+			});
 		};
 
 

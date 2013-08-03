@@ -44,69 +44,61 @@ module.exports = function(module) {
 				});
 			}
 */
+			var checkSuccess = function(response, callback) {
+				if (response.success) {
+					userService.isLogged = true;
+					userService.user = response.user;
+					if (response.authToken) {
+						$.cookie(authTokenCookie, response.authToken, { expires: 365 });
+						$.cookie(usernameCookie, response.user.user, { expires: 365 });
+					} else {
+						$.removeCookie(authTokenCookie);
+						$.removeCookie(usernameCookie);
+					}
+					callback();
+
+				} else {
+					userService.isLogged = false;
+					callback('Login failed.');
+				}
+			};
 
 			return {
-				login: function(user, password, rememberMe) {
-					var deferred = $q.defer();
+				login: function(user, password, rememberMe, callback) {
 
 					if (user && password) {
 						ss.rpc(authServiceModule + ".authenticate", user, password, rememberMe, function(response) {
-							if (response.success) {
-								userService.isLogged = true;
-								deferred.resolve("Login successful.");
-								if (response.authToken) {
-									$.cookie(authTokenCookie, response.authToken, { expires: 365 });
-									$.cookie(usernameCookie, user, { expires: 365 });
-								}
-
-							} else {
-								userService.isLogged = false;
-								deferred.reject("Login failed.");
-							}
+							checkSuccess(response, callback);
 						});
 					} else {
 						userService.isLogged = false;
-						deferred.reject("User and pass not given, not even logging in.");
+						callback('Need credentials.');
 					}
-					return deferred.promise;
 				},
 
-				tryAutologin: function() {
-					var deferred = $q.defer();
+				tryAutologin: function(callback) {
 					if ($.cookie(usernameCookie) && $.cookie(authTokenCookie)) {
+						console.log(authServiceModule + ".autologin");
 						ss.rpc(authServiceModule + ".autologin", $.cookie(usernameCookie), $.cookie(authTokenCookie), function(response) {
-							if (response.success) {
-								userService.isLogged = true;
-								deferred.resolve("Logged in");
-								if (response.authToken) {
-									$.cookie(authTokenCookie, response.authToken, { expires: 365 });
-									$.cookie(usernameCookie, user, { expires: 365 });
-								}
-
-							} else {
-								userService.isLogged = false;
-								deferred.reject("Invalid");
-							}
+							console.log('got response: %s', response);
+							checkSuccess(response, callback);
 						});
 					} else {
 						userService.isLogged = false;
-						deferred.reject("Need user and authToken.");
+						callback('Need username and cookie.');
 					}
-					return deferred.promise;
 				},
 
-				logout: function() {
-					var deferred = $q.defer();
+				logout: function(callback) {
 					ss.rpc(authServiceModule + ".logout", function() {
-						$rootScope.$apply(function(scope) {
+						$rootScope.$apply(function() {
 							userService.isLogged = false;
 							userService.user = null;
 							$.removeCookie(authTokenCookie);
 							$.removeCookie(usernameCookie);
-							deferred.resolve("Success");
 						});
+						callback();
 					});
-					return deferred.promise;
 				}
 			};
 		}];
