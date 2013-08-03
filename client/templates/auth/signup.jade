@@ -6,18 +6,20 @@ div(ng-controller="AuthCtrl")
 				h1 Signup
 				p.subheading Get playing. With balls.
 			.modal-body
-				input.input.input-large(name="user", type="text", placeholder="Username", ng-model="user")
-				.icon.inputhint.user
-				span.help-block Your three-letter acronym. Case doesn't matter.
-				input.input.input-large(name="pass", type="password", placeholder="Password", ng-model="password")
-				.icon.inputhint.locked
-				span.help-block At least six chars.
+				.control-group.user
+					input.input.input-large(name="user", type="text", placeholder="Username", ng-model="user")
+					.icon.inputhint.user
+					span.help-block Your three-letter acronym. Case doesn't matter.
+				.control-group.pass
+					input.input.input-large(name="pass", type="password", placeholder="Password", ng-model="password")
+					.icon.inputhint.locked
+					span.help-block At least six chars.
 			.modal-footer
-				button.right(name="submit", type="submit", ng-click="signup()") Go
+				button.right(name="submit", type="submit", ng-click="signup()") Go!
 				a#create-account.link-big(href="/login") Cancel
 
-include modals/form-errors
-include modals/alert
+	include modals/form-errors
+	include modals/alert
 
 
 

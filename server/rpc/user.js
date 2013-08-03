@@ -46,12 +46,12 @@ exports.actions = function(req, res, ss) {
 					res({ rows : rows, count: num });
 
 				}).error(function(err) {
-						throw Error(err);
-					});
-
-			}).error(function(err) {
 					throw Error(err);
 				});
+
+			}).error(function(err) {
+				throw Error(err);
+			});
 		},
 
 		update: function(params) {

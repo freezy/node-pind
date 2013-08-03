@@ -25,8 +25,27 @@ module.exports = function(module) {
 			});
 		};
 
-		$scope.register = function() {
-
+		$scope.signup = function() {
+			ss.rpc('auth.register', $scope.user, $scope.password, function(result) {
+				console.log('auth result: %j', result);
+				if (result.success) {
+					alert('all ok');
+				} else {
+					if (result.errors) {
+						_.each(result.errors, function(value, key) {
+							$('.control-group.' + key).addClass('error');
+							$('.control-group.' + key + ' .help-block').html(value);
+						});
+					}
+				}
+				if (result.alert) {
+					$scope.$apply(function() {
+						$scope.alert = result.alert;
+						$scope.alert.btn = result.alert.btn || 'OK';
+					});
+					$('.modal-alert').modal('show');
+				}
+			});
 		};
 
 	}]);
