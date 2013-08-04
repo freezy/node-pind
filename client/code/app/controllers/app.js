@@ -61,21 +61,22 @@ module.exports = function(module) {
 		});
 
 
+		$scope.logout = function() {
+			pindAuth.logout(function() {
+				console.log('Logged out.');
+				$location.path('/login');
+			});
+		};
+
+
 		// ------------------------------------------------------------------------
 		// global events
 		// ------------------------------------------------------------------------
 
 		$scope.$root.$on('alert', function(event, alert) {
-			var apply = function() {
-				$scope.alert = alert;
-				$scope.alert.btn = alert.btn || 'OK';
-			};
-
-			if (!$scope.$$phase) {
-				$scope.$apply(apply);
-			} else {
-				apply();
-			}
+			$scope.alert = alert;
+			$scope.alert.btn = alert.btn || 'OK';
+			$scope.$$phase || $scope.$apply();
 
 			$('.modal-alert.alert-generic').modal('show');
 		});
@@ -120,11 +121,6 @@ module.exports = function(module) {
 					count--;
 				}, 1000);
 			});
-		};
-
-		$scope.logout = function() {
-			rpc('auth.logout');
-			location.reload();
 		};
 
 		$scope.restartDialog = function() {
