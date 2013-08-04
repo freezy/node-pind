@@ -11,7 +11,6 @@ module.exports = function(module) {
 		var loginPath = '/login';
 		var authServiceModule = 'app';
 		var authTokenCookie = 'authToken';
-		var usernameCookie = 'authUser';
 
 		this.loginPath = function(path) {
 			loginPath = path;
@@ -49,11 +48,11 @@ module.exports = function(module) {
 					userService.isLogged = true;
 					userService.user = response.user;
 					if (response.authToken) {
-						$.cookie(authTokenCookie, response.authToken, { expires: 365 });
-						$.cookie(usernameCookie, response.user.user, { expires: 365 });
+						$.cookie(authTokenCookie, { token: response.authToken, username: response.user.user }, { expires: 365 });
+						console.log('Auth token and username cookie set.');
 					} else {
 						$.removeCookie(authTokenCookie);
-						$.removeCookie(usernameCookie);
+						console.log('Auth token and username cookie cleared.');
 					}
 					callback();
 
@@ -77,10 +76,8 @@ module.exports = function(module) {
 				},
 
 				tryAutologin: function(callback) {
-					if ($.cookie(usernameCookie) && $.cookie(authTokenCookie)) {
-						console.log(authServiceModule + ".autologin");
-						ss.rpc(authServiceModule + ".autologin", $.cookie(usernameCookie), $.cookie(authTokenCookie), function(response) {
-							console.log('got response: %s', response);
+					if ($.cookie(authTokenCookie)) {
+						ss.rpc(authServiceModule + ".autologin", $.cookie(authTokenCookie).username, $.cookie(authTokenCookie).token, function(response) {
 							checkSuccess(response, callback);
 						});
 					} else {
@@ -95,7 +92,7 @@ module.exports = function(module) {
 							userService.isLogged = false;
 							userService.user = null;
 							$.removeCookie(authTokenCookie);
-							$.removeCookie(usernameCookie);
+							console.log('Auth token and username cookie cleared.');
 						});
 						callback();
 					});

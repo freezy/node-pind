@@ -55,9 +55,9 @@ module.exports = function(module) {
 					});
 				});
 
-			} else if (next.adminOnly && !user.isAdmin) {
+			} /*else if (next.adminOnly && !user.isAdmin) {
 				console.log('No admin access, re-routing to /.');
-			}
+			}*/
 		});
 
 

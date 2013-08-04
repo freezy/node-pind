@@ -56,7 +56,11 @@ exports.actions = function(req, res, ss) {
 					req.session.user = user;
 					req.session.save(function(){
 						logger.log('info', '[rpc] [auth] Autologged user %s: ', user.user);
-						res({ success: true, user: _.pick(user, userAttributes) });
+						res({
+							success: true,
+							user: _.pick(user, userAttributes),
+							authToken: user.authtoken
+						});
 					});
 
 				} else {
