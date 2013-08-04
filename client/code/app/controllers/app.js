@@ -43,12 +43,15 @@ module.exports = function(module) {
 				$scope.connectionReady(function() {
 					pindAuth.tryAutologin(function(err) {
 						if (err) {
-							console.log('Autologin failed, redirecting to /login, saving ' + $location.path());
+							console.log('Autologin failed: ' + err);
+							console.log('Redirecting to /login, saving ' + $location.path());
 							userService.redirectPath = $location.path();
-							return $location.path('/login');
+							$location.path('/login');
+							$scope.$apply();
+						} else {
+							console.log('Autologin succeeded.');
+							$scope.user = userService.user;
 						}
-						console.log('Autologin succeeded.');
-						$scope.user = userService.user;
 					});
 				});
 

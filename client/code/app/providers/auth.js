@@ -85,7 +85,7 @@ module.exports = function(module) {
 						});
 					} else {
 						userService.isLogged = false;
-						callback('Need username and cookie.');
+						callback('Need username and token.');
 					}
 				},
 

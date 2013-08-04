@@ -74,7 +74,7 @@ module.exports = function(sequelize, DataTypes) {
 		classMethods: {
 
 			authenticate: function(username, password, callback) {
-
+				console.log('Checking unicity for user %j', username);
 				User.find({ where: { user: username } }).success(function(row) {
 					if (!row) {
 						console.log('User "' + username  + '" not found.');

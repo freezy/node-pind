@@ -12,10 +12,10 @@ module.exports = function(module) {
 
 
 		$scope.login = function() {
-			pindAuth.login($scope.user, $scope.password, $scope.rememberme, function(err) {
+			pindAuth.login($scope.username, $scope.password, $scope.rememberme, function(err) {
 
 				if (err) {
-					if (!$scope.user) {
+					if (!$scope.username) {
 						$scope.$root.$broadcast('alert', {
 							title: 'Well..',
 							message: 'How to put this... In order to login, you need to put <b>a username</b> into the field.',
@@ -37,12 +37,13 @@ module.exports = function(module) {
 				}
 				$location.path(newPath);
 				$scope.user = userService.user;
+				$scope.$apply();
 			});
 		};
 
 
 		$scope.signup = function() {
-			ss.rpc('auth.register', $scope.user, $scope.password, function(result) {
+			ss.rpc('auth.register', $scope.username, $scope.password, function(result) {
 				if (result.success) {
 					$location.path('/login');
 				} else if (result.errors) {
