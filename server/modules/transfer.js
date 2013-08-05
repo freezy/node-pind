@@ -37,6 +37,8 @@ Transfer.prototype.initAnnounce = function() {
 
 	var ns = 'transfer';
 
+	an.notice(this, 'transferAborted', 'All transfers aborted.', 5000);
+
 	an.transferUpdate(this, 'transferFailed', ns);
 	an.transferUpdate(this, 'transferCompleted', ns);
 	an.transferUpdate(this, 'extractFailed', ns);
@@ -270,6 +272,10 @@ Transfer.prototype.next = function(callback) {
 		if (transfers.length > 0) {
 			var downloadStarted = false;
 
+			if (aborting) {
+				return callback(null, { aborted: true });
+			}
+
 			var download = function(transfer, modulename, moduleRef) {
 
 				downloadStarted = true;
@@ -311,6 +317,10 @@ Transfer.prototype.next = function(callback) {
 							});
 						}
 					});
+
+					if (aborting) {
+						return callback(null, { aborted: true });
+					}
 
 					// now start the download
 					moduleRef.download.call(moduleRef, row, that, function(err, filepath) {
@@ -356,6 +366,9 @@ Transfer.prototype.next = function(callback) {
 
 			// loop through transfers
 			for (var i = 0; i < transfers.length; i++) {
+				if (aborting) {
+					return callback(null, { aborted: true });
+				}
 				var transfer = transfers[i];
 				switch (transfer.engine) {
 					case 'vpf': {

@@ -22,6 +22,7 @@ var loggingIn = false;
 var isDownloadingIndex = false;
 var isCreatingIndex = false;
 var transferring = [];
+var aborting = false;
 
 function VPForums() {
 	events.EventEmitter.call(this);
@@ -175,6 +176,7 @@ VPForums.prototype.getRomLinks = function(table, callback) {
  */
 VPForums.prototype.download = function(transfer, watcher, callback) {
 	var that = this;
+	aborting = false;
 
 	that.emit('downloadInitializing', { reference: transfer, fileinfo: transfer.filename ? ' for "' + transfer.filename + '"' : '' });
 
@@ -183,11 +185,19 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 		if (err) {
 			return callback(err);
 		}
-		error.dumpDebugData('vpf', '01-first.page', body, 'html');
+		if (aborting) {
+			logger.log('info', '[vpf] Aborting.');
+			return callback();
+		}
+		//error.dumpDebugData('vpf', '01-first.page', body, 'html');
 
 		// starts the download, assuming we have a logged session.
 		var download = function(body) {
 			var m;
+			if (aborting) {
+				logger.log('info', '[vpf] Aborting.');
+				return callback();
+			}
 			if (body.match(/<h1[^>]*>Sorry, you don't have permission for that/i)) {
 				m = body.match(/<p class='ipsType_sectiontitle'>\s*([^<]+)/gi);
 				logger.log('error', '[vpf] Unexpected return while fetching download page: "%s"', m[1]);
@@ -200,8 +210,12 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 				logger.log('info', '[vpf] Getting confirmation page at %s...', confirmUrl);
 				// fetch the "confirm" page, where the actual link is
 				request({ url: confirmUrl, jar: true }, function(err, response, body) {
-					error.dumpDebugData('vpf', '02-confirmation', body, 'html');
+					//error.dumpDebugData('vpf', '02-confirmation', body, 'html');
 
+					if (aborting) {
+						logger.log('info', '[vpf] Aborting.');
+						return callback();
+					}
 					if (err) {
 						return callback(err);
 					}
@@ -324,6 +338,7 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 };
 
 VPForums.prototype.abortDownloads = function() {
+	aborting = true;
 	logger.log('info', '[vpf] Aborting %d transfer(s).', transferring.length);
 	_.each(transferring, function(req) {
 		req.abort();
@@ -696,8 +711,11 @@ VPForums.prototype._login = function(callback) {
 	// just get the index to obtain the damn auth key
 	request({ url: 'http://www.vpforums.org/index.php', jar: true }, function(err, response, body) {
 		if (err) {
-			callback(err);
-			return;
+			return callback(err);
+		}
+		if (aborting) {
+			logger.log('info', '[vpf] Aborting.');
+			return callback();
 		}
 		var m = body.match(/<input\s+type='hidden'\s+name='auth_key'\s+value='([^']+)/i);
 		if (!m) {
