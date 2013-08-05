@@ -33,16 +33,7 @@ module.exports = function(module) {
 			ss.event.off('statusUpdated', statusUpdated);
 		});
 
-		ss.server.on('disconnect', function() {
-			console.log('Connection down :-(');
-		});
-
-		ss.server.on('reconnect', function() {
-			console.log('Connection back up :-)');
-		});
-
-
-
+		
 		// ------------------------------------------------------------------------
 		// access "control"
 		// ------------------------------------------------------------------------
