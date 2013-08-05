@@ -8,5 +8,11 @@ html(lang="en", ng-app="app")
 	body(data-spy='scroll', data-target='.sidebar', ng-controller="AppCtrl")
 		div(ng-view)
 
+		#offlinebar.progress-danger.progress-striped(offlinebar)
+			.bar
+				.inner
+					i.icon.offline
+					span <em>You're offline</em> - Trying to re-connect...
+
 		include modals/alert
 		include modals/updating

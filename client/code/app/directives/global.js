@@ -38,6 +38,37 @@ module.exports = function (module) {
 		}
 	});
 
+	module.directive('offlinebar', function() {
+		return {
+			restrict: 'A',
+			link: function(scope, element, attrs) {
+
+				var show = function() {
+					element.removeClass('animated bounceOutDown').show().addClass('animated bounceInUp');
+				};
+
+				var hide = function() {
+					element.removeClass('animated bounceInUp').addClass('animated bounceOutDown');
+				};
+
+				ss.server.on('disconnect', function() {
+					console.log('offlinebar: disconnect');
+					show();
+				});
+
+				ss.server.on('reconnect', function() {
+					console.log('offlinebar: reconnect');
+					hide();
+				});
+
+				ss.server.on('ready', function() {
+					console.log('offlinebar: ready');
+					hide();
+				});
+			}
+		}
+	});
+
 	module.directive('animresize', function() {
 		return {
 			restrict: 'A',
