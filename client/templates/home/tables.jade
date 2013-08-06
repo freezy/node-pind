@@ -41,7 +41,8 @@ block content
 					ul.thumbnails.tables
 						li.span4(ng-repeat="table in data", ng-animate="{ enter: 'animated fadeIn' }", tb-768-980="span6")
 							.thumbnail
-								img(ng-src="{{table.url_backglass_medium}}")
+								.img_wrapper.backglass
+									img(ng-src="{{table.url_backglass_medium}}", imgload)
 								hr
 								.thumbnail-content.game
 									.thumbnail-content-centered

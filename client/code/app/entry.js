@@ -4,6 +4,7 @@
 window.ss = require('socketstream');
 
 require('ssAngular');
+
 var directives = angular.module('app.directives', []);
 var filters = angular.module('app.filters', []);
 

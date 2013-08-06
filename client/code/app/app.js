@@ -10,7 +10,6 @@ ss.server.on('reconnect', function() {
 	console.log('Connection back up :-)');
 });
 
-
 updateColumnSize();
 
 $.cookie.json = true;
@@ -26,7 +25,6 @@ $('.modal .modal-footer a.cancel').click(function(event) {
 	event.preventDefault();
 	$(this).parents('.modal').modal('hide');
 });
-
 
 function updateColumnSize() {
 	// adjust the span of various columns to match the screen size

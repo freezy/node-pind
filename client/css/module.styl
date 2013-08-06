@@ -433,6 +433,25 @@ ul.badge-group
 				&.champ li
 					margin-bottom 25px
 
+// :images (http://www.barrelny.com/blog/taking-control-of-imageloading/)
+// ============================================================================
+.img_wrapper
+	position relative
+	overflow hidden
+	&.banner
+		padding-top 18.77862595419847%
+	&.backglass
+		padding-top 80%
+	& > img
+		position absolute
+		top 0
+		left 0
+		width 100%
+		opacity 0
+		transition opacity 150ms
+
+	&.loaded > img
+		opacity 1
 
 // :sources
 // ============================================================================

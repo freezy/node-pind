@@ -9,7 +9,8 @@
 						span.player {{hiscore.player}}
 						span.score {{hiscore.score | groupdigit}}
 			hr
-			img(ng-src='{{table.url_banner_small}}')
+			.img_wrapper.banner
+				img(ng-src='{{table.url_banner_small}}', imgload)
 			hr
 			.slider-bottom
 				h3 {{table.name}}

@@ -61,6 +61,18 @@ module.exports = function (module) {
 		}
 	});
 
+	module.directive('imgload', function() {
+		return {
+			restrict: 'A',
+			link: function(scope, element) {
+				element.bind("load" , function(){
+					element.parent().addClass('loaded');
+				});
+			}
+		}
+	});
+
+
 	module.directive('animresize', function() {
 		return {
 			restrict: 'A',
