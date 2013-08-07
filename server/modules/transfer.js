@@ -262,6 +262,11 @@ Transfer.prototype.start = function(callback) {
 
 /**
  * Starts the next download in the queue and handles the result.
+ *
+ * Once the download is finished, it runs postDownload(), which extracts the files
+ * and basically completes the download process. However, postDownload() also calls
+ * postProcess(), which executes potential actions such as ROM search for a table, etc.
+ *
  * @param callback Executed at the end of each download or instantly when on download was started.
  * @returns {*}
  */
@@ -405,6 +410,13 @@ Transfer.prototype.next = function(callback) {
 	});
 };
 
+/**
+ * Extracts (or moves) a downloaded file to the correct location.
+ *
+ * @param filepath Downloaded file
+ * @param transfer Transfer from database
+ * @param callback Callback, passed from caller
+ */
 Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 	var that = this;
 	var result;
@@ -458,6 +470,13 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 
 };
 
+/**
+ * Executes eventual post actions, such as search for ROMs, media etc.
+ *
+ * @param transfer
+ * @param callback
+ * @returns {*}
+ */
 Transfer.prototype.postProcess = function(transfer, callback) {
 	if (!transfer.postAction) {
 		return callback();
