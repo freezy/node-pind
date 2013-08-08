@@ -13,6 +13,7 @@ var settings = require('../../config/settings-mine');
 var schema = require('../database/schema');
 
 var an = require('./announce');
+var vp = require('./visualpinball');
 var vpf = require('./vpforums');
 var vpm = require('./vpinmame');
 var extr = require('./extract');
@@ -501,35 +502,43 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 
 		// in any case, add to tables and update ipdb.
 		if (transfer.engine == 'vpf') {
-			schema.VpfFile.find(transfer.reference).success(function(row) {
-				if (!row) {
+			schema.VpfFile.find(transfer.reference).success(function(vpffile) {
+				if (!vpffile) {
 					logger.log('warn', '[transfer] Skipping post process for %s because cannot find referenced row %d in VpfFile table.', transfer.title, transfer.reference);
 					return callback(null, transfer);
 				}
-				row = row.map();
-				var filename;
+				vpffile = vpffile.map();
+				var filename, filepath;
 				if (result && result.extract) {
 					for (var name in result.extract) {
 						if (path.extname(name).toLowerCase() == '.vpt' && result.extract.hasOwnProperty(name)) {
 							filename = path.basename(name, path.extname(name));
+							filepath = result.extract[name].dst;
 							break;
 						}
 					}
 				}
 
 				ipdb.enrich({
-					name: row.title_trimmed,
+					name: vpffile.title_trimmed,
 					platform: 'VP',
 					filename: filename
 				}, function(err, table) {
 
 					if (table.ipdb_no) {
-						schema.Table.updateOrCreate({ where: { ipdb_no: table.ipdb_no }}, table, function(err, row) {
+						schema.Table.updateOrCreate({ where: { ipdb_no: table.ipdb_no }}, table, function(err, table) {
 							if (err) {
 								logger.log('warn', '[transfer] Error adding to tables: %s', err);
 								return callback(err);
 							}
-							console.log('Found game: %s', util.inspect(table, false, 2, true));
+
+							vp.getTableData(filepath, function(err, attrs) {
+								table.updateAttributes(attrs).success(function(table) {
+									console.log('Found game: %s', util.inspect(table, false, 1, true));
+									console.log('path = %s', filepath);
+
+								});
+							});
 						});
 					} else {
 						logger.log('warn', '[transfer] No ipdb match, ignoring for now.');

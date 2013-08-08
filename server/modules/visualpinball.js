@@ -340,46 +340,59 @@ VisualPinball.prototype.updateTableData = function(callback) {
 			}
 
 			that.emit('analysisStarted', { name: row.name });
-s
-			// read script from table
-			that.getScriptFromTable(tablePath, function(err, script) {
+			that.getTableData(row, tablePath, function(err, attrs) {
 				if (err) {
-					logger.log('warn', '[vp] Error getting script: ' + err);
-					return next(err);
+					return next();
 				}
-
-				// parse rom name
-				that.getRomName(script, function(err, rom) {
-					if (err) {
-						logger.log('warn', '[vp] Error reading ROM name: ' + err);
-						rom = null;
-					}
-
-					that.getDmdOrientation(script, function(err, rotation) {
-						if (err) {
-							logger.log('warn', '[vp] Error reading DMD rotation: ' + err);
-							rotation = null;
-						}
-
-						that.getController(script, function(err, controller) {
-							if (err) {
-								logger.log('warn', '[vp] Error reading controller: ' + err);
-								controller = null;
-							}
-
-							row.updateAttributes({
-								rom: rom,
-								dmd_rotation: rotation,
-								controller: controller,
-								rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + rom + '.zip')
-							}).done(next);
-						});
-					});
-				});
+				row.updateAttributes(attrs).done(callback);
 			});
 
 		}, callback);
 	}).error(callback);
+};
+
+VisualPinball.prototype.getTableData = function(path, callback) {
+	var that = this;
+
+	// read script from table
+	that.getScriptFromTable(path, function(err, script) {
+		if (err) {
+			logger.log('warn', '[vp] Error getting script: ' + err);
+			return callback(err);
+		}
+
+		// parse rom name
+		that.getRomName(script, function(err, rom) {
+			if (err) {
+				logger.log('warn', '[vp] Error reading ROM name: ' + err);
+				rom = null;
+			}
+
+			// read orientation
+			that.getDmdOrientation(script, function(err, rotation) {
+				if (err) {
+					logger.log('warn', '[vp] Error reading DMD rotation: ' + err);
+					rotation = null;
+				}
+
+				// read controller
+				that.getController(script, function(err, controller) {
+					if (err) {
+						logger.log('warn', '[vp] Error reading controller: ' + err);
+						controller = null;
+					}
+
+					callback(null, {
+						rom: rom,
+						rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + rom + '.zip'),
+						dmd_rotation: rotation,
+						controller: controller
+					});
+				});
+			});
+		});
+	});
+
 };
 
 module.exports = new VisualPinball();
