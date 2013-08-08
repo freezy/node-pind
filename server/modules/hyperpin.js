@@ -149,6 +149,7 @@ HyperPin.prototype.syncTables = function(callback) {
 						return;
 					}
 					table.hpid = d;
+					table.hpenabled = true;
 					table.type = g.type[0];
 					table.filename = g.$.name;
 					table.platform = platform;

@@ -148,17 +148,25 @@ Ipdb.prototype.enrichAll = function(tables, callback) {
  * 	    <li>ipdb_mfg - ipdb.org manufacturer ID</li>
  * 	    <li>modelno - Model number</li>
  * 	    <li>rating - Rating</li>
- * 	    <li>short - Abbreviation</li></ul>
+ * 	    <li>short - Abbreviation</li>
+ * 	    <li>units</li>
+ * 	    <li>theme</li>
+ * 	    <li>designer</li>
+ * 	    <li>artist</li>
+ * 	    <li>features</li>
+ * 	    <li>notes</li>
+ * 	    <li>toys</li>
+ * 	    <li>slogans</li></ul>
  *
  * Note that games of type OG (original) are skipped directly, since ipdb.org
  * only contains real world machines.
  *
- * @param game Game from database. Must contain at least name.
+ * @param table Game from database. Must contain at least name.
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Object} Updated table object</li></ol>
  */
-Ipdb.prototype.enrich = function(game, callback) {
+Ipdb.prototype.enrich = function(table, callback) {
 
 	var forceSearch = false;
 
@@ -192,22 +200,22 @@ Ipdb.prototype.enrich = function(game, callback) {
 		return name;
 	};
 
-	if (!game.name) {
+	if (!table.name) {
 		return callback('First parameter must contain at least "name".');
 	}
 
-	if (game.type == 'OG') { // ignore original games
-		return callback(null, game);
+	if (table.type == 'OG') { // ignore original games
+		return callback(null, table);
 	}
 
-	ipdb.emit('searchStarted', { name: game.name });
-	logger.log('info', '[ipdb] Fetching data for %s', game.name);
+	ipdb.emit('searchStarted', { name: table.name });
+	logger.log('info', '[ipdb] Searching data for %s', table.name);
 	var url;
-	if (game.ipdb_no && !forceSearch) {
-		url = 'http://www.ipdb.org/machine.cgi?id=' + game.ipdb_no;
+	if (table.ipdb_no && !forceSearch) {
+		url = 'http://www.ipdb.org/machine.cgi?id=' + table.ipdb_no;
 	} else {
 		// advanced search: var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
-		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(fixName(game.name)) + '&searchtype=quick';
+		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(fixName(table.name)) + '&searchtype=quick';
 	}
 	logger.log('debug', '[ipdb] Requesting %s', url);
 	request(url, function (error, response, body) {
@@ -218,17 +226,17 @@ Ipdb.prototype.enrich = function(game, callback) {
 			// check if multiple matches
 			m = body.match(/(\d+) records match/i);
 			if (m && m[1] > 1) {
-				logger.log('debug', '[ipdb] Found %d hits for "%s".', m[1], game.name);
+				logger.log('debug', '[ipdb] Found %d hits for "%s".', m[1], table.name);
 
 				// parse the matches
 				var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"\s+href="#(\d+)">([^<]+)/ig;
 				var matches = [];
 				while (m = regex.exec(body)) {
-					matches.push({ name: m[4], year: m[2], ipdbid: m[3], distance: natural.LevenshteinDistance(game.name.toLowerCase(), m[4].toLowerCase()) });
+					matches.push({ name: m[4], year: m[2], ipdbid: m[3], distance: natural.LevenshteinDistance(table.name.toLowerCase(), m[4].toLowerCase()) });
 				}
 
 				// figure out best match
-				var match = findBestMatch(matches, game);
+				var match = findBestMatch(matches, table);
 				logger.log('info', '[ipdb] Figured best match is "%s" (%s)', match.name, match.ipdbid);
 
 				// strip off non-matches from body
@@ -243,24 +251,36 @@ Ipdb.prototype.enrich = function(game, callback) {
 
 			m = body.match(/<a name="(\d+)">([^<]+)/i);
 			if (m) {
-				game.name = trim(m[2]);
-				game.ipdb_no = m[1];
-				game.modelno = firstMatch(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
-				game.ipdb_mfg = firstMatch(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
-				game.rating = firstMatch(body, /Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
-				game.short = firstMatch(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
+				table.name = trim(m[2]);
+				table.ipdb_no = m[1];
+				table.modelno = firstMatch(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
+				table.ipdb_mfg = firstMatch(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
+				if (!table.manufacturer && table.ipdb_mfg && manufacturerNames[table.ipdb_mfg]) {
+					table.manufacturer = manufacturerNames[table.ipdb_mfg];
+				}
+				if (!table.year) {
+					table.year = firstMatch(body, /href="machine\.cgi\?id=\d+">\d+<\/a>\s*<I>[^<>\d]*(\d{4})/i);
+				}
+				if (!table.type) {
+					table.type = firstMatch(body, /Type:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
+						var mm = m.match(/\((..)\)/);
+						return mm ? mm[1] : null;
+					});
+				}
+				table.rating = firstMatch(body, /Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
+				table.short = firstMatch(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
 					return m.replace(', ', ',');
 				});
-				game.units = firstMatch(body, /Production:\s*<\/b><\/td><td[^>]*>([\d,]+)\s*units/i, function(m) {
+				table.units = firstMatch(body, /Production:\s*<\/b><\/td><td[^>]*>([\d,]+)\s*units/i, function(m) {
 					return m.replace(/,/g, '');
 				});
-				game.theme = firstMatch(body, /Theme:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
+				table.theme = firstMatch(body, /Theme:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
 					return m.replace(/\s+-\s+/gi, ',');
 				});
-				game.designer = firstMatch(body, /Design by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
+				table.designer = firstMatch(body, /Design by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
 					return ent.decode(m);
 				});
-				game.artist = firstMatch(body, /Art by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
+				table.artist = firstMatch(body, /Art by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
 					return ent.decode(m);
 				});
 				var tidyText = function(m) {
@@ -268,18 +288,18 @@ Ipdb.prototype.enrich = function(game, callback) {
 					m = m.replace(/<[^>]+>/gi, '');
 					return ent.decode(m.trim());
 				};
-				game.features = firstMatch(body, /Notable Features:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
-				game.notes = firstMatch(body, /Notes:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
-				game.toys = firstMatch(body, /Toys:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
-				game.slogans = firstMatch(body, /Marketing Slogans:\s*<\/b><\/td><td[^>]*>([\s\S]*?)<\/td>/i, tidyText);
+				table.features = firstMatch(body, /Notable Features:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
+				table.notes = firstMatch(body, /Notes:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
+				table.toys = firstMatch(body, /Toys:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
+				table.slogans = firstMatch(body, /Marketing Slogans:\s*<\/b><\/td><td[^>]*>([\s\S]*?)<\/td>/i, tidyText);
 
-				var distance = natural.LevenshteinDistance(game.name, m[2]);
-				logger.log('debug', '[ipdb] Found title "%s" as #%d (distance %d)', game.name, m[1], distance);
-				callback(null, game);
+				var distance = natural.LevenshteinDistance(table.name, m[2]);
+				logger.log('info', '[ipdb] Found title "%s" as #%d (distance %d)', table.name, m[1], distance);
+				callback(null, table);
 
 			} else {
-				logger.log('warn', '[ipdb] Game "%s" not found in HTTP body.', game.name);
-				callback(null, game);
+				logger.log('warn', '[ipdb] Game "%s" not found in HTTP body.', table.name);
+				callback(null, table);
 			}
 		}
 	});
@@ -479,6 +499,14 @@ var findBestMatch = function(matches, game) {
 	logger.log('info', '[ipdb] Matches are now sorted:', bestMatches);
 
 	return bestMatches[0];
+};
+
+var manufacturerNames = {
+	76: 'Capcom',
+	98: 'Data East',
+	214: 'Bally',
+	303: 'Stern',
+	349: 'Williams'
 };
 
 module.exports = new Ipdb();

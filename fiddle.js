@@ -4,6 +4,8 @@ var fs = require('fs');
 var util = require('util');
 var async = require('async');
 
+var schema = require('./server/database/schema');
+
 var au = require('./server/modules/autoupdate');
 var nv = require('./server/modules/nvram');
 var hs = require('./server/modules/hiscore');
@@ -30,13 +32,14 @@ log.cli();
 
 //nv.diff();
 
+postProcessTransfer(33);
 
 //	cacheAllTableDownloads();
 //	nextDownload();
 
 
 //	extractMedia('C:/temp/NBA_Fastbreak__Midaway_1997_.zip');
-extractMedia('E:/tmp/Playboy.Stern.2002.zip');
+//extractMedia('E:/tmp/Playboy.Stern.2002.zip');
 
 //	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
 //	vpParse();
@@ -57,6 +60,22 @@ extractMedia('E:/tmp/Playboy.Stern.2002.zip');
 //getRomName('STERN - The Simpsons Pinball Party - MEGAPIN_V1.2FS.vpt');
 
 
+function postProcessTransfer(id) {
+	schema.Transfer.find(id).success(function(row) {
+		if (row) {
+			trns.postProcess(row, function(err, result) {
+				if (err) {
+					console.error("ERROR: " + err);
+				} else {
+					console.log("Post processing done!");
+					//console.log("Post processing done, got\n%s", util.inspect(result, false, 2, true));
+				}
+			})
+		} else {
+			console.error('No transfer found with row ID ' + id);
+		}
+	});
+}
 
 function git() {
 //	au.update({ sha: '8721605a0fd32594dea1fb53f60c4cca363daf1a', commit: { committer: { date: '2013-06-01T10:31:10Z' }}}, function(err, result) {

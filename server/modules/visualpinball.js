@@ -340,30 +340,30 @@ VisualPinball.prototype.updateTableData = function(callback) {
 			}
 
 			that.emit('analysisStarted', { name: row.name });
-
+s
 			// read script from table
 			that.getScriptFromTable(tablePath, function(err, script) {
 				if (err) {
-					logger.log('error', '[vp] Error getting script: ' + err);
+					logger.log('warn', '[vp] Error getting script: ' + err);
 					return next(err);
 				}
 
 				// parse rom name
 				that.getRomName(script, function(err, rom) {
 					if (err) {
-						logger.log('error', '[vp] Error reading ROM name: ' + err);
+						logger.log('warn', '[vp] Error reading ROM name: ' + err);
 						rom = null;
 					}
 
 					that.getDmdOrientation(script, function(err, rotation) {
 						if (err) {
-							logger.log('error', '[vp] Error reading DMD rotation: ' + err);
+							logger.log('warn', '[vp] Error reading DMD rotation: ' + err);
 							rotation = null;
 						}
 
 						that.getController(script, function(err, controller) {
 							if (err) {
-								logger.log('error', '[vp] Error reading controller: ' + err);
+								logger.log('warn', '[vp] Error reading controller: ' + err);
 								controller = null;
 							}
 

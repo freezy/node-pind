@@ -3,6 +3,7 @@
 var _ = require('underscore');
 var fs = require('fs');
 var util = require('util');
+var path = require('path');
 var async = require('async');
 var events = require('events');
 var logger = require('winston');
@@ -438,7 +439,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 			transfer.updateAttributes({
 				result: JSON.stringify(result)
 			}).success(function(row) {
-				callback(null, row);
+				that.postProcess(row, callback);
 			});
 		}
 		break;
@@ -461,7 +462,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 					result: JSON.stringify(extractResult)
 				}).success(function(row) {
 					that.emit('extractCompleted', { result: extractResult, transfer: row });
-					callback(null, row);
+					that.postProcess(row, callback);
 				});
 			});
 		}
@@ -479,27 +480,70 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
  */
 Transfer.prototype.postProcess = function(transfer, callback) {
 	if (!transfer.postAction) {
-		return callback();
+		return callback(null, transfer);
 	}
 
 	var action = JSON.parse(transfer.postAction);
+	var result = JSON.parse(transfer.result);
 
 	// transfer type: TABLE
 	if (transfer.type == 'table') {
 
-		var actions = [];
+
 		var availableActions = ['addtohp', 'dlrom', 'dlmedia', 'dlvideo']; // order is important
 		var table = {
 			name: schema.VpfFile.splitName(transfer.title)[0],
 			platform: 'VP'
 		};
+		var actions = _.filter(availableActions, function(a) {
+			return action[a];
+		});
 
-		// explode checked actions into array
-		for (var i = 0; i < availableActions.length; i++) {
-			if (action[availableActions[i]]) {
-				actions.push(availableActions[i]);
-			}
+		// in any case, add to tables and update ipdb.
+		if (transfer.engine == 'vpf') {
+			schema.VpfFile.find(transfer.reference).success(function(row) {
+				if (!row) {
+					logger.log('warn', '[transfer] Skipping post process for %s because cannot find referenced row %d in VpfFile table.', transfer.title, transfer.reference);
+					return callback(null, transfer);
+				}
+				row = row.map();
+				var filename;
+				if (result && result.extract) {
+					for (var name in result.extract) {
+						if (path.extname(name).toLowerCase() == '.vpt' && result.extract.hasOwnProperty(name)) {
+							filename = path.basename(name, path.extname(name));
+							break;
+						}
+					}
+				}
+
+				ipdb.enrich({
+					name: row.title_trimmed,
+					platform: 'VP',
+					filename: filename
+				}, function(err, table) {
+
+					if (table.ipdb_no) {
+						schema.Table.updateOrCreate({ where: { ipdb_no: table.ipdb_no }}, table, function(err, row) {
+							if (err) {
+								logger.log('warn', '[transfer] Error adding to tables: %s', err);
+								return callback(err);
+							}
+							console.log('Found game: %s', util.inspect(table, false, 2, true));
+						});
+					} else {
+						logger.log('warn', '[transfer] No ipdb match, ignoring for now.');
+						return callback(null, transfer);
+					}
+				});
+
+				// add to game
+			});
+		} else {
+			logger.log('warn', '[transfer] Skipping post process for %s due to unimplemented engine %s.', transfer.title, transfer.engine);
+			return callback(null, transfer);
 		}
+		return callback(null, transfer);
 
 		// process checked actions
 		async.eachSeries(actions, function(action, next) {
@@ -534,13 +578,13 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 
 			// otherwise just continue
 			else {
-				logger.log('info', '[transfer] Unimplemented action: %s', action);
+				logger.log('warn', '[transfer] Unimplemented action: %s', action);
 				next();
 			}
 		}, callback);
 
 	} else {
-		callback();
+		callback(null, transfer);
 	}
 };
 

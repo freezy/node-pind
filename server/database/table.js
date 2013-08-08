@@ -22,6 +22,7 @@ module.exports = function(sequelize, DataTypes) {
 		platform: DataTypes.STRING,
 		filename: DataTypes.STRING,
 		hpid: DataTypes.STRING,
+		hpenabled: DataTypes.BOOLEAN,
 		rom: DataTypes.STRING,
 		ipdb_no: DataTypes.STRING,
 		ipdb_mfg: DataTypes.STRING,
@@ -61,34 +62,7 @@ module.exports = function(sequelize, DataTypes) {
 					if (!table.hpid || !table.platform) {
 						callback('Provided object must contain at least name and platform.');
 					}
-					Table.find({ where: { hpid: table.hpid, platform: table.platform }}).success(function(row) {
-						if (row) {
-
-							// don't update name and year if it was already matched by ipdb.org
-							if (row.ipdb_no) {
-								delete table.name;
-								delete table.year;
-							}
-
-							row.updateAttributes(table).success(function(r) {
-								callback(null, r);
-							}).error(callback);
-
-						} else {
-							that.generateKey(3, function(err, key) {
-								if (err) {
-									callback(err);
-									return;
-								}
-								table.key = key;
-								Table.create(table).success(function(r) {
-									callback(null, r);
-								}).error(function(err){
-									callback(err);
-								});
-							});
-						}
-					}).error(callback);
+					that.updateOrCreate({ where: { hpid: table.hpid, platform: table.platform }}, table, callback);
 				};
 
 				async.eachSeries(tables, updateOrCreate, function(err) {
@@ -98,6 +72,35 @@ module.exports = function(sequelize, DataTypes) {
 					//db.prepare('UPDATE tables SET enabled = (?) WHERE updated < (?);').run([ false, now ], function(err) {
 					//	callback(err, games);
 					//});
+				});
+			},
+
+			updateOrCreate: function(clause, table, callback) {
+				var that = this;
+				Table.find(clause).success(function(row) {
+					if (row) {
+
+						// don't update name and year if it was already matched by ipdb.org
+						if (row.ipdb_no) {
+							delete table.name;
+							delete table.year;
+						}
+
+						row.updateAttributes(table).success(function(r) {
+							callback(null, r);
+						});
+
+					} else {
+						that.generateKey(3, function(err, key) {
+							if (err) {
+								return callback(err);
+							}
+							table.key = key;
+							Table.create(table).success(function(r) {
+								callback(null, r);
+							});
+						});
+					}
 				});
 			},
 
