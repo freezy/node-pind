@@ -487,72 +487,12 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 	var action = JSON.parse(transfer.postAction);
 	var result = JSON.parse(transfer.result);
 
-	// transfer type: TABLE
-	if (transfer.type == 'table') {
-
+	var tableActions = function(table, callback) {
 
 		var availableActions = ['addtohp', 'dlrom', 'dlmedia', 'dlvideo']; // order is important
-		var table = {
-			name: schema.VpfFile.splitName(transfer.title)[0],
-			platform: 'VP'
-		};
 		var actions = _.filter(availableActions, function(a) {
 			return action[a];
 		});
-
-		// in any case, add to tables and update ipdb.
-		if (transfer.engine == 'vpf') {
-			schema.VpfFile.find(transfer.reference).success(function(vpffile) {
-				if (!vpffile) {
-					logger.log('warn', '[transfer] Skipping post process for %s because cannot find referenced row %d in VpfFile table.', transfer.title, transfer.reference);
-					return callback(null, transfer);
-				}
-				vpffile = vpffile.map();
-				var filename, filepath;
-				if (result && result.extract) {
-					for (var name in result.extract) {
-						if (path.extname(name).toLowerCase() == '.vpt' && result.extract.hasOwnProperty(name)) {
-							filename = path.basename(name, path.extname(name));
-							filepath = result.extract[name].dst;
-							break;
-						}
-					}
-				}
-
-				ipdb.enrich({
-					name: vpffile.title_trimmed,
-					platform: 'VP',
-					filename: filename
-				}, function(err, table) {
-
-					if (table.ipdb_no) {
-						schema.Table.updateOrCreate({ where: { ipdb_no: table.ipdb_no }}, table, function(err, table) {
-							if (err) {
-								logger.log('warn', '[transfer] Error adding to tables: %s', err);
-								return callback(err);
-							}
-
-							vp.getTableData(filepath, function(err, attrs) {
-								table.updateAttributes(attrs).success(function(table) {
-									console.log('Found game: %s', util.inspect(table, false, 1, true));
-									console.log('path = %s', filepath);
-
-								});
-							});
-						});
-					} else {
-						logger.log('warn', '[transfer] No ipdb match, ignoring for now.');
-						return callback(null, transfer);
-					}
-				});
-
-				// add to game
-			});
-		} else {
-			logger.log('warn', '[transfer] Skipping post process for %s due to unimplemented engine %s.', transfer.title, transfer.engine);
-			return callback(null, transfer);
-		}
-		return callback(null, transfer);
 
 		// process checked actions
 		async.eachSeries(actions, function(action, next) {
@@ -591,7 +531,69 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 				next();
 			}
 		}, callback);
+	};
 
+	// transfer type: TABLE
+	if (transfer.type == 'table') {
+
+		// 1. add to tables
+		if (transfer.engine == 'vpf') {
+			schema.VpfFile.find(transfer.reference).success(function(vpffile) {
+				if (!vpffile) {
+					logger.log('warn', '[transfer] Skipping post process for %s because cannot find referenced row %d in VpfFile table.', transfer.title, transfer.reference);
+					return callback(null, transfer);
+				}
+				vpffile = vpffile.map();
+				var filename, filepath;
+				if (result && result.extract) {
+					for (var name in result.extract) {
+						if (path.extname(name).toLowerCase() == '.vpt' && result.extract.hasOwnProperty(name)) {
+							filename = path.basename(name, path.extname(name));
+							filepath = result.extract[name].dst;
+							break;
+						}
+					}
+				}
+
+				// 2. try to match at ipdb
+				ipdb.enrich({
+					name: vpffile.title_trimmed,
+					platform: 'VP',
+					filename: filename
+				}, function(err, table) {
+
+					if (table.ipdb_no) {
+						schema.Table.updateOrCreate({ where: { ipdb_no: table.ipdb_no }}, table, function(err, table) {
+							if (err) {
+								logger.log('warn', '[transfer] Error adding to tables: %s', err);
+								return callback(err);
+							}
+
+							// 3. analyze table data
+							vp.getTableData(filepath, function(err, attrs) {
+								if (err) {
+									logger.log('warn', '[transfer] Error reading vpt data: %s', err);
+									return callback(err);
+								}
+								table.updateAttributes(attrs).success(function(table) {
+
+									// 4. continue with optional post actions.
+									tableActions(table, callback);
+
+								});
+							});
+						});
+					} else {
+						logger.log('warn', '[transfer] No ipdb match, ignoring for now.');
+						return callback(null, transfer);
+					}
+				});
+
+			});
+		} else {
+			logger.log('warn', '[transfer] Skipping post process for %s due to unimplemented engine %s.', transfer.title, transfer.engine);
+			return callback(null, transfer);
+		}
 	} else {
 		callback(null, transfer);
 	}
