@@ -97,7 +97,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	 * @param next
 	 */
 	var queue = function(link, folder, engine, reference, next) {
-		var transfer = require('./transfer')(_app);
+		var transfer = require('./transfer');
 		transfer.queue({
 			title: link.title,
 			url: link.url,

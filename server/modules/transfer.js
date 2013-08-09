@@ -484,6 +484,8 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 		return callback(null, transfer);
 	}
 
+	logger.log('info', '[transfer] Starting post processing of download.');
+
 	var action = JSON.parse(transfer.postAction);
 	var result = JSON.parse(transfer.result);
 

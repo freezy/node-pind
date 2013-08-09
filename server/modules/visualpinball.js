@@ -364,21 +364,21 @@ VisualPinball.prototype.getTableData = function(path, callback) {
 		// parse rom name
 		that.getRomName(script, function(err, rom) {
 			if (err) {
-				logger.log('warn', '[vp] Error reading ROM name: ' + err);
+				logger.log('warn', '[vp] Could not read ROM name: ' + err);
 				rom = null;
 			}
 
 			// read orientation
 			that.getDmdOrientation(script, function(err, rotation) {
 				if (err) {
-					logger.log('warn', '[vp] Error reading DMD rotation: ' + err);
+					logger.log('warn', '[vp] Could not read DMD rotation: ' + err);
 					rotation = null;
 				}
 
 				// read controller
 				that.getController(script, function(err, controller) {
 					if (err) {
-						logger.log('warn', '[vp] Error reading controller: ' + err);
+						logger.log('warn', '[vp] Could not read controller: ' + err);
 						controller = null;
 					}
 
