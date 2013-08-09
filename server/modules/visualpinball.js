@@ -340,7 +340,7 @@ VisualPinball.prototype.updateTableData = function(callback) {
 			}
 
 			that.emit('analysisStarted', { name: row.name });
-			that.getTableData(row, tablePath, function(err, attrs) {
+			that.getTableData(tablePath, function(err, attrs) {
 				if (err) {
 					return next();
 				}
