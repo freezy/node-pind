@@ -218,89 +218,102 @@ Ipdb.prototype.enrich = function(table, callback) {
 		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(fixName(table.name)) + '&searchtype=quick';
 	}
 	logger.log('debug', '[ipdb] Requesting %s', url);
-	request(url, function (error, response, body) {
-		if (!error && response.statusCode == 200) {
+	request(url, function(err, response, body) {
 
-			var m;
+		if (!response) {
+			logger.log('error', '[ipdb] Network seems to be down, aborting.');
+			return callback('No network.');
+		}
 
-			// check if multiple matches
-			m = body.match(/(\d+) records match/i);
-			if (m && m[1] > 1) {
-				logger.log('debug', '[ipdb] Found %d hits for "%s".', m[1], table.name);
+		if (err) {
+			logger.log('error', '[ipdb] Error requesting %s: %s', url, err);
+			return callback('Error requesting data from IPDB.');
+		}
 
-				// parse the matches
-				var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"\s+href="#(\d+)">([^<]+)/ig;
-				var matches = [];
-				while (m = regex.exec(body)) {
-					matches.push({ name: m[4], year: m[2], ipdbid: m[3], distance: natural.LevenshteinDistance(table.name.toLowerCase(), m[4].toLowerCase()) });
-				}
+		if (response.statusCode != 200) {
+			logger.log('error', '[ipdb] Wrong response code, got %s instead of 200. Body: ', response.statusCode, body);
+			return callback('Wrong response data from IPDB.');
+		}
 
-				// figure out best match
-				var match = findBestMatch(matches, table);
-				logger.log('info', '[ipdb] Figured best match is "%s" (%s)', match.name, match.ipdbid);
+		var m;
 
-				// strip off non-matches from body
-				regex =  new RegExp('<table border=0 width="100%"><tr><td><font[^>]*><B><a name="' + match.ipdbid + '">[.\\s\\S]*?<hr width="80', 'gi');
-				m = body.match(regex);
-				if (!m) {
-					callback('Cannot find matched game "%s" in body.', match.name );
-					return;
-				}
-				body = m[0];
+		// check if multiple matches
+		m = body.match(/(\d+) records match/i);
+		if (m && m[1] > 1) {
+			logger.log('debug', '[ipdb] Found %d hits for "%s".', m[1], table.name);
+
+			// parse the matches
+			var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"\s+href="#(\d+)">([^<]+)/ig;
+			var matches = [];
+			while (m = regex.exec(body)) {
+				matches.push({ name: m[4], year: m[2], ipdbid: m[3], distance: natural.LevenshteinDistance(table.name.toLowerCase(), m[4].toLowerCase()) });
 			}
 
-			m = body.match(/<a name="(\d+)">([^<]+)/i);
-			if (m) {
-				table.name = trim(m[2]);
-				table.ipdb_no = m[1];
-				table.modelno = firstMatch(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
-				table.ipdb_mfg = firstMatch(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
-				if (!table.manufacturer && table.ipdb_mfg && manufacturerNames[table.ipdb_mfg]) {
-					table.manufacturer = manufacturerNames[table.ipdb_mfg];
-				}
-				if (!table.year) {
-					table.year = firstMatch(body, /href="machine\.cgi\?id=\d+">\d+<\/a>\s*<I>[^<>\d]*(\d{4})/i);
-				}
-				if (!table.type) {
-					table.type = firstMatch(body, /Type:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
-						var mm = m.match(/\((..)\)/);
-						return mm ? mm[1] : null;
-					});
-				}
-				table.rating = firstMatch(body, /Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
-				table.short = firstMatch(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
-					return m.replace(', ', ',');
-				});
-				table.units = firstMatch(body, /Production:\s*<\/b><\/td><td[^>]*>([\d,]+)\s*units/i, function(m) {
-					return m.replace(/,/g, '');
-				});
-				table.theme = firstMatch(body, /Theme:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
-					return m.replace(/\s+-\s+/gi, ',');
-				});
-				table.designer = firstMatch(body, /Design by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
-					return ent.decode(m);
-				});
-				table.artist = firstMatch(body, /Art by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
-					return ent.decode(m);
-				});
-				var tidyText = function(m) {
-					m = m.replace(/<br>/gi, '\n');
-					m = m.replace(/<[^>]+>/gi, '');
-					return ent.decode(m.trim());
-				};
-				table.features = firstMatch(body, /Notable Features:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
-				table.notes = firstMatch(body, /Notes:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
-				table.toys = firstMatch(body, /Toys:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
-				table.slogans = firstMatch(body, /Marketing Slogans:\s*<\/b><\/td><td[^>]*>([\s\S]*?)<\/td>/i, tidyText);
+			// figure out best match
+			var match = findBestMatch(matches, table);
+			logger.log('info', '[ipdb] Figured best match is "%s" (%s)', match.name, match.ipdbid);
 
-				var distance = natural.LevenshteinDistance(table.name, m[2]);
-				logger.log('info', '[ipdb] Found title "%s" as #%d (distance %d)', table.name, m[1], distance);
-				callback(null, table);
-
-			} else {
-				logger.log('warn', '[ipdb] Game "%s" not found in HTTP body.', table.name);
-				callback(null, table);
+			// strip off non-matches from body
+			regex =  new RegExp('<table border=0 width="100%"><tr><td><font[^>]*><B><a name="' + match.ipdbid + '">[.\\s\\S]*?<hr width="80', 'gi');
+			m = body.match(regex);
+			if (!m) {
+				callback('Cannot find matched game "%s" in body.', match.name );
+				return;
 			}
+			body = m[0];
+		}
+
+		m = body.match(/<a name="(\d+)">([^<]+)/i);
+		if (m) {
+			table.name = trim(m[2]);
+			table.ipdb_no = m[1];
+			table.modelno = firstMatch(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
+			table.ipdb_mfg = firstMatch(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
+			if (!table.manufacturer && table.ipdb_mfg && manufacturerNames[table.ipdb_mfg]) {
+				table.manufacturer = manufacturerNames[table.ipdb_mfg];
+			}
+			if (!table.year) {
+				table.year = firstMatch(body, /href="machine\.cgi\?id=\d+">\d+<\/a>\s*<I>[^<>\d]*(\d{4})/i);
+			}
+			if (!table.type) {
+				table.type = firstMatch(body, /Type:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
+					var mm = m.match(/\((..)\)/);
+					return mm ? mm[1] : null;
+				});
+			}
+			table.rating = firstMatch(body, /Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
+			table.short = firstMatch(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
+				return m.replace(', ', ',');
+			});
+			table.units = firstMatch(body, /Production:\s*<\/b><\/td><td[^>]*>([\d,]+)\s*units/i, function(m) {
+				return m.replace(/,/g, '');
+			});
+			table.theme = firstMatch(body, /Theme:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
+				return m.replace(/\s+-\s+/gi, ',');
+			});
+			table.designer = firstMatch(body, /Design by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
+				return ent.decode(m);
+			});
+			table.artist = firstMatch(body, /Art by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
+				return ent.decode(m);
+			});
+			var tidyText = function(m) {
+				m = m.replace(/<br>/gi, '\n');
+				m = m.replace(/<[^>]+>/gi, '');
+				return ent.decode(m.trim());
+			};
+			table.features = firstMatch(body, /Notable Features:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
+			table.notes = firstMatch(body, /Notes:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
+			table.toys = firstMatch(body, /Toys:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
+			table.slogans = firstMatch(body, /Marketing Slogans:\s*<\/b><\/td><td[^>]*>([\s\S]*?)<\/td>/i, tidyText);
+
+			var distance = natural.LevenshteinDistance(table.name, m[2]);
+			logger.log('info', '[ipdb] Found title "%s" as #%d (distance %d)', table.name, m[1], distance);
+			callback(null, table);
+
+		} else {
+			logger.log('warn', '[ipdb] Game "%s" not found in HTTP body.', table.name);
+			callback(null, table);
 		}
 	});
 };

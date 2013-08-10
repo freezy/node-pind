@@ -58,14 +58,16 @@ Transfer.prototype.initAnnounce = function() {
 	an.transferProgress(this, 'transferProgress', ns);
 
 	var that = this;
-	vpf.on('queueTransfer', function(transfer) {
+	var queue = function(transfer) {
 		that.queue(transfer, function(err) {
 			if (err) {
 				return logger.log('error', '[transfer] ERROR: %s', err);
 			}
-			logger.log('info', '[transfer] Received transfer event from VPF and succesfully queued "%s".', transfer.title);
+			logger.log('info', '[transfer] Queued "%s" via event.', transfer.title);
 		});
-	});
+	};
+	vpf.on('queueTransfer', queue);
+	vpm.on('queueTransfer', queue);
 };
 
 /**
@@ -506,39 +508,30 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 		// process checked actions
 		async.eachSeries(actions, function(action, next) {
 
-			// download ROM
-			if (action == 'dlrom') {
-				vpm.fetchMissingRom(table, function(err, downloadedRoms) {
-					if (err) {
-						return next(err);
-					}
-					logger.log('info', '[transfer] Added %d ROMs to the download queue.', downloadedRoms.length);
-					next();
-				});
-			}
+			switch (action) {
 
-			// download media
-			else if (action == 'dlmedia') {
-				vpf.findMediaPack(table, function(err, filepath) {
-					if (err) {
-						return next(err);
-					}
-					extr.extract(filepath, table.hpid ? table.hpid : null, function(err, files) {
+				// download ROM
+				case 'dlrom':
+					vpm.fetchMissingRom(table, function(err, downloadedRoms) {
 						if (err) {
 							return next(err);
 						}
-						logger.log('info', '[transfer] Successfully extracted %d media files.', files.length);
-						fs.unlinkSync(filepath);
+						logger.log('info', '[transfer] Added %d ROMs to the download queue.', downloadedRoms.length);
 						next();
 					});
-				})
+					break;
+
+				// download media
+				case 'dlmedia':
+					vpf.findMediaPack(table, next);
+					break;
+
+				// otherwise just continue
+				default:
+					logger.log('warn', '[transfer] Skipping unimplemented action: %s', action);
+					next();
 			}
 
-			// otherwise just continue
-			else {
-				logger.log('warn', '[transfer] Unimplemented action: %s', action);
-				next();
-			}
 		}, callback);
 	};
 
@@ -571,7 +564,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 					filename: filename
 				}, function(err, table) {
 
-					if (table.ipdb_no) {
+					if (!err && table.ipdb_no) {
 						schema.Table.updateOrCreate({ where: { ipdb_no: table.ipdb_no }}, table, function(err, table) {
 							if (err) {
 								logger.log('warn', '[transfer] Error adding to tables: %s', err);

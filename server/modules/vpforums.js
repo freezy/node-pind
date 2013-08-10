@@ -72,9 +72,8 @@ VPForums.prototype.initAnnounce = function() {
  *
  * @param cat VPF category
  * @param table Table of the media pack
- * @param callback Function to execute after completion, invoked with two arguments:
- * 	<ol><li>{String} Error message on error</li>
- * 		<li>{String} Success message from transfer.</li></ol>
+ * @param callback Function to execute after completion, invoked with one argument:
+ * 	<ol><li>{String} Error message on error</li></ol>
  */
 VPForums.prototype._findMedia = function(table, cat, callback) {
 
@@ -89,9 +88,11 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
 			return str.replace(/[\[\(].*/, '').trim();
 		}, 'intelligent');
 		if (!match) {
+			logger.log('error', '[vpf] Cannot find any media with name similar to "%s".', table.name);
 			return callback('Cannot find any media with name similar to "' + table.name + '".');
 		}
 
+		// this will add a new transfer.
 		that.emit('queueTransfer', {
 			title: match.title,
 			url: 'http://www.vpforums.org/index.php?app=downloads&showfile=' + match.fileId,
@@ -112,9 +113,9 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
  */
 VPForums.prototype.findMediaPack = function(table, callback) {
 	if (table.platform == 'VP') {
-		VPForums.prototype._findMedia(table, 35, callback);
+		this._findMedia(table, 35, callback);
 	} else {
-		VPForums.prototype._findMedia(table, 36, callback);
+		this._findMedia(table, 36, callback);
 	}
 };
 
@@ -385,7 +386,7 @@ VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance
 VPForums.prototype._matchResult = function(results, title, trimFct, strategy) {
 	//noinspection JSCheckFunctionSignatures
     var matches = this._matchResults(results, title, trimFct);
-	logger.log('info', 'Got matches: %j', matches, {});
+	logger.log('info', '[vpf] Got matches: %j', matches, {});
 	matches.sort(function(a, b) {
 		var x;
 		//noinspection FallthroughInSwitchStatementJS
@@ -453,7 +454,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 
 		// update cache
 		if (letter) {
-			logger.log('info', '[vpf] Updating cache for letter "%s"...', letter);
+			logger.log('info', '[vpf] Updating cache for category "%s" / letter "%s"...', cat, letter);
 		} else {
 			logger.log('info', '[vpf] Updating cache...');
 		}
@@ -560,9 +561,9 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			if (m = body.match(/<li class='pagejump[^']+'>\s+<a[^>]+>Page \d+ of (\d+)/i)) {
 				numPages = m[1];
 			} else {
-				//var debugFile = error.dumpDebugData('vpf', 'no-numpage', body, 'html');
-				//logger.log('info', '[vpf] Could not parse number of pages at ' + url + '. See ' + debugFile);
-				logger.log('info', '[vpf] Could not parse number of pages, assuming one page only.');
+				var debugFile = error.dumpDebugData('vpf', 'no-numpage', body, 'html');
+				logger.log('info', '[vpf] Could not parse number of pages at ' + url + '. See ' + debugFile);
+				//logger.log('info', '[vpf] Could not parse number of pages, assuming one page only.');
 				numPages = 1;
 			}
 

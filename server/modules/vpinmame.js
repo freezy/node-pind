@@ -97,22 +97,18 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	 * @param next
 	 */
 	var queue = function(link, folder, engine, reference, next) {
-		var transfer = require('./transfer');
-		transfer.queue({
+
+		// this will queue a new transfer.
+		that.emit('queueTransfer', {
 			title: link.title,
 			url: link.url,
 			filename: link.filename,
 			type: 'rom',
 			engine: engine,
 			reference: reference
-		}, function(err, msg) {
-			if (err) {
-				logger.log('error', '[vpm] Error querying ROM "%s": %s', link.title, err);
-				return next(err);
-			}
-			next(null, msg);
 		});
-	}
+		next();
+	};
 
 	/**
 	 * Downloads all ROMs from vpforums.org (that don't exist already).
