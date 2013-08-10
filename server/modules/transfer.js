@@ -207,18 +207,25 @@ Transfer.prototype.queue = function(transfer, callback) {
 		transfer.postAction = JSON.stringify(transfer.postAction);
 	}
 	transfer.sort = +new Date();
-	schema.Transfer.create(transfer).success(function(row) {
-
-		that.emit('transferAdded', { transfer: row });
-
-		callback(null, 'Added "' + transfer.title + '" successfully to queue.');
-		that.emit('statusUpdated');
-		if (settings.pind.startDownloadsAutomatically) {
-			that.start(function() {
-				logger.log('info', '[transfer] Download queue finished.');
-			});
+	schema.Transfer.find({ where: [ 'url = ? AND startedAt IS NULL', transfer.url ]}).success(function(row) {
+		if (row) {
+			logger.log('info', '[transfer] Transfer with URL "%s" already added, skipping.', transfer.url);
+			return callback(null, 'Skipped "' + transfer.title + '" since it is already in the queue.');
 		}
+		schema.Transfer.create(transfer).success(function(row) {
+
+			that.emit('transferAdded', { transfer: row });
+
+			callback(null, 'Added "' + transfer.title + '" successfully to queue.');
+			that.emit('statusUpdated');
+			if (settings.pind.startDownloadsAutomatically) {
+				that.start(function() {
+					logger.log('info', '[transfer] Download queue finished.');
+				});
+			}
+		});
 	});
+
 };
 
 /**
@@ -484,7 +491,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 		return callback(null, transfer);
 	}
 
-	logger.log('info', '[transfer] Starting post processing of download.');
+	logger.log('info', '[transfer] Starting post processing of transfer "%s".', transfer.title);
 
 	var action = JSON.parse(transfer.postAction);
 	var result = JSON.parse(transfer.result);
@@ -538,7 +545,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 	// transfer type: TABLE
 	if (transfer.type == 'table') {
 
-		// 1. add to tables
+		// 1. find reference
 		if (transfer.engine == 'vpf') {
 			schema.VpfFile.find(transfer.reference).success(function(vpffile) {
 				if (!vpffile) {
