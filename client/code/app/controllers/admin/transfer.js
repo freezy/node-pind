@@ -164,13 +164,36 @@ module.exports = function(module) {
 			$scope.showDragHandle = true;
 			$scope.dragHandleClass = 'dragHandle';
 		}
-		var iconmap = {
-			table: 'file',
-			rom: 'chip',
-			mediapack: 'pictures',
-			video: 'video'
+		var icon = {
+			type: {
+				icon: {
+					table: 'file',
+					rom: 'chip',
+					mediapack: 'pictures',
+					video: 'video'
+				},
+				text: {
+					table: 'Table File',
+					rom: 'ROM File',
+					mediapack: 'Media Pack',
+					video: 'Table Video'
+				}
+			},
+			source: {
+				icon: {
+					vpf: 'vpf-small',
+					ipdb: 'ipdb'
+				},
+				text: {
+					vpf: 'Download from VPForums.org',
+					ipdb: 'Download from IPDB.org'
+				}
+			}
 		};
-		$scope.icon = iconmap[$scope.transfer.type];
+		$scope.typeicon = icon.type.icon[$scope.transfer.type];
+		$scope.typetext = icon.type.text[$scope.transfer.type];
+		$scope.srcicon = icon.source.icon[$scope.transfer.engine];
+		$scope.srctext = icon.source.text[$scope.transfer.engine];
 
 		var prev = $scope.data[$scope.$index - 1];
 		if (prev && prev.s != $scope.transfer.s) {

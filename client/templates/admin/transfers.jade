@@ -44,6 +44,7 @@ block inner-content
 						th(style='width:100px')
 						th(style='width:40px') Size
 						th(style='width:10px')
+						th(style='width:10px')
 						th Name
 						th(style='width:120px') Added
 						th(style='width:95px')
@@ -57,11 +58,11 @@ block inner-content
 								.bar(style="width: {{progress}}%;")
 						td.size {{transfer.displaySize}}
 						td
-							i.icon(class='{{icon}}')
+							i.icon(class='{{typeicon}}', title='{{typetext}}')				
 						td
-							span(ng-bind-html-unsafe="displayName")
 							a(href='{{transfer.url}}', target='_blank')
-								i.icon.link
+								i.icon(class='{{srcicon}}', title='{{srctext}}')
+						td(ng-bind-html-unsafe="displayName")
 						td {{transfer.queuedSince}}
 						td.nowrap
 							ul.pills.small
