@@ -167,7 +167,7 @@ module.exports = function(module) {
 		var iconmap = {
 			table: 'file',
 			rom: 'chip',
-			mediapack: 'image',
+			mediapack: 'pictures',
 			video: 'video'
 		};
 		$scope.icon = iconmap[$scope.transfer.type];

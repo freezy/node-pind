@@ -4,7 +4,7 @@ var ss = require('socketstream');
 // Define a single-page client
 ss.client.define('main', {
 	view: 'index.jade',
-	css: ['libs', 'symbols.css', 'fonts.css', 'definitions.styl', 'layout.styl', 'element.styl', 'module.styl'],
+	css: ['libs', 'animations.css', 'fonts.css', 'definitions.styl', 'layout.styl', 'element.styl', 'module.styl'],
 	code: ['libs', 'app'],
 	tmpl: '*'
 });

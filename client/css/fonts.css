@@ -1,4 +1,15 @@
 @font-face {
+	font-family: 'pind-symbols';
+	src:url('/fonts/pind-symbols.eot?31024');
+	src:url('/fonts/pind-symbols.eot?31024') format('embedded-opentype'),
+	url('/fonts/pind-symbols.woff?31024') format('woff'),
+	url('/fonts/pind-symbols.ttf?31024') format('truetype'),
+	url('/fonts/pind-symbols.svg?v#pind-symbols') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
 	font-family: 'Open Sans';
 	src: url('/fonts/opensans-light-webfont.eot');
 	src: url('/fonts/opensans-light-webfont.eot?#iefix') format('embedded-opentype'),
