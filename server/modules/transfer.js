@@ -164,6 +164,7 @@ Transfer.prototype.resetFailed = function(callback) {
 			that.start(function() {});
 		}
 		that.emit('dataUpdated');
+		that.emit('statusUpdated');
 		that.emit('transferClearedFailed');
 		callback();
 	}).error(callback);
