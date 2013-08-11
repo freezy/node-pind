@@ -526,6 +526,10 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 					vpf.findMediaPack(table, next);
 					break;
 
+				case 'dlvideo':
+					vpf.findTableVideo(table, next);
+					break;
+
 				// otherwise just continue
 				default:
 					logger.log('warn', '[transfer] Skipping unimplemented action: %s', action);

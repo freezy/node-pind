@@ -72,14 +72,15 @@ VPForums.prototype.initAnnounce = function() {
  *
  * @param cat VPF category
  * @param table Table of the media pack
+ * @param what Enum for transfer table
  * @param callback Function to execute after completion, invoked with one argument:
  * 	<ol><li>{String} Error message on error</li></ol>
  */
-VPForums.prototype._findMedia = function(table, cat, callback) {
+VPForums.prototype._findMedia = function(table, cat, what, callback) {
 
 	var that = this;
-	logger.log('info', '[vpf] Searching media pack for "%s"...', table.name);
-	this._fetchDownloads(35, table.name, {}, function(err, results) {
+	logger.log('info', '[vpf] Searching %s for "%s"', what, table.name);
+	this._fetchDownloads(cat, table.name, {}, function(err, results) {
 		if (err) {
 			logger.log('error', '[vpf] Error fetching downloads: %s', err);
 			return callback(err);
@@ -96,7 +97,7 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
 		that.emit('queueTransfer', {
 			title: match.title,
 			url: 'http://www.vpforums.org/index.php?app=downloads&showfile=' + match.fileId,
-			type: 'mediapack',
+			type: what,
 			engine: 'vpf',
 			reference: match.id
 		});
@@ -113,9 +114,9 @@ VPForums.prototype._findMedia = function(table, cat, callback) {
  */
 VPForums.prototype.findMediaPack = function(table, callback) {
 	if (table.platform == 'VP') {
-		this._findMedia(table, 35, callback);
+		this._findMedia(table, 35, 'mediapack', callback);
 	} else {
-		this._findMedia(table, 36, callback);
+		this._findMedia(table, 36, 'mediapack', callback);
 	}
 };
 
@@ -128,9 +129,9 @@ VPForums.prototype.findMediaPack = function(table, callback) {
  */
 VPForums.prototype.findTableVideo = function(table, callback) {
 	if (table.platform == 'VP') {
-		this._findMedia(table, 43, callback);
+		this._findMedia(table, 43, 'video', callback);
 	} else {
-		this._findMedia(table, 34, callback);
+		this._findMedia(table, 34, 'video', callback);
 	}
 };
 
