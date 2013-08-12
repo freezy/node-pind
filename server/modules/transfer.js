@@ -500,6 +500,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 
 	var action = JSON.parse(transfer.postAction);
 	var result = JSON.parse(transfer.result);
+	var that = this;
 
 	var tableActions = function(table, callback) {
 
@@ -511,6 +512,12 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 		// process checked actions
 		async.eachSeries(actions, function(action, next) {
 
+			var done = function() {
+				that.emit('dataUpdated');
+				that.emit('statusUpdated');
+				next();
+			};
+
 			switch (action) {
 
 				// download ROM
@@ -520,17 +527,17 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 							return next(err);
 						}
 						logger.log('info', '[transfer] Added %d ROMs to the download queue.', downloadedRoms.length);
-						next();
+						done();
 					});
 					break;
 
 				// download media
 				case 'dlmedia':
-					vpf.findMediaPack(table, next);
+					vpf.findMediaPack(table, done);
 					break;
 
 				case 'dlvideo':
-					vpf.findTableVideo(table, next);
+					vpf.findTableVideo(table, done);
 					break;
 
 				// otherwise just continue
