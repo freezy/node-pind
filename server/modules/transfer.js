@@ -249,7 +249,7 @@ Transfer.prototype.start = function(callback) {
 			}
 
 		} else {
-			if (result.emptyQueue) {
+			if (result && result.emptyQueue) {
 				logger.log('info', '[transfer] Queue is empty, returning.');
 				if (first && callback) {
 					callback(null, result);
@@ -361,7 +361,9 @@ Transfer.prototype.next = function(callback) {
 							return row.updateAttributes({
 								failedAt: new Date(),
 								result: JSON.stringify({ error: err })
-							}).done(callback);
+							}).done(function() {
+								callback(null, { failed: true });
+							});
 						}
 
 						// otherwise, update db with success and extract
