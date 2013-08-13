@@ -193,7 +193,10 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 		}
 		//error.dumpDebugData('vpf', '01-first.page', body, 'html');
 
-		// starts the download, assuming we have a logged session.
+		/**
+		 * Starts the download, assuming we have a logged session.
+		 * @param body HTML body of initial download page.
+		 */
 		var download = function(body) {
 			var m;
 			if (aborting) {
@@ -208,59 +211,113 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 
 			that.emit('downloadPreparing', { reference: transfer });
 			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
-				var confirmUrl = m[1].replace(/&amp;/g, '&');
 
+				/**
+				 * Like "request", but with two callbacks:
+				 * 	- One for "text" responses, where no "Content-Disposition" header is provided
+				 * 	- One for "binary" responses, where "Content-Disposition" header is provided
+				 *
+				 * The first returns the body directly, while the latter only provides the res object
+				 * which can be used for streaming.
+				 *
+				 * @param options Options passed to "request()"
+				 * @param txtFct
+				 * @param binFct
+				 */
+				var reqTxtOrBin = function(options, txtFct, binFct) {
+
+					var req = request(options);
+					req.on('response', function(response) {
+
+						// check status code
+						if (response.statusCode !== 200) {
+							logger.log('error', '[vpf] Status code is %d instead of 200 when downloading confirmation page.', response.statusCode);
+							return txtFct('Status code is not 200 but ' + response.statusCode);
+						}
+
+						// stream to file
+						if (response.headers['content-disposition']) {
+							var m = response.headers['content-disposition'].match(/filename="([^"]+)"/i);
+							var filename;
+							if (m) {
+								filename = m[1];
+							} else {
+								filename = response.headers['content-disposition'].substr(response.headers['content-disposition'].toLowerCase().indexOf('filename'));
+								filename = filename.trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
+								logger.log('warn', '[vpf] Messed up Content-Disposition "%s", taking whole string "%s".', response.headers['content-disposition'], filename);
+							}
+							that.emit('filenameReceived', { filename: filename, reference: transfer });
+
+							if (response.headers['content-length']) {
+								that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: transfer });
+								watcher.watchDownload(dest, response.headers['content-length'], transfer);
+							}
+
+							binFct(response, filename, options.url);
+
+						// stream to memory
+						} else {
+							var chunks = [];
+							response.on('data', function(chunk) {
+								chunks.push(chunk);
+							});
+
+							response.on('end', function() {
+								var buffer = Buffer.concat(chunks);
+								txtFct(null, response, buffer.toString());
+							});
+						}
+					});
+
+					req.on('error', function(err) {
+						logger.log('error', '[vpf] Error fetching: ', err.message);
+						txtFct(err.message);
+					});
+				};
+
+				/**
+				 * Streams a download to disk.
+				 * FVABZ-GE0L7-ETB2H
+				 * @param res
+				 * @param filename
+ 				 * @param url
+				 */
+				var downloadFile = function(res, filename, url) {
+
+					var dest = settings.pind.tmp + '/' + filename;
+					that.emit('downloadStarted', { filename: filename, destpath: dest, reference: transfer });
+					logger.log('info', '[vpf] Downloading %s at %s...', filename, url);
+					var stream = fs.createWriteStream(dest);
+					stream.on('close', function() {
+
+						var fd = fs.openSync(dest, 'r');
+						var size = fs.fstatSync(fd).size;
+						fs.closeSync(fd);
+						watcher.unWatchDownload(dest);
+
+						that.emit('downloadCompleted', { size: size, reference: transfer });
+						logger.log('info', '[vpf] Downloaded %d bytes to %s.', size, dest);
+
+						// remove from transferring array
+						transferring.splice(transferring.indexOf(res), 1);
+
+						callback(null, dest);
+					});
+					res.pipe(stream);
+
+					// add to transferring array so we can stop/pause it
+					transferring.push(res);
+				};
+
+				var confirmUrl = m[1].replace(/&amp;/g, '&');
 				logger.log('info', '[vpf] Getting confirmation page at %s...', confirmUrl);
 
 				/*
 				 * The "confirmation page" can also directly return file data. That means we have to look at the headers
 				 * in order to determine if the returned data is the confirmation page or not.
 				 */
-				var reqOrStream = function(options, htmlFct, binaryFct) {
+				reqTxtOrBin({ url: confirmUrl, jar: true }, function(err, response, body) {
 
-					var req = request(options);
-					req.on('response', function(res) {
-
-						// check status code
-						if (res.statusCode !== 200) {
-							logger.log('error', '[vpf] Status code is %d instead of 200 when downloading confirmation page.', res.statusCode);
-							return callback('Error in confirmation page, see log.');
-						}
-
-						// stream to file
-						if (response.headers['content-disposition']) {
-							var filename = response.headers['content-disposition'].match(/filename="([^"]+)"/i)[1];
-							that.emit('filenameReceived', { filename: filename, reference: transfer });
-							binaryFct(res, filename);
-
-						// stream to memory
-						} else {
-							var chunks = [];
-							res.on('data', function(chunk) {
-								chunks.push(chunk);
-							});
-
-							res.on('end', function() {
-								var buffer = Buffer.concat(chunks);
-								htmlFct(null, res, buffer.toString());
-							});
-						}
-					});
-
-					req.on('error', function(err) {
-						logger.log('error', '[vpf] Error fetching confirmation page: ', err.message);
-						return callback('Error in confirmation page, see log.');
-					});
-
-				};
-
-
-
-
-
-
-				// fetch the "confirm" page, where the actual link is
-				request({ url: confirmUrl, jar: true }, function(err, response, body) {
 					//error.dumpDebugData('vpf', '02-confirmation', body, 'html');
 
 					if (aborting) {
@@ -278,79 +335,39 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 					}
 					if (link) {
 						var downloadUrl = link[1].replace(/&amp;/g, '&');
-						var filename = link[2].trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
-						var dest = settings.pind.tmp + '/' + filename;
 						var failed = false;
 
+						reqTxtOrBin({ url: downloadUrl, jar: true }, function(err, response, body) {
 
-						that.emit('downloadStarted', { filename: filename, destpath: dest, reference: transfer });
-						logger.log('info', '[vpf] Downloading %s at %s...', filename, downloadUrl);
-						var stream = fs.createWriteStream(dest);
-						stream.on('close', function() {
-
-							var fd = fs.openSync(dest, 'r');
-							var size = fs.fstatSync(fd).size;
-							fs.closeSync(fd);
-							watcher.unWatchDownload(dest);
-
-							// check for failed flags
-							if (failed || size < 128000) {
-								var data = fs.readFileSync(dest, 'utf8');
-								if (data.match(/You have exceeded the maximum number of downloads allotted to you for the day/i)) {
-									logger.log('info', '[vpf] Download data is error message, quitting.', { size: size, dest: dest });
-									err = 'Number of daily downloads exceeded at VPF.';
-									that.emit('downloadFailed', { message: err });
-									return callback(err);
-								}
-								if (data.match(/You may not download any more files until your other downloads are complete/i)) {
-									logger.log('info', '[vpf] Too many simulataneous downloads, quitting.', { size: size, dest: dest });
-									err = 'Number of concurrent downloads exceeded at VPF.';
-									that.emit('downloadFailed', { message: err });
-									return callback(err);
-								}
-								if (failed) {
-									logger.log('info', '[vpf] Download failed, see %s what went wrong.', dest);
-									err = 'Download failed.';
-									that.emit('downloadFailed', { message: err });
-									return callback(err);
-								}
+							if (body.match(/You have exceeded the maximum number of downloads allotted to you for the day/i)) {
+								logger.log('info', '[vpf] Download data is error message, quitting.', { size: size, dest: dest });
+								err = 'Number of daily downloads exceeded at VPF.';
+								that.emit('downloadFailed', { message: err });
+								return callback(err);
+							}
+							if (body.match(/You may not download any more files until your other downloads are complete/i)) {
+								logger.log('info', '[vpf] Too many simulataneous downloads, quitting.', { size: size, dest: dest });
+								err = 'Number of concurrent downloads exceeded at VPF.';
+								that.emit('downloadFailed', { message: err });
+								return callback(err);
+							}
+							if (failed) {
+								logger.log('info', '[vpf] Download failed, see %s what went wrong.', dest);
+								err = 'Download failed.';
+								that.emit('downloadFailed', { message: err });
+								return callback(err);
 							}
 
-							that.emit('downloadCompleted', { size: size, reference: transfer });
-							logger.log('info', '[vpf] Downloaded %d bytes to %s.', size, dest);
-
-							// remove from transferring array
-							transferring.splice(transferring.indexOf(req), 1);
-
-							callback(null, dest);
-						});
-						req = request({ url: downloadUrl, jar: true });
-						req.on('response', function(response) {
-
-							if (response.statusCode != 200) {
-								failed = true;
-								logger.log('error', '[vpf] Download failed with status code %s.', response.statusCode);
-								return;
-							}
-							if (response.headers['content-length']) {
-								that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: transfer });
-								watcher.watchDownload(dest, response.headers['content-length'], transfer);
-							}
-							if (response.headers['content-disposition']) {
-								var filename = response.headers['content-disposition'].match(/filename="([^"]+)"/i)[1];
-								that.emit('filenameReceived', { filename: filename, reference: transfer });
-							}
-						}).pipe(stream);
-
-						// add to transferring array so we can stop/pause it
-						transferring.push(req);
+						}, downloadFile);
 
 					} else {
 						var f = error.dumpDebugData('vpf', 'confirm.page', body, 'html');
 						logger.log('error', '[vpf] Error parsing download button, see %s for content body.', f);
 						callback('Cannot find file download button at ' + confirmUrl);
 					}
-				});
+				}, downloadFile);
+
+
 			} else {
 				var f = error.dumpDebugData('vpf', 'download.page', body, 'html');
 				logger.log('error', '[vpf] Error parsing download button, see %s for content body.', f);
