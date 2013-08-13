@@ -209,7 +209,56 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 			that.emit('downloadPreparing', { reference: transfer });
 			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
 				var confirmUrl = m[1].replace(/&amp;/g, '&');
+
 				logger.log('info', '[vpf] Getting confirmation page at %s...', confirmUrl);
+
+				/*
+				 * The "confirmation page" can also directly return file data. That means we have to look at the headers
+				 * in order to determine if the returned data is the confirmation page or not.
+				 */
+				var reqOrStream = function(options, htmlFct, binaryFct) {
+
+					var req = request(options);
+					req.on('response', function(res) {
+
+						// check status code
+						if (res.statusCode !== 200) {
+							logger.log('error', '[vpf] Status code is %d instead of 200 when downloading confirmation page.', res.statusCode);
+							return callback('Error in confirmation page, see log.');
+						}
+
+						// stream to file
+						if (response.headers['content-disposition']) {
+							var filename = response.headers['content-disposition'].match(/filename="([^"]+)"/i)[1];
+							that.emit('filenameReceived', { filename: filename, reference: transfer });
+							binaryFct(res, filename);
+
+						// stream to memory
+						} else {
+							var chunks = [];
+							res.on('data', function(chunk) {
+								chunks.push(chunk);
+							});
+
+							res.on('end', function() {
+								var buffer = Buffer.concat(chunks);
+								htmlFct(null, res, buffer.toString());
+							});
+						}
+					});
+
+					req.on('error', function(err) {
+						logger.log('error', '[vpf] Error fetching confirmation page: ', err.message);
+						return callback('Error in confirmation page, see log.');
+					});
+
+				};
+
+
+
+
+
+
 				// fetch the "confirm" page, where the actual link is
 				request({ url: confirmUrl, jar: true }, function(err, response, body) {
 					//error.dumpDebugData('vpf', '02-confirmation', body, 'html');
@@ -232,7 +281,7 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 						var filename = link[2].trim().replace(/\s/g, '.').replace(/[^\w\d\.\-]/gi, '');
 						var dest = settings.pind.tmp + '/' + filename;
 						var failed = false;
-						var req;
+
 
 						that.emit('downloadStarted', { filename: filename, destpath: dest, reference: transfer });
 						logger.log('info', '[vpf] Downloading %s at %s...', filename, downloadUrl);
