@@ -119,7 +119,7 @@ exports.actions = function(req, res, ss) {
 					}
 					rows = rs;
 
-					logger.log('info', '[db] Returning %d rows from a total of %d.', rows.length, num );
+					logger.log('info', '[db] [table] Returning %d rows from a total of %d.', rows.length, num );
 					res({ rows : rows, count : num });
 				});
 

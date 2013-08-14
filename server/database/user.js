@@ -1,4 +1,5 @@
 var ih = require('insanehash').crypto;
+var logger = require('winston');
 
 module.exports = function(sequelize, DataTypes) {
 
@@ -74,10 +75,10 @@ module.exports = function(sequelize, DataTypes) {
 		classMethods: {
 
 			authenticate: function(username, password, callback) {
-				console.log('Checking unicity for user %j', username);
+				logger.log('info', '[db] [user] Checking unicity for user %j', username);
 				User.find({ where: { user: username } }).success(function(row) {
 					if (!row) {
-						console.log('User "' + username  + '" not found.');
+						logger.log('info', '[db] [user] User "' + username  + '" not found.');
 						callback();
 					} else {
 						if (row.verifyPassword(password, row.pass)) {
@@ -92,13 +93,13 @@ module.exports = function(sequelize, DataTypes) {
 			},
 
 			autologin: function(user, authtoken, callback) {
-				console.log('Autologin: Checking user "' + user + '".');
+				logger.log('info', '[db] [user] Autologin: Checking user "' + user + '".');
 				User.find({ where: { user: user } }).success(function(user) {
 					if (user && user.authtoken == authtoken) {
-						console.log('Autologin: User "' + user.user + '" had a valid auth token.');
+						logger.log('info', '[db] [user] Autologin: User "' + user.user + '" had a valid auth token.');
 						callback(null, user);
 					} else {
-						console.log('Autologin: User "' + user + '" had an invalid auth token, resetting.');
+						logger.log('info', '[db] [user] Autologin: User "' + user + '" had an invalid auth token.');
 						callback('Invalid token.')
 					}
 				}).error(function(err) {

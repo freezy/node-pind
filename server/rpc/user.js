@@ -1,5 +1,6 @@
 'use strict';
 
+var logger = require('winston');
 var schema = require('../database/schema');
 var error = require('../modules/error');
 
@@ -42,7 +43,7 @@ exports.actions = function(req, res, ss) {
 				delete p.order;
 				schema.User.count(p).success(function(num) {
 
-					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
+					logger.log('info', '[db] [user] Returning ' + rows.length + ' rows from a total of ' + num + '.');
 					res({ rows : rows, count: num });
 
 				}).error(function(err) {

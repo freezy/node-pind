@@ -58,6 +58,7 @@ module.exports = function(module) {
 
 				} else {
 					userService.isLogged = false;
+					$.removeCookie(authTokenCookie);
 					callback('Login failed.');
 				}
 			};

@@ -21,6 +21,7 @@ var ipdb = require('./ipdb');
 
 var transferring = { vpf: [], ipdb: [] };
 var aborting = false;
+var downloadStarted = false;
 var progress = { };
 
 function Transfer() {
@@ -287,101 +288,10 @@ Transfer.prototype.next = function(callback) {
 	var that = this;
 	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'sort ASC' }).success(function(transfers) {
 		if (transfers.length > 0) {
-			var downloadStarted = false;
 
 			if (aborting) {
 				return callback(null, { aborted: true });
 			}
-
-			var download = function(transfer, modulename, moduleRef) {
-
-				downloadStarted = true;
-
-				// update "started" clock..
-				logger.log('info', '[transfer] [%s] Starting download of %s', modulename, transfer.url);
-				transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
-					that.emit('statusUpdated');
-
-					// update file size as soon as we receive the content length.
-					moduleRef.once('contentLengthReceived', function(data) {
-						if (data.reference.id) {
-							schema.Transfer.find(data.reference.id).success(function(row) {
-								if (row) {
-									row.updateAttributes({ size: data.contentLength });
-									logger.log('info', '[transfer] [%s] Updating size of transfer %s to %s.', modulename, data.reference.id, data.contentLength);
-									that.emit('transferSizeKnown', {
-										id: data.reference.id,
-										size: data.contentLength,
-										displaySize: filesize(data.contentLength, true)
-									});
-
-								} else {
-									logger.log('error', '[transfer] [%s] Could not find transfer with id %s for updating size to %s.', modulename, data.reference.id, data.contentLength);
-								}
-							});
-						}
-					});
-
-					moduleRef.once('filenameReceived', function(data) {
-						if (data.reference.id) {
-							schema.Transfer.find(data.reference.id).success(function(row) {
-								if (row) {
-									row.updateAttributes({ filename: data.filename });
-									logger.log('info', '[transfer] [%s] Updating filename of %s to %s.', modulename, row.title, data.filename);
-								} else {
-									logger.log('error', '[transfer] [%s] Could not find transfer with id %s for updating filename to %s.', modulename, data.reference.id, data.filename);
-								}
-							});
-						}
-					});
-
-					if (aborting) {
-						return callback(null, { aborted: true });
-					}
-
-					// now start the download
-					moduleRef.download.call(moduleRef, row, that, function(err, filepath) {
-
-						// free up slot
-						transferring[modulename] = _.reject(transferring[modulename], function(t) {
-							return t.id == transfer.id;
-						});
-						delete progress[transfer.id];
-
-						// if aborting, reset status and return.
-						if (aborting) {
-							return schema.sequelize.query('UPDATE transfers SET startedAt = null WHERE id = ' + row.id).success(function() {
-								that.emit('transferAborted', { id: row.id });
-							});
-						}
-
-						// on error, update db with error and exit
-						if (err) {
-							that.emit('transferFailed', { error: err, transfer: row });
-							return row.updateAttributes({
-								failedAt: new Date(),
-								result: JSON.stringify({ error: err })
-							}).done(function() {
-								callback(null, { failed: true });
-							});
-						}
-
-						// otherwise, update db with success and extract
-						var fd = fs.openSync(filepath, 'r');
-						var size = fs.fstatSync(fd).size;
-						fs.closeSync(fd);
-						row.updateAttributes({
-							completedAt: new Date(),
-							result: JSON.stringify({ downloaded: filepath }),
-							size: size
-
-						}).success(function(row) {
-							that.emit('transferCompleted', { file: filepath, transfer: row });
-							that.postDownload(filepath, row, callback);
-						});
-					});
-				});
-			};
 
 			// loop through transfers
 			for (var i = 0; i < transfers.length; i++) {
@@ -392,19 +302,19 @@ Transfer.prototype.next = function(callback) {
 				switch (transfer.engine) {
 					case 'vpf': {
 
-						// found a hit. check if there are download slots available:
+						// found vpf hit. check if there are download slots available:
 						if (transferring.vpf.length < settings.vpforums.numConcurrentDownloads) {
 							transferring.vpf.push(transfer);
-							download(transfer, 'vpf', vpf);
+							that._download(transfer, 'vpf', vpf, callback);
 						}
 					}
 					break;
 					case 'ipdb': {
 
-						// found a hit. check if there are download slots available:
+						// found ipdb hit. check if there are download slots available:
 						if (transferring.ipdb.length < settings.ipdb.numConcurrentDownloads) {
 							transferring.ipdb.push(transfer);
-							download(transfer, 'ipdb', ipdb);
+							that._download(transfer, 'ipdb', ipdb, callback);
 						}
 					}
 					break;
@@ -417,10 +327,111 @@ Transfer.prototype.next = function(callback) {
 			if (!downloadStarted) {
 				callback(null, { emptyQueue: true });
 			}
+
 		} else {
 			that.emit('statusUpdated');
 			callback(null, { emptyQueue: true });
 		}
+	});
+};
+
+/**
+ * Uses provided module to download a transfer.
+ *
+ * @param transfer
+ * @param moduleName
+ * @param moduleRef
+ * @param callback
+ * @private
+ */
+Transfer.prototype._download = function(transfer, moduleName, moduleRef, callback) {
+
+	var that = this;
+	downloadStarted = true;
+
+	// update "started" clock..
+	logger.log('info', '[transfer] [%s] Starting download of %s', moduleName, transfer.url);
+	transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
+		that.emit('statusUpdated');
+
+		// update file size as soon as we receive the content length.
+		moduleRef.once('contentLengthReceived', function(data) {
+			if (data.reference.id) {
+				schema.Transfer.find(data.reference.id).success(function(row) {
+					if (row) {
+						row.updateAttributes({ size: data.contentLength });
+						logger.log('info', '[transfer] [%s] Updating size of transfer %s to %s.', moduleName, data.reference.id, data.contentLength);
+						that.emit('transferSizeKnown', {
+							id: data.reference.id,
+							size: data.contentLength,
+							displaySize: filesize(data.contentLength, true)
+						});
+
+					} else {
+						logger.log('error', '[transfer] [%s] Could not find transfer with id %s for updating size to %s.', moduleName, data.reference.id, data.contentLength);
+					}
+				});
+			}
+		});
+
+		moduleRef.once('filenameReceived', function(data) {
+			if (data.reference.id) {
+				schema.Transfer.find(data.reference.id).success(function(row) {
+					if (row) {
+						row.updateAttributes({ filename: data.filename });
+						logger.log('info', '[transfer] [%s] Updating filename of %s to %s.', moduleName, row.title, data.filename);
+					} else {
+						logger.log('error', '[transfer] [%s] Could not find transfer with id %s for updating filename to %s.', moduleName, data.reference.id, data.filename);
+					}
+				});
+			}
+		});
+
+		if (aborting) {
+			return callback(null, { aborted: true });
+		}
+
+		// now start the download
+		moduleRef.download.call(moduleRef, row, that, function(err, filepath) {
+
+			// free up slot
+			transferring[moduleName] = _.reject(transferring[moduleName], function(t) {
+				return t.id == transfer.id;
+			});
+			delete progress[transfer.id];
+
+			// if aborting, reset status and return.
+			if (aborting) {
+				return schema.sequelize.query('UPDATE transfers SET startedAt = null WHERE id = ' + row.id).success(function() {
+					that.emit('transferAborted', { id: row.id });
+				});
+			}
+
+			// on error, update db with error and exit
+			if (err) {
+				that.emit('transferFailed', { error: err, transfer: row });
+				return row.updateAttributes({
+					failedAt: new Date(),
+					result: JSON.stringify({ error: err })
+				}).done(function() {
+					callback(null, { failed: true });
+				});
+			}
+
+			// otherwise, update db with success and run post download
+			var fd = fs.openSync(filepath, 'r');
+			var size = fs.fstatSync(fd).size;
+			fs.closeSync(fd);
+			row.updateAttributes({
+				completedAt: new Date(),
+				result: JSON.stringify({ downloaded: filepath }),
+				size: size
+
+			}).success(function(row) {
+				that.emit('transferCompleted', { file: filepath, transfer: row });
+				that.postDownload(filepath, row, callback);
+			});
+		});
 	});
 };
 
@@ -561,14 +572,20 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 				}
 				vpffile = vpffile.map();
 				var filename, filepath;
-				if (result && result.extract) {
-					for (var name in result.extract) {
-						if (path.extname(name).toLowerCase() == '.vpt' && result.extract.hasOwnProperty(name)) {
+				if (result && (result.extract || result.skip)) {
+					var files = _.extend(result.extract ? result.extract : {}, result.skip);
+					for (var name in files) {
+						if (path.extname(name).toLowerCase() == '.vpt' && files.hasOwnProperty(name)) {
 							filename = path.basename(name, path.extname(name));
-							filepath = result.extract[name].dst;
+							filepath = files[name].dst;
 							break;
 						}
 					}
+					if (!filepath) {
+						logger.log('warn', '[transfer] Unable to retrieve extracted file from result: %s', transfer.result);
+					}
+				} else {
+					logger.log('warn', '[transfer] No result or no extract info in transfer result: %s', transfer.result);
 				}
 
 				// 2. try to match at ipdb
@@ -586,18 +603,25 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 							}
 
 							// 3. analyze table data
-							vp.getTableData(filepath, function(err, attrs) {
-								if (err) {
-									logger.log('warn', '[transfer] Error reading vpt data: %s', err);
-									return callback(err);
-								}
-								table.updateAttributes(attrs).success(function(table) {
+							if (filepath) {
+								vp.getTableData(filepath, function(err, attrs) {
+									if (err) {
+										logger.log('warn', '[transfer] Error reading vpt data: %s', err);
+										return callback(err);
+									}
+									table.updateAttributes(attrs).success(function(table) {
 
-									// 4. continue with optional post actions.
-									tableActions(table, callback);
+										// 4. continue with optional post actions.
+										tableActions(table, callback);
 
+									});
 								});
-							});
+
+							} else {
+								// 4. continue with optional post actions.
+								tableActions(table, callback);
+							}
+
 						});
 					} else {
 						logger.log('warn', '[transfer] No ipdb match, ignoring for now.');

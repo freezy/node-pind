@@ -240,6 +240,16 @@ Extract.prototype.prepareExtract = function(files, renameTo, callback) {
 					mapping.ignore.push(filepath);
 				}
 
+			// Table videos
+			} else if (ext == '.f4v') {
+				dst = settings.hyperpin.path + '/Media/Visual Pinball/Table Videos/' + filename;
+				if (!fs.existsSync(dst)) {
+					add(dst, filepath);
+				} else {
+					logger.log('info', '[extract] "%s" already exists in VP table videos, skipping.', dst);
+					mapping.skip[filepath] = { src: filepath, dst: dst };
+				}
+
 			// otherwise, ignore
 			} else {
 				logger.log('warn', '[extract] No idea where "%s" belongs to.', filepath);

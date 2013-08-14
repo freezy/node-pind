@@ -142,7 +142,7 @@ exports.actions = function(req, res, ss) {
 
 				schema.Transfer.count().success(function(num) {
 
-					console.log('Returning ' + returnedRows.length + ' rows from a total of ' + num + '.');
+					logger.log('info', '[db] [transfer] Returning ' + returnedRows.length + ' rows from a total of ' + num + '.');
 					res({ rows: returnedRows, count: num });
 
 				}).error(function(err) {

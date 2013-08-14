@@ -91,7 +91,7 @@ exports.actions = function(req, res, ss) {
 				schema.VpfFile.count(p).success(function(num) {
 					var countTime = (+new Date() - countStart);
 
-					console.log('Returning ' + rows.length + ' rows from a total of ' + num + ' (%d/%dms).', queryTime, countTime);
+					logger.log('info', '[rpc] [vpf] Returning ' + rows.length + ' rows from a total of ' + num + ' (%d/%dms).', queryTime, countTime);
 					res({ rows: returnedRows, count: num, queryTime: queryTime, countTime: countTime });
 
 				}).error(function(err) {
