@@ -1,6 +1,10 @@
+'use strict';
+
 var _ = require('underscore');
+var clc = require('cli-color');
 var path = require('path');
 var fuzzy = require('fuzzy');
+var logger = require('winston');
 var Sequelize = require('sequelize');
 
 var settings = require('../../config/settings-mine');
@@ -8,7 +12,9 @@ var settings = require('../../config/settings-mine');
 var config = {
 
 	// enable/disable logging
-	logging: false, //console.log,
+	logging: function(msg) {
+		logger.log('info', clc.magentaBright.bgRed(msg.replace(/^executing:\s+/i, '')));
+	},
 
 	// disable inserting undefined values as NULL
 	omitNull: true,
@@ -17,14 +23,14 @@ var config = {
 		classMethods: {
 
 			fuzzySearch: function(rows, params, callback) {
-				console.log('Fuzzy-filtering ' + rows.length + ' rows...');
+				logger.log('info', '[db] Fuzzy-filtering ' + rows.length + ' rows...');
 				var options = {
 					pre: '<b>',
 					post: '</b>',
 					extract: this.fuzzyExtract
 				};
 				var hits = fuzzy.filter(params.search, rows, options);
-				console.log('Fuzzy-filtered ' + hits.length + ' hits.');
+				logger.log('info', '[db] Fuzzy-filtered ' + hits.length + ' hits.');
 
 				// paging needs to be done manually
 				var pagedResults;
@@ -73,7 +79,7 @@ if (settings.pind.database.engine == 'mysql') {
 	} else {
 		config.storage = path.normalize(__dirname + '../../../' + settings.pind.database.database + '.db');
 	}
-	console.log('SQLite storage file at %s.', config.storage);
+	logger.log('info', '[db] SQLite storage file at %s.', config.storage);
 
 } else {
 	throw new Error('Unknown database engine (' + settings.pind.database.engine + ').');
@@ -88,13 +94,13 @@ var sequelize = new Sequelize(
 );
 
 // retrieve base definitions
-User = sequelize.import(__dirname + '/user');
-Table = sequelize.import(__dirname + '/table');
-Rom = sequelize.import(__dirname + '/rom');
-Hiscore = sequelize.import(__dirname + '/hiscore');
-Transfer = sequelize.import(__dirname + '/transfer');
-VpfFile = sequelize.import(__dirname + '/vpf_file');
-Upgrade = sequelize.import(__dirname + '/upgrade');
+var User = sequelize.import(__dirname + '/user');
+var Table = sequelize.import(__dirname + '/table');
+var Rom = sequelize.import(__dirname + '/rom');
+var Hiscore = sequelize.import(__dirname + '/hiscore');
+var Transfer = sequelize.import(__dirname + '/transfer');
+var VpfFile = sequelize.import(__dirname + '/vpf_file');
+var Upgrade = sequelize.import(__dirname + '/upgrade');
 
 
 // setup associations
@@ -105,12 +111,12 @@ Hiscore.belongsTo(Table);
 
 
 sequelize.sync().on('success', function() {
-	console.log('Connected to %s.', settings.pind.database.engine == 'mysql' ? "MySQL" : "SQLite");
+	logger.log('info', '[db] Connected to %s.', settings.pind.database.engine == 'mysql' ? "MySQL" : "SQLite");
 }).error(function(err){
-	console.log('Error connecting to SQLite: ' + err);
+	logger.log('error', '[db] Error connecting to SQLite: ' + err);
 });
 
-create = function(next){
+var create = function(next){
 	sequelize.sync({force: true}).on('success', function() {
 		next();
 	}).error(function(err){
