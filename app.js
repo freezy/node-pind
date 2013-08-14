@@ -1,5 +1,7 @@
-var http = require('http');
 var ss = require('socketstream');
+var clc = require('cli-color');
+var http = require('http');
+var logger = require('winston');
 
 // Define a single-page client
 ss.client.define('main', {
@@ -30,6 +32,12 @@ ss.responders.add(require('ss-angular'), { pollFreq: 60000 });
 if (ss.env == 'production') {
 	ss.client.packAssets();
 }
+
+// override logger
+ss.api.log = function() {
+	var args = Array.prototype.slice.call(arguments);
+	logger.log('info', clc.bgBlue(args.join(' ')));
+};
 
 // init modules
 require('./server/initializers/pind.js')();

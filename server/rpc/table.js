@@ -5,6 +5,7 @@ var fs = require('fs');
 var ent = require('ent');
 var util = require('util');
 var fuzzy = require('fuzzy');
+var logger = require('winston');
 
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
@@ -85,7 +86,7 @@ exports.actions = function(req, res, ss) {
 				// trim trailing operator
 				if (p.where && p.where.length > 0) {
 					p.where = p.where.substr(0, p.where.lastIndexOf(')') + 1);
-					console.log('Condition: WHERE %s', p.where);
+					//console.log('Condition: WHERE %s', p.where);
 				} else {
 					delete p.where;
 				}
@@ -117,9 +118,9 @@ exports.actions = function(req, res, ss) {
 						rs.push(fields(rows[i], params));
 					}
 					rows = rs;
-					console.log('Returning ' + rows.length + ' rows from a total of ' + num + '.');
-					res({ rows : rows, count : num });
 
+					logger.log('info', '[db] Returning %d rows from a total of %d.', rows.length, num );
+					res({ rows : rows, count : num });
 				});
 
 			});
