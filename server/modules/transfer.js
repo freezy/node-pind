@@ -379,9 +379,9 @@ Transfer.prototype._download = function(transfer, moduleName, moduleRef, callbac
 				schema.Transfer.find(data.reference.id).success(function(row) {
 					if (row) {
 						row.updateAttributes({ filename: data.filename });
-						logger.log('info', '[transfer] [%s] Updating filename of %s to %s.', moduleName, row.title, data.filename);
+						logger.log('info', '[transfer] [%s] Updating database with new filename "%s" for id %d.', moduleName, data.filename, row.id);
 					} else {
-						logger.log('error', '[transfer] [%s] Could not find transfer with id %s for updating filename to %s.', moduleName, data.reference.id, data.filename);
+						logger.log('error', '[transfer] [%s] Could not find transfer with id %s for updating filename to "%s".', moduleName, data.reference.id, data.filename);
 					}
 				});
 			}

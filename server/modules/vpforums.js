@@ -183,13 +183,15 @@ VPForums.prototype.getRomLinks = function(table, callback) {
 
 		// now, try to match by description (which contains the file name) first.
 		var matchedResult;
-		for (i = 0; i < results.length; i++) {
-			var result = results[i];
-			var d = result.description.toLowerCase();
-			if (d.substr(0, d.lastIndexOf('.')) == table.rom) {
-				logger.log('info', '[vpf] Matched "%s" by ROM name "%s".', result.title, table.rom);
-				matchedResult = result;
-				break;
+		if (table.rom) {
+			for (i = 0; i < results.length; i++) {
+				var result = results[i];
+				var d = result.description.toLowerCase();
+				if (d.substr(0, d.lastIndexOf('.')) == table.rom) {
+					logger.log('info', '[vpf] Matched "%s" by ROM name "%s".', result.title, table.rom);
+					matchedResult = result;
+					break;
+				}
 			}
 		}
 
@@ -239,8 +241,6 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 		}
 		//error.dumpDebugData('vpf', '01-first.page', body, 'html');
 
-		console.log('### First page loaded.');
-
 		/**
 		 * Starts the download, assuming we have a logged session.
 		 * @param body HTML body of initial download page.
@@ -260,8 +260,6 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 			that.emit('downloadPreparing', { reference: transfer });
 			if (m = body.match(/<a\s+href='([^']+)'\s+class='download_button[^']*'>/i)) {
 
-				console.log('### Download button found.');
-
 				/**
 				 * Like "request", but with two callbacks:
 				 * 	- One for "text" responses, where no "Content-Disposition" header is provided
@@ -276,12 +274,8 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 				 */
 				var reqTxtOrBin = function(options, txtFct, binFct) {
 
-					console.log('*** REQUEST for %s', options.url);
-
 					var req = request(options);
 					req.on('response', function(response) {
-
-						console.log('*** Got reponse code %d.', response.statusCode);
 
 						// check status code
 						if (response.statusCode !== 200) {
@@ -291,7 +285,6 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 
 						// stream to file
 						if (response.headers['content-disposition']) {
-							console.log('*** Binary file detected.');
 							var m = response.headers['content-disposition'].match(/filename="([^"]+)"/i);
 							var filename;
 							if (m) {
@@ -306,13 +299,10 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 							if (response.headers['content-length']) {
 								that.emit('contentLengthReceived', { contentLength: response.headers['content-length'], reference: transfer });
 							}
-							console.log('*** Parsed filename "%s" and size %d. Running callback now.', filename, response.headers['content-length']);
-
 							binFct(response, filename, response.headers['content-length'], options.url);
 
 						// stream to memory
 						} else {
-							console.log('*** HTML file detected.');
 							var chunks = [];
 							response.on('data', function(chunk) {
 								chunks.push(chunk);
@@ -320,7 +310,6 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 
 							response.on('end', function() {
 								var buffer = Buffer.concat(chunks);
-								console.log('*** Got all HTML chunks (%d bytes). Running callback now.', buffer.length);
 								txtFct(null, response, buffer.toString());
 							});
 						}
@@ -337,12 +326,12 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 				 *
 				 * @param res
 				 * @param filename
+				 * @param size
  				 * @param url
 				 */
 				var downloadFile = function(res, filename, size, url) {
 
-					console.log('### Streaming data from %s to %s', url, filename);
-
+					var watching = false;
 					var dest = settings.pind.tmp + '/' + filename;
 
 					that.emit('downloadStarted', { filename: filename, destpath: dest, reference: transfer });
@@ -363,13 +352,17 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 
 						callback(null, dest);
 					});
+					res.on('data', function() {
+						if (!watching) {
+							// register watcher
+							watcher.watchDownload(dest, size, transfer);
+							watching = true;
+						}
+					});
 					res.pipe(stream);
 
 					// add to transferring array so we can stop/pause it
 					transferring.push(res);
-
-					// register watcher
-					watcher.watchDownload(dest, size, transfer);
 				};
 
 				var confirmUrl = m[1].replace(/&amp;/g, '&');
@@ -380,8 +373,6 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 				 * in order to determine if the returned data is the confirmation page or not.
 				 */
 				reqTxtOrBin({ url: confirmUrl, jar: true }, function(err, response, body) {
-
-					console.log('### Got confirmation page.');
 
 					//error.dumpDebugData('vpf', '02-confirmation', body, 'html');
 
@@ -402,7 +393,6 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 						var downloadUrl = link[1].replace(/&amp;/g, '&');
 						var failed = false;
 
-						console.log('### Downloading file now.');
 						reqTxtOrBin({ url: downloadUrl, jar: true }, function(err, response, body) {
 
 							if (body.match(/You have exceeded the maximum number of downloads allotted to you for the day/i)) {
