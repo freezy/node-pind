@@ -82,8 +82,12 @@ module.exports = function(sequelize, DataTypes) {
 
 						// don't update name and year if it was already matched by ipdb.org
 						if (row.ipdb_no) {
-							delete table.name;
-							delete table.year;
+							if (row.name) {
+								delete table.name;
+							}
+							if (row.year) {
+								delete table.year;
+							}
 						}
 
 						row.updateAttributes(table).success(function(r) {

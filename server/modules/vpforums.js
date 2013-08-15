@@ -68,6 +68,21 @@ VPForums.prototype.initAnnounce = function() {
 	an.forward(this, 'queueTransfer');
 };
 
+VPForums.prototype._fixTitle = function(n) {
+
+	var name = n;
+	var r = function(regex, newName) {
+		if (name.match(regex)) {
+			name = newName;
+		}
+	};
+
+	// short names
+	r(/tommy pinball wizard/i, 'Tommy The Pinball Wizard');
+
+	return name;
+};
+
 /**
  * Finds and downloads either a media pack or a table video.
  *
@@ -80,18 +95,19 @@ VPForums.prototype.initAnnounce = function() {
 VPForums.prototype._findMedia = function(table, cat, what, callback) {
 
 	var that = this;
-	logger.log('info', '[vpf] Searching %s for "%s"', what, table.name);
-	this._fetchDownloads(cat, table.name, {}, function(err, results) {
+	var searchName = that._fixTitle(table.name);
+	logger.log('info', '[vpf] Searching %s for "%s"', what, searchName);
+	this._fetchDownloads(cat, searchName, {}, function(err, results) {
 		if (err) {
 			logger.log('error', '[vpf] Error fetching downloads: %s', err);
 			return callback(err);
 		}
-		var match = VPForums.prototype._matchResult(results, table.name, function(str) {
+		var match = VPForums.prototype._matchResult(results, searchName, function(str) {
 			return str.replace(/[\[\(].*/, '').trim();
 		}, 'intelligent');
 		if (!match) {
-			logger.log('error', '[vpf] Cannot find any media with name similar to "%s".', table.name);
-			return callback('Cannot find any media with name similar to "' + table.name + '".');
+			logger.log('error', '[vpf] Cannot find any media with name similar to "%s".', searchName);
+			return callback('Cannot find any media with name similar to "' + searchName + '".');
 		}
 
 		// this will add a new transfer.
@@ -138,6 +154,13 @@ VPForums.prototype.findTableVideo = function(table, callback) {
 
 /**
  * Returns a list of links to all ROM files for a given table.
+ *
+ * The matching is a bit more complicated as usual:
+ *   - Search queries firstly got through _fixTitle() as usual, but only for knowning which letter
+ *     to fetch.
+ *   - If a match can be made by the ROM name, which is the description at VPF for ROM downloads,
+ *     read the search name from there.
+ *
  * @param table Row from tables database.
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
@@ -146,18 +169,40 @@ VPForums.prototype.findTableVideo = function(table, callback) {
 VPForums.prototype.getRomLinks = function(table, callback) {
 
 	var that = this;
-	logger.log('info', '[vpf] Searching ROM for "%s"...', table.name);
-	this.emit('romSearchStarted', { name: table.name });
-	that._fetchDownloads(9, table.name, {}, function(err, results) {
+	var searchName = that._fixTitle(table.name);
+	logger.log('info', '[vpf] Searching ROM for "%s"...', searchName);
+	this.emit('romSearchStarted', { name: searchName });
+	that._fetchDownloads(9, searchName, {}, function(err, results) {
 		if (err) {
 			return callback(err);
 		}
-		//noinspection JSCheckFunctionSignatures
-        var matches = VPForums.prototype._matchResults(results, table.name, function(str) {
+		var i;
+		var trimFct = function(str) {
 			return str.replace(/[\[\(\-].*/, '').trim();
-		});
+		};
+
+		// now, try to match by description (which contains the file name) first.
+		var matchedResult;
+		for (i = 0; i < results.length; i++) {
+			var result = results[i];
+			var d = result.description.toLowerCase();
+			if (d.substr(0, d.lastIndexOf('.')) == table.rom) {
+				logger.log('info', '[vpf] Matched "%s" by ROM name "%s".', result.title, table.rom);
+				matchedResult = result;
+				break;
+			}
+		}
+
+		// if match has been made, trim the match's title and use it for a second search.
+		if (matchedResult) {
+			searchName = trimFct(matchedResult.title);
+			logger.log('info', '[vpf] Using "%s" for final matching.', searchName);
+		}
+
+		//noinspection JSCheckFunctionSignatures
+        var matches = VPForums.prototype._matchResults(results, searchName, trimFct);
 		var links = [];
-		for (var i = 0; i < matches.length; i++) {
+		for (i = 0; i < matches.length; i++) {
 			links.push({
 				id: matches[i].id,
 				title: matches[i].title,

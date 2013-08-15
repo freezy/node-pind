@@ -260,7 +260,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 			logger.log('info', '[ipdb] Figured best match is "%s" (%s)', match.name, match.ipdbid);
 
 			// strip off non-matches from body
-			regex =  new RegExp('<table border=0 width="100%"><tr><td><font[^>]*><B><a name="' + match.ipdbid + '">[.\\s\\S]*?<hr width="80', 'gi');
+			regex = new RegExp('<table border=0 width="100%"><tr><td><font[^>]*><B><a name="' + match.ipdbid + '">[.\\s\\S]*?<hr width="80', 'gi');
 			m = body.match(regex);
 			if (!m) {
 				callback('Cannot find matched game "%s" in body.', match.name );
@@ -279,7 +279,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 				table.manufacturer = manufacturerNames[table.ipdb_mfg];
 			}
 			if (!table.year) {
-				table.year = firstMatch(body, /href="machine\.cgi\?id=\d+">\d+<\/a>\s*<I>[^<>\d]*(\d{4})/i);
+				table.year = firstMatch(body, /href="machine\.cgi\?id=\d+">\d+<\/a>\s*<I>[^<]*?(\d{4})/i);
 			}
 			if (!table.type) {
 				table.type = firstMatch(body, /Type:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {

@@ -74,7 +74,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	 * @param row
 	 * @param next
 	 * @todo run this after download completes, right now it's no use after queue.
-	 */
+	 *
 	var checkSuccess = function(row, next) {
 		if (row.rom) {
 			logger.log('info', '[vpm] Updating table row with new ROM status...');
@@ -87,7 +87,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 		} else {
 			next(null, downloadedRoms);
 		}
-	};
+	};*/
 
 	/**
 	 * Queues a file to the transfer table.
@@ -126,7 +126,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 				if (err) {
 					return next(err);
 				}
-				checkSuccess(table, next);
+				next(null, downloadedRoms)
 			});
 		});
 	};
