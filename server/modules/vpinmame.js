@@ -48,14 +48,14 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 
 	/**
 	 * Loops through a list of download links, checks if the file is already
-	 * locally available and otherwise fetches it using the given download
+	 * locally available and otherwise queues it using the given download
 	 * function.
 	 *
 	 * @param links List of download links
 	 * @param engine How to download. "vpf" or "ipdb" for now.
 	 * @param callback Callback function
 	 */
-	var checkAndDownload = function(links, engine, callback) {
+	var checkAndQueue = function(links, engine, callback) {
 		async.eachSeries(links, function(link, next) {
 			if (!fs.existsSync(settings.vpinmame.path + '/roms/' + link.filename)) {
 				queue(link, settings.vpinmame.path + '/roms', engine, link.id, function(err, filepath) {
@@ -73,6 +73,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	 * Updates the row with rom_file status.
 	 * @param row
 	 * @param next
+	 * @todo run this after download completes, right now it's no use after queue.
 	 */
 	var checkSuccess = function(row, next) {
 		if (row.rom) {
@@ -81,7 +82,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 				rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + row.rom + '.zip')
 			}).success(function() {
 				next(null, downloadedRoms);
-			}).fail(next);
+			});
 
 		} else {
 			next(null, downloadedRoms);
@@ -121,7 +122,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 				logger.log('error', '[vpm] ERROR: ' + err);
 				return next(err);
 			}
-			checkAndDownload(links, 'vpf', function(err) {
+			checkAndQueue(links, 'vpf', function(err) {
 				if (err) {
 					return next(err);
 				}
@@ -144,7 +145,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 				logger.log('error', '[vpm] ERROR: ' + err);
 				return next(err);
 			}
-			checkAndDownload(links, 'ipdb', function(err) {
+			checkAndQueue(links, 'ipdb', function(err) {
 				if (err) {
 					return next(err);
 				}
@@ -160,7 +161,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 		downloadVPF(table, callback);
 	}
 
-}
+};
 
 /**
  * Checks ipdb.org and vpforums.org for ROMs and downloads them, preferably from

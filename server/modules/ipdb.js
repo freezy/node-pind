@@ -192,6 +192,9 @@ Ipdb.prototype.enrich = function(table, callback) {
 		r(/high speed 2/i, 'high speed ii');
 		r(/attack and revenge from mars/i, 'revenge from mars');
 
+		// too ambiguous
+		r(/tommy/i, 'tommy pinball wizard');
+
 		// strip off unnecessary shit
 		r(/night mode/i, '');
 		r(/v\d$/i, '');
@@ -208,14 +211,17 @@ Ipdb.prototype.enrich = function(table, callback) {
 		return callback(null, table);
 	}
 
-	ipdb.emit('searchStarted', { name: table.name });
-	logger.log('info', '[ipdb] Searching data for %s', table.name);
 	var url;
+	var searchName = fixName(table.name);
+
 	if (table.ipdb_no && !forceSearch) {
 		url = 'http://www.ipdb.org/machine.cgi?id=' + table.ipdb_no;
+		logger.log('info', '[ipdb] Refreshing data for ipdb# %s.', table.ipdb_no);
 	} else {
 		// advanced search: var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
-		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(fixName(table.name)) + '&searchtype=quick';
+		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(searchName) + '&searchtype=quick';
+		ipdb.emit('searchStarted', { name: searchName });
+		logger.log('info', '[ipdb] Searching at ipdb.org for "%s"', searchName);
 	}
 	logger.log('debug', '[ipdb] Requesting %s', url);
 	request(url, function(err, response, body) {
@@ -240,7 +246,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 		// check if multiple matches
 		m = body.match(/(\d+) records match/i);
 		if (m && m[1] > 1) {
-			logger.log('debug', '[ipdb] Found %d hits for "%s".', m[1], table.name);
+			logger.log('info', '[ipdb] Found %d hits for "%s".', m[1], table.name);
 
 			// parse the matches
 			var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"\s+href="#(\d+)">([^<]+)/ig;

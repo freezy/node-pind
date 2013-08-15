@@ -541,7 +541,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 
 		// update cache
 		if (letter) {
-			logger.log('info', '[vpf] Updating cache for category "%s" / letter "%s"...', cat, letter);
+			logger.log('info', '[vpf] Updating cache for category %s / letter "%s"...', cat, letter);
 		} else {
 			logger.log('info', '[vpf] Updating cache...');
 		}
@@ -595,7 +595,13 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			var cacheFinished = +new Date();
 
 			// check for zombies (i.e. entries that are in the db but have been removed at vpf)
-			schema.VpfFile.all({ where: ['id NOT IN (' + ids.join(',') + ') AND category = ' + cat + ' AND lastUpdatedAt > ?', firstUpdated ] }).success(function(rows) {
+			var query;
+			if (letter) {
+				query = 'id NOT IN (' + ids.join(',') + ') AND category = ' + cat + ' AND letter = "' + letter + '" AND lastUpdatedAt > ?';
+			} else {
+				query = 'id NOT IN (' + ids.join(',') + ') AND category = ' + cat + ' AND lastUpdatedAt > ?';
+			}
+			schema.VpfFile.all({ where: [query, firstUpdated ] }).success(function(rows) {
 				async.eachSeries(rows, function(row, next) {
 					var r = row.map();
 					logger.log('info', '[vpf] Looks like "%s" was removed at VPF, checking at %s', row.title, r.url);
@@ -729,7 +735,9 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			schema.VpfFile.all({ where: { category: cat, letter: words[1][0] }}).success(function(rows) {
 				if (rows.length == 0) {
 					// if empty, launch fetch.
-					fetch(cat, words[1][0], result, 1, callback);
+					fetch(cat, words[1][0], [], 1, function(err, resultNextLetter) {
+						callback(null, result.concat(resultNextLetter));
+					});
 				} else {
 					var returnedRows = [];
 					_.each(rows, function(row) {
