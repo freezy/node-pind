@@ -2,6 +2,7 @@
 
 var _ = require('underscore');
 var fs = require('fs');
+var ent	 = require('ent');
 var util = require('util');
 var async = require('async');
 var jsdom = require('jsdom').jsdom;
@@ -563,6 +564,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 				category: cat,
 				letter: l,
 				title: item.title,
+				description: item.description,
 				fileId: item.fileId,
 				downloads: item.downloads,
 				views: item.views,
@@ -681,6 +683,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 					currentResult.push({
 						fileId: parseInt(u[1]),
 						title: $(that).find('h3.ipsType_subtitle a').attr('title').replace(/^view file named\s+/ig, ''),
+						description: ent.decode($(that).find('span[class="desc"]').html()).trim(),
 						downloads: parseInt(fileinfo[1].replace(/,/, '')),
 						views: parseInt(fileinfo[2].replace(/,/, '')),
 						updated: dateParsed.length > 0 ? dateParsed[0].startDate : null,
