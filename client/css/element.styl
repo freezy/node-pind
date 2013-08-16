@@ -13,9 +13,10 @@ a.tt &:hover
 .tt
 	font-family font-fixed
 a
-	color color-darker
+	color color-text-link
+	transition all animation-fast ease
 a:hover
-	color black
+	color rgba(0,0,0,0.5)
 
 input[disabled]
 	cursor default
@@ -381,6 +382,9 @@ td
 		cursor pointer
 		&.disabled
 			cursor default
+		a:hover
+			color inherit
+
 
 	i.icon
 		&.info
