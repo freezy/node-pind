@@ -139,7 +139,7 @@ module.exports = function(module) {
 
 		$element.find('li[data-toggle="popover"]').popover({
 			html: true,
-			placement: 'top',
+			placement: 'left',
 			content: function() {
 				return $(this).find('.popover').html();
 			}
@@ -211,5 +211,23 @@ module.exports = function(module) {
 		if (prev && prev.s != $scope.transfer.s) {
 			$scope.classes.push('newblock');
 		}
+
+		// result data mapping
+		var mapSrcDst = function(item) {
+			if (item) {
+				item.filename = item.src.substr(('/' + item.src).lastIndexOf('/'));
+				item.dstPath = item.dst.substr(0, item.dst.lastIndexOf('/'));
+			}
+		};
+		$scope.result = {
+			extract: _.values($scope.transfer.result.extract),
+			skip: _.values($scope.transfer.result.skip),
+			ignore: $scope.transfer.result.ignore ? $scope.transfer.result.ignore : [],
+			saved: $scope.transfer.result.saved
+		};
+		_.each($scope.result.extract, mapSrcDst);
+		_.each($scope.result.skip, mapSrcDst);
+		mapSrcDst($scope.result.saved);
+
 	}]);
 };

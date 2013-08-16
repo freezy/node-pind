@@ -70,7 +70,31 @@ block inner-content
 									a
 										i.icon.info
 									span.popover(style='display:none')
-										p Some neat info displayed here!			
+										h4(ng-show='result.saved') Downloaded
+										dl(ng-show='result.saved')
+											dt {{result.saved.filename}} 
+											dd 
+												| Saved to 
+												code.wrap {{result.saved.dstPath}}
+										h4(ng-show='result.extract.length') Extracted Files
+										dl(ng-show='result.extract.length')
+											span(ng-repeat='item in result.extract')
+												dt {{item.filename}} 
+												dd 
+													| Extracted to 
+													code.wrap {{item.dstPath}}
+										h4(ng-show='result.skip.length') Skipped Files
+										dl(ng-show='result.skip.length')
+											span(ng-repeat='item in result.skip')
+												dt {{item.filename}} 
+												dd 
+													| Already exists at 
+													code.wrap {{item.dstPath}}
+										h4(ng-show='result.ignore.length') Ignored Files
+										ul(ng-show='result.ignore.length')
+											span(ng-repeat='item in result.ignore')
+												li
+													tt.wrap {{item}} 
 								li.link.delete
 									a
 										i.icon.trash

@@ -452,7 +452,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 			if (!fs.existsSync(dest)) {
 				logger.log('info', '[transfer] Moving downloaded ROM from %s to %s.', filepath, dest);
 				fs.renameSync(filepath, dest);
-				result = { moved: { src: filepath, dest: dest }};
+				result = { saved: { src: filepath, dst: dest }};
 			} else {
 				logger.log('info', '[transfer] ROM at %s already exists, deleting %s.', dest, filepath);
 				fs.unlinkSync(filepath);

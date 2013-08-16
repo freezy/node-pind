@@ -137,6 +137,8 @@ exports.actions = function(req, res, ss) {
 				var returnedRows = [];
 				var currentProgress = transfer.getCurrentProgress();
 				_.each(rows, function(row) {
+					row.result = JSON.parse(row.result);
+					row.postAction = JSON.parse(row.postAction);
 					returnedRows.push(schema.Transfer.map(row, currentProgress[row.id]));
 				});
 

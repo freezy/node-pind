@@ -238,7 +238,7 @@ module.exports = function (module) {
 							scope.$broadcast('paramsUpdated');
 						}
 					});
-				}
+				};
 				scope.$on('dataUpdated', render);
 			}
 		}
