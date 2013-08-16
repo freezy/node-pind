@@ -66,12 +66,15 @@ block inner-content
 						td {{transfer.queuedSince}}
 						td.nowrap
 							ul.pills.small
-								li.link
+								li.link(data-toggle='popover', data-original-title='Download Info', data-placement='left')
 									a
 										i.icon.info
+									span.popover(style='display:none')
+										p Some neat info displayed here!			
 								li.link.delete
 									a
 										i.icon.trash
+							
 
 		//- empty search result
 		div.noresult(style='display:none')

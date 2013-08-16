@@ -131,7 +131,19 @@ module.exports = function(module) {
 	}]);
 
 
-	module.controller('AdminTransferItemCtrl', ['$scope', 'rpc', function($scope, rpc) {
+	module.controller('AdminTransferItemCtrl', ['$scope', '$element', 'rpc', function($scope, $element, rpc) {
+
+		// ------------------------------------------------------------------------
+		// popovers
+		// ------------------------------------------------------------------------
+
+		$element.find('li[data-toggle="popover"]').popover({
+			html: true,
+			placement: 'top',
+			content: function() {
+				return $(this).find('.popover').html();
+			}
+		});
 
 
 		// ------------------------------------------------------------------------
