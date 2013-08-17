@@ -3,29 +3,15 @@ module.exports = function(module) {
 
 	module.controller('AdminGlobalCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
 
-		$scope.version;
-		$scope.date;
-		$scope.url;
-		$scope.sha;
 		$scope.checkBtnClass = '';
 		$scope.checking = false;
-
-		$scope.updateVersion;
-		$scope.updateSince;
-		$scope.updateAuthor;
-		$scope.updateLink;
-		$scope.updateSha;
-		$scope.updateShaFull;
 
 		$scope.checkVersionUpdate = function() {
 			$scope.checkBtnClass = 'spin';
 			$scope.checking = true;
-			Jsonrpc.call('Pind.GetAvailableUpdate', {}, function(err, version) {
+			ss.rpc('pind.getAvailableUpdate', {}, function(version) {
 				$scope.checkBtnClass = '';
 				$scope.checking = false;
-				if (err) {
-					return alert('ERROR: ' + err);
-				}
 				if (version.noUpdates) {
 					$('.modal.no-update').modal('show');
 				} else {
@@ -37,25 +23,12 @@ module.exports = function(module) {
 					$scope.updateShaFull = version.commit.sha;
 					$('.modal.update-found').modal('show');
 				}
+				$scope.$apply();
 			});
 		};
 
 		$scope.updatePind = function() {
-			var waiting = $('.modal.update-progressing');
-			waiting.modal({
-				show: true,
-				keyboard: false,
-				backdrop: 'static'
-			});
-			Jsonrpc.call('Pind.UpdatePind', { sha: $scope.updateShaFull }, function(err, version) {
-
-				waiting.modal('hide');
-				if (err) {
-					return alert('ERROR: ' + err);
-				}
-				updateVersion(version);
-				location.reload();
-			});
+			rpc('pind.updatePind', { sha: $scope.updateShaFull });
 		};
 
 		var setVersion = function() {

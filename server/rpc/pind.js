@@ -120,24 +120,28 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
-		GetAvailableUpdate : function() {
+		getAvailableUpdate : function() {
 			au.newVersionAvailable(function(err, version) {
 				if (err) {
-					return res(error.api(err));
+					logger.log('error', '[rpc] [pind] [getAvailableUpdate] %s', err);
+					res(error.api(err));
+				} else {
+					res(version);
 				}
-				res(version);
 			});
 		},
 
-		UpdatePind : function(params) {
+		updatePind : function(params) {
 			if (!params.sha) {
 				return res(error.api('Must specify SHA to which revision to update.'));
 			}
 			au.update(params.sha, function(err, version) {
 				if (err) {
-					return res(error.api(err));
+					logger.log('error', '[rpc] [pind] [updatePind] %s', err);
+					res(error.api(err));
+				} else {
+					res(version);
 				}
-				res(version);
 			});
 		},
 

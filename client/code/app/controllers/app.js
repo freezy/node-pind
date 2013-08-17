@@ -87,7 +87,6 @@ module.exports = function(module) {
 			$scope.$broadcast('alertClosed');
 		});
 
-
 		$scope.connectionReady = function(callback) {
 			if (connectionReady) {
 				callback();
@@ -99,6 +98,21 @@ module.exports = function(module) {
 				ss.server.on('ready', fn);
 			}
 		};
+
+		ss.event.on('upgradeStarted', function() {
+			$('.modal.update-progressing').modal({
+				show: true,
+				keyboard: false,
+				backdrop: 'static'
+			});
+		});
+		ss.event.on('upgradeCompleted', function() {
+			$('.modal.update-progressing').modal('hide');
+		});
+		ss.event.on('upgradeFailed', function() {
+			$('.modal.update-progressing').modal('hide');
+			alert('Upgrade failed, check logs below.')
+		});
 
 		$scope.restart = function() {
 

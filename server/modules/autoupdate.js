@@ -28,7 +28,7 @@ var settings = require('../../config/settings-mine');
 var version = null;
 var localRepo = null;
 
-var dryRun = false;
+var dryRun = true;
 
 /**
  * Manages the application self-updates.
@@ -56,6 +56,7 @@ var dryRun = false;
  */
 function AutoUpdate() {
 	events.EventEmitter.call(this);
+	this.initAnnounce();
 	if (fs.existsSync(__dirname + '../../../.git')) {
 		localRepo = git(path.normalize(__dirname + '../../../'));
 	}
@@ -64,10 +65,11 @@ util.inherits(AutoUpdate, events.EventEmitter);
 
 /**
  * Sets up event listener for realtime updates via Socket.IO.
- * @param app Express application
  */
-AutoUpdate.prototype.initAnnounce = function(app) {
-	an.forward(this, 'updateAvailable');
+AutoUpdate.prototype.initAnnounce = function() {
+	an.forward(this, 'upgradeStarted');
+	an.forward(this, 'upgradeCompleted');
+	an.forward(this, 'upgradeFailed');
 };
 
 /**
@@ -269,6 +271,8 @@ AutoUpdate.prototype.update = function(sha, callback) {
 
 	var that = this;
 	var startedAt = new Date();
+	that.emit('upgradeStarted');
+	logger.log('info', '[autoupdate] Starting update.');
 
 	// separate log
 	logger.add(logger.transports.Memory);
@@ -901,7 +905,7 @@ AutoUpdate.prototype.newHeadAvailable = function(callback) {
 
 		// no update if head is older or equal
 		if (!dryRun && dateCurrent >= dateHead) {
-			logger.log('info', '[autoupdate] No newer HEAD found at GitHub - local: %s, remote: %s.', new Date(dateCurrent), new Date(dateHead));
+			logger.log('info', '[autoupdate] No newer HEAD found at GitHub - local: %s, remote: %s.', new Date(dateCurrent), new Date(dateHead), {});
 			return callback(null, { noUpdates: true });
 		}
 
@@ -1222,6 +1226,7 @@ AutoUpdate.prototype._readVersion = function() {
  * @private
  */
 AutoUpdate.prototype._logResult = function(err, startedAt, toSha, result, callback) {
+	var that = this;
 	if (err) {
 		this.emit('updateFailed', { error: err });
 		schema.Upgrade.create({
@@ -1241,6 +1246,7 @@ AutoUpdate.prototype._logResult = function(err, startedAt, toSha, result, callba
 			if (err) {
 				logger.log('error', '[autoupdate] Error updating database: ' + err);
 			}
+			that.emit('upgradeFailed');
 			callback(err);
 		});
 	} else {
@@ -1263,6 +1269,7 @@ AutoUpdate.prototype._logResult = function(err, startedAt, toSha, result, callba
 			if (err) {
 				logger.log('error', '[autoupdate] Error updating database: ' + err);
 			}
+			that.emit('upgradeCompleted');
 			callback(null, result);
 		});
 	}

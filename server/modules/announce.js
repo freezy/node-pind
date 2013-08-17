@@ -26,6 +26,8 @@ Announce.prototype._publish = function(event, data, ns) {
 	if (socketstream) {
 		logger.log('info', '[announce] "%s": %j', name, data, {});
 		socketstream.publish.all(name, data);
+	} else {
+		logger.log('warn', '[announce] Skipping event "%s", SocketStream unavailable.', name);
 	}
 };
 
