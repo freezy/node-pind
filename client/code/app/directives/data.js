@@ -395,20 +395,29 @@ module.exports = function (module) {
 			var resource = attrs['editable'];
 			var viewBlock = element.find('.data-view');
 			var editBlock = element.find('.data-edit');
+			var inputFields = editBlock.find('[data-reference]');
+
 			editBlock.hide();
+
+			// show edit block on edit click
 			element.find('.action-edit').click(function() {
 				viewBlock.hide();
 				editBlock.show();
 			});
-			element.find('.action-cancel').click(function() {
+
+			// show view block on cancel edit
+			var actionCancel = function() {
 				editBlock.hide();
 				viewBlock.show();
-			});
-			element.find('.action-submit').click(function() {
+			};
+			element.find('.action-cancel').click(actionCancel);
+
+			// submit values on ok
+			var actionSubmit = function() {
 				editBlock.hide();
 				viewBlock.show();
 				var newValues = {};
-				editBlock.find('[data-reference]').each(function(i, element) {
+				inputFields.each(function(i, element) {
 					var ref = element.getAttribute('data-reference').split('.');
 					if (scope[ref[0]][ref[1]] != element.value) {
 						newValues[ref[1]] = element.value;
@@ -417,9 +426,23 @@ module.exports = function (module) {
 				});
 				scope.$apply();
 				if (_.keys(newValues).length > 0) {
+					newValues.id = element.parents('[data-id]').data('id');
 					rpc(resource, newValues);
 				}
-			});
+			};
+			element.find('.action-submit').click(actionSubmit);
+
+			// if only one input, enable enter/esc for editing
+			if (inputFields.length == 1) {
+				inputFields.focus().on('keyup', function(e) {
+					if (e.which == 13) {
+						actionSubmit();
+					}
+					if (e.which == 27) {
+						actionCancel();
+					}
+				});
+			}
 		};
 	}]);
 };
