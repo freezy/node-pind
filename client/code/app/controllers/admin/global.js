@@ -124,7 +124,7 @@ module.exports = function(module) {
 				} else {
 					dep.linkedName = dep.name;
 				}
-			}
+			};
 			if (deps.added.length > 0) {
 				t.push(deps.added.length + ' added');
 				_.each(deps.added, linkName);
@@ -172,6 +172,8 @@ module.exports = function(module) {
 				return $(this).next('.popover').html();
 			}
 		});
+
+		$scope.$apply();
 	}]);
 };
 

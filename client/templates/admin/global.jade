@@ -67,9 +67,9 @@ block inner-content
 							td
 								span(data-toggle='tooltip', data-original-title='{{ upgrade.completedAt | date:"medium" }}') {{ upgrade.completedSince }}
 							td
-								span(ng-bind-html="upgrade | githubRange", data-toggle='tooltip', data-original-title='{{ commitInfo }}')
+								span(ng-bind-html-unsafe="upgrade | githubRange", data-toggle='tooltip', data-original-title='{{ commitInfo }}')
 							td
-								span(ng-bind-html="settings", data-original-title='New Settings')
+								span(ng-bind-html-unsafe="settings", data-original-title='New Settings')
 								span.popover(style='display:none')
 									table
 										tr
@@ -79,28 +79,28 @@ block inner-content
 											td
 												| {{ setting.p }} <strong>{{ setting.name }}</strong>
 												| = {{ setting.v}}
-												span(ng-bind-html="setting.warning")
-											td(ng-bind-html="setting.d")
+												span(ng-bind-html-unsafe="setting.warning")
+											td(ng-bind-html-unsafe="setting.d")
 							td
-								span(ng-bind-html="dependencies", data-original-title='Dependencies')
+								span(ng-bind-html-unsafe="dependencies", data-original-title='Dependencies')
 								span.popover(style='display:none')
 									h4 Added
 									ul
 										li(ng-repeat='a in upgrade.result.dependencies.added')
-											span(ng-bind-html='a.linkedName')
+											span(ng-bind-html-unsafe='a.linkedName')
 											| &nbsp;&nbsp;<tt>{{ a.version }}</tt>
 									h4 Updated
 									ul
 										li(ng-repeat='u in upgrade.result.dependencies.updated')
-											span(ng-bind-html='u.linkedName')
+											span(ng-bind-html-unsafe='u.linkedName')
 											| &nbsp;&nbsp;<tt>{{ u.from }}</tt> &rarr; <tt>{{ u.version }}</tt>
 									h4 Removed
 									ul
 										li(ng-repeat='r in upgrade.result.dependencies.removed')
-											span(ng-bind-html='r.linkedName')
+											span(ng-bind-html-unsafe='r.linkedName')
 											| &nbsp;&nbsp;<tt>{{ r.version }}</tt>
 							td
-								span(ng-bind-html="migrations", data-toggle='tooltip', data-original-title='{{ migrationsInfo }}')
+								span(ng-bind-html-unsafe="migrations", data-toggle='tooltip', data-original-title='{{ migrationsInfo }}')
 							td
 								span(data-toggle='popover', data-original-title='Upgrade Log', data-placement='left')
 									i.icon.file
