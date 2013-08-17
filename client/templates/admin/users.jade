@@ -45,9 +45,14 @@ block inner-content
 				tbody
 					tr(ng-repeat='user in data', data-id='{{ user.id }}', ng-animate="{ enter: 'animated fadeIn' }")
 						td {{ user.user }}
-						td.nowrap(data-value='{{ user.credits }}')
-							i.icon.pencil.clickable
-							| &nbsp;{{ user.credits }}
+						td.nowrap(editable="user.update")
+							span.data-view
+								i.icon.pencil.clickable.action-edit
+								| &nbsp;{{ user.credits }}
+							span.data-edit
+								i.icon.remove.clickable.action-cancel
+								input.input-micro(type="text", value="{{user.credits}}", data-reference="user.credits")
+								i.icon.ok.clickable.action-submit
 		.clearfix
 
 		//- empty search result

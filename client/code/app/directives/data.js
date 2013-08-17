@@ -389,4 +389,37 @@ module.exports = function (module) {
 
 		};
 	}]);
+
+	module.directive('editable', ['rpc', function(rpc) {
+		return function(scope, element, attrs) {
+			var resource = attrs['editable'];
+			var viewBlock = element.find('.data-view');
+			var editBlock = element.find('.data-edit');
+			editBlock.hide();
+			element.find('.action-edit').click(function() {
+				viewBlock.hide();
+				editBlock.show();
+			});
+			element.find('.action-cancel').click(function() {
+				editBlock.hide();
+				viewBlock.show();
+			});
+			element.find('.action-submit').click(function() {
+				editBlock.hide();
+				viewBlock.show();
+				var newValues = {};
+				editBlock.find('[data-reference]').each(function(i, element) {
+					var ref = element.getAttribute('data-reference').split('.');
+					if (scope[ref[0]][ref[1]] != element.value) {
+						newValues[ref[1]] = element.value;
+					}
+					scope[ref[0]][ref[1]] = element.value;
+				});
+				scope.$apply();
+				if (_.keys(newValues).length > 0) {
+					rpc(resource, newValues);
+				}
+			});
+		};
+	}]);
 };
