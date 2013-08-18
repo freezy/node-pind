@@ -52,6 +52,8 @@ module.exports = function(module) {
 			table.badge_media_backglass = table.media_backglass ? 'success' : 'important';
 			table.badge_media_table = table.media_table ? 'success' : 'important';
 			table.badge_media_video = table.media_video ? 'success' : 'important';
+			table.hpicon = table.hpenabled ? 'hplogo.svg' : 'hplogo-grey.svg';
+			table.hpiconclass = table.hpenabled ? 'hplogo-enabled' : 'hplogo-disabled';
 
 			if (table.type != 'OG' && table.platform == 'VP' && table.rom === null) {
 				if (table.table_file) {
