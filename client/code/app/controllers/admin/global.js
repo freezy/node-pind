@@ -172,8 +172,6 @@ module.exports = function(module) {
 				return $(this).next('.popover').html();
 			}
 		});
-
-		$scope.$apply();
 	}]);
 };
 

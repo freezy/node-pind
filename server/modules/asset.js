@@ -110,7 +110,7 @@ exports.backglass = function(context, key, size) {
 				gm.resize(size, size);
 			}
 			callback(gm);
-		});
+		}, 'default_backglass_43.svg');
 	}).error(function(err) {
 		logger.log('error', '[asset] Error retrieving table for backglass ' + key + ': ' + err);
 		context.res.writeHead(500);
@@ -131,7 +131,7 @@ exports.flyer = function(context, key, size, which) {
 	});
 };
 
-var asset = function(context, path, process) {
+var asset = function(context, path, process, defaultName) {
 	if (path && fs.existsSync(path)) {
 
 		// caching
@@ -163,8 +163,17 @@ var asset = function(context, path, process) {
 			});
 		});
 	} else {
-		context.res.writeHead(404);
-		context.res.end('Sorry, ' + path + ' not found.');
+		logger.log('warn', '[asset] No asset found for %s.', path);
+		if (defaultName) {
+			context.res.writeHead(200, {
+				'Content-Type': 'image/svg+xml',
+				'Cache-Control': 'private'
+			});
+			fs.createReadStream(__dirname + '/../../client/static/images/' + defaultName).pipe(context.res);
+		} else {
+			context.res.writeHead(404);
+			context.res.end('Sorry, ' + path + ' not found.');
+		}
 	}
 };
 
