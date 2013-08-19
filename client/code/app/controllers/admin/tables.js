@@ -42,8 +42,14 @@ module.exports = function(module) {
 
 			if (table.name && table.year && table.manufacturer) {
 				table.title = (table.name_match ? table.name_match : table.name) + ' (' + table.manufacturer + ' ' + table.year + ')';
-			} else {
+			} else if (table.hpid) {
 				table.title = table.hpid;
+			} else if (table.name && table.year) {
+				table.title = (table.name_match ? table.name_match : table.name) + ' (' + table.year + ')';
+			} else if (table.name) {
+				table.title = (table.name_match ? table.name_match : table.name);
+			} else {
+				table.title = '<i>Not Available</i>';
 			}
 
 			table.badge_table = table.table_file ? 'success' : 'important';

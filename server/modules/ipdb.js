@@ -463,6 +463,10 @@ Ipdb.prototype.isSyncing = function() {
 	return isSyncing;
 };
 
+Ipdb.prototype.getKnownManufacturers = function() {
+	return _.uniq(_.values(manufacturerNames));
+};
+
 var firstMatch = function(str, regex, postFn) {
 	var m = str.match(regex);
 	if (m && postFn) {
@@ -521,8 +525,11 @@ var findBestMatch = function(matches, game) {
 };
 
 var manufacturerNames = {
+	47: 'Bally',
 	76: 'Capcom',
+	94: 'Gottlieb',
 	98: 'Data East',
+	156: 'INDER',
 	214: 'Bally',
 	303: 'Stern',
 	349: 'Williams'
