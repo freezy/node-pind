@@ -160,7 +160,7 @@ ul.pills, ul.nav.nav-pills
 		border-radius-bottomleft corner-size
 		line-height 22px
 		padding 2px 9px
-	
+
 
 ul.nav.nav-pills, .pagination.pagination-small ul
 	& > li
@@ -370,15 +370,16 @@ ul.badge-group
 		position absolute
 		overflow hidden
 		top -286px
-		& > img
-			cursor pointer
-			border-radius-topleft corner-size-small
-			border-radius-topright corner-size-small
-		& > img.bottom
-			border-radius-topleft 0px
-			border-radius-topright 0px
-			border-radius-bottomleft corner-size-small
-			border-radius-bottomright corner-size-small
+		& > .img_wrapper
+			& > img
+				cursor pointer
+				border-radius-topleft corner-size-small
+				border-radius-topright corner-size-small
+			& > img.bottom
+				border-radius-topleft 0px
+				border-radius-topright 0px
+				border-radius-bottomleft corner-size-small
+				border-radius-bottomright corner-size-small
 
 
 .thumbnails
@@ -440,11 +441,14 @@ ul.badge-group
 	position relative
 	overflow hidden
 	background-image url('/images/bg_pd_med.png')
-	background-size 65%
 	&.banner
 		padding-top 18.77862595419847%
+		background-image url('/images/default_banner.svg')
+		background-size 100%
 	&.backglass
 		padding-top 80%
+		background-image url('/images/default_backglass_43.svg')
+		background-size 100%
 	& > img
 		position absolute
 		top 0

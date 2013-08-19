@@ -18,7 +18,7 @@ exports.banner = function(context, key, size) {
 				gm.resize(size, size);
 			}
 			callback(gm);
-		});
+		}, 'default_banner.svg');
 	}).error(function(err) {
 		logger.log('error', '[asset] Error retrieving table for banner ' + key + ': ' + err);
 		context.res.writeHead(500);

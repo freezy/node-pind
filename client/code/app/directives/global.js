@@ -15,7 +15,7 @@ module.exports = function (module) {
 				var duration = parseInt(attrs['slider']);
 				var slider = element.find('.thumbnail-content .slider');
 
-				element.find('.slider > img').click(function() {
+				element.find('.slider > .img_wrapper > img').click(function() {
 
 					var img = $(this);
 					if (running) {
