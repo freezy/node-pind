@@ -137,14 +137,15 @@ module.exports = function(module) {
 		// popovers
 		// ------------------------------------------------------------------------
 
-		$element.find('li[data-toggle="popover"]').popover({
-			html: true,
-			placement: 'left',
-			content: function() {
-				return $(this).find('.popover').html();
-			}
-		});
-
+		if ($scope.transfer.result) {
+			$element.find('li[data-toggle="popover"]').popover({
+				html: true,
+				placement: 'left',
+				content: function() {
+					return $(this).find('.popover').html();
+				}
+			});
+		}
 
 		// ------------------------------------------------------------------------
 		// data mapping
@@ -219,12 +220,18 @@ module.exports = function(module) {
 				item.dstPath = item.dst.substr(0, item.dst.lastIndexOf('/'));
 			}
 		};
-		$scope.result = {
-			extract: _.values($scope.transfer.result.extract),
-			skip: _.values($scope.transfer.result.skip),
-			ignore: $scope.transfer.result.ignore ? $scope.transfer.result.ignore : [],
-			saved: $scope.transfer.result.saved
-		};
+		if ($scope.transfer.result) {
+			$scope.result = {
+				extract: _.values($scope.transfer.result.extract),
+				skip: _.values($scope.transfer.result.skip),
+				ignore: $scope.transfer.result.ignore ? $scope.transfer.result.ignore : [],
+				saved: $scope.transfer.result.saved
+			};
+			$scope.class = '';
+		} else {
+			$scope.result = {};
+			$scope.class = 'disabled';
+		}
 		_.each($scope.result.extract, mapSrcDst);
 		_.each($scope.result.skip, mapSrcDst);
 		mapSrcDst($scope.result.saved);

@@ -330,13 +330,12 @@ VisualPinball.prototype.updateTableData = function(callback) {
 
 	// fetch all VP tables
 	schema.Table.findAll({ where: { platform: 'VP' }}).success(function(rows) {
-		logger.warn('[vp] Reading table data from %d VP tables.', rows.length);
 		async.eachSeries(rows, function(row, next) {
 
 			// skip if file doesn't exist.
 			var tablePath = settings.visualpinball.path + '/tables/' + row.filename + '.vpt';
 			if (!fs.existsSync(tablePath)) {
-				logger.warn('[vp] Table file "' + tablePath + '" does not exist.');
+				logger.log('warn', '[vp] Table file "' + tablePath + '" does not exist.');
 				return next();
 			}
 
@@ -354,8 +353,6 @@ VisualPinball.prototype.updateTableData = function(callback) {
 
 VisualPinball.prototype.getTableData = function(path, callback) {
 	var that = this;
-
-	console.log('Getting table data for "%s"...', path);
 
 	// read script from table
 	that.getScriptFromTable(path, function(err, script) {
