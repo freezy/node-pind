@@ -591,6 +591,8 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 				// 2. try to match at ipdb
 				ipdb.enrich({
 					name: vpffile.title_trimmed,
+					manufacturer: vpffile.manufacturer,
+					year: vpffile.year,
 					platform: 'VP',
 					filename: filename
 				}, function(err, table) {

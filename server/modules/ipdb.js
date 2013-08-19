@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('underscore');
 var fs = require('fs');
 var ent = require('ent');
 var util = require('util');
@@ -482,7 +483,7 @@ var trim = function(str) {
 	return str.replace(/[^\w\d\s\.\-,:_'"()]/ig, '');
 };
 
-var findBestMatch = function(matches, game) {
+var findBestMatch = function(matches, table) {
 
 	// sort by distance
 	matches.sort(function(a, b) {
@@ -511,10 +512,13 @@ var findBestMatch = function(matches, game) {
 
 	// on tie, return nearest year
 	bestMatches.sort(function(a, b) {
-		if (Math.abs(a.year - game.year) < Math.abs(b.year - game.year)) {
+		if (!table.year) {
+			return 0;
+		}
+		if (Math.abs(a.year - table.year) < Math.abs(b.year - table.year)) {
 			return -1;
 		}
-		if (Math.abs(a.year - game.year) > Math.abs(b.year - game.year)) {
+		if (Math.abs(a.year - table.year) > Math.abs(b.year - table.year)) {
 			return 1;
 		}
 		return 0;

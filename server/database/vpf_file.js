@@ -64,6 +64,15 @@ module.exports = function(sequelize, DataTypes) {
 					}
 					result.url = 'http://www.vpforums.org/index.php?app=downloads&showfile=' + result.fileId;
 
+					var ipdb = require('./../modules/ipdb');
+					var m, regex = new RegExp(ipdb.getKnownManufacturers().join('|').toLowerCase(), 'i');
+					if (m = regex.exec(result.title)) {
+						result.manufacturer = m[0];
+					}
+					if (m = result.title.match(/(19[5-9]\d|20\d{2})/)) {
+						result.year = m[1];
+					}
+
 					return result;
 				}
 			},
