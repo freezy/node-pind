@@ -330,6 +330,7 @@ VisualPinball.prototype.updateTableData = function(callback) {
 
 	// fetch all VP tables
 	schema.Table.findAll({ where: { platform: 'VP' }}).success(function(rows) {
+		logger.warn('[vp] Reading table data from %d VP tables.', rows.length);
 		async.eachSeries(rows, function(row, next) {
 
 			// skip if file doesn't exist.
@@ -344,7 +345,7 @@ VisualPinball.prototype.updateTableData = function(callback) {
 				if (err) {
 					return next();
 				}
-				row.updateAttributes(attrs).done(callback);
+				row.updateAttributes(attrs).done(next);
 			});
 
 		}, callback);
@@ -353,6 +354,8 @@ VisualPinball.prototype.updateTableData = function(callback) {
 
 VisualPinball.prototype.getTableData = function(path, callback) {
 	var that = this;
+
+	console.log('Getting table data for "%s"...', path);
 
 	// read script from table
 	that.getScriptFromTable(path, function(err, script) {
@@ -382,6 +385,7 @@ VisualPinball.prototype.getTableData = function(path, callback) {
 						controller = null;
 					}
 
+					logger.log('warn', '[vp] Got table data, returning now.');
 					callback(null, {
 						rom: rom,
 						rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + rom + '.zip'),
