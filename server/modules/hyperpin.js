@@ -288,19 +288,22 @@ HyperPin.prototype.insertCoin = function(user, slot, callback) {
 		logger.log('info', '[hyperpin] %d > 0, all good, inserting coin.', user.credits);
 		//noinspection JSUnresolvedVariable
         var binPath = fs.realpathSync(__dirname + '../../../bin');
-		exec(binPath + '/Keysender.exe', function(error) {
-			if (error !== null) {
-				callback(error);
+		exec(binPath + '/Keysender.exe', function(err) {
+			if (err !== null) {
+				callback(err);
 			} else {
 				logger.log('info', '[hyperpin] Coin inserted, updating user credits.');
-				user.credits--;
-				user.save(['credits']).success(function(u) {
-					logger.log('info', '[hyperpin] User credits updated to %d, calling callback.', u.credits);
-					callback(null, {
-						message : 'Coin inserted successfully!',
-						credits : u.credits
+				schema.User.find(user.id).success(function(row) {
+					user.credits--;
+					row.credits--;
+					row.save(['credits']).success(function(u) {
+						logger.log('info', '[hyperpin] User credits updated to %d, calling callback.', u.credits);
+						callback(null, {
+							message : 'Coin inserted successfully!',
+							credits : u.credits
+						});
 					});
-				}).error(callback);
+				});
 			}
 		});
 	} else {

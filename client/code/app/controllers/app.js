@@ -6,6 +6,7 @@ module.exports = function(module) {
 	 */
 	module.controller('AppCtrl', ['$scope', '$location', 'rpc', 'userService', 'pindAuth', function($scope, $location, rpc, userService, pindAuth) {
 
+		
 		// ------------------------------------------------------------------------
 		// status
 		// ------------------------------------------------------------------------
@@ -32,6 +33,7 @@ module.exports = function(module) {
 		$scope.$on('$destroy', function() {
 			ss.event.off('statusUpdated', statusUpdated);
 		});
+
 
 
 		// ------------------------------------------------------------------------
@@ -69,6 +71,7 @@ module.exports = function(module) {
 				$location.path('/login');
 			});
 		};
+
 
 
 		// ------------------------------------------------------------------------
@@ -114,6 +117,18 @@ module.exports = function(module) {
 			alert('Upgrade failed, check logs below.')
 		});
 
+
+
+		// ------------------------------------------------------------------------
+		// global features
+		// ------------------------------------------------------------------------
+
+		$scope.insertCoin = function(slot) {
+			ss.rpc('control.insertCoin', slot, function(status) {
+				console.log('Coin inserted, got: %j', status)
+			});
+		};
+
 		$scope.restart = function() {
 
 			Jsonrpc.call('Pind.Restart', {}, function(err) {
@@ -142,6 +157,7 @@ module.exports = function(module) {
 		$scope.restartDialog = function() {
 			$('.modal.restart').modal().show();
 		};
+
 
 
 		// ------------------------------------------------------------------------

@@ -24,12 +24,12 @@ block content
 			.row
 				.offset2.span3
 					#coinleft.fuzzy3d
-						button Drop -.20
+						button(ng-click="insertCoin(1)") Drop -.20
 					p Gives you <b>one</b> credit.
 					.clearfix
 				.offset2.span3
 					#coinright.fuzzy3d
-						button Drop -.50
+						button(ng-click="insertCoin(2)") Drop -.50
 					p Gives you <b>three</b> credits.
 					.clearfix
 
