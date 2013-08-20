@@ -107,10 +107,10 @@ HyperPin.prototype.readTables = function(callback) {
 				return callback('Error reading file: ' + err);
 			}
 
-			var parseAndAdd = function(data, active) {
+			var parseAndAdd = function(data, active, callback) {
 
 				var parser = new xml2js.Parser();
-				parser.parseString(data, function (err, result) {
+				parser.parseString(data, function(err, result) {
 					if (err) {
 						logger.log('error', '[hyperpin] [' + platform + '] ' + err);
 						return callback('error parsing file: ' + err);
@@ -121,7 +121,7 @@ HyperPin.prototype.readTables = function(callback) {
 					}
 					if (!result.menu['game']) {
 						logger.log('warn', '[hyperpin] [' + platform + '] XML database is empty.');
-						return callback(null, []);
+						return callback();
 					}
 
 					var l = result.menu['game'].length;
@@ -146,8 +146,7 @@ HyperPin.prototype.readTables = function(callback) {
 						}
 						if (!g.$ || !g.$.name) {
 							logger.log('error', '[hyperpin] [' + platform + '] Cannot find "name" attribute for "' + table.name + '".');
-							callback('error parsing game "' + table.name + '", XML must contain "name" attribute.');
-							return;
+							return callback('error parsing game "' + table.name + '", XML must contain "name" attribute.');
 						}
 						table.hpid = d;
 						table.hpenabled = true;
@@ -174,14 +173,16 @@ HyperPin.prototype.readTables = function(callback) {
 					that.emit('xmlParsed', { num: tables.length, platform: platforms[platform] });
 
 					schema.Table.updateAll(tables, now, function(err, tables) {
+						if (err) {
+							logger.log('error', '[hyperpin] [%s] %s', platform, err);
+						}
 						that.emit('tablesUpdated', { num: tables.length });
-						callback(err, tables);
+						callback(err);
 					});
 				});
 			};
-			parseAndAdd(data, true);
 
-			// parse also commented games and add them as non-active.
+			// also parse commented games and add them as non-active.
 			var regex = new RegExp(/<!--[\s\S]*?-->/g);
 			var m, mm, commentedGames = '';
 			while (m = regex.exec(data.toString('utf8'))) {
@@ -190,15 +191,26 @@ HyperPin.prototype.readTables = function(callback) {
 					commentedGames += '<game ' + mm[1] + '</game>';
 				}
 			}
-			if (commentedGames.trim()) {
-				parseAndAdd('<menu>' + commentedGames + '</menu>', false);
-			}
 
+			// process non-commented and commented xml.
+			async.series([
+				function(callback) {
+					parseAndAdd(data, true, callback);
+				},
+				function(callback) {
+					if (commentedGames.trim()) {
+						parseAndAdd('<menu>' + commentedGames + '</menu>', false, callback);
+					} else {
+						callback();
+					}
+				}
+			], callback);
 		});
 	};
 
 	// disable all tables first
 	schema.sequelize.query('UPDATE tables SET hpenabled = 0').success(function() {
+
 		// launch FP and VP parsing in parallel
 		async.eachSeries([ 'FP', 'VP' ], process, function(err) {
 			if (err) {

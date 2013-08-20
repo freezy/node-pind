@@ -66,12 +66,8 @@ module.exports = function(sequelize, DataTypes) {
 				};
 
 				async.eachSeries(tables, updateOrCreate, function(err) {
-					log.debug("[table] Database is now updated, deactivating dirty records.");
+					log.debug("[table] Database is now updated.");
 					callback(err, tables);
-
-					//db.prepare('UPDATE tables SET enabled = (?) WHERE updated < (?);').run([ false, now ], function(err) {
-					//	callback(err, games);
-					//});
 				});
 			},
 
