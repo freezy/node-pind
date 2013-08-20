@@ -16,7 +16,7 @@ var an = require('./announce');
 var vp = require('./visualpinball');
 var vpf = require('./vpforums');
 
-var isSyncing = false;
+var isReading = false;
 var isSearchingMedia = false;
 
 var platforms = {
@@ -37,13 +37,13 @@ HyperPin.prototype.initAnnounce = function() {
 
 	var ns = 'hp';
 
-	// syncTablesWithData()
-	an.data(this, 'processingStarted', { id: 'hpsync' }, ns);
-	an.notice(this, 'syncCompleted', 'Done syncing, starting analysis...');
+	// readTablesWithData()
+	an.data(this, 'processingStarted', { id: 'hpread' }, ns);
+	an.notice(this, 'readCompleted', 'Done reading tables, starting analysis...');
 	an.notice(this, 'analysisCompleted', 'Finished analyzing tables.', 5000);
-	an.data(this, 'processingCompleted', { id: 'hpsync' }, ns);
+	an.data(this, 'processingCompleted', { id: 'hpread' }, ns);
 
-	// syncTables()
+	// readTables()
 	an.notice(this, 'xmlParsed', 'Read {{num}} tables from {{platform}}.xml, updating local database...');
 	an.notice(this, 'tablesUpdated', 'Updated {{num}} tables in database.');
 
@@ -56,17 +56,17 @@ HyperPin.prototype.initAnnounce = function() {
 	an.forward(this, 'tableUpdated', ns);
 };
 
-HyperPin.prototype.syncTablesWithData = function(callback) {
+HyperPin.prototype.readTablesWithData = function(callback) {
 	var that = this;
 
-	if (isSyncing) {
-		return callback('Syncing process already running. Wait until complete.');
+	if (isReading) {
+		return callback('Readomg process already running. Wait until complete.');
 	}
 	that.emit('processingStarted');
-	isSyncing = true;
+	isReading = true;
 
-	this.syncTables(function(err) {
-		that.emit('syncCompleted');
+	this.readTables(function(err) {
+		that.emit('readCompleted');
 		if (err) {
 			logger.log('error', '[hyperpin] ERROR: ' + err);
 			return callback(err);
@@ -77,7 +77,7 @@ HyperPin.prototype.syncTablesWithData = function(callback) {
 				throw new Error(err);
 			}
 			that.emit('analysisCompleted', 5000);
-			isSyncing = false;
+			isReading = false;
 			that.emit('processingCompleted');
 			callback();
 		});
@@ -92,7 +92,7 @@ HyperPin.prototype.syncTablesWithData = function(callback) {
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{Object} Updated table object</li></ol>
  */
-HyperPin.prototype.syncTables = function(callback) {
+HyperPin.prototype.readTables = function(callback) {
 	var that = this;
 	var now = new Date().getTime();
 	var process = function(platform, callback) {
@@ -189,16 +189,11 @@ HyperPin.prototype.syncTables = function(callback) {
 				while (mm = innerRegex.exec(m[0])) {
 					commentedGames += '<game ' + mm[1] + '</game>';
 				}
-				console.log('Got commented match: %s', m[0]);
 			}
-			console.log('Commented games: ' + commentedGames);
 			if (commentedGames.trim()) {
 				parseAndAdd('<menu>' + commentedGames + '</menu>', false);
 			}
 
-
-
-			console.log('Done syncing.');
 		});
 	};
 
@@ -337,8 +332,8 @@ HyperPin.prototype.insertCoin = function(user, slot, callback) {
 	}
 };
 
-HyperPin.prototype.isSyncing = function() {
-	return isSyncing;
+HyperPin.prototype.isReading = function() {
+	return isReading;
 };
 
 HyperPin.prototype.isSearchingMedia = function() {

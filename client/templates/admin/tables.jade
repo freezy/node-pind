@@ -77,7 +77,7 @@ block inner-content
 		//- no data
 		div.nodata.action(style='display:none')
 			p No tables in database.
-			button.btn.submit(ng-click="hpsync($event)")
+			button.btn.submit(ng-click="hpread($event)")
 				i.icon.refresh
 				span Load from HyperPin
 	.clearfix
@@ -85,10 +85,10 @@ block inner-content
 block inner-footer
 	h2(ng-show="dataLoaded") Available Actions:
 	.row-fluid(ng-show="dataLoaded")
-		.span4.action#hpsync
+		.span4.action#hpread
 			h3 Resync with HyperPin
 			p Read HyperPin's XML, analyze table files and update the local database.
-			button.btn.submit.small(ng-click="hpsync($event)")
+			button.btn.submit.small(ng-click="hpread($event)")
 				i.icon.refresh
 				span Resync
 		.span4.action#ipdbsync

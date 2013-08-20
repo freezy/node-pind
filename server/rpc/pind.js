@@ -29,7 +29,7 @@ exports.actions = function(req, res, ss) {
 					user: req.session.user,
 					version: au.getVersion(),
 					processing: {
-						hpsync: hp.isSyncing(),
+						hpread: hp.isReading(),
 						ipdbsync: ipdb.isSyncing(),
 						dlrom: vpm.isFetchingRoms(),
 						dlmedia: hp.isSearchingMedia(),

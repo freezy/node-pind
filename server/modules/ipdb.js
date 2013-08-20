@@ -88,7 +88,7 @@ Ipdb.prototype.syncIPDB = function(callback) {
 Ipdb.prototype.syncAll = function(callback) {
 	var that = this;
 	// sync with local database (aka HyperPin)
-	hp.syncTables(function(err, tables) {
+	hp.readTables(function(err, tables) {
 		if (err) {
 			return logger.log('error', '[ipdb] ' + err);
 		}

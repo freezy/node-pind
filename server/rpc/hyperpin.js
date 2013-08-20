@@ -9,8 +9,8 @@ exports.actions = function(req, res, ss) {
 
 	return {
 
-		sync: function() {
-			hp.syncTablesWithData(function(err) {
+		read: function() {
+			hp.readTablesWithData(function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [hyperpin] [sync] %s', err);
 					res(error.api(err));

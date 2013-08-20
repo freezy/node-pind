@@ -8,9 +8,9 @@ module.exports = function(module) {
 		// actions
 		// ------------------------------------------------------------------------
 
-		$scope.hpsync = function(event) {
+		$scope.hpread = function(event) {
 			event.target.blur();
-			rpc('hyperpin.sync');
+			rpc('hyperpin.read');
 		};
 
 		$scope.ipdbsync = function(event) {
@@ -104,7 +104,7 @@ module.exports = function(module) {
 		// ------------------------------------------------------------------------
 
 		$scope.registerEvents({
-			hpsync:   [ 'hp.processingStarted', 'hp.processingCompleted' ],
+			hpread:   [ 'hp.processingStarted', 'hp.processingCompleted' ],
 			ipdbsync: [ 'ipdb.processingStarted', 'ipdb.processingCompleted' ],
 			dlrom:    [ 'vpm.processingStarted', 'vpm.processingCompleted' ],
 			dlmedia:  [ 'vpf.processingStarted', 'vpf.processingCompleted' ],
