@@ -104,89 +104,115 @@ HyperPin.prototype.syncTables = function(callback) {
 
 			if (err) {
 				logger.log('error', '[hyperpin] [' + platform + '] ' + err);
-					return callback('Error reading file: ' + err);
+				return callback('Error reading file: ' + err);
 			}
 
-			var parser = new xml2js.Parser();
-			parser.parseString(data, function (err, result) {
+			var parseAndAdd = function(data, active) {
 
-				if (err) {
-					logger.log('error', '[hyperpin] [' + platform + '] ' + err);
-                    return callback('error parsing file: ' + err);
-				}
-				if (!result.menu) {
-					logger.log('error', '[hyperpin] [' + platform + '] Root element "menu" not found, aborting.');
-                    return callback('weird xml file, root element "menu" not found.');
-				}
-				if (!result.menu['game']) {
-					logger.log('warn', '[hyperpin] [' + platform + '] XML database is empty.');
-					return callback(null, []);
-				}
-
-				var l = result.menu['game'].length;
-				var tables = [];
-				for (var i = 0; i < l; i++) {
-					var g = result.menu['game'][i];
-					var d = g.description[0];
-					var table;
-					var m = d.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\)/); // match Medieval Madness (Williams 1997)
-					if (m) {
-						table = {
-							name: m[1],
-							manufacturer: m[2],
-							year: m[3]
-						};
-					} else {
-						table = {
-							name: d,
-							manufacturer: g.manufacturer[0],
-							year: g.year[0]
-						};
+				var parser = new xml2js.Parser();
+				parser.parseString(data, function (err, result) {
+					if (err) {
+						logger.log('error', '[hyperpin] [' + platform + '] ' + err);
+						return callback('error parsing file: ' + err);
 					}
-					if (!g.$ || !g.$.name) {
-						logger.log('error', '[hyperpin] [' + platform + '] Cannot find "name" attribute for "' + table.name + '".');
-						callback('error parsing game "' + table.name + '", XML must contain "name" attribute.');
-						return;
+					if (!result.menu) {
+						logger.log('error', '[hyperpin] [' + platform + '] Root element "menu" not found, aborting.');
+						return callback('weird xml file, root element "menu" not found.');
 					}
-					table.hpid = d;
-					table.hpenabled = true;
-					table.type = g.type[0];
-					table.filename = g.$.name;
-					table.platform = platform;
-					table.enabled = g.enabled === undefined || (g.enabled[0].toLowerCase() == 'true' || g.enabled[0].toLowerCase() == 'yes');
-
-					if (platform == 'VP') {
-						table.table_file = fs.existsSync(settings.visualpinball.path + '/Tables/' + table.filename + '.vpt');
-					} else if (platform == 'FP') {
-						table.table_file = fs.existsSync(settings.futurepinball.path + '/Tables/' + table.filename + '.fpt');
+					if (!result.menu['game']) {
+						logger.log('warn', '[hyperpin] [' + platform + '] XML database is empty.');
+						return callback(null, []);
 					}
 
-					table.media_table = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Table Images/' + table.hpid + '.png');
-					table.media_backglass = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Backglass Images/' + table.hpid + '.png');
-					table.media_wheel = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Wheel Images/' + table.hpid + '.png');
-					table.media_video = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Table Videos/' + table.hpid + '.f4v');
+					var l = result.menu['game'].length;
+					var tables = [];
+					for (var i = 0; i < l; i++) {
+						var g = result.menu['game'][i];
+						var d = g.description[0];
+						var table;
+						var m = d.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\)/); // match Medieval Madness (Williams 1997)
+						if (m) {
+							table = {
+								name: m[1],
+								manufacturer: m[2],
+								year: m[3]
+							};
+						} else {
+							table = {
+								name: d,
+								manufacturer: g.manufacturer[0],
+								year: g.year[0]
+							};
+						}
+						if (!g.$ || !g.$.name) {
+							logger.log('error', '[hyperpin] [' + platform + '] Cannot find "name" attribute for "' + table.name + '".');
+							callback('error parsing game "' + table.name + '", XML must contain "name" attribute.');
+							return;
+						}
+						table.hpid = d;
+						table.hpenabled = true;
+						table.type = g.type[0];
+						table.filename = g.$.name;
+						table.platform = platform;
+						table.enabled = g.enabled === undefined || (g.enabled[0].toLowerCase() == 'true' || g.enabled[0].toLowerCase() == 'yes');
+						table.hpenabled = active;
 
-					tables.push(table);
-				}
-				logger.log('info', '[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
-				that.emit('xmlParsed', { num: tables.length, platform: platforms[platform] });
+						if (platform == 'VP') {
+							table.table_file = fs.existsSync(settings.visualpinball.path + '/Tables/' + table.filename + '.vpt');
+						} else if (platform == 'FP') {
+							table.table_file = fs.existsSync(settings.futurepinball.path + '/Tables/' + table.filename + '.fpt');
+						}
 
-				schema.Table.updateAll(tables, now, function(err, tables) {
-					that.emit('tablesUpdated', { num: tables.length });
-					callback(err, tables);
+						table.media_table = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Table Images/' + table.hpid + '.png');
+						table.media_backglass = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Backglass Images/' + table.hpid + '.png');
+						table.media_wheel = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Wheel Images/' + table.hpid + '.png');
+						table.media_video = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Table Videos/' + table.hpid + '.f4v');
+
+						tables.push(table);
+					}
+					logger.log('info', '[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
+					that.emit('xmlParsed', { num: tables.length, platform: platforms[platform] });
+
+					schema.Table.updateAll(tables, now, function(err, tables) {
+						that.emit('tablesUpdated', { num: tables.length });
+						callback(err, tables);
+					});
 				});
-			});
+			};
+			parseAndAdd(data, true);
+
+			// parse also commented games and add them as non-active.
+			var regex = new RegExp(/<!--[\s\S]*?-->/g);
+			var m, mm, commentedGames = '';
+			while (m = regex.exec(data.toString('utf8'))) {
+				var innerRegex = new RegExp(/(name="[^"]+">[\s\S]*?)<\/game/g);
+				while (mm = innerRegex.exec(m[0])) {
+					commentedGames += '<game ' + mm[1] + '</game>';
+				}
+				console.log('Got commented match: %s', m[0]);
+			}
+			console.log('Commented games: ' + commentedGames);
+			if (commentedGames.trim()) {
+				parseAndAdd('<menu>' + commentedGames + '</menu>', false);
+			}
+
+
+
+			console.log('Done syncing.');
 		});
 	};
 
-	// launch FP and VP parsing in parallel
-	async.eachSeries([ 'FP', 'VP' ], process, function(err) {
-        if (err) {
-            throw new Error(err);
-        }
-		schema.Table.findAll().success(function(rows) {
-			callback(null, rows);
-		}).error(callback);
+	// disable all tables first
+	schema.sequelize.query('UPDATE tables SET hpenabled = 0').success(function() {
+		// launch FP and VP parsing in parallel
+		async.eachSeries([ 'FP', 'VP' ], process, function(err) {
+			if (err) {
+				throw new Error(err);
+			}
+			schema.Table.findAll().success(function(rows) {
+				callback(null, rows);
+			}).error(callback);
+		});
 	});
 };
 

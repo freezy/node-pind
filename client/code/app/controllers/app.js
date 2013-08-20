@@ -6,7 +6,7 @@ module.exports = function(module) {
 	 */
 	module.controller('AppCtrl', ['$scope', '$location', 'rpc', 'userService', 'pindAuth', function($scope, $location, rpc, userService, pindAuth) {
 
-		
+
 		// ------------------------------------------------------------------------
 		// status
 		// ------------------------------------------------------------------------

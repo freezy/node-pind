@@ -32,7 +32,7 @@ log.cli();
 
 //nv.diff();
 
-postProcessTransfer(20);
+//postProcessTransfer(20);
 
 //	cacheAllTableDownloads();
 //	nextDownload();
@@ -44,7 +44,7 @@ postProcessTransfer(20);
 //	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
 //	vpParse();
 
-//	syncTables2();
+syncTables2();
 //	syncTables();
 
 //getHighScore('ww_l5');
