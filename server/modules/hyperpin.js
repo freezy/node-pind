@@ -245,7 +245,6 @@ HyperPin.prototype.writeTables = function(callback) {
 				continue;
 			}
 
-			console.log('%s (%s %s)', row.name, row.manufacturer, row.year);
 			writer.startElement(row.hpenabled ? 'game' : '_game');
 			writer.writeAttribute('name', row.filename);
 			writer.writeElement('description', row.hpid);
@@ -263,7 +262,7 @@ HyperPin.prototype.writeTables = function(callback) {
 		}
 		var xml = writer.toString();
 
-		// add comments
+		// comment out disabled games
 		if (settings.hyperpin.onItemDisabled != 'remove') {
 			xml = xml.replace(/<_game/g, '<!--game');
 			xml = xml.replace(/<\/_game>/g, '</game-->');
@@ -277,7 +276,6 @@ HyperPin.prototype.writeTables = function(callback) {
 			'	If you feel that an issue should be fixed, feel free to submit a bug report at\n' +
 			'		https://github.com/freezy/node-pind/issues\n' +
 			'-->\n\n';
-		console.log(header + xml);
 
 		var write = function(filename, data) {
 			logger.log('info', 'Writing database to %s', filename);
