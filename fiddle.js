@@ -44,7 +44,8 @@ log.cli();
 //	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
 //	vpParse();
 
-syncTables2();
+// readTables();
+writeTables();
 //	syncTables();
 
 //getHighScore('ww_l5');
@@ -239,9 +240,20 @@ function syncTables() {
 	});
 }
 
-function syncTables2() {
-	console.log('Starting to sync HP tables...');
-	hp.syncTables(function(err) {
+function readTables() {
+	console.log('Starting to read HP tables...');
+	hp.readTables(function(err) {
+		if (err) {
+			console.log("ERROR: " + err);
+		} else {
+			console.log("All done!");
+		}
+	});
+}
+
+function writeTables() {
+	console.log('Starting to write HP tables...');
+	hp.writeTables(function(err) {
 		if (err) {
 			console.log("ERROR: " + err);
 		} else {

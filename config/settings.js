@@ -129,7 +129,15 @@ module.exports = {
 		 * Path to installation folder. No trailing slash!
 		 * @important
 		 */
-		path: 'C:/Games/HyperPin'
+		path: 'C:/Games/HyperPin',
+
+		/**
+		 * When a table is disabled in HyperPin, Pind can either remove it from
+		 * the database XML file completely or put it into comments.
+		 *
+		 * Allowed values: "comment" (default), "remove".
+		 */
+		onItemDisabled: 'comment'
 	},
 
 	/**

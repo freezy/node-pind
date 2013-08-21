@@ -8,11 +8,13 @@ var async = require('async');
 var events = require('events');
 var xml2js = require('xml2js');
 var logger = require('winston');
+var xmlw = require('xml-writer');
 
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
 
 var an = require('./announce');
+var au = require('./autoupdate');
 var vp = require('./visualpinball');
 var vpf = require('./vpforums');
 
@@ -183,13 +185,14 @@ HyperPin.prototype.readTables = function(callback) {
 			};
 
 			// also parse commented games and add them as non-active.
-			var regex = new RegExp(/<!--[\s\S]*?-->/g);
-			var m, mm, commentedGames = '';
+			var regex = new RegExp(/<!--([\s\S]*?)-->/g);
+			var m, commentedGames = '', comments = '';
 			while (m = regex.exec(data.toString('utf8'))) {
-				var innerRegex = new RegExp(/(name="[^"]+">[\s\S]*?)<\/game/g);
-				while (mm = innerRegex.exec(m[0])) {
-					commentedGames += '<game ' + mm[1] + '</game>';
-				}
+				comments += m[1];
+			}
+			regex = new RegExp(/(name="[^"]+">[\s\S]*?)<\/game/g);
+			while (m = regex.exec(comments)) {
+				commentedGames += '<game ' + m[1] + '</game>';
 			}
 
 			// process non-commented and commented xml.
@@ -220,6 +223,79 @@ HyperPin.prototype.readTables = function(callback) {
 				callback(null, rows);
 			}).error(callback);
 		});
+	});
+};
+
+HyperPin.prototype.writeTables = function(callback) {
+
+	var platform = 'VP';
+	schema.Table.all({ where: { platform: platform }, order: 'name ASC' }).success(function(rows) {
+
+		var i, row, game;
+		var writer = new xmlw(true);
+		writer.startDocument();
+		writer.startElement('menu');
+
+		for (i = 0; i < rows.length; i++) {
+			row = rows[i];
+			if (!row.hpid) {
+				continue;
+			}
+			if (!row.hpenabled && settings.hyperpin.onItemDisabled == 'remove') {
+				continue;
+			}
+
+			console.log('%s (%s %s)', row.name, row.manufacturer, row.year);
+			writer.startElement(row.hpenabled ? 'game' : '_game');
+			writer.writeAttribute('name', row.filename);
+			writer.writeElement('description', row.hpid);
+			if (row.manufacturer) {
+				writer.writeElement('manufacturer', row.manufacturer);
+			}
+			if (row.year) {
+				writer.writeElement('year', String(row.year));
+			}
+			if (row.type) {
+				writer.writeElement('type', row.type);
+			}
+			writer.writeElement('enabled', row.enabled ? 'yes' : 'no');
+			writer.endElement();
+		}
+		var xml = writer.toString();
+
+		// add comments
+		if (settings.hyperpin.onItemDisabled != 'remove') {
+			xml = xml.replace(/<_game/g, '<!--game');
+			xml = xml.replace(/<\/_game>/g, '</game-->');
+		}
+		xml = xml.replace('<?xml version="1.0"?>', '').replace(/    /g, '\t').trim();
+		var version = au.getVersion();
+		var header = '<!--\n' +
+			'	This database was automatically updated by Pind ' + version.version + ' (' + version.sha.substr(0, 7) + ').\n\n' +
+			'	If something went wrong, a backup has been created and named\n' +
+			'		"' + platforms[platform] + ' - Pind Backup.xml".\n\n' +
+			'	If you feel that an issue should be fixed, feel free to submit a bug report at\n' +
+			'		https://github.com/freezy/node-pind/issues\n' +
+			'-->\n\n';
+		console.log(header + xml);
+
+		var write = function(filename, data) {
+			logger.log('info', 'Writing database to %s', filename);
+			fs.writeFile(filename, data, callback);
+		};
+
+		var filename = settings.hyperpin.path + '/Databases/' + platforms[platform] + '/' + platforms[platform] + '.xml';
+		var bakname = settings.hyperpin.path + '/Databases/' + platforms[platform] + '/' + platforms[platform] + ' - Pind Backup.xml';
+		if (!fs.existsSync(bakname)) {
+			logger.log('info', '[hyperpin] Backuping current database %s before writing new data', platforms[platform] + '.xml');
+			fs.createReadStream(filename).pipe(fs.createWriteStream(bakname)).on('close', function() {
+				logger.log('info', '[hyperpin] Done, saved to %s', bakname);
+				write(filename, header + xml);
+			});
+
+		} else {
+			write(filename, header + xml);
+		}
 	});
 };
 
