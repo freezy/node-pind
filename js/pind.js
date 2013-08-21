@@ -32,7 +32,7 @@ jQuery(document).ready(function() {
         $(this).blur();
         dataslide = $(this).parents('li').attr('data-slide');
         htmlbody.animate({
-            scrollTop: $('.slide[data-slide="' + dataslide + '"]').prev('hr').offset().top - 38
+            scrollTop: $('.slide[data-slide="' + dataslide + '"]').prev('hr').offset().top - 40
         }, 1000, 'easeInOutQuint');
 
     });
