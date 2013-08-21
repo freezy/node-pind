@@ -9,41 +9,41 @@ kinds of neat stuff. Particularly it should be able to:
 
 - Browse through HyperPin's tables in a fast and visually pleasing way with
   the ability to:
-  - ``[ ]`` Define filters based on table attributes
-  - ``[ ]`` Mark tables as favorite for faster access
-  - ``[ ]`` Make use of available artwork using realtime image processing and caching
-  - ``[X]`` Get status out of VPM tables, such as total number of games, score/playtime
+  - `[ ]` Define filters based on table attributes
+  - `[ ]` Mark tables as favorite for faster access
+  - `[ ]` Make use of available artwork using realtime image processing and caching
+  - `[X]` Get status out of VPM tables, such as total number of games, score/playtime
         histogram etc
-- ``[ ]`` List high scores of all tables for a given user, including a "global" score
+- `[ ]` List high scores of all tables for a given user, including a "global" score
       based on achievements.
-- ``[X]`` List audit data from tables. Use a graphical representation for histogram data
+- `[X]` List audit data from tables. Use a graphical representation for histogram data
       pulled from the table's NVRAM
-- ``[ ]`` Provide a voting system for new tables to install.
+- `[ ]` Provide a voting system for new tables to install.
 - Administer HyperPin's tables. This includes:
-  - ``[X]`` Automatically download missing artwork
-  - ``[X]`` Easily (fuzzy-) search, download and add new tables
-  - ``[X]`` Automatically download missing ROMs
-  - ``[ ]`` Automatically search, download and patch table for DirectB2S backglasses
-  - ``[X]`` Bulk-update VPinMAME rotation settings in tables
-  - ``[X]`` Match tables on IPDB.org for additional meta data
-  - ``[X]`` Support for Visual Pinball and Future Pinball
-  - ``[X]`` Receive real-time status updates during processing
-  - ``[ ]`` Add (and remove) tables to HyperPin's XML database
+  - `[X]` Automatically download missing artwork
+  - `[X]` Easily (fuzzy-) search, download and add new tables
+  - `[X]` Automatically download missing ROMs
+  - `[ ]` Automatically search, download and patch table for DirectB2S backglasses
+  - `[X]` Bulk-update VPinMAME rotation settings in tables
+  - `[X]` Match tables on IPDB.org for additional meta data
+  - `[X]` Support for Visual Pinball and Future Pinball
+  - `[X]` Receive real-time status updates during processing
+  - `[ ]` Add (and remove) tables to HyperPin's XML database
 * Manage users:
-  - ``[X]`` Anyone can sign up individually using high score initials as user name
-  - ``[X]`` Administrator can manage credits for each user
-  - ``[X]`` Credits allow users to insert coins via web app or Android client (using
+  - `[X]` Anyone can sign up individually using high score initials as user name
+  - `[X]` Administrator can manage credits for each user
+  - `[X]` Credits allow users to insert coins via web app or Android client (using
         NFC where supported)
-  - ``[ ]`` Users can be notified by mail when someone beats a high score
-- ``[X]`` Include a download manager for assets and tables
-- ``[X]`` Provide an API for all features (JSON-RPC 2.0)
-- ``[X]`` Provide an Android app for some features (such as inserting a coin, browsing
+  - `[ ]` Users can be notified by mail when someone beats a high score
+- `[X]` Include a download manager for assets and tables
+- `[X]` Provide an API for all features (JSON-RPC 2.0)
+- `[X]` Provide an Android app for some features (such as inserting a coin, browsing
       tables and high scores).
-- ``[X]`` Implement reasonable security. Passwords are salted and strongly hashed,
+- `[X]` Implement reasonable security. Passwords are salted and strongly hashed,
       auto-login uses a random token, SSL connections should be enforced when
       transferring sensitive data.
-- ``[X]`` Provide an automatic update procedure.
-- ``[X]`` Be usable on a phone by using a responsive layout.
+- `[X]` Provide an automatic update procedure.
+- `[X]` Be usable on a phone by using a responsive layout.
 
 Note that for a single user cab, pind is mainly useful for managing tables,
 which is a major PITA to do manually. Most of the other features however are

@@ -270,8 +270,8 @@ HyperPin.prototype.writeTables = function(callback) {
 		xml = xml.replace('<?xml version="1.0"?>', '').replace(/    /g, '\t').trim();
 		var version = au.getVersion();
 		var header = '<!--\n' +
-			'	This database was automatically updated by Pind ' + version.version + ' (' + version.sha.substr(0, 7) + ').\n\n' +
-			'	If something went wrong, a backup has been created and named\n' +
+			'	This database file was automatically created by Pind ' + version.version + ' (' + version.sha.substr(0, 7) + ').\n\n' +
+			'	In case something went wrong, the original file was renamed to\n' +
 			'		"' + platforms[platform] + ' - Pind Backup.xml".\n\n' +
 			'	If you feel that an issue should be fixed, feel free to submit a bug report at\n' +
 			'		https://github.com/freezy/node-pind/issues\n' +

@@ -6,7 +6,7 @@ Installation
 1. Install Node.js
 ------------------
 Since Pind is running on top of Node.js, there is no need of an additional
-HTTP server. For the dependencies used in the project, 
+HTTP server. For the dependencies used in the project,
 [npm](https://github.com/isaacs/npm) will take care of downloading and
 compiling all the necessary libraries.
 
@@ -30,7 +30,7 @@ included in the installation procedure.
 
 1. Download and install [Python 2.7](http://www.python.org/download/releases/2.7.5/).
 2. Download and install the [Visual Studio 2010 Express](http://go.microsoft.com/?linkid=9709949).
-3. On Windows 7 or above, download and install the 
+3. On Windows 7 or above, download and install the
    [Windows 7 SDK](http://www.microsoft.com/en-us/download/details.aspx?id=8279).
 
 
@@ -61,7 +61,7 @@ Don't close the command line window just yet.
 2. Go through every option and update it if necessary.
 3. Make sure you got everything by searching "@important" in the file and double-check each value.
 3. Initialize database schema via command prompt - `node create-schema`
-4. Start Pind for a first test run (`node server`) and open a browser at
+4. Start Pind for a first test run (`node app`) and open a browser at
    `http://localhost`.
 
 

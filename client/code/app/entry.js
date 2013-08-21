@@ -45,11 +45,7 @@ require('/controllers/admin/user')(app);
 require('/controllers/admin/global')(app);
 
 ss.server.on('ready', function() {
-
 	jQuery(function() {
-
 		require('/app');
-
 	});
-
 });

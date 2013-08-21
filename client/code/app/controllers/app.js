@@ -40,23 +40,25 @@ module.exports = function(module) {
 		// access "control"
 		// ------------------------------------------------------------------------
 
+		var tryLogin = function() {
+			pindAuth.tryAutologin(function(err) {
+				if (err) {
+					console.log('Autologin failed: ' + err);
+					console.log('Redirecting to /login, saving ' + $location.path());
+					userService.redirectPath = $location.path();
+					$location.path('/login');
+					$scope.$apply();
+				} else {
+					console.log('Autologin succeeded.');
+					$scope.user = userService.user;
+				}
+			});
+		};
 		$scope.$root.$on("$routeChangeStart", function(event, next, current) {
 			if (!next.noAuth && !userService.isLogged) {
 				console.log('No access, trying autologin..');
-
 				$scope.connectionReady(function() {
-					pindAuth.tryAutologin(function(err) {
-						if (err) {
-							console.log('Autologin failed: ' + err);
-							console.log('Redirecting to /login, saving ' + $location.path());
-							userService.redirectPath = $location.path();
-							$location.path('/login');
-							$scope.$apply();
-						} else {
-							console.log('Autologin succeeded.');
-							$scope.user = userService.user;
-						}
-					});
+					tryLogin();
 				});
 
 			} /*else if (next.adminOnly && !user.isAdmin) {
@@ -71,6 +73,13 @@ module.exports = function(module) {
 				$location.path('/login');
 			});
 		};
+
+		ss.server.on('disconnect', function() {
+			userService.isLogged = false;
+		});
+		ss.server.on('reconnect', function() {
+			tryLogin();
+		});
 
 
 
