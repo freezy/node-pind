@@ -9,6 +9,7 @@ var logger = require('winston');
 
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
+var error = require('../modules/error');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
@@ -17,6 +18,10 @@ exports.actions = function(req, res, ss) {
 	return {
 
 		one: function(req, params, callback) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+
 			schema.Table.find({ where : { key : params.id }}).success(function(row) {
 				if (row) {
 					details(fields(row, params), callback);
@@ -27,6 +32,9 @@ exports.actions = function(req, res, ss) {
 		},
 
 		all: function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
 
 			var search = params.search && params.search.length > 1;
 			var p = {};

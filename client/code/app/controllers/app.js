@@ -78,7 +78,7 @@ module.exports = function(module) {
 			userService.isLogged = false;
 		});
 		ss.server.on('reconnect', function() {
-			tryLogin();
+			//tryLogin();
 		});
 
 
