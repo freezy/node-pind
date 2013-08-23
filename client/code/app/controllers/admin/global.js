@@ -9,7 +9,7 @@ module.exports = function(module) {
 		$scope.checkVersionUpdate = function() {
 			$scope.checkBtnClass = 'spin';
 			$scope.checking = true;
-			ss.rpc('pind.getAvailableUpdate', {}, function(version) {
+			$scope.rpc('pind.getAvailableUpdate', {}, function(version) {
 				$scope.checkBtnClass = '';
 				$scope.checking = false;
 				if (version.noUpdates) {

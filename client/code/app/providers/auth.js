@@ -54,6 +54,7 @@ module.exports = function(module) {
 						$.removeCookie(authTokenCookie);
 						console.log('Auth token and username cookie cleared.');
 					}
+					$rootScope.$broadcast('loggedIn');
 					callback();
 
 				} else {

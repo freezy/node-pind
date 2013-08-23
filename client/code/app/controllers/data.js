@@ -55,7 +55,7 @@ module.exports = function(module) {
 				params.order = $scope.sort;
 			}
 
-			ss.rpc($scope.resource, params, function(result) {
+			$scope.rpc($scope.resource, params, function(result) {
 
 				// copy rows to result, with mapper function if available.
 				var setData = function($scope, result) {

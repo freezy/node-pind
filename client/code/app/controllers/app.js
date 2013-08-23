@@ -4,7 +4,7 @@ module.exports = function(module) {
 	/**
 	 * The global controller that sits on the <body> element.
 	 */
-	module.controller('AppCtrl', ['$scope', '$location', 'rpc', 'userService', 'pindAuth', function($scope, $location, rpc, userService, pindAuth) {
+	module.controller('AppCtrl', ['$scope', '$location', '$rootScope', 'rpc', 'userService', 'pindAuth', function($scope, $location, $rootScope, rpc, userService, pindAuth) {
 
 
 		// ------------------------------------------------------------------------
@@ -17,14 +17,14 @@ module.exports = function(module) {
 		ss.server.on('ready', function() {
 			offlineBar.addClass('bounceOutDown');
 			connectionReady = true;
-			ss.rpc('pind.status', function(status) {
+			$scope.rpc('pind.status', function(status) {
 				$scope.status = status;
 				$scope.statusAvailable = true;
 				$scope.$broadcast('statusAvailable');
 			});
 		});
 		var statusUpdated = function() {
-			ss.rpc('pind.status', function(status) {
+			$scope.rpc('pind.status', function(status) {
 				$scope.status = status;
 				$scope.$broadcast('statusUpdated');
 			});
@@ -33,8 +33,6 @@ module.exports = function(module) {
 		$scope.$on('$destroy', function() {
 			ss.event.off('statusUpdated', statusUpdated);
 		});
-
-
 
 		// ------------------------------------------------------------------------
 		// access "control"
@@ -132,8 +130,23 @@ module.exports = function(module) {
 		// global features
 		// ------------------------------------------------------------------------
 
+		var that = this;
+		$scope.rpc = function() {
+			var args = Array.prototype.slice.call(arguments);
+			if (userService.isLogged) {
+				ss.rpc.apply(that, args);
+			} else {
+				var off;
+				var fn = function() {
+					ss.rpc.apply(that, args);
+					off();
+				};
+				off = $rootScope.$on('loggedIn', fn);
+			}
+		};
+
 		$scope.insertCoin = function(slot) {
-			ss.rpc('control.insertCoin', slot, function(status) {
+			$scope.rpc('control.insertCoin', slot, function(status) {
 				console.log('Coin inserted, got: %j', status)
 			});
 		};

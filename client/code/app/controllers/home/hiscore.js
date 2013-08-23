@@ -8,7 +8,7 @@ module.exports = function(module) {
 		$scope.fields = [ 'key', 'name', 'year', 'url_banner_small'];
 
 		$scope.postDataFn = function(scope, result, callback) {
-			ss.rpc('pind.getHiscores', { tableIds: _.pluck(result.rows, 'key') }, function(hiscores) {
+			$scope.rpc('pind.getHiscores', { tableIds: _.pluck(result.rows, 'key') }, function(hiscores) {
 				$scope.hiscores = {};
 				for (var i = 0; i < hiscores.rows.length; i++) {
 					var hiscore = hiscores.rows[i];
