@@ -3,9 +3,9 @@
 var _ = require('underscore');
 var logger = require('winston');
 
+var vpf = require('../modules/vpforums');
 var error = require('../modules/error');
 var schema = require('../database/schema');
-var vpf = require('../modules/vpforums');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
@@ -14,6 +14,11 @@ exports.actions = function(req, res, ss) {
 	return {
 
 		createIndex : function() {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			vpf.cacheAllTableDownloads(function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [vpf] [create index] %s', err);
@@ -25,6 +30,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		updateIndex : function() {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			vpf.cacheLatestTableDownloads(function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [vpf] [update index] %s', err);
@@ -36,6 +46,10 @@ exports.actions = function(req, res, ss) {
 		},
 
 		tables : function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+
 			var category = 41;
 			var search = params.search && params.search.length > 1;
 			var p = { where: { category: category }};

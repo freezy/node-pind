@@ -17,6 +17,11 @@ exports.actions = function(req, res, ss) {
 	return {
 
 		control: function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			transfer.control(params.action, function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [transfer] [control] %s', err);
@@ -28,6 +33,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		reorder: function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			if (!params.id) {
 				return res(error.api('Missing parameter: "id".'));
 			}
@@ -45,6 +55,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		remove: function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			transfer.delete(params.id, function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [transfer] [delete] %s', err);
@@ -56,6 +71,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		resetFailed: function() {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			transfer.resetFailed(function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [transfer] [reset failed] %s', err);
@@ -67,6 +87,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		addvpt: function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			schema.VpfFile.find(params.id).success(function(row) {
 				if (row) {
 					row = row.map();
@@ -98,6 +123,10 @@ exports.actions = function(req, res, ss) {
 
 
 		all: function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
 
 			params = params || {};
 			var search = params.search && params.search.length > 1;

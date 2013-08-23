@@ -25,6 +25,15 @@ exports.unauthorized = function() {
 	}};
 };
 
+exports.forbidden = function() {
+	var trace = stacktrace.get();
+	logger.log('warn', 'Access forbidden at %s (%d)', trace[1].getFileName(), trace[1].getLineNumber());
+	return { error: {
+		message: 'You must be logged AS ADMIN for this RPC call.',
+		code: 403
+	}};
+};
+
 exports.dumpDebugData = function(module, what, data, ext) {
 	//noinspection JSUnresolvedVariable
     var filename = __dirname + '/../../logs/debug-' + module + '-' + what + '-' + new Date().getTime() + '.' + (ext ? ext : 'log');

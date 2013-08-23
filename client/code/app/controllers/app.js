@@ -76,7 +76,7 @@ module.exports = function(module) {
 			userService.isLogged = false;
 		});
 		ss.server.on('reconnect', function() {
-			//tryLogin();
+			tryLogin();
 		});
 
 
@@ -136,10 +136,15 @@ module.exports = function(module) {
 			if (userService.isLogged) {
 				ss.rpc.apply(that, args);
 			} else {
+				console.log('Postponing call for ' + args[0] + ' since we\'re not logged.');
 				var off;
 				var fn = function() {
+					console.log('Now we\'re logged, run ' + args[0] + '.');
 					ss.rpc.apply(that, args);
-					off();
+					if (off) {
+						off();
+						console.log('Unregistered RPC call.');
+					}
 				};
 				off = $rootScope.$on('loggedIn', fn);
 			}

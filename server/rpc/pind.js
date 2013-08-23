@@ -14,8 +14,8 @@ var hp = require('../modules/hyperpin');
 var vpm = require('../modules/vpinmame');
 var vpf = require('../modules/vpforums');
 var ipdb = require('../modules/ipdb');
-var transfer = require('../modules/transfer');
 var error = require('../modules/error');
+var transfer = require('../modules/transfer');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
@@ -23,6 +23,9 @@ exports.actions = function(req, res, ss) {
 	return {
 
 		status: function() {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
 
 			transfer.getStatus(function(err, transferStatus) {
 				var status = {
@@ -49,6 +52,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		fetchIpdb : function() {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			ipdb.syncIPDB(function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [pind] [fetch IPDB] %s', err);
@@ -60,6 +68,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		fetchMissingRoms : function() {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			vpm.fetchMissingRoms(function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [pind] [fetch ROMs] %s', err);
@@ -71,6 +84,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		fetchHiscores : function() {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			hs.fetchHighscores(function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [pind] [fetch hiscores] %s', err);
@@ -83,6 +101,10 @@ exports.actions = function(req, res, ss) {
 
 
 		getHiscores : function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+
 			var query =
 				'SELECT h.*, t.key, u.user FROM hiscores h ' +
 				'JOIN tables t ON t.id = h.tableId ' +
@@ -121,6 +143,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		getAvailableUpdate : function() {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			au.newVersionAvailable(function(err, version) {
 				if (err) {
 					logger.log('error', '[rpc] [pind] [getAvailableUpdate] %s', err);
@@ -132,6 +159,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		updatePind : function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			if (!params.sha) {
 				return res(error.api('Must specify SHA to which revision to update.'));
 			}
@@ -146,6 +178,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		getPreviousUpdates: function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			var p = {
 				offset : params.offset ? parseInt(params.offset) : 0,
 				limit : params.limit ? parseInt(params.limit) : 0,
@@ -164,6 +201,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		Restart: function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			res({ message: 'Got it, will kill myself in two seconds.' });
 			setTimeout(function() {
 				logger.log('err', '[api] [pind] Killing myself in hope for a respawn.');

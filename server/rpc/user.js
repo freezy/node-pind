@@ -11,6 +11,11 @@ exports.actions = function(req, res, ss) {
 	return {
 
 		all: function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			var p = {
 				order: params && params.order ? params.order.replace(/[^\w\s]*/g, '') : 'name ASC',
 				offset: params && params.offset ? parseInt(params.offset) : 0,
@@ -56,6 +61,11 @@ exports.actions = function(req, res, ss) {
 		},
 
 		update: function(params) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
 			var allowedFields = [ 'id', 'credits' ];
 			if (!params.id) {
 				return res(error.api('ID must be set when updating user.'));

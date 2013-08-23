@@ -49,7 +49,7 @@ block inner-content
 				tbody
 					tr(ng-repeat='table in data', data-id='{{table.key}}', data-idx="{{idx}}", ng-animate="{ enter: 'animated fadeIn' }", style="transition-delay: {{$index * 20}}ms")
 						td
-							img(src="/images/{{table.hpicon}}", class="{{table.hpiconclass}}", width="20", height="20")
+							img(ng-src="/images/{{table.hpicon}}", class="{{table.hpiconclass}}", width="20", height="20")
 						td(ng-bind-html-unsafe="table.title")
 						td.nowrap
 							ul.badge-group
