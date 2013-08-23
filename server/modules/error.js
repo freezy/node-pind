@@ -18,8 +18,7 @@ exports.api = function(message, code, data) {
 
 exports.unauthorized = function() {
 	var trace = stacktrace.get();
-	console.log(util.inspect(trace[0], false, 2, true));
-	logger.log('warn', 'Unauthorized access from ' + exports.unauthorized.caller.toString());
+	logger.log('warn', 'Unauthorized access at %s (%d)', trace[1].getFileName(), trace[1].getLineNumber());
 	return { error: {
 		message: 'You must be logged for this RPC call.',
 		code: 401

@@ -53,6 +53,7 @@
 		"readdirp": "0.3.x",
 		"relative-date": "1.1.x",
 		"semver": "2.0.x",
+		"stack-trace" : "0.0.x",
 		"uglify-js2": "2.1.x",
 		"unzip": "0.1.x",
 		"xml-writer" : "1.3.x",
