@@ -31,6 +31,7 @@ exports.actions = function(req, res, ss) {
 						}
 						req.session.setUserId(user.user);
 						req.session.user = user;
+						logger.log('info', '[rpc] [auth] Saving session..');
 						req.session.save(function() {
 							logger.log('info', '[rpc] [auth] Logged user saved to session: ', req.session, {});
 							res(result);
@@ -55,7 +56,7 @@ exports.actions = function(req, res, ss) {
 					req.session.setUserId(user.user);
 					req.session.user = user;
 					req.session.save(function(){
-						logger.log('info', '[rpc] [auth] Autologged user %s: ', user.user);
+						logger.log('info', '[rpc] [auth] Autologged user %s.', user.user);
 						res({
 							success: true,
 							user: _.pick(user, userAttributes),

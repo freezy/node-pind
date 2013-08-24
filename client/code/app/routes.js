@@ -20,6 +20,7 @@ module.exports = function(module) {
 			.when('/',                { templateUrl: 'home-index.html' })
 			.when('/hiscores',        { templateUrl: 'home-hiscores.html' })
 			.when('/tables',          { templateUrl: 'home-tables.html' })
+			.when('/table/:key',      { templateUrl: 'home-table.html' })
 			.when('/coin',            { templateUrl: 'home-coin.html' })
 
 			.when('/admin',           { templateUrl: 'admin-tables.html', adminOnly: true })

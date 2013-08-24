@@ -34,6 +34,7 @@ require('/controllers/data')(app);
 
 require('/controllers/home/hiscore')(app);
 require('/controllers/home/home')(app);
+require('/controllers/home/table')(app);
 
 require('/controllers/user/auth')(app);
 

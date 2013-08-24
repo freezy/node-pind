@@ -13,6 +13,7 @@ exports.api = function(message, code, data) {
 	if (data) {
 		error.data = data;
 	}
+	logger.log('error', '[api] %s', message);
 	return error;
 };
 

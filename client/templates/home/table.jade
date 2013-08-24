@@ -1,13 +1,13 @@
 extends ../layouts/inner
 
 block vars
-	- var pageController = 'NoopCtrl'
+	- var pageController = 'TableCtrl'
 	- var mainMenu = "tables"
 
 block content
 
 	.container.content.span10.offset1
-		div(ng-controller="TableCtrl", data-id="{{id}}")
+		div(data-id="{{id}}")
 			.row.ng-cloak
 				.span3
 					.row-topleft
