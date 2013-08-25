@@ -13,11 +13,11 @@ kinds of neat stuff. Particularly it should be able to:
   - `[ ]` Mark tables as favorite for faster access
   - `[ ]` Make use of available artwork using realtime image processing and caching
   - `[X]` Get status out of VPM tables, such as total number of games, score/playtime
-        histogram etc
+          histogram etc
 - `[ ]` List high scores of all tables for a given user, including a "global" score
-      based on achievements.
+        based on achievements.
 - `[X]` List audit data from tables. Use a graphical representation for histogram data
-      pulled from the table's NVRAM
+        pulled from the table's NVRAM
 - `[ ]` Provide a voting system for new tables to install.
 - Administer HyperPin's tables. This includes:
   - `[X]` Automatically download missing artwork
@@ -33,19 +33,19 @@ kinds of neat stuff. Particularly it should be able to:
   - `[X]` Anyone can sign up individually using high score initials as user name
   - `[X]` Administrator can manage credits for each user
   - `[X]` Credits allow users to insert coins via web app or Android client (using
-        NFC where supported)
+          NFC where supported)
   - `[ ]` Users can be notified by mail when someone beats a high score
 - `[X]` Include a download manager for assets and tables
 - `[X]` Provide an API for all features (JSON-RPC 2.0)
 - `[X]` Provide an Android app for some features (such as inserting a coin, browsing
       tables and high scores).
 - `[X]` Implement reasonable security. Passwords are salted and strongly hashed,
-      auto-login uses a random token, SSL connections should be enforced when
-      transferring sensitive data.
+        auto-login uses a random token, SSL connections should be enforced when
+        transferring sensitive data.
 - `[X]` Provide an automatic update procedure.
 - `[X]` Be usable on a phone by using a responsive layout.
 
-Note that for a single user cab, pind is mainly useful for managing tables,
+Note that for a single user cab, Pind is mainly useful for managing tables,
 which is a major PITA to do manually. Most of the other features however are
 about multiple players using the same cab.
 
