@@ -14,6 +14,7 @@ var hp = require('../modules/hyperpin');
 var vpm = require('../modules/vpinmame');
 var vpf = require('../modules/vpforums');
 var ipdb = require('../modules/ipdb');
+var nvram = require('../modules/nvram');
 var error = require('../modules/error');
 var transfer = require('../modules/transfer');
 
@@ -99,6 +100,21 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
+		fetchAudits : function() {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
+			nvram.readTables(function(err) {
+				if (err) {
+					logger.log('error', '[rpc] [pind] [fetch audits] %s', err);
+					res(error.api(err));
+				} else {
+					res();
+				}
+			});
+		},
 
 		getHiscores : function(params) {
 

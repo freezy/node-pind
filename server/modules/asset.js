@@ -131,6 +131,14 @@ exports.flyer = function(context, key, size, which) {
 	});
 };
 
+exports.flyer_front = function(context, key, size) {
+	return exports.flyer(context, key, size, 'front');
+};
+
+exports.flyer_back = function(context, key, size) {
+	return exports.flyer(context, key, size, 'back');
+};
+
 var asset = function(context, path, process, defaultName) {
 	if (path && fs.existsSync(path)) {
 

@@ -211,7 +211,7 @@ function details(r, callback) {
 	if (fs.existsSync(prefix + '/Flyer Images/Front/' + r.hpid + '.jpg')) {
 		r.url_flyer_front_medium = asset + '/flyer_front/' + r.key + '.medium.png';
 	}
-	if (fs.existsSync(prefix + '/Flyer Images/Front/' + r.hpid + '.jpg')) {
+	if (fs.existsSync(prefix + '/Flyer Images/Back/' + r.hpid + '.jpg')) {
 		r.url_flyer_back_medium = asset + '/flyer_back/' + r.key + '.medium.png';
 	}
 

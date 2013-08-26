@@ -22,8 +22,8 @@ block content
 						h1 {{table.name}}
 						h3.pull-top {{table.manufacturer}}, {{table.year}}
 
-					h5 Stats
-					table.stats(cellspacing="0", cellpadding="0", border="0")
+					h5(ng-show="table.audits") Stats
+					table.stats(ng-show="table.audits", cellspacing="0", cellpadding="0", border="0")
 						colgroup
 							col(width="50%")
 							col(width="50%")
@@ -48,13 +48,13 @@ block content
 								td(colspan="2") Running time
 							tr.big
 								td(colspan="2") {{ table.audits.runningTime | duration }}
-					p &nbsp;
+					p(ng-show="table.audits") &nbsp;
 
-					h6 Score Histogram
-					.graph.graph-score-histogram
+					h6(ng-show="table.audits && table.audits.scoreHistogram") Score Histogram
+					div(ng-show="table.audits && table.audits.scoreHistogram").graph.graph-score-histogram
 
-					h6 Play Time Histogram
-					.graph.graph-playtime-histogram
+					h6(ng-show="table.audits && table.audits.playtimeHistogram") Play Time Histogram
+					div(ng-show="table.audits && table.audits.playtimeHistogram").graph.graph-playtime-histogram
 
 					h5 High Scores
 					ul
@@ -84,8 +84,8 @@ block content
 						p &nbsp;
 						img(ng-src="{{table.url_logo}}")
 						p &nbsp;
-						img.detached(ng-src="{{table.url_flyer_front_medium}}")
+						img.detached(ng-src="{{table.url_flyer_front_medium}}", ng-show="table.url_flyer_front_medium")
 						p &nbsp;
-						img.detached(ng-src="{{table.url_flyer_back_medium}}")
+						img.detached(ng-src="{{table.url_flyer_back_medium}}", ng-show="table.url_flyer_back_medium")
 
 	.clearfix

@@ -9,6 +9,7 @@ var logger = require('winston');
 var Buffer = require('buffer').Buffer;
 var Duration = require('duration');
 
+var an = require('./announce');
 var wpc = require('./rom/wpc');
 var stern = require('./rom/stern');
 
@@ -19,8 +20,21 @@ var isFetching;
 
 function NvRam() {
 	events.EventEmitter.call(this);
+	this.initAnnounce();
 }
 util.inherits(NvRam, events.EventEmitter);
+
+/**
+ * Sets up event listener for realtime updates.
+ */
+NvRam.prototype.initAnnounce = function() {
+
+	var ns = 'nvram';
+
+	// fetchHighscores()
+	an.data(this, 'processingStarted', { id: 'fetchaudits' }, ns);
+	an.data(this, 'processingCompleted', { id: 'fetchaudits' }, ns);
+};
 
 
 /**
@@ -93,12 +107,19 @@ NvRam.prototype.readTables = function(callback) {
 				});
 			})
 		}, function(err) {
+
+			isFetching = false;
+			that.emit('processingCompleted');
+
+			if (err) {
+				logger.log('error', 'Error fetching audits: %s', err);
+				return callback(err);
+			}
+
 			logger.log('info', '[nvram] Reading done.');
+			callback();
 		});
-
-
-
-	}).error(callback);
+	});
 };
 
 

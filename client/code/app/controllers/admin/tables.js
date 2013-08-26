@@ -33,6 +33,11 @@ module.exports = function(module) {
 			rpc('pind.fetchHiscores');
 		};
 
+		$scope.fetchaudits = function(event) {
+			event.target.blur();
+			rpc('pind.fetchAudits');
+		};
+
 
 		// ------------------------------------------------------------------------
 		// data mapping
@@ -104,11 +109,12 @@ module.exports = function(module) {
 		// ------------------------------------------------------------------------
 
 		$scope.registerEvents({
-			hpread:   [ 'hp.processingStarted', 'hp.processingCompleted' ],
-			ipdbsync: [ 'ipdb.processingStarted', 'ipdb.processingCompleted' ],
-			dlrom:    [ 'vpm.processingStarted', 'vpm.processingCompleted' ],
-			dlmedia:  [ 'vpf.processingStarted', 'vpf.processingCompleted' ],
-			fetchhs:  [ 'hiscore.processingStarted', 'hiscore.processingCompleted' ]
+			hpread:       [ 'hp.processingStarted', 'hp.processingCompleted' ],
+			ipdbsync:     [ 'ipdb.processingStarted', 'ipdb.processingCompleted' ],
+			dlrom:        [ 'vpm.processingStarted', 'vpm.processingCompleted' ],
+			dlmedia:      [ 'vpf.processingStarted', 'vpf.processingCompleted' ],
+			fetchhs:      [ 'hiscore.processingStarted', 'hiscore.processingCompleted' ],
+			fetchaudits:  [ 'nvram.processingStarted', 'nvram.processingCompleted' ]
 		});
 
 	}]);
