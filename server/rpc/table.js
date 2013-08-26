@@ -17,16 +17,16 @@ exports.actions = function(req, res, ss) {
 
 	return {
 
-		one: function(req, params, callback) {
+		one: function(params) {
 
 			// access control
 			if (!req.session.userId) return res(error.unauthorized());
 
 			schema.Table.find({ where : { key : params.id }}).success(function(row) {
 				if (row) {
-					details(fields(row, params), callback);
+					details(fields(row, params), res);
 				} else {
-					callback(error.api('Cannot find table with ID "' + params.id + '".'));
+					res(error.api('Cannot find table with ID "' + params.id + '".'));
 				}
 			});
 		},
@@ -205,14 +205,15 @@ function fields(row, params) {
 
 function details(r, callback) {
 
+	var asset = '/asset';
 	var prefix = settings.hyperpin.path + '/Media/HyperPin';
-	if (fs.existsSync(prefix + '/Flyer Images/Front/' + r.hpid + '.jpg')) {
-		r.url_flyer_front_medium = pathTo.asset_flyer_front_medium(r.key);
-	}
-	if (fs.existsSync(prefix + '/Flyer Images/Front/' + r.hpid + '.jpg')) {
-		r.url_flyer_back_medium = pathTo.asset_flyer_back_medium(r.key);
-	}
 
+	if (fs.existsSync(prefix + '/Flyer Images/Front/' + r.hpid + '.jpg')) {
+		r.url_flyer_front_medium = asset + '/flyer_front/' + r.key + '.medium.png';
+	}
+	if (fs.existsSync(prefix + '/Flyer Images/Front/' + r.hpid + '.jpg')) {
+		r.url_flyer_back_medium = asset + '/flyer_back/' + r.key + '.medium.png';
+	}
 
 	if (r.rom) {
 		schema.Rom.find({ where : { name : r.rom }}).success(function(rom) {
