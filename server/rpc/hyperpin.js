@@ -26,7 +26,7 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
-		findMissingMedia : function() {
+		findMissingMedia: function() {
 
 			// access control
 			if (!req.session.userId) return res(error.unauthorized());
@@ -40,6 +40,21 @@ exports.actions = function(req, res, ss) {
 					res();
 				}
 			});
+		},
+
+		setEnabled: function(key) {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+			if (!req.session.user.admin) return res(error.forbidden());
+
+			hp.setEnabled(key, function(err) {
+				if (err) {
+					logger.log('error', '[rpc] [hyperpin] [setEnabled] %s', err);
+				} else {
+					res();
+				}
+			})
 		}
 	};
 };
