@@ -418,6 +418,10 @@ HyperPin.prototype.insertCoin = function(user, slot, callback) {
 	}
 };
 
+HyperPin.prototype.setEnabled = function(key, value, callback) {
+	
+};
+
 HyperPin.prototype.isReading = function() {
 	return isReading;
 };

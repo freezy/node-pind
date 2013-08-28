@@ -48,7 +48,7 @@ exports.actions = function(req, res, ss) {
 			if (!req.session.userId) return res(error.unauthorized());
 			if (!req.session.user.admin) return res(error.forbidden());
 
-			hp.setEnabled(key, function(err) {
+			hp.setEnabled(key, value, function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [hyperpin] [setEnabled] %s', err);
 				} else {
