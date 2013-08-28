@@ -418,8 +418,22 @@ HyperPin.prototype.insertCoin = function(user, slot, callback) {
 	}
 };
 
+/**
+ * Enables or disables a game in HyperPin's database.
+ * @param key Table key (from database)
+ * @param value true or false
+ * @param callback Callback with only error arg as first arg.
+ */
 HyperPin.prototype.setEnabled = function(key, value, callback) {
-	
+	var that = this;
+	schema.Table.find({ where: { key: key }}).success(function(row) {
+		if (!row) {
+			return callback('Cannot find row with key "' + key + '".');
+		}
+		row.setAttributes({ hpenabled: value ? true : false}).success(function(row) {
+			that.writeTables(callback);
+		});
+	});
 };
 
 HyperPin.prototype.isReading = function() {
