@@ -15,15 +15,23 @@ a.tt &:hover
 a
 	color color-text-link
 	transition all animation-fast ease
-a:hover
-	color rgba(0,0,0,0.5)
-	text-decoration none
+
+	&:focus
+		outline none
+		-moz-outline-style none
+
+	&:hover
+		color rgba(0,0,0,0.5)
+		text-decoration none
 
 input[disabled]
 	cursor default
 	
 button, select, textarea
 	font-family font-sans
+.btn:focus
+	outline none
+	-moz-outline-style none
 
 hr 
 	border 3px solid color-btn-light

@@ -10,7 +10,7 @@ block content
 			.page-header
 				h1 Welcome!
 
-			.inner
+			.inner(ng-show="status.dataAvailable")
 				h2 Latest Releases
 				div.row-fluid
 
@@ -109,3 +109,13 @@ block content
 								p Free Table of the Week
 								h3 {{table.name}}
 							img.table(ng-src='{{table.url_portrait_medium}}')
+
+			.inner(ng-show="!status.dataAvailable")
+				//- no data
+				div.nodata
+					p Before you can use Pind, you need to scan tables from HyperPin.
+					span(ng-show="!status.user.admin")
+						p Please contact an admin in order to do that.
+					span(ng-show="status.user.admin")
+						p In order to do that, click on the button below or on the settings link on the upper right corner.
+						a.btn.submit.small(href="/admin/") Manage Tables

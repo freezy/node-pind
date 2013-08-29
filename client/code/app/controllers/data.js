@@ -90,7 +90,7 @@ module.exports = function(module) {
 
 					$scope.numpages = Math.ceil(result.count / $scope.limit);
 					$scope.$root.dataLoaded = true;
-					$scope.$broadcast('dataUpdated');
+					$scope.$broadcast('dataUpdated', result.length);
 					$scope.$apply();
 					$scope.$broadcast('dataViewUpdated');
 				};

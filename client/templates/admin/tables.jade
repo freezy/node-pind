@@ -77,7 +77,7 @@ block inner-content
 		//- no data
 		div.nodata.action(style='display:none')
 			p No tables in database.
-			button.btn.submit(ng-click="hpread($event)")
+			button.btn.submit(ng-click="hpread()")
 				i.icon.refresh
 				span Load from HyperPin
 	.clearfix
@@ -88,37 +88,37 @@ block inner-footer
 		.span4.action#hpread
 			h3 Resync with HyperPin
 			p Read HyperPin's XML, analyze table files and update the local database.
-			button.btn.submit.small(ng-click="hpread($event)")
+			button.btn.submit.small(ng-click="hpread()")
 				i.icon.refresh
 				span Resync
 		.span4.action#ipdbsync
 			h3 Match with IPDB.org
 			p Match re-creations with IPDB and fetch additional data.
-			button.btn.submit.small(ng-click="ipdbsync($event)")
+			button.btn.submit.small(ng-click="ipdbsync()")
 				i.icon.refresh
 				span Match
 		.span4.action#dlrom
 			h3 Retrieve game ROMs
 			p Try to retrieve needed ROMs from IPDB.org or vpforums.org.
-			button.btn.submit.small(ng-click="dlrom($event)")
+			button.btn.submit.small(ng-click="dlrom()")
 				i.icon.refresh
 				span Download
 	.row-fluid(ng-show="dataLoaded")
 		.span4.action#dlmedia
 			h3 Find Missing Media
 			p Check vpforums.org for available media packs.
-			button.btn.submit.small(ng-click="dlmedia($event)")
+			button.btn.submit.small(ng-click="dlmedia()")
 				i.icon.refresh
 				span Find
 		.span4.action#fetchhs
 			h3 Update High Scores
 			p Read Highscores from tables and update stats.
-			button.btn.submit.small(ng-click="fetchhs($event)")
+			button.btn.submit.small(ng-click="fetchhs()")
 				i.icon.refresh
 				span Update
 		.span4.action#fetchaudits
 			h3 Update Audits
 			p Read game stats from ROMs to database.
-			button.btn.submit.small(ng-click="fetchaudits($event)")
+			button.btn.submit.small(ng-click="fetchaudits()")
 				i.icon.refresh
 				span Update

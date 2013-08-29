@@ -29,25 +29,29 @@ exports.actions = function(req, res, ss) {
 			if (!req.session.userId) return res(error.unauthorized());
 
 			transfer.getStatus(function(err, transferStatus) {
-				var status = {
-					user: req.session.user,
-					version: au.getVersion(),
-					processing: {
-						hpread: hp.isReading(),
-						ipdbsync: ipdb.isSyncing(),
-						dlrom: vpm.isFetchingRoms(),
-						dlmedia: hp.isSearchingMedia(),
-						fetchhs: hs.isFetching(),
-						dlvpfindex: vpf.isDownloadingIndex(),
-						crvpfindex: vpf.isCreatingIndex()
-					},
-					status: {
-						transfer: transferStatus
-					}
-				};
+				schema.Table.count().success(function(count) {
+					var status = {
+						user: req.session.user,
+						version: au.getVersion(),
+						dataAvailable: count > 0,
+						processing: {
+							hpread: hp.isReading(),
+							ipdbsync: ipdb.isSyncing(),
+							dlrom: vpm.isFetchingRoms(),
+							dlmedia: hp.isSearchingMedia(),
+							fetchhs: hs.isFetching(),
+							dlvpfindex: vpf.isDownloadingIndex(),
+							crvpfindex: vpf.isCreatingIndex()
+						},
+						status: {
+							transfer: transferStatus
+						}
+					};
 
-				//console.log('STATUS = %s', util.inspect(req.session, false, 10, true));
-				res(status);
+					//console.log('STATUS = %s', util.inspect(req.session, false, 10, true));
+					res(status);
+
+				});
 			})
 
 		},

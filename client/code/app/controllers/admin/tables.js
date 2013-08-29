@@ -8,33 +8,27 @@ module.exports = function(module) {
 		// actions
 		// ------------------------------------------------------------------------
 
-		$scope.hpread = function(event) {
-			event.target.blur();
+		$scope.hpread = function() {
 			rpc('hyperpin.read');
 		};
 
-		$scope.ipdbsync = function(event) {
-			event.target.blur();
+		$scope.ipdbsync = function() {
 			rpc('pind.fetchIpdb');
 		};
 
-		$scope.dlrom = function(event) {
-			event.target.blur();
+		$scope.dlrom = function() {
 			rpc('pind.fetchMissingRoms');
 		};
 
-		$scope.dlmedia = function(event) {
-			event.target.blur();
+		$scope.dlmedia = function() {
 			rpc('hyperpin.findMissingMedia');
 		};
 
-		$scope.fetchhs = function(event) {
-			event.target.blur();
+		$scope.fetchhs = function() {
 			rpc('pind.fetchHiscores');
 		};
 
-		$scope.fetchaudits = function(event) {
-			event.target.blur();
+		$scope.fetchaudits = function() {
 			rpc('pind.fetchAudits');
 		};
 

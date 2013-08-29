@@ -3,20 +3,6 @@ module.exports = function(module) {
 
 	module.controller('HomeCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
 
-/*		Jsonrpc.call('Table.GetAll', {
-			fields: ['name', 'year', 'url_portrait_medium', 'url_backglass_medium'],
-			limit : 1,
-			offset: 6
-
-		}, function(err, result) {
-			if (err) {
-				alert('Problem loading tables: ' + err);
-			} else {
-				if (result.rows.length > 0) {
-					$scope.table = result.rows[0];
-				}
-			}
-		});*/
 	}]);
 
 
