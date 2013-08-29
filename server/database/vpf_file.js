@@ -27,13 +27,15 @@ module.exports = function(sequelize, DataTypes) {
 
 				/**
 				 * Splits the title into two parts: the "real" title and all the tags that fly along.
-				 * @param title
+				 * @param result
 				 * @returns {Array}
 				 */
-				splitName: function(title) {
+				splitName: function(result) {
+					var title = result.title;
 					title = title.replace(/[\-_]+/g, ' ');
 					title = title.replace(/[^\s]\(/g, ' (');
-					var m = title.match(/\s+((vp\s*9|v[\d\.]{3,}|fs\s|fs$|\(|\[|mod\s|directB2S|FSLB|B2S|de\s|em\s|BLUEandREDledGImod|8 step GI|FSHD|HR\s|Low Res|night mod|chrome edition).*)/i);
+					title = title.replace(result.author, '');
+					var m = title.match(/\s+((vp\s*9|v[\d\.]{3,}|fs\s|fs$|\(|\[|mod\s|directB2S|FSLB|B2S|de\s|em\s|BLUEandREDledGImod|8 step GI|FSHD|HR\s|Low Res|night mod|chrome edition|data east|williams|bally|stern|gottlieb|capcom).*)/i);
 					if (m) {
 						var info = m[1];
 						title = title.substr(0, title.length - info.length).trim();
@@ -45,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
 
 				map: function(row, hit) {
 					var result = row.values ? row.values : row;
-					var split = this.splitName(result.title);
+					var split = this.splitName(result);
 					result.title_match = hit ? hit.string : null;
 					result.title_trimmed = split[0];
 					result.info = split[1];

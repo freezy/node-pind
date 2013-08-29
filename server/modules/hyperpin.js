@@ -434,8 +434,7 @@ HyperPin.prototype.setEnabled = function(key, value, callback) {
 			return callback('Cannot find row with key "' + key + '".');
 		}
 		logger.log('info', '[hyperpin] %s table with key "%s" in database.', value ? 'Enabling' : 'Disabling', key);
-		row.updateAttributes({ hpenabled: value ? true : false}).success(function(row) {
-			that.emit('dataUpdated', { resource: 'table', row: row });
+		row.updateAttributes({ hpenabled: value ? true : false}).success(function() {
 			that.writeTables(callback);
 		});
 	});
