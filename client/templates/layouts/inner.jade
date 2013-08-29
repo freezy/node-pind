@@ -21,7 +21,7 @@ div.navbar.navbar-static-top
 				li.coin(class=coinActive)
 					a(href='/coin') Coin Drop
 			ul.nav.pull-right
-				li.settings(class=adminActive)
+				li.settings(class=adminActive, ng-show="status.user.admin")
 					a(href='/admin').icon
 						i.icon.settings
 				li.logout
