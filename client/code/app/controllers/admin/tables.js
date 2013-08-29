@@ -38,6 +38,10 @@ module.exports = function(module) {
 			rpc('pind.fetchAudits');
 		};
 
+		$scope.toggleTable = function(key, status) {
+			rpc('hyperpin.setEnabled', key, !status);
+		};
+
 
 		// ------------------------------------------------------------------------
 		// data mapping

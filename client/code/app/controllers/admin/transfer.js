@@ -103,7 +103,6 @@ module.exports = function(module) {
 			$('table#transfers tr#' + status.id + ' .progress .bar').css('width', (status.downloadedSize / status.totalSize * 100) + '%')
 		};
 
-
 		// hook up events
 		ss.event.on('transfer.transferDeleted', transferDeleted);
 		ss.event.on('transfer.transferAdded', refreshTransfers);
@@ -113,7 +112,6 @@ module.exports = function(module) {
 		ss.event.on('transfer.transferSizeKnown', transferSizeKnown);
 		ss.event.on('transfer.transferOrderChanged', transferOrderChanged);
 		ss.event.on('transfer.transferProgress', transferProgress);
-		ss.event.on('transfer.dataUpdated', refreshTransfers);
 
 		// cleanup on destruction
 		$scope.$on('$destroy', function() {
@@ -125,7 +123,6 @@ module.exports = function(module) {
 			ss.event.off('transfer.transferSizeKnown', transferSizeKnown);
 			ss.event.off('transfer.transferOrderChanged', transferOrderChanged);
 			ss.event.off('transfer.transferProgress', transferProgress);
-			ss.event.off('transfer.dataUpdated', refreshTransfers);
 		});
 
 	}]);

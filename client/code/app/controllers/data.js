@@ -115,8 +115,26 @@ module.exports = function(module) {
 		});
 
 		var autorefresh = function(what) {
-			if ($scope.resource && $scope.resource.substr(0, $scope.resource.indexOf('.')) == what) {
-				$scope.refresh();
+			if ($scope.resource && $scope.resource.substr(0, $scope.resource.indexOf('.')) == what.resource) {
+				// if a row is provided, only update one record
+				if (what.row) {
+					var i;
+					for (i = 0; i < $scope.data.length; i++) {
+						if (what.row.id && $scope.data[i].id == what.row.id) {
+							if ($scope.mapperFn) {
+								$scope.data[i] = $scope.mapperFn(what.row);
+							} else {
+								$scope.data[i] = what.row;
+							}
+							$scope.$apply();
+							break;
+						}
+					}
+				} else {
+					$scope.refresh();
+				}
+			} else {
+				console.log('Got data update event, but scope resource = %s and data resource = %s.', $scope.resource, what.resource);
 			}
 		};
 

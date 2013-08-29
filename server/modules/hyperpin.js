@@ -56,13 +56,16 @@ HyperPin.prototype.initAnnounce = function() {
 	an.notice(this, 'searchStarted', 'Searching {{what}} for "{{name}}"', 60000);
 	an.notice(this, 'searchCompleted', '{{msg}}');
 	an.forward(this, 'tableUpdated', ns);
+
+	// data
+	an.forward(this, 'dataUpdated');
 };
 
 HyperPin.prototype.readTablesWithData = function(callback) {
 	var that = this;
 
 	if (isReading) {
-		return callback('Readomg process already running. Wait until complete.');
+		return callback('Reading process already running. Wait until complete.');
 	}
 	that.emit('processingStarted');
 	isReading = true;
@@ -430,7 +433,9 @@ HyperPin.prototype.setEnabled = function(key, value, callback) {
 		if (!row) {
 			return callback('Cannot find row with key "' + key + '".');
 		}
-		row.setAttributes({ hpenabled: value ? true : false}).success(function(row) {
+		logger.log('info', '[hyperpin] %s table with key "%s" in database.', value ? 'Enabling' : 'Disabling', key);
+		row.updateAttributes({ hpenabled: value ? true : false}).success(function(row) {
+			that.emit('dataUpdated', { resource: 'table', row: row });
 			that.writeTables(callback);
 		});
 	});

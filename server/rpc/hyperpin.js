@@ -42,13 +42,13 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
-		setEnabled: function(key) {
+		setEnabled: function(key, val) {
 
 			// access control
 			if (!req.session.userId) return res(error.unauthorized());
 			if (!req.session.user.admin) return res(error.forbidden());
 
-			hp.setEnabled(key, value, function(err) {
+			hp.setEnabled(key, val, function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [hyperpin] [setEnabled] %s', err);
 				} else {
