@@ -7,13 +7,11 @@ module.exports = function(module) {
 		// actions
 		// ------------------------------------------------------------------------
 
-		$scope.createIndex = function(event) {
-			event.target.blur();
+		$scope.createIndex = function() {
 			rpc('vpforums.createIndex');
 		};
 
-		$scope.updateIndex = function(event) {
-			event.target.blur();
+		$scope.updateIndex = function() {
 			rpc('vpforums.updateIndex');
 		};
 

@@ -58,7 +58,7 @@ block inner-content
 								.bar(style="width: {{progress}}%;")
 						td.size {{transfer.displaySize}}
 						td
-							i.icon(class='{{typeicon}}', title='{{typetext}}')				
+							i.icon(class='{{typeicon}}', title='{{typetext}}')
 						td
 							a(href='{{transfer.url}}', target='_blank')
 								i.icon(class='{{srcicon}}', title='{{srctext}}')
@@ -72,33 +72,33 @@ block inner-content
 									span.popover(style='display:none')
 										h4(ng-show='result.saved') Downloaded
 										dl(ng-show='result.saved')
-											dt {{result.saved.filename}} 
-											dd 
-												| Saved to 
+											dt {{result.saved.filename}}
+											dd
+												| Saved to
 												code.wrap {{result.saved.dstPath}}
 										h4(ng-show='result.extract.length') Extracted Files
 										dl(ng-show='result.extract.length')
 											span(ng-repeat='item in result.extract')
-												dt {{item.filename}} 
-												dd 
-													| Extracted to 
+												dt {{item.filename}}
+												dd
+													| Extracted to
 													code.wrap {{item.dstPath}}
 										h4(ng-show='result.skip.length') Skipped Files
 										dl(ng-show='result.skip.length')
 											span(ng-repeat='item in result.skip')
-												dt {{item.filename}} 
-												dd 
-													| Already exists at 
+												dt {{item.filename}}
+												dd
+													| Already exists at
 													code.wrap {{item.dstPath}}
 										h4(ng-show='result.ignore.length') Ignored Files
 										ul(ng-show='result.ignore.length')
 											span(ng-repeat='item in result.ignore')
 												li
-													tt.wrap {{item}} 
+													tt.wrap {{item}}
 								li.link.delete
 									a
 										i.icon.trash
-							
+
 
 		//- empty search result
 		div.noresult(style='display:none')
@@ -117,18 +117,18 @@ block inner-footer
 		.span4.action
 			h3 Control Panel
 			p Manually start, resume, pause or stop the queue.
-			button.btn.submit.small.more(ng-disabled='startDisabled', ng-click='start($event)')
+			button.btn.submit.small.more(ng-disabled='startDisabled', ng-click='start()')
 				i.icon.play
-			button.btn.submit.small.more(ng-disabled='pauseDisabled', ng-click='pause($event)')
+			button.btn.submit.small.more(ng-disabled='pauseDisabled', ng-click='pause()')
 				i.icon.pause
-			button.btn.submit.small.more(ng-disabled='stopDisabled', ng-click='stop($event)')
+			button.btn.submit.small.more(ng-disabled='stopDisabled', ng-click='stop()')
 				i.icon.stop
 			span.transfer-status.ng-cloak
 				strong.status {{status.status.transfer}}
 		.span4.action
 			h3 Clear downloaded
 			p Remove all completed transfers from the database.
-			button.btn.submit.small(disabled="disabled", ng-click='cleanDownloaded($event)')
+			button.btn.submit.small(disabled="disabled", ng-click='cleanDownloaded()')
 				i.icon.trash
 				span Clear
 		.span4.action

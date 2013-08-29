@@ -8,21 +8,17 @@ module.exports = function(module) {
 		// actions
 		// ------------------------------------------------------------------------
 
-		$scope.start = function(event) {
-			event.target.blur();
+		$scope.start = function() {
 			rpc('transfer.control', { action: 'start' });
 		};
-		$scope.pause = function(event) {
-			event.target.blur();
+		$scope.pause = function() {
 			alert('not yet implemented.');
 		};
-		$scope.stop = function(event) {
-			event.target.blur();
+		$scope.stop = function() {
 			rpc('transfer.control', { action: 'stop' });
 		};
 
-		$scope.resetFailed = function(event) {
-			event.target.blur();
+		$scope.resetFailed = function() {
 			rpc('transfer.resetFailed');
 		};
 
