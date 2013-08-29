@@ -11,37 +11,41 @@ block content
 				h1 Welcome!
 
 			.inner(ng-show="status.dataAvailable")
-				h2 Latest Releases
+
 				div.row-fluid
 
 					.span9(tb-768-980='span8')
 
 						//- RELEASES
 						//---------------------------------------------------------
+						h2 Latest Releases
 
-						div(ng-controller='LatestReleasesCtrl')
-							ul.thumbnails(ng-controller='DataCtrl', resource="vpforums.tables")
-								li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}", tb-768-980='span12')
-									.thumbnail
-										thumb.ng-transclude(fileid="{{row.fileId}}")
-										h3 {{row.title_trimmed}}
-										p.pull-right.updated.hidden-phone-small {{row.lastUpdatedSince}}
-										h4.hidden-phone-small {{row.info}}
-										ul.pills.small
-											li
-												i.icon.user
-												.author.hidden-phone-small {{row.author}}
-											li
-												i.icon.circle-arrow-down(title="{{row.downloads|groupdigit}}")
-												span.hidden-desktop-small.hidden-phone-small {{row.downloads|groupdigit}}
-											li
-												i.icon.eye(title="{{row.views|groupdigit}}")
-												span.hidden-desktop-small.hidden-phone-small {{row.views|groupdigit}}
-											li.link
-												a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
-													i.icon.link
-										.clearfix
-
+						div(ng-controller="LatestReleasesCtrl")
+							div(ng-controller="DataCtrl", resource="vpforums.tables")
+								ul.thumbnails()
+									li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}", tb-768-980='span12')
+										.thumbnail
+											thumb.ng-transclude(fileid="{{row.fileId}}")
+											h3 {{row.title_trimmed}}
+											p.pull-right.updated.hidden-phone-small {{row.lastUpdatedSince}}
+											h4.hidden-phone-small {{row.info}}
+											ul.pills.small
+												li
+													i.icon.user
+													.author.hidden-phone-small {{row.author}}
+												li
+													i.icon.circle-arrow-down(title="{{row.downloads|groupdigit}}")
+													span.hidden-desktop-small.hidden-phone-small {{row.downloads|groupdigit}}
+												li
+													i.icon.eye(title="{{row.views|groupdigit}}")
+													span.hidden-desktop-small.hidden-phone-small {{row.views|groupdigit}}
+												li.link
+													a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
+														i.icon.link
+											.clearfix
+								//- no data
+								div.nodata(style='display:none')
+									p No releases fetched yet.
 
 						//- GAMES
 						//---------------------------------------------------------
@@ -64,10 +68,14 @@ block content
 						//---------------------------------------------------------
 						h2 Latest Hiscores
 						div(ng-controller='LatestHiscoresCtrl')
-							div(ng-controller='HiscoreCtrl')
-								ul.thumbnails.hiscores(ng-controller='DataCtrl', resource="table.all")
-									li.span4(ng-repeat='table in data', slider='200', tb-768-980='span6')
-										include ../layouts/snippets/hiscore
+							div(ng-controller="HiscoreCtrl")
+								div(ng-controller="DataCtrl", resource="table.all")
+									ul.thumbnails.hiscores
+										li.span4(ng-repeat='table in data', slider='200', tb-768-980='span6')
+											include ../layouts/snippets/hiscore
+									//- no data
+									div.noresult(style='display:none')
+										p No high scores fetched yet.
 
 					.span3(tb-768-980='span4')
 
@@ -99,16 +107,6 @@ block content
 										button Drop -.20
 							.clearfix
 						br
-
-						//- FREE TABLE OF THE WEEK
-						//---------------------------------------------------------
-						.thumbnail
-							img(ng-src='{{table.url_backglass_medium}}')
-							hr
-							.thumbnail-content
-								p Free Table of the Week
-								h3 {{table.name}}
-							img.table(ng-src='{{table.url_portrait_medium}}')
 
 			.inner(ng-show="!status.dataAvailable")
 				//- no data
