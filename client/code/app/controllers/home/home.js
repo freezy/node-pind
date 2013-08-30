@@ -2,7 +2,13 @@ module.exports = function(module) {
 	'use strict';
 
 	module.controller('HomeCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
-
+		$scope.rpc('user.getLeaderboard', function(result) {
+			if (_.isArray(result) && result.length > 0) {
+				$scope.leaderboard = result;
+			} else {
+				$scope.leaderboard = [ { user: 'NO DATA.' }];
+			}
+		});
 	}]);
 
 

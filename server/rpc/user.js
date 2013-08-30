@@ -41,23 +41,32 @@ exports.actions = function(req, res, ss) {
 				}
 			}
 
-			schema.User.findAll(p).success(function(rows) {
+			schema.User.all(p).success(function(rows) {
 
 				delete p.limit;
 				delete p.skip;
 				delete p.order;
 				schema.User.count(p).success(function(num) {
-
 					logger.log('info', '[db] [user] Returning ' + rows.length + ' rows from a total of ' + num + '.');
 					res({ rows : rows, count: num });
-
-				}).error(function(err) {
-					throw Error(err);
 				});
-
-			}).error(function(err) {
-				throw Error(err);
 			});
+		},
+
+		getLeaderboard: function() {
+
+			// access control
+			if (!req.session.userId) return res(error.unauthorized());
+
+			schema.sequelize.query(
+				'SELECT u.id, u.user, sum(h.points) AS points FROM users u ' +
+				'INNER JOIN hiscores h ON h.userId = u.id ' +
+				'GROUP BY u.user, u.id ' +
+				'ORDER BY points DESC'
+			).success(function(rows) {
+				res(rows);
+			});
+
 		},
 
 		update: function(params) {

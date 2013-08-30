@@ -90,9 +90,9 @@ block content
 								.dmd.leaderboard
 									table.table
 										tbody
-											tr(ng-repeat='hiscore in hiscores')
+											tr(ng-repeat='hiscore in leaderboard')
 												td {{ hiscore.user }}
-												td.text-right {{ hiscore.totalPoints }}
+												td.text-right {{ hiscore.points }}
 						br
 
 						//- QUICK COIN DROP
