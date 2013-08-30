@@ -57,7 +57,7 @@ HyperPin.prototype.initAnnounce = function() {
 	an.notice(this, 'searchCompleted', '{{msg}}');
 	an.forward(this, 'tableUpdated', ns);
 
-	// data
+	// toggles
 	an.forward(this, 'dataUpdated');
 };
 
@@ -434,7 +434,8 @@ HyperPin.prototype.setEnabled = function(key, value, callback) {
 			return callback('Cannot find row with key "' + key + '".');
 		}
 		logger.log('info', '[hyperpin] %s table with key "%s" in database.', value ? 'Enabling' : 'Disabling', key);
-		row.updateAttributes({ hpenabled: value ? true : false}).success(function() {
+		row.updateAttributes({ hpenabled: value ? true : false}).success(function(row) {
+			that.emit('dataUpdated', { resource: 'table', row: row });
 			that.writeTables(callback);
 		});
 	});
