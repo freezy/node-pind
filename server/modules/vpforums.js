@@ -714,11 +714,12 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 				var u = url.match(/showfile=(\d+)/i);
 				// author dom is different when logged in (names are linked)
 				var author = $(that).find('.basic_info .desc').html().match(/by\s+([^\s]+)/i);
+				var descr = $(that).find('span[class="desc"]').html();
 				if (u) {
 					currentResult.push({
 						fileId: parseInt(u[1]),
 						title: $(that).find('h3.ipsType_subtitle a').attr('title').replace(/^view file named\s+/ig, ''),
-						description: ent.decode($(that).find('span[class="desc"]').html()).trim(),
+						description: descr ? ent.decode(descr).trim() : '',
 						downloads: parseInt(fileinfo[1].replace(/,/, '')),
 						views: parseInt(fileinfo[2].replace(/,/, '')),
 						updated: dateParsed.length > 0 ? dateParsed[0].startDate : null,
