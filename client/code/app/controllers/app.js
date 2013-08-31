@@ -24,6 +24,7 @@ module.exports = function(module) {
 			});
 		});
 		var statusUpdated = function() {
+			console.log('Status has been updated, retrieving new status.');
 			$scope.rpc('pind.status', function(status) {
 				$scope.status = status;
 				$scope.$broadcast('statusUpdated');

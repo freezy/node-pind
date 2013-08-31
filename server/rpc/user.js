@@ -89,8 +89,8 @@ exports.actions = function(req, res, ss) {
 					return res(error.api('No user found with ID "' + params.id + '".'));
 				}
 				user.updateAttributes(params).success(function(user) {
+					ss.publish.user(user.user, 'statusUpdated');
 					res(user);
-
 				});
 			});
 		}

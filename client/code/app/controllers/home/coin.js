@@ -3,8 +3,12 @@ module.exports = function(module) {
 
 	module.controller('CoinCtrl', ['$scope', function($scope) {
 
-		$scope.statusReady(function(status) {
-			$scope.credits = status.user.credits + ' CREDITS';
-		});
+		var updateCredits = function() {
+			$scope.credits = $scope.status.user.credits + ' CREDIT' + ($scope.status.user.credits != 1 ? 'S' : '');
+			$scope.$apply();
+		};
+
+		$scope.statusReady(updateCredits);
+		$scope.$on('statusUpdated', updateCredits);
 	}]);
 };
