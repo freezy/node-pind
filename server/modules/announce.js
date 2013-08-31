@@ -28,10 +28,12 @@ Announce.prototype._publish = function(event, data, ns, who) {
 		logger.log('info', '[announce] "%s": %j', name, data, {});
 		if (!who || who == 'all') {
 			socketstream.publish.all(name, data);
-		} else if (_.isObject(who) && who.who == 'user') {
-			socketstream.publish.user(who.user, name, data);
 		} else if (who == 'admin') {
 			socketstream.publish.channel('admin', name, data);
+		} else if (data._user) {
+			socketstream.publish.user(data._user, name, data);
+		} else {
+			logger.log('error', '[announce] Skipping event "%s", unknown channel "%s".', name, who, {});
 		}
 	} else {
 		logger.log('warn', '[announce] Skipping event "%s", SocketStream unavailable.', name);

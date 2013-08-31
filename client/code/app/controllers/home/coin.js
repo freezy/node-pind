@@ -10,5 +10,11 @@ module.exports = function(module) {
 
 		$scope.statusReady(updateCredits);
 		$scope.$on('statusUpdated', updateCredits);
+
+		$scope.insertCoin = function(slot) {
+			$scope.rpc('control.insertCoin', slot, function() {
+
+			});
+		}
 	}]);
 };

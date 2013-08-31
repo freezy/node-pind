@@ -18,7 +18,6 @@ exports.actions = function(req, res, ss) {
 
 			// access control
 			if (!req.session.userId) return res(error.unauthorized());
-			if (!req.session.user.admin) return res(error.forbidden());
 
 			logger.log('info', '[rpc] [control] Inserting coin into slot %s by %s', slot, req.session.user.user);
 			hp.insertCoin(req.session.user, slot, function(err, result) {

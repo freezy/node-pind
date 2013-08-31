@@ -59,6 +59,7 @@ HyperPin.prototype.initAnnounce = function() {
 
 	// toggles
 	an.forward(this, 'dataUpdated');
+	an.forward(this, 'statusUpdated');
 };
 
 HyperPin.prototype.readTablesWithData = function(callback) {
@@ -393,28 +394,29 @@ HyperPin.prototype.findMissingMedia = function(callback) {
  * @param callback
  */
 HyperPin.prototype.insertCoin = function(user, slot, callback) {
+	var that = this;
 	logger.log('info', '[hyperpin] Checking amount of credits');
 	if (user.credits > 0) {
 		logger.log('info', '[hyperpin] %d > 0, all good, inserting coin.', user.credits);
 		//noinspection JSUnresolvedVariable
         var binPath = fs.realpathSync(__dirname + '../../../bin');
 		exec(binPath + '/Keysender.exe', function(err) {
-			if (err !== null) {
-				callback(err);
-			} else {
-				logger.log('info', '[hyperpin] Coin inserted, updating user credits.');
-				schema.User.find(user.id).success(function(row) {
-					user.credits--;
-					row.credits--;
-					row.save(['credits']).success(function(u) {
-						logger.log('info', '[hyperpin] User credits updated to %d, calling callback.', u.credits);
-						callback(null, {
-							message : 'Coin inserted successfully!',
-							credits : u.credits
-						});
+			if (err) {
+				return callback(err);
+			}
+			logger.log('info', '[hyperpin] Coin inserted, updating user credits.');
+			schema.User.find(user.id).success(function(row) {
+				user.credits--;
+				row.credits--;
+				row.save(['credits']).success(function(u) {
+					logger.log('info', '[hyperpin] User credits updated to %d, calling callback.', u.credits);
+					that.emit('statusUpdated', { _user: user.user });
+					callback(null, {
+						message : 'Coin inserted successfully!',
+						credits : u.credits
 					});
 				});
-			}
+			});
 		});
 	} else {
 		callback('No more credits available.');

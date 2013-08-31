@@ -31,6 +31,7 @@ exports.actions = function(req, res, ss) {
 			transfer.getStatus(function(err, transferStatus) {
 				schema.Table.count().success(function(count) {
 					schema.User.find({ where: { user: req.session.userId }}).success(function(user) {
+						req.session.user = user;
 						var status = {
 							user: user,
 							version: au.getVersion(),
