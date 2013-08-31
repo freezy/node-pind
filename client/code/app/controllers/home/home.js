@@ -1,7 +1,7 @@
 module.exports = function(module) {
 	'use strict';
 
-	module.controller('HomeCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
+	module.controller('HomeCtrl', ['$scope', function($scope) {
 		$scope.rpc('user.getLeaderboard', function(result) {
 			if (_.isArray(result) && result.length > 0) {
 				$scope.leaderboard = result;
@@ -12,19 +12,19 @@ module.exports = function(module) {
 	}]);
 
 
-	module.controller('LatestReleasesCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
+	module.controller('LatestReleasesCtrl', ['$scope', '$log', 'rpc', function($scope) {
 		$scope.limit = 4;
 		$scope.sort = 'latest'
 	}]);
 
 
-	module.controller('LatestGamesCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
+	module.controller('LatestGamesCtrl', ['$scope', function($scope) {
 		$scope.limit = 3;
 		$scope.fields = ['name', 'year', 'manufacturer', 'url', 'url_backglass_medium' ];
 	}]);
 
 
-	module.controller('LatestHiscoresCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
+	module.controller('LatestHiscoresCtrl', ['$scope', function($scope) {
 		$scope.limit = 3;
 		$scope.sort = 'latestHiscores';
 		$scope.filters = [ 'hiscoreAny' ];
@@ -32,7 +32,7 @@ module.exports = function(module) {
 	}]);
 
 
-	module.controller('SourceItemCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
+	module.controller('SourceItemCtrl', ['$scope', function($scope) {
 
 	}]);
 
