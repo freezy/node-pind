@@ -31,19 +31,19 @@ Hiscore.prototype.initAnnounce = function() {
 	var ns = 'hiscore';
 
 	// fetchHighscores()
-	an.data(this, 'processingStarted', { id: 'fetchhs' }, ns);
-	an.data(this, 'processingCompleted', { id: 'fetchhs' }, ns);
-	an.notice(this, 'processingCompleted', 'High scores successfully synchronized.', 5000);
+	an.data(this, 'processingStarted', { id: 'fetchhs' }, ns, 'admin');
+	an.data(this, 'processingCompleted', { id: 'fetchhs' }, ns, 'admin');
+	an.notice(this, 'processingCompleted', 'High scores successfully synchronized.', 'admin', 5000);
 	an.notice(this, 'processingFailed', 'Error synchronizing: {{err}}', 3600000);
 
 	// matchHiscore()
-	an.notice(this, 'readingStarted', 'Reading high scores from "{{rom}}" ({{name}})', 5000);
+	an.notice(this, 'readingStarted', 'Reading high scores from "{{rom}}" ({{name}})', 'admin', 5000);
 
 	// watchHischores()
-	an.notice(this, 'nvramChangeDetected', 'Updated NVRAM, updating high score for ROM {{rom}}', 60000);
-	an.data(this, 'nvramChangeDetected', { id: '#fetchhs' }, ns, 'processingStarted');
-	an.notice(this, 'nvramChangeProcessed', 'High scores for "{{name}}" updated.', 5000);
-	an.data(this, 'nvramChangeProcessed', { id: '#fetchhs' }, ns, 'processingCompleted');
+	an.notice(this, 'nvramChangeDetected', 'Updated NVRAM, updating high score for ROM {{rom}}', 'admin', 60000);
+	an.data(this, 'nvramChangeDetected', { id: '#fetchhs' }, ns, 'admin', 'processingStarted');
+	an.notice(this, 'nvramChangeProcessed', 'High scores for "{{name}}" updated.', 'admin', 5000);
+	an.data(this, 'nvramChangeProcessed', { id: '#fetchhs' }, ns, 'admin', 'processingCompleted');
 };
 
 Hiscore.prototype.isFetching = function() {

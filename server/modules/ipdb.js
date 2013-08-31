@@ -34,20 +34,20 @@ Ipdb.prototype.initAnnounce = function() {
 	var ns = 'ipdb';
 
 	// syncIPDB()
-	an.data(this, 'processingStarted', { id: 'ipdbsync' }, ns);
-	an.data(this, 'processingCompleted', { id: 'ipdbsync' }, ns);
-	an.notice(this, 'processingCompleted', 'Finished matching IPDB.', 5000);
+	an.data(this, 'processingStarted', { id: 'ipdbsync' }, ns, 'admin');
+	an.data(this, 'processingCompleted', { id: 'ipdbsync' }, ns, 'admin');
+	an.notice(this, 'processingCompleted', 'Finished matching IPDB.', 'admin', 5000);
 
 	// enrichAll()
-	an.notice(this, 'fetchingCompleted', 'Updating database with {{num}} data sets', 30000);
-	an.notice(this, 'updateCompleted', '{{num}} games updated, fetching top 300 games', 30000);
-	an.notice(this, 'top300Completed', 'Top 300 synced ({{num}} games).', 30000);
+	an.notice(this, 'fetchingCompleted', 'Updating database with {{num}} data sets', 'admin', 30000);
+	an.notice(this, 'updateCompleted', '{{num}} games updated, fetching top 300 games', 'admin', 30000);
+	an.notice(this, 'top300Completed', 'Top 300 synced ({{num}} games).', 'admin', 30000);
 
 	// enrich()
-	an.notice(this, 'searchStarted', 'Searching for "{{name}}"', 30000);
+	an.notice(this, 'searchStarted', 'Searching for "{{name}}"', 'admin', 30000);
 
 	// syncTop300()
-	an.notice(this, 'top300Matched', 'Matched {{name}} ({{platform}}) at rank {{rank}}.', 30000);
+	an.notice(this, 'top300Matched', 'Matched {{name}} ({{platform}}) at rank {{rank}}.', 'admin', 30000);
 };
 
 /**

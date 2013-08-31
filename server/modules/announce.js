@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('underscore');
 var util = require('util');
 var events = require('events');
 var logger = require('winston');
@@ -19,13 +20,19 @@ Announce.prototype.registerSocketStream = function(_ss) {
 	}
 };
 
-Announce.prototype._publish = function(event, data, ns) {
+Announce.prototype._publish = function(event, data, ns, who) {
 	// always emit on self
 	var name = ns ? ns + '.' + event : event;
 	this.emit(name, data);
 	if (socketstream) {
 		logger.log('info', '[announce] "%s": %j', name, data, {});
-		socketstream.publish.all(name, data);
+		if (!who || who == 'all') {
+			socketstream.publish.all(name, data);
+		} else if (_.isObject(who) && who.who == 'user') {
+			socketstream.publish.user(who.user, name, data);
+		} else if (who == 'admin') {
+			socketstream.publish.channel('admin', name, data);
+		}
 	} else {
 		logger.log('warn', '[announce] Skipping event "%s", SocketStream unavailable.', name);
 	}
@@ -36,11 +43,12 @@ Announce.prototype._publish = function(event, data, ns) {
  * @param emitter Event emitter
  * @param event Name of the event
  * @param ns Namespace - prefix added to event name, separated by a dot.
+ * @param who Receipents - null is everybody, valid values are "user" and "admin".
  */
-Announce.prototype.forward = function(emitter, event, ns) {
+Announce.prototype.forward = function(emitter, event, ns, who) {
 	var that = this;
 	emitter.on(event, function(obj) {
-		that._publish(event, obj, ns);
+		that._publish(event, obj, ns, who);
 	});
 };
 
@@ -50,8 +58,9 @@ Announce.prototype.forward = function(emitter, event, ns) {
  * @param event Name of the event
  * @param message Message to send. Use {{varname}} if payload contains values.
  * @param timeout If set, override default timeout to send to client
+ * @param who Receipents - null is everybody, valid values are "user" and "admin".
  */
-Announce.prototype.notice = function(emitter, event, message, timeout) {
+Announce.prototype.notice = function(emitter, event, message, who, timeout) {
 	var that = this;
 	emitter.on(event, function(values) {
 		var msg = message;
@@ -65,7 +74,7 @@ Announce.prototype.notice = function(emitter, event, message, timeout) {
 		that._publish('console', {
 			msg: msg,
 			timeout: timeout ? timeout : defaultTimeout
-		});
+		}, null, who);
 	});
 };
 
@@ -76,11 +85,12 @@ Announce.prototype.notice = function(emitter, event, message, timeout) {
  * @param data Data to send
  * @param ns Namespace - prefix added to event name, separated by a dot.
  * @param eventName If set, change event name to this value instead of original value
+ * @param who Receipents - null is everybody, valid values are "user" and "admin".
  */
-Announce.prototype.data = function(emitter, event, data, ns, eventName) {
+Announce.prototype.data = function(emitter, event, data, ns, who, eventName) {
 	var that = this;
 	emitter.on(event, function() {
-		that._publish(eventName ? eventName : event, data, ns);
+		that._publish(eventName ? eventName : event, data, ns, who);
 	});
 };
 
@@ -91,14 +101,14 @@ Announce.prototype.transferProgress = function(emitter, event, ns) {
 			id: data.reference.id,
 			totalSize: data.contentLength,
 			downloadedSize: data.size
-		}, ns);
+		}, ns, 'admin');
 	});
 };
 
 Announce.prototype.transferUpdate = function(emitter, event, ns) {
 	var that = this;
 	emitter.on(event, function(data) {
-		that._publish('transferUpdated', { id: data.transfer.id }, ns);
+		that._publish('transferUpdated', { id: data.transfer.id }, ns, 'admin');
 	});
 };
 

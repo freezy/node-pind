@@ -39,33 +39,33 @@ VPForums.prototype.initAnnounce = function() {
 	var ns = 'vpf';
 
 	// getRomLinks()
-	an.notice(this, 'romSearchStarted', 'VPF: Searching ROM for "{{name}}"', 120000);
+	an.notice(this, 'romSearchStarted', 'VPF: Searching ROM for "{{name}}"', 'admin', 120000);
 
 	// fetchDownloads()
-	an.forward(this, 'downloadProgressUpdated', ns);
+	an.forward(this, 'downloadProgressUpdated', ns, 'admin');
 
 	// download()
-	an.notice(this, 'downloadInitializing', 'VPF: Initializing download {{fileinfo}}', 60000);
-	an.notice(this, 'downloadPreparing', 'VPF: Preparing download', 60000);
-	an.notice(this, 'downloadStarted', 'VPF: Downloading "{{filename}}"', 300000);
-	an.notice(this, 'downloadCompleted', 'VPF: {{size}} bytes downloaded.');
-	an.notice(this, 'downloadFailed', 'VPF: Download failed: {{message}}');
+	an.notice(this, 'downloadInitializing', 'VPF: Initializing download {{fileinfo}}', 'admin', 60000);
+	an.notice(this, 'downloadPreparing', 'VPF: Preparing download', 'admin', 60000);
+	an.notice(this, 'downloadStarted', 'VPF: Downloading "{{filename}}"', 'admin', 300000);
+	an.notice(this, 'downloadCompleted', 'VPF: {{size}} bytes downloaded.', 'admin');
+	an.notice(this, 'downloadFailed', 'VPF: Download failed: {{message}}', 'admin');
 
 	// login()
-	an.notice(this, 'loginStarted', 'VPF: Logging in as "{{user}}"', 30000);
+	an.notice(this, 'loginStarted', 'VPF: Logging in as "{{user}}"', 'admin', 30000);
 
 	// index
-	an.data(this, 'createIndexStarted',    { id: 'crvpfindex' }, ns);
-	an.data(this, 'createIndexCompleted',  { id: 'crvpfindex' }, ns);
-	an.data(this, 'createIndexCompleted',  {}, ns, 'indexUpdated');
-	an.data(this, 'refreshIndexStarted',   { id: 'dlvpfindex' }, ns);
-	an.data(this, 'refreshIndexCompleted', { id: 'dlvpfindex' }, ns);
-	an.data(this, 'refreshIndexCompleted',  {}, ns, 'indexUpdated');
-	an.notice(this, 'downloadIndexFailed', 'Index download failed: {{error}}');
-	an.notice(this, 'downloadIndexFailed', 'Index update failed: {{error}}');
+	an.data(this, 'createIndexStarted',    { id: 'crvpfindex' }, ns, 'admin');
+	an.data(this, 'createIndexCompleted',  { id: 'crvpfindex' }, ns, 'admin');
+	an.data(this, 'createIndexCompleted',  {}, ns, 'admin', 'indexUpdated');
+	an.data(this, 'refreshIndexStarted',   { id: 'dlvpfindex' }, ns, 'admin');
+	an.data(this, 'refreshIndexCompleted', { id: 'dlvpfindex' }, ns, 'admin');
+	an.data(this, 'refreshIndexCompleted',  {}, ns, 'admin', 'indexUpdated');
+	an.notice(this, 'downloadIndexFailed', 'Index download failed: {{error}}', 'admin');
+	an.notice(this, 'downloadIndexFailed', 'Index update failed: {{error}}', 'admin');
 
 	// "inverse" method calls
-	an.forward(this, 'queueTransfer');
+	//an.forward(this, 'queueTransfer');
 };
 
 VPForums.prototype._fixTitle = function(n) {

@@ -40,21 +40,21 @@ HyperPin.prototype.initAnnounce = function() {
 	var ns = 'hp';
 
 	// readTablesWithData()
-	an.data(this, 'processingStarted', { id: 'hpread' }, ns);
-	an.notice(this, 'readCompleted', 'Done reading tables, starting analysis...');
-	an.notice(this, 'analysisCompleted', 'Finished analyzing tables.', 5000);
-	an.data(this, 'processingCompleted', { id: 'hpread' }, ns);
+	an.data(this, 'processingStarted', { id: 'hpread' }, ns, 'admin');
+	an.notice(this, 'readCompleted', 'Done reading tables, starting analysis...', 'admin');
+	an.notice(this, 'analysisCompleted', 'Finished analyzing tables.', 'admin', 5000);
+	an.data(this, 'processingCompleted', { id: 'hpread' }, ns, 'admin');
 
 	// readTables()
-	an.notice(this, 'xmlParsed', 'Read {{num}} tables from {{platform}}.xml, updating local database...');
-	an.notice(this, 'tablesUpdated', 'Updated {{num}} tables in database.');
+	an.notice(this, 'xmlParsed', 'Read {{num}} tables from {{platform}}.xml, updating local database...', 'admin');
+	an.notice(this, 'tablesUpdated', 'Updated {{num}} tables in database.', 'admin');
 
 	// findMissingMedia()
-	an.data(this, 'mediaSearchStarted', { id: 'dlmedia' }, ns, 'processingStarted');
-	an.data(this, 'mediaSearchCompleted', { id: 'dlmedia' }, ns, 'processingCompleted');
-	an.notice(this, 'mediaSearchSucceeded', 'Successfully added {{count}} media packs to download queue.', 5000);
-	an.notice(this, 'searchStarted', 'Searching {{what}} for "{{name}}"', 60000);
-	an.notice(this, 'searchCompleted', '{{msg}}');
+	an.data(this, 'mediaSearchStarted', { id: 'dlmedia' }, ns, 'admin', 'processingStarted');
+	an.data(this, 'mediaSearchCompleted', { id: 'dlmedia' }, ns, 'admin', 'processingCompleted');
+	an.notice(this, 'mediaSearchSucceeded', 'Successfully added {{count}} media packs to download queue.', 'admin', 5000);
+	an.notice(this, 'searchStarted', 'Searching {{what}} for "{{name}}"', 'admin', 60000);
+	an.notice(this, 'searchCompleted', '{{msg}}', 'admin');
 	an.forward(this, 'tableUpdated', ns);
 
 	// toggles

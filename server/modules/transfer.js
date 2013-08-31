@@ -40,22 +40,22 @@ Transfer.prototype.initAnnounce = function() {
 
 	var ns = 'transfer';
 
-	an.notice(this, 'transferAborted', 'All transfers aborted.', 5000);
+	an.notice(this, 'transferAborted', 'All transfers aborted.', 'admin', 5000);
 
 	an.transferUpdate(this, 'transferFailed', ns);
 	an.transferUpdate(this, 'transferCompleted', ns);
 	an.transferUpdate(this, 'extractFailed', ns);
 	an.transferUpdate(this, 'extractCompleted', ns);
 
-	an.forward(this, 'dataUpdated');
+	an.forward(this, 'dataUpdated', null, 'admin');
 
-	an.forward(this, 'transferAdded', ns);
-	an.forward(this, 'transferDeleted', ns);
-	an.forward(this, 'transferAborted', ns);
-	an.forward(this, 'transferSizeKnown', ns);
-	an.forward(this, 'transferClearedFailed', ns);
-	an.forward(this, 'transferOrderChanged', ns);
-	an.forward(this, 'statusUpdated');
+	an.forward(this, 'transferAdded', ns, 'admin');
+	an.forward(this, 'transferDeleted', ns, 'admin');
+	an.forward(this, 'transferAborted', ns, 'admin');
+	an.forward(this, 'transferSizeKnown', ns, 'admin');
+	an.forward(this, 'transferClearedFailed', ns, 'admin');
+	an.forward(this, 'transferOrderChanged', ns, 'admin');
+	an.forward(this, 'statusUpdated', null, 'admin');
 
 	an.transferProgress(this, 'transferProgress', ns);
 

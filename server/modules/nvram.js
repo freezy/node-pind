@@ -32,8 +32,8 @@ NvRam.prototype.initAnnounce = function() {
 	var ns = 'nvram';
 
 	// fetchHighscores()
-	an.data(this, 'processingStarted', { id: 'fetchaudits' }, ns);
-	an.data(this, 'processingCompleted', { id: 'fetchaudits' }, ns);
+	an.data(this, 'processingStarted', { id: 'fetchaudits' }, ns, 'admin');
+	an.data(this, 'processingCompleted', { id: 'fetchaudits' }, ns, 'admin');
 };
 
 

@@ -31,6 +31,10 @@ exports.actions = function(req, res, ss) {
 						}
 						req.session.setUserId(user.user);
 						req.session.user = user;
+						if (user.admin) {
+							req.session.channel.subscribe('admin');
+							logger.log('info', '[rpc] [auth] Subscribing user %s to admin channel.', user.user);
+						}
 						logger.log('info', '[rpc] [auth] Saving session..');
 						req.session.save(function() {
 							logger.log('info', '[rpc] [auth] Logged user saved to session: ', req.session, {});
@@ -55,6 +59,10 @@ exports.actions = function(req, res, ss) {
 				if (user) {
 					req.session.setUserId(user.user);
 					req.session.user = user;
+					if (user.admin) {
+						req.session.channel.subscribe('admin');
+						logger.log('info', '[rpc] [auth] Subscribing user %s to admin channel.', user.user);
+					}
 					req.session.save(function(){
 						logger.log('info', '[rpc] [auth] Autologged user %s.', user.user);
 						res({
@@ -138,6 +146,10 @@ exports.actions = function(req, res, ss) {
 
 		logout: function() {
 			req.session.setUserId(null);
+			if (req.session.user.admin) {
+				req.session.channel.unsubscribe('admin');
+			}
+			req.session.user = null;
 			res(true);
 		}
 	};

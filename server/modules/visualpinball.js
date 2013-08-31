@@ -26,7 +26,7 @@ util.inherits(VisualPinball, events.EventEmitter);
 VisualPinball.prototype.initAnnounce = function() {
 
 	// updateTableData()
-	an.notice(this, 'analysisStarted', 'Analyzing {{name}}...');
+	an.notice(this, 'analysisStarted', 'Analyzing {{name}}...', 'admin');
 };
 
 

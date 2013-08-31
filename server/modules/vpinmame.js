@@ -30,15 +30,15 @@ VPinMAME.prototype.initAnnounce = function() {
 	var ns = 'vpm';
 
 	// fetchHighscores()
-	an.data(this, 'processingStarted', { id: 'dlrom' }, ns);
-	an.data(this, 'processingCompleted', { id: 'dlrom' }, ns);
-	an.notice(this, 'processingNoRomsFound', 'All tables already seem to have a ROM available.', 5000);
-	an.notice(this, 'processingCompleted', 'All done, {{num}} ROMs queued for download.', 5000);
-	an.notice(this, 'processingFailed', 'Error finding ROMs: {{err}}', 3600000);
+	an.data(this, 'processingStarted', { id: 'dlrom' }, ns, 'admin');
+	an.data(this, 'processingCompleted', { id: 'dlrom' }, ns, 'admin');
+	an.notice(this, 'processingNoRomsFound', 'All tables already seem to have a ROM available.', 'admin', 5000);
+	an.notice(this, 'processingCompleted', 'All done, {{num}} ROMs queued for download.', 'admin', 5000);
+	an.notice(this, 'processingFailed', 'Error finding ROMs: {{err}}', 'admin', 3600000);
 
 	// fetchMissingRom() -> download()
-	an.notice(this, 'ipdbDownloadStarted', 'IPDB: Downloading "{{filename}}"', 60000);
-	an.notice(this, 'ipdbSearchStarted', 'IPDB: Searching ROMs for "{{name}}"', 60000);
+	an.notice(this, 'ipdbDownloadStarted', 'IPDB: Downloading "{{filename}}"', 'admin', 60000);
+	an.notice(this, 'ipdbSearchStarted', 'IPDB: Searching ROMs for "{{name}}"', 'admin', 60000);
 };
 
 VPinMAME.prototype.fetchMissingRom = function(table, callback) {
