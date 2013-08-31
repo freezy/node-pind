@@ -1,7 +1,7 @@
 extends ../layouts/inner
 
 block vars
-	- var pageController = 'NoopCtrl'
+	- var pageController = 'CoinCtrl'
 	- var mainMenu = "coin"
 
 block content
@@ -17,8 +17,8 @@ block content
 					| nothing.
 				br
 
-		.dmd.middle(data-credits="{{user.credits}}")
-			span GAME OVER
+		.dmd.middle
+			span {{ credits }}
 
 		section.coindrop
 			.row

@@ -110,6 +110,20 @@ module.exports = function(module) {
 			}
 		};
 
+		$scope.statusReady = function(callback) {
+			if ($scope.statusAvailable) {
+				callback($scope.status);
+			} else {
+				var off = $scope.$on('statusAvailable', function() {
+					callback($scope.status);
+					$scope.$apply();
+					if (off) {
+						off();
+					}
+				});
+			}
+		};
+
 		ss.event.on('upgradeStarted', function() {
 			$('.modal.update-progressing').modal({
 				show: true,
