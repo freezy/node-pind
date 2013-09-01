@@ -34,6 +34,9 @@ p.justify {
 .light img {
   border: 1px solid rgba(0,0,0,0.7);
 }
+.light img.noborder {
+  border: none;
+}
 .light ::-moz-selection {
   background: #ccc;
   text-shadow: none;
@@ -71,6 +74,9 @@ p.postarrow {
 }
 .dark img {
   border: 1px solid rgba(255,255,255,0.6);
+}
+.dark img.noborder {
+  border: none;
 }
 .dark img.arrow-h {
   border: none;
