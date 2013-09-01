@@ -25,6 +25,10 @@ hr
 	&.first
 		margin-top 40px
 
+p.justify
+	text-align justify
+	text-justify inter-word
+
 .light
 	p, h1, h2
 		text-shadow 0 1px rgba(255,255,255, 0.75)
@@ -46,11 +50,18 @@ div.arrow-v
 	position absolute
 	left 50%
 	margin-top -71px
+p.postarrow
+	margin-bottom 30px
+	margin-top -10px
 
 .dark
-	p, h1, h2, a
+	p, h1, h2
 		color foreground-light
 		text-shadow 0 1px rgba(0,0,0, 0.75)
+	a
+		color rgba(255,255,255,0.85)
+		&:hover
+			color white
 	img
 		border 1px solid foreground-light
 		&.arrow-h
@@ -160,6 +171,16 @@ h1
 	h1 > span
 		background-image url("../img/white_carbonfiber.png")
 
+#slide-download
+	background-image url("../img/pw_maze_grey.png")
+	h1 > span
+		background-image url("../img/pw_maze_grey.png")
+
+#slide-about
+	background-image url("../img/dark_leather.png")
+	h1 > span
+		background-image url("../img/dark_leather.png")
+
 
 ul.thumbnails img + p
 	margin-top 15px
@@ -242,6 +263,31 @@ ul.bubbles
 	font-style: normal;
 }
 
+a.dl
+	border 1px solid rgba(0, 0, 0, .2)
+	color #fff
+	display inline-block
+	padding .5em 1.2em
+	text-decoration none
+	text-shadow 1px 1px 1px rgba(0, 0, 0, 0.5)
+	border-radius 30px
+	box-shadow inset 0 1px 0 rgba(255, 255, 255, .3)
+	background #c2c2c2
+	background linear-gradient(top, #c2c2c2 0%, #aeaeae 100%)
+	font-family font-sans
+	font-weight 600
+	font-size 27px
+	width 232px
+	transition all 300ms ease
+	margin-bottom 30px
+
+	& > span
+		margin-left 20px
+
+	&:hover
+		color: #fff
+		opacity: .5
+
 .icon
 
 	font-family 'pind-symbols'
@@ -258,6 +304,12 @@ ul.bubbles
 
 	&.vpf:before
 		content: "\e00d"
+
+	&.github-alt:before
+			content "\f113"
+
+	&.download-alt:before
+		content "\f019"
 
 @media (max-width: 480px)
 	.header-logo

@@ -25,6 +25,8 @@ html
 						li(data-slide="4")
 							a(href="#") Technologies
 						li(data-slide="5")
+							a(href="#") Download
+						li(data-slide="6")
 							a(href="#") About
 
 		hr.first
@@ -87,7 +89,7 @@ html
 									img.arrow-v(src="img/arrow_v.png")
 						div.arrow-h
 							img.arrow-h(src="img/arrow_h.png")
-						p Syncronize HyperPin's database with Pind. Enable and disable tables with one click.
+						p.postarrow Syncronize HyperPin's database with Pind. Enable and disable tables with one click.
 
 						ul.thumbnails.bubbles
 							li.span4
@@ -121,7 +123,7 @@ html
 								img(src="img/features_admin_upgrade.png")
 								p Get hassle-free upgrades with two clicks, including info about new features, logs and history.
 
-
+			br
 		hr
 		section#slide-techno.light.slide(data-slide="4")
 			.container
@@ -148,6 +150,60 @@ html
 						p Of course such a project would be impossible without the help of <a href="http://underscorejs.org/" target="_blank">Underscore.JS</a>,
 							| <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>, <a href="http://jquery.com/" target="_blank">jQuery</a>
 							| and many more.
+
+			br
+		hr
+		section#slide-download.dark.slide(data-slide="5")
+			.container
+				.row-fluid
+					.span10.offset1
+						h1
+							span Download
+						.header-line
+						.row-fluid
+							.span6.text-center
+								a(href="https://github.com/freezy/node-pind/blob/master/INSTALL.md").dl
+									i.icon.download-alt
+									span Installation
+							.span6.text-center
+								a(href="https://github.com/freezy/node-pind").dl
+									i.icon.github-alt
+									span GitHub Repo
+						p.text-center After initial installation, Pind can update itself automatically. Also check out the GitHub project
+							| page, which contains a complete feature list as well as additional information.
+
+			br
+			br
+		hr
+		section#slide-about.dark.slide(data-slide="6")
+			.container
+				.row-fluid
+					.span10.offset1
+						h1
+							span About
+						.header-line
+						.row-fluid
+							.span4
+								p Everything you see here is free and open source. I've entirely coded it in my spare
+									| time and will continue to do so. I believe that openly sharing code is the future
+									| of innovative software design, and I appeal to everyone to do so as well. The pinball
+									| community needs more open source software!
+							.span4
+								p If you find bugs (which you will - we're in beta after all), feel free to use GitHub's
+									| <a href="https://github.com/freezy/node-pind/issues" target="_blank">issue tracker</a>.
+									| Or even better, fork the <a href="https://github.com/freezy/node-pind" target="_blank">
+									| repository</a> and submit a pull request directly. If you have suggestions, ideas,
+									| complaints or even compliments, feel free to post them <a href="#" target="_blank">here</a>.
+							.span4
+								p You can check out my cabinet built thread
+									| <a href="http://hyperspin-fe.com/forum/showthread.php?19987" target="_blank">here</a>
+									| - this is the main motivation behind the project, but as a coder I have a need to play
+									| around with new technologies. This was very interesting, specially the real-time
+									| part, but also writing server-side code in JS was more fun than expected.
+			br
+			br
+			br
+
 
 
 	script(type="text/javascript", src="js/jquery-2.0.2.min.js")

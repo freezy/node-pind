@@ -22,6 +22,10 @@ hr {
 hr.first {
   margin-top: 40px;
 }
+p.justify {
+  text-align: justify;
+  text-justify: inter-word;
+}
 .light p,
 .light h1,
 .light h2 {
@@ -49,12 +53,21 @@ div.arrow-v {
   left: 50%;
   margin-top: -71px;
 }
+p.postarrow {
+  margin-bottom: 30px;
+  margin-top: -10px;
+}
 .dark p,
 .dark h1,
-.dark h2,
-.dark a {
+.dark h2 {
   color: rgba(255,255,255,0.6);
   text-shadow: 0 1px rgba(0,0,0,0.75);
+}
+.dark a {
+  color: rgba(255,255,255,0.85);
+}
+.dark a:hover {
+  color: #fff;
 }
 .dark img {
   border: 1px solid rgba(255,255,255,0.6);
@@ -181,6 +194,18 @@ h1 > span {
 #slide-techno h1 > span {
   background-image: url("../img/white_carbonfiber.png");
 }
+#slide-download {
+  background-image: url("../img/pw_maze_grey.png");
+}
+#slide-download h1 > span {
+  background-image: url("../img/pw_maze_grey.png");
+}
+#slide-about {
+  background-image: url("../img/dark_leather.png");
+}
+#slide-about h1 > span {
+  background-image: url("../img/dark_leather.png");
+}
 ul.thumbnails img + p {
   margin-top: 15px;
 }
@@ -275,6 +300,44 @@ ul.bubbles p {
   font-weight: normal;
   font-style: normal;
 }
+a.dl {
+  border: 1px solid rgba(0,0,0,0.2);
+  color: #fff;
+  display: inline-block;
+  padding: 0.5em 1.2em;
+  text-decoration: none;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+  background: #c2c2c2;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #c2c2c2), color-stop(1, #aeaeae));
+  background: -webkit-linear-gradient(top, #c2c2c2 0%, #aeaeae 100%);
+  background: -moz-linear-gradient(top, #c2c2c2 0%, #aeaeae 100%);
+  background: -o-linear-gradient(top, #c2c2c2 0%, #aeaeae 100%);
+  background: -ms-linear-gradient(top, #c2c2c2 0%, #aeaeae 100%);
+  background: linear-gradient(top, #c2c2c2 0%, #aeaeae 100%);
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 27px;
+  width: 232px;
+  -webkit-transition: all 300ms ease;
+  -moz-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+  -ms-transition: all 300ms ease;
+  transition: all 300ms ease;
+  margin-bottom: 30px;
+}
+a.dl > span {
+  margin-left: 20px;
+}
+a.dl:hover {
+  color: #fff;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
 .icon {
   font-family: 'pind-symbols';
   speak: none;
@@ -290,6 +353,12 @@ ul.bubbles p {
 }
 .icon.vpf:before {
   content: "\e00d";
+}
+.icon.github-alt:before {
+  content: "\f113";
+}
+.icon.download-alt:before {
+  content: "\f019";
 }
 @media (max-width: 480px) {
   .header-logo {
