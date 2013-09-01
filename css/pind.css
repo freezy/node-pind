@@ -30,6 +30,17 @@ hr.first {
   background: #ccc;
   text-shadow: none;
 }
+div.arrow-h {
+  position: absolute;
+  left: 50%;
+  margin-top: -166px;
+}
+div.arrow-v {
+  display: none;
+  position: absolute;
+  left: 50%;
+  margin-top: -71px;
+}
 .dark p,
 .dark h1,
 .dark h2 {
@@ -38,6 +49,16 @@ hr.first {
 }
 .dark img {
   border: 1px solid rgba(255,255,255,0.6);
+}
+.dark img.arrow-h {
+  border: none;
+  position: relative;
+  left: -50%;
+}
+.dark img.arrow-v {
+  border: none;
+  position: relative;
+  left: -50%;
 }
 .dark ::-moz-selection {
   background: #444;
@@ -245,6 +266,9 @@ ul.bubbles p {
     top: 80px;
     width: 70%;
   }
+  div.arrow-v {
+    display: inline;
+  }
 }
 @media (max-width: 767px) {
   section .container {
@@ -259,6 +283,12 @@ ul.bubbles p {
     box-shadow: none;
     padding-top: 0;
   }
+  div.arrow-h {
+    display: none;
+  }
+  div.arrow-v {
+    display: inline;
+  }
 }
 @media (min-width: 768px) and (max-width: 979px) {
   .navbar {
@@ -269,6 +299,20 @@ ul.bubbles p {
     -webkit-box-shadow: none;
     box-shadow: none;
     padding: 0 40px;
+  }
+  div.arrow-h {
+    margin-top: -140px;
+  }
+  div.arrow-v {
+    display: none;
+  }
+}
+@media (min-width: 1200px) {
+  div.arrow-h {
+    margin-top: -190px;
+  }
+  div.arrow-v {
+    display: none;
   }
 }
 .navbar-fixed-top {

@@ -15,7 +15,7 @@ body
 p
 	font-size 17px
 
-hr 
+hr
 	border 3px solid color-btn-light
 	margin 0
 	&.first
@@ -33,19 +33,37 @@ hr
 		background #ccc
 		text-shadow none
 
+div.arrow-h
+	position absolute
+	left 50%
+	margin-top -166px
+div.arrow-v
+	display none
+	position absolute
+	left 50%
+	margin-top -71px
 
 .dark
 	p, h1, h2
 		color foreground-light
-		text-shadow 0 1px rgba(0,0,0, 0.75)	
+		text-shadow 0 1px rgba(0,0,0, 0.75)
 	img
 		border 1px solid foreground-light
+		&.arrow-h
+			border none
+			position relative
+			left -50%
+		&.arrow-v
+			border none
+			position relative
+			left -50%
+
 	::-moz-selection
 		background #444
 		text-shadow none
 	::selection
 		background #444
-		text-shadow none		
+		text-shadow none
 
 .navbar
 	.navbar-inner
@@ -85,7 +103,7 @@ hr
 	h1, h2, p
 		margin 0
 		font-family font-serif
-		font-weight normal 
+		font-weight normal
 		text-transform none
 		text-align left
 		strong
@@ -170,7 +188,6 @@ ul.bubbles
 		text-align center
 
 
-	
 
 // bootstrap hacks
 .row-fluid ul.thumbnails li.span12 + li { margin-left: 0px; clear: left }
@@ -178,7 +195,7 @@ ul.bubbles
 .row-fluid ul.thumbnails li.span4:nth-child(3n + 4) { margin-left: 0px; clear: left }
 .row-fluid ul.thumbnails li.span3:nth-child(4n + 5) { margin-left: 0px; clear: left }
 .row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left: 0px; clear: left }
-.row-fluid ul.thumbnails li.span1:nth-child(12n + 13) { margin-left: 0px; clear: left }	
+.row-fluid ul.thumbnails li.span1:nth-child(12n + 13) { margin-left: 0px; clear: left }
 
 
 @font-face {
@@ -213,7 +230,7 @@ ul.bubbles
 	text-transform none
 	line-height 1
 	-webkit-font-smoothing antialiased
-	
+
 	&.ipdb:before
 		content "\e00c"
 
@@ -227,6 +244,8 @@ ul.bubbles
 			img
 				top 80px
 				width 70%
+	div.arrow-v
+		display inline
 
 @media (max-width: 767px)
 	section .container
@@ -237,6 +256,10 @@ ul.bubbles
 			padding 0 40px
 			box-shadow none
 			padding-top 0
+	div.arrow-h
+		display none
+	div.arrow-v
+		display inline
 
 @media (min-width: 768px) and (max-width: 979px)
 	.navbar
@@ -245,7 +268,16 @@ ul.bubbles
 			padding-top 0
 			box-shadow none
 			padding 0 40px
+	div.arrow-h
+		margin-top -140px
+	div.arrow-v
+		display none
 
+@media (min-width: 1200px)
+	div.arrow-h
+		margin-top -190px
+	div.arrow-v
+		display none
 
 .navbar-fixed-top
 	left 0
