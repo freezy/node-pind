@@ -4,6 +4,14 @@ body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 0;
 }
+a {
+  color: rgba(0,0,0,0.7);
+}
+a:hover,
+a:focus {
+  color: #000;
+  text-decoration: none;
+}
 p {
   font-size: 17px;
 }
@@ -33,7 +41,7 @@ hr.first {
 div.arrow-h {
   position: absolute;
   left: 50%;
-  margin-top: -166px;
+  margin-top: -16px;
 }
 div.arrow-v {
   display: none;
@@ -43,7 +51,8 @@ div.arrow-v {
 }
 .dark p,
 .dark h1,
-.dark h2 {
+.dark h2,
+.dark a {
   color: rgba(255,255,255,0.6);
   text-shadow: 0 1px rgba(0,0,0,0.75);
 }
@@ -166,6 +175,12 @@ h1 > span {
 #slide-features h1 > span {
   background-image: url("../img/grey_wash_wall.png");
 }
+#slide-techno {
+  background-image: url("../img/white_carbonfiber.png");
+}
+#slide-techno h1 > span {
+  background-image: url("../img/white_carbonfiber.png");
+}
 ul.thumbnails img + p {
   margin-top: 15px;
 }
@@ -201,8 +216,26 @@ ul.bubbles li .bubble > span.dmd {
   left: 2px;
   cursor: default;
 }
+ul.bubbles li .bubble img {
+  border: none;
+}
 ul.bubbles p {
   text-align: center;
+}
+.light ul.bubbles li .bubble {
+  border: 1px solid rgba(0,0,0,0.2);
+}
+.bubble-ng > img {
+  width: 154px;
+  margin-top: 25px;
+}
+.bubble-ss > img {
+  width: 142px;
+  margin-top: 29px;
+}
+.bubble-node > img {
+  width: 141px;
+  margin-top: 28px;
 }
 .row-fluid ul.thumbnails li.span12 + li {
   margin-left: 0px;
