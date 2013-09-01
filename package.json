@@ -1,6 +1,6 @@
 {
 	"name": "pind",
-	"version": "0.0.5-delta",
+	"version": "0.0.5",
 	"description": "Pinball Daemon",
 	"license": "GPLv2",
 	"author": {
