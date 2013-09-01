@@ -2,13 +2,215 @@
 html
 	head
 		title Pind - A Pinball Daemon
-		link(href="http://fonts.googleapis.com/css?family=Open+Sans:800", rel="stylesheet", type="text/css")
-		link(href="css/comingsoon.css", rel="stylesheet", type="text/css", media="screen")
+		meta(name="viewport", content="width=device-width, initial-scale = 1.0, user-scalable = no")
+		meta(http-equiv="Content-Type", content="text/html; charset=utf-8")
+		link(href="http://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic|Open+Sans:800,600,400", rel="stylesheet", type="text/css")
+		link(href="css/bootstrap.min.css", rel="stylesheet", type="text/css", media="screen")
+		link(href="css/bootstrap-responsive.min.css", rel="stylesheet", type="text/css", media="screen")
+		link(href="css/pind.css", rel="stylesheet", type="text/css", media="screen")
+		<!-- <link rel="stylesheet" href="css/style.min.css" type="text/css" media="screen"> -->
+		<!--[if IE]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
 	body
-		.gradient
-			.center
-				.content
-					i.icon.pd-round
-					p coming soon
-			
+		.navbar.navbar-fixed-top
+			.navbar-inner
+				.container
+					ul.nav.pull-right
+						li(data-slide="1").active
+							a(href="#") Home
+						li(data-slide="2")
+							a(href="#") Design
+						li(data-slide="3")
+							a(href="#") Features
+						li(data-slide="4")
+							a(href="#") Technologies
+						li(data-slide="5")
+							a(href="#") Download
+						li(data-slide="6")
+							a(href="#") About
+
+		hr.first
+		section#slide-header.slide(data-slide="1")
+			.row
+				.header-logo(data-stellar-background-ratio="0.5")
+					.header-glow
+						img(src="img/header-logo.png")
+		hr
+		section#slide-dictionary.light
+			.container
+				.row
+					.span5.offset1
+						.header-dictionary
+							h1 <strong>dae&bull;mon</strong> [dee-muhn]
+							h2 noun
+							p A program that is not invoked explicitly, but lies dormant waiting for some condition(s) to occur.
+
+					.span5
+						.header-dictionary
+							h1 <strong>condition to occur</strong>
+							h2 &nbsp;
+							p A high score, a new table release, missing artwork or ROM file or just a user browsing tables.
+
+		hr
+		section#slide-design.light.slide(data-slide="2")
+			.container
+				.row-fluid
+					.span10.offset1
+						h1
+							span Design
+						.header-line
+
+						ul.thumbnails
+							li.span6
+								img(src="img/design_login.png")
+								p Simple design based on Twitter Bootstrap.
+							li.span6
+								img(src="img/design_vector.png")
+								p Vector icons make sure everything is looking crispy at any resolution or zoom setting.
+							li.span6
+								img(src="img/design_buttons.png")
+								p CSS for realistic DMD and buttons.
+							li.span6
+								img.noborder(src="img/responsive.svg")
+								p Responsive design. Works well on desktop, tablet and phone screen sizes.
+
+		hr
+		section#slide-features.dark.slide(data-slide="3")
+			.container
+				.row-fluid
+					.span10.offset1
+						h1
+							span Features
+						.header-line
+
+						ul.thumbnails
+							li.span6
+								img(src="img/features_xml.png")
+							li.span6
+								img(src="img/features_admin_tables.png")
+								div.arrow-v
+									img.arrow-v(src="img/arrow_v.png")
+						div.arrow-h
+							img.arrow-h(src="img/arrow_h.png")
+						p.postarrow Syncronize HyperPin's database with Pind. Enable and disable tables with one click.
+
+						ul.thumbnails.bubbles
+							li.span4
+								.bubble
+									i.icon.ipdb
+								p Connect to ipdb.org and enhance the browsing experience with data from world’s largest pinball database.
+							li.span4
+								.bubble
+									i.icon.vpf
+								p Automatically retrieve missing ROMs, table artwork and videos from vpforums.org’s huge download section.
+							li.span4
+								.bubble
+									span.dmd Visual<br>Pin<br>MAME
+								p Adjust rotation settings with one click. Sync high scores using PINemHi as soon as the ROM writes them to disk.
+
+						ul.thumbnails
+							li.span12
+								img(src="img/features_admin_sources.png")
+								p Real-time fuzzy search on VPF’s cabinet downloads. See results popping up while typing.
+						ul.thumbnails
+							li.span6
+								img(src="img/features_admin_download.png")
+								p Queue downloads and let pind automatically search for ROMs, media packs and table videos.
+							li.span6
+								img(src="img/features_admin_transfers.png")
+								p Manage and monitor downloads in real-time. Everything stays in sync in all your browser windows.
+							li.span6
+								img(src="img/features_hiscores.png")
+								p List high scores of all tables on one single page.
+							li.span6
+								img(src="img/features_admin_upgrade.png")
+								p Get hassle-free upgrades with two clicks, including info about new features, logs and history.
+
+			br
+		hr
+		section#slide-techno.light.slide(data-slide="4")
+			.container
+				.row-fluid
+					.span10.offset1
+						h1
+							span Technologies
+						.header-line
+
+						ul.thumbnails.bubbles
+							li.span4
+								.bubble.bubble-node
+									img(src="img/logo-node.png")
+								p <strong><a href="http://nodejs.org/" target="_blank">Node.JS</a></strong><br>for ultralight server-side processing.
+							li.span4
+								.bubble.bubble-ss
+									img(src="img/logo-ss.png")
+								p <strong><a href="http://http://www.socketstream.org/" target="_blank">SocketStream</a></strong><br>for kick-ass realtime features.
+							li.span4
+								.bubble.bubble-ng
+									img(src="img/logo-ng.png")
+								p <strong><a href="http://angularjs.org/" target="_blank">AngularJS</a></strong><br>for client-side pleasure.
+
+						p Of course such a project would be impossible without the help of <a href="http://underscorejs.org/" target="_blank">Underscore.JS</a>,
+							| <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>, <a href="http://jquery.com/" target="_blank">jQuery</a>,
+							| <a href="http://learnboost.github.io/stylus/" target="_blank">Stylus</a>, <a href="http://jade-lang.com/" target="_blank">Jade</a> and many more.
+
+			br
+		hr
+		section#slide-download.dark.slide(data-slide="5")
+			.container
+				.row-fluid
+					.span10.offset1
+						h1
+							span Download
+						.header-line
+						.row-fluid
+							.span6.text-center
+								a(href="https://github.com/freezy/node-pind/blob/master/INSTALL.md").dl
+									i.icon.download-alt
+									span Installation
+							.span6.text-center
+								a(href="https://github.com/freezy/node-pind").dl
+									i.icon.github-alt
+									span GitHub Repo
+						p.text-center After initial installation, Pind can update itself automatically. Also check out the GitHub project
+							| page, which contains a complete feature list as well as additional information.
+
+			br
+			br
+		hr
+		section#slide-about.dark.slide(data-slide="6")
+			.container
+				.row-fluid
+					.span10.offset1
+						h1
+							span About
+						.header-line
+						.row-fluid
+							.span4
+								p Everything you see here is free and open source. I've entirely coded it in my spare
+									| time and will continue to do so. I believe that openly sharing code is the future
+									| of innovative software design, and I appeal to everyone to do so as well. The pinball
+									| community needs more open source software!
+							.span4
+								p If you find bugs (which you will - we're in beta after all), feel free to use GitHub's
+									| <a href="https://github.com/freezy/node-pind/issues" target="_blank">issue tracker</a>.
+									| Or even better, fork the <a href="https://github.com/freezy/node-pind" target="_blank">
+									| repository</a> and submit a pull request directly. If you have suggestions, ideas,
+									| complaints or even compliments, feel free to post them <a href="#" target="_blank">here</a>.
+							.span4
+								p You can check out my cabinet built thread
+									| <a href="http://hyperspin-fe.com/forum/showthread.php?19987" target="_blank">here</a>
+									| - this is the main motivation behind the project, but as a coder I have a need to play
+									| around with new technologies. This was very interesting, specially the real-time
+									| part, but also writing server-side code in JS was more fun than expected.
+			br
+			br
+			br
+
+
+
+	script(type="text/javascript", src="js/jquery-2.0.2.min.js")
+	script(type="text/javascript", src="js/jquery.stellar-0.6.2.min.js")
+	script(type="text/javascript", src="js/jquery.waypoints-2.0.2.min.js")
+	script(type="text/javascript", src="js/jquery.easing-1.3.min.js")
+	script(type="text/javascript", src="js/pind.js")
