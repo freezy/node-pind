@@ -54,7 +54,7 @@ module.exports = function(module) {
 		$scope.toVersion = $scope.upgrade.result.updatedTo ? $scope.upgrade.result.updatedTo.version : 'n/a';
 
 		// commits
-		if ($scope.upgrade.result.commits) {
+		if ($scope.upgrade.result.commits && $scope.upgrade.result.commits.length > 0) {
 			var durationMs = new Date($scope.upgrade.result.commits[0].date).getTime() - new Date($scope.upgrade.result.commits[$scope.upgrade.result.commits.length - 1].date).getTime();
 			var durationSecs = Math.round((durationMs) / 3600000) * 3600
 			$scope.commitInfo = $scope.upgrade.result.commits.length + ' commits over ' + juration.stringify(durationSecs) + '.';
