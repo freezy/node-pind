@@ -4,14 +4,13 @@ var logger = require('winston');
 
 var hs = require('../modules/hiscore');
 var au = require('../modules/autoupdate');
+var error = require('../modules/error');
 var transfer = require('../modules/transfer');
 
 module.exports = function() {
 
-	// make sure settings-mine.js is available
-	if (!fs.existsSync(__dirname + '/../../config/settings-mine.js')) {
-		throw new Error('Settings not found. Please copy "config/settings.js" to "config/settings-mine.js" and update settings-mine.js according to your setup.');
-	}
+	// default exception handler
+	error.registerLogger();
 
 	// initialize logger
 	var logDir = path.normalize(__dirname + '/../../logs');
@@ -37,6 +36,11 @@ module.exports = function() {
 		colorize: true,  // Boolean flag indicating if we should colorize output (default false).
 		timestamp: false // Boolean flag indicating if we should prepend output with timestamps (default false). If function is specified, its return value will be used instead of timestamps.
 	});
+
+	// make sure settings-mine.js is available
+	if (!fs.existsSync(__dirname + '/../../config/settings-mine.js')) {
+		throw new Error('Settings not found. Please copy "config/settings.js" to "config/settings-mine.js" and update settings-mine.js according to your setup.');
+	}
 
 	// create config file for pinemhi and start watching .nv files if necessary
 	hs.initConfig();

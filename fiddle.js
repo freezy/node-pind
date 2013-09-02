@@ -45,10 +45,10 @@ log.cli();
 //	vpParse();
 
 // readTables();
-writeTables();
+//writeTables();
 //	syncTables();
 
-//getHighScore('ww_l5');
+getHighScore('ww_l5');
 
 //	getRomNames();
 //	updateRomNames();
@@ -172,7 +172,7 @@ function getRomNames() {
 
 
 function getHighScore(romname) {
-	vp.getHighscore(romname, function(err, highscores) {
+	hs.getHighscore(romname, function(err, highscores) {
 		if (!err) {
 			console.log(highscores.raw);
 			delete highscores.raw;

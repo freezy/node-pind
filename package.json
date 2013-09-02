@@ -16,7 +16,7 @@
 	},
 	"engines": ["node >= 0.8.0"],
 	"os": [ "win32" ],
-	"main": "server.js",
+	"main": "app.js",
 	"keywords": [ "pinball", "visual pinball", "future pinball", "hyperpin", "cabinet" ],
 	"private": false,
 	"dependencies": {

@@ -41,3 +41,18 @@ exports.dumpDebugData = function(module, what, data, ext) {
 	fs.writeFileSync(filename, data);
 	return fs.realpathSync(filename);
 };
+
+exports.registerLogger = function() {
+	process.on('uncaughtException', function(err) {
+		//console.log('Caught exception: %s', util.inspect(err, true, 10, true));
+		logger.log('error', '================================================================================');
+		logger.log('error', err.stack.toString());
+		logger.log('error', '================================================================================');
+		logger.log('info', 'Bye bye, cruel world.');
+		// let the log write before suiciding.
+		setTimeout(function() {
+			process.kill(process.pid, 'SIGTERM');
+		}, 500);
+
+	});
+};
