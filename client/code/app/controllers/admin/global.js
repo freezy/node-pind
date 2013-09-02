@@ -38,7 +38,6 @@ module.exports = function(module) {
 			$scope.url = $scope.status.version.url;
 			//$scope.$apply();
 			$scope.$broadcast('paramsUpdated');
-			console.log('UUUUUUPDATEING!!!');
 		};
 
 		$scope.statusReady(refresh);
