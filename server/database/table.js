@@ -47,6 +47,7 @@ module.exports = function(sequelize, DataTypes) {
 		media_wheel: DataTypes.BOOLEAN,
 		media_video: DataTypes.BOOLEAN,
 		enabled: DataTypes.BOOLEAN
+/*		src_id: DataTypes.INTEGER*/
 	},
 	{
 		classMethods: {

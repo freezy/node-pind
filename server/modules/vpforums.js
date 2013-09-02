@@ -544,6 +544,15 @@ VPForums.prototype._matchResult = function(results, title, trimFct, strategy) {
 };
 
 /**
+ * Returns all cabinet downloads from VFP
+ * @param title If provided returns only downloads starting with that letter.
+ * @param callback
+ */
+VPForums.prototype.getTables = function(title, callback) {
+	this._fetchDownloads(41, title, {}, callback);
+};
+
+/**
  * Retrieves all downloadable items for a given category and letter. This is a
  * cached operation, items are only downloaded the first time.
  *

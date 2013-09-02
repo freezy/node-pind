@@ -22,6 +22,10 @@ var extr = require('./server/modules/extract');
 var log = require('winston');
 log.cli();
 
+
+matchSources();
+//ipdbMatch('Bram Stoker s Dracula');
+
 //git();
 //postExtract();
 //readAudits();
@@ -60,6 +64,19 @@ getHighScore('ww_l5');
 //getRomName('LOTR_VP91x_2.3FS.vpt');
 //getRomName('STERN - The Simpsons Pinball Party - MEGAPIN_V1.2FS.vpt');
 
+
+
+function matchSources() {
+
+	hp.matchSources(function(err, result) {
+		if (err) {
+			console.error("ERROR: " + err);
+		} else {
+			console.log("Post processing done!");
+			//console.log("Post processing done, got\n%s", util.inspect(result, false, 2, true));
+		}
+	});
+}
 
 function postProcessTransfer(id) {
 	schema.Transfer.find(id).success(function(row) {
@@ -226,6 +243,16 @@ function updateTable(id) {
 			});
 		} else {
 			console.log('ERROR: ' + err);
+		}
+	});
+}
+
+function ipdbMatch(name) {
+	ipdb.enrich({ name: name }, function(err, table) {
+		if (err) {
+			console.log("ERROR: " + err);
+		} else {
+			console.log("Update table: %s", util.inspect(table, false, 10, true));
 		}
 	});
 }

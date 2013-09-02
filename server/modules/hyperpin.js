@@ -4,11 +4,12 @@ var fs = require('fs');
 var path = require('path');
 var util = require('util');
 var exec = require('child_process').exec;
+var xmlw = require('xml-writer');
 var async = require('async');
 var events = require('events');
 var xml2js = require('xml2js');
 var logger = require('winston');
-var xmlw = require('xml-writer');
+var natural = require('natural');
 
 var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
@@ -383,6 +384,35 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 					callback();
 				});
 			}
+		});
+	});
+};
+
+HyperPin.prototype.matchSources = function(callback) {
+
+	vpf.getTables(null, function(err, sources) {
+		if (err) {
+			return callback(err);
+		}
+		schema.Table.all({ where: { platform: 'VP' }}).success(function(tables) {
+			var i, j, table, source, d, minD, match, s, t;
+			for (i = 0; i < tables.length; i++) {
+				table = tables[i];
+				minD = -1;
+				t = table.filename.replace(/[^a-z0-9]*/gi, '').toLowerCase();
+				console.log(table.filename);
+				for (j = 0; j < sources.length; j++) {
+					source = sources[j];
+					s = source.title.replace(/[^a-z0-9]*/gi, '').toLowerCase();
+					d = natural.LevenshteinDistance(t, s);
+					if (minD < 0 || d < minD) {
+						match = source;
+						minD = d;
+					}
+				}
+				console.log('%s (%d - %s%)\n', match.title, minD, Math.round((1 - minD / ((t.length + s.length) / 2)) * 100));
+			}
+			callback();
 		});
 	});
 };
