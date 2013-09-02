@@ -180,7 +180,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 	 */
 	var fixName = function(n) {
 
-		var name = n;
+		var name = n + ' ';
 		var r = function(needle, haystack) {
 			name = name.replace(needle, haystack);
 		};
@@ -200,8 +200,9 @@ Ipdb.prototype.enrich = function(table, callback) {
 		r(/night mode/i, '');
 		r(/v\d$/i, '');
 		r(/[^0-9a-z]+/ig, ' ');
+		r(/\sss\s/i, '');
 
-		return name;
+		return name.trim();
 	};
 
 	var parseData = function(body, table, callback) {
@@ -298,6 +299,11 @@ Ipdb.prototype.enrich = function(table, callback) {
 			return callback('Wrong response data from IPDB.');
 		}
 
+		if (body.match(/NO records matched/i)) {
+			logger.log('info', '[ipdb] No records matched for search query "%s".', searchName);
+			return callback(null, table);
+		}
+
 		var m;
 
 		// check if multiple matches
@@ -316,13 +322,11 @@ Ipdb.prototype.enrich = function(table, callback) {
 				return callback('Error parsing search result from IPDB.');
 			}
 
-			console.log(util.inspect(matches, false, 2, true));
-
 			// figure out best match
 			var match = findBestMatch(matches, table);
 			logger.log('info', '[ipdb] Figured best match is "%s" (%s)', match.name, match.ipdbid);
 
-			if (body.match(/Too many matches to display all individual records/)) {
+			if (body.match(/Too many matches to display all individual records/i)) {
 
 				url = 'http://www.ipdb.org/machine.cgi?id=' + match.ipdbid;
 				logger.log('info', '[ipdb] Table details not on search result page, loading details at %s', url);
@@ -339,10 +343,11 @@ Ipdb.prototype.enrich = function(table, callback) {
 					callback('Cannot find matched game "' + match.name + '" in body.');
 					return;
 				}
-				body = m[0];
-
-				parseData(body, table, callback);
+				parseData(m[0], table, callback);
 			}
+		} else {
+			logger.log('err', '[ipdb] No records matched but apparently with different error message.');
+			callback('No records matched but apparently with different error message at ipdb.');
 		}
 
 	});
