@@ -347,7 +347,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 			}
 		} else {
 			logger.log('err', '[ipdb] No records matched but apparently with different error message.');
-			callback('No records matched but apparently with different error message at ipdb.');
+			return callback(null, table);
 		}
 
 	});
