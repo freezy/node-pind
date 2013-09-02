@@ -204,73 +204,9 @@ Ipdb.prototype.enrich = function(table, callback) {
 		return name;
 	};
 
-	if (!table.name) {
-		return callback('First parameter must contain at least "name".');
-	}
+	var parseData = function(body, table, callback) {
 
-	if (table.type == 'OG') { // ignore original games
-		return callback(null, table);
-	}
-
-	var url;
-	var searchName = fixName(table.name);
-
-	if (table.ipdb_no && !forceSearch) {
-		url = 'http://www.ipdb.org/machine.cgi?id=' + table.ipdb_no;
-		logger.log('info', '[ipdb] Refreshing data for ipdb# %s.', table.ipdb_no);
-	} else {
-		// advanced search: var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
-		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(searchName) + '&searchtype=quick';
-		ipdb.emit('searchStarted', { name: searchName });
-		logger.log('info', '[ipdb] Searching at ipdb.org for "%s"', searchName);
-	}
-	logger.log('debug', '[ipdb] Requesting %s', url);
-	request(url, function(err, response, body) {
-
-		if (!response) {
-			logger.log('error', '[ipdb] Network seems to be down, aborting.');
-			return callback('No network.');
-		}
-
-		if (err) {
-			logger.log('error', '[ipdb] Error requesting %s: %s', url, err);
-			return callback('Error requesting data from IPDB.');
-		}
-
-		if (response.statusCode != 200) {
-			logger.log('error', '[ipdb] Wrong response code, got %s instead of 200. Body: ', response.statusCode, body);
-			return callback('Wrong response data from IPDB.');
-		}
-
-		var m;
-
-		// check if multiple matches
-		m = body.match(/(\d+) records match/i);
-		if (m && m[1] > 1) {
-			logger.log('info', '[ipdb] Found %d hits for "%s".', m[1], table.name);
-
-			// parse the matches
-			var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"\s+href="#(\d+)">([^<]+)/ig;
-			var matches = [];
-			while (m = regex.exec(body)) {
-				matches.push({ name: m[4], year: m[2], ipdbid: m[3], distance: natural.LevenshteinDistance(table.name.toLowerCase(), m[4].toLowerCase()) });
-			}
-
-			// figure out best match
-			var match = findBestMatch(matches, table);
-			logger.log('info', '[ipdb] Figured best match is "%s" (%s)', match.name, match.ipdbid);
-
-			// strip off non-matches from body
-			regex = new RegExp('<table border=0 width="100%"><tr><td><font[^>]*><B><a name="' + match.ipdbid + '">[.\\s\\S]*?<hr width="80', 'gi');
-			m = body.match(regex);
-			if (!m) {
-				callback('Cannot find matched game "%s" in body.', match.name );
-				return;
-			}
-			body = m[0];
-		}
-
-		m = body.match(/<a name="(\d+)">([^<]+)/i);
+		var m = body.match(/<a name="(\d+)">([^<]+)/i);
 		if (m) {
 			table.name = trim(m[2]);
 			table.ipdb_no = m[1];
@@ -322,6 +258,93 @@ Ipdb.prototype.enrich = function(table, callback) {
 			logger.log('warn', '[ipdb] Game "%s" not found in HTTP body.', table.name);
 			callback(null, table);
 		}
+	};
+
+	if (!table.name) {
+		return callback('First parameter must contain at least "name".');
+	}
+
+	if (table.type == 'OG') { // ignore original games
+		return callback(null, table);
+	}
+
+	var url;
+	var searchName = fixName(table.name);
+
+	if (table.ipdb_no && !forceSearch) {
+		url = 'http://www.ipdb.org/machine.cgi?id=' + table.ipdb_no;
+		logger.log('info', '[ipdb] Refreshing data for ipdb# %s.', table.ipdb_no);
+	} else {
+		// advanced search: var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
+		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(searchName) + '&searchtype=quick';
+		ipdb.emit('searchStarted', { name: searchName });
+		logger.log('info', '[ipdb] Searching at ipdb.org for "%s"', searchName);
+	}
+	logger.log('debug', '[ipdb] Requesting %s', url);
+	request(url, function(err, response, body) {
+
+		if (!response) {
+			logger.log('error', '[ipdb] Network seems to be down, aborting.');
+			return callback('No network.');
+		}
+
+		if (err) {
+			logger.log('error', '[ipdb] Error requesting %s: %s', url, err);
+			return callback('Error requesting data from IPDB.');
+		}
+
+		if (response.statusCode != 200) {
+			logger.log('error', '[ipdb] Wrong response code, got %s instead of 200. Body: ', response.statusCode, body);
+			return callback('Wrong response data from IPDB.');
+		}
+
+		var m;
+
+		// check if multiple matches
+		m = body.match(/(\d+) records match/i);
+		if (m && m[1] > 1) {
+			logger.log('info', '[ipdb] Found %d hits for "%s".', m[1], table.name);
+
+			// parse the matches
+			var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"[^>]*href="[^"]*?(\d+)">([^<]+)/ig;
+			var matches = [];
+			while (m = regex.exec(body)) {
+				matches.push({ name: m[4], year: m[2], ipdbid: m[3], distance: natural.LevenshteinDistance(table.name.toLowerCase(), m[4].toLowerCase()) });
+			}
+			if (matches.length == 0) {
+				logger.log('error', '[ipdb] Failed to match any table entry, check regex.');
+				return callback('Error parsing search result from IPDB.');
+			}
+
+			console.log(util.inspect(matches, false, 2, true));
+
+			// figure out best match
+			var match = findBestMatch(matches, table);
+			logger.log('info', '[ipdb] Figured best match is "%s" (%s)', match.name, match.ipdbid);
+
+			if (body.match(/Too many matches to display all individual records/)) {
+
+				url = 'http://www.ipdb.org/machine.cgi?id=' + match.ipdbid;
+				logger.log('info', '[ipdb] Table details not on search result page, loading details at %s', url);
+				request(url, function(err, response, body) {
+					parseData(body, table, callback);
+				});
+
+			} else {
+
+				// strip off non-matches from body
+				regex = new RegExp('<table border=0 width="100%"><tr><td><font[^>]*><B><a name="' + match.ipdbid + '">[.\\s\\S]*?<hr width="80', 'gi');
+				m = body.match(regex);
+				if (!m) {
+					callback('Cannot find matched game "' + match.name + '" in body.');
+					return;
+				}
+				body = m[0];
+
+				parseData(body, table, callback);
+			}
+		}
+
 	});
 };
 
