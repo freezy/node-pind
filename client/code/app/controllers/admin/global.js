@@ -157,7 +157,11 @@ module.exports = function(module) {
 		// migrations
 		if ($scope.upgrade.result.migrations && $scope.upgrade.result.migrations.length > 0) {
 			$scope.migrations = $scope.upgrade.result.migrations.length + ' database migration scripts executed.';
-			$scope.migrationsInfo = 'List here.';
+			$scope.migrationsInfo = '';
+			_.each($scope.upgrade.result.migrations, function(m) {
+				$scope.migrationsInfo += '"' + m.description + '", ';
+			});
+			$scope.migrationsInfo = $scope.migrationsInfo.substr(0, $scope.migrationsInfo.length - 2);
 
 		} else if ($scope.upgrade.result.migrations) {
 			$scope.migrations = 'none';

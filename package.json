@@ -25,7 +25,7 @@
 		"ss-jade": "latest",
 		"ss-stylus": "latest",
 
-		"sequelize": "2.0.x",
+		"sequelize": "2.0.0-beta.0",
 		"sequelize-sqlite": "1.7.x",
 		"sqlite3": "2.1.x",
 

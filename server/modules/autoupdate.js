@@ -797,7 +797,7 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 			return next();
 		}
 		var migrator = schema.sequelize.getMigrator();
-		var oldCommit = dryRun ? 'f079931cb3ae97f7e9d5f9ac621d836d7fcfa0b6' : version.sha;
+		var oldCommit = dryRun ? '35eca297f5a05bee6688651a1cb6129800e3b80d' : version.sha;
 		that._getCommits(oldCommit, newCommit.sha, function(err, commits) {
 			if (err) {
 				result.errors.push({
