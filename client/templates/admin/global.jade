@@ -106,7 +106,7 @@ block inner-content
 									i.icon.file
 								span.popover(style='display:none')
 									ul
-										li(ng-repeat='r in upgrade.log.out') {{ r }}
+										li(ng-repeat='l in upgrade.log.out track by $index') {{ l }}
 
 			//- no data
 			div.nodata

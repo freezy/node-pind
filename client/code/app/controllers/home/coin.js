@@ -5,7 +5,7 @@ module.exports = function(module) {
 
 		var updateCredits = function() {
 			$scope.credits = $scope.status.user.credits + ' CREDIT' + ($scope.status.user.credits != 1 ? 'S' : '');
-			$scope.$apply();
+			$scope.safeApply();
 		};
 
 		$scope.statusReady(updateCredits);

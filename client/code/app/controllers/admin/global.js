@@ -31,20 +31,22 @@ module.exports = function(module) {
 			rpc('pind.updatePind', { sha: $scope.updateShaFull });
 		};
 
-		var setVersion = function() {
+		var refresh = function() {
 			$scope.version = $scope.status.version.version.toUpperCase();
 			$scope.date = $scope.status.version.dateSince;
 			$scope.sha = $scope.status.version.sha.substr(0, 8);
 			$scope.url = $scope.status.version.url;
+			//$scope.$apply();
+			$scope.$broadcast('paramsUpdated');
+			console.log('UUUUUUPDATEING!!!');
 		};
 
-		if (!$scope.statusAvailable) {
-			$scope.$on('statusAvailable', function() {
-				$scope.$apply(setVersion);
-			});
-		} else {
-			setVersion();
-		}
+		$scope.statusReady(refresh);
+
+		ss.server.on('reconnect', refresh);
+		$scope.$on('$destroy', function() {
+			ss.server.off('reconnect', refresh);
+		});
 
 	}]);
 
