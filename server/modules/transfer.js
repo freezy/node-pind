@@ -594,8 +594,10 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 					name: vpffile.title_trimmed,
 					manufacturer: vpffile.manufacturer,
 					year: vpffile.year,
+					reference: transfer.reference,
 					platform: 'VP',
-					filename: filename
+					filename: filename,
+					hpid: vpffile.manufacturer && vpffile.year && vpffile.title_trimmed ? vpffile.title_trimmed + ' (' + vpffile.manufacturer + ' ' + vpffile.year + ')' : null
 				}, function(err, table) {
 
 					if (!err && table.ipdb_no) {

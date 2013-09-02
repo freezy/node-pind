@@ -46,8 +46,8 @@ module.exports = function(sequelize, DataTypes) {
 		media_backglass: DataTypes.BOOLEAN,
 		media_wheel: DataTypes.BOOLEAN,
 		media_video: DataTypes.BOOLEAN,
-		enabled: DataTypes.BOOLEAN
-/*		src_id: DataTypes.INTEGER*/
+		enabled: DataTypes.BOOLEAN,
+		reference: DataTypes.INTEGER // points to vpf_file.id
 	},
 	{
 		classMethods: {
