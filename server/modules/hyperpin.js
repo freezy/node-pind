@@ -327,7 +327,7 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 	 */
 	var process = function(row, what, findFct, next) {
 		that.emit('searchStarted', { what: what, name: row.name });
-		findFct.call(vpf, row, function(err, msg) {
+		findFct.call(vpf, row, null, function(err, msg) {
 			if (err) {
 				logger.log('error', '[hyperpin] Error searching for media: %s', err);
 				return next(err);

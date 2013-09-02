@@ -8,6 +8,8 @@ module.exports = function(module) {
 
 	module.provider('pindAuth', function() {
 
+		$.cookie.json = true;
+
 		var loginPath = '/login';
 		var authServiceModule = 'app';
 		var authTokenCookie = 'authToken';

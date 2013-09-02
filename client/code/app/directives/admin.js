@@ -9,7 +9,7 @@ module.exports = function (module) {
 		return {
 			restrict: 'C',
 			link: function(scope, element) {
-
+				$.cookie.json = true;
 				var queryTransfer = function(id, params) {
 					params.id = id;
 					rpc('transfer.addvpt', params, function(err, result) {

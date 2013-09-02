@@ -14,7 +14,8 @@ module.exports = function(sequelize, DataTypes) {
 			url: DataTypes.STRING,
 			type: DataTypes.ENUM('rom', 'table', 'mediapack', 'video'),
 			engine: DataTypes.ENUM('vpf', 'ipdb'),
-			reference: DataTypes.INTEGER,
+			ref_src: DataTypes.INTEGER, // points to vpf_file.id
+			ref_parent: DataTypes.INTEGER, // points to transfer.id
 			postAction: DataTypes.TEXT,
 			size: DataTypes.BIGINT,
 			startedAt: DataTypes.DATE,

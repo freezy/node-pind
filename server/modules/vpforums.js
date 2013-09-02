@@ -88,11 +88,12 @@ VPForums.prototype._fixTitle = function(n) {
  *
  * @param cat VPF category
  * @param table Table of the media pack
+ * @param ref_parent ID of transfer, in case of a post action
  * @param what Enum for transfer table
  * @param callback Function to execute after completion, invoked with one argument:
  * 	<ol><li>{String} Error message on error</li></ol>
  */
-VPForums.prototype._findMedia = function(table, cat, what, callback) {
+VPForums.prototype._findMedia = function(table, ref_parent, cat, what, callback) {
 
 	var that = this;
 	var searchName = that._fixTitle(table.name);
@@ -116,7 +117,8 @@ VPForums.prototype._findMedia = function(table, cat, what, callback) {
 			url: 'http://www.vpforums.org/index.php?app=downloads&showfile=' + match.fileId,
 			type: what,
 			engine: 'vpf',
-			reference: match.id
+			ref_src: match.id,
+			ref_parent: ref_parent
 		});
 		callback();
 	});
@@ -125,30 +127,32 @@ VPForums.prototype._findMedia = function(table, cat, what, callback) {
 /**
  * Finds a media pack and downloads it.
  * @param table Table of the media pack
+ * @param ref_parent ID of transfer, in case of a post action
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Success message from transfer.</li></ol>
  */
-VPForums.prototype.findMediaPack = function(table, callback) {
+VPForums.prototype.findMediaPack = function(table, ref_parent, callback) {
 	if (table.platform == 'VP') {
-		this._findMedia(table, 35, 'mediapack', callback);
+		this._findMedia(table, ref_parent, 35, 'mediapack', callback);
 	} else {
-		this._findMedia(table, 36, 'mediapack', callback);
+		this._findMedia(table, ref_parent, 36, 'mediapack', callback);
 	}
 };
 
 /**
  * Finds a table video and downloads it.
  * @param table Table of the media pack
+ * @param ref_parent ID of transfer, in case of a post action
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Absolute file path of the downloaded archive.</li></ol>
  */
-VPForums.prototype.findTableVideo = function(table, callback) {
+VPForums.prototype.findTableVideo = function(table, ref_parent, callback) {
 	if (table.platform == 'VP') {
-		this._findMedia(table, 43, 'video', callback);
+		this._findMedia(table, ref_parent, 43, 'video', callback);
 	} else {
-		this._findMedia(table, 34, 'video', callback);
+		this._findMedia(table, ref_parent, 34, 'video', callback);
 	}
 };
 

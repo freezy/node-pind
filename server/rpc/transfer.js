@@ -100,7 +100,7 @@ exports.actions = function(req, res, ss) {
 						url: row.url,
 						type: 'table',
 						engine: 'vpf',
-						reference: row.id,
+						ref_src: row.id,
 						postAction: JSON.stringify({
 							dlrom: params.dlrom ? true : false,
 							dlmedia: params.dlmedia ? true : false,

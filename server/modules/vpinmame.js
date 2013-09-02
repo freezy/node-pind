@@ -41,7 +41,7 @@ VPinMAME.prototype.initAnnounce = function() {
 	an.notice(this, 'ipdbSearchStarted', 'IPDB: Searching ROMs for "{{name}}"', 'admin', 60000);
 };
 
-VPinMAME.prototype.fetchMissingRom = function(table, callback) {
+VPinMAME.prototype.fetchMissingRom = function(table, ref_parent, callback) {
 
 	var downloadedRoms = [];
 	var that = this;
@@ -94,10 +94,10 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 	 * @param link
 	 * @param folder
 	 * @param engine
-	 * @param reference
+	 * @param ref_src
 	 * @param next
 	 */
-	var queue = function(link, folder, engine, reference, next) {
+	var queue = function(link, folder, engine, ref_src, next) {
 
 		// this will queue a new transfer.
 		that.emit('queueTransfer', {
@@ -106,7 +106,8 @@ VPinMAME.prototype.fetchMissingRom = function(table, callback) {
 			filename: link.filename,
 			type: 'rom',
 			engine: engine,
-			reference: reference
+			ref_src: ref_src,
+			ref_parent: ref_parent
 		});
 		next();
 	};
@@ -188,7 +189,7 @@ VPinMAME.prototype.fetchMissingRoms = function(callback) {
 			return callback(null, []);
 		}
 		async.eachSeries(rows, function(row, next) {
-			that.fetchMissingRom(row, function(err, dlRoms) {
+			that.fetchMissingRom(row, null, function(err, dlRoms) {
 				if (err) {
 					return next(err);
 				}

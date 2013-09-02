@@ -534,7 +534,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 
 				// download ROM
 				case 'dlrom':
-					vpm.fetchMissingRom(table, function(err, downloadedRoms) {
+					vpm.fetchMissingRom(table, transfer.id, function(err, downloadedRoms) {
 						if (err) {
 							return next(err);
 						}
@@ -545,11 +545,11 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 
 				// download media
 				case 'dlmedia':
-					vpf.findMediaPack(table, done);
+					vpf.findMediaPack(table, transfer.id, done);
 					break;
 
 				case 'dlvideo':
-					vpf.findTableVideo(table, done);
+					vpf.findTableVideo(table, transfer.id, done);
 					break;
 
 				// otherwise just continue
@@ -566,9 +566,9 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 
 		// 1. find reference
 		if (transfer.engine == 'vpf') {
-			schema.VpfFile.find(transfer.reference).success(function(vpffile) {
+			schema.VpfFile.find(transfer.ref_src).success(function(vpffile) {
 				if (!vpffile) {
-					logger.log('warn', '[transfer] Skipping post process for %s because cannot find referenced row %d in VpfFile table.', transfer.title, transfer.reference);
+					logger.log('warn', '[transfer] Skipping post process for %s because cannot find referenced row %d in VpfFile table.', transfer.title, transfer.ref_src);
 					return callback(null, transfer);
 				}
 				vpffile = vpffile.map();
@@ -594,7 +594,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 					name: vpffile.title_trimmed,
 					manufacturer: vpffile.manufacturer,
 					year: vpffile.year,
-					reference: transfer.reference,
+					ref_src: transfer.ref_src,
 					platform: 'VP',
 					filename: filename,
 					hpid: vpffile.manufacturer && vpffile.year && vpffile.title_trimmed ? vpffile.title_trimmed + ' (' + vpffile.manufacturer + ' ' + vpffile.year + ')' : null

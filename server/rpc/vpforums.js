@@ -77,7 +77,7 @@ exports.actions = function(req, res, ss) {
 			}
 			var query =
 				'SELECT f.*, t.startedAt, t.failedAt, t.completedAt, t.createdAt AS queuedAt, t.id as transferId FROM vpf_files f ' +
-				'LEFT JOIN transfers t ON t.reference = f.id ' +
+				'LEFT JOIN transfers t ON t.ref_src = f.id ' +
 				'WHERE category = ' + category + ' ' +
 				'ORDER BY f.' + p.order;
 			if (!search) {
