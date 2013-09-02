@@ -186,17 +186,17 @@ var asset = function(context, path, process, defaultName) {
 };
 
 var file = function(context, path) {
-	// caching
-	var fd = fs.openSync(path, 'r');
-	var modified = new Date(fs.fstatSync(fd).mtime);
-	fs.closeSync(fd);
-	var ifmodifiedsince = new Date(context.req.headers['if-modified-since']);
-	if (modified.getTime() >= ifmodifiedsince.getTime()) {
-		context.res.writeHead(304);
-		context.res.end();
-		return;
-	}
 	if (fs.existsSync(path)) {
+		// caching
+		var fd = fs.openSync(path, 'r');
+		var modified = new Date(fs.fstatSync(fd).mtime);
+		fs.closeSync(fd);
+		var ifmodifiedsince = new Date(context.req.headers['if-modified-since']);
+		if (modified.getTime() >= ifmodifiedsince.getTime()) {
+			context.res.writeHead(304);
+			context.res.end();
+			return;
+		}
 		context.res.writeHead(200, { 'Content-Type': 'image/png' });
 		var stream = fs.createReadStream(path);
 		stream.pipe(context.res);
