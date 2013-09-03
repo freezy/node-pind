@@ -48,6 +48,15 @@ module.exports = function() {
 	transfer.initTransfers();
 	// initialize version
 	au.initVersion(function(err, version) {
-		logger.log('info', '[init] Running Pind %s (%s) from %s', version.version, version.sha ? version.sha.substr(0, 8) : 'unknown', version.date, {});
+		if (err) {
+			logger.log('error', '[init] Error retrieving local version: ' + err);
+			// let the log write before suiciding.
+			setTimeout(function() {
+				process.kill(process.pid, 'SIGTERM');
+			}, 500);
+		} else {
+			logger.log('info', '[init] Running Pind %s (%s) from %s', version.version, version.sha ? version.sha.substr(0, 8) : 'unknown', version.date, {});
+		}
+
 	});
 };

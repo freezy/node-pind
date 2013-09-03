@@ -89,7 +89,7 @@ AutoUpdate.prototype.initVersion = function(callback) {
 	if (localRepo) {
 		localRepo.commits('master', 1, function(err, commits) {
 			if (err) {
-				logger.log('error', '[autoupdate] Cannot retrieve commits from master: %s', err);
+				logger.log('error', '[autoupdate] Cannot retrieve commits from master: %s', util.inspect(err));
 				return callback(err);
 			}
 			var commit = commits[0];
