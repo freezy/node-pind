@@ -435,32 +435,53 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 			}
 		};
 
-		// check if need to login
-		if (body.match(/<a href='[^']+' title='Sign In' id='sign_in'>Sign In/i)) {
+		var initDownload = function(body) {
 
-			if (loggingIn) {
-				logger.log('info', '[vpf] Waiting for current login to complete...');
-				that.once('loginCompleted', function() {
-					logger.log('info', '[vpf] Login completed, let\'s go!');
-					download(body);
-				});
-				that.once('loginFailed', function(result) {
-					return callback('Error logging in: ' + result.error);
-				});
+			// check if need to login
+			if (body.match(/<a href='[^']+' title='Sign In' id='sign_in'>Sign In/i)) {
+
+				if (loggingIn) {
+					logger.log('info', '[vpf] Waiting for current login to complete...');
+					that.once('loginCompleted', function() {
+						logger.log('info', '[vpf] Login completed, let\'s go!');
+						download(body);
+					});
+					that.once('loginFailed', function(result) {
+						return callback('Error logging in: ' + result.error);
+					});
+
+				} else {
+					logger.log('info', '[vpf] Seems we need to login first.');
+					that._login(function(err) {
+						if (err) {
+							return callback(err);
+						}
+						download(body);
+					});
+				}
 
 			} else {
-				logger.log('info', '[vpf] Seems we need to login first.');
-				that._login(function(err) {
-					if (err) {
-						return callback(err);
-					}
-					download(body);
-				});
+				logger.log('info', '[vpf] Looks like we\'re already logged in.');
+				download(body);
 			}
+		};
 
+		// update description
+		var $ = jquery.create(jsdom(body).createWindow());
+		var description = $('div.ipsType_textblock.description_content').html();
+		if (transfer.ref_src) {
+			logger.log('info', '[vpf] Updating description for download %s', transfer.ref_src);
+			schema.VpfFile.find(transfer.ref_src).success(function(row) {
+				if (row) {
+					row.updateAttributes({ description: ent.decode(description).trim() }).success(function() {
+						initDownload(body);
+					});
+				} else {
+					initDownload(body);
+				}
+			});
 		} else {
-			logger.log('info', '[vpf] Looks like we\'re already logged in.');
-			download(body);
+			initDownload(body);
 		}
 	});
 };

@@ -115,7 +115,7 @@ module.exports = {
 		/**
 		 * If set to true, the auto-updater will not only retrieve latest releases but
 		 * every commit that is pushed to the repository. Only recommended when
-		 * developing.
+		 * developing or testing.
 		 */
 		updateToBleedingEdge: false
 	},
