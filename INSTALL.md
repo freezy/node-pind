@@ -1,4 +1,4 @@
-![pind](http://pind.ch/img/hipsterlogo-install.png)
+![pind](https://raw.github.com/freezy/node-pind/gh-pages/img/hipsterlogo-install.png)
 
 Installation
 ============
