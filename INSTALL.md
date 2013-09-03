@@ -1,4 +1,4 @@
-![pind](app/_public/img/logo.png)
+![pind](client/static/images/logo.png)
 
 Installation
 ============
