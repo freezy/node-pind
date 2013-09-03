@@ -473,7 +473,8 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 			logger.log('info', '[vpf] Updating description for download %s', transfer.ref_src);
 			schema.VpfFile.find(transfer.ref_src).success(function(row) {
 				if (row) {
-					row.updateAttributes({ description: ent.decode(description).trim() }).success(function() {
+					row.updateAttributes({ description: ent.decode(description).trim() }).success(function(row) {
+						that.emit('descriptionUpdated', { transfer: transfer, vpf_file: row });
 						initDownload(body);
 					});
 				} else {

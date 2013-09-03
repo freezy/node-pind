@@ -30,6 +30,7 @@ function Transfer() {
 	this.on('transferProgress', function(data) {
 		progress[data.reference.id] = data.size / data.contentLength;
 	});
+	vpf.on('descriptionUpdated', Transfer.prototype.descriptionUpdated);
 }
 util.inherits(Transfer, events.EventEmitter);
 
@@ -725,6 +726,38 @@ Transfer.prototype.unWatchDownload = function(filename) {
 	fs.closeSync(this.openFiles[filename]);
 	delete this.watches[filename];
 	delete this.openFiles[filename];
+};
+
+/**
+ * Called when VPF updates the full description after fetching the download page.
+ *
+ * This is primarily used to parse the HyperPin ID ("description") which is usually
+ * pasted in a media pack's download description. By references we can find the table
+ * in question and update the hpid accoringly.
+ *
+ * @param data Object containing "vpf_file" (the download row) and "transfer" (the transfer row).
+ */
+Transfer.prototype.descriptionUpdated = function(data) {
+	if (data.transfer.type == 'mediapack' && data.transfer.ref_parent) {
+		var m;
+		if (m = data.vpf_file.description.match(/<description>([^<]+)<\/description>/i)) {
+			logger.log('info', '[transfer] Got media pack description, updating hpid of "%s"', data.transfer.title);
+			schema.Transfer.find(data.transfer.ref_parent).success(function(parent) {
+				if (!parent) {
+					return logger.log('warn', '[transfer] Cannot find parent transfer ID %d.', data.transfer.ref_parent);
+				}
+				schema.Table.find({ where: { ref_src : parent.ref_src }}).success(function(table) {
+					if (!table) {
+						return logger.log('warn', '[transfer] Cannot find table that has reference to %d.', parent.ref_src);
+					}
+					logger.log('info', '[transfer] Updating hpid of "%s" to "%s" (%d).', table.hpid, m[1], table.id, {});
+					table.updateAttributes({ hpid: m[1] }).success(function(table) {
+						// TODO check for duplicate entries
+					});
+				});
+			});
+		}
+	}
 };
 
 module.exports = new Transfer();

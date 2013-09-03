@@ -24,6 +24,7 @@ module.exports = function(sequelize, DataTypes) {
 		hpid: DataTypes.STRING,
 		hpenabled: DataTypes.BOOLEAN,
 		rom: DataTypes.STRING,
+		ref_src: DataTypes.INTEGER, // points to vpf_file.id
 		ipdb_no: DataTypes.STRING,
 		ipdb_mfg: DataTypes.STRING,
 		ipdb_rank: DataTypes.INTEGER,
@@ -46,8 +47,7 @@ module.exports = function(sequelize, DataTypes) {
 		media_backglass: DataTypes.BOOLEAN,
 		media_wheel: DataTypes.BOOLEAN,
 		media_video: DataTypes.BOOLEAN,
-		enabled: DataTypes.BOOLEAN,
-		ref_src: DataTypes.INTEGER // points to vpf_file.id
+		enabled: DataTypes.BOOLEAN
 	},
 	{
 		classMethods: {
