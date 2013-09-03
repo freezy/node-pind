@@ -88,6 +88,10 @@ AutoUpdate.prototype.initVersion = function(callback) {
 	// retrieve version from local git repo first (hash from .git, version from package.json)
 	if (localRepo) {
 		localRepo.commits('master', 1, function(err, commits) {
+			if (err) {
+				logger.log('error', '[autoupdate] Cannot retrieve commits from master: %s', err);
+				return callback(err);
+			}
 			var commit = commits[0];
 			that.setVersion(commit.id, commit.committed_date, packageVersion);
 			callback(null, version);
