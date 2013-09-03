@@ -18,7 +18,8 @@ Download and install Node.js from [here](http://nodejs.org/). Also, make sure
 --------------
 If you haven't already, install [Git for Windows](https://code.google.com/p/msysgit/downloads/list?q=full+installer+official+git). If you really want
 to live without Git, you can also download the zipball from GitHub instead of
-cloning in step 5 below.
+cloning in step 5 below. **Note that if you use a graphical client such as TortoiseGit, you'll still need
+to install the Git command line tool in order to make Pind work.**
 
 
 3. Install Build Tools
@@ -74,3 +75,12 @@ of your installation.
 
 
 If shit crashes, open up an issue. :)
+
+
+Troubleshooting
+---------------
+
+If `npm install` crashes with an error, there are a few points that have been reported to work and that you should try:
+
+* Launch the command prompt as administrator
+* Enter `SET VisualStudioVersion=11.0` in the console before doing anything
