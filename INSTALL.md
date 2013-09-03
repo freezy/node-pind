@@ -1,4 +1,4 @@
-![pind](client/static/images/logo.png)
+![pind](http://pind.ch/img/hipsterlogo-install.png)
 
 Installation
 ============
