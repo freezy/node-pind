@@ -398,6 +398,10 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 						var failed = false;
 
 						reqTxtOrBin({ url: downloadUrl, jar: true }, function(err, response, body) {
+							
+							if (err) {
+								return callback(err);
+							}
 
 							if (body.match(/You have exceeded the maximum number of downloads allotted to you for the day/i)) {
 								logger.log('info', '[vpf] Download data is error message, quitting.', { size: size, dest: dest });
