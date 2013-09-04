@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
 			category: DataTypes.INTEGER,
 			letter: DataTypes.STRING,
 			title: DataTypes.STRING,
-			description: DataTypes.STRING,
+			description: DataTypes.TEXT,
 			fileId: DataTypes.STRING,
 			downloads: DataTypes.INTEGER,
 			views: DataTypes.INTEGER,
