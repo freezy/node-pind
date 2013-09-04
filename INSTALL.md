@@ -36,10 +36,12 @@ Since not every library is available in native Javascript, NPM will have to do
 some compilation. This is the reason of Visual Studio and Windows SDK being
 included in the installation procedure.
 
-1. Download and install [Python 2.7](http://www.python.org/download/releases/2.7.5/).
+1. Download and install [Python 2.7](http://www.python.org/download/releases/2.7.5/) and make sure the installation
+   folder `Python27` in in your `PATH`.
 2. Download and install the [Visual Studio 2010 Express](http://go.microsoft.com/?linkid=9709949).
 3. On Windows 7 or above, download and install the
-   [Windows 7 SDK](http://www.microsoft.com/en-us/download/details.aspx?id=8279).
+   [Windows 7 SDK](http://www.microsoft.com/en-us/download/details.aspx?id=8279). You might have to uninstall any
+   *Microsoft Visual C++ 2010  Redistributable* packages on your system in order to successfully install the SDK.
 
 
 4. Install Additional Dependencies
@@ -65,7 +67,7 @@ Don't close the command line window just yet.
 
 6. Configure Pind
 -----------------
-1. Copy `config/settings.json` to `config/settings-mine.json` and open it in a text editor.
+1. Copy `config/settings.js` to `config/settings-mine.js` and open it in a text editor.
 2. Go through every option and update it if necessary.
 3. Make sure you got everything by searching "@important" in the file and double-check each value.
 3. Initialize database schema via command prompt - `node create-schema`
