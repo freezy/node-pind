@@ -3,6 +3,13 @@
 Installation
 ============
 
+Granted, installation is a bit cumbersome and sometimes the module compilation just doesn't work. Fortunately, this
+should improve with time, since the SQLite module will hopefully soon get [binary builds via npm](https://github.com/developmentseed/node-sqlite3/issues/67).
+
+If you really can't get `npm install` to work, you can replace `node-sqlite3` by `node-mysql` and `sequelize-sqlite` by
+`sequelize-mysql` in `package.json`, adapt the database settings in `settings-mine.js` and use a MySQL server instead.
+
+
 1. Install Node.js
 ------------------
 Since Pind is running on top of Node.js, there is no need of an additional
