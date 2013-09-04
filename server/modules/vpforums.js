@@ -467,23 +467,32 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 		};
 
 		// update description
-		var $ = jquery.create(jsdom(body).createWindow());
-		var description = $('div.ipsType_textblock.description_content').html();
-		if (transfer.ref_src) {
-			logger.log('info', '[vpf] Updating description for download %s', transfer.ref_src);
-			schema.VpfFile.find(transfer.ref_src).success(function(row) {
-				if (row) {
-					row.updateAttributes({ description: ent.decode(description).trim() }).success(function(row) {
-						that.emit('descriptionUpdated', { transfer: transfer, vpf_file: row });
-						initDownload(body);
+		jsdom.env({
+			html: body,
+			done: function(err, window) {
+				if (err) {
+					logger.log('warn', 'Error loading result into DOM: %s', err);
+					return initDownload(body);
+				}
+				var $ = jquery.create(window);
+				var description = $('div.ipsType_textblock.description_content').html();
+				if (transfer.ref_src) {
+					logger.log('info', '[vpf] Updating description for download %s', transfer.ref_src);
+					schema.VpfFile.find(transfer.ref_src).success(function(row) {
+						if (row) {
+							row.updateAttributes({ description: ent.decode(description).trim() }).success(function(row) {
+								that.emit('descriptionUpdated', { transfer: transfer, vpf_file: row });
+								initDownload(body);
+							});
+						} else {
+							initDownload(body);
+						}
 					});
 				} else {
 					initDownload(body);
 				}
-			});
-		} else {
-			initDownload(body);
-		}
+			}
+		});
 	});
 };
 
@@ -733,46 +742,56 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			}
 
 			// initialize jquery on result
-			var $ = jquery.create(jsdom(body).createWindow());
-			var today = new Date();
-			today.setHours(0);today.setMinutes(0);today.setSeconds(0);today.setMilliseconds(0);
-			async.eachSeries($('.idm_category_row'), function(that, next) {
+			// update description
+			jsdom.env({
+				html: body,
+				done: function(err, window) {
+					if (err) {
+						logger.log('warn', 'Error loading result into DOM: %s', err);
+						return initDownload(body);
+					}
+					var $ = jquery.create(window);
+					var today = new Date();
+					today.setHours(0);today.setMinutes(0);today.setSeconds(0);today.setMilliseconds(0);
+					async.eachSeries($('.idm_category_row'), function(that, next) {
 
-				var fileinfo = $(that).find('.file_info').html().match(/([\d,]+)\s+downloads\s+\(([\d,]+)\s+views/i);
-				var url = $(that).find('h3.ipsType_subtitle a').attr('href').replace(/s=[a-f\d]+&?/gi, '');
-				var dateString = $(that).find('.file_info .date').html().trim().replace(/^added|^updated|,/gi, '').trim();
-				var dateParsed = chrono.parse(dateString, today);
-				if (dateParsed.length == 0) {
-					logger.log('warn', '[vpf] Could not parse date "%s".', dateString);
-				}
+						var fileinfo = $(that).find('.file_info').html().match(/([\d,]+)\s+downloads\s+\(([\d,]+)\s+views/i);
+						var url = $(that).find('h3.ipsType_subtitle a').attr('href').replace(/s=[a-f\d]+&?/gi, '');
+						var dateString = $(that).find('.file_info .date').html().trim().replace(/^added|^updated|,/gi, '').trim();
+						var dateParsed = chrono.parse(dateString, today);
+						if (dateParsed.length == 0) {
+							logger.log('warn', '[vpf] Could not parse date "%s".', dateString);
+						}
 
-				var u = url.match(/showfile=(\d+)/i);
-				// author dom is different when logged in (names are linked)
-				var author = $(that).find('.basic_info .desc').html().match(/by\s+([^\s]+)/i);
-				var descr = $(that).find('span[class="desc"]').html();
-				if (u) {
-					currentResult.push({
-						fileId: parseInt(u[1]),
-						title: $(that).find('h3.ipsType_subtitle a').attr('title').replace(/^view file named\s+/ig, ''),
-						description: descr ? ent.decode(descr).trim() : '',
-						downloads: parseInt(fileinfo[1].replace(/,/, '')),
-						views: parseInt(fileinfo[2].replace(/,/, '')),
-						updated: dateParsed.length > 0 ? dateParsed[0].startDate : null,
-						author: author ? author[1] : $(that).find('.___hover___member span').html()
+						var u = url.match(/showfile=(\d+)/i);
+						// author dom is different when logged in (names are linked)
+						var author = $(that).find('.basic_info .desc').html().match(/by\s+([^\s]+)/i);
+						var descr = $(that).find('span[class="desc"]').html();
+						if (u) {
+							currentResult.push({
+								fileId: parseInt(u[1]),
+								title: $(that).find('h3.ipsType_subtitle a').attr('title').replace(/^view file named\s+/ig, ''),
+								description: descr ? ent.decode(descr).trim() : '',
+								downloads: parseInt(fileinfo[1].replace(/,/, '')),
+								views: parseInt(fileinfo[2].replace(/,/, '')),
+								updated: dateParsed.length > 0 ? dateParsed[0].startDate : null,
+								author: author ? author[1] : $(that).find('.___hover___member span').html()
+							});
+							next();
+						} else {
+							logger.log('error', 'ERROR: Could not parse file ID from %s.', url);
+							next('Could not parse file ID from ' + url);
+						}
+
+					}, function() {
+						if (firstPageOnly || options.firstPageOnly || page >= numPages) {
+							logger.log('info', '[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
+							saveToCache(cat, letter, currentResult, callback);
+						} else {
+							that.emit('downloadProgressUpdated', { progress: page / numPages });
+							fetch(cat, letter, currentResult, page + 1, callback);
+						}
 					});
-					next();
-				} else {
-					logger.log('error', 'ERROR: Could not parse file ID from %s.', url);
-					next('Could not parse file ID from ' + url);
-				}
-
-			}, function() {
-				if (firstPageOnly || options.firstPageOnly || page >= numPages) {
-					logger.log('info', '[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
-					saveToCache(cat, letter, currentResult, callback);
-				} else {
-					that.emit('downloadProgressUpdated', { progress: page / numPages });
-					fetch(cat, letter, currentResult, page + 1, callback);
 				}
 			});
 

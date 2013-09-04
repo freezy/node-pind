@@ -48,8 +48,9 @@ var dryRun = false;
  *		6. Update package.json with next working version: "0.0.7-pre"
  *
  * When writing migration scripts, name them YYYYMMDDHHmmss-sha1-migration-name.js.
- * Get the timestamp by running
- * 	php -r "date_default_timezone_set('UTC');echo date('YmdHis', trim(`git diff-tree -s --pretty=%at sha1`));"
+ * Get prefix by running
+ * 	php -r "$sha='xxxxxxx';date_default_timezone_set('UTC');echo date('YmdHis', trim(`git diff-tree -s --pretty=%at $sha`)).'-'.$sha;"
+ *
  *
  * @returns {AutoUpdate}
  * @constructor
