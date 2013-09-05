@@ -23,7 +23,7 @@ var log = require('winston');
 log.cli();
 
 
-matchSources();
+//matchSources();
 //ipdbMatch('Bram Stoker s Dracula');
 
 //git();
@@ -42,7 +42,7 @@ matchSources();
 //	nextDownload();
 
 
-//	extractMedia('C:/temp/NBA_Fastbreak__Midaway_1997_.zip');
+extractMedia('E:/tmp/Safe_Cracker_HPMP.zip');
 //extractMedia('E:/tmp/Playboy.Stern.2002.zip');
 
 //	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');

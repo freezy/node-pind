@@ -281,7 +281,7 @@ Extract.prototype.zipExtract = function(zipfile, mapping, callback) {
 				var map = mapping.extract[entry.path];
 				if (map) {
 					destDir = path.dirname(map.dst);
-					if (fs.existsSync(path.dirname(destDir))) {
+					if (fs.existsSync(destDir)) {
 						logger.log('info', '[extract] [unzip] Extracting "%s" to "%s"...', entry.path, map.dst);
 						map.extracted = true;
 						entry.pipe(fs.createWriteStream(map.dst));
