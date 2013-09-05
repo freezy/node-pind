@@ -359,8 +359,7 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 					res.on('data', function() {
 						if (!watching) {
 							// register watcher
-							watcher.watchDownload(dest, size, transfer);
-							watching = true;
+							watching = watcher.watchDownload(dest, size, transfer);
 						}
 					});
 					res.pipe(stream);
@@ -398,7 +397,7 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 						var failed = false;
 
 						reqTxtOrBin({ url: downloadUrl, jar: true }, function(err, response, body) {
-							
+
 							if (err) {
 								return callback(err);
 							}

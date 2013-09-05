@@ -702,6 +702,9 @@ Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
 };
 
 Transfer.prototype.watchDownload = function(filename, contentLength, reference) {
+	if (!fs.existsSync(filename)) {
+		return false;
+	}
 	if (!this.watches) {
 		this.watches = {};
 	}
@@ -716,6 +719,7 @@ Transfer.prototype.watchDownload = function(filename, contentLength, reference) 
 		that.emit('transferProgress', { size: size, contentLength: contentLength, reference: reference });
 
 	}, settings.pind.downloaderRefreshRate);
+	return true;
 };
 
 Transfer.prototype.unWatchDownload = function(filename) {
