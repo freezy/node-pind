@@ -3,6 +3,7 @@
 var _ = require('underscore');
 var fs = require('fs');
 var util = require('util');
+var path = require('path');
 var exec = require('child_process').exec;
 var async = require('async');
 var unzip = require('unzip');
@@ -275,12 +276,20 @@ Extract.prototype.zipExtract = function(zipfile, mapping, callback) {
 	fs.createReadStream(zipfile)
 		.pipe(unzip.Parse())
 		.on('entry', function(entry) {
+			var destDir;
 			try {
 				var map = mapping.extract[entry.path];
 				if (map) {
-					logger.log('info', '[extract] [unzip] Extracting "%s" to "%s"...', entry.path, map.dst);
-					map.extracted = true;
-					entry.pipe(fs.createWriteStream(map.dst));
+					destDir = path.dirname(map.dst);
+					if (fs.existsSync(path.dirname(destDir))) {
+						logger.log('info', '[extract] [unzip] Extracting "%s" to "%s"...', entry.path, map.dst);
+						map.extracted = true;
+						entry.pipe(fs.createWriteStream(map.dst));
+					} else {
+						logger.log('warn', '[extract] [unzip] Folder "%s" does not exist, skipping "%s".', destDir, entry.path);
+						entry.autodrain();
+					}
+
 				} else {
 					logger.log('info', '[extract] [unzip] Skipping "%s".', entry.path);
 					entry.autodrain();
@@ -318,30 +327,37 @@ Extract.prototype.rarExtract = function(rarfile, mapping, callback) {
 			var dstFolder = map.dst.substr(0, map.dst.lastIndexOf('/'));
 			var dstFilename = map.dst.substr(map.dst.lastIndexOf('/') + 1);
 			var srcFilename = map.src.substr(map.src.lastIndexOf('/') + 1);
-			logger.log('info', '[extract] [unrar] Extracting "%s" to "%s"...', map.src, map.dst);
-			// TODO extract to tmp if to be renamed so there are no name conflicts.
-			var cmd = '"' + settings.pind.unrar + '" x -ep -y "' + rarfile + '" "' + map.src.replace(/\//g, '\\') + '" "' + dstFolder.replace(/\//g, '\\') + '"';
-			logger.log('info', '[extract] [unrar] # %s', cmd);
-			exec(cmd, function (err, stdout, stderr) {
-				if (err) {
-					logger.log('error', '[extract] [unrar] ' + err);
-					return next(err);
-				}
-				if (stderr) {
-					logger.log('error', '[extract] [unrar] ' + err);
-					return next(stderr);
-				}
-				if (!stdout.match(/all ok/i)) {
-					return next(stdout);
-				}
-				map.extracted = true;
-				if (dstFilename != srcFilename) {
-					logger.log('info', '[extract] [unrar] Renaming "%s" to "%s"', dstFolder + '/' + srcFilename, map.dst);
-					fs.rename(dstFolder + '/' + srcFilename, map.dst, next);
-				} else {
-					next();
-				}
-			});
+			if (fs.existsSync(dstFolder)) {
+
+				logger.log('info', '[extract] [unrar] Extracting "%s" to "%s"...', map.src, map.dst);
+				// TODO extract to tmp if to be renamed so there are no name conflicts.
+				var cmd = '"' + settings.pind.unrar + '" x -ep -y "' + rarfile + '" "' + map.src.replace(/\//g, '\\') + '" "' + dstFolder.replace(/\//g, '\\') + '"';
+				logger.log('info', '[extract] [unrar] # %s', cmd);
+				exec(cmd, function (err, stdout, stderr) {
+					if (err) {
+						logger.log('error', '[extract] [unrar] ' + err);
+						return next(err);
+					}
+					if (stderr) {
+						logger.log('error', '[extract] [unrar] ' + err);
+						return next(stderr);
+					}
+					if (!stdout.match(/all ok/i)) {
+						return next(stdout);
+					}
+					map.extracted = true;
+					if (dstFilename != srcFilename) {
+						logger.log('info', '[extract] [unrar] Renaming "%s" to "%s"', dstFolder + '/' + srcFilename, map.dst);
+						fs.rename(dstFolder + '/' + srcFilename, map.dst, next);
+					} else {
+						next();
+					}
+				});
+
+			} else {
+				logger.log('warn', '[extract] [unrar] Folder "%s" not found, skipping "%s".', dstFolder, map.src);
+				next();
+			}
 
 		}, function(err) {
 			if (err) {
