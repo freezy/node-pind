@@ -8,7 +8,7 @@ In order of priority:
 * The download queue still has a few display bugs. Transfers also need more frontend logging,
   everything that is post-processing is not displayed.
 * Table versioning is not working. If you download a new version of a table that is already
-  in HyperPin, another entry will be created.
+  in HyperPin, another entry will be created if IPDB number doesn't match.
 * Messed up settings leads probably to a crash. Need to add a validator on first run.
 * IPDB matching is based on current HP conventions. If the description is different than
   `Game Name (Manufacturer Year)`, matching will probably fail.
