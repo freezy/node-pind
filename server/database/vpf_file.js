@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
 				autoIncrement: true,
 				primaryKey: true
 			},
+			ipdb_id: DataTypes.INTEGER,
 			category: DataTypes.INTEGER,
 			letter: DataTypes.STRING,
 			title: DataTypes.STRING,
