@@ -192,15 +192,20 @@ Ipdb.prototype.enrich = function(table, callback) {
 		// variations
 		r(/high speed 2/i, 'high speed ii');
 		r(/attack and revenge from mars/i, 'revenge from mars');
+		r(/250cc/i, '250 cc');
 
 		// too ambiguous
 		r(/tommy/i, 'tommy pinball wizard');
 
 		// strip off unnecessary shit
-		r(/night mode/i, '');
+		r(/night mode|megapin/i, '');
 		r(/v\d$/i, '');
 		r(/[^0-9a-z]+/ig, ' ');
 		r(/\sss\s/i, '');
+
+		// wtfs
+		r(/Amazing Spiderman 2012/i, 'Amazing Spiderman');
+
 
 		return name.trim();
 	};
@@ -250,6 +255,10 @@ Ipdb.prototype.enrich = function(table, callback) {
 			table.notes = firstMatch(body, /Notes:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
 			table.toys = firstMatch(body, /Toys:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
 			table.slogans = firstMatch(body, /Marketing Slogans:\s*<\/b><\/td><td[^>]*>([\s\S]*?)<\/td>/i, tidyText);
+
+			table.img_playfield = firstMatch(body, /<span title="[^"]*"><img src="[^"]*" onError="this.src='([^']+)'[^>]+><br>\s*Playfield\s*</i, function(url) {
+				return url.replace(/tn_/i, '');
+			});
 
 			var distance = natural.LevenshteinDistance(table.name, m[2]);
 			logger.log('info', '[ipdb] Found title "%s" as #%d (distance %d)', table.name, m[1], distance);
@@ -556,14 +565,29 @@ var findBestMatch = function(matches, table) {
 };
 
 var manufacturerNames = {
+	33: 'Atari',
 	47: 'Bally',
+	55: 'Bensa',
 	76: 'Capcom',
+	93: 'Gottlieb',
 	94: 'Gottlieb',
 	98: 'Data East',
+	126: 'Game Plan',
+	139: 'Grand Products',
+	141: 'Great States',
 	156: 'INDER',
+	170: 'Juegos Populares',
 	214: 'Bally',
+	224: 'Mylstar',
+	255: 'Playmatic',
+	257: 'Premier',
+	280: 'Sega',
+	302: 'Stern',
 	303: 'Stern',
-	349: 'Williams'
+	349: 'Williams',
+	350: 'Williams',
+	351: 'Williams',
+	269: 'Rock-ola'
 };
 
 module.exports = new Ipdb();
