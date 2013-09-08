@@ -25,7 +25,7 @@ block content
 								ul.thumbnails()
 									li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}", tb-768-980='span12')
 										.thumbnail
-											thumb.ng-transclude(fileid="{{row.fileId}}")
+											thumb.ng-transclude.pull-left(fileid="{{row.fileId}}")
 											h3 {{row.title_trimmed}}
 											p.pull-right.updated.hidden-phone-small {{row.lastUpdatedSince}}
 											h4.hidden-phone-small {{row.info}}

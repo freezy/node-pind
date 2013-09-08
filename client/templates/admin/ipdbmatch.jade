@@ -28,6 +28,8 @@ block inner-content
 				li
 					.icon
 						i.icon.filter(title="Filter by")
+				li(data-filter="confirmed")
+					a(href="#") Confirmed
 				li(data-filter="original")
 					a(href="#") Original
 				li(data-filter="match")
@@ -40,7 +42,7 @@ block inner-content
 		div.data.ng-cloak(style="display:none")
 			.row-fluid
 				ul.thumbnails
-					li.span12.vpf.item.big(ng-repeat="row in data", data-id="{{row.id}}", data-transferid="{{row.transferId}}", ng-animate="{ enter: 'animated fadeIn' }")
+					li.span12.vpf.item.big(ng-repeat="row in data", ng-controller="IpdbMatchItemCtrl")
 						.thumbnail
 							thumb.ng-transclude.pull-left(fileid="{{row.fileId}}")
 							thumb.ng-transclude.pull-left(fileid="{{row.ipdb_data.img}}")
@@ -52,7 +54,20 @@ block inner-content
 								h3 {{row.ipdb_data.title}}
 							p.pull-right.updated.hidden-phone-small IPDB
 							h4.hidden-phone-small {{row.ipdb_data.manufacturer}} {{row.ipdb_data.year}}
-							.clearfix
+							p
+								button.btn(ng-hide="row.ipdb_data.isConfirmed", ng-click="confirm()")
+									i.icon.ok
+									span &nbsp;&nbsp;Confirm
+								span &nbsp;&nbsp;
+								button.btn(ng-click="original()")
+									i.icon.remove
+									span &nbsp;&nbsp;Original Game
+							p
+								button.btn(ng-click="change()")
+									i.icon.ok
+								input(type="text", ng-model="newId", placeholder="IPDB# or URL")
+
+	.clearfix
 
 		//- empty search result
 		div.noresult(style="display:none")

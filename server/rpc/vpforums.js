@@ -116,36 +116,61 @@ exports.actions = function(req, res, ss) {
 		ipdbmatch: function(params) {
 
 			var category = 41;
-			var search = params.search && params.search.length > 1;
 			var p = { where: { category: category }, order: 'title' };
-
-			p.offset = params.offset ? parseInt(params.offset) : 0;
-			p.limit = params.limit ? parseInt(params.limit) : 0;
-
 			var mapFile = __dirname + '/../../ipdb-vpf.json';
-
-			var queryStart = +new Date();
 			var map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
-
+			var queryStart = +new Date();
 			schema.VpfFile.all(p).success(function(rows) {
 				var queryTime = (+new Date() - queryStart);
 
+				if (params.filters && Array.isArray(params.filters) && _.contains(params.filters, 'confirmed')) {
+					rows = _.filter(rows, function(row) {
+						return map[row.fileId] && map[row.fileId].confirmed;
+					});
+				} else {
+					rows = _.filter(rows, function(row) {
+						return !(map[row.fileId] && map[row.fileId].confirmed);
+					});
+				}
+
+				var pagedRows;
+				var offset = params.offset ? parseInt(params.offset) : 0;
+				var limit = params.limit ? parseInt(params.limit) : 0;
+				if (offset || limit) {
+					pagedRows = rows.slice(offset, offset + limit);
+				} else {
+					pagedRows = rows;
+				}
+
 				var returnedRows = [];
 				var r;
-				_.each(rows, function(row) {
+				_.each(pagedRows, function(row) {
 					r = schema.VpfFile.map(row);
 					r.ipdb_data = map[row.fileId];
 					returnedRows.push(r);
 				});
 
-				delete p.limit;
-				delete p.offset;
-				delete p.order;
-				var countStart = +new Date();
-				schema.VpfFile.count(p).success(function(num) {
-					var countTime = (+new Date() - countStart);
-					res({ rows: returnedRows, count: num, queryTime: queryTime, countTime: countTime });
-				});
+				res({ rows: returnedRows, count: rows.length, queryTime: queryTime });
+			});
+		},
+
+		ipdbmatchConfirm: function(id) {
+			schema.VpfFile.find(id).success(function(row) {
+				if (!row) {
+					return logger.log('warn', '[rpc] [vpf] Cannot find VPF row ID %s.', id);
+				}
+				var mapFile = __dirname + '/../../ipdb-vpf.json';
+				var map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
+				var found = false;
+				for (var fileId in map) {
+					if (fileId == row.fileId && map.hasOwnProperty(fileId)) {
+						found = true;
+						map[fileId].confirmed = true;
+						break;
+					}
+				}
+				fs.writeFileSync(mapFile, JSON.stringify(map, null, 2));
+				res();
 			});
 		}
 	};

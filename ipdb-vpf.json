@@ -57,7 +57,8 @@
     "manufacturer": "Game Plan",
     "img": "http://www.ipdb.org/images/26/image-2.jpg",
     "title_original": "Agents 777 FS",
-    "title_original_trimmed": "Agents 777"
+    "title_original_trimmed": "Agents 777",
+    "confirmed": true
   },
   "2412": {
     "ipdb": "3783",
@@ -1178,7 +1179,8 @@
     "manufacturer": "INDER",
     "img": "http://www.ipdb.org/images/4089/image-4.jpg",
     "title_original": "250cc VP9 FS",
-    "title_original_trimmed": "250cc"
+    "title_original_trimmed": "250cc",
+    "confirmed": true
   },
   "3082": {
     "ipdb": "4480",
@@ -2863,7 +2865,8 @@
     "manufacturer": "INDER",
     "img": "http://www.ipdb.org/images/4089/image-4.jpg",
     "title_original": "250cc VP91x 1.1 FS",
-    "title_original_trimmed": "250cc"
+    "title_original_trimmed": "250cc",
+    "confirmed": true
   },
   "5385": {
     "ipdb": "1260",
@@ -3171,7 +3174,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/2/Playfield2.jpg",
     "title_original": "Abra Ca Dabra B2S",
-    "title_original_trimmed": "Abra Ca Dabra"
+    "title_original_trimmed": "Abra Ca Dabra",
+    "confirmed": true
   },
   "5743": {
     "ipdb": "1447",
@@ -5499,7 +5503,8 @@
     "manufacturer": "Grand Products",
     "img": "http://www.ipdb.org/images/403/image-3.jpg",
     "title_original": "301 Bullseye FS",
-    "title_original_trimmed": "301 Bullseye"
+    "title_original_trimmed": "301 Bullseye",
+    "confirmed": true
   },
   "8181": {
     "ipdb": "33",
@@ -5508,7 +5513,8 @@
     "manufacturer": "Atari",
     "img": "http://www.ipdb.org/images/33/image-5.jpg",
     "title_original": "Airborne Avenger FS",
-    "title_original_trimmed": "Airborne Avenger"
+    "title_original_trimmed": "Airborne Avenger",
+    "confirmed": true
   },
   "8182": {
     "ipdb": "250",
