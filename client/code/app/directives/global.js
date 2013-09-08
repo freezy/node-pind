@@ -104,18 +104,29 @@ module.exports = function (module) {
 			replace: true,
 			transclude: true,
 			template:
-				'<div class="pull-left thumb-wrapper"><a href="#">' +
+				'<div class="thumb-wrapper"><a href="#">' +
 					'<div class="thumb"></div>' +
 					'<div class="thumb-placeholder"></div>' +
 					'</a></div>',
 			link: function(scope, element, attrs) {
 
 				attrs.$observe('fileid', function(value) {
+					var urlFull, urlSmall;
 					var a = element.find('a');
 					var thumb = element.find('.thumb');
+					if (value.substr(0, 7) == 'http://') {
+						urlFull = value;
+						urlSmall = value;
+					} else if (value && value != 'null') {
+						urlFull = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&full=1&id=' + value;
+						urlSmall = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&id=' + value;
 
-					a.attr('href', 'http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&full=1&id=' + value);
-					thumb.css('background-image', "url('http://www.vpforums.org/index.php?app=downloads&module=display&section=screenshot&id=" + value + "')");
+					} else {
+						return;
+					}
+
+					a.attr('href', urlFull);
+					thumb.css('background-image', "url('" + urlSmall + "')");
 					thumb.waitForImages({
 						each: function() {
 							var that = $(this);

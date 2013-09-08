@@ -202,9 +202,11 @@ Ipdb.prototype.enrich = function(table, callback) {
 		r(/v\d$/i, '');
 		r(/[^0-9a-z]+/ig, ' ');
 		r(/\sss\s/i, '');
+		r(/\d+\.\d+/, '');
 
 		// wtfs
 		r(/Amazing Spiderman 2012/i, 'Amazing Spiderman');
+		r(/BigDaddyVP9/i, 'Big Daddy');
 
 
 		return name.trim();
@@ -256,9 +258,14 @@ Ipdb.prototype.enrich = function(table, callback) {
 			table.toys = firstMatch(body, /Toys:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
 			table.slogans = firstMatch(body, /Marketing Slogans:\s*<\/b><\/td><td[^>]*>([\s\S]*?)<\/td>/i, tidyText);
 
-			table.img_playfield = firstMatch(body, /<span title="[^"]*"><img src="[^"]*" onError="this.src='([^']+)'[^>]+><br>\s*Playfield\s*</i, function(url) {
+			table.img_playfield = firstMatch(body, /<span title="[^"]*"><img src="[^"]*" onError="this.src='([^']+)'[^>]+><br>\s*Playfield\s*[\*]?</i, function(url) {
 				return url.replace(/tn_/i, '');
 			});
+			if (!table.img_playfield) {
+				table.img_playfield = firstMatch(body, /<span title="[^"]*"><img src="[^"]*" onError="this.src='([^']+)'[^>]+><br>[^<]*Playfield</i, function(url) {
+					return url.replace(/tn_/i, '');
+				});
+			}
 
 			var distance = natural.LevenshteinDistance(table.name, m[2]);
 			logger.log('info', '[ipdb] Found title "%s" as #%d (distance %d)', table.name, m[1], distance);
@@ -278,8 +285,13 @@ Ipdb.prototype.enrich = function(table, callback) {
 		return callback(null, table);
 	}
 
-	var url;
+	var url, m;
 	var searchName = fixName(table.name);
+	var regex = new RegExp('(' + this.getKnownManufacturers().join('|') + ')', 'i');
+	if (m = searchName.match(regex)) {
+		table.manufacturer = m[1];
+		searchName = searchName.replace(regex, '').trim();
+	}
 
 	if (table.ipdb_no && !forceSearch) {
 		url = 'http://www.ipdb.org/machine.cgi?id=' + table.ipdb_no;
@@ -565,29 +577,62 @@ var findBestMatch = function(matches, table) {
 };
 
 var manufacturerNames = {
+	16: 'All American Games',
+	32: 'Astro Games',
 	33: 'Atari',
 	47: 'Bally',
+	48: 'Midway',
+	53: 'Bell Coin Matics',
+	54: 'Bell Games',
 	55: 'Bensa',
 	76: 'Capcom',
+	81: 'Chicago Coin',
+	83: 'Unidesa',
 	93: 'Gottlieb',
 	94: 'Gottlieb',
 	98: 'Data East',
+	117: 'Exhibit',
 	126: 'Game Plan',
+	129: 'Geiger',
+	130: 'Genco',
 	139: 'Grand Products',
 	141: 'Great States',
 	156: 'INDER',
+	157: 'Interflip',
+	159: 'International Concepts',
 	170: 'Juegos Populares',
+	206: 'Marvel',
 	214: 'Bally',
+	222: 'Mr. Game',
 	224: 'Mylstar',
+	239: 'P & S',
+	250: 'Pierce Tool',
 	255: 'Playmatic',
 	257: 'Premier',
+	267: 'Richard',
+	269: 'Rock-ola',
+	279: 'Sega',
 	280: 'Sega',
+	282: 'Sonic',
 	302: 'Stern',
 	303: 'Stern',
+	311: 'Christian Tabart',
+	323: 'United',
+	328: 'Unknown',
 	349: 'Williams',
 	350: 'Williams',
 	351: 'Williams',
-	269: 'Rock-ola'
+	352: 'Williams',
+	356: 'Zaccaria',
+	359: 'RMG',
+	367: 'Taito',
+	371: 'Recreativos Franco',
+	458: 'Rowamet',
+	447: 'Delmar',
+	467: 'LTD',
+	483: 'ICE',
+	495: 'Elbos'
+
 };
 
 module.exports = new Ipdb();

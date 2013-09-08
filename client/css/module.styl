@@ -463,9 +463,7 @@ ul.badge-group
 // :sources
 // ============================================================================
 
-vpf-thumbsize = 120px
-vpf-padding = 15px
-.item.vpf
+thumbdef(thumbsize, thumbpadding)
 	h3
 		line-height 24px
 		margin-bottom 0
@@ -477,7 +475,7 @@ vpf-padding = 15px
 		text-transform none
 		margin-top 0px
 	.thumbnail
-		min-height vpf-thumbsize
+		min-height thumbsize
 		position relative
 		.updated
 			font-size 11.9px
@@ -486,7 +484,7 @@ vpf-padding = 15px
 		ul.pills
 			position absolute
 			bottom 15px
-			margin-left vpf-thumbsize + 15px
+			margin-left thumbsize + 15px
 
 			a:hover
 				text-decoration none
@@ -527,8 +525,8 @@ vpf-padding = 15px
 
 
 	.thumb
-		width vpf-thumbsize
-		height vpf-thumbsize
+		width thumbsize
+		height thumbsize
 		margin-right 15px
 		background-position center
 		background-size cover
@@ -550,16 +548,16 @@ vpf-padding = 15px
 
 
 	.thumb-placeholder
-		width vpf-thumbsize - vpf-padding - vpf-padding
-		height vpf-thumbsize - vpf-padding - vpf-padding
-		margin-top - vpf-thumbsize
+		width thumbsize - thumbpadding - thumbpadding
+		height thumbsize - thumbpadding - thumbpadding
+		margin-top - thumbsize
 		background-color rgba(0,0,0,0.2)
-		padding vpf-padding
+		padding thumbpadding
 		border-right 4px solid #e09d55
 		border-radius-topleft corner-size-small
 		border-radius-bottomleft corner-size-small
 
-		font-size vpf-thumbsize - vpf-padding - vpf-padding
+		font-size thumbsize - thumbpadding - thumbpadding
 		font-family 'pind-symbols'
 		speak none
 		line-height 1
@@ -570,7 +568,11 @@ vpf-padding = 15px
 			color rgba(255,255,255,0.5)
 			text-shadow none
 
+.item.vpf
+	thumbdef(120px, 15px)
 
+.item.vpf.big
+	thumbdef(240px, 30px)
 
 /* Large desktop */
 @media (min-width: 1200px)

@@ -1,0 +1,5839 @@
+{
+  "332": {
+    "ipdb": "1970",
+    "title": "Road Kings",
+    "year": "1986",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1970/Playfield.jpg",
+    "title_original": "Road Kings FS",
+    "title_original_trimmed": "Road Kings"
+  },
+  "333": {
+    "ipdb": "2799",
+    "title": "Wipe Out",
+    "year": "1993",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2799/image-5.jpg",
+    "title_original": "Wipe Out FS",
+    "title_original_trimmed": "Wipe Out"
+  },
+  "2252": {
+    "name": "MataHari Scapino   FSMod",
+    "error": "********** NO MATCH **********",
+    "title_original": "MataHari Scapino - FSMod",
+    "title_original_trimmed": "MataHari Scapino   FSMod"
+  },
+  "2275": {
+    "name": "Xenon Scapino FSMod",
+    "error": "********** NO MATCH **********",
+    "title_original": "Xenon Scapino FSMod",
+    "title_original_trimmed": "Xenon Scapino FSMod"
+  },
+  "2277": {
+    "name": "Fathom Scapino",
+    "error": "********** NO MATCH **********",
+    "title_original": "Fathom Scapino FS Mod",
+    "title_original_trimmed": "Fathom Scapino"
+  },
+  "2392": {
+    "name": "TOTAN Night",
+    "error": "********** NO MATCH **********",
+    "title_original": "TOTAN Night FS",
+    "title_original_trimmed": "TOTAN Night"
+  },
+  "2410": {
+    "ipdb": "4339",
+    "title": "Aaron Spelling",
+    "year": "1992",
+    "manufacturer": "Data East",
+    "img": null,
+    "title_original": "Aaron Spelling FS",
+    "title_original_trimmed": "Aaron Spelling"
+  },
+  "2411": {
+    "ipdb": "26",
+    "title": "Agents 777",
+    "year": "1984",
+    "manufacturer": "Game Plan",
+    "img": "http://www.ipdb.org/images/26/image-2.jpg",
+    "title_original": "Agents 777 FS",
+    "title_original_trimmed": "Agents 777"
+  },
+  "2412": {
+    "ipdb": "3783",
+    "title": "Airborne",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/3783/image-1.jpg",
+    "title_original": "Airborne (Capcom) FS",
+    "title_original_trimmed": "Airborne"
+  },
+  "2413": {
+    "ipdb": "49",
+    "title": "Alien Star",
+    "year": "1984",
+    "manufacturer": "Mylstar",
+    "img": "http://www.ipdb.org/images/49/image-4.jpg",
+    "title_original": "Alien Star FS",
+    "title_original_trimmed": "Alien Star"
+  },
+  "2414": {
+    "ipdb": "5013",
+    "title": "America 1492",
+    "year": "1986",
+    "manufacturer": "Juegos Populares",
+    "img": "http://www.ipdb.org/images/5013/image-2.jpg",
+    "title_original": "America 1492 FS",
+    "title_original_trimmed": "America 1492"
+  },
+  "2415": {
+    "ipdb": "82",
+    "title": "Arena",
+    "year": "1987",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/82/image-8.jpg",
+    "title_original": "Arena FS",
+    "title_original_trimmed": "Arena"
+  },
+  "2416": {
+    "ipdb": "126",
+    "title": "Back to the Future",
+    "year": "1990",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/126/image-4.jpg",
+    "title_original": "Back to the Future FS",
+    "title_original_trimmed": "Back to the Future"
+  },
+  "2417": {
+    "ipdb": "128",
+    "title": "Bad Girls",
+    "year": "1988",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/128/Playfield.jpg",
+    "title_original": "Bad Girls FS",
+    "title_original_trimmed": "Bad Girls"
+  },
+  "2418": {
+    "ipdb": "3795",
+    "title": "Barb Wire",
+    "year": "1996",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/3795/image-3.jpg",
+    "title_original": "Barb Wire FS",
+    "title_original_trimmed": "Barb Wire"
+  },
+  "2419": {
+    "ipdb": "177",
+    "title": "Barracora",
+    "year": "1981",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/177/image-3.jpg",
+    "title_original": "Barracora FS",
+    "title_original_trimmed": "Barracora"
+  },
+  "2420": {
+    "ipdb": "211",
+    "title": "Beat the Clock",
+    "year": "1963",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/211/image-3.jpg",
+    "title_original": "Beat the Clock FS",
+    "title_original_trimmed": "Beat the Clock"
+  },
+  "2421": {
+    "ipdb": "3602",
+    "title": "Bell Ringer",
+    "year": "1990",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/3602/image-2.jpg",
+    "title_original": "Bell Ringer FS",
+    "title_original_trimmed": "Bell Ringer"
+  },
+  "2422": {
+    "ipdb": "256",
+    "title": "Big House",
+    "year": "1989",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/256/Playfield.jpg",
+    "title_original": "Big House FS",
+    "title_original_trimmed": "Big House"
+  },
+  "2423": {
+    "ipdb": "3591",
+    "title": "Frank Thomas' Big Hurt",
+    "year": "1995",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/3591/image-4.jpg",
+    "title_original": "Big Hurt FS",
+    "title_original_trimmed": "Big Hurt"
+  },
+  "2424": {
+    "ipdb": "303",
+    "title": "Black Belt",
+    "year": "1986",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/316/image-8.jpg",
+    "title_original": "Black Belt (Bally) FS",
+    "title_original_trimmed": "Black Belt"
+  },
+  "2425": {
+    "ipdb": "308",
+    "title": "Black Jack",
+    "year": "1960",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/308/Playfield.jpg",
+    "title_original": "Black Jack FS",
+    "title_original_trimmed": "Black Jack"
+  },
+  "2426": {
+    "ipdb": "313",
+    "title": "Black Rose",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/313/image-2.jpg",
+    "title_original": "Black Rose FS",
+    "title_original_trimmed": "Black Rose"
+  },
+  "2427": {
+    "ipdb": "315",
+    "title": "Black Velvet",
+    "year": "1978",
+    "manufacturer": "Game Plan",
+    "img": "http://www.ipdb.org/images/946/image-4.jpg",
+    "title_original": "Black Velvet FS",
+    "title_original_trimmed": "Black Velvet"
+  },
+  "2428": {
+    "ipdb": "347",
+    "title": "Bone Busters Inc.",
+    "year": "1989",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/347/image-5.jpg",
+    "title_original": "Bone Busters FS",
+    "title_original_trimmed": "Bone Busters"
+  },
+  "2429": {
+    "ipdb": "4480",
+    "title": "Brave Team",
+    "year": "1985",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/4480/image-3.jpg",
+    "title_original": "Brave Team FS",
+    "title_original_trimmed": "Brave Team"
+  },
+  "2430": {
+    "ipdb": "3784",
+    "title": "Breakshot",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/3784/Playfield.jpg",
+    "title_original": "Breakshot FS",
+    "title_original_trimmed": "Breakshot"
+  },
+  "2431": {
+    "ipdb": "4481",
+    "title": "Bushido",
+    "year": "1993",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/4481/image-3.jpg",
+    "title_original": "Bushido FS",
+    "title_original_trimmed": "Bushido"
+  },
+  "2432": {
+    "ipdb": "3675",
+    "title": "Camel Lights",
+    "year": "1978",
+    "manufacturer": "Game Plan",
+    "img": "http://www.ipdb.org/images/3675/image-1.jpg",
+    "title_original": "Camel Lights FS",
+    "title_original_trimmed": "Camel Lights"
+  },
+  "2433": {
+    "ipdb": "434",
+    "title": "Captain Hook",
+    "year": "1985",
+    "manufacturer": "Game Plan",
+    "img": "http://www.ipdb.org/images/434/image-1.jpg",
+    "title_original": "Captain Hook FS",
+    "title_original_trimmed": "Captain Hook"
+  },
+  "2434": {
+    "ipdb": "3003",
+    "title": "Caribbean Cruise",
+    "year": "1989",
+    "manufacturer": "International Concepts of Kansas",
+    "img": "http://www.ipdb.org/images/3003/image-4.jpg",
+    "title_original": "Caribbean Cruise FS",
+    "title_original_trimmed": "Caribbean Cruise"
+  },
+  "2435": {
+    "ipdb": "4568",
+    "title": "Cavaleiro Negro",
+    "year": "1981",
+    "manufacturer": "Taito",
+    "img": "http://www.ipdb.org/images/4568/image-8.jpg",
+    "title_original": "Cavaleiro Negro FS",
+    "title_original_trimmed": "Cavaleiro Negro"
+  },
+  "2436": {
+    "ipdb": "498",
+    "title": "Checkpoint",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/498/image-2.jpg",
+    "title_original": "Checkpoint FS",
+    "title_original_trimmed": "Checkpoint"
+  },
+  "2437": {
+    "ipdb": "500",
+    "title": "Cheetah",
+    "year": "1980",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/500/image-2.jpg",
+    "title_original": "Cheetah FS",
+    "title_original_trimmed": "Cheetah"
+  },
+  "2438": {
+    "ipdb": "3020",
+    "title": "Chuck-A-Luck",
+    "year": "1978",
+    "manufacturer": "Game Plan",
+    "img": "http://www.ipdb.org/images/3020/image-1.jpg",
+    "title_original": "Chuck-A-Luck FS",
+    "title_original_trimmed": "Chuck A Luck"
+  },
+  "2439": {
+    "ipdb": "527",
+    "title": "City Slicker",
+    "year": "1987",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/527/image-2.jpg",
+    "title_original": "City Slicker FS",
+    "title_original_trimmed": "City Slicker"
+  },
+  "2442": {
+    "ipdb": "5136",
+    "title": "The Flintstones",
+    "year": "1994",
+    "manufacturer": "ICE",
+    "img": "http://www.ipdb.org/images/5136/image-2.jpg",
+    "title_original": "The FlintStones Night Mod FS",
+    "title_original_trimmed": "The FlintStones"
+  },
+  "2471": {
+    "ipdb": "127",
+    "title": "Bad Cats",
+    "year": "1989",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/127/image-5.jpg",
+    "title_original": "Bad Cats VP9 FS",
+    "title_original_trimmed": "Bad Cats"
+  },
+  "2505": {
+    "ipdb": "5306",
+    "title": "Indiana Jones",
+    "year": "2008",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5306/image-8.jpg",
+    "title_original": "Indiana Jones FS",
+    "title_original_trimmed": "Indiana Jones"
+  },
+  "2557": {
+    "ipdb": "4674",
+    "title": "The Simpsons Pinball Party",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4674/image-2.jpg",
+    "title_original": "The Simpsons Pinball Party FS Mod 2 pack",
+    "title_original_trimmed": "The Simpsons Pinball Party"
+  },
+  "2609": {
+    "ipdb": "2684",
+    "title": "Twilight Zone",
+    "year": "1993",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2684/image-1.jpg",
+    "title_original": "Twilight Zone Night Mod FS",
+    "title_original_trimmed": "Twilight Zone"
+  },
+  "2618": {
+    "ipdb": "1062",
+    "title": "Gorgar",
+    "year": "1979",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1062/image-32.jpg",
+    "title_original": "Gorgar FS",
+    "title_original_trimmed": "Gorgar"
+  },
+  "2623": {
+    "ipdb": "317",
+    "title": "Blackout",
+    "year": "1980",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/317/image-3.jpg",
+    "title_original": "Heavy Metal FS",
+    "title_original_trimmed": "Heavy Metal"
+  },
+  "2624": {
+    "ipdb": "73",
+    "title": "Andromeda",
+    "year": "1985",
+    "manufacturer": "Game Plan",
+    "img": "http://www.ipdb.org/images/73/Playfield.jpg",
+    "title_original": "Andromeda FS",
+    "title_original_trimmed": "Andromeda"
+  },
+  "2626": {
+    "ipdb": "4580",
+    "title": "Conan",
+    "year": "1983",
+    "manufacturer": "Rowamet",
+    "img": "http://www.ipdb.org/images/4580/image-2.jpg",
+    "title_original": "Conan FS",
+    "title_original_trimmed": "Conan"
+  },
+  "2627": {
+    "ipdb": "1775",
+    "title": "Coney Island",
+    "year": "1938",
+    "manufacturer": "Exhibit",
+    "img": "http://www.ipdb.org/images/554/Playfield.jpg",
+    "title_original": "Coney Island FS",
+    "title_original_trimmed": "Coney Island"
+  },
+  "2628": {
+    "ipdb": "3967",
+    "title": "Cosmic Princess",
+    "year": "1979",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/3967/image-4.jpg",
+    "title_original": "Cosmic Princess FS",
+    "title_original_trimmed": "Cosmic Princess"
+  },
+  "2629": {
+    "ipdb": "3968",
+    "title": "Dark Rider",
+    "year": "1984",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/3968/image-2.jpg",
+    "title_original": "Dark Rider FS",
+    "title_original_trimmed": "Dark Rider"
+  },
+  "2630": {
+    "ipdb": "731",
+    "title": "Dragonfist",
+    "year": "1982",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/731/image-3.jpg",
+    "title_original": "Dragon Fist FS",
+    "title_original_trimmed": "Dragon Fist"
+  },
+  "2631": {
+    "ipdb": "3611",
+    "title": "Earth Wind Fire",
+    "year": "1981",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/3611/image-6.jpg",
+    "title_original": "Earth Wind Fire FS",
+    "title_original_trimmed": "Earth Wind Fire"
+  },
+  "2635": {
+    "ipdb": "3531",
+    "title": "Zankor",
+    "year": "1986",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/3531/image-3.jpg",
+    "title_original": "Zankor FS",
+    "title_original_trimmed": "Zankor"
+  },
+  "2642": {
+    "ipdb": "3705",
+    "title": "Flash Gordon",
+    "year": "1981",
+    "manufacturer": "Bell Games",
+    "img": "http://www.ipdb.org/images/874/Playfield.jpg",
+    "title_original": "Flash Gordon FS Mod",
+    "title_original_trimmed": "Flash Gordon"
+  },
+  "2644": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared Stiff FS",
+    "title_original_trimmed": "Scared Stiff"
+  },
+  "2645": {
+    "name": "Scared Stiff Dark",
+    "error": "********** NO MATCH **********",
+    "title_original": "Scared Stiff Dark FS",
+    "title_original_trimmed": "Scared Stiff Dark"
+  },
+  "2655": {
+    "ipdb": "1433",
+    "title": "Lethal Weapon 3",
+    "year": "1992",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1433/image-2.jpg",
+    "title_original": "Lethal Weapon 3 FS MOD",
+    "title_original_trimmed": "Lethal Weapon 3"
+  },
+  "2656": {
+    "ipdb": "125",
+    "title": "Baby Pac-Man",
+    "year": "1982",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/125/image-4.jpg",
+    "title_original": "Baby Pacman FS",
+    "title_original_trimmed": "Baby Pacman"
+  },
+  "2659": {
+    "ipdb": "2845",
+    "title": "Theatre of Magic",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2845/image-12.jpg",
+    "title_original": "Theatre of Magic FS NM",
+    "title_original_trimmed": "Theatre of Magic"
+  },
+  "2660": {
+    "ipdb": "684",
+    "title": "Dirty Harry",
+    "year": "1995",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/684/Playfield.jpg",
+    "title_original": "Dirty Harry FS MOD",
+    "title_original_trimmed": "Dirty Harry"
+  },
+  "2665": {
+    "name": "World Cup Soccer94",
+    "error": "********** NO MATCH **********",
+    "title_original": "World Cup Soccer94 FS",
+    "title_original_trimmed": "World Cup Soccer94"
+  },
+  "2681": {
+    "ipdb": "1793",
+    "title": "Pinball Champ",
+    "year": "1983",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/1793/image-4.jpg",
+    "title_original": "Pinball Champ FS",
+    "title_original_trimmed": "Pinball Champ"
+  },
+  "2682": {
+    "ipdb": "1511",
+    "title": "Magic Castle",
+    "year": "1984",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/1511/image-6.jpg",
+    "title_original": "Magic Castle FS",
+    "title_original_trimmed": "Magic Castle"
+  },
+  "2683": {
+    "ipdb": "3382",
+    "title": "Mexico 86",
+    "year": "1986",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/3382/image-2.jpg",
+    "title_original": "Mexico 86 FS",
+    "title_original_trimmed": "Mexico 86"
+  },
+  "2685": {
+    "ipdb": "979",
+    "title": "Galaxy",
+    "year": "1973",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/980/image-9.jpg",
+    "title_original": "Galaxy VP9 STERN Fullscreen",
+    "title_original_trimmed": "Galaxy"
+  },
+  "2686": {
+    "ipdb": "672",
+    "title": "Devil Riders",
+    "year": "1984",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/672/image-15.jpg",
+    "title_original": "Devil Riders FS",
+    "title_original_trimmed": "Devil Riders"
+  },
+  "2687": {
+    "ipdb": "3459",
+    "title": "Spooky",
+    "year": "1987",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/3459/image-2.jpg",
+    "title_original": "Spooky FS",
+    "title_original_trimmed": "Spooky"
+  },
+  "2688": {
+    "ipdb": "3311",
+    "title": "Pool Champion",
+    "year": "1985",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/3311/image-11.jpg",
+    "title_original": "Pool Champion FS",
+    "title_original_trimmed": "Pool Champion"
+  },
+  "2692": {
+    "ipdb": "824",
+    "title": "Farfalla",
+    "year": "1983",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/824/image-8.jpg",
+    "title_original": "Zaccaria Farfalla FS",
+    "title_original_trimmed": "Zaccaria Farfalla"
+  },
+  "2694": {
+    "ipdb": "4478",
+    "title": "Centaur",
+    "year": "1979",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/476/Playfield.jpg",
+    "title_original": "Centaur FS",
+    "title_original_trimmed": "Centaur"
+  },
+  "2696": {
+    "name": "Creature form the Black Lagoon",
+    "error": "********** NO MATCH **********",
+    "title_original": "Creature form the Black Lagoon FS Alpha Mod",
+    "title_original_trimmed": "Creature form the Black Lagoon"
+  },
+  "2699": {
+    "ipdb": "3613",
+    "title": "Future World",
+    "year": "1978",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/3613/image-3.jpg",
+    "title_original": "Zaccaria Future World FS",
+    "title_original_trimmed": "Zaccaria Future World"
+  },
+  "2700": {
+    "ipdb": "2090",
+    "title": "Secret Service",
+    "year": "1988",
+    "manufacturer": "ice",
+    "img": "http://www.ipdb.org/images/2090/image-9.jpg",
+    "title_original": "Secret Service FS",
+    "title_original_trimmed": "Secret Service"
+  },
+  "2714": {
+    "ipdb": "4512",
+    "title": "Hawkman",
+    "year": "1983",
+    "manufacturer": "Taito",
+    "img": "http://www.ipdb.org/images/4512/image-6.jpg",
+    "title_original": "Hawkman FS",
+    "title_original_trimmed": "Hawkman"
+  },
+  "2717": {
+    "ipdb": "195",
+    "title": "Batman",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/195/image-2.jpg",
+    "title_original": "Batman FS",
+    "title_original_trimmed": "Batman"
+  },
+  "2719": {
+    "name": "The Who's Tommy Pinball Wizard",
+    "error": "********** NO MATCH **********",
+    "title_original": "The Who's Tommy Pinball Wizard FS",
+    "title_original_trimmed": "The Who's Tommy Pinball Wizard"
+  },
+  "2722": {
+    "name": "JP's Spider Man",
+    "error": "********** NO MATCH **********",
+    "title_original": "JP's Spider-Man VP91x v1.1.1 FS",
+    "title_original_trimmed": "JP's Spider Man"
+  },
+  "2739": {
+    "ipdb": "1000",
+    "title": "The Getaway: High Speed II",
+    "year": "1992",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1000/image-4.jpg",
+    "title_original": "The Getaway - High Speed II FS",
+    "title_original_trimmed": "The Getaway   High Speed II"
+  },
+  "2740": {
+    "ipdb": "48",
+    "title": "Alien Poker",
+    "year": "1980",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/48/Playfield.jpg",
+    "title_original": "Alien Poker FS",
+    "title_original_trimmed": "Alien Poker"
+  },
+  "2741": {
+    "ipdb": "48",
+    "title": "Alien Poker",
+    "year": "1980",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/48/Playfield.jpg",
+    "title_original": "Alien Poker FS Multiball",
+    "title_original_trimmed": "Alien Poker"
+  },
+  "2765": {
+    "name": "FishTales",
+    "error": "********** NO MATCH **********",
+    "title_original": "FishTales FS (MOD)",
+    "title_original_trimmed": "FishTales"
+  },
+  "2766": {
+    "ipdb": "1257",
+    "title": "Hurricane",
+    "year": "1991",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1257/Playfield.jpg",
+    "title_original": "Hurricane FS (MOD)",
+    "title_original_trimmed": "Hurricane"
+  },
+  "2767": {
+    "ipdb": "3350",
+    "title": "Twister",
+    "year": "1936",
+    "manufacturer": "Exhibit",
+    "img": "http://www.ipdb.org/images/3976/Playfield.jpg",
+    "title_original": "Twister FS (MOD)",
+    "title_original_trimmed": "Twister"
+  },
+  "2768": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared Stiff FS MOD by Kruge99",
+    "title_original_trimmed": "Scared Stiff"
+  },
+  "2769": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared Stiff FS Dark MOD by Kruge99",
+    "title_original_trimmed": "Scared Stiff"
+  },
+  "2771": {
+    "ipdb": "947",
+    "title": "Mary Shelley's Frankenstein",
+    "year": "1995",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/947/Playfield.jpg",
+    "title_original": "Frankenstein FS (MOD)",
+    "title_original_trimmed": "Frankenstein"
+  },
+  "2773": {
+    "name": "Jokerz! Ver 1.3FS",
+    "error": "********** NO MATCH **********",
+    "title_original": "Jokerz! Ver 1.3FS",
+    "title_original_trimmed": "Jokerz! Ver 1.3FS"
+  },
+  "2774": {
+    "ipdb": "1070",
+    "title": "Grand Lizard",
+    "year": "1986",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1070/image-7.jpg",
+    "title_original": "Grand Lizard FS",
+    "title_original_trimmed": "Grand Lizard"
+  },
+  "2775": {
+    "ipdb": "2252",
+    "title": "Space Invaders",
+    "year": "1979",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2252/image-1.jpg",
+    "title_original": "Space Invaders vp9 FS",
+    "title_original_trimmed": "Space Invaders"
+  },
+  "2777": {
+    "ipdb": "2528",
+    "title": "The Shadow",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2528/Playfield.jpg",
+    "title_original": "The Shadow",
+    "title_original_trimmed": "The Shadow"
+  },
+  "2779": {
+    "type": "OG",
+    "title_original": "Avro Arrow Tribute FS - VP912 - 1.0.3",
+    "title_original_trimmed": "Avro Arrow Tribute"
+  },
+  "2780": {
+    "ipdb": "4341",
+    "title": "Starship Troopers",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4341/image-4.jpg",
+    "title_original": "Starship Troopers FS (MOD)",
+    "title_original_trimmed": "Starship Troopers"
+  },
+  "2786": {
+    "ipdb": "5647",
+    "title": "Grand Prix",
+    "year": "1976",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/5647/image-6.jpg",
+    "title_original": "Grand Prix FS (MOD)",
+    "title_original_trimmed": "Grand Prix"
+  },
+  "2788": {
+    "ipdb": "681",
+    "title": "Diner",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/681/image-2.jpg",
+    "title_original": "Diner FS (MOD)",
+    "title_original_trimmed": "Diner"
+  },
+  "2792": {
+    "name": "World Cup 94 F",
+    "error": "********** NO MATCH **********",
+    "title_original": "World Cup 94 FS(MOD",
+    "title_original_trimmed": "World Cup 94 F"
+  },
+  "2793": {
+    "ipdb": "4540",
+    "title": "NFL",
+    "year": "2001",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4540/image-1.jpg",
+    "title_original": "NFL FS (MOD)",
+    "title_original_trimmed": "NFL"
+  },
+  "2794": {
+    "ipdb": "4359",
+    "title": "Viper Night Drivin'",
+    "year": "1998",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4359/image-1.jpg",
+    "title_original": "Viper Night Drivin FS (MOD)",
+    "title_original_trimmed": "Viper Night Drivin"
+  },
+  "2795": {
+    "name": "Dale Jr. F",
+    "error": "********** NO MATCH **********",
+    "title_original": "Dale Jr. FS(MOD)",
+    "title_original_trimmed": "Dale Jr. F"
+  },
+  "2796": {
+    "name": "STTNG F",
+    "error": "********** NO MATCH **********",
+    "title_original": "STTNG FS(MOD)",
+    "title_original_trimmed": "STTNG F"
+  },
+  "2797": {
+    "ipdb": "3781",
+    "title": "Attack from Mars",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
+    "title_original": "Attack From Mars V3.3 (Megapin) FS",
+    "title_original_trimmed": "Attack From Mars"
+  },
+  "2798": {
+    "ipdb": "4858",
+    "title": "The Lord of the Rings",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5558/image-3.jpg",
+    "title_original": "Lord of the Rings V2.1 (JP Salas)FS",
+    "title_original_trimmed": "Lord of the Rings"
+  },
+  "2803": {
+    "name": "F 14 Tomcat 5.01FS",
+    "error": "********** NO MATCH **********",
+    "title_original": "F-14 Tomcat 5.01FS (JP Salas) Mod",
+    "title_original_trimmed": "F 14 Tomcat 5.01FS"
+  },
+  "2804": {
+    "ipdb": "947",
+    "title": "Mary Shelley's Frankenstein",
+    "year": "1995",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/947/Playfield.jpg",
+    "title_original": "Sharkey's Shootout FS(MOD)",
+    "title_original_trimmed": "Sharkey's Shootout F"
+  },
+  "2811": {
+    "ipdb": "3957",
+    "title": "King Tut",
+    "year": "1932",
+    "manufacturer": "Richard",
+    "img": "http://www.ipdb.org/images/3957/image-3.jpg",
+    "title_original": "King Tut Bally 1969 - FS VP9 MOD by Kruge99 1.0.3",
+    "title_original_trimmed": "King Tut"
+  },
+  "2816": {
+    "ipdb": "1777",
+    "title": "Phantom of the Opera",
+    "year": "1990",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1777/Playfield.jpg",
+    "title_original": "The Phantom of the Opera (LORD HIRYU) FS",
+    "title_original_trimmed": "The Phantom of the Opera"
+  },
+  "2819": {
+    "ipdb": "1386",
+    "title": "Kiss",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1386/Playfield.jpg",
+    "title_original": "KISS  (JP Salas) 2.1FS",
+    "title_original_trimmed": "KISS"
+  },
+  "2820": {
+    "ipdb": "1125",
+    "title": "Harlem Globetrotters On Tour",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1125/Playfield.jpg",
+    "title_original": "Harlem Globetrotters on Tour VP9 2.1FS (JP Salas)",
+    "title_original_trimmed": "Harlem Globetrotters on Tour"
+  },
+  "2823": {
+    "ipdb": "4770",
+    "title": "Bow and Arrow",
+    "year": "1974",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4770/image-3.jpg",
+    "title_original": "Bow and Arrow (JP Salas) FS",
+    "title_original_trimmed": "Bow and Arrow"
+  },
+  "2824": {
+    "ipdb": "248",
+    "title": "Big Game",
+    "year": "1935",
+    "manufacturer": "Rock-ola",
+    "img": "http://www.ipdb.org/images/248/Playfield.jpg",
+    "title_original": "Big Game (Jp Salas) FS",
+    "title_original_trimmed": "Big Game"
+  },
+  "2829": {
+    "ipdb": "686",
+    "title": "Disco Fever",
+    "year": "1978",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/686/image-6.jpg",
+    "title_original": "Disco Fever FS -oooPLAYER1ooo",
+    "title_original_trimmed": "Disco Fever"
+  },
+  "2874": {
+    "ipdb": "312",
+    "title": "Black Pyramid",
+    "year": "1984",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/312/image-1.jpg",
+    "title_original": "Black Pyramid FS vp9",
+    "title_original_trimmed": "Black Pyramid"
+  },
+  "2882": {
+    "ipdb": "5237",
+    "title": "Spider-Man",
+    "year": "2007",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5237/image-51.jpg",
+    "title_original": "Spider-Man v1.02 SE DMD UVP",
+    "title_original_trimmed": "Spider Man"
+  },
+  "2900": {
+    "ipdb": "3824",
+    "title": "Tales of the Arabian Nights",
+    "year": "1996",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
+    "title_original": "Tales of the Arabian Nights V2.1FS",
+    "title_original_trimmed": "Tales of the Arabian Nights"
+  },
+  "2901": {
+    "ipdb": "310",
+    "title": "Black Knight",
+    "year": "1980",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/310/Playfield.jpg",
+    "title_original": "Black Knight V2.1 FS",
+    "title_original_trimmed": "Black Knight"
+  },
+  "2906": {
+    "ipdb": "5136",
+    "title": "The Flintstones",
+    "year": "1994",
+    "manufacturer": "ICE",
+    "img": "http://www.ipdb.org/images/5136/image-2.jpg",
+    "title_original": "Flintstones FS MOD JW MOD",
+    "title_original_trimmed": "Flintstones"
+  },
+  "2913": {
+    "ipdb": "4059",
+    "title": "Cirqus Voltaire",
+    "year": "1997",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4059/image-16.jpg",
+    "title_original": "Cirqus Voltaire VP9 Full Screen",
+    "title_original_trimmed": "Cirqus Voltaire"
+  },
+  "2934": {
+    "ipdb": "4032",
+    "title": "Medieval Madness",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4032/image-7.jpg",
+    "title_original": "Medieval Madness Megapin V1.34 FS",
+    "title_original_trimmed": "Medieval Madness Megapin"
+  },
+  "2978": {
+    "ipdb": "856",
+    "title": "Firepower",
+    "year": "1980",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/856/image-28.jpg",
+    "title_original": "Firepower vp9 FS",
+    "title_original_trimmed": "Firepower"
+  },
+  "2984": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared Stiff VP91x v1.4.4FS",
+    "title_original_trimmed": "Scared Stiff"
+  },
+  "2999": {
+    "ipdb": "1549",
+    "title": "Mars God of War",
+    "year": "1981",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1549/image-2.jpg",
+    "title_original": "Mars God Of War FS",
+    "title_original_trimmed": "Mars God Of War"
+  },
+  "3004": {
+    "ipdb": "317",
+    "title": "Blackout",
+    "year": "1980",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/317/image-3.jpg",
+    "title_original": "Blackout FS (JP Salas)",
+    "title_original_trimmed": "Blackout"
+  },
+  "3005": {
+    "ipdb": "966",
+    "title": "Funhouse",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/966/image-4.jpg",
+    "title_original": "Funhouse VP91x 2.1.1FS",
+    "title_original_trimmed": "Funhouse"
+  },
+  "3007": {
+    "ipdb": "4858",
+    "title": "The Lord of the Rings",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5558/image-3.jpg",
+    "title_original": "Lord of the Rings V1.4FS (Megapin)",
+    "title_original_trimmed": "Lord of the Rings"
+  },
+  "3014": {
+    "name": "Spiderman 2010a",
+    "error": "********** NO MATCH **********",
+    "title_original": "Spiderman 2010a vp9 FS",
+    "title_original_trimmed": "Spiderman 2010a"
+  },
+  "3017": {
+    "ipdb": "698",
+    "title": "Dolly Parton",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/698/image-3.jpg",
+    "title_original": "Dolly Parton (JP Salas) FS",
+    "title_original_trimmed": "Dolly Parton"
+  },
+  "3023": {
+    "ipdb": "311",
+    "title": "Black Knight 2000",
+    "year": "1989",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/311/Playfield.jpg",
+    "title_original": "Black Knight 2000 FS",
+    "title_original_trimmed": "Black Knight 2000"
+  },
+  "3026": {
+    "name": "Seawitch Special Edition",
+    "error": "********** NO MATCH **********",
+    "title_original": "Seawitch Special Edition FS",
+    "title_original_trimmed": "Seawitch Special Edition"
+  },
+  "3027": {
+    "ipdb": "2089",
+    "title": "Seawitch",
+    "year": "1980",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/2089/image-4.jpg",
+    "title_original": "Seawitch VP9 FS",
+    "title_original_trimmed": "Seawitch"
+  },
+  "3032": {
+    "ipdb": "2285",
+    "title": "The Amazing Spider-Man",
+    "year": "1980",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2285/image-6.jpg",
+    "title_original": "Amazing Spiderman 2012 FS B2S",
+    "title_original_trimmed": "Amazing Spiderman 2012"
+  },
+  "3035": {
+    "ipdb": "4016",
+    "title": "Stellar Airship",
+    "year": "1979",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/4016/image-7.jpg",
+    "title_original": "Stellar Airship VP912 FS 1.0.3",
+    "title_original_trimmed": "Stellar Airship"
+  },
+  "3037": {
+    "ipdb": "3210",
+    "title": "Lightning",
+    "year": "1947",
+    "manufacturer": "Marvel",
+    "img": "http://www.ipdb.org/images/1441/image-3.jpg",
+    "title_original": "Lightning VP9 FS",
+    "title_original_trimmed": "Lightning"
+  },
+  "3040": {
+    "ipdb": "3501",
+    "title": "Tiger Rag",
+    "year": "1984",
+    "manufacturer": "Bell Games",
+    "img": "http://www.ipdb.org/images/3501/image-3.jpg",
+    "title_original": "Tiger Rag VP9 FS",
+    "title_original_trimmed": "Tiger Rag"
+  },
+  "3056": {
+    "ipdb": "3968",
+    "title": "Dark Rider",
+    "year": "1984",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/3968/image-2.jpg",
+    "title_original": "Dark Rider VP9 Geiger FS",
+    "title_original_trimmed": "Dark Rider"
+  },
+  "3059": {
+    "name": "Daffy Duck 2011",
+    "error": "********** NO MATCH **********",
+    "title_original": "Daffy Duck 2011 FS",
+    "title_original_trimmed": "Daffy Duck 2011"
+  },
+  "3060": {
+    "ipdb": "728",
+    "title": "Dracula",
+    "year": "1979",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/728/image-A.jpg",
+    "title_original": "Dracula VP9 FS",
+    "title_original_trimmed": "Dracula"
+  },
+  "3066": {
+    "ipdb": "2493",
+    "title": "Tales from the Crypt",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2493/Playfield.jpg",
+    "title_original": "Tales From The Crypt VP9 FS",
+    "title_original_trimmed": "Tales From The Crypt"
+  },
+  "3067": {
+    "name": "Mars Attacks 2010",
+    "error": "********** NO MATCH **********",
+    "title_original": "Mars Attacks 2010 FS",
+    "title_original_trimmed": "Mars Attacks 2010"
+  },
+  "3079": {
+    "ipdb": "766",
+    "title": "El Dorado",
+    "year": "1975",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/766/Playfield2.jpg",
+    "title_original": "El Dorado VP9 FS",
+    "title_original_trimmed": "El Dorado"
+  },
+  "3080": {
+    "ipdb": "828",
+    "title": "Fast Draw",
+    "year": "1975",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/828/image-1.jpg",
+    "title_original": "Fast Draw VP9 FS",
+    "title_original_trimmed": "Fast Draw"
+  },
+  "3081": {
+    "ipdb": "4089",
+    "title": "250 cc",
+    "year": "1992",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/4089/image-4.jpg",
+    "title_original": "250cc VP9 FS",
+    "title_original_trimmed": "250cc"
+  },
+  "3082": {
+    "ipdb": "4480",
+    "title": "Brave Team",
+    "year": "1985",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/4480/image-3.jpg",
+    "title_original": "Brave Team VP9 FS by JPSalas",
+    "title_original_trimmed": "Brave Team"
+  },
+  "3083": {
+    "ipdb": "3974",
+    "title": "Fly High",
+    "year": "1985",
+    "manufacturer": "Geiger",
+    "img": null,
+    "title_original": "Fly High VP9 FS",
+    "title_original_trimmed": "Fly High"
+  },
+  "3089": {
+    "ipdb": "2606",
+    "title": "Totem",
+    "year": "1935",
+    "manufacturer": "Pierce Tool",
+    "img": "http://www.ipdb.org/images/2606/image-3.jpg",
+    "title_original": "Totem FS",
+    "title_original_trimmed": "Totem"
+  },
+  "3096": {
+    "ipdb": "1764",
+    "title": "The Party Zone",
+    "year": "1991",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1764/image-25.jpg",
+    "title_original": "The Party Zone VP91x 1.2.1 FS",
+    "title_original_trimmed": "The Party Zone"
+  },
+  "3097": {
+    "name": "Superman Vs Ali",
+    "error": "********** NO MATCH **********",
+    "title_original": "Superman Vs Ali FS",
+    "title_original_trimmed": "Superman Vs Ali"
+  },
+  "3102": {
+    "ipdb": "762",
+    "title": "Eight Ball Deluxe",
+    "year": "1980",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/762/image-3.jpg",
+    "title_original": "Eight Ball Deluxe VP91x v1.2FS",
+    "title_original_trimmed": "Eight Ball Deluxe"
+  },
+  "3103": {
+    "ipdb": "4927",
+    "title": "Cyclone",
+    "year": "1932",
+    "manufacturer": "Delmar",
+    "img": "http://www.ipdb.org/images/618/image-1.jpg",
+    "title_original": "Cyclone VP91.X FS",
+    "title_original_trimmed": "Cyclone"
+  },
+  "3107": {
+    "ipdb": "2010",
+    "title": "Rolling Stones",
+    "year": "1979",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2010/image-2.jpg",
+    "title_original": "Rolling Stones VP9 1.01FS",
+    "title_original_trimmed": "Rolling Stones"
+  },
+  "3108": {
+    "ipdb": "698",
+    "title": "Dolly Parton",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/698/image-3.jpg",
+    "title_original": "Dolly Parton VP9 1.1FS",
+    "title_original_trimmed": "Dolly Parton"
+  },
+  "3121": {
+    "ipdb": "66",
+    "title": "Amazon Hunt",
+    "year": "1983",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/5691/image-2.jpg",
+    "title_original": "Amazon Hunt VP9 FS",
+    "title_original_trimmed": "Amazon Hunt"
+  },
+  "3122": {
+    "name": "Left 4 Dead",
+    "error": "********** NO MATCH **********",
+    "title_original": "Left 4 Dead FS",
+    "title_original_trimmed": "Left 4 Dead"
+  },
+  "3125": {
+    "ipdb": "1126",
+    "title": "Harley-Davidson",
+    "year": "1991",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4455/image-4.jpg",
+    "title_original": "Harley Davidson VP912 1.1FS",
+    "title_original_trimmed": "Harley Davidson"
+  },
+  "3139": {
+    "ipdb": "2357",
+    "title": "Star Trek: The Next Generation",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2357/image-17.jpg",
+    "title_original": "Star Trek: The Next Generation FS",
+    "title_original_trimmed": "Star Trek: The Next Generation"
+  },
+  "3140": {
+    "name": "Rapid Vienna 2011",
+    "error": "********** NO MATCH **********",
+    "title_original": "Rapid Vienna 2011 FS",
+    "title_original_trimmed": "Rapid Vienna 2011"
+  },
+  "3148": {
+    "ipdb": "1557",
+    "title": "Mata Hari",
+    "year": "1976",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1557/Playfield.jpg",
+    "title_original": "Mata Hari VP9 1.01FS",
+    "title_original_trimmed": "Mata Hari"
+  },
+  "3159": {
+    "ipdb": "3685",
+    "title": "WHO dunnit",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3685/Playfield.jpg",
+    "title_original": "Who Dunnit (Trout Mod 1.3)",
+    "title_original_trimmed": "Who Dunnit"
+  },
+  "3161": {
+    "ipdb": "2396",
+    "title": "Strange Science",
+    "year": "1986",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/2396/Playfield.jpg",
+    "title_original": "Strange Science VP9 FS 1.0.4",
+    "title_original_trimmed": "Strange Science"
+  },
+  "3163": {
+    "ipdb": "4446",
+    "title": "Revenge From Mars",
+    "year": "1999",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4446/image-2.jpg",
+    "title_original": "Attack and Revenge from Mars VP91x 2.3 FS",
+    "title_original_trimmed": "Attack and Revenge from Mars"
+  },
+  "3166": {
+    "ipdb": "4440",
+    "title": "La Retata",
+    "year": "1992",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/4440/image-4.jpg",
+    "title_original": "La Retata VP9 FS",
+    "title_original_trimmed": "La Retata"
+  },
+  "3167": {
+    "ipdb": "4444",
+    "title": "South Park",
+    "year": "1999",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4444/image-10.jpg",
+    "title_original": "South Park VP9 Fullscreen",
+    "title_original_trimmed": "South Park"
+  },
+  "3169": {
+    "ipdb": "4441",
+    "title": "Monster Bash",
+    "year": "1998",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4441/image-2.jpg",
+    "title_original": "Monster Bash VP9 FS",
+    "title_original_trimmed": "Monster Bash"
+  },
+  "3180": {
+    "ipdb": "1565",
+    "title": "Medusa",
+    "year": "1981",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1565/Playfield.jpg",
+    "title_original": "Medusa VP9 FS 1.0.0",
+    "title_original_trimmed": "Medusa"
+  },
+  "3192": {
+    "name": "Cueball Wizard",
+    "error": "********** NO MATCH **********",
+    "title_original": "Cueball Wizard VP913 FS",
+    "title_original_trimmed": "Cueball Wizard"
+  },
+  "3201": {
+    "ipdb": "4493",
+    "title": "Dino Turbo",
+    "year": "1990",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/4493/image-2.jpg",
+    "title_original": "Dino Turbo VP9 FS",
+    "title_original_trimmed": "Dino Turbo"
+  },
+  "3202": {
+    "name": "Flintstones NIGHT",
+    "error": "********** NO MATCH **********",
+    "title_original": "Flintstones NIGHT FS JW MOD",
+    "title_original_trimmed": "Flintstones NIGHT"
+  },
+  "3208": {
+    "ipdb": "20",
+    "title": "The Addams Family",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/20/Playfield.jpg",
+    "title_original": "The Addams Family VP91X 2.0.1 FS",
+    "title_original_trimmed": "The Addams Family"
+  },
+  "3209": {
+    "ipdb": "1678",
+    "title": "Nine Ball",
+    "year": "1980",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/1678/Playfield.jpg",
+    "title_original": "Nine Ball VP9 FS",
+    "title_original_trimmed": "Nine Ball"
+  },
+  "3228": {
+    "type": "OG",
+    "title_original": "Avro Arrow Redux VP912 FS 1.0.1",
+    "title_original_trimmed": "Avro Arrow Redux"
+  },
+  "3229": {
+    "ipdb": "3792",
+    "title": "Goldeneye",
+    "year": "1996",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/3792/image-7.jpg",
+    "title_original": "Goldeneye (Trout Mod 1.2, VP91x)",
+    "title_original_trimmed": "Goldeneye"
+  },
+  "3231": {
+    "ipdb": "3619",
+    "title": "JackBot",
+    "year": "1995",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3619/image-2.jpg",
+    "title_original": "Jack*Bot VP91x 1.1.1FS",
+    "title_original_trimmed": "Jack*Bot"
+  },
+  "3282": {
+    "ipdb": "3972",
+    "title": "Lady Death",
+    "year": "1983",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/3972/image-6.jpg",
+    "title_original": "Lady Death VP9 1.0FS",
+    "title_original_trimmed": "Lady Death"
+  },
+  "3329": {
+    "ipdb": "4018",
+    "title": "Space Rider",
+    "year": "1980",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/4018/image-2.jpg",
+    "title_original": "Space Rider VP9 1.0FS",
+    "title_original_trimmed": "Space Rider"
+  },
+  "3450": {
+    "ipdb": "887",
+    "title": "Flight 2000",
+    "year": "1980",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/887/image-2.jpg",
+    "title_original": "Flight 2000 VP9 1.0FS",
+    "title_original_trimmed": "Flight 2000"
+  },
+  "3453": {
+    "ipdb": "2821",
+    "title": "Xenon",
+    "year": "1979",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2821/image-2.jpg",
+    "title_original": "Xenon vp9 FS",
+    "title_original_trimmed": "Xenon"
+  },
+  "3457": {
+    "name": "TAF TV 2010FS",
+    "error": "********** NO MATCH **********",
+    "title_original": "TAF_TV_2010FS",
+    "title_original_trimmed": "TAF TV 2010FS"
+  },
+  "3507": {
+    "ipdb": "4983",
+    "title": "Elvis",
+    "year": "2004",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/3910/image-21.jpg",
+    "title_original": "Elvis FS",
+    "title_original_trimmed": "Elvis"
+  },
+  "3510": {
+    "ipdb": "3970",
+    "title": "Miss World",
+    "year": "1985",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/3970/image-2.jpg",
+    "title_original": "Miss World VP9 1.0FS",
+    "title_original_trimmed": "Miss World"
+  },
+  "3524": {
+    "ipdb": "4769",
+    "title": "Solar Ride",
+    "year": "1979",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/4769/image-3.jpg",
+    "title_original": "Solar Ride - FS - Lord Hiryu",
+    "title_original_trimmed": "Solar Ride"
+  },
+  "3536": {
+    "ipdb": "861",
+    "title": "Fish Tales",
+    "year": "1992",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/861/image-2.jpg",
+    "title_original": "Fish Tales VP9 FS 1.02",
+    "title_original_trimmed": "Fish Tales"
+  },
+  "3539": {
+    "ipdb": "4983",
+    "title": "Elvis",
+    "year": "2004",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/3910/image-21.jpg",
+    "title_original": "Elvis VP912 FS",
+    "title_original_trimmed": "Elvis"
+  },
+  "3541": {
+    "name": "Supergirl",
+    "error": "********** NO MATCH **********",
+    "title_original": "Supergirl FS 2010a",
+    "title_original_trimmed": "Supergirl"
+  },
+  "3561": {
+    "name": "Sorcerer UR/NF",
+    "error": "********** NO MATCH **********",
+    "title_original": "Sorcerer UR/NF VP9.1.x FS",
+    "title_original_trimmed": "Sorcerer UR/NF"
+  },
+  "3562": {
+    "ipdb": "2524",
+    "title": "Terminator 2: Judgment Day",
+    "year": "1991",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2524/image-2.jpg",
+    "title_original": "Terminator 2 Judgment Day FS Night Mod",
+    "title_original_trimmed": "Terminator 2 Judgment Day"
+  },
+  "3566": {
+    "name": "The Three Stooges",
+    "error": "********** NO MATCH **********",
+    "title_original": "The Three Stooges FS 2011",
+    "title_original_trimmed": "The Three Stooges"
+  },
+  "3567": {
+    "ipdb": "2156",
+    "title": "Silverball Mania",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2156/image-2.jpg",
+    "title_original": "Silverball Mania VP9 v2.0.0 FS",
+    "title_original_trimmed": "Silverball Mania"
+  },
+  "3576": {
+    "ipdb": "738",
+    "title": "Doctor Who",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/738/image-4.jpg",
+    "title_original": "Doctor Who FS",
+    "title_original_trimmed": "Doctor Who"
+  },
+  "3577": {
+    "ipdb": "2435",
+    "title": "Super Mario Bros.",
+    "year": "1992",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/3427/image-2.jpg",
+    "title_original": "Super Mario Bros VP9_1UP_UW_V1.2FS",
+    "title_original_trimmed": "Super Mario Bros"
+  },
+  "3584": {
+    "ipdb": "4023",
+    "title": "NBA Fastbreak",
+    "year": "1997",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4023/image-10.jpg",
+    "title_original": "NBA FASTBREAK FS",
+    "title_original_trimmed": "NBA FASTBREAK"
+  },
+  "3586": {
+    "ipdb": "195",
+    "title": "Batman",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/195/image-2.jpg",
+    "title_original": "Batman FS",
+    "title_original_trimmed": "Batman"
+  },
+  "3591": {
+    "ipdb": "2397",
+    "title": "Strange World",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2397/Playfield.jpg",
+    "title_original": "Strange World FS",
+    "title_original_trimmed": "Strange World"
+  },
+  "3596": {
+    "name": "Gilligans Island",
+    "error": "********** NO MATCH **********",
+    "title_original": "Gilligans Island VP9 FS v1.1",
+    "title_original_trimmed": "Gilligans Island"
+  },
+  "3608": {
+    "ipdb": "2356",
+    "title": "Star Trek",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2356/Playfield.jpg",
+    "title_original": "Star Trek VP91x 1.1FS",
+    "title_original_trimmed": "Star Trek"
+  },
+  "3620": {
+    "ipdb": "3724",
+    "title": "Sexy Girl",
+    "year": "1979",
+    "manufacturer": "Bell Coin Matics",
+    "img": "http://www.ipdb.org/images/2106/image-4.jpg",
+    "title_original": "Sexy Girl FS MOD",
+    "title_original_trimmed": "Sexy Girl"
+  },
+  "3622": {
+    "ipdb": "4338",
+    "title": "No Good Gofers",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4338/image-15.jpg",
+    "title_original": "No Good Gofers MOD FS",
+    "title_original_trimmed": "No Good Gofers"
+  },
+  "3628": {
+    "ipdb": "1476",
+    "title": "Lost World",
+    "year": "1977",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1476/image-3.jpg",
+    "title_original": "Lost World VP9 1.0FS",
+    "title_original_trimmed": "Lost World"
+  },
+  "3639": {
+    "name": "Wild Schuetz",
+    "error": "********** NO MATCH **********",
+    "title_original": "Wild Schuetz VP9 FS",
+    "title_original_trimmed": "Wild Schuetz"
+  },
+  "3652": {
+    "ipdb": "2652",
+    "title": "Triple Strike",
+    "year": "1975",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2652/image-6.jpg",
+    "title_original": "Triple Strike FS",
+    "title_original_trimmed": "Triple Strike"
+  },
+  "3656": {
+    "ipdb": "1565",
+    "title": "Medusa",
+    "year": "1981",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1565/Playfield.jpg",
+    "title_original": "Medusa VP9 1.1FS",
+    "title_original_trimmed": "Medusa"
+  },
+  "3665": {
+    "ipdb": "3824",
+    "title": "Tales of the Arabian Nights",
+    "year": "1996",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
+    "title_original": "Tales of the Arabian Nights VP912 FS Classic",
+    "title_original_trimmed": "Tales of the Arabian Nights"
+  },
+  "3669": {
+    "name": "Harlem Globettroters on Tour",
+    "error": "********** NO MATCH **********",
+    "title_original": "Harlem Globettroters on Tour VP91x 2.3FS",
+    "title_original_trimmed": "Harlem Globettroters on Tour"
+  },
+  "3674": {
+    "ipdb": "5542",
+    "title": "Space Shuttle",
+    "year": "1977",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/2260/image-5.jpg",
+    "title_original": "Space Shuttle VP9  1.02 FS",
+    "title_original_trimmed": "Space Shuttle"
+  },
+  "3687": {
+    "ipdb": "2406",
+    "title": "Strikes and Spares",
+    "year": "1977",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2406/image-8.jpg",
+    "title_original": "Strikes and Spares FS",
+    "title_original_trimmed": "Strikes and Spares"
+  },
+  "3692": {
+    "ipdb": "2406",
+    "title": "Strikes and Spares",
+    "year": "1977",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2406/image-8.jpg",
+    "title_original": "Strikes and Spares Night Mod FS",
+    "title_original_trimmed": "Strikes and Spares"
+  },
+  "3764": {
+    "ipdb": "3646",
+    "title": "Antar",
+    "year": "1979",
+    "manufacturer": "Playmatic",
+    "img": "http://www.ipdb.org/images/3646/image-2.jpg",
+    "title_original": "Antar (Playmatic) FS-Version 1.1",
+    "title_original_trimmed": "Antar"
+  },
+  "3820": {
+    "name": "He's Dead Jim",
+    "error": "********** NO MATCH **********",
+    "title_original": "He's Dead Jim FS",
+    "title_original_trimmed": "He's Dead Jim"
+  },
+  "3862": {
+    "ipdb": "1322",
+    "title": "Judge Dredd",
+    "year": "1993",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1322/image-1.jpg",
+    "title_original": "Judge Dredd FS LOW RES",
+    "title_original_trimmed": "Judge Dredd"
+  },
+  "3891": {
+    "name": "Indina Jones",
+    "error": "********** NO MATCH **********",
+    "title_original": "Indina Jones VP9 -Lord Hiryu - FS",
+    "title_original_trimmed": "Indina Jones"
+  },
+  "3927": {
+    "name": "Forbidden Planet",
+    "error": "********** NO MATCH **********",
+    "title_original": "Forbidden Planet FS",
+    "title_original_trimmed": "Forbidden Planet"
+  },
+  "3951": {
+    "ipdb": "3887",
+    "title": "Dragon",
+    "year": "1977",
+    "manufacturer": "Interflip",
+    "img": "http://www.ipdb.org/images/3887/image-1.jpg",
+    "title_original": "Dragon FS",
+    "title_original_trimmed": "Dragon"
+  },
+  "4033": {
+    "ipdb": "4077",
+    "title": "Mephisto",
+    "year": "1987",
+    "manufacturer": "Unidesa",
+    "img": "http://www.ipdb.org/images/4077/image-3.jpg",
+    "title_original": "Mephisto VP9 1.02FS",
+    "title_original_trimmed": "Mephisto"
+  },
+  "4039": {
+    "name": "El Bueno el Feo y el Malo",
+    "error": "********** NO MATCH **********",
+    "title_original": "El Bueno el Feo y el Malo FS",
+    "title_original_trimmed": "El Bueno el Feo y el Malo"
+  },
+  "4044": {
+    "ipdb": "699",
+    "title": "Dolphin",
+    "year": "1974",
+    "manufacturer": "Chicago Coin Machine Manufacturing Company",
+    "img": "http://www.ipdb.org/images/699/Playfield.jpg",
+    "title_original": "Dolphin FS",
+    "title_original_trimmed": "Dolphin"
+  },
+  "4046": {
+    "ipdb": "2716",
+    "title": "Vampire",
+    "year": "1970",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2716/Playfield.jpg",
+    "title_original": "Vampire FS",
+    "title_original_trimmed": "Vampire"
+  },
+  "4047": {
+    "ipdb": "1778",
+    "title": "Pharaoh",
+    "year": "1981",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1778/image-1.jpg",
+    "title_original": "Pharaoh FS",
+    "title_original_trimmed": "Pharaoh"
+  },
+  "4050": {
+    "name": "Royal Flush Trilogy",
+    "error": "********** NO MATCH **********",
+    "title_original": "Royal Flush Trilogy-FS",
+    "title_original_trimmed": "Royal Flush Trilogy"
+  },
+  "4066": {
+    "ipdb": "804",
+    "title": "F-14 Tomcat",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/804/image-4.jpg",
+    "title_original": "F-14 Tomcat VP9 1.01FS",
+    "title_original_trimmed": "F 14 Tomcat"
+  },
+  "4072": {
+    "ipdb": "1502",
+    "title": "The Machine: Bride of Pinbot",
+    "year": "1991",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1502/Playfield.jpg",
+    "title_original": "The Machine Bride of Pinbot FS",
+    "title_original_trimmed": "The Machine Bride of Pinbot"
+  },
+  "4073": {
+    "ipdb": "1796",
+    "title": "PINBOT",
+    "year": "1986",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1796/Playfield.jpg",
+    "title_original": "Pinbot FS",
+    "title_original_trimmed": "Pinbot"
+  },
+  "4133": {
+    "name": "Nova 2010",
+    "error": "********** NO MATCH **********",
+    "title_original": "Nova 2010 FS v 1.0",
+    "title_original_trimmed": "Nova 2010"
+  },
+  "4139": {
+    "ipdb": "782",
+    "title": "Elvira and the Party Monsters",
+    "year": "1989",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/782/Playfield.jpg",
+    "title_original": "Elvira and the Party Monsters VP912 FS",
+    "title_original_trimmed": "Elvira and the Party Monsters"
+  },
+  "4145": {
+    "ipdb": "737",
+    "title": "Dr. Dude",
+    "year": "1990",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/737/image-19.jpg",
+    "title_original": "DR DUDE HR NIGHT MOD",
+    "title_original_trimmed": "DR DUDE"
+  },
+  "4146": {
+    "name": "DR DUDE HR",
+    "error": "********** NO MATCH **********",
+    "title_original": "DR DUDE HR",
+    "title_original_trimmed": "DR DUDE HR"
+  },
+  "4147": {
+    "ipdb": "737",
+    "title": "Dr. Dude",
+    "year": "1990",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/737/image-19.jpg",
+    "title_original": "DR DUDE Low Res Night Mod",
+    "title_original_trimmed": "DR DUDE"
+  },
+  "4148": {
+    "ipdb": "737",
+    "title": "Dr. Dude",
+    "year": "1990",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/737/image-19.jpg",
+    "title_original": "DR DUDE Low Res",
+    "title_original_trimmed": "DR DUDE"
+  },
+  "4150": {
+    "name": "High Speed 1.0.1",
+    "error": "********** NO MATCH **********",
+    "title_original": "High Speed 1.0.1 FS VP9",
+    "title_original_trimmed": "High Speed 1.0.1"
+  },
+  "4155": {
+    "ipdb": "1322",
+    "title": "Judge Dredd",
+    "year": "1993",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1322/image-1.jpg",
+    "title_original": "JUDGE DREDD FS HIGH RES",
+    "title_original_trimmed": "JUDGE DREDD"
+  },
+  "4257": {
+    "ipdb": "2357",
+    "title": "Star Trek: The Next Generation",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2357/image-17.jpg",
+    "title_original": "Star Trek the Next Generation VP91x 1.2FS",
+    "title_original_trimmed": "Star Trek the Next Generation"
+  },
+  "4268": {
+    "name": "Dragon 2011",
+    "error": "********** NO MATCH **********",
+    "title_original": "Dragon 2011 FS",
+    "title_original_trimmed": "Dragon 2011"
+  },
+  "4269": {
+    "name": "Drop A Card 2011",
+    "error": "********** NO MATCH **********",
+    "title_original": "Drop A Card 2011 FS",
+    "title_original_trimmed": "Drop A Card 2011"
+  },
+  "4282": {
+    "ipdb": "2853",
+    "title": "Indianapolis 500",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2853/Playfield.jpg",
+    "title_original": "Indianapolis 500 VP912 1.1FS",
+    "title_original_trimmed": "Indianapolis 500"
+  },
+  "4291": {
+    "ipdb": "392",
+    "title": "Buck Rogers",
+    "year": "1980",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/392/image-3.jpg",
+    "title_original": "Buck Rogers (Gottlieb 1980) FS MOD",
+    "title_original_trimmed": "Buck Rogers"
+  },
+  "4292": {
+    "name": "Laser Cue 1.8",
+    "error": "********** NO MATCH **********",
+    "title_original": "Laser Cue 1.8 FS",
+    "title_original_trimmed": "Laser Cue 1.8"
+  },
+  "4299": {
+    "ipdb": "3609",
+    "title": "Combat",
+    "year": "1977",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/3609/image-6.jpg",
+    "title_original": "Combat - FS",
+    "title_original_trimmed": "Combat"
+  },
+  "4300": {
+    "ipdb": "314",
+    "title": "Black Sheep Squadron",
+    "year": "1979",
+    "manufacturer": "Astro Games",
+    "img": "http://www.ipdb.org/images/314/image-2.jpg",
+    "title_original": "Black Sheep Squadron (1979) FS",
+    "title_original_trimmed": "Black Sheep Squadron"
+  },
+  "4304": {
+    "ipdb": "1561",
+    "title": "Maverick The Movie",
+    "year": "1994",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1561/Playfield.jpg",
+    "title_original": "Maverick FS (beta 4)",
+    "title_original_trimmed": "Maverick"
+  },
+  "4310": {
+    "ipdb": "3878",
+    "title": "Independence Day",
+    "year": "1996",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/3878/image-2.jpg",
+    "title_original": "Independence Day FS v1.3",
+    "title_original_trimmed": "Independence Day"
+  },
+  "4311": {
+    "name": "Ultimate Spider man 2011",
+    "error": "********** NO MATCH **********",
+    "title_original": "Ultimate Spider-man 2011 FS",
+    "title_original_trimmed": "Ultimate Spider man 2011"
+  },
+  "4322": {
+    "name": "Rolling Stones 2 1.01FS",
+    "error": "********** NO MATCH **********",
+    "title_original": "Rolling Stones 2 1.01FS",
+    "title_original_trimmed": "Rolling Stones 2 1.01FS"
+  },
+  "4323": {
+    "ipdb": "4032",
+    "title": "Medieval Madness",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4032/image-7.jpg",
+    "title_original": "Medieval Madness VP915 FS",
+    "title_original_trimmed": "Medieval Madness"
+  },
+  "4410": {
+    "ipdb": "2089",
+    "title": "Seawitch",
+    "year": "1980",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/2089/image-4.jpg",
+    "title_original": "Seawitch (Stern 1980) [HP MEDIA PACK]",
+    "title_original_trimmed": "Seawitch"
+  },
+  "4411": {
+    "ipdb": "2090",
+    "title": "Secret Service",
+    "year": "1988",
+    "manufacturer": "ice",
+    "img": "http://www.ipdb.org/images/2090/image-9.jpg",
+    "title_original": "Secret Service (Data East 1988) [HP MEDIA PACK]",
+    "title_original_trimmed": "Secret Service"
+  },
+  "4412": {
+    "ipdb": "2156",
+    "title": "Silverball Mania",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2156/image-2.jpg",
+    "title_original": "Silverball Mania (Bally 1980) [HP MEDIA PACK]",
+    "title_original_trimmed": "Silverball Mania"
+  },
+  "4413": {
+    "name": "Simpsons Pinball Party, The",
+    "error": "********** NO MATCH **********",
+    "title_original": "Simpsons Pinball Party, The (Stern 2003) [HP MEDIA PACK]",
+    "title_original_trimmed": "Simpsons Pinball Party, The"
+  },
+  "4414": {
+    "ipdb": "2242",
+    "title": "Sorcerer",
+    "year": "1985",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2242/image-2.jpg",
+    "title_original": "Sorcerer (Williams 1985) [HP MEDIA PACK]",
+    "title_original_trimmed": "Sorcerer"
+  },
+  "4415": {
+    "ipdb": "4444",
+    "title": "South Park",
+    "year": "1999",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4444/image-10.jpg",
+    "title_original": "South Park (Sega 1999) [HP MEDIA PACK]",
+    "title_original_trimmed": "South Park"
+  },
+  "4416": {
+    "ipdb": "2252",
+    "title": "Space Invaders",
+    "year": "1979",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2252/image-1.jpg",
+    "title_original": "Space Invaders (Bally 1979) [HP MEDIA PACK]",
+    "title_original_trimmed": "Space Invaders"
+  },
+  "4417": {
+    "ipdb": "5542",
+    "title": "Space Shuttle",
+    "year": "1977",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/2260/image-5.jpg",
+    "title_original": "Space Shuttle (Williams 1984) [HP MEDIA PACK]",
+    "title_original_trimmed": "Space Shuttle"
+  },
+  "4418": {
+    "ipdb": "4018",
+    "title": "Space Rider",
+    "year": "1980",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/4018/image-2.jpg",
+    "title_original": "Space Rider (Data East 2003) [HP MEDIA PACK]",
+    "title_original_trimmed": "Space Rider"
+  },
+  "4419": {
+    "ipdb": "2269",
+    "title": "Speakeasy",
+    "year": "1977",
+    "manufacturer": "Playmatic",
+    "img": "http://www.ipdb.org/images/2269/image-6.jpg",
+    "title_original": "Speakeasy (Bally 1982) [HP MEDIA PACK]",
+    "title_original_trimmed": "Speakeasy"
+  },
+  "4420": {
+    "ipdb": "2274",
+    "title": "Spectrum",
+    "year": "1981",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2274/Playfield.jpg",
+    "title_original": "Spectrum (Bally 1982) [HP MEDIA PACK]",
+    "title_original_trimmed": "Spectrum"
+  },
+  "4421": {
+    "ipdb": "2357",
+    "title": "Star Trek: The Next Generation",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2357/image-17.jpg",
+    "title_original": "STTNG (Williams 1993) [HP MEDIA PACK]",
+    "title_original_trimmed": "STTNG"
+  },
+  "4422": {
+    "ipdb": "4513",
+    "title": "Star Wars",
+    "year": "1987",
+    "manufacturer": "Sonic",
+    "img": "http://www.ipdb.org/images/2358/Playfield.jpg",
+    "title_original": "Star Wars (Data East 1992) [HP MEDIA PACK]",
+    "title_original_trimmed": "Star Wars"
+  },
+  "4423": {
+    "ipdb": "4341",
+    "title": "Starship Troopers",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4341/image-4.jpg",
+    "title_original": "Starship Troopers (Sega 1997) [HP MEDIA PACK]",
+    "title_original_trimmed": "Starship Troopers"
+  },
+  "4424": {
+    "ipdb": "2356",
+    "title": "Star Trek",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2356/Playfield.jpg",
+    "title_original": "Star Trek (Bally 1979) [HP MEDIA PACK]",
+    "title_original_trimmed": "Star Trek"
+  },
+  "4425": {
+    "ipdb": "2435",
+    "title": "Super Mario Bros.",
+    "year": "1992",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/3427/image-2.jpg",
+    "title_original": "Super Mario Bros (Premier 1992) [HP MEDIA PACK]",
+    "title_original_trimmed": "Super Mario Bros"
+  },
+  "4440": {
+    "ipdb": "2848",
+    "title": "Baywatch",
+    "year": "1995",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/2848/image-4.jpg",
+    "title_original": "BAYWATCH FS HRES and LRES",
+    "title_original_trimmed": "BAYWATCH"
+  },
+  "4471": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared Stiff (Williams 1996) [HP MEDIA PACK]",
+    "title_original_trimmed": "Scared Stiff"
+  },
+  "4472": {
+    "ipdb": "5053",
+    "title": "The Sopranos",
+    "year": "2005",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5053/image-D6.jpg",
+    "title_original": "Sopranos (Stern 2005) [HP MEDIA PACK]",
+    "title_original_trimmed": "Sopranos"
+  },
+  "4473": {
+    "ipdb": "2406",
+    "title": "Strikes and Spares",
+    "year": "1977",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2406/image-8.jpg",
+    "title_original": "Strikes and Spares (Bally 1978) [HP MEDIA PACK]",
+    "title_original_trimmed": "Strikes and Spares"
+  },
+  "4474": {
+    "ipdb": "2486",
+    "title": "Swords of Fury",
+    "year": "1988",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2486/image-2.jpg",
+    "title_original": "Swords of Fury (Williams 1988) [HP MEDIA PACK]",
+    "title_original_trimmed": "Swords of Fury"
+  },
+  "4481": {
+    "ipdb": "548",
+    "title": "Comet",
+    "year": "1985",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/548/Playfield.jpg",
+    "title_original": "comet vp9.12 FS",
+    "title_original_trimmed": "comet"
+  },
+  "4503": {
+    "ipdb": "4513",
+    "title": "Star Wars",
+    "year": "1987",
+    "manufacturer": "Sonic",
+    "img": "http://www.ipdb.org/images/2358/Playfield.jpg",
+    "title_original": "Star Wars - Data East VP9 FS",
+    "title_original_trimmed": "Star Wars"
+  },
+  "4522": {
+    "ipdb": "3459",
+    "title": "Spooky",
+    "year": "1987",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/3459/image-2.jpg",
+    "title_original": "Spooky (Zaccaria 1987) [HP MEDIA PACK]",
+    "title_original_trimmed": "Spooky"
+  },
+  "4523": {
+    "ipdb": "2461",
+    "title": "Surf 'n Safari",
+    "year": "1991",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2461/image-1.jpg",
+    "title_original": "Surf 'N Safari (Premier 1991) [HP MEDIA PACK]",
+    "title_original_trimmed": "Surf 'N Safari"
+  },
+  "4539": {
+    "name": "Knockout 2011b",
+    "error": "********** NO MATCH **********",
+    "title_original": "Knockout 2011b FS Update",
+    "title_original_trimmed": "Knockout 2011b"
+  },
+  "4540": {
+    "ipdb": "2005",
+    "title": "Roller Disco",
+    "year": "1980",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2005/Playfield.jpg",
+    "title_original": "Roller Disco VP9 FS",
+    "title_original_trimmed": "Roller Disco"
+  },
+  "4541": {
+    "ipdb": "2377",
+    "title": "Stingray",
+    "year": "1977",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/2377/image-3.jpg",
+    "title_original": "Stingray VP912 FS 1.0.1",
+    "title_original_trimmed": "Stingray"
+  },
+  "4546": {
+    "ipdb": "2508",
+    "title": "Tee'd Off",
+    "year": "1993",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2508/image-4.jpg",
+    "title_original": "Teed Off VP9 1.01 FS",
+    "title_original_trimmed": "Teed Off"
+  },
+  "4547": {
+    "ipdb": "314",
+    "title": "Black Sheep Squadron",
+    "year": "1979",
+    "manufacturer": "Astro Games",
+    "img": "http://www.ipdb.org/images/314/image-2.jpg",
+    "title_original": "Black Sheep Squadron (1979) FS v2",
+    "title_original_trimmed": "Black Sheep Squadron"
+  },
+  "4553": {
+    "ipdb": "3087",
+    "title": "Faeton",
+    "year": "1985",
+    "manufacturer": "Juegos Populares",
+    "img": null,
+    "title_original": "Faeton VP9 1.01 FS",
+    "title_original_trimmed": "Faeton"
+  },
+  "4563": {
+    "name": "Laser Cue 1.8",
+    "error": "********** NO MATCH **********",
+    "title_original": "Laser Cue 1.8 FS v2",
+    "title_original_trimmed": "Laser Cue 1.8"
+  },
+  "4577": {
+    "ipdb": "3781",
+    "title": "Attack from Mars",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
+    "title_original": "Attack from Mars VP914 FS",
+    "title_original_trimmed": "Attack from Mars"
+  },
+  "4589": {
+    "ipdb": "2454",
+    "title": "Superman",
+    "year": "1979",
+    "manufacturer": "Atari",
+    "img": "http://www.ipdb.org/images/2454/image-5.jpg",
+    "title_original": "Superman (Atari, 1979) FS",
+    "title_original_trimmed": "Superman"
+  },
+  "4592": {
+    "ipdb": "806",
+    "title": "Faces",
+    "year": "1976",
+    "manufacturer": "Sonic",
+    "img": "http://www.ipdb.org/images/806/image-4.jpg",
+    "title_original": "Faces vp9 FS",
+    "title_original_trimmed": "Faces"
+  },
+  "4701": {
+    "ipdb": "1795",
+    "title": "Pinball Pool",
+    "year": "1979",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2334/Playfield.jpg",
+    "title_original": "Pinball Pool vp9 FS",
+    "title_original_trimmed": "Pinball Pool"
+  },
+  "4745": {
+    "ipdb": "2274",
+    "title": "Spectrum",
+    "year": "1981",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2274/Playfield.jpg",
+    "title_original": "Spectrum VP9 1.0 FS",
+    "title_original_trimmed": "Spectrum"
+  },
+  "4755": {
+    "ipdb": "1343",
+    "title": "Jurassic Park",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1343/image-6.jpg",
+    "title_original": "Jurassic Park FS MOD",
+    "title_original_trimmed": "Jurassic Park"
+  },
+  "4767": {
+    "ipdb": "753",
+    "title": "Earthshaker",
+    "year": "1989",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/753/image-7.jpg",
+    "title_original": "EARTHSHAKER FS HRES LRES",
+    "title_original_trimmed": "EARTHSHAKER"
+  },
+  "4771": {
+    "ipdb": "5306",
+    "title": "Indiana Jones",
+    "year": "2008",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5306/image-8.jpg",
+    "title_original": "Indiana Jones VP9  V.1.2 FS - HR",
+    "title_original_trimmed": "Indiana Jones"
+  },
+  "4773": {
+    "ipdb": "1966",
+    "title": "Riverboat Gambler",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1966/image-4.jpg",
+    "title_original": "Riverboat Gambler VP9 1.0FS",
+    "title_original_trimmed": "Riverboat Gambler"
+  },
+  "4775": {
+    "ipdb": "753",
+    "title": "Earthshaker",
+    "year": "1989",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/753/image-7.jpg",
+    "title_original": "EARTHSHAKER FS LOW RES",
+    "title_original_trimmed": "EARTHSHAKER"
+  },
+  "4788": {
+    "ipdb": "1550",
+    "title": "Mars Trek",
+    "year": "1977",
+    "manufacturer": "Sonic",
+    "img": "http://www.ipdb.org/images/1550/image-5.jpg",
+    "title_original": "Mars Trek VP9 FS",
+    "title_original_trimmed": "Mars Trek"
+  },
+  "4804": {
+    "ipdb": "1580",
+    "title": "Meteor",
+    "year": "1979",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/1580/Playfield.jpg",
+    "title_original": "Meteor (Stern 1979) FS",
+    "title_original_trimmed": "Meteor"
+  },
+  "4805": {
+    "ipdb": "1206",
+    "title": "Hokus Pokus",
+    "year": "1975",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1206/Playfield.jpg",
+    "title_original": "Hokus Pokus FS",
+    "title_original_trimmed": "Hokus Pokus"
+  },
+  "4810": {
+    "ipdb": "829",
+    "title": "Fathom",
+    "year": "1980",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/829/image-6.jpg",
+    "title_original": "Fathom Vp9.12 FS",
+    "title_original_trimmed": "Fathom"
+  },
+  "4813": {
+    "ipdb": "997",
+    "title": "Genie",
+    "year": "1979",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/997/image-1.jpg",
+    "title_original": "Genie (Gottlieb 1979) FS",
+    "title_original_trimmed": "Genie"
+  },
+  "4822": {
+    "ipdb": "997",
+    "title": "Genie",
+    "year": "1979",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/997/image-1.jpg",
+    "title_original": "Genie (1979 Gottlieb) no-score FS",
+    "title_original_trimmed": "Genie"
+  },
+  "4827": {
+    "ipdb": "981",
+    "title": "Galaxy Ranger",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/981/image-5.jpg",
+    "title_original": "Captain Fantastic_VP9_FS",
+    "title_original_trimmed": "Captain Fantastic"
+  },
+  "4832": {
+    "ipdb": "5350",
+    "title": "The Incredible Hulk",
+    "year": "1979",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1266/image-17.jpg",
+    "title_original": "Incredible Hulk FS (Gottlieb 1979)",
+    "title_original_trimmed": "Incredible Hulk"
+  },
+  "4865": {
+    "ipdb": "662",
+    "title": "Demolition Man",
+    "year": "1994",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/662/image-35.jpg",
+    "title_original": "DEMOLITION MAN FS HRES",
+    "title_original_trimmed": "DEMOLITION MAN"
+  },
+  "4914": {
+    "ipdb": "2804",
+    "title": "Wizard",
+    "year": "1937",
+    "manufacturer": "Genco",
+    "img": null,
+    "title_original": "Wizard FS VP910",
+    "title_original_trimmed": "Wizard"
+  },
+  "4939": {
+    "ipdb": "1687",
+    "title": "Nugent",
+    "year": "1978",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/1687/Playfield.jpg",
+    "title_original": "Nugent FS",
+    "title_original_trimmed": "Nugent"
+  },
+  "4945": {
+    "ipdb": "2804",
+    "title": "Wizard",
+    "year": "1937",
+    "manufacturer": "Genco",
+    "img": null,
+    "title_original": "WIZARD FS B2S",
+    "title_original_trimmed": "WIZARD"
+  },
+  "4995": {
+    "name": "Viper Night Drivn'",
+    "error": "********** NO MATCH **********",
+    "title_original": "Viper Night Drivn' VP9 FS HD",
+    "title_original_trimmed": "Viper Night Drivn'"
+  },
+  "4999": {
+    "ipdb": "981",
+    "title": "Galaxy Ranger",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/981/image-5.jpg",
+    "title_original": "Captain Fantastic FS VP911",
+    "title_original_trimmed": "Captain Fantastic"
+  },
+  "5011": {
+    "ipdb": "2569",
+    "title": "Time Zone",
+    "year": "1972",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2684/image-1.jpg",
+    "title_original": "Time Zone FS B2S",
+    "title_original_trimmed": "Time Zone"
+  },
+  "5022": {
+    "ipdb": "2397",
+    "title": "Strange World",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2397/Playfield.jpg",
+    "title_original": "Strange World FS B2S",
+    "title_original_trimmed": "Strange World"
+  },
+  "5024": {
+    "name": "The",
+    "error": "********** NO MATCH **********",
+    "title_original": "The Bally Game Show VP911 v1.02FS",
+    "title_original_trimmed": "The"
+  },
+  "5026": {
+    "ipdb": "5136",
+    "title": "The Flintstones",
+    "year": "1994",
+    "manufacturer": "ICE",
+    "img": "http://www.ipdb.org/images/5136/image-2.jpg",
+    "title_original": "The Flintstones VP91x v1.02FS",
+    "title_original_trimmed": "The Flintstones"
+  },
+  "5028": {
+    "ipdb": "1972",
+    "title": "Red  Ted's Road Show",
+    "year": "1994",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1972/image-8.jpg",
+    "title_original": "Red & Ted's Road Show VP912 v1.0.1FS",
+    "title_original_trimmed": "Red & Ted's Road Show"
+  },
+  "5179": {
+    "ipdb": "1201",
+    "title": "Hit the Deck",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1201/Playfield.jpg",
+    "title_original": "Hit the Deck VP911 FS",
+    "title_original_trimmed": "Hit the Deck"
+  },
+  "5182": {
+    "ipdb": "3957",
+    "title": "King Tut",
+    "year": "1932",
+    "manufacturer": "Richard",
+    "img": "http://www.ipdb.org/images/3957/image-3.jpg",
+    "title_original": "King Tut FS VP912",
+    "title_original_trimmed": "King Tut"
+  },
+  "5189": {
+    "ipdb": "1206",
+    "title": "Hokus Pokus",
+    "year": "1975",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1206/Playfield.jpg",
+    "title_original": "Hokus Pokus FS B2S",
+    "title_original_trimmed": "Hokus Pokus"
+  },
+  "5192": {
+    "ipdb": "126",
+    "title": "Back to the Future",
+    "year": "1990",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/126/image-4.jpg",
+    "title_original": "Back To the Future VP911 FS",
+    "title_original_trimmed": "Back To the Future"
+  },
+  "5199": {
+    "name": "Harry Potter and the Silverball Dream",
+    "error": "********** NO MATCH **********",
+    "title_original": "Harry Potter and the Silverball Dream FS 1.1.0",
+    "title_original_trimmed": "Harry Potter and the Silverball Dream"
+  },
+  "5205": {
+    "ipdb": "1260",
+    "title": "Ice Fever",
+    "year": "1985",
+    "manufacturer": "Ice",
+    "img": "http://www.ipdb.org/images/1260/image-8.jpg",
+    "title_original": "Ice Fever FS VP9.11",
+    "title_original_trimmed": "Ice Fever"
+  },
+  "5207": {
+    "ipdb": "4059",
+    "title": "Cirqus Voltaire",
+    "year": "1997",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4059/image-16.jpg",
+    "title_original": "Cirqus Voltaire VP913 FS",
+    "title_original_trimmed": "Cirqus Voltaire"
+  },
+  "5208": {
+    "ipdb": "1260",
+    "title": "Ice Fever",
+    "year": "1985",
+    "manufacturer": "Ice",
+    "img": "http://www.ipdb.org/images/1260/image-8.jpg",
+    "title_original": "Ice Fever VP9 FS",
+    "title_original_trimmed": "Ice Fever"
+  },
+  "5212": {
+    "ipdb": "4137",
+    "title": "The X Files",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4137/image-5.jpg",
+    "title_original": "The X Files VP91x FS v1.01",
+    "title_original_trimmed": "The X Files"
+  },
+  "5217": {
+    "ipdb": "2196",
+    "title": "Sky Kings",
+    "year": "1973",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2196/Playfield.jpg",
+    "title_original": "Sky Kings FS VP9.1.1",
+    "title_original_trimmed": "Sky Kings"
+  },
+  "5226": {
+    "ipdb": "2036",
+    "title": "Royal Flush Deluxe",
+    "year": "1983",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2036/image-5.jpg",
+    "title_original": "Royal Flush Deluxe FS 9.1x",
+    "title_original_trimmed": "Royal Flush Deluxe"
+  },
+  "5228": {
+    "name": "Royal Flush Supreme",
+    "error": "********** NO MATCH **********",
+    "title_original": "Royal Flush Supreme FS 9.1x",
+    "title_original_trimmed": "Royal Flush Supreme"
+  },
+  "5230": {
+    "ipdb": "1866",
+    "title": "Pro Pool",
+    "year": "1973",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1866/Playfield.jpg",
+    "title_original": "Pro Pool FS vp9.1.x",
+    "title_original_trimmed": "Pro Pool"
+  },
+  "5234": {
+    "ipdb": "974",
+    "title": "Future Spa",
+    "year": "1979",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/974/image-4.jpg",
+    "title_original": "Future Spa VP91x v1.2FS",
+    "title_original_trimmed": "Future Spa"
+  },
+  "5282": {
+    "ipdb": "3631",
+    "title": "Motor Show",
+    "year": "1989",
+    "manufacturer": "Mr. Game",
+    "img": "http://www.ipdb.org/images/3631/image-4.jpg",
+    "title_original": "Motor Show FS",
+    "title_original_trimmed": "Motor Show"
+  },
+  "5283": {
+    "ipdb": "5093",
+    "title": "NASCAR",
+    "year": "2005",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5093/image-1.jpg",
+    "title_original": "Nascar FS",
+    "title_original_trimmed": "Nascar"
+  },
+  "5287": {
+    "ipdb": "1235",
+    "title": "Hoops",
+    "year": "1991",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2152/image-2.jpg",
+    "title_original": "Hoops FS",
+    "title_original_trimmed": "Hoops"
+  },
+  "5288": {
+    "ipdb": "2158",
+    "title": "The Simpsons",
+    "year": "1990",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2158/Playfield.jpg",
+    "title_original": "The Simpsons (Data East) FS",
+    "title_original_trimmed": "The Simpsons"
+  },
+  "5292": {
+    "ipdb": "4673",
+    "title": "Sinbad",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/4673/image-3.jpg",
+    "title_original": "Sinbad VP912 FS",
+    "title_original_trimmed": "Sinbad"
+  },
+  "5298": {
+    "ipdb": "5606",
+    "title": "Magic Eight",
+    "year": "1980",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/5469/image-13.jpg",
+    "title_original": "Magic Eight FS",
+    "title_original_trimmed": "Magic Eight"
+  },
+  "5299": {
+    "name": "World Cup Soccer 94",
+    "error": "********** NO MATCH **********",
+    "title_original": "World Cup Soccer 94 (Bally) FS",
+    "title_original_trimmed": "World Cup Soccer 94"
+  },
+  "5338": {
+    "ipdb": "2509",
+    "title": "Teenage Mutant Ninja Turtles",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2509/image-1.jpg",
+    "title_original": "Teenage Mutant Ninja Turtles FS",
+    "title_original_trimmed": "Teenage Mutant Ninja Turtles"
+  },
+  "5342": {
+    "ipdb": "4673",
+    "title": "Sinbad",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/4673/image-3.jpg",
+    "title_original": "Sinbad (Gottlieb 1978) [HP MEDIA PACK]",
+    "title_original_trimmed": "Sinbad"
+  },
+  "5343": {
+    "ipdb": "2006",
+    "title": "Rollergames",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2006/image-4.jpg",
+    "title_original": "Rollergames FS 1.1 HD",
+    "title_original_trimmed": "Rollergames"
+  },
+  "5346": {
+    "ipdb": "5647",
+    "title": "Grand Prix",
+    "year": "1976",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/5647/image-6.jpg",
+    "title_original": "Grand Prix FS B2S",
+    "title_original_trimmed": "Grand Prix"
+  },
+  "5349": {
+    "ipdb": "804",
+    "title": "F-14 Tomcat",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/804/image-4.jpg",
+    "title_original": "High Speed 1.0.5 FSLB VP912",
+    "title_original_trimmed": "High Speed 1.0.5"
+  },
+  "5351": {
+    "ipdb": "43",
+    "title": "Ali",
+    "year": "1980",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/43/Playfield.jpg",
+    "title_original": "Ali VP91x 1.3 FS",
+    "title_original_trimmed": "Ali"
+  },
+  "5352": {
+    "ipdb": "4858",
+    "title": "The Lord of the Rings",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5558/image-3.jpg",
+    "title_original": "Lord of the Rings VP91x FS",
+    "title_original_trimmed": "Lord of the Rings"
+  },
+  "5353": {
+    "ipdb": "760",
+    "title": "Eight Ball",
+    "year": "1977",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/760/image-7.jpg",
+    "title_original": "Eight Ball FS VP9.1x (Megapin)",
+    "title_original_trimmed": "Eight Ball"
+  },
+  "5361": {
+    "ipdb": "806",
+    "title": "Faces",
+    "year": "1976",
+    "manufacturer": "Sonic",
+    "img": "http://www.ipdb.org/images/806/image-4.jpg",
+    "title_original": "FACES FS VP9.1.x",
+    "title_original_trimmed": "FACES"
+  },
+  "5363": {
+    "ipdb": "1308",
+    "title": "Jokerz",
+    "year": "1988",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1308/image-9.jpg",
+    "title_original": "Jokerz! VP91x 1.4.5FS",
+    "title_original_trimmed": "Jokerz!"
+  },
+  "5365": {
+    "ipdb": "2006",
+    "title": "Rollergames",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2006/image-4.jpg",
+    "title_original": "Rollergames FS 1.3 HD",
+    "title_original_trimmed": "Rollergames"
+  },
+  "5366": {
+    "name": "Viper Night Drivn'",
+    "error": "********** NO MATCH **********",
+    "title_original": "Viper Night Drivn' FS 0.95 HD",
+    "title_original_trimmed": "Viper Night Drivn'"
+  },
+  "5370": {
+    "ipdb": "3705",
+    "title": "Flash Gordon",
+    "year": "1981",
+    "manufacturer": "Bell Games",
+    "img": "http://www.ipdb.org/images/874/Playfield.jpg",
+    "title_original": "Flash Gordon FS",
+    "title_original_trimmed": "Flash Gordon"
+  },
+  "5371": {
+    "ipdb": "2845",
+    "title": "Theatre of Magic",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2845/image-12.jpg",
+    "title_original": "Theatre of Magic VP91x v2.1.1FS",
+    "title_original_trimmed": "Theatre of Magic"
+  },
+  "5372": {
+    "ipdb": "2524",
+    "title": "Terminator 2: Judgment Day",
+    "year": "1991",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2524/image-2.jpg",
+    "title_original": "Terminator 2: Judgment Day FS 2.0 HD",
+    "title_original_trimmed": "Terminator 2: Judgment Day"
+  },
+  "5376": {
+    "ipdb": "619",
+    "title": "Cyclopes",
+    "year": "1985",
+    "manufacturer": "Game Plan",
+    "img": "http://www.ipdb.org/images/619/image-3.jpg",
+    "title_original": "Cyclopes FS VP 9.1x",
+    "title_original_trimmed": "Cyclopes"
+  },
+  "5377": {
+    "ipdb": "310",
+    "title": "Black Knight",
+    "year": "1980",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/310/Playfield.jpg",
+    "title_original": "Black Knight VP91x 2.2.1FS",
+    "title_original_trimmed": "Black Knight"
+  },
+  "5378": {
+    "ipdb": "4089",
+    "title": "250 cc",
+    "year": "1992",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/4089/image-4.jpg",
+    "title_original": "250cc VP91x 1.1 FS",
+    "title_original_trimmed": "250cc"
+  },
+  "5385": {
+    "ipdb": "1260",
+    "title": "Ice Fever",
+    "year": "1985",
+    "manufacturer": "Ice",
+    "img": "http://www.ipdb.org/images/1260/image-8.jpg",
+    "title_original": "Ice Fever FS VP 9.1x",
+    "title_original_trimmed": "Ice Fever"
+  },
+  "5386": {
+    "ipdb": "2509",
+    "title": "Teenage Mutant Ninja Turtles",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2509/image-1.jpg",
+    "title_original": "TMNT FS VP 9.1x",
+    "title_original_trimmed": "TMNT"
+  },
+  "5401": {
+    "ipdb": "1904",
+    "title": "Radical",
+    "year": "1990",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1904/image-1.jpg",
+    "title_original": "Radical! VP91x FS1.0.1",
+    "title_original_trimmed": "Radical!"
+  },
+  "5422": {
+    "ipdb": "3967",
+    "title": "Cosmic Princess",
+    "year": "1979",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/3967/image-4.jpg",
+    "title_original": "Cosmic Princess VP91x 1.02FS",
+    "title_original_trimmed": "Cosmic Princess"
+  },
+  "5427": {
+    "ipdb": "1993",
+    "title": "Rocky",
+    "year": "1982",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/4084/image-2.jpg",
+    "title_original": "Rocky VP91x V1.0FS",
+    "title_original_trimmed": "Rocky"
+  },
+  "5436": {
+    "ipdb": "127",
+    "title": "Bad Cats",
+    "year": "1989",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/127/image-5.jpg",
+    "title_original": "Bad Cats VP9.15 FS",
+    "title_original_trimmed": "Bad Cats"
+  },
+  "5440": {
+    "name": "KnockOut 2012",
+    "error": "********** NO MATCH **********",
+    "title_original": "KnockOut 2012 FS B2S",
+    "title_original_trimmed": "KnockOut 2012"
+  },
+  "5441": {
+    "name": "Ghostbusters 2011",
+    "error": "********** NO MATCH **********",
+    "title_original": "Ghostbusters 2011 B2S",
+    "title_original_trimmed": "Ghostbusters 2011"
+  },
+  "5445": {
+    "ipdb": "1281",
+    "title": "Jacks Open",
+    "year": "1977",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1281/Playfield.jpg",
+    "title_original": "Jacks Open B2S",
+    "title_original_trimmed": "Jacks Open"
+  },
+  "5447": {
+    "name": "Jacks Open 1FS",
+    "error": "********** NO MATCH **********",
+    "title_original": "Jacks Open 1FS",
+    "title_original_trimmed": "Jacks Open 1FS"
+  },
+  "5455": {
+    "ipdb": "5350",
+    "title": "The Incredible Hulk",
+    "year": "1979",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1266/image-17.jpg",
+    "title_original": "HULK FS B2S",
+    "title_original_trimmed": "HULK"
+  },
+  "5501": {
+    "ipdb": "3072",
+    "title": "Bram Stoker's Dracula",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3072/Playfield.jpg",
+    "title_original": "Bram Stoker's Dracula VP91x 1.04FS",
+    "title_original_trimmed": "Bram Stoker's Dracula"
+  },
+  "5503": {
+    "ipdb": "1382",
+    "title": "Kings of Steel",
+    "year": "1984",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/1382/image-2.jpg",
+    "title_original": "Kings of Steel FS",
+    "title_original_trimmed": "Kings of Steel"
+  },
+  "5539": {
+    "ipdb": "2112",
+    "title": "Sharpshooter",
+    "year": "1949",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2112/Playfield.jpg",
+    "title_original": "Sharpshooter FS",
+    "title_original_trimmed": "Sharpshooter"
+  },
+  "5544": {
+    "ipdb": "3683",
+    "title": "Johnny Mnemonic",
+    "year": "1995",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3683/Playfield.jpg",
+    "title_original": "Johnny Mnemonic VP9.1.x FS",
+    "title_original_trimmed": "Johnny Mnemonic"
+  },
+  "5552": {
+    "ipdb": "3705",
+    "title": "Flash Gordon",
+    "year": "1981",
+    "manufacturer": "Bell Games",
+    "img": "http://www.ipdb.org/images/874/Playfield.jpg",
+    "title_original": "Flash Gordon FS B2S",
+    "title_original_trimmed": "Flash Gordon"
+  },
+  "5559": {
+    "type": "OG",
+    "title_original": "Beatles 2012b FS B2S",
+    "title_original_trimmed": "Beatles 2012b"
+  },
+  "5563": {
+    "ipdb": "1951",
+    "title": "Rescue 911",
+    "year": "1994",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/1951/image-1.jpg",
+    "title_original": "Rescue 911 FS 1.0 HD",
+    "title_original_trimmed": "Rescue 911"
+  },
+  "5566": {
+    "name": "The Three Stooges",
+    "error": "********** NO MATCH **********",
+    "title_original": "The Three Stooges FS B2S",
+    "title_original_trimmed": "The Three Stooges"
+  },
+  "5576": {
+    "ipdb": "3592",
+    "title": "Apollo 13",
+    "year": "1995",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/3592/image-8.jpg",
+    "title_original": "Apollo 13 FS",
+    "title_original_trimmed": "Apollo 13"
+  },
+  "5579": {
+    "ipdb": "2724",
+    "title": "Vegas",
+    "year": "1990",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2724/Playfield.jpg",
+    "title_original": "VEGAS GOTTLIEB / PREMIER 1990",
+    "title_original_trimmed": "VEGAS"
+  },
+  "5580": {
+    "ipdb": "2443",
+    "title": "Super Soccer",
+    "year": "1975",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2443/image-2.jpg",
+    "title_original": "Super Soccer [HP MEDIA PACK]",
+    "title_original_trimmed": "Super Soccer"
+  },
+  "5582": {
+    "ipdb": "2443",
+    "title": "Super Soccer",
+    "year": "1975",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2443/image-2.jpg",
+    "title_original": "Super Soccer FS B2S",
+    "title_original_trimmed": "Super Soccer"
+  },
+  "5596": {
+    "ipdb": "4023",
+    "title": "NBA Fastbreak",
+    "year": "1997",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4023/image-10.jpg",
+    "title_original": "NBA FASTBREAK (FS VP912)",
+    "title_original_trimmed": "NBA FASTBREAK"
+  },
+  "5603": {
+    "ipdb": "481",
+    "title": "Central Park",
+    "year": "1966",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/481/image-3.jpg",
+    "title_original": "Central Park FS B2S",
+    "title_original_trimmed": "Central Park"
+  },
+  "5612": {
+    "ipdb": "4490",
+    "title": "Playboy",
+    "year": "1999",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1822/Playfield.jpg",
+    "title_original": "PLAYBOY FS",
+    "title_original_trimmed": "PLAYBOY"
+  },
+  "5626": {
+    "ipdb": "1386",
+    "title": "Kiss",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1386/Playfield.jpg",
+    "title_original": "Kiss VP91x 2.2FS",
+    "title_original_trimmed": "Kiss"
+  },
+  "5647": {
+    "ipdb": "947",
+    "title": "Mary Shelley's Frankenstein",
+    "year": "1995",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/947/Playfield.jpg",
+    "title_original": "Mary Shelley's Frankenstein VP 9.12 HRES",
+    "title_original_trimmed": "Mary Shelley's Frankenstein"
+  },
+  "5652": {
+    "ipdb": "683",
+    "title": "Dipsy Doodle",
+    "year": "1970",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/683/Playfield.jpg",
+    "title_original": "Dipsy Doodle FS B2S",
+    "title_original_trimmed": "Dipsy Doodle"
+  },
+  "5663": {
+    "ipdb": "889",
+    "title": "Flip Flop",
+    "year": "1974",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/889/Playfield.jpg",
+    "title_original": "Flip Flop FS B2S",
+    "title_original_trimmed": "Flip Flop"
+  },
+  "5669": {
+    "ipdb": "871",
+    "title": "Flash",
+    "year": "1979",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/871/image-2.jpg",
+    "title_original": "Flash VP91x v1.2FS",
+    "title_original_trimmed": "Flash"
+  },
+  "5708": {
+    "ipdb": "2509",
+    "title": "Teenage Mutant Ninja Turtles",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2509/image-1.jpg",
+    "title_original": "TMNT FS B2S",
+    "title_original_trimmed": "TMNT"
+  },
+  "5721": {
+    "ipdb": "4348",
+    "title": "Joel Silver, The Pinball",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": null,
+    "title_original": "Star Trek 25th Anniversary v1.05 FS",
+    "title_original_trimmed": "Star Trek 25th Anniversary"
+  },
+  "5727": {
+    "ipdb": "2356",
+    "title": "Star Trek",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2356/Playfield.jpg",
+    "title_original": "Star Trek (Data East 1991) [HP MEDIA PACK]",
+    "title_original_trimmed": "Star Trek"
+  },
+  "5740": {
+    "ipdb": "2565",
+    "title": "Time Machine",
+    "year": "1988",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2565/Playfield.jpg",
+    "title_original": "Time Machine VP91x 1.0.1 FS",
+    "title_original_trimmed": "Time Machine"
+  },
+  "5742": {
+    "ipdb": "2876",
+    "title": "Abra Ca Dabra",
+    "year": "1971",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2/Playfield2.jpg",
+    "title_original": "Abra Ca Dabra B2S",
+    "title_original_trimmed": "Abra Ca Dabra"
+  },
+  "5743": {
+    "ipdb": "1447",
+    "title": "Line Drive",
+    "year": "1972",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1447/Playfield.jpg",
+    "title_original": "Line Drive B2S",
+    "title_original_trimmed": "Line Drive"
+  },
+  "5763": {
+    "name": "FirePower UR/NF",
+    "error": "********** NO MATCH **********",
+    "title_original": "FirePower UR/NF VP9.1.x FS",
+    "title_original_trimmed": "FirePower UR/NF"
+  },
+  "5766": {
+    "name": "SPACE:1999",
+    "error": "********** NO MATCH **********",
+    "title_original": "SPACE:1999 FS",
+    "title_original_trimmed": "SPACE:1999"
+  },
+  "5767": {
+    "name": "SPACE:1999 WS",
+    "error": "********** NO MATCH **********",
+    "title_original": "SPACE:1999 WS B2S",
+    "title_original_trimmed": "SPACE:1999 WS"
+  },
+  "5779": {
+    "name": "Lethal Weapon 3 ALPHA EDITION",
+    "error": "********** NO MATCH **********",
+    "title_original": "Lethal Weapon 3_ALPHA EDITION_FS_v1.1_VP9.12",
+    "title_original_trimmed": "Lethal Weapon 3 ALPHA EDITION"
+  },
+  "5782": {
+    "ipdb": "678",
+    "title": "Diamond Lady",
+    "year": "1988",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/678/Playfield.jpg",
+    "title_original": "Diamond Lady VP91x 1.0FS",
+    "title_original_trimmed": "Diamond Lady"
+  },
+  "5791": {
+    "name": "Checkpoint 1.2",
+    "error": "********** NO MATCH **********",
+    "title_original": "Checkpoint 1.2 FS HD",
+    "title_original_trimmed": "Checkpoint 1.2"
+  },
+  "5798": {
+    "ipdb": "2652",
+    "title": "Triple Strike",
+    "year": "1975",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2652/image-6.jpg",
+    "title_original": "Triple Strike FS B2S",
+    "title_original_trimmed": "Triple Strike"
+  },
+  "5823": {
+    "ipdb": "1677",
+    "title": "Night Rider",
+    "year": "1976",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1677/Playfield.jpg",
+    "title_original": "Night Rider FS",
+    "title_original_trimmed": "Night Rider"
+  },
+  "5838": {
+    "ipdb": "948",
+    "title": "Freddy: a Nightmare on Elm Street",
+    "year": "1994",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/948/image-2.jpg",
+    "title_original": "Freddy: A Nightmare On Elm Street vp9.1x FS",
+    "title_original_trimmed": "Freddy: A Nightmare On Elm Street"
+  },
+  "5841": {
+    "name": "STALKER",
+    "error": "********** NO MATCH **********",
+    "title_original": "STALKER FS B2S",
+    "title_original_trimmed": "STALKER"
+  },
+  "5853": {
+    "ipdb": "3458",
+    "title": "Star God",
+    "year": "1980",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/3458/image-10.jpg",
+    "title_original": "Star God VP9 FS",
+    "title_original_trimmed": "Star God"
+  },
+  "5902": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared Stiff FS B2S",
+    "title_original_trimmed": "Scared Stiff"
+  },
+  "5912": {
+    "ipdb": "127",
+    "title": "Bad Cats",
+    "year": "1989",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/127/image-5.jpg",
+    "title_original": "Bad Cats FS B2S",
+    "title_original_trimmed": "Bad Cats"
+  },
+  "5944": {
+    "ipdb": "4686",
+    "title": "Ski Jump",
+    "year": "1978",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/4686/image-5.jpg",
+    "title_original": "Zaccaria Ski Jump FS",
+    "title_original_trimmed": "Zaccaria Ski Jump"
+  },
+  "5949": {
+    "ipdb": "4182",
+    "title": "Congo",
+    "year": "1936",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3780/image-2.jpg",
+    "title_original": "Congo VP91x 1.01FS",
+    "title_original_trimmed": "Congo"
+  },
+  "5960": {
+    "ipdb": "871",
+    "title": "Flash",
+    "year": "1979",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/871/image-2.jpg",
+    "title_original": "Flash FS B2S",
+    "title_original_trimmed": "Flash"
+  },
+  "5964": {
+    "ipdb": "2644",
+    "title": "Trident",
+    "year": "1979",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/2644/image-4.jpg",
+    "title_original": "Trident VP9 FS",
+    "title_original_trimmed": "Trident"
+  },
+  "5967": {
+    "ipdb": "3903",
+    "title": "L'Hexagone",
+    "year": "1986",
+    "manufacturer": "Christian Tabart",
+    "img": null,
+    "title_original": "L'Hexagone FS",
+    "title_original_trimmed": "L'Hexagone"
+  },
+  "5973": {
+    "ipdb": "2565",
+    "title": "Time Machine",
+    "year": "1988",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2565/Playfield.jpg",
+    "title_original": "Time Machine FS B2S",
+    "title_original_trimmed": "Time Machine"
+  },
+  "5974": {
+    "ipdb": "1308",
+    "title": "Jokerz",
+    "year": "1988",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1308/image-9.jpg",
+    "title_original": "JOKERZ! FS B2S",
+    "title_original_trimmed": "JOKERZ!"
+  },
+  "5980": {
+    "ipdb": "1229",
+    "title": "Honey",
+    "year": "1938",
+    "manufacturer": "Exhibit",
+    "img": "http://www.ipdb.org/images/1228/Playfield.jpg",
+    "title_original": "Honey (Williams 1972) FS B2S",
+    "title_original_trimmed": "Honey"
+  },
+  "5983": {
+    "ipdb": "288",
+    "title": "Big Town",
+    "year": "1940",
+    "manufacturer": "Genco",
+    "img": "http://www.ipdb.org/images/288/image-2.jpg",
+    "title_original": "Big Town FS",
+    "title_original_trimmed": "Big Town"
+  },
+  "5994": {
+    "ipdb": "5007",
+    "title": "Charlie's Angels",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/5007/image-4.jpg",
+    "title_original": "Charlie's Angel FS",
+    "title_original_trimmed": "Charlie's Angel"
+  },
+  "5995": {
+    "ipdb": "4927",
+    "title": "Cyclone",
+    "year": "1932",
+    "manufacturer": "Delmar",
+    "img": "http://www.ipdb.org/images/618/image-1.jpg",
+    "title_original": "Cyclone FS B2S",
+    "title_original_trimmed": "Cyclone"
+  },
+  "6000": {
+    "ipdb": "1201",
+    "title": "Hit the Deck",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1201/Playfield.jpg",
+    "title_original": "Hit The Deck FS B2S",
+    "title_original_trimmed": "Hit The Deck"
+  },
+  "6016": {
+    "ipdb": "3939",
+    "title": "Screech",
+    "year": "1976",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/3939/image-4.jpg",
+    "title_original": "Screech FS",
+    "title_original_trimmed": "Screech"
+  },
+  "6018": {
+    "ipdb": "2852",
+    "title": "No Fear: Dangerous Sports",
+    "year": "1995",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2852/image-2.jpg",
+    "title_original": "No Fear: Dangerous Sports VP91x 1.0 FS",
+    "title_original_trimmed": "No Fear: Dangerous Sports"
+  },
+  "6031": {
+    "ipdb": "4341",
+    "title": "Starship Troopers",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4341/image-4.jpg",
+    "title_original": "Starship Troopers FS B2S",
+    "title_original_trimmed": "Starship Troopers"
+  },
+  "6033": {
+    "ipdb": "1975",
+    "title": "Robo-War",
+    "year": "1988",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/1975/image-1.jpg",
+    "title_original": "Robo-War FS",
+    "title_original_trimmed": "Robo War"
+  },
+  "6041": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared Stiff 8-step GI FS Lighting MOD",
+    "title_original_trimmed": "Scared Stiff"
+  },
+  "6046": {
+    "ipdb": "2250",
+    "title": "Space Gambler",
+    "year": "1978",
+    "manufacturer": "Playmatic",
+    "img": "http://www.ipdb.org/images/2250/image-6.jpg",
+    "title_original": "Space Gambler FS",
+    "title_original_trimmed": "Space Gambler"
+  },
+  "6052": {
+    "ipdb": "1381",
+    "title": "Kings  Queens",
+    "year": "1965",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1381/Playfield.jpg",
+    "title_original": "Kings and Queens vp9.1x FS",
+    "title_original_trimmed": "Kings and Queens"
+  },
+  "6055": {
+    "ipdb": "1381",
+    "title": "Kings  Queens",
+    "year": "1965",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1381/Playfield.jpg",
+    "title_original": "Kings and Queens vp9.1x FS BS2",
+    "title_original_trimmed": "Kings and Queens"
+  },
+  "6058": {
+    "name": "Gorgar UR/NF",
+    "error": "********** NO MATCH **********",
+    "title_original": "Gorgar UR/NF VP9.1.x FullScreen v1.0.4",
+    "title_original_trimmed": "Gorgar UR/NF"
+  },
+  "6060": {
+    "ipdb": "762",
+    "title": "Eight Ball Deluxe",
+    "year": "1980",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/762/image-3.jpg",
+    "title_original": "Eight Ball Deluxe B2S",
+    "title_original_trimmed": "Eight Ball Deluxe"
+  },
+  "6065": {
+    "name": "Haunted Mansion",
+    "error": "********** NO MATCH **********",
+    "title_original": "Haunted Mansion FS B2S",
+    "title_original_trimmed": "Haunted Mansion"
+  },
+  "6070": {
+    "ipdb": "3273",
+    "title": "Solar Wars",
+    "year": "1986",
+    "manufacturer": "Sonic",
+    "img": null,
+    "title_original": "Solar Wars FS",
+    "title_original_trimmed": "Solar Wars"
+  },
+  "6071": {
+    "name": "FourMillionB.C.",
+    "error": "********** NO MATCH **********",
+    "title_original": "FourMillionB.C._FS_B2S",
+    "title_original_trimmed": "FourMillionB.C."
+  },
+  "6076": {
+    "ipdb": "3207",
+    "title": "Last Lap",
+    "year": "1978",
+    "manufacturer": "Playmatic",
+    "img": "http://www.ipdb.org/images/3207/image-3.jpg",
+    "title_original": "Last Lap FS",
+    "title_original_trimmed": "Last Lap"
+  },
+  "6077": {
+    "ipdb": "4878",
+    "title": "Chance",
+    "year": "1974",
+    "manufacturer": "Playmatic",
+    "img": "http://www.ipdb.org/images/491/image-2.jpg",
+    "title_original": "Chance FS",
+    "title_original_trimmed": "Chance"
+  },
+  "6080": {
+    "ipdb": "175",
+    "title": "Banzai Run",
+    "year": "1988",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2820/image-1.jpg",
+    "title_original": "Banzai Run - Megapin - FSHD - V1.02",
+    "title_original_trimmed": "Banzai Run   Megapin"
+  },
+  "6092": {
+    "ipdb": "2768",
+    "title": "White Water",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2768/image-25.jpg",
+    "title_original": "Whitewater VP91x FS",
+    "title_original_trimmed": "Whitewater"
+  },
+  "6105": {
+    "ipdb": "1004",
+    "title": "Gilligan's Island",
+    "year": "1991",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1004/image-6.jpg",
+    "title_original": "Terminator 2 - Chrome Edition FS (VP916) MOD",
+    "title_original_trimmed": "Terminator 2"
+  },
+  "6127": {
+    "ipdb": "5158",
+    "title": "Super Star",
+    "year": "1986",
+    "manufacturer": "Recreativos Franco",
+    "img": "http://www.ipdb.org/images/5158/image-1.jpg",
+    "title_original": "Super Star FS B2S",
+    "title_original_trimmed": "Super Star"
+  },
+  "6135": {
+    "ipdb": "1343",
+    "title": "Jurassic Park",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1343/image-6.jpg",
+    "title_original": "Jurassic Park FS VP912",
+    "title_original_trimmed": "Jurassic Park"
+  },
+  "6137": {
+    "ipdb": "4868",
+    "title": "Impacto",
+    "year": "1975",
+    "manufacturer": "Recreativos Franco",
+    "img": "http://www.ipdb.org/images/4868/image-3.jpg",
+    "title_original": "Impacto FS B2S",
+    "title_original_trimmed": "Impacto"
+  },
+  "6155": {
+    "ipdb": "2355",
+    "title": "Star Trek",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2355/image-4.jpg",
+    "title_original": "Star Trek 25 FS B2S",
+    "title_original_trimmed": "Star Trek 25"
+  },
+  "6160": {
+    "name": "JP SpiderMan",
+    "error": "********** NO MATCH **********",
+    "title_original": "JP SpiderMan FS B2S",
+    "title_original_trimmed": "JP SpiderMan"
+  },
+  "6167": {
+    "ipdb": "987",
+    "title": "Gator",
+    "year": "1968",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/987/image-1.jpg",
+    "title_original": "Gator FS B2S",
+    "title_original_trimmed": "Gator"
+  },
+  "6170": {
+    "ipdb": "4502",
+    "title": "High Roller Casino",
+    "year": "2001",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4502/image-7.jpg",
+    "title_original": "HIGH ROLLER CASINO VP912 FS UVP",
+    "title_original_trimmed": "HIGH ROLLER CASINO"
+  },
+  "6177": {
+    "name": "BobsBOP 2012",
+    "error": "********** NO MATCH **********",
+    "title_original": "BobsBOP 2012 FS",
+    "title_original_trimmed": "BobsBOP 2012"
+  },
+  "6186": {
+    "name": "Paragon 2011a",
+    "error": "********** NO MATCH **********",
+    "title_original": "Paragon 2011a FS MOD VP912",
+    "title_original_trimmed": "Paragon 2011a"
+  },
+  "6193": {
+    "ipdb": "2356",
+    "title": "Star Trek",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2356/Playfield.jpg",
+    "title_original": "Star Trek (Bally 1979) UR/NF FullScreen v1.0",
+    "title_original_trimmed": "Star Trek"
+  },
+  "6208": {
+    "name": "Viking 2012",
+    "error": "********** NO MATCH **********",
+    "title_original": "Viking 2012 FS MOD VP912",
+    "title_original_trimmed": "Viking 2012"
+  },
+  "6215": {
+    "name": "Embryon 2012",
+    "error": "********** NO MATCH **********",
+    "title_original": "Embryon 2012 FS MOD VP912",
+    "title_original_trimmed": "Embryon 2012"
+  },
+  "6218": {
+    "ipdb": "1244",
+    "title": "Hot Hand",
+    "year": "1979",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/1244/image-9.jpg",
+    "title_original": "Hot Hand (Stern 1979) FS",
+    "title_original_trimmed": "Hot Hand"
+  },
+  "6222": {
+    "ipdb": "3072",
+    "title": "Bram Stoker's Dracula",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3072/Playfield.jpg",
+    "title_original": "Bram Stoker's Dracula 8-step GI FS Lighting and BMPR Physics MOD",
+    "title_original_trimmed": "Bram Stoker's Dracula"
+  },
+  "6226": {
+    "ipdb": "2357",
+    "title": "Star Trek: The Next Generation",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2357/image-17.jpg",
+    "title_original": "Star Trek The Next Generation (TNG) FS Night Mod v1.2.1",
+    "title_original_trimmed": "Star Trek The Next Generation"
+  },
+  "6233": {
+    "ipdb": "5132",
+    "title": "Cowboy Eight Ball",
+    "year": "1981",
+    "manufacturer": "LTD",
+    "img": "http://www.ipdb.org/images/5132/image-14.jpg",
+    "title_original": "Cowboy Eight Ball FS",
+    "title_original_trimmed": "Cowboy Eight Ball"
+  },
+  "6237": {
+    "ipdb": "2563",
+    "title": "Time Fantasy",
+    "year": "1983",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2563/image-8.jpg",
+    "title_original": "Time Fantasy (Williams 1983) FS",
+    "title_original_trimmed": "Time Fantasy"
+  },
+  "6243": {
+    "name": "JP SpiderMan",
+    "error": "********** NO MATCH **********",
+    "title_original": "JP SpiderMan FS B2S LW",
+    "title_original_trimmed": "JP SpiderMan"
+  },
+  "6253": {
+    "ipdb": "2091",
+    "title": "See Saw",
+    "year": "1970",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3230/image-2.jpg",
+    "title_original": "See Saw FS B2S",
+    "title_original_trimmed": "See Saw"
+  },
+  "6255": {
+    "ipdb": "251",
+    "title": "Big Hit",
+    "year": "1946",
+    "manufacturer": "Exhibit",
+    "img": "http://www.ipdb.org/images/251/Playfield.jpg",
+    "title_original": "Big Hit FS",
+    "title_original_trimmed": "Big Hit"
+  },
+  "6259": {
+    "name": "Pirates: Wolves of the Sea 1.05",
+    "error": "********** NO MATCH **********",
+    "title_original": "Pirates: Wolves of the Sea 1.05 FS",
+    "title_original_trimmed": "Pirates: Wolves of the Sea 1.05"
+  },
+  "6264": {
+    "ipdb": "2365",
+    "title": "Stars",
+    "year": "1952",
+    "manufacturer": "United",
+    "img": "http://www.ipdb.org/images/2365/Playfield.jpg",
+    "title_original": "Stars VP9 FS",
+    "title_original_trimmed": "Stars"
+  },
+  "6269": {
+    "name": "JP Pirates LW",
+    "error": "********** NO MATCH **********",
+    "title_original": "JP Pirates LW B2S",
+    "title_original_trimmed": "JP Pirates LW"
+  },
+  "6270": {
+    "ipdb": "852",
+    "title": "Fireball",
+    "year": "1971",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/852/image-17.jpg",
+    "title_original": "Fireball (Bally 1972) + B2S",
+    "title_original_trimmed": "Fireball"
+  },
+  "6278": {
+    "name": "JP's Diamod Lady LedWiz",
+    "error": "********** NO MATCH **********",
+    "title_original": "JP's Diamod Lady LedWiz",
+    "title_original_trimmed": "JP's Diamod Lady LedWiz"
+  },
+  "6289": {
+    "ipdb": "1429",
+    "title": "Lectronamo",
+    "year": "1978",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/1429/image-2.jpg",
+    "title_original": "Lectronamo VP9 FS",
+    "title_original_trimmed": "Lectronamo"
+  },
+  "6296": {
+    "name": "Red Dwarf",
+    "error": "********** NO MATCH **********",
+    "title_original": "Red Dwarf FS B2S",
+    "title_original_trimmed": "Red Dwarf"
+  },
+  "6313": {
+    "ipdb": "2292",
+    "title": "Spirit",
+    "year": "1982",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2292/image-3.jpg",
+    "title_original": "Spirit FS B2S",
+    "title_original_trimmed": "Spirit"
+  },
+  "6314": {
+    "ipdb": "2292",
+    "title": "Spirit",
+    "year": "1982",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2292/image-3.jpg",
+    "title_original": "Spirit FS UVP",
+    "title_original_trimmed": "Spirit"
+  },
+  "6318": {
+    "ipdb": "2282",
+    "title": "Speedway",
+    "year": "1933",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2282/Playfield.jpg",
+    "title_original": "Speedway FS B2S",
+    "title_original_trimmed": "Speedway"
+  },
+  "6322": {
+    "name": "Daffy Duck 2012",
+    "error": "********** NO MATCH **********",
+    "title_original": "Daffy Duck 2012 FS B2S Updated",
+    "title_original_trimmed": "Daffy Duck 2012"
+  },
+  "6331": {
+    "ipdb": "1306",
+    "title": "Joker Poker",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/5078/image-8.jpg",
+    "title_original": "Joker Poker (FS Pinuck Mod)",
+    "title_original_trimmed": "Joker Poker"
+  },
+  "6337": {
+    "ipdb": "3945",
+    "title": "Flipper Football",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/3945/image-16.jpg",
+    "title_original": "Flipper Football VP9 1.0 FS",
+    "title_original_trimmed": "Flipper Football"
+  },
+  "6340": {
+    "ipdb": "2765",
+    "title": "Whirlwind",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2765/image-2.jpg",
+    "title_original": "Whirlwind (FS MOD) - 1.4.8 VP9 - Noah Fentz & UncleReamus",
+    "title_original_trimmed": "Whirlwind"
+  },
+  "6342": {
+    "ipdb": "4059",
+    "title": "Cirqus Voltaire",
+    "year": "1997",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4059/image-16.jpg",
+    "title_original": "Cirqus Voltaire FS B2S",
+    "title_original_trimmed": "Cirqus Voltaire"
+  },
+  "6345": {
+    "ipdb": "4576",
+    "title": "Vortex",
+    "year": "1983",
+    "manufacturer": "Taito",
+    "img": "http://www.ipdb.org/images/4576/image-3.jpg",
+    "title_original": "Vortex VP9 FS",
+    "title_original_trimmed": "Vortex"
+  },
+  "6350": {
+    "ipdb": "1635",
+    "title": "Mousin' Around",
+    "year": "1989",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1635/image-12.jpg",
+    "title_original": "Mousin' Around! FS Dark",
+    "title_original_trimmed": "Mousin' Around!"
+  },
+  "6351": {
+    "ipdb": "2493",
+    "title": "Tales from the Crypt",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2493/Playfield.jpg",
+    "title_original": "Tales from the Crypt VP912 2.1.1FS",
+    "title_original_trimmed": "Tales from the Crypt"
+  },
+  "6355": {
+    "name": "Jigglebox",
+    "error": "********** NO MATCH **********",
+    "title_original": "Jigglebox V1.3 FS B2S",
+    "title_original_trimmed": "Jigglebox"
+  },
+  "6357": {
+    "ipdb": "4442",
+    "title": "Lost In Space",
+    "year": "1998",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4442/image-7.jpg",
+    "title_original": "Lost in Space FS Mod",
+    "title_original_trimmed": "Lost in Space"
+  },
+  "6358": {
+    "ipdb": "2742",
+    "title": "Volcano",
+    "year": "1981",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2742/image-2.jpg",
+    "title_original": "Volcano FS Mod",
+    "title_original_trimmed": "Volcano"
+  },
+  "6395": {
+    "ipdb": "4001",
+    "title": "Big Bang Bar",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/4001/image-6.jpg",
+    "title_original": "Big Bang Bar FS",
+    "title_original_trimmed": "Big Bang Bar"
+  },
+  "6399": {
+    "ipdb": "4445",
+    "title": "Cactus Canyon",
+    "year": "1998",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4445/image-6.jpg",
+    "title_original": "Cactus Canyon (High Noon MOD) v1.0.1 FS",
+    "title_original_trimmed": "Cactus Canyon"
+  },
+  "6409": {
+    "ipdb": "528",
+    "title": "Class of 1812",
+    "year": "1991",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/528/image-8.jpg",
+    "title_original": "Class of 1812 VP912 1.0FS",
+    "title_original_trimmed": "Class of 1812"
+  },
+  "6424": {
+    "ipdb": "681",
+    "title": "Diner",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/681/image-2.jpg",
+    "title_original": "Diner FS [B2S]",
+    "title_original_trimmed": "Diner"
+  },
+  "6433": {
+    "ipdb": "3824",
+    "title": "Tales of the Arabian Nights",
+    "year": "1996",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
+    "title_original": "Tales of the Arabian Nights VP91x3.2FS MOD",
+    "title_original_trimmed": "Tales of the Arabian Nights"
+  },
+  "6435": {
+    "name": "Yellow Submarine",
+    "error": "********** NO MATCH **********",
+    "title_original": "Yellow Submarine FS B2S",
+    "title_original_trimmed": "Yellow Submarine"
+  },
+  "6436": {
+    "name": "Yellow Submarine 2012",
+    "error": "********** NO MATCH **********",
+    "title_original": "Yellow Submarine 2012 FS B2S Alt Mod",
+    "title_original_trimmed": "Yellow Submarine 2012"
+  },
+  "6445": {
+    "ipdb": "4779",
+    "title": "Big Valley",
+    "year": "1970",
+    "manufacturer": "RMG",
+    "img": "http://www.ipdb.org/images/289/image-7.jpg",
+    "title_original": "Big Valley FS B2S",
+    "title_original_trimmed": "Big Valley"
+  },
+  "6456": {
+    "ipdb": "1550",
+    "title": "Mars Trek",
+    "year": "1977",
+    "manufacturer": "Sonic",
+    "img": "http://www.ipdb.org/images/1550/image-5.jpg",
+    "title_original": "Mars Trek FS B2S",
+    "title_original_trimmed": "Mars Trek"
+  },
+  "6461": {
+    "ipdb": "359",
+    "title": "Boston",
+    "year": "1949",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/359/Playfield.jpg",
+    "title_original": "The MOON FS B2S",
+    "title_original_trimmed": "The MOON"
+  },
+  "6462": {
+    "ipdb": "4883",
+    "title": "Petaco",
+    "year": "1984",
+    "manufacturer": "Juegos Populares",
+    "img": "http://www.ipdb.org/images/4883/image-4.jpg",
+    "title_original": "Petaco FS",
+    "title_original_trimmed": "Petaco"
+  },
+  "6463": {
+    "ipdb": "5179",
+    "title": "Genesis",
+    "year": "1982",
+    "manufacturer": "Elbos",
+    "img": "http://www.ipdb.org/images/5179/image-2.jpg",
+    "title_original": "Genesis VP912 1.01FS",
+    "title_original_trimmed": "Genesis"
+  },
+  "6469": {
+    "name": "Zone Fury 1.0.1",
+    "error": "********** NO MATCH **********",
+    "title_original": "Zone Fury 1.0.1 FS",
+    "title_original_trimmed": "Zone Fury 1.0.1"
+  },
+  "6470": {
+    "ipdb": "1704",
+    "title": "Old Chicago",
+    "year": "1975",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1704/image-13.jpg",
+    "title_original": "Nova_1.3_FS_B2S",
+    "title_original_trimmed": "Nova 1.3"
+  },
+  "6472": {
+    "name": "Tommy TPW LH",
+    "error": "********** NO MATCH **********",
+    "title_original": "Tommy_TPW_LH_VP9.12_(Sally_Simpson_Mod FS)",
+    "title_original_trimmed": "Tommy TPW LH"
+  },
+  "6474": {
+    "ipdb": "1800",
+    "title": "Pink Panther",
+    "year": "1981",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1800/image-3.jpg",
+    "title_original": "Pink Panther FS",
+    "title_original_trimmed": "Pink Panther"
+  },
+  "6481": {
+    "ipdb": "2204",
+    "title": "Skyrocket",
+    "year": "1970",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2204/image-4.jpg",
+    "title_original": "Skyrocket FS B2S",
+    "title_original_trimmed": "Skyrocket"
+  },
+  "6490": {
+    "ipdb": "313",
+    "title": "Black Rose",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/313/image-2.jpg",
+    "title_original": "Black Rose",
+    "title_original_trimmed": "Black Rose"
+  },
+  "6494": {
+    "ipdb": "1754",
+    "title": "Paragon",
+    "year": "1936",
+    "manufacturer": "All American Games",
+    "img": "http://www.ipdb.org/images/1755/Playfield.jpg",
+    "title_original": "Paragon FS (2012 build)",
+    "title_original_trimmed": "Paragon"
+  },
+  "6495": {
+    "ipdb": "3498",
+    "title": "Star Ship",
+    "year": "1976",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3498/image-13.jpg",
+    "title_original": "Capt. Fantastic FS B2S",
+    "title_original_trimmed": "Capt. Fantastic"
+  },
+  "6503": {
+    "ipdb": "2493",
+    "title": "Tales from the Crypt",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2493/Playfield.jpg",
+    "title_original": "TFTC FS B2S",
+    "title_original_trimmed": "TFTC"
+  },
+  "6527": {
+    "ipdb": "3781",
+    "title": "Attack from Mars",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
+    "title_original": "Attack From Mars FS B2S",
+    "title_original_trimmed": "Attack From Mars"
+  },
+  "6529": {
+    "name": "Jupiter Crush",
+    "error": "********** NO MATCH **********",
+    "title_original": "Jupiter Crush",
+    "title_original_trimmed": "Jupiter Crush"
+  },
+  "6531": {
+    "name": "FirePower UR/NF",
+    "error": "********** NO MATCH **********",
+    "title_original": "FirePower UR/NF VP9.1.x FS Momentum MOD",
+    "title_original_trimmed": "FirePower UR/NF"
+  },
+  "6533": {
+    "ipdb": "126",
+    "title": "Back to the Future",
+    "year": "1990",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/126/image-4.jpg",
+    "title_original": "BTTF FS B2S",
+    "title_original_trimmed": "BTTF"
+  },
+  "6534": {
+    "ipdb": "966",
+    "title": "Funhouse",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/966/image-4.jpg",
+    "title_original": "Funhouse FS B2S",
+    "title_original_trimmed": "Funhouse"
+  },
+  "6536": {
+    "ipdb": "804",
+    "title": "F-14 Tomcat",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/804/image-4.jpg",
+    "title_original": "F-14 TomCat FS B2S",
+    "title_original_trimmed": "F 14 TomCat"
+  },
+  "6537": {
+    "ipdb": "3619",
+    "title": "JackBot",
+    "year": "1995",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3619/image-2.jpg",
+    "title_original": "Jack-Bot FS B2S",
+    "title_original_trimmed": "Jack Bot"
+  },
+  "6538": {
+    "ipdb": "1557",
+    "title": "Mata Hari",
+    "year": "1976",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1557/Playfield.jpg",
+    "title_original": "Mata Hari FS VP91x and Momentum MOD",
+    "title_original_trimmed": "Mata Hari"
+  },
+  "6542": {
+    "ipdb": "4513",
+    "title": "Star Wars",
+    "year": "1987",
+    "manufacturer": "Sonic",
+    "img": "http://www.ipdb.org/images/2358/Playfield.jpg",
+    "title_original": "Star Wars FS B2S",
+    "title_original_trimmed": "Star Wars"
+  },
+  "6543": {
+    "name": "Black Hole 9.1.2",
+    "error": "********** NO MATCH **********",
+    "title_original": "Black Hole_9.1.2_MOD_FS",
+    "title_original_trimmed": "Black Hole 9.1.2"
+  },
+  "6544": {
+    "ipdb": "4032",
+    "title": "Medieval Madness",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4032/image-7.jpg",
+    "title_original": "Medieval Madness FS B2S",
+    "title_original_trimmed": "Medieval Madness"
+  },
+  "6549": {
+    "ipdb": "1133",
+    "title": "Haunted House",
+    "year": "1982",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1133/Playfield2.jpg",
+    "title_original": "Haunted House VP915 FS",
+    "title_original_trimmed": "Haunted House"
+  },
+  "6552": {
+    "ipdb": "4092",
+    "title": "Metal Man",
+    "year": "1992",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/4092/image-9.jpg",
+    "title_original": "Metal Man VP912 v1.0 FS",
+    "title_original_trimmed": "Metal Man"
+  },
+  "6553": {
+    "ipdb": "4442",
+    "title": "Lost In Space",
+    "year": "1998",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4442/image-7.jpg",
+    "title_original": "Lost in Space VP912 v1.02 FS",
+    "title_original_trimmed": "Lost in Space"
+  },
+  "6557": {
+    "ipdb": "782",
+    "title": "Elvira and the Party Monsters",
+    "year": "1989",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/782/Playfield.jpg",
+    "title_original": "Elvira And The Party Monsters FS B2S",
+    "title_original_trimmed": "Elvira And The Party Monsters"
+  },
+  "6561": {
+    "ipdb": "1977",
+    "title": "Robot",
+    "year": "1985",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/1977/image-10.jpg",
+    "title_original": "Robot v1.0 FS",
+    "title_original_trimmed": "Robot"
+  },
+  "6567": {
+    "ipdb": "2357",
+    "title": "Star Trek: The Next Generation",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2357/image-17.jpg",
+    "title_original": "STTNG FS B2S",
+    "title_original_trimmed": "STTNG"
+  },
+  "6578": {
+    "ipdb": "1133",
+    "title": "Haunted House",
+    "year": "1982",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1133/Playfield2.jpg",
+    "title_original": "Haunted House VP912 v1.02 FS_Mod v6",
+    "title_original_trimmed": "Haunted House"
+  },
+  "6580": {
+    "ipdb": "480",
+    "title": "Centigrade 37",
+    "year": "1977",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/480/image-8.jpg",
+    "title_original": "Centigrade 37 FS B2S",
+    "title_original_trimmed": "Centigrade 37"
+  },
+  "6587": {
+    "name": "VP Music Template",
+    "error": "********** NO MATCH **********",
+    "title_original": "VP Music Template FS",
+    "title_original_trimmed": "VP Music Template"
+  },
+  "6606": {
+    "name": "Cowboys and Indians",
+    "error": "********** NO MATCH **********",
+    "title_original": "Cowboys and Indians FS",
+    "title_original_trimmed": "Cowboys and Indians"
+  },
+  "6607": {
+    "ipdb": "588",
+    "title": "Creature from the Black Lagoon",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/588/image-22.jpg",
+    "title_original": "Creature from the Black Lagoon (CFTBL) (FS)",
+    "title_original_trimmed": "Creature from the Black Lagoon"
+  },
+  "6621": {
+    "name": "World Cup Soccer 94",
+    "error": "********** NO MATCH **********",
+    "title_original": "World Cup Soccer 94 (Bally 1994) VP912FS",
+    "title_original_trimmed": "World Cup Soccer 94"
+  },
+  "6697": {
+    "ipdb": "2845",
+    "title": "Theatre of Magic",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2845/image-12.jpg",
+    "title_original": "Theatre of Magic VP91x FS MirrorMod v3",
+    "title_original_trimmed": "Theatre of Magic"
+  },
+  "6735": {
+    "ipdb": "536",
+    "title": "Close Encounters of the Third Kind",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/4692/image-2.jpg",
+    "title_original": "Close Encounters of The Third Kind (FS Pinuck Mod)",
+    "title_original_trimmed": "Close Encounters of The Third Kind"
+  },
+  "6751": {
+    "ipdb": "5237",
+    "title": "Spider-Man",
+    "year": "2007",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5237/image-51.jpg",
+    "title_original": "Spider-Man (Stern 2007) [HP MEDIA PACK]",
+    "title_original_trimmed": "Spider Man"
+  },
+  "6755": {
+    "ipdb": "311",
+    "title": "Black Knight 2000",
+    "year": "1989",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/311/Playfield.jpg",
+    "title_original": "BK2K FS B2S",
+    "title_original_trimmed": "BK2K"
+  },
+  "6756": {
+    "name": "T2 Chrome",
+    "error": "********** NO MATCH **********",
+    "title_original": "T2 Chrome FS B2S",
+    "title_original_trimmed": "T2 Chrome"
+  },
+  "6760": {
+    "ipdb": "3782",
+    "title": "Safe Cracker",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3782/Playfield.jpg",
+    "title_original": "Safe Cracker (Bally 1996) [HP MEDIA PACK]",
+    "title_original_trimmed": "Safe Cracker"
+  },
+  "6761": {
+    "ipdb": "2847",
+    "title": "Stargate",
+    "year": "1995",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2847/image-12.jpg",
+    "title_original": "Stargate (Gottlieb 1995) [HP MEDIA PACK]",
+    "title_original_trimmed": "Stargate"
+  },
+  "6777": {
+    "ipdb": "1386",
+    "title": "Kiss",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1386/Playfield.jpg",
+    "title_original": "Kiss VP91x 2.2FS B2S MOD",
+    "title_original_trimmed": "Kiss"
+  },
+  "6796": {
+    "ipdb": "3786",
+    "title": "Mystic",
+    "year": "1941",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3786/Playfield.jpg",
+    "title_original": "Mystic FS",
+    "title_original_trimmed": "Mystic"
+  },
+  "6814": {
+    "ipdb": "1993",
+    "title": "Rocky",
+    "year": "1982",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/4125/image-3.jpg",
+    "title_original": "RUSH (Pinuck) FS",
+    "title_original_trimmed": "RUSH"
+  },
+  "6823": {
+    "ipdb": "1951",
+    "title": "Rescue 911",
+    "year": "1994",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/1951/image-1.jpg",
+    "title_original": "Rescue 911 - Mod - FS",
+    "title_original_trimmed": "Rescue 911"
+  },
+  "6850": {
+    "ipdb": "2396",
+    "title": "Strange Science",
+    "year": "1986",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/2396/Playfield.jpg",
+    "title_original": "Strange Science (Bally 1986) [HP MEDIA PACK]",
+    "title_original_trimmed": "Strange Science"
+  },
+  "6852": {
+    "name": "FacesFS",
+    "error": "********** NO MATCH **********",
+    "title_original": "FacesFS_B2s.zip",
+    "title_original_trimmed": "FacesFS"
+  },
+  "6853": {
+    "ipdb": "251",
+    "title": "Big Hit",
+    "year": "1946",
+    "manufacturer": "Exhibit",
+    "img": "http://www.ipdb.org/images/251/Playfield.jpg",
+    "title_original": "Big-Hit-FS-B2S.zip",
+    "title_original_trimmed": "Big Hit"
+  },
+  "6855": {
+    "name": "Wrath of Olympus",
+    "error": "********** NO MATCH **********",
+    "title_original": "Wrath of Olympus VP912 FS",
+    "title_original_trimmed": "Wrath of Olympus"
+  },
+  "6864": {
+    "ipdb": "1841",
+    "title": "Police Force",
+    "year": "1989",
+    "manufacturer": "ice",
+    "img": "http://www.ipdb.org/images/1841/image-A6.jpg",
+    "title_original": "Police Force FS",
+    "title_original_trimmed": "Police Force"
+  },
+  "6871": {
+    "ipdb": "2853",
+    "title": "Indianapolis 500",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2853/Playfield.jpg",
+    "title_original": "Indianapolis 500 8-step GI FS Lighting and BMPR Physics MOD",
+    "title_original_trimmed": "Indianapolis 500"
+  },
+  "6874": {
+    "ipdb": "1070",
+    "title": "Grand Lizard",
+    "year": "1986",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1070/image-7.jpg",
+    "title_original": "Grand Lizard FS GI Nightmod",
+    "title_original_trimmed": "Grand Lizard"
+  },
+  "6888": {
+    "ipdb": "570",
+    "title": "Corvette",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/570/Playfield.jpg",
+    "title_original": "Corvette FS",
+    "title_original_trimmed": "Corvette"
+  },
+  "6899": {
+    "ipdb": "959",
+    "title": "Frontier",
+    "year": "1980",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/959/image-2.jpg",
+    "title_original": "Frontier FS",
+    "title_original_trimmed": "Frontier"
+  },
+  "6905": {
+    "name": "Grateful Dead",
+    "error": "********** NO MATCH **********",
+    "title_original": "Grateful Dead FS",
+    "title_original_trimmed": "Grateful Dead"
+  },
+  "6907": {
+    "name": "Black Sabbath the 70's",
+    "error": "********** NO MATCH **********",
+    "title_original": "Black Sabbath the 70's FS",
+    "title_original_trimmed": "Black Sabbath the 70's"
+  },
+  "6909": {
+    "name": "Black Sabbath the 80's",
+    "error": "********** NO MATCH **********",
+    "title_original": "Black Sabbath the 80's FS",
+    "title_original_trimmed": "Black Sabbath the 80's"
+  },
+  "6926": {
+    "ipdb": "2505",
+    "title": "Taxi",
+    "year": "1988",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2505/Playfield.jpg",
+    "title_original": "Taxi VP912 FS",
+    "title_original_trimmed": "Taxi"
+  },
+  "6935": {
+    "name": "Sorcerer UR/NF",
+    "error": "********** NO MATCH **********",
+    "title_original": "Sorcerer UR/NF VP9.1.x High Res. and BMPR Physics MOD FS",
+    "title_original_trimmed": "Sorcerer UR/NF"
+  },
+  "6938": {
+    "ipdb": "313",
+    "title": "Black Rose",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/313/image-2.jpg",
+    "title_original": "Black Rose (VP912) (FS Mod)",
+    "title_original_trimmed": "Black Rose"
+  },
+  "6944": {
+    "ipdb": "3824",
+    "title": "Tales of the Arabian Nights",
+    "year": "1996",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
+    "title_original": "Tales of the Arabian Nights VP912FS Enhanced",
+    "title_original_trimmed": "Tales of the Arabian Nights"
+  },
+  "6951": {
+    "name": "Rush2112",
+    "error": "********** NO MATCH **********",
+    "title_original": "Rush2112 FS",
+    "title_original_trimmed": "Rush2112"
+  },
+  "6964": {
+    "ipdb": "4917",
+    "title": "Ripley's Believe It or Not",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4917/image-5.jpg",
+    "title_original": "Ripley's Believe It or Not VP912 FS",
+    "title_original_trimmed": "Ripley's Believe It or Not"
+  },
+  "6968": {
+    "name": "Wrath Of Olympus",
+    "error": "********** NO MATCH **********",
+    "title_original": "Wrath Of Olympus B2S",
+    "title_original_trimmed": "Wrath Of Olympus"
+  },
+  "6973": {
+    "ipdb": "4014",
+    "title": "Junk Yard",
+    "year": "1996",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4014/Playfield.jpg",
+    "title_original": "Junk Yard VP9 FS",
+    "title_original_trimmed": "Junk Yard"
+  },
+  "6979": {
+    "ipdb": "4445",
+    "title": "Cactus Canyon",
+    "year": "1998",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4445/image-6.jpg",
+    "title_original": "Cactus Canyon (High Noon MOD) FS",
+    "title_original_trimmed": "Cactus Canyon"
+  },
+  "6983": {
+    "ipdb": "1100",
+    "title": "Guns N' Roses",
+    "year": "1994",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1100/image-11.jpg",
+    "title_original": "Guns N' Roses FS Alpha MOD",
+    "title_original_trimmed": "Guns N' Roses"
+  },
+  "6985": {
+    "name": "Flash 3179",
+    "error": "********** NO MATCH **********",
+    "title_original": "Flash 3179 Mod VP91x_1.2FS",
+    "title_original_trimmed": "Flash 3179"
+  },
+  "6997": {
+    "ipdb": "571",
+    "title": "Cosmic Gunfight",
+    "year": "1982",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/571/Playfield.jpg",
+    "title_original": "Cosmic Gunfight VP91x FS",
+    "title_original_trimmed": "Cosmic Gunfight"
+  },
+  "7008": {
+    "ipdb": "2346",
+    "title": "Star Gazer",
+    "year": "1980",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/2346/image-14.jpg",
+    "title_original": "Star Gazer (Stern 1980) [HP MEDIA PACK]",
+    "title_original_trimmed": "Star Gazer"
+  },
+  "7009": {
+    "ipdb": "1004",
+    "title": "Gilligan's Island",
+    "year": "1991",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1004/image-6.jpg",
+    "title_original": "Gilligan's Island (FS Mod VP913)",
+    "title_original_trimmed": "Gilligan's Island"
+  },
+  "7012": {
+    "ipdb": "5767",
+    "title": "ACDC (Pro)",
+    "year": "2012",
+    "manufacturer": "Stern",
+    "img": null,
+    "title_original": "ACDC FS",
+    "title_original_trimmed": "ACDC"
+  },
+  "7027": {
+    "name": "Starship Troopers Flasher",
+    "error": "********** NO MATCH **********",
+    "title_original": "Starship Troopers Flasher MOD FS",
+    "title_original_trimmed": "Starship Troopers Flasher"
+  },
+  "7050": {
+    "ipdb": "4059",
+    "title": "Cirqus Voltaire",
+    "year": "1997",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4059/image-16.jpg",
+    "title_original": "Cirqus Voltaire VP913 FS B2S",
+    "title_original_trimmed": "Cirqus Voltaire"
+  },
+  "7052": {
+    "ipdb": "2847",
+    "title": "Stargate",
+    "year": "1995",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2847/image-12.jpg",
+    "title_original": "Stargate FS 4K UHD 1.3",
+    "title_original_trimmed": "Stargate"
+  },
+  "7060": {
+    "ipdb": "2847",
+    "title": "Stargate",
+    "year": "1995",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2847/image-12.jpg",
+    "title_original": "Stargate FS 2K FullHD 1.3",
+    "title_original_trimmed": "Stargate"
+  },
+  "7063": {
+    "ipdb": "2397",
+    "title": "Strange World",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2397/Playfield.jpg",
+    "title_original": "Strange World FS B2S Table Image",
+    "title_original_trimmed": "Strange World"
+  },
+  "7070": {
+    "name": "SKRILLEX",
+    "error": "********** NO MATCH **********",
+    "title_original": "SKRILLEX_FS_DB2S_VP916",
+    "title_original_trimmed": "SKRILLEX"
+  },
+  "7086": {
+    "ipdb": "2684",
+    "title": "Twilight Zone",
+    "year": "1993",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2684/image-1.jpg",
+    "title_original": "Twilight FS VP912",
+    "title_original_trimmed": "Twilight"
+  },
+  "7088": {
+    "ipdb": "5007",
+    "title": "Charlie's Angels",
+    "year": "1978",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/5007/image-4.jpg",
+    "title_original": "Charlie's Angels FS VP91x",
+    "title_original_trimmed": "Charlie's Angels"
+  },
+  "7097": {
+    "ipdb": "2403",
+    "title": "Street Fighter II",
+    "year": "1993",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2403/image-2.jpg",
+    "title_original": "Street Fighter II FS MOD",
+    "title_original_trimmed": "Street Fighter II"
+  },
+  "7108": {
+    "type": "OG",
+    "title_original": "311 VP912 FS MOD",
+    "title_original_trimmed": "311"
+  },
+  "7114": {
+    "name": "DEF LEPPARD",
+    "error": "********** NO MATCH **********",
+    "title_original": "DEF LEPPARD (VP916_DB2S_FS_MOD)",
+    "title_original_trimmed": "DEF LEPPARD"
+  },
+  "7116": {
+    "ipdb": "2158",
+    "title": "The Simpsons",
+    "year": "1990",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2158/Playfield.jpg",
+    "title_original": "The Simpsons Data East 1990",
+    "title_original_trimmed": "The Simpsons"
+  },
+  "7119": {
+    "ipdb": "3276",
+    "title": "Trailer",
+    "year": "1985",
+    "manufacturer": "Playmatic",
+    "img": "http://www.ipdb.org/images/3276/image-4.jpg",
+    "title_original": "Trailer (FS)",
+    "title_original_trimmed": "Trailer"
+  },
+  "7130": {
+    "name": "SABATON",
+    "error": "********** NO MATCH **********",
+    "title_original": "SABATON FS VP 912",
+    "title_original_trimmed": "SABATON"
+  },
+  "7131": {
+    "ipdb": "431",
+    "title": "Capersville",
+    "year": "1966",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/431/image-2.jpg",
+    "title_original": "Capersville (Bally 1966) FS B2S",
+    "title_original_trimmed": "Capersville"
+  },
+  "7142": {
+    "ipdb": "2455",
+    "title": "Supersonic",
+    "year": "1979",
+    "manufacturer": "sonic",
+    "img": "http://www.ipdb.org/images/2455/Playfield.jpg",
+    "title_original": "Supersonic (Bally 1979) [HP MEDIA PACK]",
+    "title_original_trimmed": "Supersonic"
+  },
+  "7143": {
+    "ipdb": "2455",
+    "title": "Supersonic",
+    "year": "1979",
+    "manufacturer": "sonic",
+    "img": "http://www.ipdb.org/images/2455/Playfield.jpg",
+    "title_original": "Supersonic (Bally 1979) [HP MEDIA PACK]",
+    "title_original_trimmed": "Supersonic"
+  },
+  "7145": {
+    "name": "Getaway HighspeedII",
+    "error": "********** NO MATCH **********",
+    "title_original": "Getaway HighspeedII FS GI Dark UNL",
+    "title_original_trimmed": "Getaway HighspeedII"
+  },
+  "7146": {
+    "ipdb": "242",
+    "title": "Big Daddy",
+    "year": "1963",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/242/Playfield.jpg",
+    "title_original": "BigDaddyVP9_B2S",
+    "title_original_trimmed": "BigDaddyVP9"
+  },
+  "7157": {
+    "ipdb": "2454",
+    "title": "Superman",
+    "year": "1979",
+    "manufacturer": "Atari",
+    "img": "http://www.ipdb.org/images/2454/image-5.jpg",
+    "title_original": "Superman (Atari 1979) [HP MEDIA PACK]",
+    "title_original_trimmed": "Superman"
+  },
+  "7159": {
+    "ipdb": "4769",
+    "title": "Solar Ride",
+    "year": "1979",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/4769/image-3.jpg",
+    "title_original": "Solar Ride (Gottlieb 1979) [HP MEDIA PACK]",
+    "title_original_trimmed": "Solar Ride"
+  },
+  "7160": {
+    "ipdb": "2328",
+    "title": "Spy Hunter",
+    "year": "1984",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/2328/image-3.jpg",
+    "title_original": "Spy Hunter (Bally 1984) [HP MEDIA PACK]",
+    "title_original_trimmed": "Spy Hunter"
+  },
+  "7162": {
+    "ipdb": "2403",
+    "title": "Street Fighter II",
+    "year": "1993",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2403/image-2.jpg",
+    "title_original": "Street Fighter II (Premier 1993) [HP MEDIA PACK]",
+    "title_original_trimmed": "Street Fighter II"
+  },
+  "7163": {
+    "ipdb": "2365",
+    "title": "Stars",
+    "year": "1952",
+    "manufacturer": "United",
+    "img": "http://www.ipdb.org/images/2365/Playfield.jpg",
+    "title_original": "Stars (Stern 1978) [HP MEDIA PACK]",
+    "title_original_trimmed": "Stars"
+  },
+  "7169": {
+    "ipdb": "3237",
+    "title": "Skateball",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2170/image-3.jpg",
+    "title_original": "Skateball (Bally 1980) [HP MEDIA PACK]",
+    "title_original_trimmed": "Skateball"
+  },
+  "7173": {
+    "ipdb": "619",
+    "title": "Cyclopes",
+    "year": "1985",
+    "manufacturer": "Game Plan",
+    "img": "http://www.ipdb.org/images/619/image-3.jpg",
+    "title_original": "Cyclopes - Mod FS",
+    "title_original_trimmed": "Cyclopes"
+  },
+  "7176": {
+    "ipdb": "4513",
+    "title": "Star Wars",
+    "year": "1987",
+    "manufacturer": "Sonic",
+    "img": "http://www.ipdb.org/images/2358/Playfield.jpg",
+    "title_original": "Star Wars - VP9 Mod FS",
+    "title_original_trimmed": "Star Wars"
+  },
+  "7193": {
+    "ipdb": "2874",
+    "title": "Shaq Attaq",
+    "year": "1995",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2874/image-2.jpg",
+    "title_original": "Shaq Attaq (Gottlieb 1995) [HP MEDIA PACK]",
+    "title_original_trimmed": "Shaq Attaq"
+  },
+  "7194": {
+    "ipdb": "3879",
+    "title": "Space Jam",
+    "year": "1996",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/3879/image-2.jpg",
+    "title_original": "Space Jam (Sega 1996) [HP MEDIA PACK]",
+    "title_original_trimmed": "Space Jam"
+  },
+  "7203": {
+    "ipdb": "3427",
+    "title": "Super Mario Bros. Mushroom World",
+    "year": "1992",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/3427/image-2.jpg",
+    "title_original": "Super Mario Bros. Mushroom World (Gottlieb 1992) [HP MEDIA PACK]",
+    "title_original_trimmed": "Super Mario Bros. Mushroom World"
+  },
+  "7212": {
+    "ipdb": "4059",
+    "title": "Cirqus Voltaire",
+    "year": "1997",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4059/image-16.jpg",
+    "title_original": "Cirqus Voltaire [ Night Mod ]_VP916_v2.2_FS_B2S",
+    "title_original_trimmed": "Cirqus Voltaire"
+  },
+  "7221": {
+    "ipdb": "1414",
+    "title": "Laser Cue",
+    "year": "1984",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1414/image-3.jpg",
+    "title_original": "Laser Cue - VP9.1x - v 1.0 - MRCMRC",
+    "title_original_trimmed": "Laser Cue"
+  },
+  "7227": {
+    "name": "KeyWest",
+    "error": "********** NO MATCH **********",
+    "title_original": "KeyWest_B2S",
+    "title_original_trimmed": "KeyWest"
+  },
+  "7229": {
+    "name": "SureShot",
+    "error": "********** NO MATCH **********",
+    "title_original": "SureShot_FS_B2S",
+    "title_original_trimmed": "SureShot"
+  },
+  "7230": {
+    "ipdb": "4574",
+    "title": "Sure Shot",
+    "year": "1981",
+    "manufacturer": "Taito",
+    "img": "http://www.ipdb.org/images/4891/image-6.jpg",
+    "title_original": "Sure Shot (Gottlieb 1976) [HP MEDIA PACK]",
+    "title_original_trimmed": "Sure Shot"
+  },
+  "7249": {
+    "name": "Terminator3",
+    "error": "********** NO MATCH **********",
+    "title_original": "Terminator3 BLUEandREDledGImod",
+    "title_original_trimmed": "Terminator3"
+  },
+  "7250": {
+    "ipdb": "2486",
+    "title": "Swords of Fury",
+    "year": "1988",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2486/image-2.jpg",
+    "title_original": "Swords of Fury VP9 FS MOD",
+    "title_original_trimmed": "Swords of Fury"
+  },
+  "7251": {
+    "name": "Terminator3",
+    "error": "********** NO MATCH **********",
+    "title_original": "Terminator3_BLUEandREDledGImod_B2S",
+    "title_original_trimmed": "Terminator3"
+  },
+  "7254": {
+    "ipdb": "953",
+    "title": "Freefall",
+    "year": "1981",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/953/image-2.jpg",
+    "title_original": "Freefall VP91x FS",
+    "title_original_trimmed": "Freefall"
+  },
+  "7258": {
+    "ipdb": "2156",
+    "title": "Silverball Mania",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2156/image-2.jpg",
+    "title_original": "Silverball Mania (Bally 1978) [HP MEDIA PACK]",
+    "title_original_trimmed": "Silverball Mania"
+  },
+  "7284": {
+    "ipdb": "2091",
+    "title": "See Saw",
+    "year": "1970",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3230/image-2.jpg",
+    "title_original": "See-Saw (Bally 1970) [HP MEDIA PACK]",
+    "title_original_trimmed": "See Saw"
+  },
+  "7289": {
+    "name": "Scarface   Balls and Power",
+    "error": "********** NO MATCH **********",
+    "title_original": "Scarface - Balls and Power FS",
+    "title_original_trimmed": "Scarface   Balls and Power"
+  },
+  "7292": {
+    "name": "Scarface   Balls and Power",
+    "error": "********** NO MATCH **********",
+    "title_original": "Scarface - Balls and Power [HP MEDIA PACK]",
+    "title_original_trimmed": "Scarface   Balls and Power"
+  },
+  "7293": {
+    "ipdb": "195",
+    "title": "Batman",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/195/image-2.jpg",
+    "title_original": "Batman DE FS Alpha BMPR MOD",
+    "title_original_trimmed": "Batman"
+  },
+  "7294": {
+    "ipdb": "4137",
+    "title": "The X Files",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4137/image-5.jpg",
+    "title_original": "X-Files FS GI BMPR MOD",
+    "title_original_trimmed": "X Files"
+  },
+  "7296": {
+    "ipdb": "2112",
+    "title": "Sharpshooter",
+    "year": "1949",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2112/Playfield.jpg",
+    "title_original": "Sharpshooter (Game Plan 1979)",
+    "title_original_trimmed": "Sharpshooter"
+  },
+  "7297": {
+    "ipdb": "2112",
+    "title": "Sharpshooter",
+    "year": "1949",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2112/Playfield.jpg",
+    "title_original": "Sharpshooter (Game Plan) (1979) (Bodydump) (1.0) (FS)",
+    "title_original_trimmed": "Sharpshooter"
+  },
+  "7313": {
+    "ipdb": "5158",
+    "title": "Super Star",
+    "year": "1986",
+    "manufacturer": "Recreativos Franco",
+    "img": "http://www.ipdb.org/images/5158/image-1.jpg",
+    "title_original": "Super Star (Briarwood 1976) [HP MEDIA PACK]",
+    "title_original_trimmed": "Super Star"
+  },
+  "7314": {
+    "ipdb": "2204",
+    "title": "Skyrocket",
+    "year": "1970",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2204/image-4.jpg",
+    "title_original": "Skyrocket (Bally 1970) [HP MEDIA PACK]",
+    "title_original_trimmed": "Skyrocket"
+  },
+  "7326": {
+    "ipdb": "1386",
+    "title": "Kiss",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1386/Playfield.jpg",
+    "title_original": "KISS FS",
+    "title_original_trimmed": "KISS"
+  },
+  "7364": {
+    "ipdb": "1922",
+    "title": "Raven",
+    "year": "1986",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/1922/image-1.jpg",
+    "title_original": "Raven_FS_VP91x_1.0.0",
+    "title_original_trimmed": "Raven"
+  },
+  "7375": {
+    "ipdb": "1796",
+    "title": "PINBOT",
+    "year": "1986",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1796/Playfield.jpg",
+    "title_original": "Pinbot VP91x and BMPR Physics MOD FS",
+    "title_original_trimmed": "Pinbot"
+  },
+  "7376": {
+    "name": "FANTASY MADNESS",
+    "error": "********** NO MATCH **********",
+    "title_original": "FANTASY MADNESS",
+    "title_original_trimmed": "FANTASY MADNESS"
+  },
+  "7397": {
+    "ipdb": "4097",
+    "title": "Canasta 86",
+    "year": "1986",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/4097/image-3.jpg",
+    "title_original": "Canasta 86 VP9 FS",
+    "title_original_trimmed": "Canasta 86"
+  },
+  "7418": {
+    "ipdb": "2465",
+    "title": "Surfer",
+    "year": "1976",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2465/image-2.jpg",
+    "title_original": "Surfer_FS_B2S",
+    "title_original_trimmed": "Surfer"
+  },
+  "7419": {
+    "ipdb": "4054",
+    "title": "Star Wars Trilogy",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4054/image-7.jpg",
+    "title_original": "Star Wars Trilogy VP915 FS",
+    "title_original_trimmed": "Star Wars Trilogy"
+  },
+  "7422": {
+    "ipdb": "2465",
+    "title": "Surfer",
+    "year": "1976",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2465/image-2.jpg",
+    "title_original": "Surfer (Gottlieb 1976) [HP MEDIA PACK]",
+    "title_original_trimmed": "Surfer"
+  },
+  "7425": {
+    "ipdb": "4054",
+    "title": "Star Wars Trilogy",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4054/image-7.jpg",
+    "title_original": "Star Wars Trilogy (Sega 1997) [HP MEDIA PACK]",
+    "title_original_trimmed": "Star Wars Trilogy"
+  },
+  "7449": {
+    "ipdb": "5287",
+    "title": "Hell",
+    "year": "1980",
+    "manufacturer": "Unknown",
+    "img": "http://www.ipdb.org/images/5287/image-3.jpg",
+    "title_original": "FS Gottlieb - Fast Draw EM directb2s",
+    "title_original_trimmed": "FS"
+  },
+  "7461": {
+    "ipdb": "4769",
+    "title": "Solar Ride",
+    "year": "1979",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/4769/image-3.jpg",
+    "title_original": "Solar Ride (Gottlieb 1979) (dB2S) (FS)",
+    "title_original_trimmed": "Solar Ride"
+  },
+  "7468": {
+    "name": "Scarface balls and power",
+    "error": "********** NO MATCH **********",
+    "title_original": "Scarface balls and power B2S LEDWIZ cabinet edition",
+    "title_original_trimmed": "Scarface balls and power"
+  },
+  "7475": {
+    "ipdb": "3781",
+    "title": "Attack from Mars",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
+    "title_original": "Mars Attacks FS DirectB2S 2013.2.16",
+    "title_original_trimmed": "Mars Attacks"
+  },
+  "7477": {
+    "name": "Goldeneye Alpha II",
+    "error": "********** NO MATCH **********",
+    "title_original": "Goldeneye Alpha II MOD FS",
+    "title_original_trimmed": "Goldeneye Alpha II"
+  },
+  "7480": {
+    "type": "OG",
+    "title_original": "ACDC FS [directB2S]",
+    "title_original_trimmed": "ACDC"
+  },
+  "7490": {
+    "name": "Grateful Dead",
+    "error": "********** NO MATCH **********",
+    "title_original": "Grateful Dead FS [directB2S]",
+    "title_original_trimmed": "Grateful Dead"
+  },
+  "7506": {
+    "name": "Fantasy Madness Remake",
+    "error": "********** NO MATCH **********",
+    "title_original": "Fantasy Madness Remake",
+    "title_original_trimmed": "Fantasy Madness Remake"
+  },
+  "7538": {
+    "ipdb": "1745",
+    "title": "Panthera",
+    "year": "1980",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1745/image-4.jpg",
+    "title_original": "Panthera(JPSalas, Zany) FS",
+    "title_original_trimmed": "Panther"
+  },
+  "7542": {
+    "name": "Tommy HD BMPR GI",
+    "error": "********** NO MATCH **********",
+    "title_original": "Tommy HD BMPR GI MOD (FS)",
+    "title_original_trimmed": "Tommy HD BMPR GI"
+  },
+  "7543": {
+    "name": "Ravine",
+    "error": "********** NO MATCH **********",
+    "title_original": "Ravine",
+    "title_original_trimmed": "Ravine"
+  },
+  "7559": {
+    "ipdb": "5056",
+    "title": "Baseball",
+    "year": "1932",
+    "manufacturer": "Great States",
+    "img": null,
+    "title_original": "Baseball FS [directB2S]",
+    "title_original_trimmed": "Baseball"
+  },
+  "7576": {
+    "ipdb": "4077",
+    "title": "Mephisto",
+    "year": "1987",
+    "manufacturer": "Unidesa",
+    "img": "http://www.ipdb.org/images/4077/image-3.jpg",
+    "title_original": "Mephisto (Cirsa - 1987) FS dB2S MOD",
+    "title_original_trimmed": "Mephisto"
+  },
+  "7578": {
+    "ipdb": "1777",
+    "title": "Phantom of the Opera",
+    "year": "1990",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1777/Playfield.jpg",
+    "title_original": "Phantom of the Opera - FS",
+    "title_original_trimmed": "Phantom of the Opera"
+  },
+  "7582": {
+    "ipdb": "4443",
+    "title": "Godzilla",
+    "year": "1998",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4443/image-3.jpg",
+    "title_original": "Godzilla (SEGA) (1998) (Rosve)",
+    "title_original_trimmed": "Godzilla"
+  },
+  "7584": {
+    "ipdb": "2235",
+    "title": "Soccer Kings",
+    "year": "1982",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/2235/image-16.jpg",
+    "title_original": "Soccer Kings (Zaccaria 1982) [HP MEDIA PACK]",
+    "title_original_trimmed": "Soccer Kings"
+  },
+  "7587": {
+    "ipdb": "861",
+    "title": "Fish Tales",
+    "year": "1992",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/861/image-2.jpg",
+    "title_original": "Fish Tales (Williams) (1992) (Rosve)",
+    "title_original_trimmed": "Fish Tales"
+  },
+  "7589": {
+    "ipdb": "5542",
+    "title": "Space Shuttle",
+    "year": "1977",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/2260/image-5.jpg",
+    "title_original": "Space Shuttle  (Williams) (1984) (Rosve)",
+    "title_original_trimmed": "Space Shuttle"
+  },
+  "7591": {
+    "ipdb": "105",
+    "title": "Atlantis",
+    "year": "1975",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/106/image-3.jpg",
+    "title_original": "Atlantis (Bally) (1989) (Rosve) (1.1)",
+    "title_original_trimmed": "Atlantis"
+  },
+  "7593": {
+    "name": "Terminator Killing Machine",
+    "error": "********** NO MATCH **********",
+    "title_original": "Terminator Killing Machine",
+    "title_original_trimmed": "Terminator Killing Machine"
+  },
+  "7594": {
+    "name": "StarshipTroopers",
+    "error": "********** NO MATCH **********",
+    "title_original": "StarshipTroopers (SEGA) Rosve)",
+    "title_original_trimmed": "StarshipTroopers"
+  },
+  "7596": {
+    "name": "Gyruss",
+    "error": "********** NO MATCH **********",
+    "title_original": "Gyruss_FS_B2S",
+    "title_original_trimmed": "Gyruss"
+  },
+  "7602": {
+    "ipdb": "3939",
+    "title": "Screech",
+    "year": "1976",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/3939/image-4.jpg",
+    "title_original": "Screech (Inder 1978) [HP MEDIA PACK]",
+    "title_original_trimmed": "Screech"
+  },
+  "7624": {
+    "ipdb": "1966",
+    "title": "Riverboat Gambler",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1966/image-4.jpg",
+    "title_original": "Riverboat Gambler - Mod - FS",
+    "title_original_trimmed": "Riverboat Gambler"
+  },
+  "7630": {
+    "ipdb": "3724",
+    "title": "Sexy Girl",
+    "year": "1979",
+    "manufacturer": "Bell Coin Matics",
+    "img": "http://www.ipdb.org/images/2106/image-4.jpg",
+    "title_original": "Sexy Girl (Arkon 1980) [HP MEDIA PACK]",
+    "title_original_trimmed": "Sexy Girl"
+  },
+  "7631": {
+    "ipdb": "438",
+    "title": "Capt. Fantastic and The Brown Dirt Cowboy",
+    "year": "1975",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/438/image-1.jpg",
+    "title_original": "Party_Nation_-FS-MOD-VP914",
+    "title_original_trimmed": "Party Nation"
+  },
+  "7632": {
+    "ipdb": "1976",
+    "title": "Robocop",
+    "year": "1989",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1976/image-1.jpg",
+    "title_original": "Robocop FS GI Darkmod",
+    "title_original_trimmed": "Robocop"
+  },
+  "7633": {
+    "ipdb": "1976",
+    "title": "Robocop",
+    "year": "1989",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1976/image-1.jpg",
+    "title_original": "Robocop FS GI darkmod ledwiz",
+    "title_original_trimmed": "Robocop"
+  },
+  "7637": {
+    "ipdb": "2196",
+    "title": "Sky Kings",
+    "year": "1973",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2196/Playfield.jpg",
+    "title_original": "Sky Kings (Bally 1973) [HP MEDIA PACK]",
+    "title_original_trimmed": "Sky Kings"
+  },
+  "7638": {
+    "ipdb": "3273",
+    "title": "Solar Wars",
+    "year": "1986",
+    "manufacturer": "Sonic",
+    "img": null,
+    "title_original": "Solar Wars (Sonic 1986) [HP MEDIA PACK]",
+    "title_original_trimmed": "Solar Wars"
+  },
+  "7639": {
+    "ipdb": "2250",
+    "title": "Space Gambler",
+    "year": "1978",
+    "manufacturer": "Playmatic",
+    "img": "http://www.ipdb.org/images/2250/image-6.jpg",
+    "title_original": "Space Gambler (Playmatic 1978) [HP MEDIA PACK]",
+    "title_original_trimmed": "Space Gambler"
+  },
+  "7640": {
+    "ipdb": "3458",
+    "title": "Star God",
+    "year": "1980",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/3458/image-10.jpg",
+    "title_original": "Star God (Zaccaria 1980) [HP MEDIA PACK]",
+    "title_original_trimmed": "Star God"
+  },
+  "7641": {
+    "ipdb": "4016",
+    "title": "Stellar Airship",
+    "year": "1979",
+    "manufacturer": "Geiger",
+    "img": "http://www.ipdb.org/images/4016/image-7.jpg",
+    "title_original": "Stellar Airship (Geiger 1979) [HP MEDIA PACK]",
+    "title_original_trimmed": "Stellar Airship"
+  },
+  "7644": {
+    "ipdb": "438",
+    "title": "Capt. Fantastic and The Brown Dirt Cowboy",
+    "year": "1975",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/438/image-1.jpg",
+    "title_original": "Party Nation directB2S",
+    "title_original_trimmed": "Party Nation"
+  },
+  "7648": {
+    "ipdb": "2684",
+    "title": "Twilight Zone",
+    "year": "1993",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2684/image-1.jpg",
+    "title_original": "Twilight FS [directB2S] [VP 9.x Cabinet FS B2S]",
+    "title_original_trimmed": "Twilight"
+  },
+  "7649": {
+    "name": "SKRILLEX",
+    "error": "********** NO MATCH **********",
+    "title_original": "SKRILLEX FS [directB2S] [VP 9.x Cabinet FS B2S] 1.0",
+    "title_original_trimmed": "SKRILLEX"
+  },
+  "7650": {
+    "name": "Def Leppard",
+    "error": "********** NO MATCH **********",
+    "title_original": "Def Leppard FS [directB2S] [VP 9.x Cabinet FS B2S]",
+    "title_original_trimmed": "Def Leppard"
+  },
+  "7658": {
+    "name": "Rapid Vienna 2013",
+    "error": "********** NO MATCH **********",
+    "title_original": "Rapid Vienna 2013 FS Direct B2s",
+    "title_original_trimmed": "Rapid Vienna 2013"
+  },
+  "7660": {
+    "type": "OG",
+    "title_original": "311 FS [directB2S] [VP 9.x Cabinet FS B2S]",
+    "title_original_trimmed": "311"
+  },
+  "7664": {
+    "ipdb": "5053",
+    "title": "The Sopranos",
+    "year": "2005",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5053/image-D6.jpg",
+    "title_original": "The Sopranos VP915 FS",
+    "title_original_trimmed": "The Sopranos"
+  },
+  "7669": {
+    "name": "Linkin Park",
+    "error": "********** NO MATCH **********",
+    "title_original": "Linkin Park [FS-DB2S-VP914-MOD]",
+    "title_original_trimmed": "Linkin Park"
+  },
+  "7692": {
+    "ipdb": "645",
+    "title": "Deadly Weapon",
+    "year": "1990",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2152/image-2.jpg",
+    "title_original": "Deadly Weapon (Gottlieb)(1990)(Bodydump)(1.0)(FS)(9.14)",
+    "title_original_trimmed": "Deadly Weapon"
+  },
+  "7694": {
+    "name": "Black Sabbath 70s",
+    "error": "********** NO MATCH **********",
+    "title_original": "Black Sabbath 70s FS [directB2S]",
+    "title_original_trimmed": "Black Sabbath 70s"
+  },
+  "7700": {
+    "name": "Black Sabbath 80s",
+    "error": "********** NO MATCH **********",
+    "title_original": "Black Sabbath 80s FS [directB2S]",
+    "title_original_trimmed": "Black Sabbath 80s"
+  },
+  "7701": {
+    "name": "RUSH 2112",
+    "error": "********** NO MATCH **********",
+    "title_original": "RUSH 2112 FS [directB2S]",
+    "title_original_trimmed": "RUSH 2112"
+  },
+  "7776": {
+    "ipdb": "3350",
+    "title": "Twister",
+    "year": "1936",
+    "manufacturer": "Exhibit",
+    "img": "http://www.ipdb.org/images/3976/Playfield.jpg",
+    "title_original": "Twister VP912 BMPR FS",
+    "title_original_trimmed": "Twister"
+  },
+  "7791": {
+    "ipdb": "1682",
+    "title": "Nitro Ground Shaker",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1682/image-3.jpg",
+    "title_original": "NITRO GROUND SHAKER (Bally 1980) FS",
+    "title_original_trimmed": "NITRO GROUND SHAKER"
+  },
+  "7795": {
+    "ipdb": "3781",
+    "title": "Attack from Mars",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
+    "title_original": "Attack_From_Mars_NIGHT MOD_VP916_v3.0_FS_3-WAY-GI_BMPR_FD-Routine",
+    "title_original_trimmed": "Attack From Mars"
+  },
+  "7961": {
+    "ipdb": "4061",
+    "title": "Big Brave",
+    "year": "1974",
+    "manufacturer": "Bensa",
+    "img": "http://www.ipdb.org/images/234/image-2.jpg",
+    "title_original": "Big Brave VP915 FS",
+    "title_original_trimmed": "Big Brave"
+  },
+  "7966": {
+    "ipdb": "4061",
+    "title": "Big Brave",
+    "year": "1974",
+    "manufacturer": "Bensa",
+    "img": "http://www.ipdb.org/images/234/image-2.jpg",
+    "title_original": "Big Brave VP915 FS dB2S",
+    "title_original_trimmed": "Big Brave"
+  },
+  "8127": {
+    "ipdb": "4032",
+    "title": "Medieval Madness",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4032/image-7.jpg",
+    "title_original": "Medieval-Madness_Night Mod_VP916_V1.2_FS",
+    "title_original_trimmed": "Medieval Madness"
+  },
+  "8144": {
+    "ipdb": "1977",
+    "title": "Robot",
+    "year": "1985",
+    "manufacturer": "Zaccaria",
+    "img": "http://www.ipdb.org/images/1977/image-10.jpg",
+    "title_original": "Robot FS 1.2",
+    "title_original_trimmed": "Robot"
+  },
+  "8151": {
+    "ipdb": "1885",
+    "title": "QBert's Quest",
+    "year": "1983",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1885/Playfield.jpg",
+    "title_original": "Q*bert's Quest",
+    "title_original_trimmed": "Q*bert's Quest"
+  },
+  "8166": {
+    "ipdb": "614",
+    "title": "Cybernaut",
+    "year": "1985",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/614/image-1.jpg",
+    "title_original": "Cybernaut FS",
+    "title_original_trimmed": "Cybernaut"
+  },
+  "8168": {
+    "ipdb": "4023",
+    "title": "NBA Fastbreak",
+    "year": "1997",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4023/image-10.jpg",
+    "title_original": "NBA Fastbreak VP915 FS",
+    "title_original_trimmed": "NBA Fastbreak"
+  },
+  "8174": {
+    "ipdb": "4536",
+    "title": "RollerCoaster Tycoon",
+    "year": "2002",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4536/image-2.jpg",
+    "title_original": "Rollercoaster Tycoon FS",
+    "title_original_trimmed": "Rollercoaster Tycoon"
+  },
+  "8175": {
+    "ipdb": "4504",
+    "title": "Austin Powers",
+    "year": "2001",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4504/image-11.jpg",
+    "title_original": "Austin Powers FS",
+    "title_original_trimmed": "Austin Powers"
+  },
+  "8180": {
+    "ipdb": "403",
+    "title": "301Bulls Eye",
+    "year": "1986",
+    "manufacturer": "Grand Products",
+    "img": "http://www.ipdb.org/images/403/image-3.jpg",
+    "title_original": "301 Bullseye FS",
+    "title_original_trimmed": "301 Bullseye"
+  },
+  "8181": {
+    "ipdb": "33",
+    "title": "Airborne Avenger",
+    "year": "1977",
+    "manufacturer": "Atari",
+    "img": "http://www.ipdb.org/images/33/image-5.jpg",
+    "title_original": "Airborne Avenger FS",
+    "title_original_trimmed": "Airborne Avenger"
+  },
+  "8182": {
+    "ipdb": "250",
+    "title": "Big Guns",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/250/image-4.jpg",
+    "title_original": "Big Guns FS",
+    "title_original_trimmed": "Big Guns"
+  },
+  "8183": {
+    "ipdb": "3676",
+    "title": "Car Hop",
+    "year": "1991",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2152/image-2.jpg",
+    "title_original": "Car Hop FS",
+    "title_original_trimmed": "Car Hop"
+  },
+  "8184": {
+    "ipdb": "531",
+    "title": "Cleopatra",
+    "year": "1948",
+    "manufacturer": "Marvel",
+    "img": "http://www.ipdb.org/images/4538/image-3.jpg",
+    "title_original": "Cleopatra FS",
+    "title_original_trimmed": "Cleopatra"
+  },
+  "8194": {
+    "ipdb": "1763",
+    "title": "Party Animal",
+    "year": "1987",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/1763/image-2.jpg",
+    "title_original": "Party Animal FS",
+    "title_original_trimmed": "Party Animal"
+  },
+  "8196": {
+    "ipdb": "3784",
+    "title": "Breakshot",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/3784/Playfield.jpg",
+    "title_original": "BreakShot_VP915+_(Mod FS)1.1",
+    "title_original_trimmed": "BreakShot"
+  },
+  "8201": {
+    "ipdb": "588",
+    "title": "Creature from the Black Lagoon",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/588/image-22.jpg",
+    "title_original": "Creature from the Black Lagoon FSHD Mod",
+    "title_original_trimmed": "Creature from the Black Lagoon"
+  },
+  "8202": {
+    "ipdb": "4459",
+    "title": "Striker Xtreme",
+    "year": "2000",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4459/image-10.jpg",
+    "title_original": "Striker Xtreme FS",
+    "title_original_trimmed": "Striker Xtreme"
+  },
+  "8203": {
+    "ipdb": "2630",
+    "title": "Transporter the Rescue",
+    "year": "1989",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2630/image-1.jpg",
+    "title_original": "Transporter The Rescue FS",
+    "title_original_trimmed": "Transporter The Rescue"
+  },
+  "8210": {
+    "ipdb": "1329",
+    "title": "Jumping Jack",
+    "year": "1973",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1329/Playfield.jpg",
+    "title_original": "Jumping Jack (Gottlieb 1973).zip",
+    "title_original_trimmed": "Jumping Jack"
+  },
+  "8213": {
+    "name": "FS Drop A Card",
+    "error": "********** NO MATCH **********",
+    "title_original": "FS Drop-A-Card",
+    "title_original_trimmed": "FS Drop A Card"
+  },
+  "8217": {
+    "ipdb": "3337",
+    "title": "Shangri'La",
+    "year": "1943",
+    "manufacturer": "P & S",
+    "img": "http://www.ipdb.org/images/2110/Playfield.jpg",
+    "title_original": "Shangri-La (Williams 1967)",
+    "title_original_trimmed": "Shangri La"
+  },
+  "8218": {
+    "ipdb": "3337",
+    "title": "Shangri'La",
+    "year": "1943",
+    "manufacturer": "P & S",
+    "img": "http://www.ipdb.org/images/2110/Playfield.jpg",
+    "title_original": "Shangri-La (Williams)(1967)(Bodydump)(1.0)(FS)(9.16)",
+    "title_original_trimmed": "Shangri La"
+  },
+  "8228": {
+    "ipdb": "4445",
+    "title": "Cactus Canyon",
+    "year": "1998",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4445/image-6.jpg",
+    "title_original": "Cactus Canyon (High Noon Night Mod)_VP916_FS_v1.2",
+    "title_original_trimmed": "Cactus Canyon"
+  },
+  "8234": {
+    "name": "Gridiron Pinuck",
+    "error": "********** NO MATCH **********",
+    "title_original": "Gridiron Pinuck (FS B2S)",
+    "title_original_trimmed": "Gridiron Pinuck"
+  },
+  "8238": {
+    "ipdb": "105",
+    "title": "Atlantis",
+    "year": "1975",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/106/image-3.jpg",
+    "title_original": "Atlantis - FS - v1.1",
+    "title_original_trimmed": "Atlantis"
+  },
+  "8242": {
+    "ipdb": "250",
+    "title": "Big Guns",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/250/image-4.jpg",
+    "title_original": "Big Guns (Williams 1987)",
+    "title_original_trimmed": "Big Guns"
+  },
+  "8250": {
+    "ipdb": "2005",
+    "title": "Roller Disco",
+    "year": "1980",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2005/Playfield.jpg",
+    "title_original": "Roller Disco FS Mod",
+    "title_original_trimmed": "Roller Disco"
+  },
+  "8258": {
+    "ipdb": "1308",
+    "title": "Jokerz",
+    "year": "1988",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1308/image-9.jpg",
+    "title_original": "Jokerz! (Night Mod)_VP916_FS_v1.3",
+    "title_original_trimmed": "Jokerz!"
+  },
+  "8263": {
+    "ipdb": "4478",
+    "title": "Centaur",
+    "year": "1979",
+    "manufacturer": "INDER",
+    "img": "http://www.ipdb.org/images/476/Playfield.jpg",
+    "title_original": "Centaur_(Bally)_(1981)_VP916_FS",
+    "title_original_trimmed": "Centaur"
+  },
+  "8265": {
+    "ipdb": "1635",
+    "title": "Mousin' Around",
+    "year": "1989",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1635/image-12.jpg",
+    "title_original": "Mousin' Around - VP915 - FS",
+    "title_original_trimmed": "Mousin' Around"
+  },
+  "8274": {
+    "ipdb": "4490",
+    "title": "Playboy",
+    "year": "1999",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1822/Playfield.jpg",
+    "title_original": "Playboy (Stern)",
+    "title_original_trimmed": "Playboy"
+  },
+  "8279": {
+    "ipdb": "2261",
+    "title": "Space Station",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3498/image-13.jpg",
+    "title_original": "Space Station FS 1.0a_rev2",
+    "title_original_trimmed": "Space Station"
+  },
+  "8281": {
+    "ipdb": "730",
+    "title": "Dragonette",
+    "year": "1954",
+    "manufacturer": "Interflip",
+    "img": "http://www.ipdb.org/images/730/Playfield.jpg",
+    "title_original": "Dragon Interflip starman v1.0.0 (orig_B2S).rar",
+    "title_original_trimmed": "Dragon Interflip"
+  },
+  "8282": {
+    "ipdb": "730",
+    "title": "Dragonette",
+    "year": "1954",
+    "manufacturer": "Interflip",
+    "img": "http://www.ipdb.org/images/730/Playfield.jpg",
+    "title_original": "Dragon Interflip starman v1.0.0 (alt AR B2S).rar",
+    "title_original_trimmed": "Dragon Interflip"
+  },
+  "8346": {
+    "ipdb": "2261",
+    "title": "Space Station",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3498/image-13.jpg",
+    "title_original": "Space Station (Williams 1987) [HP MEDIA PACK with dB2S]",
+    "title_original_trimmed": "Space Station"
+  },
+  "8391": {
+    "ipdb": "1745",
+    "title": "Panthera",
+    "year": "1980",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1745/image-4.jpg",
+    "title_original": "Panthera FS Mod",
+    "title_original_trimmed": "Panthera"
+  },
+  "8438": {
+    "ipdb": "662",
+    "title": "Demolition Man",
+    "year": "1994",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/662/image-35.jpg",
+    "title_original": "Demolition Man FS Alpha MOD VP916",
+    "title_original_trimmed": "Demolition Man"
+  },
+  "8445": {
+    "ipdb": "2579",
+    "title": "The Who's Tommy Pinball Wizard",
+    "year": "1994",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2579/Playfield.jpg",
+    "title_original": "TOMMY FS BMPR Night MOD VP916",
+    "title_original_trimmed": "TOMMY"
+  },
+  "8446": {
+    "ipdb": "1233",
+    "title": "Hook",
+    "year": "1992",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1233/image-1.jpg",
+    "title_original": "Hook (Data East 1992) FS_HR_1.0",
+    "title_original_trimmed": "Hook"
+  },
+  "8491": {
+    "ipdb": "2641",
+    "title": "Tri Zone",
+    "year": "1979",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2641/Playfield.jpg",
+    "title_original": "Tri Zone FS Williams 1979 v1.0.2",
+    "title_original_trimmed": "Tri Zone"
+  },
+  "8498": {
+    "name": "Full",
+    "error": "********** NO MATCH **********",
+    "title_original": "Full (Recreativos Franco 1977) FS v1.0.0 B2S",
+    "title_original_trimmed": "Full"
+  },
+  "8505": {
+    "ipdb": "5306",
+    "title": "Indiana Jones",
+    "year": "2008",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5306/image-8.jpg",
+    "title_original": "Indiana Jones VP916 FS MOD",
+    "title_original_trimmed": "Indiana Jones"
+  },
+  "8530": {
+    "ipdb": "1257",
+    "title": "Hurricane",
+    "year": "1991",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1257/Playfield.jpg",
+    "title_original": "Hurricane-(FS MOD)-v1.0",
+    "title_original_trimmed": "Hurricane"
+  },
+  "8541": {
+    "type": "OG",
+    "title_original": "Beatles FS 2013 [DirectB2s]",
+    "title_original_trimmed": "Beatles"
+  },
+  "8542": {
+    "ipdb": "2528",
+    "title": "The Shadow",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2528/Playfield.jpg",
+    "title_original": "The Shadow VP916 FS Night MOD",
+    "title_original_trimmed": "The Shadow"
+  },
+  "8543": {
+    "ipdb": "3782",
+    "title": "Safe Cracker",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3782/Playfield.jpg",
+    "title_original": "Safe Cracker - VP915+ - FS",
+    "title_original_trimmed": "Safe Cracker"
+  },
+  "8550": {
+    "ipdb": "5306",
+    "title": "Indiana Jones",
+    "year": "2008",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5306/image-8.jpg",
+    "title_original": "Indiana Jones VP916 FS NIGHT MOD",
+    "title_original_trimmed": "Indiana Jones"
+  },
+  "8551": {
+    "name": "Bronco Buster rev3.0",
+    "error": "********** NO MATCH **********",
+    "title_original": "Bronco Buster rev3.0 FS B2S (flippered version)",
+    "title_original_trimmed": "Bronco Buster rev3.0"
+  }
+}

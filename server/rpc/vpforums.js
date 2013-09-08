@@ -1,8 +1,9 @@
 'use strict';
 
 var _ = require('underscore');
-var logger = require('winston');
+var fs = require('fs');
 
+var logger = require('winston');
 var vpf = require('../modules/vpforums');
 var error = require('../modules/error');
 var schema = require('../database/schema');
@@ -108,8 +109,42 @@ exports.actions = function(req, res, ss) {
 					logger.log('info', '[rpc] [vpf] Returning ' + rows.length + ' rows from a total of ' + num + ' (%d/%dms).', queryTime, countTime);
 					res({ rows: returnedRows, count: num, queryTime: queryTime, countTime: countTime });
 
-				}).error(function(err) {
-					throw new Error(err);
+				});
+			});
+		},
+
+		ipdbmatch: function(params) {
+
+			var category = 41;
+			var search = params.search && params.search.length > 1;
+			var p = { where: { category: category }, order: 'title' };
+
+			p.offset = params.offset ? parseInt(params.offset) : 0;
+			p.limit = params.limit ? parseInt(params.limit) : 0;
+
+			var mapFile = __dirname + '/../../ipdb-vpf.json';
+
+			var queryStart = +new Date();
+			var map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
+
+			schema.VpfFile.all(p).success(function(rows) {
+				var queryTime = (+new Date() - queryStart);
+
+				var returnedRows = [];
+				var r;
+				_.each(rows, function(row) {
+					r = schema.VpfFile.map(row);
+					r.ipdb_data = map[row.fileId];
+					returnedRows.push(r);
+				});
+
+				delete p.limit;
+				delete p.offset;
+				delete p.order;
+				var countStart = +new Date();
+				schema.VpfFile.count(p).success(function(num) {
+					var countTime = (+new Date() - countStart);
+					res({ rows: returnedRows, count: num, queryTime: queryTime, countTime: countTime });
 				});
 			});
 		}

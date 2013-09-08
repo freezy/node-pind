@@ -1,0 +1,75 @@
+extends layout
+
+block vars
+	- var pageController = 'AdminGlobalCtrl'
+	- var mainMenu = "admin"
+	- var subMenu = "global"
+
+block inner-content
+
+	.inner(ng-controller='DataCtrl', resource="vpforums.ipdbmatch")
+
+		h2 Link VPF files to IPDB
+
+		//- control bar
+		div.controls(style='display:none')
+
+			//- pager
+			pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
+
+			//- number of rows
+			numrows.numrows.input-mini.pull-right(selection='[10, 20, 30]', value='limit')
+
+			//- search box
+			searchbox(value='search', wait='300')
+
+			//- filter pills
+			ul.nav.nav-pills.pull-left.filter(filters, value='filters')
+				li
+					.icon
+						i.icon.filter(title="Filter by")
+				li(data-filter="original")
+					a(href="#") Original
+				li(data-filter="match")
+					a(href="#") Matched
+				li(data-filter="nomatch")
+					a(href="#") Missed
+		.clearfix
+
+		//- data
+		div.data.ng-cloak(style="display:none")
+			.row-fluid
+				ul.thumbnails
+					li.span12.vpf.item.big(ng-repeat="row in data", data-id="{{row.id}}", data-transferid="{{row.transferId}}", ng-animate="{ enter: 'animated fadeIn' }")
+						.thumbnail
+							thumb.ng-transclude.pull-left(fileid="{{row.fileId}}")
+							thumb.ng-transclude.pull-left(fileid="{{row.ipdb_data.img}}")
+							a(href="http://www.vpforums.org/index.php?app=downloads&showfile={{row.fileId}}", target="_blank")
+								h3 {{row.title_trimmed}}
+							p.pull-right.updated.hidden-phone-small VPF Name
+							h4.hidden-phone-small {{row.info}}
+							a(href="http://www.ipdb.org/machine.cgi?id={{row.ipdb_data.ipdb}}", target="_blank")
+								h3 {{row.ipdb_data.title}}
+							p.pull-right.updated.hidden-phone-small IPDB
+							h4.hidden-phone-small {{row.ipdb_data.manufacturer}} {{row.ipdb_data.year}}
+							.clearfix
+
+		//- empty search result
+		div.noresult(style="display:none")
+			p No results found.
+			button.btn.submit.small Clear Filters
+
+		//- no data
+		div.nodata(style="display:none")
+			p
+				| No index found. Click below to fetch the file index which takes a few minutes. <br>
+				| Data will be automatically refreshed when done.
+			button.btn.submit(ng-click="createIndex($event)")
+				i.icon.refresh
+				span(data-active="Downloading index") Download index
+
+			.indexing.progress.progress-striped.active(style="display:none")
+				.bar
+
+		.clearfix
+	div
