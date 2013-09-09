@@ -118,8 +118,7 @@ exports.actions = function(req, res, ss) {
 
 			var category = 41;
 			var p = { where: { category: category }, order: 'title' };
-			var mapFile = __dirname + '/../data/ipdb-vpf.json';
-			var map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
+			var map = ipdb.getIpdbMap();
 			var queryStart = +new Date();
 			schema.VpfFile.all(p).success(function(rows) {
 				var queryTime = (+new Date() - queryStart);

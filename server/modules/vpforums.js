@@ -590,6 +590,10 @@ VPForums.prototype.getTables = function(title, callback) {
 	this._fetchDownloads(41, title, {}, callback);
 };
 
+VPForums.prototype.getIpdbMap = function() {
+	return JSON.parse(fs.readFileSync(__dirname + '/../data/ipdb-vpf.json', 'utf8'));
+};
+
 /**
  * Retrieves all downloadable items for a given category and letter. This is a
  * cached operation, items are only downloaded the first time.
@@ -631,6 +635,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 		var results = [];
 		var ids = [];
 		var firstUpdated = null;
+		var map = that.getIpdbMap();
 		async.eachSeries(items, function(item, next) {
 			var l;
 			if (!letter) {
@@ -653,6 +658,10 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 				author: item.author,
 				lastUpdatedAt: new Date(item.updated)
 			};
+
+			if (map[item.fileId]) {
+				obj.ipdb_id = map[item.fileId].ipdb;
+			}
 
 			var done = function(err, r) {
 				if (err) {
