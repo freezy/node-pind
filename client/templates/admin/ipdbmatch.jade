@@ -11,31 +11,24 @@ block inner-content
 
 		h2 Link VPF files to IPDB
 
-		//- control bar
-		div.controls(style='display:none')
+		//- pager
+		pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
 
-			//- pager
-			pager.pagination.pagination-small.pull-right(page='page', pages='numpages')
+		//- number of rows
+		numrows.numrows.input-mini.pull-right(selection='[10, 20, 30]', value='limit')
 
-			//- number of rows
-			numrows.numrows.input-mini.pull-right(selection='[10, 20, 30]', value='limit')
+		//- search box
+		searchbox(value='search', wait='300')
 
-			//- search box
-			searchbox(value='search', wait='300')
-
-			//- filter pills
-			ul.nav.nav-pills.pull-left.filter(filters, value='filters')
-				li
-					.icon
-						i.icon.filter(title="Filter by")
-				li(data-filter="confirmed")
-					a(href="#") Confirmed
-				li(data-filter="original")
-					a(href="#") Original
-				li(data-filter="match")
-					a(href="#") Matched
-				li(data-filter="nomatch")
-					a(href="#") Missed
+		//- filter pills
+		ul.nav.nav-pills.pull-left.filter(filters, value='filters')
+			li
+				.icon
+					i.icon.filter(title="Filter by")
+			li(data-filter="confirmed")
+				a(href="#") Confirmed
+			li(data-filter="original")
+				a(href="#") Original
 		.clearfix
 
 		//- data
@@ -50,15 +43,19 @@ block inner-content
 								h3 {{row.title_trimmed}}
 							p.pull-right.updated.hidden-phone-small VPF Name
 							h4.hidden-phone-small {{row.info}}
-							a(href="http://www.ipdb.org/machine.cgi?id={{row.ipdb_data.ipdb}}", target="_blank")
-								h3 {{row.ipdb_data.title}}
-							p.pull-right.updated.hidden-phone-small IPDB
-							h4.hidden-phone-small {{row.ipdb_data.manufacturer}} {{row.ipdb_data.year}}
+							span(ng-show="row.ipdb_data.ipdb")
+								a(href="http://www.ipdb.org/machine.cgi?id={{row.ipdb_data.ipdb}}", target="_blank")
+									h3 {{row.ipdb_data.title}}
+								p.pull-right.updated.hidden-phone-small IPDB
+								h4.hidden-phone-small {{row.ipdb_data.manufacturer}} {{row.ipdb_data.year}}
+							span(ng-hide="row.ipdb_data.ipdb")
+								h3 NONE (original game)
+								p &nbsp;
 							p
-								button.btn(ng-hide="row.ipdb_data.isConfirmed", ng-click="confirm()")
+								button.btn(ng-hide="row.ipdb_data.confirmed", ng-click="confirm()")
 									i.icon.ok
 									span &nbsp;&nbsp;Confirm
-								span &nbsp;&nbsp;
+								span(ng-hide="row.ipdb_data.confirmed") &nbsp;&nbsp;
 								button.btn(ng-click="original()")
 									i.icon.remove
 									span &nbsp;&nbsp;Original Game
@@ -67,24 +64,15 @@ block inner-content
 									i.icon.ok
 								input(type="text", ng-model="newId", placeholder="IPDB# or URL")
 
-	.clearfix
+		.clearfix
 
 		//- empty search result
 		div.noresult(style="display:none")
-			p No results found.
-			button.btn.submit.small Clear Filters
+			p No results found. Try switching to "confirmed" above.
 
 		//- no data
 		div.nodata(style="display:none")
-			p
-				| No index found. Click below to fetch the file index which takes a few minutes. <br>
-				| Data will be automatically refreshed when done.
-			button.btn.submit(ng-click="createIndex($event)")
-				i.icon.refresh
-				span(data-active="Downloading index") Download index
-
-			.indexing.progress.progress-striped.active(style="display:none")
-				.bar
+			p No results found. Try switching to "confirmed" above.
 
 		.clearfix
 	div

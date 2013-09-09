@@ -5,6 +5,7 @@ var fs = require('fs');
 
 var logger = require('winston');
 var vpf = require('../modules/vpforums');
+var ipdb = require('../modules/ipdb');
 var error = require('../modules/error');
 var schema = require('../database/schema');
 
@@ -117,19 +118,33 @@ exports.actions = function(req, res, ss) {
 
 			var category = 41;
 			var p = { where: { category: category }, order: 'title' };
-			var mapFile = __dirname + '/../../ipdb-vpf.json';
+			var mapFile = __dirname + '/../data/ipdb-vpf.json';
 			var map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
 			var queryStart = +new Date();
 			schema.VpfFile.all(p).success(function(rows) {
 				var queryTime = (+new Date() - queryStart);
 
-				if (params.filters && Array.isArray(params.filters) && _.contains(params.filters, 'confirmed')) {
+				var hasFilter = function(filter) {
+					return params.filters && Array.isArray(params.filters) && _.contains(params.filters, filter);
+				};
+
+				if (hasFilter('confirmed')) {
 					rows = _.filter(rows, function(row) {
 						return map[row.fileId] && map[row.fileId].confirmed;
 					});
 				} else {
 					rows = _.filter(rows, function(row) {
 						return !(map[row.fileId] && map[row.fileId].confirmed);
+					});
+				}
+
+				if (hasFilter('original')) {
+					rows = _.filter(rows, function(row) {
+						return map[row.fileId] && map[row.fileId].type == 'OG';
+					});
+				} else {
+					rows = _.filter(rows, function(row) {
+						return !(map[row.fileId] && map[row.fileId].type == 'OG');
 					});
 				}
 
@@ -154,23 +169,72 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
-		ipdbmatchConfirm: function(id) {
-			schema.VpfFile.find(id).success(function(row) {
-				if (!row) {
-					return logger.log('warn', '[rpc] [vpf] Cannot find VPF row ID %s.', id);
-				}
-				var mapFile = __dirname + '/../../ipdb-vpf.json';
-				var map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
-				var found = false;
-				for (var fileId in map) {
-					if (fileId == row.fileId && map.hasOwnProperty(fileId)) {
-						found = true;
-						map[fileId].confirmed = true;
-						break;
-					}
-				}
+		ipdbmatchConfirm: function(id, what) {
+
+			var mapFile = __dirname + '/../data/ipdb-vpf.json';
+			var map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
+			var done = function() {
 				fs.writeFileSync(mapFile, JSON.stringify(map, null, 2));
 				res();
+			};
+
+			schema.VpfFile.find(id).success(function(row) {
+				if (!row) {
+					logger.log('warn', '[rpc] [vpf] Cannot find VPF row ID %s.', id);
+					return res()
+				}
+
+				var m, ipdb_id;
+				var fileId = row.fileId;
+
+				// check for ipdb url / id
+				if (m = what.trim().match(/^http:\/\/.*?ipdb\.org.*?id=(\d+)/i)) {
+					ipdb_id = m[1];
+				}
+				if (m = what.trim().match(/^\d+$/)) {
+					ipdb_id = m[0];
+				}
+
+				if (ipdb_id) {
+					ipdb.enrich({ ipdb_no: ipdb_id, name: row.title }, function(err, table) {
+						if (err) {
+							logger.log('error', err);
+							return done();
+						}
+						if (!table.manufacturer) {
+							logger.log('error', 'Unknown manufacturer: http://ipdb.org/search.pl?searchtype=advanced&mfgid=' + table.ipdb_mfg);
+							return done();
+						}
+						map[fileId] = {
+							ipdb: table.ipdb_no,
+							title: table.name,
+							year: table.year,
+							manufacturer: table.manufacturer,
+							img: table.img_playfield,
+							title_original: row.title,
+							title_original_trimmed: row.title_trimmed,
+							confirmed: true
+						};
+						done();
+					});
+				} else {
+
+					map[fileId].confirmed = true;
+
+					// if no ipdb found, that means we're confirming an OG
+					if (what == 'OG' || !map[fileId].ipdb) {
+						delete map[fileId].ipdb;
+						delete map[fileId].title;
+						delete map[fileId].year;
+						delete map[fileId].manufacturer;
+						delete map[fileId].img;
+						delete map[fileId].error;
+						map[fileId].type = 'OG';
+					}
+
+					done();
+				}
+
 			});
 		}
 	};

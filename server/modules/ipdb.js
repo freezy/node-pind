@@ -202,11 +202,15 @@ Ipdb.prototype.enrich = function(table, callback) {
 		r(/v\d$/i, '');
 		r(/[^0-9a-z]+/ig, ' ');
 		r(/\sss\s/i, '');
+		r(/\shr\s/i, '');
+		r(/\d+\.\d+\.\d+/, '');
 		r(/\d+\.\d+/, '');
 
 		// wtfs
 		r(/Amazing Spiderman 2012/i, 'Amazing Spiderman');
 		r(/BigDaddyVP9/i, 'Big Daddy');
+		r(/HighspeedII/i, 'high speed ii');
+		r(/Terminator3/i, 'terminator 3');
 
 
 		return name.trim();
@@ -582,8 +586,10 @@ var manufacturerNames = {
 	33: 'Atari',
 	47: 'Bally',
 	48: 'Midway',
+	49: 'Wulff',
 	53: 'Bell Coin Matics',
 	54: 'Bell Games',
+	62: 'Briarwood',
 	55: 'Bensa',
 	76: 'Capcom',
 	81: 'Chicago Coin',
