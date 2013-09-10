@@ -3,7 +3,7 @@
 @import('values')
 
 
-// :generic elements 
+// :generic elements
 // ============================================================================
 
 // link with a fixed-width label
@@ -18,6 +18,8 @@ a
 
 	&:focus
 		outline none
+		color color-btn-light
+		text-decoration none
 		-moz-outline-style none
 
 	&:hover
@@ -26,18 +28,18 @@ a
 
 input[disabled]
 	cursor default
-	
+
 button, select, textarea
 	font-family font-sans
 .btn:focus
 	outline none
 	-moz-outline-style none
 
-hr 
+hr
 	border 3px solid color-btn-light
 	margin 0
 
-h5	
+h5
 	font-family font-serif
 	font-weight 700
 	font-size 23px
@@ -51,7 +53,7 @@ h5
 	margin-left -10px
 	margin-right -10px
 
-h6	
+h6
 	font-family font-serif
 	font-weight 400
 	font-size 20px
@@ -114,19 +116,19 @@ input[type='text'], input[type='password']
 	border-radius corner-size
 	box-shadow inset 0 1px 3px rgba(0,0,0,0.50)
 	transition all animation-fast ease
-	&:hover 
-		background color-bg-focus 
+	&:hover
+		background color-bg-focus
 		color color-darker
 	&:focus
-		background color-bg-focus 
+		background color-bg-focus
 		color color-darker
 		box-shadow inset 0 1px 2px rgba(0,0,0,0.25)
-	
+
 	&[disabled]
 		background color-lighter
 		box-shadow none
 		border 1px solid color-light
-		&:hover 
+		&:hover
 			background color-lighter
 			color color-medium
 
@@ -143,7 +145,7 @@ input[type='text'], input[type='password']
 button[type="submit"], .btn.submit
 
 		transition all animation-fast ease !important
-		
+
 		&.right
 			float right
 
@@ -164,7 +166,7 @@ button[type="submit"], .btn.submit
 			border 1px solid rgba(256,256,256,0.75)
 			box-shadow inset 0 1px 3px rgba(0,0,0,0.5)
 			color #fff
-		
+
 		&:focus
 			position relative
 			bottom -1px
@@ -186,7 +188,7 @@ button[type="submit"], .btn.submit
 			font-size 15px
 			padding 5px 10px
 			span
-				margin-left 7px	
+				margin-left 7px
 
 // input box prepend formatting
 .input-prepend
@@ -253,7 +255,7 @@ button[type="submit"], .btn.submit
 		bottom -1px
 
 // 3d buttons
-.fuzzy3d 
+.fuzzy3d
 	z-index 0
 	color #b3aca5
 	font-family font-serif
@@ -365,7 +367,7 @@ td > .progress
 
 
 // :table element styles
-// ============================================================================	
+// ============================================================================
 
 td
 	a
@@ -381,14 +383,14 @@ td
 		margin 0
 
 	&.rom
-		font-family font-fixed	
+		font-family font-fixed
 		&.na, &.unknown
 			color color-medium
 		&.missing
 			color color-red
 
 	&.size
-		text-align right			
+		text-align right
 
 	&.nowrap
 		white-space nowrap
@@ -447,7 +449,7 @@ tr.newblock td
 
 
 // :misc elements
-// ============================================================================	
+// ============================================================================
 
 .transfer-status strong.status
 	text-transform uppercase
