@@ -68,7 +68,8 @@ Don't close the command line window just yet.
 6. Configure Pind
 -----------------
 1. Copy `config/settings.js` to `config/settings-mine.js` and open it in a text editor.
-2. Go through every option and update it if necessary.
+2. Go through every option and update it if necessary. Make sure you use *slashes* "/" in the
+   path names, *not* backslashes.
 3. Make sure you got everything by searching "@important" in the file and double-check each value.
 3. Initialize database schema via command prompt - `node create-schema`
 4. Start Pind for a first test run (`node app`) and open a browser at
