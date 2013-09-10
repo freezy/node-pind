@@ -660,7 +660,11 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			};
 
 			if (map[item.fileId]) {
-				obj.ipdb_id = map[item.fileId].ipdb;
+				if (map[item.fileId].type && map[item.fileId].type == 'OG') {
+					obj.ipdb_id = -1;
+				} else {
+					obj.ipdb_id = map[item.fileId].ipdb;
+				}
 			}
 
 			var done = function(err, r) {
