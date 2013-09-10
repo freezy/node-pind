@@ -291,7 +291,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 
 	var url, m;
 	var searchName = fixName(table.name);
-	var regex = new RegExp('(' + this.getKnownManufacturers().join('|') + ')', 'i');
+	var regex = new RegExp('(' + ipdb.getKnownManufacturers().join('|') + ')', 'i');
 	if (m = searchName.match(regex)) {
 		table.manufacturer = m[1];
 		searchName = searchName.replace(regex, '').trim();
