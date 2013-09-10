@@ -43,7 +43,10 @@ block inner-content
 					li.span6.vpf.item(ng-repeat="row in data", data-id="{{row.id}}", data-transferid="{{row.transferId}}", ng-animate="{ enter: 'animated fadeIn' }")
 						.thumbnail
 							thumb.ng-transclude.pull-left(fileid="{{row.fileId}}")
-							h3 {{row.title_trimmed}}
+							a(ng-show="row.ipdb_id > 0", href="http://www.ipdb.org/machine.cgi?id={{row.ipdb_id}}", target="_blank", title="View at IPDB.org")
+								h3 {{row.title_trimmed}}
+							h3(ng-show="row.ipdb_id == -1", title="Original Game") {{row.title_trimmed}}
+							h3(ng-show="row.ipdb_id == null", title="No match at IPDB") {{row.title_trimmed}}
 							p.pull-right.updated.hidden-phone-small {{row.lastUpdatedSince}}
 							h4.hidden-phone-small {{row.info}}
 							ul.pills.small
