@@ -597,7 +597,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						logger.log('warn', '[transfer] Unable to retrieve extracted file from result: %s', transfer.result);
 					}
 				} else {
-					logger.log('warn', '[transfer] No result or no extract info in transfer result: %s', transfer.result);
+					logger.log('warn', '[transfer] No result or no extract info in transfer result ' + transfer.result);
 				}
 
 				var analyzeAndContinue = function(err, table) {

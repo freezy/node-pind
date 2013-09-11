@@ -36,7 +36,7 @@ log.cli();
 
 //nv.diff();
 
-postProcessTransfer(1);
+postProcessTransfer(2);
 
 //	cacheAllTableDownloads();
 //	nextDownload();

@@ -131,10 +131,9 @@ HyperPin.prototype.readTables = function(callback) {
 						return callback();
 					}
 
-					var l = result.menu['game'].length;
 					var tables = [];
-					for (var i = 0; i < l; i++) {
-						var g = result.menu['game'][i];
+					async.eachSeries(result.menu['game'], function(g, next) {
+
 						var d = g.description[0];
 						var table;
 						var m = d.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\)/); // match Medieval Madness (Williams 1997)
@@ -163,6 +162,10 @@ HyperPin.prototype.readTables = function(callback) {
 						table.enabled = g.enabled === undefined || (g.enabled[0].toLowerCase() == 'true' || g.enabled[0].toLowerCase() == 'yes');
 						table.hpenabled = active;
 
+						if (g.$.ipdb) {
+							table.ipdb_no = g.$.ipdb;
+						}
+
 						if (platform == 'VP') {
 							table.table_file = fs.existsSync(settings.visualpinball.path + '/Tables/' + table.filename + '.vpt');
 						} else if (platform == 'FP') {
@@ -174,18 +177,33 @@ HyperPin.prototype.readTables = function(callback) {
 						table.media_wheel = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Wheel Images/' + table.hpid + '.png');
 						table.media_video = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Table Videos/' + table.hpid + '.f4v');
 
-						tables.push(table);
-					}
-					logger.log('info', '[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
-					that.emit('xmlParsed', { num: tables.length, platform: platforms[platform] });
-
-					schema.Table.updateAll(tables, now, function(err, tables) {
-						if (err) {
-							logger.log('error', '[hyperpin] [%s] %s', platform, err);
+						if (g.$.vpf) {
+							schema.VpfFile.find({ where: { fileId: g.$.vpf }}).success(function(row) {
+								if (row) {
+									table.ref_src = row.id;
+								}
+								tables.push(table);
+								next();
+							})
+						} else {
+							tables.push(table);
+							next();
 						}
-						that.emit('tablesUpdated', { num: tables.length });
-						callback(err);
+
+					}, function() {
+
+						logger.log('info', '[hyperpin] [' + platform + '] Finished parsing ' + tables.length + ' games in ' + (new Date().getTime() - now) + 'ms, updating db now.');
+						that.emit('xmlParsed', { num: tables.length, platform: platforms[platform] });
+
+						schema.Table.updateAll(tables, now, function(err, tables) {
+							if (err) {
+								logger.log('error', '[hyperpin] [%s] %s', platform, err);
+							}
+							that.emit('tablesUpdated', { num: tables.length });
+							callback(err);
+						});
 					});
+
 				});
 			};
 
@@ -234,7 +252,8 @@ HyperPin.prototype.readTables = function(callback) {
 HyperPin.prototype.writeTables = function(callback) {
 
 	var platform = 'VP';
-	schema.Table.all({ where: { platform: platform }, order: 'name ASC' }).success(function(rows) {
+	var query = 'SELECT t.*, v.fileId FROM tables t LEFT JOIN vpf_files v ON t.ref_src = v.id WHERE platform = "VP" ORDER by t.name ASC';
+	schema.sequelize.query(query).success(function(rows) {
 
 		var i, row, game;
 		var writer = new xmlw(true);
@@ -252,6 +271,12 @@ HyperPin.prototype.writeTables = function(callback) {
 
 			writer.startElement(row.hpenabled ? 'game' : '_game');
 			writer.writeAttribute('name', row.filename);
+			if (row.ipdb_no) {
+				writer.writeAttribute('ipdb', row.ipdb_no);
+			}
+			if (row.fileId) {
+				writer.writeAttribute('vpf', row.fileId);
+			}
 			writer.writeElement('description', row.hpid);
 			if (row.manufacturer) {
 				writer.writeElement('manufacturer', row.manufacturer);
@@ -279,7 +304,14 @@ HyperPin.prototype.writeTables = function(callback) {
 			'	In case something went wrong, the original file was renamed to\n' +
 			'		"' + platforms[platform] + ' - Pind Backup.xml".\n\n' +
 			'	If you feel that an issue should be fixed, feel free to submit a bug report at\n' +
-			'		https://github.com/freezy/node-pind/issues\n' +
+			'		https://github.com/freezy/node-pind/issues\n\n' +
+			'	For now, if you have a completely different naming schema than HyperPin\'s "Name (vendor year)"\n' +
+			'	you can update or add the "ipdb" attribute at the "game" elements below. If set, Pind will rely\n' +
+			'	on this first, before searching the name on IPDB.org.\n\n' +
+			'	For original games, you can add the "vpf" attribute, which contains VPF\'s file ID, that\'s the\n' +
+			'	"showfile" number you see in the address bar of a download page at VPForums.org.\n\n' +
+			'	Keeping those IDs correct makes sure Pind knows which downloads correspond to which of your tables\n' +
+			'	This makes sure the right entries get updated or added.\n' +
 			'-->\n\n';
 
 		var write = function(filename, data) {
