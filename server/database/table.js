@@ -74,6 +74,7 @@ module.exports = function(sequelize, DataTypes) {
 
 			updateOrCreate: function(clause, table, callback) {
 				var that = this;
+				delete table.img_playfield; // sequelize doesn't like non-column fields.
 				Table.find(clause).success(function(row) {
 					if (row) {
 
@@ -85,6 +86,15 @@ module.exports = function(sequelize, DataTypes) {
 							if (row.year) {
 								delete table.year;
 							}
+							// also don't update filename, this should be set explicitly only in post-processing.
+							if (row.filename) {
+								delete table.filename;
+							}
+						}
+
+						// never overwrite hpid
+						if (row.hpid) {
+							delete table.hpid;
 						}
 
 						row.updateAttributes(table).success(function(r) {

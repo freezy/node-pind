@@ -24,7 +24,7 @@ log.cli();
 
 
 //matchSources();
-//ipdbMatch('Bram Stoker s Dracula');
+//ipdbMatch('indiana jones pinball adventure');
 
 //git();
 //postExtract();
@@ -36,13 +36,13 @@ log.cli();
 
 //nv.diff();
 
-//postProcessTransfer(20);
+postProcessTransfer(1);
 
 //	cacheAllTableDownloads();
 //	nextDownload();
 
 
-extractMedia('E:/tmp/Safe_Cracker_HPMP.zip');
+//extractMedia('E:/tmp/Safe_Cracker_HPMP.zip');
 //extractMedia('E:/tmp/Playboy.Stern.2002.zip');
 
 //	extractMedia('E:/tmp/Medieval-Madness_Night Mod_VP91x_2.4.3FS.rar');
@@ -52,7 +52,7 @@ extractMedia('E:/tmp/Safe_Cracker_HPMP.zip');
 //writeTables();
 //	syncTables();
 
-getHighScore('ww_l5');
+//getHighScore('ww_l5');
 
 //	getRomNames();
 //	updateRomNames();

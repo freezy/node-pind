@@ -184,6 +184,11 @@ Ipdb.prototype.enrich = function(table, callback) {
 		var r = function(needle, haystack) {
 			name = name.replace(needle, haystack);
 		};
+		var rr = function(needle, replacment) {
+			if (name.match(needle)) {
+				name = replacment;
+			}
+		};
 
 		// common spelling errors
 		r(/judgement day/i, 'judgment day');
@@ -195,11 +200,11 @@ Ipdb.prototype.enrich = function(table, callback) {
 		r(/250cc/i, '250 cc');
 
 		// too ambiguous
-		r(/tommy/i, 'tommy pinball wizard');
+		rr(/tommy/i, 'tommy the pinball wizard');
 
 		// strip off unnecessary shit
 		r(/night mode|megapin/i, '');
-		r(/v\d$/i, '');
+		r(/v\d\s*/i, '');
 		r(/[^0-9a-z]+/ig, ' ');
 		r(/\sss\s/i, '');
 		r(/\shr\s/i, '');
@@ -212,11 +217,13 @@ Ipdb.prototype.enrich = function(table, callback) {
 		r(/HighspeedII/i, 'high speed ii');
 		r(/Terminator3/i, 'terminator 3');
 
+		// hacks
+		rr(/indiana jones/i, 'indiana jones the pinball adventure'); // until the stern version is out, then we have a problem because the media pack name is wrong
 
 		return name.trim();
 	};
 
-	var parseData = function(body, table, callback) {
+	var parseData = function(body, table, searchName, callback) {
 
 		var m = body.match(/<a name="(\d+)">([^<]+)/i);
 		if (m) {
@@ -271,7 +278,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 				});
 			}
 
-			var distance = natural.LevenshteinDistance(table.name, m[2]);
+			var distance = natural.LevenshteinDistance(searchName, m[2]);
 			logger.log('info', '[ipdb] Found title "%s" as #%d (distance %d)', table.name, m[1], distance);
 			callback(null, table);
 
@@ -334,13 +341,13 @@ Ipdb.prototype.enrich = function(table, callback) {
 		// check if multiple matches
 		m = body.match(/(\d+) records match/i);
 		if (m && m[1] > 1) {
-			logger.log('info', '[ipdb] Found %d hits for "%s".', m[1], table.name);
+			logger.log('info', '[ipdb] Found %d hits for "%s".', m[1], searchName);
 
 			// parse the matches
 			var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"[^>]*href="[^"]*?(\d+)">([^<]+)/ig;
 			var matches = [];
 			while (m = regex.exec(body)) {
-				matches.push({ name: m[4], year: m[2], ipdbid: m[3], distance: natural.LevenshteinDistance(table.name.toLowerCase(), m[4].toLowerCase()) });
+				matches.push({ name: m[4], year: m[2], ipdbid: m[3], distance: natural.LevenshteinDistance(searchName.toLowerCase(), m[4].toLowerCase()) });
 			}
 			if (matches.length == 0) {
 				logger.log('error', '[ipdb] Failed to match any table entry, check regex.');
@@ -356,7 +363,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 				url = 'http://www.ipdb.org/machine.cgi?id=' + match.ipdbid;
 				logger.log('info', '[ipdb] Table details not on search result page, loading details at %s', url);
 				request(url, function(err, response, body) {
-					parseData(body, table, callback);
+					parseData(body, table, searchName, callback);
 				});
 
 			} else {
@@ -368,10 +375,10 @@ Ipdb.prototype.enrich = function(table, callback) {
 					callback('Cannot find matched game "' + match.name + '" in body.');
 					return;
 				}
-				parseData(m[0], table, callback);
+				parseData(m[0], table, searchName, callback);
 			}
 		} else {
-			parseData(body, table, callback);
+			parseData(body, table, searchName, callback);
 		}
 
 	});

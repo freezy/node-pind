@@ -14,6 +14,7 @@ var schema = require('../database/schema');
 
 var an = require('./announce');
 var vp = require('./visualpinball');
+var hp = require('./hyperpin');
 var vpf = require('./vpforums');
 var vpm = require('./vpinmame');
 var extr = require('./extract');
@@ -515,7 +516,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 	var result = JSON.parse(transfer.result);
 	var that = this;
 
-	var tableActions = function(table, callback) {
+	var tableActions = function(table, filename, callback) {
 
 		var availableActions = ['addtohp', 'dlrom', 'dlmedia', 'dlvideo']; // order is important
 		var actions = _.filter(availableActions, function(a) {
@@ -553,6 +554,15 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 					vpf.findTableVideo(table, transfer.id, done);
 					break;
 
+				case 'addtohp':
+					table.updateAttributes({
+						hpenabled: true,
+						filename: filename
+					}).success(function() {
+						hp.writeTables(done);
+					});
+					break;
+
 				// otherwise just continue
 				default:
 					logger.log('warn', '[transfer] Skipping unimplemented action: %s', action);
@@ -565,7 +575,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 	// transfer type: TABLE
 	if (transfer.type == 'table') {
 
-		// 1. find reference
+		// find reference
 		if (transfer.engine == 'vpf') {
 			schema.VpfFile.find(transfer.ref_src).success(function(vpffile) {
 				if (!vpffile) {
@@ -590,16 +600,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 					logger.log('warn', '[transfer] No result or no extract info in transfer result: %s', transfer.result);
 				}
 
-				// 2. try to match at ipdb
-				ipdb.enrich({
-					name: vpffile.title_trimmed,
-					manufacturer: vpffile.manufacturer,
-					year: vpffile.year,
-					ref_src: transfer.ref_src,
-					platform: 'VP',
-					filename: filename,
-					hpid: vpffile.manufacturer && vpffile.year && vpffile.title_trimmed ? vpffile.title_trimmed + ' (' + vpffile.manufacturer + ' ' + vpffile.year + ')' : null
-				}, function(err, table) {
+				var analyzeAndContinue = function(err, table) {
 
 					if (!err && table.ipdb_no) {
 						schema.Table.updateOrCreate({ where: { ipdb_no: table.ipdb_no }}, table, function(err, table) {
@@ -608,7 +609,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 								return callback(err);
 							}
 
-							// 3. analyze table data
+							// analyze table data
 							if (filepath) {
 								vp.getTableData(filepath, function(err, attrs) {
 									if (err) {
@@ -617,23 +618,65 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 									}
 									table.updateAttributes(attrs).success(function(table) {
 
-										// 4. continue with optional post actions.
-										tableActions(table, callback);
+										// continue with optional post actions.
+										tableActions(table, filename, callback);
 
 									});
 								});
 
 							} else {
-								// 4. continue with optional post actions.
-								tableActions(table, callback);
+								// continue with optional post actions.
+								tableActions(table, filename, callback);
 							}
 
 						});
 					} else {
-						logger.log('warn', '[transfer] No ipdb match, ignoring for now.');
-						return callback(null, transfer);
+						logger.log('warn', '[transfer] No ipdb match.');
+						// continue with optional post actions.
+						tableActions(table, filename, callback);
 					}
-				});
+				};
+
+				// we have a pre-verified match (i.e. we're sure that this vpf download has the correct ipdb id).
+				if (vpffile.ipdb_id && vpffile.ipdb_id > 0) {
+					logger.log('info', '[transfer] Got verified IPDB %d, fetching details.', vpffile.ipdb_id);
+					ipdb.enrich({
+						name: vpffile.title_trimmed,
+						ipdb_no: vpffile.ipdb_id,
+						platform: 'VP',
+						ref_src: transfer.ref_src,
+						filename: filename
+					}, function(err, table) {
+						table.hpid = table.name + ' (' + table.manufacturer + ' ' + table.year + ')';
+						analyzeAndContinue(err, table);
+					});
+
+				// we're sure that we're dealing with an original game (i.e. no ipdb entry available)
+				} else if (vpffile.ipdb_id && vpffile.ipdb_id < 0) {
+					logger.log('info', '[transfer] Got verified original game continueing.');
+					analyzeAndContinue(null, {
+						hpid: vpffile.title,
+						name: vpffile.title_trimmed,
+						manufacturer: vpffile.manufacturer,
+						platform: 'VP',
+						type: 'OG',
+						ref_src: transfer.ref_src,
+						filename: filename
+					});
+
+				// no pre-verified match available, so let's search for it.
+				} else {
+					logger.log('warn', '[transfer] New match "%s", searching at IPDB.', vpffile.title_trimmed);
+					ipdb.enrich({
+						name: vpffile.title_trimmed,
+						manufacturer: vpffile.manufacturer,
+						year: vpffile.year,
+						ref_src: transfer.ref_src,
+						platform: 'VP',
+						hpid: vpffile.manufacturer && vpffile.year && vpffile.title_trimmed ? vpffile.title_trimmed + ' (' + vpffile.manufacturer + ' ' + vpffile.year + ')' : null,
+						filename: filename
+					}, analyzeAndContinue);
+				}
 
 			});
 		} else {
