@@ -41,7 +41,10 @@ included in the installation procedure.
 2. Download and install the [Visual Studio 2010 Express](http://go.microsoft.com/?linkid=9709949).
 3. On Windows 7 or above, download and install the
    [Windows 7 SDK](http://www.microsoft.com/en-us/download/details.aspx?id=8279). You might have to uninstall any
-   *Microsoft Visual C++ 2010  Redistributable* packages on your system in order to successfully install the SDK.
+   *Microsoft Visual C++ 2010  Redistributable* packages on your system in order to successfully install the SDK,
+   such as:
+     * Microsoft Visual C++ 2010 x64 Redistributable - 10.0.40219
+     * Microsoft Visual C++ 2010 x86 Redistributable - 10.0.40219
 
 
 4. Install Additional Dependencies
