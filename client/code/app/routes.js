@@ -22,7 +22,6 @@ module.exports = function(module) {
 			.when('/tables',          { templateUrl: 'home-tables.html' })
 			.when('/table/:key',      { templateUrl: 'home-table.html' })
 			.when('/coin',            { templateUrl: 'home-coin.html' })
-			.when('/ipdbvpf',         { templateUrl: 'admin-ipdbvpf.html', adminOnly: true })
 
 			.when('/admin',           { templateUrl: 'admin-tables.html', adminOnly: true })
 			.when('/admin/sources',   { templateUrl: 'admin-sources.html', adminOnly: true })
@@ -32,6 +31,9 @@ module.exports = function(module) {
 
 			.when('/login',           { templateUrl: 'auth-login.html', noAuth: true })
 			.when('/signup',          { templateUrl: 'auth-signup.html', noAuth: true })
+
+			.when('/ipdbvpf',         { templateUrl: 'admin-ipdbvpf.html', adminOnly: true })
+			.when('/ipdbhp',          { templateUrl: 'admin-ipdbhp.html', adminOnly: true })
 
 			.otherwise({ redirectTo: '/' });
 

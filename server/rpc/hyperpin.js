@@ -1,8 +1,11 @@
 'use strict';
 
+var _ = require('underscore');
+var logger = require('winston');
+
 var hp = require('../modules/hyperpin');
 var error = require('../modules/error');
-var logger = require('winston');
+var schema = require('../database/schema');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
@@ -55,6 +58,52 @@ exports.actions = function(req, res, ss) {
 					res();
 				}
 			})
+		},
+
+		ipdbmatch: function(params) {
+			var p = { order: 'name' };
+			var queryStart = +new Date();
+			schema.Table.all(p).success(function(rows) {
+				var queryTime = (+new Date() - queryStart);
+
+				var hasFilter = function(filter) {
+					return params.filters && Array.isArray(params.filters) && _.contains(params.filters, filter);
+				};
+
+				if (hasFilter('confirmed')) {
+					rows = _.filter(rows, function(row) {
+						return true;
+					});
+				} else {
+					rows = _.filter(rows, function(row) {
+						return true;
+					});
+				}
+
+				var pagedRows;
+				var offset = params.offset ? parseInt(params.offset) : 0;
+				var limit = params.limit ? parseInt(params.limit) : 0;
+				if (offset || limit) {
+					pagedRows = rows.slice(offset, offset + limit);
+				} else {
+					pagedRows = rows;
+				}
+
+				var returnedRows = [];
+				var m;
+				_.each(pagedRows, function(row) {
+					m = row.hpid.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\s*\)/); // match Medieval Madness (Williams 1997)
+					if (m) {
+						row.hp_name = m[1];
+						row.hp_manufacturer = m[2];
+						row.hp_year = m[3];
+					}
+					returnedRows.push(row);
+				});
+
+				res({ rows: returnedRows, count: rows.length, queryTime: queryTime });
+			});
 		}
+
 	};
 };
