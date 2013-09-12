@@ -190,6 +190,9 @@ Ipdb.prototype.enrich = function(table, callback) {
 			}
 		};
 
+		// move ", the" to the start
+		name = name.replace(/(.*),\s+(the)\s*$/gi, '$2 $1 ');
+
 		// common spelling errors
 		r(/judgement day/i, 'judgment day');
 		r(/ad+am+s family/i, 'addams family');
@@ -588,7 +591,11 @@ var findBestMatch = function(matches, table) {
 };
 
 var manufacturerNames = {
+	2: 'Hankin',
+	9: 'A.B.T.',
 	16: 'All American Games',
+	18: 'Allied Leisure',
+	20: 'Alvin G.',
 	32: 'Astro Games',
 	33: 'Atari',
 	47: 'Bally',
@@ -598,6 +605,7 @@ var manufacturerNames = {
 	54: 'Bell Games',
 	62: 'Briarwood',
 	55: 'Bensa',
+	71: 'CEA',
 	76: 'Capcom',
 	81: 'Chicago Coin',
 	83: 'Unidesa',
@@ -605,33 +613,51 @@ var manufacturerNames = {
 	94: 'Gottlieb',
 	98: 'Data East',
 	117: 'Exhibit',
+	120: 'Fascination',
 	126: 'Game Plan',
 	129: 'Geiger',
 	130: 'Genco',
+	135: 'Guiliano Lodola',
 	139: 'Grand Products',
 	141: 'Great States',
-	156: 'INDER',
+	145: 'Jac Van Ham',
+	153: 'I.D.I.',
+	156: 'Inder',
 	157: 'Interflip',
 	159: 'International Concepts',
+	165: 'Jeutel',
 	170: 'Juegos Populares',
 	206: 'Marvel',
+	213: 'Midway',
 	214: 'Bally',
+	219: 'Mirco',
 	222: 'Mr. Game',
-	224: 'Mylstar',
+	224: 'Gottlieb',
+	235: 'Bell Games',
 	239: 'P & S',
+	248: 'Petaco',
+	249: 'Peyper',
 	250: 'Pierce Tool',
+	252: 'Pinstar',
 	255: 'Playmatic',
 	257: 'Premier',
+	262: 'Petaco',
 	267: 'Richard',
 	269: 'Rock-ola',
 	279: 'Sega',
 	280: 'Sega',
+	281: 'Williams',
 	282: 'Sonic',
 	302: 'Stern',
 	303: 'Stern',
 	311: 'Christian Tabart',
+	313: 'Tecnoplay',
+	317: 'Midway',
 	323: 'United',
+	324: 'Universal',
 	328: 'Unknown',
+	333: 'Viza',
+	337: 'Wico',
 	349: 'Williams',
 	350: 'Williams',
 	351: 'Williams',
@@ -640,11 +666,15 @@ var manufacturerNames = {
 	359: 'RMG',
 	367: 'Taito',
 	371: 'Recreativos Franco',
+	375: 'Spinball',
+	419: 'Century Consolidated Industries',
 	458: 'Rowamet',
 	447: 'Delmar',
 	467: 'LTD',
 	483: 'ICE',
-	495: 'Elbos'
+	495: 'Elbos',
+	532: 'United',
+	549: 'Professional Pinball of Toronto'
 
 };
 

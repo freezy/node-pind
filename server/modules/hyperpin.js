@@ -147,7 +147,7 @@ HyperPin.prototype.readTables = function(callback) {
 							table = {
 								name: d,
 								manufacturer: g.manufacturer[0],
-								year: g.year[0]
+								year: g.year[0] ? g.year[0] : null
 							};
 						}
 						if (!g.$ || !g.$.name) {
