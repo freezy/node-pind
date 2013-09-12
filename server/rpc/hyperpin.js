@@ -61,22 +61,51 @@ exports.actions = function(req, res, ss) {
 		},
 
 		ipdbmatch: function(params) {
-			var p = { order: 'name' };
+
+			var hasFilter = function(filter) {
+				return params.filters && Array.isArray(params.filters) && _.contains(params.filters, filter);
+			};
+
+
+			var op = hasFilter('identical') ? '=' : '<>';
+
+			var queryWhere;
+			var queryWhat = 'SELECT * FROM tables ';
+			var queryOrder= 'ORDER BY name ASC';
+
+			if (hasFilter('nomatch')) {
+				queryWhere = 'WHERE `ipdb_no` IS NULL ';
+			} else {
+				queryWhere = 'WHERE hpid ' + op + ' CONCAT(`name`, " (", `manufacturer`, " ", `year`, ")")';
+			}
+
+
+			var query = queryWhat + queryWhere + queryOrder;
 			var queryStart = +new Date();
-			schema.Table.all(p).success(function(rows) {
+			schema.sequelize.query(query).success(function(rows) {
 				var queryTime = (+new Date() - queryStart);
 
-				var hasFilter = function(filter) {
-					return params.filters && Array.isArray(params.filters) && _.contains(params.filters, filter);
+				var norm = function(str) {
+					return str ? str.toString().replace(/[^a-z0-9\(\)]+/ig, '').toLowerCase() : str;
 				};
 
-				if (hasFilter('confirmed')) {
+				_.map(rows, function(row) {
+					row.norm = {
+						name: norm(row.name),
+						manufacturer: norm(row.manufacturer),
+						year: norm(row.year)
+					}
+				});
+
+				if (hasFilter('identical')) {
 					rows = _.filter(rows, function(row) {
-						return true;
+						var hpidNorm = row.norm.name + '(' + row.norm.manufacturer + row.norm.year + ')';
+						return hpidNorm == norm(row.hpid);
 					});
 				} else {
 					rows = _.filter(rows, function(row) {
-						return true;
+						var hpidNorm = row.norm.name + '(' + row.norm.manufacturer + row.norm.year + ')';
+						return hpidNorm != norm(row.hpid);
 					});
 				}
 
@@ -90,15 +119,23 @@ exports.actions = function(req, res, ss) {
 				}
 
 				var returnedRows = [];
-				var m;
+				var m, r;
 				_.each(pagedRows, function(row) {
+					r = row;
 					m = row.hpid.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\s*\)/); // match Medieval Madness (Williams 1997)
 					if (m) {
-						row.hp_name = m[1];
-						row.hp_manufacturer = m[2];
-						row.hp_year = m[3];
+						r.hp = {
+							name: m[1],
+							manufacturer: m[2],
+							year: m[3],
+							norm: {
+								name: norm(m[1]),
+								manufacturer: norm(m[2]),
+								year: norm(m[3]),
+							}
+						}
 					}
-					returnedRows.push(row);
+					returnedRows.push(r);
 				});
 
 				res({ rows: returnedRows, count: rows.length, queryTime: queryTime });

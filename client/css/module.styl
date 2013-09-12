@@ -319,6 +319,9 @@ ul.badge-group
 		border-radius-topleft corner-size-small
 		border-radius-topright corner-size-small
 
+.thumbnail-padding
+	padding 0 15px
+
 .thumbnail-content
 	position relative
 	overflow hidden
@@ -573,6 +576,10 @@ thumbdef(thumbsize, thumbpadding)
 
 .item.vpf.big
 	thumbdef(240px, 30px)
+
+.item.vpf h3, .item.vpf h4
+	&.diff
+		color color-red
 
 /* Large desktop */
 @media (min-width: 1200px)

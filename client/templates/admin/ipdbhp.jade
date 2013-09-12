@@ -22,8 +22,10 @@ block inner-content
 			li
 				.icon
 					i.icon.filter(title="Filter by")
-			li(data-filter="all")
-				a(href="#") All
+			li(data-filter="identical")
+				a(href="#") Identical
+			li(data-filter="nomatch")
+				a(href="#") Unmatched
 		.clearfix
 
 		//- data
@@ -31,13 +33,15 @@ block inner-content
 			.row-fluid
 				ul.thumbnails
 					li.span6.vpf.item(ng-repeat="row in data")
-						.thumbnail
+						.thumbnail.thumbnail-padding
 							.div.pull-left
-								h3 {{ row.name }}
-								h4 {{ row.manufacturer }}
-								h4 {{ row.year }}
+								h3(class="{{ row.norm.name == row.hp.norm.name ? '' : 'diff' }}") {{ row.name }}
+								h4(class="{{ row.norm.manufacturer == row.hp.norm.manufacturer ? '' : 'diff' }}") {{ row.manufacturer }}
+								h4(class="{{ row.norm.year == row.hp.norm.year ? '' : 'diff' }}") {{ row.year }}
 							.div.pull-right
-								h3 {{ row.hp_name }}
+								h3(class="{{ row.norm.name == row.hp.norm.name ? '' : 'diff' }}") {{ row.hp.name }}
+								h4(class="{{ row.norm.manufacturer == row.hp.norm.manufacturer ? '' : 'diff' }}") {{ row.hp.manufacturer }}
+								h4(class="{{ row.norm.year == row.hp.norm.year ? '' : 'diff' }}") {{ row.hp.year }}
 		.clearfix
 
 		//- empty search result
