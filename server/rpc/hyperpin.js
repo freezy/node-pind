@@ -102,7 +102,7 @@ exports.actions = function(req, res, ss) {
 						var hpidNorm = row.norm.name + '(' + row.norm.manufacturer + row.norm.year + ')';
 						return hpidNorm == norm(row.hpid);
 					});
-				} else {
+				} else if (!hasFilter('nomatch')) {
 					rows = _.filter(rows, function(row) {
 						var hpidNorm = row.norm.name + '(' + row.norm.manufacturer + row.norm.year + ')';
 						return hpidNorm != norm(row.hpid);
