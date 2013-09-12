@@ -45,7 +45,7 @@ require('/controllers/admin/transfer')(app);
 require('/controllers/admin/sources')(app);
 require('/controllers/admin/user')(app);
 require('/controllers/admin/global')(app);
-require('/controllers/admin/ipdbmatch')(app);
+require('/controllers/admin/ipdbvpf')(app);
 
 ss.server.on('ready', function() {
 	jQuery(function() {

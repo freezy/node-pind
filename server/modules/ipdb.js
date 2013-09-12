@@ -191,7 +191,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 		};
 
 		// move ", the" to the start
-		name = name.replace(/(.*),\s+(the)\s*$/gi, '$2 $1 ');
+		name = name.replace(/(.*),\s+(the)\s*/gi, '$2 $1 ');
 
 		// common spelling errors
 		r(/judgement day/i, 'judgment day');
@@ -228,24 +228,28 @@ Ipdb.prototype.enrich = function(table, callback) {
 
 	var parseData = function(body, table, searchName, callback) {
 
+		var tidyText = function(m) {
+			m = m.replace(/<br>/gi, '\n');
+			m = m.replace(/<[^>]+>/gi, '');
+			return ent.decode(m.trim());
+		};
+
 		var m = body.match(/<a name="(\d+)">([^<]+)/i);
 		if (m) {
 			table.name = trim(m[2]);
 			table.ipdb_no = m[1];
 			table.modelno = firstMatch(body, /Model Number:\s*<\/b><\/td><td[^>]*>(\d+)/i);
 			table.ipdb_mfg = firstMatch(body, /Manufacturer:\s*<\/b>.*?mfgid=(\d+)/i);
-			if (!table.manufacturer && table.ipdb_mfg && manufacturerNames[table.ipdb_mfg]) {
+			if (table.ipdb_mfg && manufacturerNames[table.ipdb_mfg]) {
 				table.manufacturer = manufacturerNames[table.ipdb_mfg];
 			}
-			if (!table.year) {
-				table.year = firstMatch(body, /href="machine\.cgi\?id=\d+">\d+<\/a>\s*<I>[^<]*?(\d{4})/i);
-			}
-			if (!table.type) {
-				table.type = firstMatch(body, /Type:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
-					var mm = m.match(/\((..)\)/);
-					return mm ? mm[1] : null;
-				});
-			}
+			table.year = firstMatch(body, /href="machine\.cgi\?id=\d+">\d+<\/a>\s*<I>[^<]*?(\d{4})/i);
+
+			table.type = firstMatch(body, /Type:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
+				var mm = m.match(/\((..)\)/);
+				return mm ? mm[1] : null;
+			});
+
 			table.rating = firstMatch(body, /Average Fun Rating:.*?Click for comments[^\d]*([\d\.]+)/i);
 			table.short = firstMatch(body, /Common Abbreviations:\s*<\/b><\/td><td[^>]*>([^<]+)/i, function(m) {
 				return m.replace(', ', ',');
@@ -262,11 +266,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 			table.artist = firstMatch(body, /Art by:\s*<\/b><\/td><td[^>]*><span[^>]*><a[^>]*>([^<]+)/i, function(m) {
 				return ent.decode(m);
 			});
-			var tidyText = function(m) {
-				m = m.replace(/<br>/gi, '\n');
-				m = m.replace(/<[^>]+>/gi, '');
-				return ent.decode(m.trim());
-			};
+
 			table.features = firstMatch(body, /Notable Features:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
 			table.notes = firstMatch(body, /Notes:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);
 			table.toys = firstMatch(body, /Toys:\s*<\/b><\/td><td[^>]*>(.*?)<\/td>/i, tidyText);

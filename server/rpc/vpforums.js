@@ -118,7 +118,7 @@ exports.actions = function(req, res, ss) {
 
 			var category = 41;
 			var p = { where: { category: category }, order: 'title' };
-			var map = ipdb.getIpdbMap();
+			var map = vpf.getIpdbMap();
 			var queryStart = +new Date();
 			schema.VpfFile.all(p).success(function(rows) {
 				var queryTime = (+new Date() - queryStart);

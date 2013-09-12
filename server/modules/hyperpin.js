@@ -154,13 +154,15 @@ HyperPin.prototype.readTables = function(callback) {
 							logger.log('error', '[hyperpin] [' + platform + '] Cannot find "name" attribute for "' + table.name + '".');
 							return callback('error parsing game "' + table.name + '", XML must contain "name" attribute.');
 						}
+						if (g.$.name && !g.$.name.match(/Table Name Goes Here/i)) {
+							table.filename = g.$.name;
+						}
 						table.hpid = d;
-						table.hpenabled = true;
+						table.hpenabled = active;
 						table.type = g.type[0];
-						table.filename = g.$.name;
+
 						table.platform = platform;
 						table.enabled = g.enabled === undefined || (g.enabled[0].toLowerCase() == 'true' || g.enabled[0].toLowerCase() == 'yes');
-						table.hpenabled = active;
 
 						if (g.$.ipdb) {
 							table.ipdb_no = g.$.ipdb;
