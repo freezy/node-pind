@@ -124,5 +124,185 @@
     "title": "Butterfly",
     "year": 1977,
     "manufacturer": "Sonic"
+  },
+  "Cactus Jack's (Gottlieb 1991)": {
+    "ipdb": "416",
+    "title": "Cactus Jack's",
+    "year": 1991,
+    "manufacturer": "Premier"
+  },
+  "Car Hop (Gottlieb 1991)": {
+    "ipdb": "3676",
+    "title": "Car Hop",
+    "year": 1991,
+    "manufacturer": "Premier"
+  },
+  "Caribbean Cruise (Gottlieb 1989)": {
+    "ipdb": "3003",
+    "title": "Caribbean Cruise",
+    "year": 1989,
+    "manufacturer": "International Concepts"
+  },
+  "Charlie's Angel (Gottlieb 1978)": {
+    "ipdb": "5007",
+    "title": "Charlie's Angels",
+    "year": 1978,
+    "manufacturer": "Gottlieb"
+  },
+  "Chicago Cubs Triple Play (Gottlieb 1985)": {
+    "ipdb": "502",
+    "title": "Chicago Cubs \"Triple Play\"",
+    "year": 1985,
+    "manufacturer": "Premier"
+  },
+  "Circa 1933 (Fascination Int 1979)": {
+    "ipdb": "514",
+    "title": "Circa 1933",
+    "year": 1979,
+    "manufacturer": "Fascination"
+  },
+  "Circus (Gottlieb 1981)": {
+    "ipdb": "515",
+    "title": "Circus",
+    "year": 1980,
+    "manufacturer": "Gottlieb"
+  },
+  "City Slicker (Bally 1987)": {
+    "ipdb": "527",
+    "title": "City Slicker",
+    "year": 1987,
+    "manufacturer": "Midway"
+  },
+  "Class of 1812 (Gottlieb 1991)": {
+    "ipdb": "528",
+    "title": "Class of 1812",
+    "year": 1991,
+    "manufacturer": "Premier"
+  },
+  "Conan (Rowamet Brasil 1970)": {
+    "ipdb": "4580",
+    "title": "Conan",
+    "year": 1983,
+    "manufacturer": "Rowamet"
+  },
+  "Corvette (Midway 1994)": {
+    "ipdb": "570",
+    "title": "Corvette",
+    "year": 1994,
+    "manufacturer": "Bally"
+  },
+  "Cosmic (Taito Do Brazil 1982)": {
+    "ipdb": "4567",
+    "title": "Cosmic",
+    "year": 1980,
+    "manufacturer": "Taito"
+  },
+  "Cybernaut (Bally 1985)": {
+    "ipdb": "614",
+    "title": "Cybernaut",
+    "year": 1985,
+    "manufacturer": "Midway"
+  },
+  "Dark Rider (A. H. Geiger 1985)": {
+    "ipdb": "3968",
+    "title": "Dark Rider",
+    "year": 1984,
+    "manufacturer": "Geiger"
+  },
+  "Deadly Weapon (Gottlieb 1990)": {
+    "ipdb": "645",
+    "title": "Deadly Weapon",
+    "year": 1990,
+    "manufacturer": "Premier"
+  },
+  "Diamond Lady (Gottlieb 1998)": {
+    "ipdb": "678",
+    "title": "Diamond Lady",
+    "year": 1988,
+    "manufacturer": "Premier"
+  },
+  "Dino Turbo (A. H. Geiger 1985)": {
+    "ipdb": "4493",
+    "title": "Dino Turbo",
+    "year": 1990,
+    "manufacturer": "Geiger"
+  },
+  "Dinosaur Eggs (Alvin G.  and  Company 1993)": {
+    "ipdb": "3062",
+    "title": "Dinosaur Eggs",
+    "year": 1993,
+    "manufacturer": "Alvin G."
+  },
+  "Dipsy Doodle (Williams 1971)": {
+    "ipdb": "683",
+    "title": "Dipsy Doodle",
+    "year": 1970,
+    "manufacturer": "Williams"
+  },
+  "Dolphin (Other 1974)": {
+    "ipdb": "699",
+    "title": "Dolphin",
+    "year": 1974,
+    "manufacturer": "Chicago Coin"
+  },
+  "Dungeons  and  Dragons (Bally 1987)": {
+    "ipdb": "743",
+    "title": "Dungeons  Dragons",
+    "year": 1987,
+    "manufacturer": "Midway"
+  },
+  "Earthshaker (Williams 1995)": {
+    "ipdb": "753",
+    "title": "Earthshaker",
+    "year": 1989,
+    "manufacturer": "Williams"
+  },
+  "Eight Ball (Bally 1995)": {
+    "ipdb": "760",
+    "title": "Eight Ball",
+    "year": 1977,
+    "manufacturer": "Bally"
+  },
+  "Eight Ball Champ (Bally 1985)": {
+    "ipdb": "761",
+    "title": "Eight Ball Champ",
+    "year": 1985,
+    "manufacturer": "Midway"
+  },
+  "Eight Ball Deluxe (Bally 1984)": {
+    "ipdb": "5021",
+    "title": "Eight Ball Deluxe",
+    "year": 1984,
+    "manufacturer": "Midway"
+  },
+  "El Dorado City of Gold (Gottlieb 1984)": {
+    "ipdb": "767",
+    "title": "El Dorado City of Gold",
+    "year": 1984,
+    "manufacturer": "Premier"
+  },
+  "El Toro (Bally 1972)": {
+    "ipdb": "772",
+    "title": "El Toro",
+    "year": 1970,
+    "manufacturer": "Bally"
+  },
+  "Embryon (Bally 1981)": {
+    "ipdb": "783",
+    "title": "Embryon",
+    "year": 1980,
+    "manufacturer": "Bally"
+  },
+  "Eros One (Allied Leisure 1978)": {
+    "ipdb": "3738",
+    "title": "Eros One",
+    "year": 1979,
+    "manufacturer": "Fascination"
+  },
+  "Escape from the Lost World (Bally 1987)": {
+    "ipdb": "789",
+    "title": "Escape from the Lost World",
+    "year": 1987,
+    "manufacturer": "Midway"
   }
 }

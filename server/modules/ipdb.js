@@ -561,27 +561,51 @@ var trim = function(str) {
 	return str.replace(/[^\w\d\s\.\-,:_'"()]/ig, '');
 };
 
+/**
+ * The strategy: First title, then year, then manufacturer distance
+ * EXCEPT if year and manufacturer have both distance 0 and 80% name match.
+ *
+ * @param matches
+ * @param table
+ * @param searchName
+ * @returns {*}
+ */
 var findBestMatch = function(matches, table, searchName) {
 
-	console.log(util.inspect(matches, false, 2, true));
+	var q = 0.8;
+
+	// console.log(util.inspect(matches, false, 2, true));
 
 	var normalizeManufacturer = function(manufacturer) {
 		if (!manufacturer) {
 			return '';
 		}
+
+		// remove bally from wulff, we don't want those to appear as bally.
+		manufacturer = manufacturer.match(/^bally wulff$/i) ? 'wulff' : manufacturer;
+
 		for (var name in manufacturerGroups) {
 			if (manufacturerGroups.hasOwnProperty(name)) {
 				var regex = new RegExp('(' + manufacturerGroups[name].join('|') + ')', 'i');
 				if (manufacturer.match(regex)) {
-					return name.toLowerCase();
+					return Ipdb.prototype.norm(name);
 				}
 			}
 		}
-		return manufacturer.toLowerCase();
+
+		// trim special names
+		manufacturer = manufacturer.match(/^taito/i) ? 'taito' : manufacturer;
+		manufacturer = manufacturer.match(/geiger/i) ? 'geiger' : manufacturer;
+		manufacturer = manufacturer.match(/alvin\sg/i) ? 'alvin g' : manufacturer;
+
+		return Ipdb.prototype.norm(manufacturer);
 	};
 
 	// on tie, return nearest year
 	matches.sort(function(a, b) {
+
+		var nA = a.name + ' (' + a.manufacturer + ' ' + a.year + ')';
+		var nB = b.name + ' (' + b.manufacturer + ' ' + b.year + ')';
 
 		var tableYear = table.year ? table.year : 0;
 		var tableManufacturer = normalizeManufacturer(table.manufacturer);
@@ -589,33 +613,68 @@ var findBestMatch = function(matches, table, searchName) {
 		// name distance
 		var ndA = natural.LevenshteinDistance(Ipdb.prototype.norm(a.name), Ipdb.prototype.norm(searchName));
 		var ndB = natural.LevenshteinDistance(Ipdb.prototype.norm(b.name), Ipdb.prototype.norm(searchName));
+		var maxLen = Math.max(a.name.length, b.name.length);
+		var qA = (maxLen - ndA) / maxLen;
+		var qB = (maxLen - ndB) / maxLen;
+		var byName = ndA == ndB ? 0 : (ndA < ndB ? -1 : 1);
+
 		// year difference
-		var ydA = parseInt(a.year) ? Math.abs(a.year - tableYear) : 0;
-		var ydB = parseInt(b.year) ? Math.abs(b.year - tableYear) : 0;
+		var ydA = parseInt(a.year) ? Math.abs(a.year - tableYear) : -1;
+		var ydB = parseInt(b.year) ? Math.abs(b.year - tableYear) : -1;
+		var byYear = ydA == ydB || !parseInt(a.year) || !parseInt(b.year) ? 0 : (ydA < ydB ? -1 : 1);
+		if (!byYear && parseInt(a.year) != parseInt(b.year)) {
+			// either a.year or b.year is unknown.
+			// in this case, we check if one of them is an exact match.
+			if (ydA == 0) {
+				byYear = -1;
+			} else if (ydB == 0) {
+				byYear = 1;
+			}
+		}
+
 		// manufacturer distance
 		var mdA = natural.LevenshteinDistance(normalizeManufacturer(a.manufacturer), tableManufacturer);
 		var mdB = natural.LevenshteinDistance(normalizeManufacturer(b.manufacturer), tableManufacturer);
-
-		var byName = ndA == ndB ? 0 : (ndA < ndB ? -1 : 1);
-		var byYear = ydA == ydB || !parseInt(a.year) || !parseInt(b.year) ? 0 : (ydA < ydB ? -1 : 1);
 		var byManufacturer = mdA == mdB || !tableManufacturer ? 0 : (mdA < mdB ? -1 : 1);
 
-		if (byName) {
-			return byName;
+		// year AND manufacturer matching
+		var byYearAndManufacturer = 0;
+		var aEqualsYM = mdA == 0 && ydA == 0 && qA > q;
+		var bEqualsYM = mdB == 0 && ydB == 0 && qB > q;
+		if (aEqualsYM && bEqualsYM) {
+			byYearAndManufacturer = (mdA > mdB ? -1 : 1);
+		} else if (aEqualsYM) {
+			byYearAndManufacturer = -1;
+		} else if (bEqualsYM) {
+			byYearAndManufacturer = 1;
+		}
+
+		if (byYearAndManufacturer) {
+			//console.log('"%s" <-> "%s" byYearAndManufacturer: %d', nA, nB, byYearAndManufacturer);
+			return byYearAndManufacturer;
 		} else {
-			if (byYear) {
-				return byYear;
+			if (byName) {
+				//console.log('"%s" <-> "%s" byName: %d', nA, nB, byName);
+				return byName;
 			} else {
-				return byManufacturer;
+				if (byYear) {
+					//console.log('"%s" <-> "%s" byYear: %d', nA, nB, byYear);
+					return byYear;
+				} else {
+					//console.log('"%s" <-> "%s" byManufacturer: %d', nA, nB, byManufacturer);
+					return byManufacturer;
+				}
 			}
+
 		}
 	});
 
 	logger.log('info', '[ipdb] Matches are now sorted:');
 	var i = 0;
 	_.each(matches, function(match) {
-		logger.log('info', '[ipdb]   %d. %s (%s %s) [dN=%d, dM=%d]', ++i, match.name, match.manufacturer, match.year,
+		logger.log('info', '[ipdb]   %d. %s (%s %d) [dN=%d, dY=%d, dM=%d]', ++i, match.name, match.manufacturer, match.year,
 			natural.LevenshteinDistance(Ipdb.prototype.norm(match.name), Ipdb.prototype.norm(searchName)),
+			parseInt(match.year) && parseInt(table.year) ? Math.abs(match.year - table.year) : NaN,
 			natural.LevenshteinDistance(normalizeManufacturer(match.manufacturer), normalizeManufacturer(table.manufacturer))
 		);
 	});
@@ -668,6 +727,7 @@ var manufacturerNames = {
 	224: 'Gottlieb',
 	235: 'Bell Games',
 	239: 'P & S',
+	242: 'Pamco',
 	248: 'Petaco',
 	249: 'Peyper',
 	250: 'Pierce Tool',

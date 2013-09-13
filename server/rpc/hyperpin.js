@@ -233,7 +233,7 @@ exports.actions = function(req, res, ss) {
 			schema.Table.find(id).success(function(row) {
 				var m = row.hpid.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\s*\)/);
 				if (m) {
-					logger.log('error', '[rpc] [hyperpin] Re-matching "%s" at IPDB.org', row.hpid);
+					logger.log('info', '[rpc] [hyperpin] Re-matching "%s" at IPDB.org', row.hpid);
 					row.name = m[1];
 					row.manufacturer = m[2];
 					row.year = m[3];
