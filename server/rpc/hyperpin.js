@@ -1,10 +1,12 @@
 'use strict';
 
 var _ = require('underscore');
+var fs = require('fs');
 var logger = require('winston');
 
 var hp = require('../modules/hyperpin');
 var error = require('../modules/error');
+var ipdb = require('../modules/ipdb');
 var schema = require('../database/schema');
 
 exports.actions = function(req, res, ss) {
@@ -66,6 +68,13 @@ exports.actions = function(req, res, ss) {
 				return params.filters && Array.isArray(params.filters) && _.contains(params.filters, filter);
 			};
 
+			var mapFile = __dirname + '/../data/ipdb-hp.json';
+			var map;
+			if (fs.existsSync(mapFile)) {
+				map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
+			} else {
+				map = {};
+			}
 
 			var op = hasFilter('identical') ? '=' : '<>';
 
@@ -88,6 +97,10 @@ exports.actions = function(req, res, ss) {
 				var norm = function(str) {
 					return str ? str.toString().replace(/[^a-z0-9\(\)]+/ig, '').toLowerCase() : str;
 				};
+
+				rows = _.filter(rows, function(row) {
+					return !map[row.hpid];
+				});
 
 				_.map(rows, function(row) {
 					row.norm = {
@@ -131,7 +144,7 @@ exports.actions = function(req, res, ss) {
 							norm: {
 								name: norm(m[1]),
 								manufacturer: norm(m[2]),
-								year: norm(m[3]),
+								year: norm(m[3])
 							}
 						}
 					}
@@ -139,6 +152,75 @@ exports.actions = function(req, res, ss) {
 				});
 
 				res({ rows: returnedRows, count: rows.length, queryTime: queryTime });
+			});
+		},
+
+		ipdbmatchConfirm: function(id, what) {
+
+			var mapFile = __dirname + '/../data/ipdb-hp.json';
+			var map;
+			if (fs.existsSync(mapFile)) {
+				map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
+			} else {
+				map = {};
+			}
+			var done = function() {
+				fs.writeFileSync(mapFile, JSON.stringify(map, null, 2));
+				res();
+			};
+
+			schema.Table.find(id).success(function(row) {
+				if (!row) {
+					logger.log('warn', '[rpc] [hyperpin] Cannot find table row ID %s.', id);
+					return res();
+				}
+
+				var m, ipdb_id;
+
+				// check for ipdb url / id
+				if (m = what.trim().match(/^http:\/\/.*?ipdb\.org.*?id=(\d+)/i)) {
+					ipdb_id = m[1];
+				}
+				if (m = what.trim().match(/^\d+$/)) {
+					ipdb_id = m[0];
+				}
+
+				if (ipdb_id) {
+					ipdb.enrich({ ipdb_no: ipdb_id, name: row.name }, function(err, table) {
+						if (err) {
+							logger.log('error', err);
+							return done();
+						}
+						if (!table.manufacturer) {
+							logger.log('error', 'Unknown manufacturer: http://ipdb.org/search.pl?searchtype=advanced&mfgid=' + table.ipdb_mfg);
+							return done();
+						}
+						map[row.hpid] = {
+							ipdb: table.ipdb_no,
+							title: table.name,
+							year: table.year,
+							manufacturer: table.manufacturer,
+						};
+						done();
+					});
+				} else {
+
+					// if no ipdb found, that means we're confirming an OG
+					if (what == 'OG' || !row.ipdb_no) {
+						map[row.hpid] = {
+							type: 'OG'
+						};
+					} else {
+						map[row.hpid] = {
+							ipdb: row.ipdb_no,
+							title: row.name,
+							year: row.year,
+							manufacturer: row.manufacturer
+						};
+					}
+					done();
+				}
+
 			});
 		}
 

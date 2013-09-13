@@ -46,6 +46,7 @@ require('/controllers/admin/sources')(app);
 require('/controllers/admin/user')(app);
 require('/controllers/admin/global')(app);
 require('/controllers/admin/ipdbvpf')(app);
+require('/controllers/admin/ipdbhp')(app);
 
 ss.server.on('ready', function() {
 	jQuery(function() {

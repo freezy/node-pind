@@ -1,0 +1,62 @@
+{
+  "301 Bullseye (Grand Products 1984)": {
+    "ipdb": "403",
+    "title": "301Bulls Eye",
+    "year": 1986,
+    "manufacturer": "Grand Products"
+  },
+  "Aladdin's Castle (Bally 1976)": {
+    "ipdb": "40",
+    "title": "Aladdin's Castle",
+    "year": 1975,
+    "manufacturer": "Bally"
+  },
+  "Alaska (Interflip of Spain 1978)": {
+    "ipdb": "3888",
+    "title": "Alaska",
+    "year": 1978,
+    "manufacturer": "Interflip"
+  },
+  "Algar (Williams 1992)": {
+    "ipdb": "42",
+    "title": "Algar",
+    "year": 1980,
+    "manufacturer": "Williams"
+  },
+  "Amigo (Bally 1974)": {
+    "ipdb": "71",
+    "title": "Amigo",
+    "year": 1973,
+    "manufacturer": "Bally"
+  },
+  "Argosy (Williams 1974)": {
+    "ipdb": "84",
+    "title": "Argosy",
+    "year": 1977,
+    "manufacturer": "Williams"
+  },
+  "Asteroid Annie and the Aliens (Gottileb 1977)": {
+    "ipdb": "98",
+    "title": "Asteroid Annie and the Aliens",
+    "year": 1980,
+    "manufacturer": "Gottlieb"
+  },
+  "Bad Girls (Gottlieb 1988)": {
+    "ipdb": "128",
+    "title": "Bad Girls",
+    "year": 1988,
+    "manufacturer": "Premier"
+  },
+  "Barb Wire (Gottlieb 1996)": {
+    "ipdb": "3795",
+    "title": "Barb Wire",
+    "year": 1996,
+    "manufacturer": "Premier"
+  },
+  "Beat The Clock (Bally 1985)": {
+    "ipdb": "4518",
+    "title": "Beat the Clock",
+    "year": 1985,
+    "manufacturer": "Wulff"
+  }
+}

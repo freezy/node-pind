@@ -32,10 +32,11 @@ block inner-content
 		div.data.ng-cloak(style="display:none")
 			.row-fluid
 				ul.thumbnails
-					li.span6.vpf.item(ng-repeat="row in data")
+					li.span6.vpf.item(ng-repeat="row in data", ng-controller="IpdbHpItemCtrl")
 						.thumbnail.thumbnail-padding
 							.div.pull-left
-								h3(class="{{ row.norm.name == row.hp.norm.name ? '' : 'diff' }}") {{ row.name }}
+								a(href="http://ipdb.org/search.pl?any={{row.name}}&search=Search+Database&searchtype=quick", target="_blank")
+									h3(class="{{ row.norm.name == row.hp.norm.name ? '' : 'diff' }}") {{ row.name }}
 								h4(class="{{ row.norm.manufacturer == row.hp.norm.manufacturer ? '' : 'diff' }}") {{ row.manufacturer }}
 								h4(class="{{ row.norm.year == row.hp.norm.year ? '' : 'diff' }}") {{ row.year }}
 							.div.pull-right(ng-show="row.ipdb_no")
@@ -44,18 +45,18 @@ block inner-content
 								h4(class="{{ row.norm.manufacturer == row.hp.norm.manufacturer ? '' : 'diff' }}") {{ row.hp.manufacturer }}
 								h4(class="{{ row.norm.year == row.hp.norm.year ? '' : 'diff' }}") {{ row.hp.year }}
 							.clearfix
-							p
-								button.btn(ng-hide="row.ipdb_data.confirmed", ng-click="confirm()")
+							form.form-inline(ng-submit="change()")
+								button.btn(type="button", ng-hide="row.ipdb_data.confirmed", ng-click="confirm()")
 									i.icon.ok
 									span &nbsp;&nbsp;Confirm
 								span(ng-hide="row.ipdb_data.confirmed") &nbsp;&nbsp;
-								button.btn(ng-click="original()")
+								button.btn(type="button", ng-click="original()")
 									i.icon.remove
 									span &nbsp;&nbsp;Original Game
 								span &nbsp;&nbsp;
 								input.input-small.input-inline(type="text", ng-model="newId", placeholder="IPDB# or URL")
 								span &nbsp;
-								button.btn(ng-click="change()")
+								button.btn
 									i.icon.ok
 		.clearfix
 

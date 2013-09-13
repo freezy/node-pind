@@ -1,13 +1,13 @@
 module.exports = function(module) {
 	'use strict';
 
-	module.controller('IpdbVpfItemCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
+	module.controller('IpdbHpItemCtrl', ['$scope', function($scope) {
 
 		$scope.confirm = function() {
 			if ($scope.newId) {
 				alert('Sure? If so, clear the URL field below and retry.');
 			} else {
-				$scope.rpc('vpforums.ipdbmatchConfirm', $scope.row.id, '', function() {
+				$scope.rpc('hyperpin.ipdbmatchConfirm', $scope.row.id, '', function() {
 					$scope.$parent.$parent.$broadcast('paramsUpdated');
 				});
 			}
@@ -17,7 +17,7 @@ module.exports = function(module) {
 			if ($scope.newId) {
 				alert('Sure? If so, clear the URL field below and retry.');
 			} else {
-				$scope.rpc('vpforums.ipdbmatchConfirm', $scope.row.id, 'OG', function() {
+				$scope.rpc('hyperpin.ipdbmatchConfirm', $scope.row.id, 'OG', function() {
 					$scope.$parent.$parent.$broadcast('paramsUpdated');
 				});
 			}
@@ -25,7 +25,7 @@ module.exports = function(module) {
 
 		$scope.change = function() {
 			if ($scope.newId) {
-				$scope.rpc('vpforums.ipdbmatchConfirm', $scope.row.id, $scope.newId, function() {
+				$scope.rpc('hyperpin.ipdbmatchConfirm', $scope.row.id, $scope.newId, function() {
 					$scope.$parent.$parent.$broadcast('paramsUpdated');
 				});
 			} else {
