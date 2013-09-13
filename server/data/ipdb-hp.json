@@ -58,5 +58,71 @@
     "title": "Beat the Clock",
     "year": 1985,
     "manufacturer": "Wulff"
+  },
+  "Arena (Gottlieb 1987)": {
+    "ipdb": "82",
+    "title": "Arena",
+    "year": 1987,
+    "manufacturer": "Premier"
+  },
+  "Big House (Gottlieb 1989)": {
+    "ipdb": "256",
+    "title": "Big House",
+    "year": 1989,
+    "manufacturer": "Premier"
+  },
+  "Black Belt (Bally 1986)": {
+    "ipdb": "303",
+    "title": "Black Belt",
+    "year": 1986,
+    "manufacturer": "Midway"
+  },
+  "Black Pyramid (Bally 1984)": {
+    "ipdb": "312",
+    "title": "Black Pyramid",
+    "year": 1984,
+    "manufacturer": "Midway"
+  },
+  "Blackwater 100 (Bally 1988)": {
+    "ipdb": "319",
+    "title": "Blackwater 100",
+    "year": 1988,
+    "manufacturer": "Midway"
+  },
+  "Bone Busters (Gottlieb 1989)": {
+    "ipdb": "347",
+    "title": "Bone Busters Inc.",
+    "year": 1989,
+    "manufacturer": "Premier"
+  },
+  "Boomerang (Bally 1947)": {
+    "ipdb": "354",
+    "title": "Boomerang",
+    "year": 1974,
+    "manufacturer": "Bally"
+  },
+  "Bounty Hunter (Gottlieb 1985)": {
+    "ipdb": "361",
+    "title": "Bounty Hunter",
+    "year": 1985,
+    "manufacturer": "Premier"
+  },
+  "Brave Team (Inder 1995)": {
+    "ipdb": "4480",
+    "title": "Brave Team",
+    "year": 1985,
+    "manufacturer": "Inder"
+  },
+  "Bugs Bunny Birthday Ball (Bally 1991)": {
+    "ipdb": "396",
+    "title": "Bugs Bunny's Birthday Ball",
+    "year": 1991,
+    "manufacturer": "Bally"
+  },
+  "Butterfly (Segasa Sonic 1977)": {
+    "ipdb": "410",
+    "title": "Butterfly",
+    "year": 1977,
+    "manufacturer": "Sonic"
   }
 }

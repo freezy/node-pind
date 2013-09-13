@@ -2,6 +2,7 @@
 
 var _ = require('underscore');
 var fs = require('fs');
+var util= require('util');
 var logger = require('winston');
 
 var hp = require('../modules/hyperpin');
@@ -77,20 +78,27 @@ exports.actions = function(req, res, ss) {
 			}
 
 			var op = hasFilter('identical') ? '=' : '<>';
+			var search = params.search && params.search.length > 1;
 
 			var queryWhere;
 			var queryWhat = 'SELECT * FROM tables ';
 			var queryOrder= 'ORDER BY name ASC';
 
-			if (hasFilter('nomatch')) {
-				queryWhere = 'WHERE `ipdb_no` IS NULL ';
+			var args = [];
+			if (search) {
+				queryWhere = 'WHERE lower(`hpid`) LIKE ? ';
+				args.push('%' + params.search.toLowerCase() + '%');
 			} else {
-				queryWhere = 'WHERE hpid ' + op + ' CONCAT(`name`, " (", `manufacturer`, " ", `year`, ")")';
+				if (hasFilter('nomatch')) {
+					queryWhere = 'WHERE `ipdb_no` IS NULL ';
+				} else {
+					queryWhere = 'WHERE hpid ' + op + ' CONCAT(`name`, " (", `manufacturer`, " ", `year`, ")")';
+				}
 			}
 
 			var query = queryWhat + queryWhere + queryOrder;
 			var queryStart = +new Date();
-			schema.sequelize.query(query).success(function(rows) {
+			schema.sequelize.query(query, null, { plain: false, raw: true }, args).success(function(rows) {
 				var queryTime = (+new Date() - queryStart);
 
 				rows = _.filter(rows, function(row) {
@@ -105,16 +113,18 @@ exports.actions = function(req, res, ss) {
 					}
 				});
 
-				if (hasFilter('identical')) {
-					rows = _.filter(rows, function(row) {
-						var hpidNorm = row.norm.name + '(' + row.norm.manufacturer + row.norm.year + ')';
-						return hpidNorm == ipdb.norm(row.hpid);
-					});
-				} else if (!hasFilter('nomatch')) {
-					rows = _.filter(rows, function(row) {
-						var hpidNorm = row.norm.name + '(' + row.norm.manufacturer + row.norm.year + ')';
-						return hpidNorm != ipdb.norm(row.hpid);
-					});
+				if (!search) {
+					if (hasFilter('identical')) {
+						rows = _.filter(rows, function(row) {
+							var hpidNorm = row.norm.name + '(' + row.norm.manufacturer + row.norm.year + ')';
+							return hpidNorm == ipdb.norm(row.hpid);
+						});
+					} else if (!hasFilter('nomatch')) {
+						rows = _.filter(rows, function(row) {
+							var hpidNorm = row.norm.name + '(' + row.norm.manufacturer + row.norm.year + ')';
+							return hpidNorm != ipdb.norm(row.hpid);
+						});
+					}
 				}
 
 				var pagedRows;

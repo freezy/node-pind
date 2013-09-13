@@ -170,7 +170,6 @@ Ipdb.prototype.enrichAll = function(tables, callback) {
 Ipdb.prototype.enrich = function(table, callback) {
 
 	var forceSearch = true;
-	var that = this;
 
 	/**
 	 * ipdb.org is quite picky about names and spelling errors etc will
@@ -345,27 +344,34 @@ Ipdb.prototype.enrich = function(table, callback) {
 		// check if multiple matches
 		m = body.match(/(\d+) records match/i);
 		if (m && m[1] > 1) {
-			logger.log('info', '[ipdb] Found %d hits for "%s".', m[1], searchName);
+
+			var numHits = m[1];
+			logger.log('info', '[ipdb] Found %d hits for "%s".', numHits, searchName);
 
 			// parse the matches
-			var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"[^>]*href="[^"]*?(\d+)">([^<]+)<\/a><\/td>\s*<td[^>]*><span[^>]*>([^<]+)/ig;
+			var regex = /<tr valign=top><td[^>]+>([\d\?]{4})[^<]*<\/td>\s*<td[^>]+><a class="[^"]*linkid[^"]*"[^>]*href="[^"]*?(\d+)">([^<]+)<\/a><\/td>\s*<td[^>]*><span[^>]*>([^<]+)/ig;
+
 			var matches = [];
 			while (m = regex.exec(body)) {
 				matches.push({
-					name: m[4],
-					year: m[2],
-					manufacturer: m[5],
-					ipdbid: m[3],
-					distance: natural.LevenshteinDistance(Ipdb.prototype.norm(searchName), Ipdb.prototype.norm(m[4].toLowerCase())) });
+					name: m[3],
+					year: m[1],
+					manufacturer: m[4],
+					ipdbid: m[2]
+					// distance: natural.LevenshteinDistance(Ipdb.prototype.norm(searchName), Ipdb.prototype.norm(m[4])) });
+				});
 			}
 			if (matches.length == 0) {
 				logger.log('error', '[ipdb] Failed to match any table entry, check regex.');
 				return callback('Error parsing search result from IPDB.');
 			}
+			if (matches.length < numHits) {
+				logger.log('warn', '[ipdb] Warning, %d hits on page, but could only parse %d!', numHits, matches.length);
+			}
 
 			// figure out best match
-			var match = findBestMatch(matches, table);
-			logger.log('info', '[ipdb] Figured best match is "%s (%s %d)" (%s)', match.name, match.manufacturer, match.year, match.ipdbid);
+			var match = findBestMatch(matches, table, searchName);
+			logger.log('info', '[ipdb] Figured best match is "%s (%s %d)" #%s', match.name, match.manufacturer, match.year, match.ipdbid);
 
 			if (body.match(/Too many matches to display all individual records/i)) {
 
@@ -555,56 +561,66 @@ var trim = function(str) {
 	return str.replace(/[^\w\d\s\.\-,:_'"()]/ig, '');
 };
 
-var findBestMatch = function(matches, table) {
+var findBestMatch = function(matches, table, searchName) {
 
-	// sort by distance
-	matches.sort(function(a, b) {
-		if (a.distance < b.distance) {
-			return -1;
-		}
-		if (a.distance > b.distance) {
-			return 1;
-		}
-		return 0;
-	});
+	console.log(util.inspect(matches, false, 2, true));
 
-	// check for ties
-	var best = matches[0].distance;
-	var bestMatches = [];
-	for (var i = 0; i < matches.length; i++) {
-		if (matches[i].distance == best) {
-			bestMatches.push(matches[i]);
-		} else {
-			break;
+	var normalizeManufacturer = function(manufacturer) {
+		if (!manufacturer) {
+			return '';
 		}
-	}
-	if (bestMatches.length == 1) {
-		return bestMatches[0];
-	}
+		for (var name in manufacturerGroups) {
+			if (manufacturerGroups.hasOwnProperty(name)) {
+				var regex = new RegExp('(' + manufacturerGroups[name].join('|') + ')', 'i');
+				if (manufacturer.match(regex)) {
+					return name.toLowerCase();
+				}
+			}
+		}
+		return manufacturer.toLowerCase();
+	};
 
 	// on tie, return nearest year
-	bestMatches.sort(function(a, b) {
-		if (!table.year) {
-			return 0;
+	matches.sort(function(a, b) {
+
+		var tableYear = table.year ? table.year : 0;
+		var tableManufacturer = normalizeManufacturer(table.manufacturer);
+
+		// name distance
+		var ndA = natural.LevenshteinDistance(Ipdb.prototype.norm(a.name), Ipdb.prototype.norm(searchName));
+		var ndB = natural.LevenshteinDistance(Ipdb.prototype.norm(b.name), Ipdb.prototype.norm(searchName));
+		// year difference
+		var ydA = parseInt(a.year) ? Math.abs(a.year - tableYear) : 0;
+		var ydB = parseInt(b.year) ? Math.abs(b.year - tableYear) : 0;
+		// manufacturer distance
+		var mdA = natural.LevenshteinDistance(normalizeManufacturer(a.manufacturer), tableManufacturer);
+		var mdB = natural.LevenshteinDistance(normalizeManufacturer(b.manufacturer), tableManufacturer);
+
+		var byName = ndA == ndB ? 0 : (ndA < ndB ? -1 : 1);
+		var byYear = ydA == ydB || !parseInt(a.year) || !parseInt(b.year) ? 0 : (ydA < ydB ? -1 : 1);
+		var byManufacturer = mdA == mdB || !tableManufacturer ? 0 : (mdA < mdB ? -1 : 1);
+
+		if (byName) {
+			return byName;
+		} else {
+			if (byYear) {
+				return byYear;
+			} else {
+				return byManufacturer;
+			}
 		}
-		if (Math.abs(a.year - table.year) < Math.abs(b.year - table.year)) {
-			console.log('%d | %d < %d -> %d', table.year, a.year, b.year, b.year);
-			return -1; // b wins
-		}
-		if (Math.abs(a.year - table.year) > Math.abs(b.year - table.year)) {
-			console.log('%d | %d > %d -> %d', table.year, a.year, b.year, a.year);
-			return 1; // a wins
-		}
-		return 0;
 	});
 
 	logger.log('info', '[ipdb] Matches are now sorted:');
-	i = 0;
-	_.each(bestMatches, function(match) {
-		logger.log('info', '[ipdb]   %d. %s (%s %s) [d=%d]', ++i, match.name, match.manufacturer, match.year, match.distance);
+	var i = 0;
+	_.each(matches, function(match) {
+		logger.log('info', '[ipdb]   %d. %s (%s %s) [dN=%d, dM=%d]', ++i, match.name, match.manufacturer, match.year,
+			natural.LevenshteinDistance(Ipdb.prototype.norm(match.name), Ipdb.prototype.norm(searchName)),
+			natural.LevenshteinDistance(normalizeManufacturer(match.manufacturer), normalizeManufacturer(table.manufacturer))
+		);
 	});
 
-	return bestMatches[0];
+	return matches[0];
 };
 
 var manufacturerNames = {
@@ -692,7 +708,11 @@ var manufacturerNames = {
 	495: 'Elbos',
 	532: 'United',
 	549: 'Professional Pinball of Toronto'
+};
 
+var manufacturerGroups = {
+	Gottlieb: [ 'Gottlieb', 'Mylstar', 'Premier' ],
+	Bally: [ 'Bally', 'Midway' ]
 };
 
 module.exports = new Ipdb();
