@@ -100,11 +100,14 @@ span[data-toggle="popover"]
 .clickable
 	cursor pointer
 
+.input-inline
+	margin-top 9px
+
 // :form elements
 // ============================================================================
 
 // text boxes
-input[type='text'], input[type='password']
+input[type='text']:not(.input-inline), input[type='password']
 	height initial
 	font-family font-sans
 	font-weight 400

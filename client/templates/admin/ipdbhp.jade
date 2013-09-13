@@ -38,10 +38,25 @@ block inner-content
 								h3(class="{{ row.norm.name == row.hp.norm.name ? '' : 'diff' }}") {{ row.name }}
 								h4(class="{{ row.norm.manufacturer == row.hp.norm.manufacturer ? '' : 'diff' }}") {{ row.manufacturer }}
 								h4(class="{{ row.norm.year == row.hp.norm.year ? '' : 'diff' }}") {{ row.year }}
-							.div.pull-right
-								h3(class="{{ row.norm.name == row.hp.norm.name ? '' : 'diff' }}") {{ row.hp.name }}
+							.div.pull-right(ng-show="row.ipdb_no")
+								a(href="http://www.ipdb.org/machine.cgi?id={{row.ipdb_no}}", target="_blank")
+									h3(class="{{ row.norm.name == row.hp.norm.name ? '' : 'diff' }}") {{ row.hp.name }}
 								h4(class="{{ row.norm.manufacturer == row.hp.norm.manufacturer ? '' : 'diff' }}") {{ row.hp.manufacturer }}
 								h4(class="{{ row.norm.year == row.hp.norm.year ? '' : 'diff' }}") {{ row.hp.year }}
+							.clearfix
+							p
+								button.btn(ng-hide="row.ipdb_data.confirmed", ng-click="confirm()")
+									i.icon.ok
+									span &nbsp;&nbsp;Confirm
+								span(ng-hide="row.ipdb_data.confirmed") &nbsp;&nbsp;
+								button.btn(ng-click="original()")
+									i.icon.remove
+									span &nbsp;&nbsp;Original Game
+								span &nbsp;&nbsp;
+								input.input-small.input-inline(type="text", ng-model="newId", placeholder="IPDB# or URL")
+								span &nbsp;
+								button.btn(ng-click="change()")
+									i.icon.ok
 		.clearfix
 
 		//- empty search result
