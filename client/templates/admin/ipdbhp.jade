@@ -46,13 +46,16 @@ block inner-content
 								h4(class="{{ row.norm.year == row.hp.norm.year ? '' : 'diff' }}") {{ row.hp.year }}
 							.clearfix
 							form.form-inline(ng-submit="change()")
+								button.btn(type="button", ng-click="refresh()")
+									i.icon.refresh
+								span &nbsp;&nbsp;
 								button.btn(type="button", ng-hide="row.ipdb_data.confirmed", ng-click="confirm()")
 									i.icon.ok
 									span &nbsp;&nbsp;Confirm
 								span(ng-hide="row.ipdb_data.confirmed") &nbsp;&nbsp;
 								button.btn(type="button", ng-click="original()")
 									i.icon.remove
-									span &nbsp;&nbsp;Original Game
+									span &nbsp;&nbsp;OG
 								span &nbsp;&nbsp;
 								input.input-small.input-inline(type="text", ng-model="newId", placeholder="IPDB# or URL")
 								span &nbsp;

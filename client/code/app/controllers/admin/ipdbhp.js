@@ -3,6 +3,12 @@ module.exports = function(module) {
 
 	module.controller('IpdbHpItemCtrl', ['$scope', function($scope) {
 
+		$scope.refresh = function() {
+			$scope.rpc('hyperpin.ipdbmatchRetry', $scope.row.id, '', function() {
+				$scope.$parent.$parent.$broadcast('paramsUpdated');
+			});
+		};
+
 		$scope.confirm = function() {
 			if ($scope.newId) {
 				alert('Sure? If so, clear the URL field below and retry.');

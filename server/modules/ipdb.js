@@ -169,7 +169,8 @@ Ipdb.prototype.enrichAll = function(tables, callback) {
  */
 Ipdb.prototype.enrich = function(table, callback) {
 
-	var forceSearch = false;
+	var forceSearch = true;
+	var that = this;
 
 	/**
 	 * ipdb.org is quite picky about names and spelling errors etc will
@@ -281,7 +282,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 				});
 			}
 
-			var distance = natural.LevenshteinDistance(searchName, m[2]);
+			var distance = natural.LevenshteinDistance(Ipdb.prototype.norm(searchName), Ipdb.prototype.norm(m[2]));
 			logger.log('info', '[ipdb] Found title "%s" as #%d (distance %d)', table.name, m[1], distance);
 			callback(null, table);
 
@@ -314,7 +315,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 		// advanced search: var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
 		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(searchName) + '&searchtype=quick';
 		ipdb.emit('searchStarted', { name: searchName });
-		logger.log('info', '[ipdb] Searching at ipdb.org for "%s"', searchName);
+		logger.log('info', '[ipdb] Searching at ipdb.org for "%s" (%s %d)', searchName, table.manufacturer, table.year);
 	}
 	logger.log('debug', '[ipdb] Requesting %s', url);
 	request(url, function(err, response, body) {
@@ -347,10 +348,15 @@ Ipdb.prototype.enrich = function(table, callback) {
 			logger.log('info', '[ipdb] Found %d hits for "%s".', m[1], searchName);
 
 			// parse the matches
-			var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"[^>]*href="[^"]*?(\d+)">([^<]+)/ig;
+			var regex = /<tr valign=top><td nowrap class="(normal|divider)" align=left>(\d{4})[^<]*<\/td>\s*<td[^>]*><a class="linkid"[^>]*href="[^"]*?(\d+)">([^<]+)<\/a><\/td>\s*<td[^>]*><span[^>]*>([^<]+)/ig;
 			var matches = [];
 			while (m = regex.exec(body)) {
-				matches.push({ name: m[4], year: m[2], ipdbid: m[3], distance: natural.LevenshteinDistance(searchName.toLowerCase(), m[4].toLowerCase()) });
+				matches.push({
+					name: m[4],
+					year: m[2],
+					manufacturer: m[5],
+					ipdbid: m[3],
+					distance: natural.LevenshteinDistance(Ipdb.prototype.norm(searchName), Ipdb.prototype.norm(m[4].toLowerCase())) });
 			}
 			if (matches.length == 0) {
 				logger.log('error', '[ipdb] Failed to match any table entry, check regex.');
@@ -359,7 +365,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 
 			// figure out best match
 			var match = findBestMatch(matches, table);
-			logger.log('info', '[ipdb] Figured best match is "%s" (%s)', match.name, match.ipdbid);
+			logger.log('info', '[ipdb] Figured best match is "%s (%s %d)" (%s)', match.name, match.manufacturer, match.year, match.ipdbid);
 
 			if (body.match(/Too many matches to display all individual records/i)) {
 
@@ -530,6 +536,10 @@ Ipdb.prototype.getKnownManufacturers = function() {
 	return _.uniq(_.values(manufacturerNames));
 };
 
+Ipdb.prototype.norm = function(str) {
+	return str ? str.toString().replace(/[^a-z0-9\(\)]+/ig, '').toLowerCase() : str;
+};
+
 var firstMatch = function(str, regex, postFn) {
 	var m = str.match(regex);
 	if (m && postFn) {
@@ -577,15 +587,22 @@ var findBestMatch = function(matches, table) {
 		if (!table.year) {
 			return 0;
 		}
-		if (Math.abs(a.year - table.year) < Math.abs(b.year - table.year)) {
-			return -1;
-		}
 		if (Math.abs(a.year - table.year) > Math.abs(b.year - table.year)) {
-			return 1;
+			console.log('%d | %d < %d -> %d', table.year, a.year, b.year, b.year);
+			return -1; // b wins
+		}
+		if (Math.abs(a.year - table.year) < Math.abs(b.year - table.year)) {
+			console.log('%d | %d > %d -> %d', table.year, a.year, b.year, a.year);
+			return 1; // a wins
 		}
 		return 0;
 	});
-	logger.log('info', '[ipdb] Matches are now sorted:', bestMatches);
+
+	logger.log('info', '[ipdb] Matches are now sorted:');
+	i = 0;
+	_.each(bestMatches, function(match) {
+		logger.log('info', '[ipdb]   %d. %s (%s %s) [d=%d]', ++i, match.name, match.manufacturer, match.year, match.distance);
+	});
 
 	return bestMatches[0];
 };

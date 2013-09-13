@@ -88,15 +88,10 @@ exports.actions = function(req, res, ss) {
 				queryWhere = 'WHERE hpid ' + op + ' CONCAT(`name`, " (", `manufacturer`, " ", `year`, ")")';
 			}
 
-
 			var query = queryWhat + queryWhere + queryOrder;
 			var queryStart = +new Date();
 			schema.sequelize.query(query).success(function(rows) {
 				var queryTime = (+new Date() - queryStart);
-
-				var norm = function(str) {
-					return str ? str.toString().replace(/[^a-z0-9\(\)]+/ig, '').toLowerCase() : str;
-				};
 
 				rows = _.filter(rows, function(row) {
 					return !map[row.hpid];
@@ -104,21 +99,21 @@ exports.actions = function(req, res, ss) {
 
 				_.map(rows, function(row) {
 					row.norm = {
-						name: norm(row.name),
-						manufacturer: norm(row.manufacturer),
-						year: norm(row.year)
+						name: ipdb.norm(row.name),
+						manufacturer: ipdb.norm(row.manufacturer),
+						year: ipdb.norm(row.year)
 					}
 				});
 
 				if (hasFilter('identical')) {
 					rows = _.filter(rows, function(row) {
 						var hpidNorm = row.norm.name + '(' + row.norm.manufacturer + row.norm.year + ')';
-						return hpidNorm == norm(row.hpid);
+						return hpidNorm == ipdb.norm(row.hpid);
 					});
 				} else if (!hasFilter('nomatch')) {
 					rows = _.filter(rows, function(row) {
 						var hpidNorm = row.norm.name + '(' + row.norm.manufacturer + row.norm.year + ')';
-						return hpidNorm != norm(row.hpid);
+						return hpidNorm != ipdb.norm(row.hpid);
 					});
 				}
 
@@ -142,9 +137,9 @@ exports.actions = function(req, res, ss) {
 							manufacturer: m[2],
 							year: m[3],
 							norm: {
-								name: norm(m[1]),
-								manufacturer: norm(m[2]),
-								year: norm(m[3])
+								name: ipdb.norm(m[1]),
+								manufacturer: ipdb.norm(m[2]),
+								year: ipdb.norm(m[3])
 							}
 						}
 					}
@@ -219,6 +214,27 @@ exports.actions = function(req, res, ss) {
 						};
 					}
 					done();
+				}
+
+			});
+		},
+
+		ipdbmatchRetry: function(id) {
+			schema.Table.find(id).success(function(row) {
+				var m = row.hpid.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\s*\)/);
+				if (m) {
+					logger.log('error', '[rpc] [hyperpin] Re-matching "%s" at IPDB.org', row.hpid);
+					row.name = m[1];
+					row.manufacturer = m[2];
+					row.year = m[3];
+					ipdb.enrich(row, function(err, table) {
+						table.save().success(function() {
+							res();
+						});
+					});
+				} else {
+					logger.log('error', '[rpc] [hyperpin] Cannot find match data from "%s".', row.hpid);
+					res();
 				}
 
 			});
