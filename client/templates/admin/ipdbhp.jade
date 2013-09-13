@@ -34,16 +34,18 @@ block inner-content
 				ul.thumbnails
 					li.span6.vpf.item(ng-repeat="row in data", ng-controller="IpdbHpItemCtrl")
 						.thumbnail.thumbnail-padding
+							i.icon.ipdb.hpmatch
+							img.clickable.hpmatch(ng-src="/images/hplogo-grey.svg")
 							.div.pull-left
 								a(href="http://ipdb.org/search.pl?any={{row.name}}&search=Search+Database&searchtype=quick", target="_blank")
-									h3(class="{{ row.norm.name == row.hp.norm.name ? '' : 'diff' }}") {{ row.name }}
-								h4(class="{{ row.norm.manufacturer == row.hp.norm.manufacturer ? '' : 'diff' }}") {{ row.manufacturer }}
-								h4(class="{{ row.norm.year == row.hp.norm.year ? '' : 'diff' }}") {{ row.year }}
-							.div.pull-right(ng-show="row.ipdb_no")
-								a(href="http://www.ipdb.org/machine.cgi?id={{row.ipdb_no}}", target="_blank")
 									h3(class="{{ row.norm.name == row.hp.norm.name ? '' : 'diff' }}") {{ row.hp.name }}
 								h4(class="{{ row.norm.manufacturer == row.hp.norm.manufacturer ? '' : 'diff' }}") {{ row.hp.manufacturer }}
 								h4(class="{{ row.norm.year == row.hp.norm.year ? '' : 'diff' }}") {{ row.hp.year }}
+							.div.pull-right(ng-show="row.ipdb_no")
+								a(href="http://www.ipdb.org/machine.cgi?id={{row.ipdb_no}}", target="_blank")
+									h3(class="{{ row.norm.name == row.hp.norm.name ? '' : 'diff' }}") {{ row.name }}
+								h4(class="{{ row.norm.manufacturer == row.hp.norm.manufacturer ? '' : 'diff' }}") {{ row.manufacturer }}
+								h4(class="{{ row.norm.year == row.hp.norm.year ? '' : 'diff' }}") {{ row.year }}
 							.clearfix
 							form.form-inline(ng-submit="change()")
 								button.btn(type="button", ng-click="refresh()")
@@ -61,6 +63,7 @@ block inner-content
 								span &nbsp;
 								button.btn
 									i.icon.ok
+
 		.clearfix
 
 		//- empty search result

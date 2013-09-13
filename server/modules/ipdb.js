@@ -587,11 +587,11 @@ var findBestMatch = function(matches, table) {
 		if (!table.year) {
 			return 0;
 		}
-		if (Math.abs(a.year - table.year) > Math.abs(b.year - table.year)) {
+		if (Math.abs(a.year - table.year) < Math.abs(b.year - table.year)) {
 			console.log('%d | %d < %d -> %d', table.year, a.year, b.year, b.year);
 			return -1; // b wins
 		}
-		if (Math.abs(a.year - table.year) < Math.abs(b.year - table.year)) {
+		if (Math.abs(a.year - table.year) > Math.abs(b.year - table.year)) {
 			console.log('%d | %d > %d -> %d', table.year, a.year, b.year, a.year);
 			return 1; // a wins
 		}
