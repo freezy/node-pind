@@ -2,6 +2,7 @@ var ss = require('socketstream');
 var clc = require('cli-color');
 var http = require('http');
 var logger = require('winston');
+var settings = require('./config/settings-mine.js');
 
 // Define a single-page client
 ss.client.define('main', {
@@ -44,7 +45,7 @@ require('./server/initializers/pind.js')();
 
 // Start web server
 var server = http.Server(ss.http.middleware);
-server.listen(80);
+server.listen(settings.pind.port);
 
 // Start SocketStream
 ss.start(server);
