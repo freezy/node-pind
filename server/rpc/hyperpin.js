@@ -8,7 +8,9 @@ var logger = require('winston');
 var hp = require('../modules/hyperpin');
 var error = require('../modules/error');
 var ipdb = require('../modules/ipdb');
+
 var schema = require('../database/schema');
+var settings = require('../../config/settings-mine');
 
 exports.actions = function(req, res, ss) {
 	req.use('session');
@@ -92,7 +94,12 @@ exports.actions = function(req, res, ss) {
 				if (hasFilter('nomatch')) {
 					queryWhere = 'WHERE `ipdb_no` IS NULL ';
 				} else {
-					queryWhere = 'WHERE hpid ' + op + ' CONCAT(`name`, " (", `manufacturer`, " ", `year`, ")")';
+					if (settings.pind.database.engine == 'sqlite') {
+						queryWhere = 'WHERE hpid ' + op + ' `name` || " (" || `manufacturer` || " " || `year` || ")" ';
+					} else {
+						queryWhere = 'WHERE hpid ' + op + ' CONCAT(`name`, " (", `manufacturer`, " ", `year`, ")") ';
+					}
+
 				}
 			}
 
