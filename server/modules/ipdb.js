@@ -206,7 +206,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 		r(/250cc/i, '250 cc');
 
 		// strip off unnecessary shit
-		r(/night mode|megapin/i, '');
+		r(/night mode|megapin|\snm\s*$/i, '');
 		r(/v\d\s*/i, '');
 		r(/[^0-9a-z]+/ig, ' ');
 		r(/\sss\s/i, '');

@@ -177,7 +177,16 @@ exports.actions = function(req, res, ss) {
 				map = {};
 			}
 			var done = function() {
-				fs.writeFileSync(mapFile, JSON.stringify(map, null, 2));
+				var sortObj = function(map) {
+					var keys = _.sortBy(_.keys(map), function(a) { return a; });
+					var newmap = {};
+					_.each(keys, function(k) {
+						newmap[k] = map[k];
+					});
+					return newmap;
+				};
+
+				fs.writeFileSync(mapFile, JSON.stringify(sortObj(map), null, 2));
 				res();
 			};
 
