@@ -30,8 +30,8 @@ How to match?
 As explained above, our identifier has three components: IPDB number, VPF file ID and mod type. The challenge now
 is to accurately determine the IPDB number for:
 
-	1. All VPF downloads
-	2. Your HyperPin database
+1. All VPF downloads
+2. Your HyperPin database
 
 Point 1 is pretty much taken care of. Pind contains [a map](https://github.com/freezy/node-pind/blob/master/server/data/ipdb-vpf.json)
 that links all VPF cabinet downloads to an IPDB number. This map has been manually verified, using visuals from both
