@@ -41,9 +41,10 @@ accurate.
 
 Point 2 is somewhat more difficult. Right now, Pind expects the standard HyperPin format `Table Name (Manufacturer Year)`
 and will search accordingly on IPDB. Before searching, Pind tweaks the search query for optimal results. Additionaly,
-Pind ships with a mapping file for common titles. The quality of the HyperPin matches can be checked by opening the path
-`/ipdbhp` in Pind. The displayed list highlights differences between the HyperPin database and the data fetched from
-IPDB. It also provides a way to correct wrong entries and write them into the mapping file.
+Pind ships with a [mapping file](https://github.com/freezy/node-pind/blob/master/server/data/ipdb-hp.json) for common
+titles. The quality of the HyperPin matches can be checked by opening the path `/ipdbhp` in Pind. The displayed list
+highlights differences between the HyperPin database and the data fetched from IPDB. It also provides a way to correct
+wrong entries and write them into the mapping file.
 
 
 Persistence
