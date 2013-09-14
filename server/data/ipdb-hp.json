@@ -694,5 +694,719 @@
     "title": "Motordome",
     "year": 1986,
     "manufacturer": "Midway"
+  },
+  "Mystery Castle (Alvin G and Co 1993)": {
+    "ipdb": "1647",
+    "title": "Mystery Castle",
+    "year": 1993,
+    "manufacturer": "Alvin G."
+  },
+  "Mystic (Bally 1980)": {
+    "ipdb": "1650",
+    "title": "Mystic",
+    "year": 1979,
+    "manufacturer": "Bally"
+  },
+  "NBA Fastbreak (Williams 1997)": {
+    "ipdb": "4023",
+    "title": "NBA Fastbreak",
+    "year": 1997,
+    "manufacturer": "Bally"
+  },
+  "Nitro Ground Shaker (Bally 1980)": {
+    "ipdb": "1682",
+    "title": "Nitro Ground Shaker",
+    "year": 1978,
+    "manufacturer": "Bally"
+  },
+  "Odds  and  Evens (Bally 1973)": {
+    "ipdb": "1692",
+    "title": "Odds  Evens",
+    "year": 1971,
+    "manufacturer": "Bally"
+  },
+  "Coney Island (GamePlan 1979)": {
+    "ipdb": "553",
+    "title": "Old Coney Island",
+    "year": 1979,
+    "manufacturer": "Game Plan"
+  },
+  "On Beam (Bally 1969)": {
+    "ipdb": "1715",
+    "title": "On Beam",
+    "year": 1968,
+    "manufacturer": "Bally"
+  },
+  "Op-Pop-Pop (Bally 1969)": {
+    "ipdb": "1722",
+    "title": "Op-Pop-Pop",
+    "year": 1968,
+    "manufacturer": "Bally"
+  },
+  "Operation Thunder (Gottlieb 1992)": {
+    "ipdb": "1721",
+    "title": "Operation: Thunder",
+    "year": 1992,
+    "manufacturer": "Premier"
+  },
+  "Orbit (Gottlieb 1972)": {
+    "ipdb": "1724",
+    "title": "Orbit",
+    "year": 1971,
+    "manufacturer": "Gottlieb"
+  },
+  "Orbit 1 (A Hankin  and  Co 1981)": {
+    "ipdb": "3287",
+    "title": "Orbit 1",
+    "year": 1978,
+    "manufacturer": "Hankin"
+  },
+  "Paragon (Bally 1979)": {
+    "ipdb": "1755",
+    "title": "Paragon",
+    "year": 1978,
+    "manufacturer": "Bally"
+  },
+  "Party Animal (Bally 1987)": {
+    "ipdb": "1763",
+    "title": "Party Animal",
+    "year": 1987,
+    "manufacturer": "Midway"
+  },
+  "Phantom of the Opera, The (Data East 1990)": {
+    "ipdb": "1777",
+    "title": "Phantom of the Opera",
+    "year": 1990,
+    "manufacturer": "Data East"
+  },
+  "Pink Panther (Gottlieb 1980)": {
+    "ipdb": "1800",
+    "title": "Pink Panther",
+    "year": 1981,
+    "manufacturer": "Gottlieb"
+  },
+  "Pistol Poker (Alvin G.  and  Company 1993)": {
+    "ipdb": "1805",
+    "title": "Pistol Poker",
+    "year": 1993,
+    "manufacturer": "Alvin G."
+  },
+  "Playboy (Bally 1976)": {
+    "ipdb": "1823",
+    "title": "Playboy",
+    "year": 1978,
+    "manufacturer": "Bally"
+  },
+  "Pro Pinball Challenger I (A. H. Geiger 1981)": {
+    "ipdb": "3922",
+    "title": "Professional Pinball: Challenger I",
+    "year": 1981,
+    "manufacturer": "Professional Pinball of Toronto"
+  },
+  "Pro Pinball Challenger V (A. H. Geiger 1981)": {
+    "ipdb": "4984",
+    "title": "Professional Pinball: Challenger V",
+    "year": 1981,
+    "manufacturer": "Professional Pinball of Toronto"
+  },
+  "Punchy The Clown (Alvin G.  and  Company 1993)": {
+    "ipdb": "3508",
+    "title": "Punchy the Clown",
+    "year": 1993,
+    "manufacturer": "Alvin G."
+  },
+  "Raven (Gottlieb 1986)": {
+    "ipdb": "1922",
+    "title": "Raven",
+    "year": 1986,
+    "manufacturer": "Premier"
+  },
+  "Rawhide (Stern 2006)": {
+    "ipdb": "3545",
+    "title": "Rawhide",
+    "year": 1977,
+    "manufacturer": "Stern"
+  },
+  "Red  and  Ted's Roadshow (Williams 1994)": {
+    "ipdb": "1972",
+    "title": "Red  Ted's Road Show",
+    "year": 1994,
+    "manufacturer": "Williams"
+  },
+  "Rescue 911 (Gottlieb 1994)": {
+    "ipdb": "1951",
+    "title": "Rescue 911",
+    "year": 1994,
+    "manufacturer": "Premier"
+  },
+  "Rogo (Bally 1974)": {
+    "ipdb": "1969",
+    "title": "Ro Go",
+    "year": 1973,
+    "manufacturer": "Bally"
+  },
+  "Robo War (Gottlieb 1988)": {
+    "ipdb": "1975",
+    "title": "Robo-War",
+    "year": 1988,
+    "manufacturer": "Premier"
+  },
+  "Robocop (Data East 1990)": {
+    "ipdb": "1976",
+    "title": "Robocop",
+    "year": 1989,
+    "manufacturer": "Data East"
+  },
+  "Rock (Gottlieb 1985)": {
+    "ipdb": "1978",
+    "title": "Rock",
+    "year": 1985,
+    "manufacturer": "Premier"
+  },
+  "Rock On (Allied Leasure 1975)": {
+    "ipdb": "4862",
+    "title": "Rock On",
+    "year": 1975,
+    "manufacturer": "Allied Leisure"
+  },
+  "Rockmakers (Bally 1968)": {
+    "ipdb": "1980",
+    "title": "RockMakers",
+    "year": 1967,
+    "manufacturer": "Bally"
+  },
+  "Rocky Girl (Giuliano Lodola 1979)": {
+    "ipdb": "4084",
+    "title": "Rocky Girl",
+    "year": 1979,
+    "manufacturer": "Guiliano Lodola"
+  },
+  "Rolling Stones (Bally 1980)": {
+    "ipdb": "2010",
+    "title": "Rolling Stones",
+    "year": 1979,
+    "manufacturer": "Bally"
+  },
+  "Rotation VIII (Bally 1978)": {
+    "ipdb": "2019",
+    "title": "Rotation VIII",
+    "year": 1978,
+    "manufacturer": "Midway"
+  },
+  "Safari (Bally 1968)": {
+    "ipdb": "2044",
+    "title": "Safari",
+    "year": 1966,
+    "manufacturer": "Bally"
+  },
+  "Satellite (CEA Bologna 1978)": {
+    "ipdb": "3722",
+    "title": "Satellite",
+    "year": 1978,
+    "manufacturer": "CEA"
+  },
+  "Sea Jockeys (Williams 1952)": {
+    "ipdb": "2084",
+    "title": "Sea Jockeys",
+    "year": 1951,
+    "manufacturer": "Williams"
+  },
+  "Sea Ray (Bally 1971)": {
+    "ipdb": "2085",
+    "title": "Sea Ray",
+    "year": 1970,
+    "manufacturer": "Bally"
+  },
+  "Secret Service (Data East 1987)": {
+    "ipdb": "2090",
+    "title": "Secret Service",
+    "year": 1988,
+    "manufacturer": "Data East"
+  },
+  "Sexy Girl (Bell Coin Matic 1979)": {
+    "ipdb": "3724",
+    "title": "Sexy Girl",
+    "year": 1979,
+    "manufacturer": "Bell Coin Matics"
+  },
+  "Shantytown (Exhibit Supply Company 1949)": {
+    "ipdb": "2111",
+    "title": "Shantytown",
+    "year": 1949,
+    "manufacturer": "Exhibit"
+  },
+  "Shaq Attaq (Gottlieb 1995)": {
+    "ipdb": "2874",
+    "title": "Shaq Attaq",
+    "year": 1995,
+    "manufacturer": "Premier"
+  },
+  "Sharpshooter (Bally 1961)": {
+    "ipdb": "2112",
+    "title": "Sharpshooter",
+    "year": 1949,
+    "manufacturer": "Gottlieb"
+  },
+  "Sharpshooter (Game Plant 1979)": {
+    "ipdb": "2113",
+    "title": "Sharpshooter",
+    "year": 1979,
+    "manufacturer": "Game Plan"
+  },
+  "Shock (Taito Do Brazil 1980)": {
+    "ipdb": "4573",
+    "title": "Shock",
+    "year": 2006,
+    "manufacturer": "Taito"
+  },
+  "Silver Slugger (Gottlieb 1990)": {
+    "ipdb": "2152",
+    "title": "Silver Slugger",
+    "year": 1990,
+    "manufacturer": "Premier"
+  },
+  "Sing Along (Gottlieb 1968)": {
+    "ipdb": "2160",
+    "title": "Sing Along",
+    "year": 1967,
+    "manufacturer": "Gottlieb"
+  },
+  "Zaccaria Ski Jump (Zaccaria 1977)": {
+    "ipdb": "4686",
+    "title": "Ski Jump",
+    "year": 1978,
+    "manufacturer": "Zaccaria"
+  },
+  "Soccer Ball (Alvin G.  and  Company 1991)": {
+    "ipdb": "120",
+    "title": "A.G. Soccer-Ball",
+    "year": 1991,
+    "manufacturer": "Alvin G."
+  },
+  "Space Rider (A. H. Geiger 1980)": {
+    "ipdb": "4018",
+    "title": "Space Rider",
+    "year": 1980,
+    "manufacturer": "Geiger"
+  },
+  "Special Force (Bally 1986)": {
+    "ipdb": "2272",
+    "title": "Special Force",
+    "year": 1986,
+    "manufacturer": "Midway"
+  },
+  "Spectrum (Bally 1982)": {
+    "ipdb": "2274",
+    "title": "Spectrum",
+    "year": 1981,
+    "manufacturer": "Bally"
+  },
+  "Speed Test (Taito 1980)": {
+    "ipdb": "4589",
+    "title": "Speed Test",
+    "year": 1936,
+    "manufacturer": "Taito"
+  },
+  "Spirit of '76 (Gottlieb 1976)": {
+    "ipdb": "2293",
+    "title": "Spirit of 76",
+    "year": 1975,
+    "manufacturer": "Gottlieb"
+  },
+  "Split Second (Stern 1980)": {
+    "ipdb": "2297",
+    "title": "Split Second",
+    "year": 1981,
+    "manufacturer": "Stern"
+  },
+  "Spring Break (Gottlieb 1987)": {
+    "ipdb": "2324",
+    "title": "Spring Break",
+    "year": 1987,
+    "manufacturer": "Premier"
+  },
+  "Spy Hunter (Bally 1984)": {
+    "ipdb": "2328",
+    "title": "Spy Hunter",
+    "year": 1984,
+    "manufacturer": "Midway"
+  },
+  "Stage Coach (Chicago Coin 1938)": {
+    "ipdb": "2336",
+    "title": "Stage Coach",
+    "year": 1968,
+    "manufacturer": "Chicago Coin"
+  },
+  "Oba Oba (Taito 1978)": {
+    "ipdb": "4572",
+    "title": "Oba-Oba",
+    "year": 1976,
+    "manufacturer": "Taito"
+  },
+  "Star Shooter (Allied Leasure 1979)": {
+    "ipdb": "3500",
+    "title": "Star Shooter",
+    "year": 1979,
+    "manufacturer": "Allied Leisure"
+  },
+  "Star Trek (Bally 1979)": {
+    "ipdb": "2355",
+    "title": "Star Trek",
+    "year": 1978,
+    "manufacturer": "Bally"
+  },
+  "Star Trek 25th Anniversary (Data East 1992)": {
+    "ipdb": "2356",
+    "title": "Star Trek",
+    "year": 1991,
+    "manufacturer": "Data East"
+  },
+  "Star Trip (Gameplan 1978)": {
+    "ipdb": "3605",
+    "title": "Star Trip",
+    "year": 1979,
+    "manufacturer": "Game Plan"
+  },
+  "Stargate (Gottlieb 1995)": {
+    "ipdb": "2847",
+    "title": "Stargate",
+    "year": 1995,
+    "manufacturer": "Premier"
+  },
+  "Stellar Airship (A. H. Geiger 1980)": {
+    "ipdb": "4016",
+    "title": "Stellar Airship",
+    "year": 1979,
+    "manufacturer": "Geiger"
+  },
+  "Strange Science (Bally 1986)": {
+    "ipdb": "2396",
+    "title": "Strange Science",
+    "year": 1986,
+    "manufacturer": "Midway"
+  },
+  "Street Fighter II (Gottlieb 1993)": {
+    "ipdb": "2403",
+    "title": "Street Fighter II",
+    "year": 1993,
+    "manufacturer": "Premier"
+  },
+  "Strikes 'N Spares (Gottlieb 1995)": {
+    "ipdb": "4336",
+    "title": "Strikes 'N Spares",
+    "year": 1995,
+    "manufacturer": "Premier"
+  },
+  "Strikes and Spares (Bally 1978)": {
+    "ipdb": "2406",
+    "title": "Strikes and Spares",
+    "year": 1977,
+    "manufacturer": "Bally"
+  },
+  "Super Mario Bros. (Gottlieb 1992)": {
+    "ipdb": "2435",
+    "title": "Super Mario Bros.",
+    "year": 1992,
+    "manufacturer": "Premier"
+  },
+  "Super Mario Brothers Mushroom World (Gottlieb 1992)": {
+    "ipdb": "3427",
+    "title": "Super Mario Bros. Mushroom World",
+    "year": 1992,
+    "manufacturer": "Premier"
+  },
+  "Super Star (Briawood 1977)": {
+    "ipdb": "2448",
+    "title": "Super Star",
+    "year": 1977,
+    "manufacturer": "Briarwood"
+  },
+  "Bally Supersonic (Bally 1979)": {
+    "ipdb": "2455",
+    "title": "Supersonic",
+    "year": 1979,
+    "manufacturer": "Bally"
+  },
+  "Surf 'N Safari (Gottlieb 1991)": {
+    "ipdb": "2461",
+    "title": "Surf 'n Safari",
+    "year": 1991,
+    "manufacturer": "Premier"
+  },
+  "Tag-Team Pinball (Gottlieb 1985)": {
+    "ipdb": "2489",
+    "title": "Tag-Team Pinball",
+    "year": 1985,
+    "manufacturer": "Premier"
+  },
+  "Teed Off (Gottlieb 1993)": {
+    "ipdb": "2508",
+    "title": "Tee'd Off",
+    "year": 1993,
+    "manufacturer": "Premier"
+  },
+  "Terminator 2 - Judgement Day (Williams 1991)": {
+    "ipdb": "2524",
+    "title": "Terminator 2: Judgment Day",
+    "year": 1991,
+    "manufacturer": "Williams"
+  },
+  "Terminator 3 (Stern 2003)": {
+    "ipdb": "4787",
+    "title": "Terminator 3: Rise of the Machines",
+    "year": 2003,
+    "manufacturer": "Stern"
+  },
+  "Addams Family,  The (Bally 1992)": {
+    "ipdb": "20",
+    "title": "The Addams Family",
+    "year": 1992,
+    "manufacturer": "Bally"
+  },
+  "Amazing Spiderman, The (Gottlieb 1980)": {
+    "ipdb": "2285",
+    "title": "The Amazing Spider-Man",
+    "year": 1980,
+    "manufacturer": "Gottlieb"
+  },
+  "Bally Game Show,  The (Bally 1990)": {
+    "ipdb": "985",
+    "title": "The Bally Game Show",
+    "year": 1990,
+    "manufacturer": "Bally"
+  },
+  "Champion Pub (Williams )": {
+    "ipdb": "4358",
+    "title": "The Champion Pub",
+    "year": 1998,
+    "manufacturer": "Bally"
+  },
+  "Empire Strikes Back, The (Hankin 1980)": {
+    "ipdb": "2868",
+    "title": "The Empire Strikes Back",
+    "year": 1980,
+    "manufacturer": "Hankin"
+  },
+  "Entertainer,  The (Allied Leisure 1978)": {
+    "ipdb": "785",
+    "title": "The Entertainer",
+    "year": 1977,
+    "manufacturer": "Fascination"
+  },
+  "Fiery 30's, The (Petaco 1974)": {
+    "ipdb": "834",
+    "title": "The Fiery 30's",
+    "year": 1974,
+    "manufacturer": "Petaco"
+  },
+  "Flintstones, The (Williams 1994)": {
+    "ipdb": "888",
+    "title": "The Flintstones",
+    "year": 1994,
+    "manufacturer": "Williams"
+  },
+  "Games, The (Gottlieb 1984)": {
+    "ipdb": "3391",
+    "title": "The Games",
+    "year": 1984,
+    "manufacturer": "Gottlieb"
+  },
+  "Getaway, The - High Speed II (Williams 1992)": {
+    "ipdb": "1000",
+    "title": "The Getaway: High Speed II",
+    "year": 1992,
+    "manufacturer": "Williams"
+  },
+  "Incredible Hulk (Gottlieb 1979)": {
+    "ipdb": "5350",
+    "title": "The Incredible Hulk",
+    "year": 1979,
+    "manufacturer": "Gottlieb"
+  },
+  "Lord of the Rings, The (Stern 2003)": {
+    "ipdb": "4858",
+    "title": "The Lord of the Rings",
+    "year": 2003,
+    "manufacturer": "Stern"
+  },
+  "Machine Bride Of Pinbot, The (Williams 1991)": {
+    "ipdb": "1502",
+    "title": "The Machine: Bride of Pinbot",
+    "year": 1991,
+    "manufacturer": "Williams"
+  },
+  "Party Zone, The (Bally 1991)": {
+    "ipdb": "1764",
+    "title": "The Party Zone",
+    "year": 1991,
+    "manufacturer": "Bally"
+  },
+  "Raid,The (Playmatic 1984)": {
+    "ipdb": "3511",
+    "title": "The Raid",
+    "year": 1984,
+    "manufacturer": "Playmatic"
+  },
+  "Shadow, The (Bally 1994)": {
+    "ipdb": "2528",
+    "title": "The Shadow",
+    "year": 1994,
+    "manufacturer": "Bally"
+  },
+  "Simpsons, The (Data East USA 1990)": {
+    "ipdb": "2158",
+    "title": "The Simpsons",
+    "year": 1990,
+    "manufacturer": "Data East"
+  },
+  "Simpsons Pinball Party, The (Stern 2003)": {
+    "ipdb": "4674",
+    "title": "The Simpsons Pinball Party",
+    "year": 2003,
+    "manufacturer": "Stern"
+  },
+  "Six Million Dollar Man, The (Bally 1978)": {
+    "ipdb": "2165",
+    "title": "The Six Million Dollar Man",
+    "year": 1978,
+    "manufacturer": "Bally"
+  },
+  "Sopranos, The (Stern 2005)": {
+    "ipdb": "5053",
+    "title": "The Sopranos",
+    "year": 2005,
+    "manufacturer": "Stern"
+  },
+  "X-Files,  The (Sega 1997)": {
+    "ipdb": "4137",
+    "title": "The X Files",
+    "year": 1997,
+    "manufacturer": "Sega"
+  },
+  "Thunderbolt (Allied Leasure 1977)": {
+    "ipdb": "2556",
+    "title": "Thunderbolt",
+    "year": 1976,
+    "manufacturer": "Allied Leisure"
+  },
+  "Time Zone (Bally 1973)": {
+    "ipdb": "2569",
+    "title": "Time Zone",
+    "year": 1972,
+    "manufacturer": "Bally"
+  },
+  "Titan (Taito Do Brazil 1983)": {
+    "ipdb": "4587",
+    "title": "Titan",
+    "year": 1982,
+    "manufacturer": "Taito"
+  },
+  "Torpedo (Peteco 1976)": {
+    "ipdb": "4371",
+    "title": "Torpedo",
+    "year": 1976,
+    "manufacturer": "Petaco"
+  },
+  "Touchdown (Gottlieb 1984)": {
+    "ipdb": "2610",
+    "title": "Touchdown",
+    "year": 1984,
+    "manufacturer": "Premier"
+  },
+  "TX-Sector (Gottlieb 1988)": {
+    "ipdb": "2699",
+    "title": "TX-Sector",
+    "year": 1988,
+    "manufacturer": "Premier"
+  },
+  "Vampire (Bally 1971)": {
+    "ipdb": "2716",
+    "title": "Vampire",
+    "year": 1970,
+    "manufacturer": "Bally"
+  },
+  "Vegas (Gottlieb 1990)": {
+    "ipdb": "2724",
+    "title": "Vegas",
+    "year": 1990,
+    "manufacturer": "Premier"
+  },
+  "Vegas (Taito 1981)": {
+    "ipdb": "4575",
+    "title": "Vegas",
+    "year": 1979,
+    "manufacturer": "Taito"
+  },
+  "Victory (Gottlieb 1987)": {
+    "ipdb": "2733",
+    "title": "Victory",
+    "year": 1987,
+    "manufacturer": "Premier"
+  },
+  "Viking (Bally 1980)": {
+    "ipdb": "2737",
+    "title": "Viking",
+    "year": 1979,
+    "manufacturer": "Bally"
+  },
+  "Volcano (Gottlieb 1980)": {
+    "ipdb": "2742",
+    "title": "Volcano",
+    "year": 1981,
+    "manufacturer": "Gottlieb"
+  },
+  "Voltan (Bally 1978)": {
+    "ipdb": "2744",
+    "title": "Voltan Escapes Cosmic Doom",
+    "year": 1978,
+    "manufacturer": "Bally"
+  },
+  "Waterworld (Gottlieb 1995)": {
+    "ipdb": "3793",
+    "title": "Waterworld",
+    "year": 1995,
+    "manufacturer": "Premier"
+  },
+  "Wild Wheels (Bally 1966)": {
+    "ipdb": "2786",
+    "title": "Wild Wheels",
+    "year": 1965,
+    "manufacturer": "Bally"
+  },
+  "Wipe Out (Gottlieb 1993)": {
+    "ipdb": "2799",
+    "title": "Wipe Out",
+    "year": 1993,
+    "manufacturer": "Premier"
+  },
+  "World Challenge Soccer (Gottlieb 1994)": {
+    "ipdb": "2808",
+    "title": "World Challenge Soccer",
+    "year": 1994,
+    "manufacturer": "Premier"
+  },
+  "X Force (Technoplay 1987)": {
+    "ipdb": "3539",
+    "title": "X Force",
+    "year": 1987,
+    "manufacturer": "Tecnoplay"
+  },
+  "X's  and  O's (Bally 1983)": {
+    "ipdb": "2822",
+    "title": "X's  O's",
+    "year": 1984,
+    "manufacturer": "Midway"
+  },
+  "Xenon (Bally 1980)": {
+    "ipdb": "2821",
+    "title": "Xenon",
+    "year": 1979,
+    "manufacturer": "Bally"
+  },
+  "Zarza (Taito Do Brazil 1982)": {
+    "ipdb": "4584",
+    "title": "Zarza",
+    "year": 1982,
+    "manufacturer": "Taito"
   }
 }

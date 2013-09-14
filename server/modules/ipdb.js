@@ -227,6 +227,9 @@ Ipdb.prototype.enrich = function(table, callback) {
 		if (table.manufacturer.match(/gottlieb/i)) {
 			rr(/^close encounters/i, 'Close Encounters of the Third Kind');
 		}
+		if (table.name.match(/stage coach/i) && table.manufacturer.match(/chicago coin/i)) {
+			table.year = 1968;
+		}
 		return name.trim();
 	};
 
