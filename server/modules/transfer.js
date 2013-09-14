@@ -603,6 +603,9 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 				var analyzeAndContinue = function(err, table) {
 
 					if (!err && table.ipdb_no) {
+
+						table.hpid = table.name + ' (' + table.manufacturer + ' ' + table.year + ')';
+
 						schema.Table.updateOrCreate({ where: { ipdb_no: table.ipdb_no }}, table, function(err, table) {
 							if (err) {
 								logger.log('warn', '[transfer] Error adding to tables: %s', err);

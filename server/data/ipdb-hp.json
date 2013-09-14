@@ -1495,5 +1495,38 @@
     "title": "World Cup Soccer",
     "year": 1994,
     "manufacturer": "Bally"
+  },
+  "Al's Garage Band Goes On World Tour (Alivin G. 1992)": {
+    "ipdb": "3513",
+    "title": "Al's Garage Band Goes On a World Tour",
+    "year": 1992,
+    "manufacturer": "Alvin G."
+  },
+  "Atlantis (Midway 1989)": {
+    "ipdb": "106",
+    "title": "Atlantis",
+    "year": 1989,
+    "manufacturer": "Bally"
+  },
+  "Big Daddy (Williams 1970)": {
+    "ipdb": "242",
+    "title": "Big Daddy",
+    "year": 1963,
+    "manufacturer": "Williams"
+  },
+  "Cactus Canyon (Midway 1998)": {
+    "ipdb": "4445",
+    "title": "Cactus Canyon",
+    "year": 1998,
+    "manufacturer": "Bally"
+  },
+  "Party Nation (Aaron James 2013)": {
+    "type": "OG"
+  },
+  "Central Park (Gottlieb 1996)": {
+    "ipdb": "481",
+    "title": "Central Park",
+    "year": 1966,
+    "manufacturer": "Gottlieb"
   }
 }

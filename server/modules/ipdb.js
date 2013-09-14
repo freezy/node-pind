@@ -189,6 +189,9 @@ Ipdb.prototype.enrich = function(table, callback) {
 				name = replacment;
 			}
 		};
+		if (!table.manufacturer) {
+			table.manufacturer = '';
+		}
 
 		// move ", the" to the start
 		name = name.replace(/(.*),\s*(the)\s*/gi, '$2 $1 ');

@@ -105,8 +105,13 @@ HyperPin.prototype.readTables = function(callback) {
 	var process = function(platform, callback) {
 
 		var dbfile = settings.hyperpin.path + '/Databases/' + platforms[platform] + '/' + platforms[platform] + '.xml';
-		logger.log('info', '[hyperpin] [' + platform + '] Reading games from ' + dbfile);
 
+		if (!fs.existsSync(dbfile)) {
+			logger.log('warn', '[hyperpin] [' + platform + '] Skipping synchronization, "%s" not found.', dbfile);
+			return callback();
+		}
+
+		logger.log('info', '[hyperpin] [' + platform + '] Reading games from ' + dbfile);
 		fs.readFile(dbfile, function(err, data) {
 
 			if (err) {
@@ -242,11 +247,11 @@ HyperPin.prototype.readTables = function(callback) {
 		// launch FP and VP parsing in parallel
 		async.eachSeries([ 'FP', 'VP' ], process, function(err) {
 			if (err) {
-				throw new Error(err);
+				return callback(err);
 			}
 			schema.Table.findAll().success(function(rows) {
 				callback(null, rows);
-			}).error(callback);
+			});
 		});
 	});
 };
@@ -323,7 +328,7 @@ HyperPin.prototype.writeTables = function(callback) {
 
 		var filename = settings.hyperpin.path + '/Databases/' + platforms[platform] + '/' + platforms[platform] + '.xml';
 		var bakname = settings.hyperpin.path + '/Databases/' + platforms[platform] + '/' + platforms[platform] + ' - Pind Backup.xml';
-		if (!fs.existsSync(bakname)) {
+		if (!fs.existsSync(bakname) && fs.existsSync(filename)) {
 			logger.log('info', '[hyperpin] Backuping current database %s before writing new data', platforms[platform] + '.xml');
 			fs.createReadStream(filename).pipe(fs.createWriteStream(bakname)).on('close', function() {
 				logger.log('info', '[hyperpin] Done, saved to %s', bakname);
