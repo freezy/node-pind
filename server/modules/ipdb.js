@@ -349,16 +349,15 @@ Ipdb.prototype.enrich = function(table, callback) {
 			logger.log('info', '[ipdb] Found %d hits for "%s".', numHits, searchName);
 
 			// parse the matches
-			var regex = /<tr valign=top><td[^>]+>([\d\?]{4})[^<]*<\/td>\s*<td[^>]+><a class="[^"]*linkid[^"]*"[^>]*href="[^"]*?(\d+)">([^<]+)<\/a><\/td>\s*<td[^>]*><span[^>]*>([^<]+)/ig;
-
+			var regex = /<tr valign=top><td[^>]+>([\d\?]{4})[^<]*<\/td>\s*<td[^>]+><a class="[^"]*linkid[^"]*"[^>]*href="[^"]*?(\d+)">([^<]+)<\/a><\/td>\s*<td[^>]*><span[^>]*>([^<]+)<\/span><\/td>\s*<td[^>]+><span[^>]*>([^<]*)/ig;
 			var matches = [];
 			while (m = regex.exec(body)) {
 				matches.push({
 					name: m[3],
 					year: m[1],
 					manufacturer: m[4],
+					type: m[5],
 					ipdbid: m[2]
-					// distance: natural.LevenshteinDistance(Ipdb.prototype.norm(searchName), Ipdb.prototype.norm(m[4])) });
 				});
 			}
 			if (matches.length == 0) {
@@ -565,6 +564,15 @@ var trim = function(str) {
  * The strategy: First title, then year, then manufacturer distance
  * EXCEPT if year and manufacturer have both distance 0 and 80% name match.
  *
+ * Special titles:
+ * 	- "Old Coney Island!"
+ * 	  Is listed under HP as "Coney Island". However, there are other titles
+ * 	  called "Coney Island", so that's why we match year + manufacturer first
+ * 	  if the title is more than 80% similar.
+ * 	- "Evel Knievel"
+ * 	  There are two Bally 1977 versions, however one is SS, the other one EM.
+ * 	  In this case, the type must be taken into account as well.
+ *
  * @param matches
  * @param table
  * @param searchName
@@ -575,6 +583,7 @@ var findBestMatch = function(matches, table, searchName) {
 	var q = 0.8;
 
 	// console.log(util.inspect(matches, false, 2, true));
+	logger.log('info', '[ipdb] Finding best match for "%s (%s %d) - %s"', table.name, table.manufacturer, table.year, table.type);
 
 	var normalizeManufacturer = function(manufacturer) {
 		if (!manufacturer) {
@@ -604,8 +613,8 @@ var findBestMatch = function(matches, table, searchName) {
 	// on tie, return nearest year
 	matches.sort(function(a, b) {
 
-		var nA = a.name + ' (' + a.manufacturer + ' ' + a.year + ')';
-		var nB = b.name + ' (' + b.manufacturer + ' ' + b.year + ')';
+		var nA = a.name + ' (' + a.manufacturer + ' ' + a.year + ') - ' + a.type;
+		var nB = b.name + ' (' + b.manufacturer + ' ' + b.year + ') - ' + b.type;
 
 		var tableYear = table.year ? table.year : 0;
 		var tableManufacturer = normalizeManufacturer(table.manufacturer);
@@ -642,11 +651,22 @@ var findBestMatch = function(matches, table, searchName) {
 		var aEqualsYM = mdA == 0 && ydA == 0 && qA > q;
 		var bEqualsYM = mdB == 0 && ydB == 0 && qB > q;
 		if (aEqualsYM && bEqualsYM) {
-			byYearAndManufacturer = (mdA > mdB ? -1 : 1);
+			byYearAndManufacturer = mdA == mdB ? 0 : (mdA > mdB ? -1 : 1);
 		} else if (aEqualsYM) {
 			byYearAndManufacturer = -1;
 		} else if (bEqualsYM) {
 			byYearAndManufacturer = 1;
+		}
+
+		// type
+		var byType = 0;
+		if (table.type && a.type && b.type && a.type.trim() != b.type.trim()) {
+			if (a.type.trim() == table.type) {
+				byType = -1;
+			}
+			if (b.type.trim() == table.type) {
+				byType = 1;
+			}
 		}
 
 		if (byYearAndManufacturer) {
@@ -661,8 +681,13 @@ var findBestMatch = function(matches, table, searchName) {
 					//console.log('"%s" <-> "%s" byYear: %d', nA, nB, byYear);
 					return byYear;
 				} else {
-					//console.log('"%s" <-> "%s" byManufacturer: %d', nA, nB, byManufacturer);
-					return byManufacturer;
+					if (byManufacturer) {
+						//console.log('"%s" <-> "%s" byManufacturer: %d', nA, nB, byManufacturer);
+						return byManufacturer;
+					} else {
+						//console.log('"%s" <-> "%s" byType: %d', nA, nB, byType);
+						return byType;
+					}
 				}
 			}
 
@@ -672,7 +697,7 @@ var findBestMatch = function(matches, table, searchName) {
 	logger.log('info', '[ipdb] Matches are now sorted:');
 	var i = 0;
 	_.each(matches, function(match) {
-		logger.log('info', '[ipdb]   %d. %s (%s %d) [dN=%d, dY=%d, dM=%d]', ++i, match.name, match.manufacturer, match.year,
+		logger.log('info', '[ipdb]   %d. %s (%s %d) - %s [dN=%d, dY=%d, dM=%d]', ++i, match.name, match.manufacturer, match.year, match.type,
 			natural.LevenshteinDistance(Ipdb.prototype.norm(match.name), Ipdb.prototype.norm(searchName)),
 			parseInt(match.year) && parseInt(table.year) ? Math.abs(match.year - table.year) : NaN,
 			natural.LevenshteinDistance(normalizeManufacturer(match.manufacturer), normalizeManufacturer(table.manufacturer))
