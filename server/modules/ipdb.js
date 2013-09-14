@@ -202,9 +202,6 @@ Ipdb.prototype.enrich = function(table, callback) {
 		r(/attack and revenge from mars/i, 'revenge from mars');
 		r(/250cc/i, '250 cc');
 
-		// too ambiguous
-		rr(/tommy/i, 'tommy the pinball wizard');
-
 		// strip off unnecessary shit
 		r(/night mode|megapin/i, '');
 		r(/v\d\s*/i, '');
@@ -221,14 +218,37 @@ Ipdb.prototype.enrich = function(table, callback) {
 		r(/Terminator3/i, 'terminator 3');
 
 		// hacks
+		rr(/^buccaneer.*76/i, 'Buccaneer');
+		rr(/^cueball wizard/i, 'Cue Ball Wizard');
+		rr(/^harlem globe/i, 'Harlem Globetrotters On Tour');
 		rr(/indiana jones/i, 'Indiana Jones the Pinball Adventure'); // until the stern version is out, then we have a problem because the media pack name is wrong
+		rr(/^mr.*?mrs.*pac.*?man/i, 'Mr Mrs Pac-Man Pinball');
+		rr(/^PostTime/i, 'Post Time');
+		rr(/^Ripleys Believe It Or Not/i, 'Ripley\'s Believe It Or Not');
+		rr(/^Sharpshooter II/i, 'Sharp Shooter II');
+		rr(/^Slick Chick Deluxe/i, 'Slick Chick');
+		rr(/^SkyKings/i, 'Sky Kings');
+		rr(/^SureShot/i, 'Sure Shot');
+		rr(/^Tittle Fight/i, 'Title Fight');
+		rr(/tommy/i, 'The Who\'s Tommy Pinball Wizard');
 		rr(/star trek 25th anniversary/i, 'Star Trek');
 		rr(/^voltan/i, 'Voltan Escapes Cosmic Doom');
+		rr(/^usa football/i, 'U.S.A. Football');
+		rr(/^Wild Schuetz/i, 'Wild Schutz');
+		rr(/^World Cup Soccer 94/i, 'World Cup Soccer');
+		rr(/^World Tour Al.s Garage Band/i, 'Garage Band');
+
 		if (table.manufacturer.match(/gottlieb/i)) {
 			rr(/^close encounters/i, 'Close Encounters of the Third Kind');
+			rr(/^flipper\s*$/i, 'Flipper Gottlieb');
+			rr(/^hi.lo\s*$/i, 'Hi-Lo');
+			rr(/^kc\sjones/i, 'Jones');
 		}
 		if (table.name.match(/stage coach/i) && table.manufacturer.match(/chicago coin/i)) {
 			table.year = 1968;
+		}
+		if (table.name.match(/^pinball\s*$/i) && table.manufacturer.match(/stern/i)) {
+			name = '4694';
 		}
 		return name.trim();
 	};
