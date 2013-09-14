@@ -304,5 +304,395 @@
     "title": "Escape from the Lost World",
     "year": 1987,
     "manufacturer": "Midway"
+  },
+  "Evel Knievel (Bally 1977)": {
+    "ipdb": "4499",
+    "title": "Evel Knievel",
+    "year": 1976,
+    "manufacturer": "Bally"
+  },
+  "Close Encounters (Gottlieb 1978)": {
+    "ipdb": "4692",
+    "title": "Close Encounters of the Third Kind",
+    "year": 1978,
+    "manufacturer": "Gottlieb"
+  },
+  "Excalibur (Gottlieb 1988)": {
+    "ipdb": "795",
+    "title": "Excalibur",
+    "year": 1988,
+    "manufacturer": "Premier"
+  },
+  "ExpressWay (Bally 1971)": {
+    "ipdb": "800",
+    "title": "Expressway",
+    "year": 1970,
+    "manufacturer": "Bally"
+  },
+  "Faces (Sonic )": {
+    "ipdb": "806",
+    "title": "Faces",
+    "year": 1976,
+    "manufacturer": "Sonic"
+  },
+  "Faeton (Juegos 1986)": {
+    "ipdb": "3087",
+    "title": "Faeton",
+    "year": 1985,
+    "manufacturer": "Juegos Populares"
+  },
+  "Fireball (Bally 1972)": {
+    "ipdb": "852",
+    "title": "Fireball",
+    "year": 1971,
+    "manufacturer": "Bally"
+  },
+  "Firepower II (Williams 1981)": {
+    "ipdb": "857",
+    "title": "Firepower II",
+    "year": 1983,
+    "manufacturer": "Williams"
+  },
+  "FJ Holden (Hankin 1980)": {
+    "ipdb": "3627",
+    "title": "FJ",
+    "year": 1978,
+    "manufacturer": "Hankin"
+  },
+  "Flash Gordon (Bally 1981)": {
+    "ipdb": "874",
+    "title": "Flash Gordon",
+    "year": 1980,
+    "manufacturer": "Bally"
+  },
+  "Flip Flop (Bally 1976)": {
+    "ipdb": "889",
+    "title": "Flip Flop",
+    "year": 1974,
+    "manufacturer": "Bally"
+  },
+  "Fly High (A. H. Geiger 1985)": {
+    "ipdb": "3974",
+    "title": "Fly High",
+    "year": 1985,
+    "manufacturer": "Geiger"
+  },
+  "Flying Turns (Other 1964)": {
+    "ipdb": "910",
+    "title": "Flying Turns",
+    "year": 1964,
+    "manufacturer": "Midway"
+  },
+  "Four Million BC (Bally 1971)": {
+    "ipdb": "935",
+    "title": "Four Million B.C.",
+    "year": 1970,
+    "manufacturer": "Bally"
+  },
+  "Big Hurt (Gottlieb 1995)": {
+    "ipdb": "3591",
+    "title": "Frank Thomas' Big Hurt",
+    "year": 1995,
+    "manufacturer": "Premier"
+  },
+  "Freddy - A Nightmare on Elm Street (Gottlieb 1994)": {
+    "ipdb": "948",
+    "title": "Freddy: a Nightmare on Elm Street",
+    "year": 1994,
+    "manufacturer": "Premier"
+  },
+  "Freedom (Bally 1976)": {
+    "ipdb": "952",
+    "title": "Freedom",
+    "year": 1975,
+    "manufacturer": "Bally"
+  },
+  "Freefall (Stem 1980)": {
+    "ipdb": "953",
+    "title": "Freefall",
+    "year": 1981,
+    "manufacturer": "Stern"
+  },
+  "Gator (Bally 1969)": {
+    "ipdb": "987",
+    "title": "Gator",
+    "year": 1968,
+    "manufacturer": "Bally"
+  },
+  "Gemini 2000 (Taito do Brasil 1982)": {
+    "ipdb": "4579",
+    "title": "Gemini 2000",
+    "year": 1982,
+    "manufacturer": "Taito"
+  },
+  "Genesis (Gottlieb 1986)": {
+    "ipdb": "996",
+    "title": "Genesis",
+    "year": 1986,
+    "manufacturer": "Premier"
+  },
+  "Genie (Gottlieb 1980)": {
+    "ipdb": "997",
+    "title": "Genie",
+    "year": 1979,
+    "manufacturer": "Gottlieb"
+  },
+  "Gladiators (Gottlieb 1993)": {
+    "ipdb": "1011",
+    "title": "Gladiators",
+    "year": 1993,
+    "manufacturer": "Premier"
+  },
+  "Gold Ball (Bally 1983)": {
+    "ipdb": "1024",
+    "title": "Gold Ball",
+    "year": 1983,
+    "manufacturer": "Midway"
+  },
+  "Gold Wings (Gottlieb 1986)": {
+    "ipdb": "1043",
+    "title": "Gold Wings",
+    "year": 1986,
+    "manufacturer": "Premier"
+  },
+  "Grand Slam (Bally 1983)": {
+    "ipdb": "4804",
+    "title": "Grand Slam",
+    "year": 1983,
+    "manufacturer": "Midway"
+  },
+  "Granny and the Gators (Bally 1984)": {
+    "ipdb": "1083",
+    "title": "Granny and the Gators",
+    "year": 1984,
+    "manufacturer": "Midway"
+  },
+  "Hard Body (Bally 1987)": {
+    "ipdb": "1122",
+    "title": "Hardbody",
+    "year": 1987,
+    "manufacturer": "Midway"
+  },
+  "Hearts Spades (Allied Leasure 1978)": {
+    "ipdb": "1146",
+    "title": "Hearts Spades",
+    "year": 1978,
+    "manufacturer": "Allied Leisure"
+  },
+  "Heavy Metal Meltdown (Bally 1987)": {
+    "ipdb": "1150",
+    "title": "Heavy Metal Meltdown",
+    "year": 1987,
+    "manufacturer": "Midway"
+  },
+  "Heavy Metal (Rowamet 1984)": {
+    "ipdb": "5175",
+    "title": "Heavy Metal",
+    "year": 1987,
+    "manufacturer": "Rowamet"
+  },
+  "Hoe Down (Allied Leisure 1977)": {
+    "ipdb": "1252",
+    "title": "Hoe Down",
+    "year": 1978,
+    "manufacturer": "Allied Leisure"
+  },
+  "Hokus Pokus (Bally 1976)": {
+    "ipdb": "1206",
+    "title": "Hokus Pokus",
+    "year": 1975,
+    "manufacturer": "Bally"
+  },
+  "Hollywood Heat (Gottlieb 1986)": {
+    "ipdb": "1219",
+    "title": "Hollywood Heat",
+    "year": 1986,
+    "manufacturer": "Premier"
+  },
+  "Hoops (Gottlieb 1991)": {
+    "ipdb": "1235",
+    "title": "Hoops",
+    "year": 1991,
+    "manufacturer": "Premier"
+  },
+  "Hot Shots (Gottlieb 1989)": {
+    "ipdb": "1248",
+    "title": "Hot Shots",
+    "year": 1989,
+    "manufacturer": "Premier"
+  },
+  "Howzat (A. Hankin and Co. 1980)": {
+    "ipdb": "3909",
+    "title": "Howzat",
+    "year": 1980,
+    "manufacturer": "Hankin"
+  },
+  "Ice Fever (Gottlieb 1985)": {
+    "ipdb": "1260",
+    "title": "Ice Fever",
+    "year": 1985,
+    "manufacturer": "Premier"
+  },
+  "Independence Day (Sega 1997)": {
+    "ipdb": "3878",
+    "title": "Independence Day",
+    "year": 1996,
+    "manufacturer": "Sega"
+  },
+  "Indiana Jones (Williams 1993)": {
+    "ipdb": "1267",
+    "title": "Indiana Jones: The Pinball Adventure",
+    "year": 1993,
+    "manufacturer": "Williams"
+  },
+  "James Bond (Gottlieb 1980)": {
+    "ipdb": "1286",
+    "title": "James Bond 007",
+    "year": 1980,
+    "manufacturer": "Gottlieb"
+  },
+  "Judge Dredd (Williams 1993)": {
+    "ipdb": "1322",
+    "title": "Judge Dredd",
+    "year": 1993,
+    "manufacturer": "Bally"
+  },
+  "Jungle King (Gottlieb 1972)": {
+    "ipdb": "1336",
+    "title": "Jungle King",
+    "year": 1973,
+    "manufacturer": "Gottlieb"
+  },
+  "Kick Off (Bally 1976)": {
+    "ipdb": "1365",
+    "title": "Kick Off",
+    "year": 1975,
+    "manufacturer": "Bally"
+  },
+  "Kings  and  Queens (Gottlieb 1965)": {
+    "ipdb": "1381",
+    "title": "Kings  Queens",
+    "year": 1965,
+    "manufacturer": "Gottlieb"
+  },
+  "Kings of Steel (Bally 1984)": {
+    "ipdb": "1382",
+    "title": "Kings of Steel",
+    "year": 1984,
+    "manufacturer": "Midway"
+  },
+  "Kiss (Bally 1979)": {
+    "ipdb": "1386",
+    "title": "Kiss",
+    "year": 1978,
+    "manufacturer": "Bally"
+  },
+  "Knockout (Bally 1975)": {
+    "ipdb": "1392",
+    "title": "Knockout",
+    "year": 1974,
+    "manufacturer": "Bally"
+  },
+  "L'Hexagone (other 1986)": {
+    "ipdb": "3903",
+    "title": "L'Hexagone",
+    "year": 1986,
+    "manufacturer": "Christian Tabart"
+  },
+  "La Retata (A. H. Geiger 1986)": {
+    "ipdb": "4440",
+    "title": "La Retata",
+    "year": 1992,
+    "manufacturer": "Geiger"
+  },
+  "Lady Death (A. H. Geiger 1984)": {
+    "ipdb": "3972",
+    "title": "Lady Death",
+    "year": 1983,
+    "manufacturer": "Geiger"
+  },
+  "Lady Luck (Bally 1986)": {
+    "ipdb": "1402",
+    "title": "Lady Luck",
+    "year": 1986,
+    "manufacturer": "Midway"
+  },
+  "Lady Luck (Taito 1981)": {
+    "ipdb": "5010",
+    "title": "Lady Luck",
+    "year": 1937,
+    "manufacturer": "Taito"
+  },
+  "Lady Robin Hood (Gottlieb 1947)": {
+    "ipdb": "1406",
+    "title": "Lady Robin Hood",
+    "year": 1948,
+    "manufacturer": "Gottlieb"
+  },
+  "Laser Cue (Williams 1982)": {
+    "ipdb": "1414",
+    "title": "Laser Cue",
+    "year": 1984,
+    "manufacturer": "Williams"
+  },
+  "Lights, Camera, Action (Gottlieb 1989)": {
+    "ipdb": "1445",
+    "title": "Lights...Camera...Action",
+    "year": 1989,
+    "manufacturer": "Premier"
+  },
+  "Mario Andretti (Gottlieb 1995)": {
+    "ipdb": "3794",
+    "title": "Mario Andretti",
+    "year": 1995,
+    "manufacturer": "Premier"
+  },
+  "Mars Trek (Sonic 1997)": {
+    "ipdb": "1550",
+    "title": "Mars Trek",
+    "year": 1977,
+    "manufacturer": "Sonic"
+  },
+  "Mata Hari (Bally 1978)": {
+    "ipdb": "4501",
+    "title": "Mata Hari",
+    "year": 1977,
+    "manufacturer": "Bally"
+  },
+  "Maverick (Data East 1994)": {
+    "ipdb": "1561",
+    "title": "Maverick The Movie",
+    "year": 1994,
+    "manufacturer": "Data East"
+  },
+  "Melody Lane (Gottlieb 1968)": {
+    "ipdb": "1568",
+    "title": "Melody Lane",
+    "year": 1960,
+    "manufacturer": "Gottlieb"
+  },
+  "Mephisto (Other 1987)": {
+    "ipdb": "4077",
+    "title": "Mephisto",
+    "year": 1987,
+    "manufacturer": "Unidesa"
+  },
+  "Meteor (Taito 1980)": {
+    "ipdb": "4571",
+    "title": "Meteor",
+    "year": 1979,
+    "manufacturer": "Taito"
+  },
+  "Monte Carlo (Gottlieb 1987)": {
+    "ipdb": "1622",
+    "title": "Monte Carlo",
+    "year": 1987,
+    "manufacturer": "Premier"
+  },
+  "Motordome (Bally 1986)": {
+    "ipdb": "1633",
+    "title": "Motordome",
+    "year": 1986,
+    "manufacturer": "Midway"
   }
 }

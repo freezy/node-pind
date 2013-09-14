@@ -140,7 +140,7 @@ exports.actions = function(req, res, ss) {
 				var m, r;
 				_.each(pagedRows, function(row) {
 					r = row;
-					m = row.hpid.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\s*\)/); // match Medieval Madness (Williams 1997)
+					m = row.hpid.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})?\s*\)/); // match Medieval Madness (Williams 1997)
 					if (m) {
 						r.hp = {
 							name: m[1],

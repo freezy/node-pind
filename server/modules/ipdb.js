@@ -176,11 +176,11 @@ Ipdb.prototype.enrich = function(table, callback) {
 	 * result in empty search results.
 	 *
 	 * This function fixes common spelling mistakes and name aberrations.
-	 * @param n Original name from HyperPin
+	 * @param table Table object.
 	 */
-	var fixName = function(n) {
+	var tweakName = function(table) {
 
-		var name = n + ' ';
+		var name = table.name + ' ';
 		var r = function(needle, haystack) {
 			name = name.replace(needle, haystack);
 		};
@@ -191,7 +191,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 		};
 
 		// move ", the" to the start
-		name = name.replace(/(.*),\s+(the)\s*/gi, '$2 $1 ');
+		name = name.replace(/(.*),\s*(the)\s*/gi, '$2 $1 ');
 
 		// common spelling errors
 		r(/judgement day/i, 'judgment day');
@@ -221,8 +221,12 @@ Ipdb.prototype.enrich = function(table, callback) {
 		r(/Terminator3/i, 'terminator 3');
 
 		// hacks
-		rr(/indiana jones/i, 'indiana jones the pinball adventure'); // until the stern version is out, then we have a problem because the media pack name is wrong
-
+		rr(/indiana jones/i, 'Indiana Jones the Pinball Adventure'); // until the stern version is out, then we have a problem because the media pack name is wrong
+		rr(/star trek 25th anniversary/i, 'Star Trek');
+		rr(/^voltan/i, 'Voltan Escapes Cosmic Doom');
+		if (table.manufacturer.match(/gottlieb/i)) {
+			rr(/^close encounters/i, 'Close Encounters of the Third Kind');
+		}
 		return name.trim();
 	};
 
@@ -300,9 +304,9 @@ Ipdb.prototype.enrich = function(table, callback) {
 	}
 
 	var url, m;
-	var searchName = fixName(table.name);
-	var regex = new RegExp('(' + ipdb.getKnownManufacturers().join('|') + ')', 'i');
-	if (m = searchName.match(regex)) {
+	var searchName = tweakName(table);
+	var regex = new RegExp('\\s(' + ipdb.getKnownManufacturers().join('|') + ')\\s', 'i');
+	if (m = (' ' + searchName + ' ').match(regex)) {
 		table.manufacturer = m[1];
 		searchName = searchName.replace(regex, '').trim();
 	}
