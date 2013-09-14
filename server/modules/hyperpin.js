@@ -299,22 +299,22 @@ HyperPin.prototype.writeTables = function(callback) {
 			xml = xml.replace(/<_game/g, '<!--game');
 			xml = xml.replace(/<\/_game>/g, '</game-->');
 		}
-		xml = xml.replace('<?xml version="1.0"?>', '').replace(/    /g, '\t').trim();
+		xml = xml.replace('<?xml version="1.0"?>', '').replace(/    /g, '\t').replace(/\n/g, '\r\n').trim();
 		var version = au.getVersion();
 		var header = '<!--\n' +
-			'	This database file was automatically created by Pind ' + version.version + ' (' + version.sha.substr(0, 7) + ').\n\n' +
-			'	In case something went wrong, the original file was renamed to\n' +
-			'		"' + platforms[platform] + ' - Pind Backup.xml".\n\n' +
-			'	If you feel that an issue should be fixed, feel free to submit a bug report at\n' +
-			'		https://github.com/freezy/node-pind/issues\n\n' +
-			'	For now, if you have a completely different naming schema than HyperPin\'s "Name (vendor year)"\n' +
-			'	you can update or add the "ipdb" attribute at the "game" elements below. If set, Pind will rely\n' +
-			'	on this first, before searching the name on IPDB.org.\n\n' +
-			'	For original games, you can add the "vpf" attribute, which contains VPF\'s file ID, that\'s the\n' +
-			'	"showfile" number you see in the address bar of a download page at VPForums.org.\n\n' +
-			'	Keeping those IDs correct makes sure Pind knows which downloads correspond to which of your tables\n' +
-			'	This makes sure the right entries get updated or added.\n' +
-			'-->\n\n';
+			'	This database file was automatically created by Pind ' + version.version + ' (' + version.sha.substr(0, 7) + ').\r\n\r\n' +
+			'	In case something went wrong, the original file was renamed to\r\n' +
+			'		"' + platforms[platform] + ' - Pind Backup.xml".\r\n\r\n' +
+			'	If you feel that an issue should be fixed, feel free to submit a bug report at\r\n' +
+			'		https://github.com/freezy/node-pind/issues\r\n\r\n' +
+			'	For now, if you have a completely different naming schema than HyperPin\'s "Name (vendor year)"\r\n' +
+			'	you can update or add the "ipdb" attribute at the "game" elements below. If set, Pind will rely\r\n' +
+			'	on this first, before searching the name on IPDB.org.\r\n\r\n' +
+			'	For original games, you can add the "vpf" attribute, which contains VPF\'s file ID, that\'s the\r\n' +
+			'	"showfile" number you see in the address bar of a download page at VPForums.org.\r\n\r\n' +
+			'	Keeping those IDs correct makes sure Pind knows which downloads correspond to which of your tables\r\n' +
+			'	This makes sure the right entries get updated or added.\r\n' +
+			'-->\r\n\r\n';
 
 		var write = function(filename, data) {
 			logger.log('info', 'Writing database to %s', filename);
