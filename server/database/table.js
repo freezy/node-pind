@@ -19,6 +19,7 @@ module.exports = function(sequelize, DataTypes) {
 		manufacturer: DataTypes.STRING,
 		year: DataTypes.INTEGER,
 		type: DataTypes.STRING,
+		edition: DataTypes.ENUM('standard', 'nightmod'),
 		platform: DataTypes.STRING,
 		filename: DataTypes.STRING,
 		hpid: DataTypes.STRING,

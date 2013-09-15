@@ -1,7 +1,7 @@
 
 module.exports = function(sequelize, DataTypes) {
 
-	var Hiscore = sequelize.define('hiscores', {
+	return sequelize.define('hiscores', {
 			id: {
 				type: DataTypes.INTEGER,
 				autoIncrement: true,
@@ -26,5 +26,4 @@ module.exports = function(sequelize, DataTypes) {
 
 			timestamps: true
 		});
-	return Hiscore;
 };

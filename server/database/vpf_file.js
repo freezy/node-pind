@@ -17,6 +17,7 @@ module.exports = function(sequelize, DataTypes) {
 			downloads: DataTypes.INTEGER,
 			views: DataTypes.INTEGER,
 			author: DataTypes.STRING,
+			edition: DataTypes.ENUM('standard', 'nightmod'),
 			lastUpdatedAt: DataTypes.DATE
 		},
 		{

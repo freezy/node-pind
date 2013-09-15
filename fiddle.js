@@ -19,9 +19,11 @@ var vpf = require('./server/modules/vpforums');
 var trns = require('./server/modules/transfer');
 var extr = require('./server/modules/extract');
 
-var log = require('winston');
-log.cli();
+var logger = require('winston');
+logger.cli();
 
+
+migrateUp('D:/dev/node-pind/migrations/add-edition-field-to-vpf-and-tables.js');
 
 //matchSources();
 //ipdbMatch('indiana jones pinball adventure');
@@ -65,6 +67,18 @@ log.cli();
 //getRomName('STERN - The Simpsons Pinball Party - MEGAPIN_V1.2FS.vpt');
 
 
+function migrateUp(filename) {
+	var migrator = schema.sequelize.getMigrator();
+	migrator.exec(filename, {
+		before: function(migration) {
+			console.log('Starting migration.');
+		}
+	}).success(function() {
+			console.log('Migration executed successfully.');
+	}).error(function(err) {
+		console.error('Migration went wrong: ', err);
+	});
+}
 
 function matchSources() {
 
