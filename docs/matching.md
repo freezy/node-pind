@@ -28,10 +28,11 @@ How to match?
 -------------
 
 As explained above, our identifier has three components: IPDB number, VPF file ID and mod type. The challenge now
-is to accurately determine the IPDB number for:
+is to accurately determine:
 
-1. All VPF downloads
-2. Your HyperPin database
+1. IPDB number for all VPF downloads
+2. IPDB number for your HyperPin recreations
+3. VPF file ID for your HyperPin original games
 
 Point 1 is pretty much taken care of. Pind contains [a map](https://github.com/freezy/node-pind/blob/master/server/data/ipdb-vpf.json)
 that links all VPF cabinet downloads to an IPDB number. This map has been manually verified, using visuals from both
@@ -46,13 +47,21 @@ titles. The quality of the HyperPin matches can be checked by opening the path `
 highlights differences between the HyperPin database and the data fetched from IPDB. It also provides a way to correct
 wrong entries and write them into the mapping file.
 
+Point 3 is still unsolved. If you download an OG using Pind, the VPF file ID is obviously known and future updates
+get matched correctly. However, matching the correct original game when downloading an update for an already
+*existing* table is quite difficult without an IPDB number to rely on.
+
+One approach to solve Point 3 would be to search for the OG's media pack, where the HyperPin database entry is usually
+posted, read the game description from there and try to match it with the local HP database. However for this we need
+more reliable media pack matching first.
+
 
 Persistence
 -----------
 
 When Pind adds a new table to HyperPin, it knows with 100% accuracy where the file came from (i.e. its VPF file ID and
-consequently its IPDB number). In order to not to lose that information next time a user re-initializes Pind, this
-data is written to HyperPin's XML database, looking like this:
+consequently its IPDB number). In order not to lose that information next time a user re-initializes Pind, this data
+is written to HyperPin's XML database, ending up like this:
 
 	<game name="T2_CE_Tipoto_1.06_FS" ipdb="2524" vpf="6105">
 		<description>Terminator 2 - Judgement Day (Williams 1991)</description>
