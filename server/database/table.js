@@ -73,9 +73,20 @@ module.exports = function(sequelize, DataTypes) {
 				});
 			},
 
+			getEdition: function(name) {
+				var edition = 'standard';
+				if (name.match(/[^a-z]night[^a-z]*mod|[^a-z0-9]nm\s*$/i)) {
+					edition = 'nightmod';
+				}
+				return edition;
+			},
+
 			updateOrCreate: function(clause, table, callback) {
 				var that = this;
 				delete table.img_playfield; // sequelize doesn't like non-column fields.
+
+				table.edition = Table.getEdition(table.name);
+
 				Table.find(clause).success(function(row) {
 					if (row) {
 

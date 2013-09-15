@@ -682,6 +682,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			if (currentCache[item.fileId]) {
 				currentCache[item.fileId].updateAttributes(obj).done(done);
 			} else {
+				obj.edition = schema.Table.getEdition(obj.title);
 				schema.VpfFile.create(obj).done(done);
 			}
 
