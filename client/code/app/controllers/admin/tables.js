@@ -46,13 +46,16 @@ module.exports = function(module) {
 			if (table.name && table.year && table.manufacturer) {
 				table.title = (table.name_match ? table.name_match : table.name) + ' (' + table.manufacturer + ' ' + table.year + ')';
 			} else if (table.hpid) {
-				table.title = table.hpid;
+				table.title = '<code>' + table.hpid + '</code>';
 			} else if (table.name && table.year) {
 				table.title = (table.name_match ? table.name_match : table.name) + ' (' + table.year + ')';
 			} else if (table.name) {
 				table.title = (table.name_match ? table.name_match : table.name);
 			} else {
 				table.title = '<i>Not Available</i>';
+			}
+			if (table.edition == 'nightmod') {
+				table.title += '&nbsp;&nbsp;&nbsp;<i class="icon moon" title="Night Mod"></i>';
 			}
 
 			table.badge_table = table.table_file ? 'success' : 'important';
