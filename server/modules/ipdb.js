@@ -310,9 +310,6 @@ Ipdb.prototype.enrich = function(table, callback) {
 					return url.replace(/tn_/i, '');
 				});
 			}
-
-			var distance = natural.LevenshteinDistance(Ipdb.prototype.norm(searchName), Ipdb.prototype.norm(m[2]));
-			logger.log('info', '[ipdb] Found title "%s" as #%d (distance %d)', table.name, m[1], distance);
 			callback(null, table);
 
 		} else {
@@ -321,8 +318,8 @@ Ipdb.prototype.enrich = function(table, callback) {
 		}
 	};
 
-	if (!table.name) {
-		return callback('First parameter must contain at least "name".');
+	if (!table.name && !table.ipdb_no) {
+		return callback('First parameter must contain at least "name" or "ipdb_no".');
 	}
 
 	if (table.type == 'OG') { // ignore original games
@@ -330,17 +327,18 @@ Ipdb.prototype.enrich = function(table, callback) {
 	}
 
 	var url, m;
-	var searchName = tweakName(table);
-	var regex = new RegExp('\\s(' + ipdb.getKnownManufacturers().join('|') + ')\\s', 'i');
-	if (m = (' ' + searchName + ' ').match(regex)) {
-		table.manufacturer = m[1];
-		searchName = searchName.replace(regex, '').trim();
-	}
-
-	if (table.ipdb_no && !forceSearch) {
+	if (table.ipdb_no && (!forceSearch || !table.name)) {
 		url = 'http://www.ipdb.org/machine.cgi?id=' + table.ipdb_no;
 		logger.log('info', '[ipdb] Refreshing data for ipdb# %s.', table.ipdb_no);
 	} else {
+
+		var searchName = tweakName(table);
+		var regex = new RegExp('\\s(' + ipdb.getKnownManufacturers().join('|') + ')\\s', 'i');
+		if (m = (' ' + searchName + ' ').match(regex)) {
+			table.manufacturer = m[1];
+			searchName = searchName.replace(regex, '').trim();
+		}
+
 		// advanced search: var url = 'http://www.ipdb.org/search.pl?name=' + encodeURIComponent(game.name) + '&searchtype=advanced';
 		url = 'http://www.ipdb.org/search.pl?any=' + encodeURIComponent(searchName) + '&searchtype=quick';
 		ipdb.emit('searchStarted', { name: searchName });

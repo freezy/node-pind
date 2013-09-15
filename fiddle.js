@@ -23,7 +23,7 @@ var logger = require('winston');
 logger.cli();
 
 
-migrateUp('D:/dev/node-pind/migrations/20130915122800-55d57b7-add-edition-field-to-vpf-and-tables');
+//migrateUp('D:/dev/node-pind/migrations/20130915122800-55d57b7-add-edition-field-to-vpf-and-tables');
 
 //matchSources();
 //ipdbMatch('indiana jones pinball adventure');
@@ -38,7 +38,7 @@ migrateUp('D:/dev/node-pind/migrations/20130915122800-55d57b7-add-edition-field-
 
 //nv.diff();
 
-//postProcessTransfer(2);
+postProcessTransfer(6);
 
 //	cacheAllTableDownloads();
 //	nextDownload();

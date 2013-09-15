@@ -557,7 +557,8 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 				case 'addtohp':
 					table.updateAttributes({
 						hpenabled: true,
-						filename: filename
+						filename: filename,
+						enabled: 'yes'
 					}).success(function() {
 						hp.writeTables(done);
 					});
@@ -602,53 +603,64 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 
 				var analyzeAndContinue = function(err, table) {
 
-					if (!err && table.ipdb_no) {
-
-						table.hpid = table.name + ' (' + table.manufacturer + ' ' + table.year + ')';
-
-						schema.Table.updateOrCreate({ where: { ipdb_no: table.ipdb_no }}, table, function(err, table) {
-							if (err) {
-								logger.log('warn', '[transfer] Error adding to tables: %s', err);
-								return callback(err);
-							}
-
-							// analyze table data
-							if (filepath) {
-								vp.getTableData(filepath, function(err, attrs) {
-									if (err) {
-										logger.log('warn', '[transfer] Error reading vpt data: %s', err);
-										return callback(err);
-									}
-									table.updateAttributes(attrs).success(function(table) {
-
-										// continue with optional post actions.
-										tableActions(table, filename, callback);
-
-									});
-								});
-
-							} else {
-								// continue with optional post actions.
-								tableActions(table, filename, callback);
-							}
-
-						});
-					} else {
-						logger.log('warn', '[transfer] No ipdb match.');
-						// continue with optional post actions.
-						tableActions(table, filename, callback);
+					if (err) {
+						logger.log('err', '[transfer] %s', err);
+						return callback(err);
 					}
+					table.hpid = table.name + ' (' + table.manufacturer + ' ' + table.year + ')';
+
+					// here we match the downloaded table to a hyperpin entry.
+					var where;
+					if (table.ipdb_no > 0) {
+						// recreations get matched by ipdb number.
+						where = {
+							ipdb_no: table.ipdb_no,
+							edition: table.edition
+						};
+						logger.log('info', '[transfer] Matching table in HyperPin by IPDB# %d and "%s" edition.', where.ipdb_no, where.edition);
+					} else {
+						// original games get matched by vpf file id.
+						where = {
+							ref_src: table.ref_src
+						};
+						logger.log('info', '[transfer] Matching table in HyperPin by source reference ID %d.', where.ref_src);
+					}
+					schema.Table.updateOrCreate({ where: where}, table, function(err, table) {
+						if (err) {
+							logger.log('warn', '[transfer] Error adding to tables: %s', err);
+							return callback(err);
+						}
+
+						// analyze table data
+						if (filepath) {
+							vp.getTableData(filepath, function(err, attrs) {
+								if (err) {
+									logger.log('warn', '[transfer] Error reading vpt data: %s', err);
+									return callback(err);
+								}
+								table.updateAttributes(attrs).success(function(table) {
+
+									// continue with optional post actions.
+									tableActions(table, filename, callback);
+								});
+							});
+
+						} else {
+							// continue with optional post actions.
+							tableActions(table, filename, callback);
+						}
+					});
 				};
 
 				// we have a pre-verified match (i.e. we're sure that this vpf download has the correct ipdb id).
 				if (vpffile.ipdb_id && vpffile.ipdb_id > 0) {
 					logger.log('info', '[transfer] Got verified IPDB %d, fetching details.', vpffile.ipdb_id);
 					ipdb.enrich({
-						name: vpffile.title_trimmed,
 						ipdb_no: vpffile.ipdb_id,
 						platform: 'VP',
 						ref_src: transfer.ref_src,
-						filename: filename
+						filename: filename,
+						edition: vpffile.edition
 					}, function(err, table) {
 						table.hpid = table.name + ' (' + table.manufacturer + ' ' + table.year + ')';
 						analyzeAndContinue(err, table);
@@ -656,7 +668,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 
 				// we're sure that we're dealing with an original game (i.e. no ipdb entry available)
 				} else if (vpffile.ipdb_id && vpffile.ipdb_id < 0) {
-					logger.log('info', '[transfer] Got verified original game continueing.');
+					logger.log('info', '[transfer] Got verified original game, continuing.');
 					analyzeAndContinue(null, {
 						hpid: vpffile.title,
 						name: vpffile.title_trimmed,
@@ -664,7 +676,8 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						platform: 'VP',
 						type: 'OG',
 						ref_src: transfer.ref_src,
-						filename: filename
+						filename: filename,
+						edition: vpffile.edition
 					});
 
 				// no pre-verified match available, so let's search for it.
@@ -677,7 +690,8 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						ref_src: transfer.ref_src,
 						platform: 'VP',
 						hpid: vpffile.manufacturer && vpffile.year && vpffile.title_trimmed ? vpffile.title_trimmed + ' (' + vpffile.manufacturer + ' ' + vpffile.year + ')' : null,
-						filename: filename
+						filename: filename,
+						edition: vpffile.edition
 					}, analyzeAndContinue);
 				}
 
