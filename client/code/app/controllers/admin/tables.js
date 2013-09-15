@@ -46,7 +46,7 @@ module.exports = function(module) {
 			if (table.name && table.year && table.manufacturer) {
 				table.title = (table.name_match ? table.name_match : table.name) + ' (' + table.manufacturer + ' ' + table.year + ')';
 			} else if (table.hpid) {
-				table.title = '<code>' + table.hpid + '</code>';
+				table.title = table.hpid;
 			} else if (table.name && table.year) {
 				table.title = (table.name_match ? table.name_match : table.name) + ' (' + table.year + ')';
 			} else if (table.name) {

@@ -16,7 +16,7 @@ module.exports = {
 				schema.Table.all().success(function(rows) {
 					async.eachSeries(rows, function(row, next) {
 						var edition = 'standard';
-						if (row.name.match(/[^a-z]night[^a-z]*mod|[^a-z0-9]nm\s*$/i)) {
+						if (row.name.match(/[^a-z]night[^a-z]*mod|[^a-z]dark[^a-z]*mod|[^a-z0-9]nm\s*$/i)) {
 							edition = 'nightmod';
 						}
 						row.updateAttributes({ edition: edition }).success(function() {
@@ -29,7 +29,7 @@ module.exports = {
 				schema.VpfFile.all().success(function(rows) {
 					async.eachSeries(rows, function(row, next) {
 						var edition = 'standard';
-						if (row.title.match(/[^a-z]night[^a-z]*mod|[^a-z0-9]nm\s*$/i)) {
+						if (row.title.match(/[^a-z]night[^a-z]*mod|[^a-z]dark[^a-z]*mod|[^a-z0-9]nm\s*$/i)) {
 							edition = 'nightmod';
 						}
 						row.updateAttributes({ edition: edition }).success(function() {
