@@ -23,7 +23,7 @@ var logger = require('winston');
 logger.cli();
 
 
-migrateUp('D:/dev/node-pind/migrations/add-edition-field-to-vpf-and-tables.js');
+migrateUp('D:/dev/node-pind/migrations/20130915122800-55d57b7-add-edition-field-to-vpf-and-tables');
 
 //matchSources();
 //ipdbMatch('indiana jones pinball adventure');
