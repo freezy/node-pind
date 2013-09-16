@@ -104,7 +104,7 @@ VPForums.prototype._findMedia = function(table, ref_parent, cat, what, callback)
 			return callback(err);
 		}
 		var match = VPForums.prototype._matchResult(results, searchName, function(str) {
-			return str.replace(/[\[\(].*/, '').trim();
+			return str.replace(/[\[\(].*|rev\d.*/i, '').trim();
 		}, 'intelligent');
 		if (!match) {
 			logger.log('error', '[vpf] Cannot find any media with name similar to "%s".', searchName);
@@ -240,7 +240,7 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 			return callback(err);
 		}
 		if (aborting) {
-			logger.log('info', '[vpf] Aborting.');
+			logger.log('info', '[vpf] Aborting overview download.');
 			return callback();
 		}
 		//error.dumpDebugData('vpf', '01-first.page', body, 'html');
@@ -252,7 +252,7 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 		var download = function(body) {
 			var m;
 			if (aborting) {
-				logger.log('info', '[vpf] Aborting.');
+				logger.log('info', '[vpf] Aborting download.');
 				return callback();
 			}
 			if (body.match(/<h1[^>]*>Sorry, you don't have permission for that/i)) {
@@ -380,7 +380,7 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 					//error.dumpDebugData('vpf', '02-confirmation', body, 'html');
 
 					if (aborting) {
-						logger.log('info', '[vpf] Aborting.');
+						logger.log('info', '[vpf] Aborting request.');
 						return callback();
 					}
 					if (err) {
@@ -522,11 +522,13 @@ VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance
 
 	var matches = [];
 	var distance = maxDistance ? maxDistance : 10;
+	var nameToMatch = trimFct(title).toLowerCase();
+	logger.log('info', '[vpf] Matchng against "%s"..', nameToMatch);
 	for (var i = 0; i < results.length; i++) {
 		var result = results[i];
 		var name = trimFct(result.title);
-		var d = natural.LevenshteinDistance(title.toLowerCase(), name.toLowerCase());
-		//logger.log('info', '%s %s - %s', d, title, name);
+		var d = natural.LevenshteinDistance(nameToMatch, name.toLowerCase());
+		logger.log('info', '[vpf]   %s %s - %s', d, nameToMatch, name);
 		if (d < distance) {
 			matches = [ result ];
 			distance = d;
@@ -547,7 +549,6 @@ VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance
 VPForums.prototype._matchResult = function(results, title, trimFct, strategy) {
 	//noinspection JSCheckFunctionSignatures
     var matches = this._matchResults(results, title, trimFct);
-	logger.log('info', '[vpf] Got matches: %j', matches, {});
 	matches.sort(function(a, b) {
 		var x;
 		//noinspection FallthroughInSwitchStatementJS
@@ -574,10 +575,16 @@ VPForums.prototype._matchResult = function(results, title, trimFct, strategy) {
 				} else {
 					x = a.updated > b.updated;
 				}
-
 		}
 		return x ? -1 : 1;
 	});
+
+	var i = 0;
+	logger.log('info', '[vpf] Matches sorted by accuracy:');
+	_.each(matches, function(match) {
+		logger.log('info', '[vpf]   %d. %s (%s - %d views, %d downloads)', ++i, match.title, match.lastUpdatedSince. match.views, match.downloads);
+	});
+
 	return matches[0];
 };
 
@@ -920,7 +927,8 @@ VPForums.prototype._login = function(callback) {
 			return callback(err);
 		}
 		if (aborting) {
-			logger.log('info', '[vpf] Aborting.');
+			logger.log('info', '[vpf] Aborting login.');
+			loggingIn = false;
 			return callback();
 		}
 		var m = body.match(/<input\s+type='hidden'\s+name='auth_key'\s+value='([^']+)/i);
