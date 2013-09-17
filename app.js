@@ -45,7 +45,7 @@ require('./server/initializers/pind.js')();
 
 // Start web server
 var server = http.Server(ss.http.middleware);
-server.listen(settings.pind.port);
+server.listen(parseInt(settings.pind.port));
 
 // Start SocketStream
 ss.start(server);

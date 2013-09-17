@@ -97,10 +97,6 @@ AutoUpdate.prototype.initVersion = function(callback) {
 			that.setVersion(commit.id, commit.committed_date, packageVersion);
 			callback(null, version);
 		});
-
-		localRepo.commits('master', 1, function(err, commits) { if (!err) console.log('ALL OK!')});
-
-
 		return;
 	}
 

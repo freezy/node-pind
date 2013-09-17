@@ -558,7 +558,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 					table.updateAttributes({
 						hpenabled: true,
 						filename: filename,
-						enabled: 'yes'
+						enabled: true
 					}).success(function() {
 						hp.writeTables(done);
 					});
