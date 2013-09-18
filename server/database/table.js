@@ -75,7 +75,7 @@ module.exports = function(sequelize, DataTypes) {
 
 			getEdition: function(name) {
 				var edition = 'standard';
-				if ((name + ' ').match(/[^a-z]night[^a-z]*mod|[^a-z]dark[^a-z]*mod|\s+nm\s+/i)) {
+				if ((name + ' ').match(/[^a-z\d]night[^a-z\d]*mod|[^a-z\d]dark[^a-z\d]*mod|[^a-z\d]+nm[^a-z\d]/i)) {
 					edition = 'nightmod';
 				}
 				return edition;
@@ -85,7 +85,13 @@ module.exports = function(sequelize, DataTypes) {
 				var that = this;
 				delete table.img_playfield; // sequelize doesn't like non-column fields.
 
-				table.edition = Table.getEdition(table.hpid);
+				if (!table.edition) {
+					table.edition = Table.getEdition(table.hpid);
+					// if no special match, also try filename.
+					if (table.edition == 'standard') {
+						table.edition = Table.getEdition(table.filename);
+					}
+				}
 
 				Table.find(clause).success(function(row) {
 					if (row) {

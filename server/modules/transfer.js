@@ -625,7 +625,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						};
 						logger.log('info', '[transfer] Matching table in HyperPin by source reference ID %d.', where.ref_src);
 					}
-					schema.Table.updateOrCreate({ where: where}, table, function(err, table) {
+					schema.Table.updateOrCreate({ where: where }, table, function(err, table) {
 						if (err) {
 							logger.log('warn', '[transfer] Error adding to tables: %s', err);
 							return callback(err);

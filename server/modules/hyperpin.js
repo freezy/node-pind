@@ -80,13 +80,10 @@ HyperPin.prototype.readTablesWithData = function(callback) {
 		}
 
 		vp.updateTableData(function(err) {
-			if (err) {
-				throw new Error(err);
-			}
-			that.emit('analysisCompleted', 5000);
 			isReading = false;
+			that.emit('analysisCompleted', 5000);
 			that.emit('processingCompleted');
-			callback();
+			callback(err);
 		});
 	});
 };
@@ -188,6 +185,7 @@ HyperPin.prototype.readTables = function(callback) {
 							schema.VpfFile.find({ where: { fileId: g.$.vpf }}).success(function(row) {
 								if (row) {
 									table.ref_src = row.id;
+									table.edition = row.edition; // overwrite, since more accurate.
 								}
 								tables.push(table);
 								next();
