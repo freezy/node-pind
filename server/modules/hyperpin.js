@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('underscore');
 var fs = require('fs');
 var path = require('path');
 var util = require('util');
@@ -148,8 +149,8 @@ HyperPin.prototype.readTables = function(callback) {
 						} else {
 							table = {
 								name: d,
-								manufacturer: g.manufacturer[0],
-								year: g.year[0] ? g.year[0] : null
+								manufacturer:  _.isArray(g.manufacturer) ? g.manufacturer[0] : null,
+								year: _.isArray(g.year) ? g.year[0] : null
 							};
 						}
 						if (!g.$ || !g.$.name) {
@@ -160,7 +161,9 @@ HyperPin.prototype.readTables = function(callback) {
 						table.filename = g.$.name;
 						table.hpid = d;
 						table.hpenabled = active;
-						table.type = g.type[0];
+						if (_.isArray(g.type)) {
+							table.type = g.type[0];
+						}
 
 						table.platform = platform;
 						table.enabled = g.enabled === undefined || (g.enabled[0].toLowerCase() == 'true' || g.enabled[0].toLowerCase() == 'yes');
