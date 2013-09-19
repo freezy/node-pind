@@ -156,9 +156,8 @@ HyperPin.prototype.readTables = function(callback) {
 							logger.log('error', '[hyperpin] [' + platform + '] Cannot find "name" attribute for "' + table.name + '".');
 							return callback('error parsing game "' + table.name + '", XML must contain "name" attribute.');
 						}
-						if (g.$.name && !g.$.name.match(/Table Name Goes Here/i)) {
-							table.filename = g.$.name;
-						}
+
+						table.filename = g.$.name;
 						table.hpid = d;
 						table.hpenabled = active;
 						table.type = g.type[0];
@@ -275,6 +274,10 @@ HyperPin.prototype.writeTables = function(callback) {
 			}
 
 			writer.startElement(row.hpenabled ? 'game' : '_game');
+			if (!row.filename) {
+				logger.log('warn', '[hyperpin] No filename set for "%d", NOT writing to XML.', row.hpid);
+				continue;
+			}
 			writer.writeAttribute('name', row.filename);
 			if (row.ipdb_no) {
 				writer.writeAttribute('ipdb', row.ipdb_no);
@@ -282,6 +285,7 @@ HyperPin.prototype.writeTables = function(callback) {
 			if (row.fileId) {
 				writer.writeAttribute('vpf', row.fileId);
 			}
+
 			writer.writeElement('description', row.hpid);
 			if (row.manufacturer) {
 				writer.writeElement('manufacturer', row.manufacturer);

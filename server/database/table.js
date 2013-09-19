@@ -81,6 +81,26 @@ module.exports = function(sequelize, DataTypes) {
 				return edition;
 			},
 
+			getDefaultHpid: function(table) {
+				var hpid;
+				if (!table.name) {
+					hpid = 'Unknown';
+				} else {
+					hpid = table.name;
+				}
+				if (table.edition == 'nightmod') {
+					hpid += ' - Night Mod';
+				}
+				if (table.manufacturer && table.year) {
+					hpid += ' (' + table.manufacturer + ' ' + table.year + ')';
+				} else if (table.manufacturer) {
+					hpid += ' (' + table.manufacturer + ')';
+				} else if (table.year) {
+					hpid += ' (' + table.year + ')';
+				}
+				return hpid;
+			},
+
 			updateOrCreate: function(clause, table, callback) {
 				var that = this;
 				delete table.img_playfield; // sequelize doesn't like non-column fields.

@@ -607,7 +607,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						logger.log('err', '[transfer] %s', err);
 						return callback(err);
 					}
-					table.hpid = table.name + ' (' + table.manufacturer + ' ' + table.year + ')';
+					table.hpid = schema.Table.getDefaultHpid(table);
 
 					// here we match the downloaded table to a hyperpin entry.
 					var where;
@@ -662,7 +662,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						filename: filename,
 						edition: vpffile.edition
 					}, function(err, table) {
-						table.hpid = table.name + ' (' + table.manufacturer + ' ' + table.year + ')';
+						table.hpid = schema.Table.getDefaultHpid(table);
 						analyzeAndContinue(err, table);
 					});
 
@@ -689,10 +689,12 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						year: vpffile.year,
 						ref_src: transfer.ref_src,
 						platform: 'VP',
-						hpid: vpffile.manufacturer && vpffile.year && vpffile.title_trimmed ? vpffile.title_trimmed + ' (' + vpffile.manufacturer + ' ' + vpffile.year + ')' : null,
 						filename: filename,
 						edition: vpffile.edition
-					}, analyzeAndContinue);
+					}, function(err, table) {
+						table.hpid = schema.Table.getDefaultHpid(table);
+						analyzeAndContinue(err, table);
+					});
 				}
 
 			});
@@ -814,12 +816,17 @@ Transfer.prototype.descriptionUpdated = function(data) {
 					if (!table) {
 						return logger.log('warn', '[transfer] Cannot find table that has reference to %d.', parent.ref_src);
 					}
-					logger.log('info', '[transfer] Updating hpid of "%s" to "%s" (%d).', table.hpid, m[1], table.id, {});
-					table.updateAttributes({ hpid: m[1] }).success(function(table) {
-						// TODO check for duplicate entries
+					schema.Table.find({ where: { hpid: m[1] }}).success(function(dupeTable) {
+						if (dupeTable) {
+							logger.log('warn', '[transfer] Table with identical hpid "%s" found (ID %d).', table.hpid, dupeTable.id);
+						}
+						logger.log('info', '[transfer] Updating hpid of "%s" to "%s" (%d).', table.hpid, m[1], table.id, {});
+						table.updateAttributes({ hpid: m[1] });
 					});
 				});
 			});
+		} else {
+			logger.log('info', '[transfer] Could not find XML description in message body of media pack post "%s".', data.vpf_file.title);
 		}
 	}
 };
