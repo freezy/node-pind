@@ -107,8 +107,8 @@ VPForums.prototype._findMedia = function(table, ref_parent, cat, what, callback)
 			return str.replace(/[\[\(].*|rev\d.*/i, '').trim();
 		}, 'intelligent');
 		if (!match) {
-			logger.log('error', '[vpf] Cannot find any media with name similar to "%s".', searchName);
-			return callback('Cannot find any media with name similar to "' + searchName + '".');
+			logger.log('warn', '[vpf] Cannot find any media with name similar to "%s".', searchName);
+			return callback(null, { found: false });
 		}
 
 		// this will add a new transfer.
@@ -120,7 +120,7 @@ VPForums.prototype._findMedia = function(table, ref_parent, cat, what, callback)
 			ref_src: match.id,
 			ref_parent: ref_parent
 		});
-		callback();
+		callback(null, { found: true });
 	});
 };
 
@@ -523,7 +523,7 @@ VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance
 	var matches = [];
 	var distance = maxDistance ? maxDistance : 10;
 	var nameToMatch = trimFct(title).toLowerCase();
-	logger.log('info', '[vpf] Matchng against "%s"..', nameToMatch);
+	logger.log('info', '[vpf] Matching against "%s"..', nameToMatch);
 	for (var i = 0; i < results.length; i++) {
 		var result = results[i];
 		var name = trimFct(result.title);
@@ -699,6 +699,15 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			}
 			var cacheFinished = +new Date();
 
+			var done = function() {
+				logger.log('info', '[vpf] Saved %d results to cache in %s seconds.', results.length, Math.round((cacheFinished - cacheStarted) / 100) / 10);
+				cb(null, results);
+			};
+
+			if (ids.length == 0) {
+				return done();
+			}
+
 			// check for zombies (i.e. entries that are in the db but have been removed at vpf)
 			var query;
 			if (letter) {
@@ -719,10 +728,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 							next();
 						}
 					});
-				}, function() {
-					logger.log('info', '[vpf] Saved %d results to cache in %s seconds.', results.length, Math.round((cacheFinished - cacheStarted) / 100) / 10);
-					cb(null, results);
-				});
+				}, done);
 			});
 		});
 
