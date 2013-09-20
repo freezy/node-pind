@@ -479,7 +479,7 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 				}
 				var $ = jquery.create(window);
 				var description = $('div.ipsType_textblock.description_content').html();
-				if (transfer.ref_src) {
+				if (description && transfer.ref_src) {
 					logger.log('info', '[vpf] Updating description for download %s', transfer.ref_src);
 					schema.VpfFile.find(transfer.ref_src).success(function(row) {
 						if (row) {
