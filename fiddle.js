@@ -18,10 +18,13 @@ var vpm = require('./server/modules/vpinmame');
 var vpf = require('./server/modules/vpforums');
 var trns = require('./server/modules/transfer');
 var extr = require('./server/modules/extract');
+var s = require('./server/modules/settings');
 
 var logger = require('winston');
 logger.cli();
 
+
+validateSettings();
 
 //migrateUp('D:/dev/node-pind/migrations/20130915122800-55d57b7-add-edition-field-to-vpf-and-tables');
 
@@ -38,7 +41,7 @@ logger.cli();
 
 //nv.diff();
 
-postProcessTransfer(8);
+//postProcessTransfer(8);
 
 //	cacheAllTableDownloads();
 //	nextDownload();
@@ -66,6 +69,9 @@ postProcessTransfer(8);
 //getRomName('LOTR_VP91x_2.3FS.vpt');
 //getRomName('STERN - The Simpsons Pinball Party - MEGAPIN_V1.2FS.vpt');
 
+function validateSettings() {
+	s.validate();
+}
 
 function migrateUp(filename) {
 	var migrator = schema.sequelize.getMigrator();
