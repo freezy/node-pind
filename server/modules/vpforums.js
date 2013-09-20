@@ -868,20 +868,31 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 		}
 	};
 
+	var getLetter = function(title) {
+		if (title) {
+			if (title.match(/^\d/)) {
+				return '0';
+			} else {
+				return title[0].toLowerCase();
+			}
+		}
+		return null;
+	};
+
 	// ------------------------------------------------------------------------
 	// code starts here
 	// ------------------------------------------------------------------------
 
 	// check cache first.
-	var params = { where: { category: cat }};
-	if (title) {
-		params.where.letter = title[0].toLowerCase();
-	}
+	var params = { where: {
+		category: cat,
+		letter: getLetter(title)
+	}};
 	schema.VpfFile.all(params).success(function(rows) {
 
 		if (rows.length == 0) {
 			// if empty, launch fetch.
-			fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
+			fetch(cat, getLetter(title), [], 1, goAgainOrCallback);
 		} else {
 
 			// adding additional fields
@@ -893,10 +904,10 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 
 			if (options.forceUpdate) {
 				logger.log('info', '[vpf] Force-refreshing category %d.', cat);
-				fetch(cat, title ? title[0] : null, [], 1, goAgainOrCallback);
+				fetch(cat, getLetter(title), [], 1, goAgainOrCallback);
 			} else {
 				if (title) {
-					logger.log('info', '[vpf] Returning cached letter "%s" for category %d.', title[0], cat);
+					logger.log('info', '[vpf] Returning cached letter "%s" for category %d.', getLetter(title), cat);
 				} else {
 					logger.log('info', '[vpf] Returning all cached letters for category %d.', cat);
 				}
