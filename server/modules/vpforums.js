@@ -646,11 +646,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 		async.eachSeries(items, function(item, next) {
 			var l;
 			if (!letter) {
-				if (item.title.match(/^\d/)) {
-					l = '0';
-				} else {
-					l = item.title[0].toLowerCase();
-				}
+				l = getLetter(item.title);
 			} else {
 				l = letter.toLowerCase();
 			}
@@ -890,10 +886,10 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 	// ------------------------------------------------------------------------
 
 	// check cache first.
-	var params = { where: {
-		category: cat,
-		letter: getLetter(title)
-	}};
+	var params = { where: { category: cat }};
+	if (getLetter(title)) {
+		params.letter = getLetter(title);
+	}
 	schema.VpfFile.all(params).success(function(rows) {
 
 		if (rows.length == 0) {
