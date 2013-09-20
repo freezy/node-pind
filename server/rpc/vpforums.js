@@ -21,7 +21,7 @@ exports.actions = function(req, res, ss) {
 			if (!req.session.userId) return res(error.unauthorized());
 			if (!req.session.user.admin) return res(error.forbidden());
 
-			vpf.cacheAllTableDownloads(function(err) {
+			vpf.cacheAllDownloads(function(err) {
 				if (err) {
 					logger.log('error', '[rpc] [vpf] [create index] %s', err);
 					res(error.api(err));

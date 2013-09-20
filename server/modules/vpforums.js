@@ -613,7 +613,11 @@ VPForums.prototype.getIpdbMap = function() {
  * @todo Cache invalidation
  * @param cat VPF category
  * @param title Title of the item. If not null, only items starting with the same letter will be returned.
- * @param options Object containing additional options: <tt>forceUpdate</tt> (boolean), <tt>firstPageOnly</tt> (boolean), <tt>sortKey</tt> (string), <tt>sortOrder</tt> (asc/desc)
+ * @param options Object containing additional options:
+ * 		<li><tt>forceUpdate</tt> (boolean) - Fetch from VPF even if local cache available</li>
+ * 		<li><tt>firstPageOnly</tt> (boolean) - Stop after first page</li>
+ * 		<li><tt>sortKey</tt> (string) - How to request sorting at VPF</li>
+ * 		<li><tt>sortOrder</tt> (asc/desc) - Which sort direction at VPF</li>
  * @param callback Callback.
  */
 VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
@@ -732,24 +736,25 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 
 	/**
 	 * Recursive function that fetches items from vpforums.org.
-	 * @param cat category
-	 * @param letter first letter of title
+	 * @param opt Contains parameters:
+	 * 		<li><tt>cat</tt> - category</li>
+	 * 		<li><tt>letter</tt> - first letter of title</li>
+	 * 		<li><tt>page</tt> - which page to fetch, first starts with 1.
 	 * @param currentResult result array to add items to
-	 * @param page Which page to fetch, first starts with 1.
 	 * @param callback Callback function.
 	 */
-	var fetch = function(cat, letter, currentResult, page, callback) {
+	var fetch = function(opt, currentResult, callback) {
 		var numPages;
 		var url;
 		var num = 25;
 		var sortKey = 'sort_key=' + (options.sortKey ? options.sortKey : 'file_name');
 		var sortOrder = 'sort_order=' + (options.sortOrder ? options.sortOrder : 'ASC');
-		if (letter) {
-			url = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=categoryletters&cat=' + cat + '&letter=' + letter + '&' + sortOrder + '&' + sortKey + '&num=' + num + '&st=' + ((page - 1) * num);
-			logger.log('info', '[vpf] Fetching page %d for category %s and letter "%s".', page, cat, letter);
+		if (opt.letter) {
+			url = 'http://www.vpforums.org/index.php?app=downloads&module=display&section=categoryletters&cat=' + opt.cat + '&letter=' + opt.letter + '&' + sortOrder + '&' + sortKey + '&num=' + num + '&st=' + ((opt.page - 1) * num);
+			logger.log('info', '[vpf] Fetching page %d for category %s and letter "%s".', opt.page, opt.cat, opt.letter);
 		} else {
-			url = 'http://www.vpforums.org/index.php?app=downloads&showcat=' + cat + '&' + sortOrder + '&' + sortKey + '&num=' + num + '&st=' + ((page - 1) * num);
-			logger.log('info', '[vpf] Fetching page %d for category %s.', page, cat);
+			url = 'http://www.vpforums.org/index.php?app=downloads&showcat=' + opt.cat + '&' + sortOrder + '&' + sortKey + '&num=' + num + '&st=' + ((opt.page - 1) * num);
+			logger.log('info', '[vpf] Fetching page %d for category %s.', opt.page, opt.cat);
 		}
 
 		request(url, function(err, response, body) {
@@ -810,12 +815,13 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 						}
 
 					}, function() {
-						if (firstPageOnly || options.firstPageOnly || page >= numPages) {
+						if (firstPageOnly || options.firstPageOnly || opt.page >= numPages) {
 							logger.log('info', '[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
-							saveToCache(cat, letter, currentResult, callback);
+							saveToCache(opt.cat, opt.letter, currentResult, callback);
 						} else {
-							that.emit('downloadProgressUpdated', { progress: page / numPages });
-							fetch(cat, letter, currentResult, page + 1, callback);
+							that.emit('downloadProgressUpdated', { progress: opt.page / numPages });
+							opt.page++;
+							fetch(opt, currentResult, callback);
 						}
 					});
 				}
@@ -854,7 +860,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			schema.VpfFile.all({ where: { category: cat, letter: words[1][0] }}).success(function(rows) {
 				if (rows.length == 0) {
 					// if empty, launch fetch.
-					fetch(cat, words[1][0], [], 1, function(err, resultNextLetter) {
+					fetch({ cat: cat, letter: words[1][0], page: 1 }, [], function(err, resultNextLetter) {
 						callback(null, result.concat(resultNextLetter));
 					});
 				} else {
@@ -885,16 +891,17 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 	// code starts here
 	// ------------------------------------------------------------------------
 
-	// check cache first.
+
 	var params = { where: { category: cat }};
-	if (getLetter(title)) {
+	if (title) {
 		params.letter = getLetter(title);
 	}
+	// check cache first.
 	schema.VpfFile.all(params).success(function(rows) {
 
 		if (rows.length == 0) {
 			// if empty, launch fetch.
-			fetch(cat, getLetter(title), [], 1, goAgainOrCallback);
+			fetch({ cat: cat, letter: getLetter(title), page: 1 }, [], goAgainOrCallback);
 		} else {
 
 			// adding additional fields
@@ -906,7 +913,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 
 			if (options.forceUpdate) {
 				logger.log('info', '[vpf] Force-refreshing category %d.', cat);
-				fetch(cat, getLetter(title), [], 1, goAgainOrCallback);
+				fetch({ cat: cat, letter: getLetter(title), page: 1 }, [], goAgainOrCallback);
 			} else {
 				if (title) {
 					logger.log('info', '[vpf] Returning cached letter "%s" for category %d.', getLetter(title), cat);
@@ -1015,6 +1022,34 @@ VPForums.prototype.logout = function(callback) {
 		} else {
 			callback('It looks like the nobody is logged in the current VPF session.');
 		}
+	});
+};
+
+VPForums.prototype.cacheAllDownloads = function(callback) {
+
+	if (isCreatingIndex || isDownloadingIndex) {
+		return callback('Fetching process already running. Wait until complete.');
+	}
+	isCreatingIndex = true;
+	var that = this;
+	that.emit('createIndexStarted');
+	async.eachSeries([41, 35, 33], function(cat, next) {
+		that._fetchDownloads(cat, null, {
+			forceUpdate : true,
+			firstPageOnly: true,
+			sortKey: 'file_updated',
+			sortOrder: 'desc'
+		}, next);
+
+	}, function(err) {
+		isCreatingIndex = false;
+		if (err) {
+			that.emit('createIndexFailed', { error: err });
+			callback(err);
+			return logger.log('error', 'ERROR: %s', err);
+		}
+		that.emit('createIndexCompleted');
+		callback();
 	});
 };
 
