@@ -569,6 +569,11 @@ Ipdb.prototype.getKnownManufacturers = function() {
 	return _.uniq(_.values(manufacturerNames));
 };
 
+Ipdb.prototype.getKnownManufacturer = function(id) {
+	return manufacturerNames[id];
+};
+
+
 Ipdb.prototype.norm = function(str) {
 	return str ? str.toString().replace(/[^a-z0-9\(\)]+/ig, '').toLowerCase() : str;
 };
@@ -641,9 +646,6 @@ var findBestMatch = function(matches, table, searchName) {
 	// on tie, return nearest year
 	matches.sort(function(a, b) {
 
-		var nA = a.name + ' (' + a.manufacturer + ' ' + a.year + ') - ' + a.type;
-		var nB = b.name + ' (' + b.manufacturer + ' ' + b.year + ') - ' + b.type;
-
 		var tableYear = table.year ? table.year : 0;
 		var tableManufacturer = normalizeManufacturer(table.manufacturer);
 
@@ -696,6 +698,9 @@ var findBestMatch = function(matches, table, searchName) {
 				byType = 1;
 			}
 		}
+
+		//var nA = a.name + ' (' + a.manufacturer + ' ' + a.year + ') - ' + a.type;
+		//var nB = b.name + ' (' + b.manufacturer + ' ' + b.year + ') - ' + b.type;
 
 		if (byYearAndManufacturer) {
 			//console.log('"%s" <-> "%s" byYearAndManufacturer: %d', nA, nB, byYearAndManufacturer);
@@ -772,6 +777,7 @@ var manufacturerNames = {
 	159: 'International Concepts',
 	165: 'Jeutel',
 	170: 'Juegos Populares',
+	204: 'Maresa',
 	206: 'Marvel',
 	213: 'Midway',
 	214: 'Bally',
@@ -814,13 +820,18 @@ var manufacturerNames = {
 	371: 'Recreativos Franco',
 	375: 'Spinball',
 	419: 'Century Consolidated Industries',
+	429: 'Acorn',
 	458: 'Rowamet',
 	447: 'Delmar',
+	448: 'Electromatic',
 	467: 'LTD',
+	477: 'Pinball Shop',
 	483: 'ICE',
 	495: 'Elbos',
+	530: 'Advertising Poster Company',
 	532: 'United',
-	549: 'Professional Pinball of Toronto'
+	549: 'Professional Pinball of Toronto',
+	555: 'Fipermatic'
 };
 
 var manufacturerGroups = {
