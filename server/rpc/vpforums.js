@@ -116,7 +116,7 @@ exports.actions = function(req, res, ss) {
 
 		ipdbmatch: function(params) {
 
-			var category = 41;
+			var category = 36;
 			var p = { where: { category: category }, order: 'title' };
 			var map = vpf.getIpdbMap();
 			var queryStart = +new Date();
@@ -195,7 +195,7 @@ exports.actions = function(req, res, ss) {
 				}
 
 				if (ipdb_id) {
-					ipdb.enrich({ ipdb_no: ipdb_id, name: row.title }, function(err, table) {
+					ipdb.enrich({ ipdb_no: ipdb_id }, function(err, table) {
 						if (err) {
 							logger.log('error', err);
 							return done();
