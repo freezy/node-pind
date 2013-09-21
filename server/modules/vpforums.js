@@ -618,6 +618,7 @@ VPForums.prototype.getIpdbMap = function() {
  * 		<li><tt>firstPageOnly</tt> (boolean) - Stop after first page</li>
  * 		<li><tt>sortKey</tt> (string) - How to request sorting at VPF</li>
  * 		<li><tt>sortOrder</tt> (asc/desc) - Which sort direction at VPF</li>
+ * 		<li><tt>progress</tt> (total/num/ignore) - If total and num are set, progress doesn't go from 0 to 1 but 0 to 1/total (depending on num)</li>
  * @param callback Callback.
  */
 VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
@@ -819,7 +820,21 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 							logger.log('info', '[vpf] Fetched %d items in %s seconds.', currentResult.length, Math.round((new Date().getTime() - started) / 100) / 10);
 							saveToCache(opt.cat, opt.letter, currentResult, callback);
 						} else {
-							that.emit('downloadProgressUpdated', { progress: opt.page / numPages });
+
+							// update progress bar
+							if (options.progress) {
+								if (!options.progress.ignore) {
+									if (options.progress.total > 1) {
+										var p = opt.page / numPages;
+										that.emit('downloadProgressUpdated', { progress: (options.progress.num / options.progress.total) + (p / options.progress.total) });
+									} else {
+										that.emit('downloadProgressUpdated', { progress: opt.page / numPages });
+									}
+								}
+							} else {
+								that.emit('downloadProgressUpdated', { progress: opt.page / numPages });
+							}
+
 							opt.page++;
 							fetch(opt, currentResult, callback);
 						}
@@ -1032,13 +1047,30 @@ VPForums.prototype.cacheAllDownloads = function(callback) {
 	}
 	isCreatingIndex = true;
 	var that = this;
+	var num = 0;
 	that.emit('createIndexStarted');
-	async.eachSeries([41, 35, 33], function(cat, next) {
+	// 41 VP 9.x.x Cabinet Tables
+	// 35 HyperPin Media Packs
+	// 36 HyperPin Media Packs → HyperPin Media Packs for Future Pinball
+	// 33 Hyperpin Videos
+	// 26 Hyperpin Videos → HyperPin Preview Videos - Visual Pinball
+	// 43 Hyperpin Videos → HyperPin Preview Videos - Visual Pinball → Playfield Videos - Visual Pinball
+	// 47 Hyperpin Videos → HyperPin Preview Videos - Visual Pinball → Playfield Videos - Visual Pinball → Playfield Videos - Visual Pinball - Audio Enabled
+	// 44 Hyperpin Videos → HyperPin Preview Videos - Visual Pinball → Backglass Videos - Visual Pinball
+	// 34 Hyperpin Videos → HyperPin Preview Videos - Future Pinball
+	// 35 Hyperpin Videos → HyperPin Preview Videos - Future Pinball → Playfield Videos - Future Pinball
+	// 46 Hyperpin Videos → HyperPin Preview Videos - Future Pinball → Backglass Videos - Future Pinball
+	var categories = [41, 36, 35, 47, 43, 44, 35, 46];
+	async.eachSeries(categories, function(cat, next) {
 		that._fetchDownloads(cat, null, {
-			forceUpdate : true,
+/*			forceUpdate : true,
 			firstPageOnly: true,
 			sortKey: 'file_updated',
-			sortOrder: 'desc'
+			sortOrder: 'desc',*/
+			progress: {
+				total: categories.length,
+				num: num++
+			}
 		}, next);
 
 	}, function(err) {
@@ -1102,7 +1134,8 @@ VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 		forceUpdate : true,
 		firstPageOnly: true,
 		sortKey: 'file_updated',
-		sortOrder: 'desc'
+		sortOrder: 'desc',
+		progress: { ignore: true }
 	}, function(err, results) {
 		isDownloadingIndex = false;
 		if (err) {
