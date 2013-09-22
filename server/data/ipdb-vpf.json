@@ -1624,7 +1624,8 @@
     "manufacturer": "Inder",
     "img": "http://www.ipdb.org/images/4089/image-4.jpg",
     "title_original": "250cc_VP91x_1.1FS [HP VIDEO]",
-    "title_original_trimmed": "250cc"
+    "title_original_trimmed": "250cc",
+    "confirmed": true
   },
   "3233": {
     "ipdb": "4446",
@@ -1633,7 +1634,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4446/image-2.jpg",
     "title_original": "Attack and Revenge From Mars (Bally 1999) [HP VIDEO]",
-    "title_original_trimmed": "Attack and Revenge From Mars"
+    "title_original_trimmed": "Attack and Revenge From Mars",
+    "confirmed": true
   },
   "3234": {
     "ipdb": "3783",
@@ -1642,7 +1644,8 @@
     "manufacturer": "Capcom",
     "img": "http://www.ipdb.org/images/3783/image-1.jpg",
     "title_original": "Airborne (Capcom 1996) [HP VIDEO]",
-    "title_original_trimmed": "Airborne"
+    "title_original_trimmed": "Airborne",
+    "confirmed": true
   },
   "3235": {
     "ipdb": "4339",
@@ -1651,7 +1654,8 @@
     "manufacturer": "Data East",
     "img": null,
     "title_original": "Aaron Spelling FS [HP VIDEO]",
-    "title_original_trimmed": "Aaron Spelling"
+    "title_original_trimmed": "Aaron Spelling",
+    "confirmed": true
   },
   "3236": {
     "ipdb": "33",
@@ -1660,7 +1664,8 @@
     "manufacturer": "Atari",
     "img": "http://www.ipdb.org/images/33/image-5.jpg",
     "title_original": "Airborne Avenger (Atari 1977) [HP VIDEO]",
-    "title_original_trimmed": "Airborne Avenger"
+    "title_original_trimmed": "Airborne Avenger",
+    "confirmed": true
   },
   "3237": {
     "ipdb": "43",
@@ -1669,7 +1674,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/43/Playfield.jpg",
     "title_original": "Ali (Stern 1980) [HP VIDEO]",
-    "title_original_trimmed": "Ali"
+    "title_original_trimmed": "Ali",
+    "confirmed": true
   },
   "3238": {
     "ipdb": "49",
@@ -1678,7 +1684,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/49/image-4.jpg",
     "title_original": "Alien Star (Gottlieb 1984) [HP VIDEO]",
-    "title_original_trimmed": "Alien Star"
+    "title_original_trimmed": "Alien Star",
+    "confirmed": true
   },
   "3239": {
     "ipdb": "48",
@@ -1687,7 +1694,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/48/Playfield.jpg",
     "title_original": "Alien Poker (Williams 1980) [HP VIDEO]",
-    "title_original_trimmed": "Alien Poker"
+    "title_original_trimmed": "Alien Poker",
+    "confirmed": true
   },
   "3241": {
     "ipdb": "5013",
@@ -1696,7 +1704,8 @@
     "manufacturer": "Juegos Populares",
     "img": "http://www.ipdb.org/images/5013/image-2.jpg",
     "title_original": "America 1492 (Juegos Populares 1986) [HP VIDEO]",
-    "title_original_trimmed": "America 1492"
+    "title_original_trimmed": "America 1492",
+    "confirmed": true
   },
   "3242": {
     "ipdb": "73",
@@ -1705,7 +1714,8 @@
     "manufacturer": "Game Plan",
     "img": "http://www.ipdb.org/images/73/Playfield.jpg",
     "title_original": "Andromeda (Game Plan 1985) [HP VIDEO]",
-    "title_original_trimmed": "Andromeda"
+    "title_original_trimmed": "Andromeda",
+    "confirmed": true
   },
   "3243": {
     "ipdb": "106",
@@ -1714,7 +1724,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/106/image-3.jpg",
     "title_original": "Atlantis (Bally 1989) [HP VIDEO]",
-    "title_original_trimmed": "Atlantis"
+    "title_original_trimmed": "Atlantis",
+    "confirmed": true
   },
   "3244": {
     "ipdb": "3781",
@@ -1723,7 +1734,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
     "title_original": "Attack from Mars (Bally 1995) [HP VIDEO]",
-    "title_original_trimmed": "Attack from Mars"
+    "title_original_trimmed": "Attack from Mars",
+    "confirmed": true
   },
   "3245": {
     "ipdb": "4504",
@@ -1732,7 +1744,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4504/image-11.jpg",
     "title_original": "Austin Powers (Stern 2001) [HP VIDEO]",
-    "title_original_trimmed": "Austin Powers"
+    "title_original_trimmed": "Austin Powers",
+    "confirmed": true
   },
   "3246": {
     "ipdb": "125",
@@ -1741,7 +1754,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/125/image-4.jpg",
     "title_original": "Baby Pacman (Bally 1982) [HP VIDEO]",
-    "title_original_trimmed": "Baby Pacman"
+    "title_original_trimmed": "Baby Pacman",
+    "confirmed": true
   },
   "3247": {
     "ipdb": "126",
@@ -1750,7 +1764,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/126/image-4.jpg",
     "title_original": "Back to the Future (Data East 1990) [HP VIDEO]",
-    "title_original_trimmed": "Back to the Future"
+    "title_original_trimmed": "Back to the Future",
+    "confirmed": true
   },
   "3248": {
     "ipdb": "127",
@@ -1759,7 +1774,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/127/image-5.jpg",
     "title_original": "Bad Cats (Williams 1989) [HP VIDEO]",
-    "title_original_trimmed": "Bad Cats"
+    "title_original_trimmed": "Bad Cats",
+    "confirmed": true
   },
   "3249": {
     "ipdb": "127",
@@ -1768,7 +1784,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/127/image-5.jpg",
     "title_original": "Bad Cats (Williams 1989)NM [HP VIDEO]",
-    "title_original_trimmed": "Bad Cats"
+    "title_original_trimmed": "Bad Cats",
+    "confirmed": true
   },
   "3250": {
     "ipdb": "128",
@@ -1777,16 +1794,17 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/128/Playfield.jpg",
     "title_original": "Bad Girls (Gottlieb 1988) [HP VIDEO]",
-    "title_original_trimmed": "Bad Girls"
+    "title_original_trimmed": "Bad Girls",
+    "confirmed": true
   },
   "3251": {
     "ipdb": "175",
     "title": "Banzai Run",
     "year": "1988",
     "manufacturer": "Williams",
-    "img": "http://www.ipdb.org/images/2820/image-1.jpg",
+    "img": "http://www.ipdb.org/images/175/image-4.jpg",
     "title_original": "Banzai Run (Williams 1988) [HP VIDEO]",
-    "title_original_trimmed": "Banzai Run"
+    "confirmed": true
   },
   "3252": {
     "ipdb": "3795",
@@ -1795,7 +1813,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/3795/image-3.jpg",
     "title_original": "Barb Wire (Gottlieb 1996) [HP VIDEO]",
-    "title_original_trimmed": "Barb Wire"
+    "title_original_trimmed": "Barb Wire",
+    "confirmed": true
   },
   "3253": {
     "ipdb": "177",
@@ -1804,7 +1823,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/177/image-3.jpg",
     "title_original": "Barracora (Williams 1981) [HP VIDEO]",
-    "title_original_trimmed": "Barracora"
+    "title_original_trimmed": "Barracora",
+    "confirmed": true
   },
   "3255": {
     "ipdb": "212",
@@ -1813,7 +1833,8 @@
     "manufacturer": "Midway",
     "img": "http://www.ipdb.org/images/212/image-15.jpg",
     "title_original": "Beat The Clock (Bally 1985) [HP VIDEO]",
-    "title_original_trimmed": "Beat The Clock"
+    "title_original_trimmed": "Beat The Clock",
+    "confirmed": true
   },
   "3256": {
     "ipdb": "249",
@@ -1822,7 +1843,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/249/image-4.jpg",
     "title_original": "Big Game (Stern 1980) [HP VIDEO]",
-    "title_original_trimmed": "Big Game"
+    "title_original_trimmed": "Big Game",
+    "confirmed": true
   },
   "3257": {
     "ipdb": "250",
@@ -1831,7 +1853,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/250/image-4.jpg",
     "title_original": "Big Guns (Williams 1987) [HP VIDEO]",
-    "title_original_trimmed": "Big Guns"
+    "title_original_trimmed": "Big Guns",
+    "confirmed": true
   },
   "3258": {
     "ipdb": "256",
@@ -1840,7 +1863,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/256/Playfield.jpg",
     "title_original": "Big House-FS [HP VIDEO]",
-    "title_original_trimmed": "Big House"
+    "title_original_trimmed": "Big House",
+    "confirmed": true
   },
   "3259": {
     "ipdb": "3591",
@@ -1849,23 +1873,26 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/3591/image-4.jpg",
     "title_original": "Big Hurt (Gottlieb 1995) [HP VIDEO]",
-    "title_original_trimmed": "Big Hurt"
+    "title_original_trimmed": "Big Hurt",
+    "confirmed": true
   },
   "3260": {
+    "ipdb": "303",
+    "title": "Black Belt",
+    "year": "1986",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/303/image-4.jpg",
+    "title_original": "Black Belt (Zaccaria 1986) [HP VIDEO]",
+    "confirmed": true
+  },
+  "3261": {
     "ipdb": "316",
     "title": "Blackbelt",
     "year": "1986",
     "manufacturer": "Zaccaria",
     "img": "http://www.ipdb.org/images/316/image-8.jpg",
-    "title_original": "Black Belt (Zaccaria 1986) [HP VIDEO]",
-    "title_original_trimmed": "Black Belt"
-  },
-  "3261": {
-    "name": "Black Belt Zaccaria",
-    "manufacturer": "Zaccaria",
-    "error": "********** NO MATCH **********",
     "title_original": "Black Belt Zaccaria FS [HP VIDEO]",
-    "title_original_trimmed": "Black Belt Zaccaria"
+    "confirmed": true
   },
   "3262": {
     "ipdb": "311",
@@ -1874,7 +1901,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/311/Playfield.jpg",
     "title_original": "Black Knight 2000 (Williams 1989) [HP VIDEO]",
-    "title_original_trimmed": "Black Knight 2000"
+    "title_original_trimmed": "Black Knight 2000",
+    "confirmed": true
   },
   "3263": {
     "ipdb": "310",
@@ -1883,7 +1911,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/310/Playfield.jpg",
     "title_original": "Black Knight (Williams 1980) [HP VIDEO]",
-    "title_original_trimmed": "Black Knight"
+    "title_original_trimmed": "Black Knight",
+    "confirmed": true
   },
   "3264": {
     "ipdb": "312",
@@ -1892,7 +1921,8 @@
     "manufacturer": "Midway",
     "img": "http://www.ipdb.org/images/312/image-1.jpg",
     "title_original": "Black Pyramid (Bally 1984) [HP VIDEO]",
-    "title_original_trimmed": "Black Pyramid"
+    "title_original_trimmed": "Black Pyramid",
+    "confirmed": true
   },
   "3265": {
     "ipdb": "4445",
@@ -1901,7 +1931,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4445/image-6.jpg",
     "title_original": "Cactus Canyon (Midway 1998) [HP VIDEO]",
-    "title_original_trimmed": "Cactus Canyon"
+    "title_original_trimmed": "Cactus Canyon",
+    "confirmed": true
   },
   "3266": {
     "ipdb": "476",
@@ -1910,7 +1941,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/476/Playfield.jpg",
     "title_original": "Centaur (Bally 1981) [HP VIDEO]",
-    "title_original_trimmed": "Centaur"
+    "title_original_trimmed": "Centaur",
+    "confirmed": true
   },
   "3267": {
     "ipdb": "588",
@@ -1919,7 +1951,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/588/image-22.jpg",
     "title_original": "Creature from the Black Lagoon (Bally 1992) [HP VIDEO]",
-    "title_original_trimmed": "Creature from the Black Lagoon"
+    "title_original_trimmed": "Creature from the Black Lagoon",
+    "confirmed": true
   },
   "3268": {
     "ipdb": "684",
@@ -1928,7 +1961,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/684/Playfield.jpg",
     "title_original": "Dirty Harry (Williams 1995) [HP VIDEO]",
-    "title_original_trimmed": "Dirty Harry"
+    "title_original_trimmed": "Dirty Harry",
+    "confirmed": true
   },
   "3269": {
     "ipdb": "698",
@@ -1937,7 +1971,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/698/image-3.jpg",
     "title_original": "Dolly Parton (Bally 1978) [HP VIDEO]",
-    "title_original_trimmed": "Dolly Parton"
+    "title_original_trimmed": "Dolly Parton",
+    "confirmed": true
   },
   "3271": {
     "ipdb": "829",
@@ -1946,7 +1981,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/829/image-6.jpg",
     "title_original": "Fathom (Bally 1981) [HP VIDEO]",
-    "title_original_trimmed": "Fathom"
+    "title_original_trimmed": "Fathom",
+    "confirmed": true
   },
   "3272": {
     "ipdb": "888",
@@ -1955,7 +1991,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/888/image-8.jpg",
     "title_original": "Flintstones, The (Williams 1994) [HP VIDEO]",
-    "title_original_trimmed": "Flintstones, The"
+    "title_original_trimmed": "Flintstones, The",
+    "confirmed": true
   },
   "3273": {
     "ipdb": "888",
@@ -1964,7 +2001,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/888/image-8.jpg",
     "title_original": "Flintstones, The (Williams 1994) NightModFinal [HP VIDEO]",
-    "title_original_trimmed": "Flintstones, The"
+    "title_original_trimmed": "Flintstones, The",
+    "confirmed": true
   },
   "3274": {
     "ipdb": "966",
@@ -1973,7 +2011,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/966/image-4.jpg",
     "title_original": "Funhouse (Williams 1990) [HP VIDEO]",
-    "title_original_trimmed": "Funhouse"
+    "title_original_trimmed": "Funhouse",
+    "confirmed": true
   },
   "3275": {
     "ipdb": "1000",
@@ -1982,7 +2021,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1000/image-4.jpg",
     "title_original": "Getaway - High Speed 2 (Williams 1992) [HP VIDEO]",
-    "title_original_trimmed": "Getaway   High Speed 2"
+    "title_original_trimmed": "Getaway   High Speed 2",
+    "confirmed": true
   },
   "3276": {
     "ipdb": "1100",
@@ -1991,16 +2031,17 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1100/image-11.jpg",
     "title_original": "Guns and Roses (Data East 1994) [HP VIDEO]",
-    "title_original_trimmed": "Guns and Roses"
+    "title_original_trimmed": "Guns and Roses",
+    "confirmed": true
   },
   "3277": {
     "ipdb": "1126",
     "title": "Harley-Davidson",
     "year": "1991",
     "manufacturer": "Bally",
-    "img": "http://www.ipdb.org/images/4455/image-4.jpg",
+    "img": "http://www.ipdb.org/images/1126/image-1.jpg",
     "title_original": "Harley Davidson (Bally 1991) [HP VIDEO]",
-    "title_original_trimmed": "Harley Davidson"
+    "confirmed": true
   },
   "3279": {
     "ipdb": "1308",
@@ -2009,7 +2050,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1308/image-9.jpg",
     "title_original": "Jokerz! (Williams 1988) [HP VIDEO]",
-    "title_original_trimmed": "Jokerz!"
+    "title_original_trimmed": "Jokerz!",
+    "confirmed": true
   },
   "3281": {
     "ipdb": "1386",
@@ -2018,7 +2060,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1386/Playfield.jpg",
     "title_original": "KISS (Bally 1979) [HP VIDEO]",
-    "title_original_trimmed": "KISS"
+    "title_original_trimmed": "KISS",
+    "confirmed": true
   },
   "3282": {
     "ipdb": "3972",
@@ -2037,7 +2080,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1433/image-2.jpg",
     "title_original": "Lethal Weapon 3 (Data East 1992) [HP VIDEO]",
-    "title_original_trimmed": "Lethal Weapon 3"
+    "title_original_trimmed": "Lethal Weapon 3",
+    "confirmed": true
   },
   "3284": {
     "ipdb": "4858",
@@ -2046,14 +2090,17 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5558/image-3.jpg",
     "title_original": "Lord Of The Rings (Stern 2003) [HP VIDEO]",
-    "title_original_trimmed": "Lord Of The Rings"
+    "title_original_trimmed": "Lord Of The Rings",
+    "confirmed": true
   },
   "3285": {
-    "name": "Megapin",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "4032",
+    "title": "Medieval Madness",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4032/image-7.jpg",
     "title_original": "Megapin_Williams_Medieval_Madnees_V133FS [HP VIDEO]",
-    "title_original_trimmed": "Megapin"
+    "confirmed": true
   },
   "3286": {
     "ipdb": "4505",
@@ -2062,7 +2109,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4505/image-2.jpg",
     "title_original": "Monopoly (Stern 2001) [HP VIDEO]",
-    "title_original_trimmed": "Monopoly"
+    "title_original_trimmed": "Monopoly",
+    "confirmed": true
   },
   "3287": {
     "ipdb": "1764",
@@ -2071,7 +2119,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1764/image-25.jpg",
     "title_original": "Party Zone (Williams 1991) [HP VIDEO]",
-    "title_original_trimmed": "Party Zone"
+    "title_original_trimmed": "Party Zone",
+    "confirmed": true
   },
   "3288": {
     "ipdb": "4917",
@@ -2080,7 +2129,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4917/image-5.jpg",
     "title_original": "Ripley's Believe It or Not (Stern 2004) [HP VIDEO]",
-    "title_original_trimmed": "Ripley's Believe It or Not"
+    "title_original_trimmed": "Ripley's Believe It or Not",
+    "confirmed": true
   },
   "3289": {
     "ipdb": "4536",
@@ -2089,14 +2139,17 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4536/image-2.jpg",
     "title_original": "Rollercoaster Tycoon (Stern 2002) [HP VIDEO]",
-    "title_original_trimmed": "Rollercoaster Tycoon"
+    "title_original_trimmed": "Rollercoaster Tycoon",
+    "confirmed": true
   },
   "3290": {
-    "name": "Scared Stiff Dark",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
     "title_original": "Scared Stiff Dark FS_ver_102 [HP VIDEO]",
-    "title_original_trimmed": "Scared Stiff Dark"
+    "confirmed": true
   },
   "3291": {
     "ipdb": "3915",
@@ -2105,7 +2158,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
     "title_original": "Scared Stiff (Williams 1996) [HP VIDEO]",
-    "title_original_trimmed": "Scared Stiff"
+    "title_original_trimmed": "Scared Stiff",
+    "confirmed": true
   },
   "3292": {
     "ipdb": "2089",
@@ -2114,7 +2168,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/2089/image-4.jpg",
     "title_original": "Seawitch (Stern 1980) [HP VIDEO]",
-    "title_original_trimmed": "Seawitch"
+    "title_original_trimmed": "Seawitch",
+    "confirmed": true
   },
   "3295": {
     "ipdb": "2684",
@@ -2123,7 +2178,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2684/image-1.jpg",
     "title_original": "Twilight Zone (Bally 1993) [HP VIDEO]",
-    "title_original_trimmed": "Twilight Zone"
+    "title_original_trimmed": "Twilight Zone",
+    "confirmed": true
   },
   "3297": {
     "ipdb": "2684",
@@ -2132,7 +2188,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2684/image-1.jpg",
     "title_original": "TWILIGHT ZONE - MEGAPIN - VP9 - V12FSNM [HP VIDEO]",
-    "title_original_trimmed": "TWILIGHT ZONE   MEGAPIN"
+    "title_original_trimmed": "TWILIGHT ZONE   MEGAPIN",
+    "confirmed": true
   },
   "3298": {
     "ipdb": "3824",
@@ -2141,7 +2198,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
     "title_original": "TOTAN_VP9_21FS [HP VIDEO]",
-    "title_original_trimmed": "TOTAN"
+    "title_original_trimmed": "TOTAN",
+    "confirmed": true
   },
   "3299": {
     "ipdb": "3531",
@@ -2150,7 +2208,8 @@
     "manufacturer": "Zaccaria",
     "img": "http://www.ipdb.org/images/3531/image-3.jpg",
     "title_original": "Zankor (Zaccaria 1986) [HP VIDEO]",
-    "title_original_trimmed": "Zankor"
+    "title_original_trimmed": "Zankor",
+    "confirmed": true
   },
   "3300": {
     "ipdb": "2811",
@@ -2159,7 +2218,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2811/image-8.jpg",
     "title_original": "World Cup Soccer 94 (Bally 1994) [HP VIDEO]",
-    "title_original_trimmed": "World Cup Soccer 94"
+    "title_original_trimmed": "World Cup Soccer 94",
+    "confirmed": true
   },
   "3301": {
     "ipdb": "2799",
@@ -2168,7 +2228,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2799/image-5.jpg",
     "title_original": "Wipe Out (Gottlieb 1993) [HP VIDEO]",
-    "title_original_trimmed": "Wipe Out"
+    "title_original_trimmed": "Wipe Out",
+    "confirmed": true
   },
   "3302": {
     "ipdb": "3685",
@@ -2177,7 +2238,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3685/Playfield.jpg",
     "title_original": "Who Dunnit (Bally 1995) [HP VIDEO]",
-    "title_original_trimmed": "Who Dunnit"
+    "title_original_trimmed": "Who Dunnit",
+    "confirmed": true
   },
   "3303": {
     "ipdb": "4359",
@@ -2186,7 +2248,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4359/image-1.jpg",
     "title_original": "Viper Night Drivin' [HP VIDEO]",
-    "title_original_trimmed": "Viper Night Drivin'"
+    "title_original_trimmed": "Viper Night Drivin'",
+    "confirmed": true
   },
   "3304": {
     "ipdb": "2733",
@@ -2195,7 +2258,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2733/image-2.jpg",
     "title_original": "Victory (Premier 1987) [HP VIDEO]",
-    "title_original_trimmed": "Victory"
+    "title_original_trimmed": "Victory",
+    "confirmed": true
   },
   "3305": {
     "ipdb": "2699",
@@ -2204,7 +2268,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2699/image-1.jpg",
     "title_original": "TX-Sector (Premier 1988) [HP VIDEO]",
-    "title_original_trimmed": "TX Sector"
+    "title_original_trimmed": "TX Sector",
+    "confirmed": true
   },
   "3306": {
     "ipdb": "3976",
@@ -2213,16 +2278,17 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/3976/Playfield.jpg",
     "title_original": "Twister (Sega 1996) [HP VIDEO]",
-    "title_original_trimmed": "Twister"
+    "title_original_trimmed": "Twister",
+    "confirmed": true
   },
   "3307": {
-    "ipdb": "4843",
-    "title": "Black-Jack",
-    "year": "1932",
-    "manufacturer": "Acorn",
-    "img": "http://www.ipdb.org/images/4843/image-1.jpg",
+    "ipdb": "309",
+    "title": "Black Jack",
+    "year": "1976",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/309/Playfield.jpg",
     "title_original": "Black Jack (Bally 1977 SS) [HP VIDEO]",
-    "title_original_trimmed": "Black Jack"
+    "confirmed": true
   },
   "3308": {
     "ipdb": "313",
@@ -2231,7 +2297,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/313/image-2.jpg",
     "title_original": "Black Rose (Bally 1992) [HP VIDEO]",
-    "title_original_trimmed": "Black Rose"
+    "title_original_trimmed": "Black Rose",
+    "confirmed": true
   },
   "3309": {
     "ipdb": "317",
@@ -2240,7 +2307,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/317/image-3.jpg",
     "title_original": "Blackout (Williams 1980) [HP VIDEO]",
-    "title_original_trimmed": "Blackout"
+    "title_original_trimmed": "Blackout",
+    "confirmed": true
   },
   "3310": {
     "ipdb": "4059",
@@ -2249,7 +2317,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4059/image-16.jpg",
     "title_original": "Cirqus Voltaire (Bally 1997) [HP VIDEO]",
-    "title_original_trimmed": "Cirqus Voltaire"
+    "title_original_trimmed": "Cirqus Voltaire",
+    "confirmed": true
   },
   "3311": {
     "ipdb": "347",
@@ -2258,7 +2327,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/347/image-5.jpg",
     "title_original": "Bone Busters (Gottlieb 1989) [HP VIDEO]",
-    "title_original_trimmed": "Bone Busters"
+    "title_original_trimmed": "Bone Busters",
+    "confirmed": true
   },
   "3312": {
     "ipdb": "4770",
@@ -2267,7 +2337,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4770/image-3.jpg",
     "title_original": "Bow And Arrow (Bally 1974) [HP VIDEO]",
-    "title_original_trimmed": "Bow And Arrow"
+    "title_original_trimmed": "Bow And Arrow",
+    "confirmed": true
   },
   "3313": {
     "ipdb": "4480",
@@ -2276,16 +2347,17 @@
     "manufacturer": "Inder",
     "img": "http://www.ipdb.org/images/4480/image-3.jpg",
     "title_original": "Brave Team (Industria 1985) [HP VIDEO]",
-    "title_original_trimmed": "Brave Team"
+    "title_original_trimmed": "Brave Team",
+    "confirmed": true
   },
   "3315": {
-    "ipdb": "4563",
-    "title": "Bullseye",
-    "year": "1994",
-    "manufacturer": "Premier",
-    "img": null,
+    "ipdb": "403",
+    "title": "301Bulls Eye",
+    "year": "1986",
+    "manufacturer": "Grand Products",
+    "img": "http://www.ipdb.org/images/403/image-3.jpg",
     "title_original": "Bullseye (Pinstar 1986) [HP VIDEO]",
-    "title_original_trimmed": "Bullseye"
+    "confirmed": true
   },
   "3316": {
     "ipdb": "4481",
@@ -2294,7 +2366,8 @@
     "manufacturer": "Inder",
     "img": "http://www.ipdb.org/images/4481/image-3.jpg",
     "title_original": "Bushido (Industria 1993) [HP VIDEO]",
-    "title_original_trimmed": "Bushido"
+    "title_original_trimmed": "Bushido",
+    "confirmed": true
   },
   "3317": {
     "ipdb": "434",
@@ -2303,16 +2376,17 @@
     "manufacturer": "Game Plan",
     "img": "http://www.ipdb.org/images/434/image-1.jpg",
     "title_original": "Captain Hook (Game Plan 1985) [HP VIDEO]",
-    "title_original_trimmed": "Captain Hook"
+    "title_original_trimmed": "Captain Hook",
+    "confirmed": true
   },
   "3318": {
     "ipdb": "3676",
     "title": "Car Hop",
     "year": "1991",
     "manufacturer": "Premier",
-    "img": "http://www.ipdb.org/images/2152/image-2.jpg",
+    "img": "http://www.ipdb.org/images/3676/image-2.jpg",
     "title_original": "Car Hop (Premier 1991) [HP VIDEO]",
-    "title_original_trimmed": "Car Hop"
+    "confirmed": true
   },
   "3319": {
     "ipdb": "498",
@@ -2321,7 +2395,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/498/image-2.jpg",
     "title_original": "Checkpoint (Data East 1991) [HP VIDEO]",
-    "title_original_trimmed": "Checkpoint"
+    "title_original_trimmed": "Checkpoint",
+    "confirmed": true
   },
   "3320": {
     "ipdb": "500",
@@ -2330,7 +2405,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/500/image-2.jpg",
     "title_original": "Cheetah (Stern 1980) [HP VIDEO]",
-    "title_original_trimmed": "Cheetah"
+    "title_original_trimmed": "Cheetah",
+    "confirmed": true
   },
   "3321": {
     "ipdb": "528",
@@ -2339,16 +2415,17 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/528/image-8.jpg",
     "title_original": "Class of 1812 (Gottlieb 1991) [HP VIDEO]",
-    "title_original_trimmed": "Class of 1812"
+    "title_original_trimmed": "Class of 1812",
+    "confirmed": true
   },
   "3322": {
-    "ipdb": "1775",
-    "title": "Coney Island",
-    "year": "1938",
-    "manufacturer": "Exhibit",
-    "img": "http://www.ipdb.org/images/554/Playfield.jpg",
+    "ipdb": "553",
+    "title": "Old Coney Island",
+    "year": "1979",
+    "manufacturer": "Game Plan",
+    "img": "http://www.ipdb.org/images/553/image-3.jpg",
     "title_original": "Coney Island FS [HP VIDEO]",
-    "title_original_trimmed": "Coney Island"
+    "confirmed": true
   },
   "3323": {
     "ipdb": "3780",
@@ -2357,7 +2434,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3780/image-2.jpg",
     "title_original": "Congo (Williams 1995) [HP VIDEO]",
-    "title_original_trimmed": "Congo"
+    "title_original_trimmed": "Congo",
+    "confirmed": true
   },
   "3324": {
     "ipdb": "4567",
@@ -2366,7 +2444,8 @@
     "manufacturer": "Taito",
     "img": "http://www.ipdb.org/images/4567/image-3.jpg",
     "title_original": "Cosmic (Taito 1980) [HP VIDEO]",
-    "title_original_trimmed": "Cosmic"
+    "title_original_trimmed": "Cosmic",
+    "confirmed": true
   },
   "3325": {
     "ipdb": "575",
@@ -2375,7 +2454,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/575/image-1.jpg",
     "title_original": "Counterforce (Gottlieb 1977) [HP VIDEO]",
-    "title_original_trimmed": "Counterforce"
+    "title_original_trimmed": "Counterforce",
+    "confirmed": true
   },
   "3326": {
     "ipdb": "610",
@@ -2384,7 +2464,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/610/Playfield.jpg",
     "title_original": "Cueball Wizard (Gottlieb 1984) [HP VIDEO]",
-    "title_original_trimmed": "Cueball Wizard"
+    "title_original_trimmed": "Cueball Wizard",
+    "confirmed": true
   },
   "3328": {
     "ipdb": "614",
@@ -2393,7 +2474,8 @@
     "manufacturer": "Midway",
     "img": "http://www.ipdb.org/images/614/image-1.jpg",
     "title_original": "Cybernaut (Bally 1985) [HP VIDEO]",
-    "title_original_trimmed": "Cybernaut"
+    "title_original_trimmed": "Cybernaut",
+    "confirmed": true
   },
   "3329": {
     "ipdb": "4018",
@@ -2412,7 +2494,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2603/image-3.jpg",
     "title_original": "Torpedo Alley (Data East 1988) [HP VIDEO]",
-    "title_original_trimmed": "Torpedo Alley"
+    "title_original_trimmed": "Torpedo Alley",
+    "confirmed": true
   },
   "3331": {
     "ipdb": "2493",
@@ -2421,7 +2504,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2493/Playfield.jpg",
     "title_original": "Tales from the Crypt (Data East 1993) [HP VIDEO]",
-    "title_original_trimmed": "Tales from the Crypt"
+    "title_original_trimmed": "Tales from the Crypt",
+    "confirmed": true
   },
   "3332": {
     "ipdb": "3824",
@@ -2430,7 +2514,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
     "title_original": "Tales of the Arabian Nights (Williams 1996)night [HP VIDEO]",
-    "title_original_trimmed": "Tales of the Arabian Nights"
+    "title_original_trimmed": "Tales of the Arabian Nights",
+    "confirmed": true
   },
   "3333": {
     "ipdb": "2505",
@@ -2439,7 +2524,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2505/Playfield.jpg",
     "title_original": "Taxi (Williams 1988) [HP VIDEO]",
-    "title_original_trimmed": "Taxi"
+    "title_original_trimmed": "Taxi",
+    "confirmed": true
   },
   "3334": {
     "ipdb": "2579",
@@ -2448,7 +2534,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2579/Playfield.jpg",
     "title_original": "Tommy The Pinball Wizard (Data East 1994) [HP VIDEO]",
-    "title_original_trimmed": "Tommy The Pinball Wizard"
+    "title_original_trimmed": "Tommy The Pinball Wizard",
+    "confirmed": true
   },
   "3335": {
     "ipdb": "2845",
@@ -2457,7 +2544,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2845/image-12.jpg",
     "title_original": "Theatre of Magic (Midway 1995) [HP VIDEO]",
-    "title_original_trimmed": "Theatre of Magic"
+    "title_original_trimmed": "Theatre of Magic",
+    "confirmed": true
   },
   "3336": {
     "ipdb": "2508",
@@ -2466,7 +2554,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2508/image-4.jpg",
     "title_original": "Tee'd Off (Premier 1993) [HP VIDEO]",
-    "title_original_trimmed": "Tee'd Off"
+    "title_original_trimmed": "Tee'd Off",
+    "confirmed": true
   },
   "3337": {
     "ipdb": "2565",
@@ -2475,7 +2564,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2565/Playfield.jpg",
     "title_original": "Time Machine (Data East 1988) [HP VIDEO]",
-    "title_original_trimmed": "Time Machine"
+    "title_original_trimmed": "Time Machine",
+    "confirmed": true
   },
   "3338": {
     "ipdb": "2524",
@@ -2484,7 +2574,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2524/image-2.jpg",
     "title_original": "Terminator 2 - Judgement Day (Williams 1991) [HP VIDEO]",
-    "title_original_trimmed": "Terminator 2   Judgement Day"
+    "title_original_trimmed": "Terminator 2   Judgement Day",
+    "confirmed": true
   },
   "3339": {
     "ipdb": "2563",
@@ -2493,7 +2584,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2563/image-8.jpg",
     "title_original": "Time Fantasy (Williams 1983) [HP VIDEO]",
-    "title_original_trimmed": "Time Fantasy"
+    "title_original_trimmed": "Time Fantasy",
+    "confirmed": true
   },
   "3340": {
     "ipdb": "2845",
@@ -2502,7 +2594,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2845/image-12.jpg",
     "title_original": "Theatre of Magic (Bally 1995)NM [HP VIDEO]",
-    "title_original_trimmed": "Theatre of Magic"
+    "title_original_trimmed": "Theatre of Magic",
+    "confirmed": true
   },
   "3341": {
     "ipdb": "2165",
@@ -2511,7 +2604,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2165/Playfield.jpg",
     "title_original": "The Six Million Dollar Man (Bally 1978) [HP VIDEO]",
-    "title_original_trimmed": "The Six Million Dollar Man"
+    "title_original_trimmed": "The Six Million Dollar Man",
+    "confirmed": true
   },
   "3342": {
     "ipdb": "2528",
@@ -2520,7 +2614,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2528/Playfield.jpg",
     "title_original": "The Shadow (Bally 1994) [HP VIDEO]",
-    "title_original_trimmed": "The Shadow"
+    "title_original_trimmed": "The Shadow",
+    "confirmed": true
   },
   "3343": {
     "ipdb": "1777",
@@ -2529,7 +2624,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1777/Playfield.jpg",
     "title_original": "The Phantom Of The Opera (Data East 1990) [HP VIDEO]",
-    "title_original_trimmed": "The Phantom Of The Opera"
+    "title_original_trimmed": "The Phantom Of The Opera",
+    "confirmed": true
   },
   "3344": {
     "ipdb": "102",
@@ -2538,7 +2634,8 @@
     "manufacturer": "Atari",
     "img": "http://www.ipdb.org/images/102/image-4.jpg",
     "title_original": "The Atarians (Atari 1976) [HP VIDDEO]",
-    "title_original_trimmed": "The Atarians"
+    "title_original_trimmed": "The Atarians",
+    "confirmed": true
   },
   "3346": {
     "ipdb": "2285",
@@ -2547,7 +2644,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/2285/image-6.jpg",
     "title_original": "The Amazing Spiderman [HP VIDEO]",
-    "title_original_trimmed": "The Amazing Spiderman"
+    "title_original_trimmed": "The Amazing Spiderman",
+    "confirmed": true
   },
   "3347": {
     "ipdb": "20",
@@ -2556,7 +2654,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/20/Playfield.jpg",
     "title_original": "The Addams Family (Bally 1992) [HP VIDEO]",
-    "title_original_trimmed": "The Addams Family"
+    "title_original_trimmed": "The Addams Family",
+    "confirmed": true
   },
   "3348": {
     "ipdb": "4787",
@@ -2565,7 +2664,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4787/image-6.jpg",
     "title_original": "Terminator 3 (Stern 2003) [HP VIDEO]",
-    "title_original_trimmed": "Terminator 3"
+    "title_original_trimmed": "Terminator 3",
+    "confirmed": true
   },
   "3349": {
     "ipdb": "2486",
@@ -2574,7 +2674,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2486/image-2.jpg",
     "title_original": "Swords of Fury (Williams 1988) [HP VIDEO]",
-    "title_original_trimmed": "Swords of Fury"
+    "title_original_trimmed": "Swords of Fury",
+    "confirmed": true
   },
   "3350": {
     "ipdb": "2461",
@@ -2583,14 +2684,15 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2461/image-1.jpg",
     "title_original": "Surf 'N Safari (Premier 1991) [HP VIDEO]",
-    "title_original_trimmed": "Surf 'N Safari"
+    "title_original_trimmed": "Surf 'N Safari",
+    "confirmed": true
   },
   "3351": {
     "name": "Superman Vs Ali",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Superman Vs Ali VP9_2010FS [HP VIDEO]",
-    "title_original_trimmed": "Superman Vs Ali"
+    "title_original_trimmed": "Superman Vs Ali",
+    "confirmed": true,
+    "type": "OG"
   },
   "3352": {
     "ipdb": "4341",
@@ -2599,7 +2701,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4341/image-4.jpg",
     "title_original": "Starship Troopers (Sega 1997) [HP VIDEO]",
-    "title_original_trimmed": "Starship Troopers"
+    "title_original_trimmed": "Starship Troopers",
+    "confirmed": true
   },
   "3353": {
     "ipdb": "2358",
@@ -2608,14 +2711,15 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2358/Playfield.jpg",
     "title_original": "Star Wars (Data East 1992) [HP VIDEO]",
-    "title_original_trimmed": "Star Wars"
+    "title_original_trimmed": "Star Wars",
+    "confirmed": true
   },
   "3355": {
     "name": "Spider Man JP",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Spider-Man_JP_VP9_102_DMDFS [HP VIDEO]",
-    "title_original_trimmed": "Spider Man JP"
+    "title_original_trimmed": "Spider Man JP",
+    "confirmed": true,
+    "type": "OG"
   },
   "3356": {
     "ipdb": "2274",
@@ -2624,7 +2728,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2274/Playfield.jpg",
     "title_original": "Spectrum (Bally 1982) [HP VIDEO]",
-    "title_original_trimmed": "Spectrum"
+    "title_original_trimmed": "Spectrum",
+    "confirmed": true
   },
   "3357": {
     "ipdb": "2270",
@@ -2633,7 +2738,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2270/image-2.jpg",
     "title_original": "Speakeasy (Bally 1982) [HP VIDEO]",
-    "title_original_trimmed": "Speakeasy"
+    "title_original_trimmed": "Speakeasy",
+    "confirmed": true
   },
   "3358": {
     "ipdb": "3697",
@@ -2642,7 +2748,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/617/Playfield.jpg",
     "title_original": "Cyclone (Williams 1981) [HP VIDEO]",
-    "title_original_trimmed": "Cyclone"
+    "title_original_trimmed": "Cyclone",
+    "confirmed": true
   },
   "3359": {
     "ipdb": "5292",
@@ -2651,7 +2758,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5292/image-3.jpg",
     "title_original": "Dale Jr (Stern 2007) [HP VIDEO]",
-    "title_original_trimmed": "Dale Jr"
+    "title_original_trimmed": "Dale Jr",
+    "confirmed": true
   },
   "3360": {
     "ipdb": "3968",
@@ -2660,7 +2768,8 @@
     "manufacturer": "Geiger",
     "img": "http://www.ipdb.org/images/3968/image-2.jpg",
     "title_original": "Dark Rider (Geiger 1985) [HP VIDEO]",
-    "title_original_trimmed": "Dark Rider"
+    "title_original_trimmed": "Dark Rider",
+    "confirmed": true
   },
   "3361": {
     "ipdb": "672",
@@ -2669,7 +2778,8 @@
     "manufacturer": "Zaccaria",
     "img": "http://www.ipdb.org/images/672/image-15.jpg",
     "title_original": "Devil Riders (Zaccaria 1974) [HP VIDEO]",
-    "title_original_trimmed": "Devil Riders"
+    "title_original_trimmed": "Devil Riders",
+    "confirmed": true
   },
   "3362": {
     "ipdb": "686",
@@ -2678,7 +2788,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/686/image-6.jpg",
     "title_original": "Disco Fever (Williams 1978) [HP VIDEO]",
-    "title_original_trimmed": "Disco Fever"
+    "title_original_trimmed": "Disco Fever",
+    "confirmed": true
   },
   "3363": {
     "ipdb": "728",
@@ -2687,7 +2798,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/728/image-A.jpg",
     "title_original": "Dracula (Stern 1978) [HP VIDEO]",
-    "title_original_trimmed": "Dracula"
+    "title_original_trimmed": "Dracula",
+    "confirmed": true
   },
   "3364": {
     "ipdb": "760",
@@ -2696,7 +2808,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/760/image-7.jpg",
     "title_original": "Eight Ball (Bally 1977) [HP VIDEO]",
-    "title_original_trimmed": "Eight Ball"
+    "title_original_trimmed": "Eight Ball",
+    "confirmed": true
   },
   "3365": {
     "ipdb": "762",
@@ -2705,7 +2818,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/762/image-3.jpg",
     "title_original": "Eight Ball Deluxe (Bally 1981) [HP VIDEO]",
-    "title_original_trimmed": "Eight Ball Deluxe"
+    "title_original_trimmed": "Eight Ball Deluxe",
+    "confirmed": true
   },
   "3366": {
     "ipdb": "766",
@@ -2714,16 +2828,17 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/766/Playfield2.jpg",
     "title_original": "El Dorado (Gottlieb 1975)v [HP VIDEO]",
-    "title_original_trimmed": "El Dorado"
+    "title_original_trimmed": "El Dorado",
+    "confirmed": true
   },
   "3367": {
     "ipdb": "4983",
     "title": "Elvis",
     "year": "2004",
     "manufacturer": "Stern",
-    "img": "http://www.ipdb.org/images/3910/image-21.jpg",
+    "img": "http://www.ipdb.org/images/4983/image-1.jpg",
     "title_original": "Elvis (Stern 2004) [HP VIDEO]",
-    "title_original_trimmed": "Elvis"
+    "confirmed": true
   },
   "3368": {
     "ipdb": "783",
@@ -2732,7 +2847,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/783/image-2.jpg",
     "title_original": "Embryon (Bally 1980) [HP VIDEO]",
-    "title_original_trimmed": "Embryon"
+    "title_original_trimmed": "Embryon",
+    "confirmed": true
   },
   "3369": {
     "ipdb": "795",
@@ -2741,7 +2857,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/795/image-5.jpg",
     "title_original": "Excalibur (Premier 1988) [HP VIDEO]",
-    "title_original_trimmed": "Excalibur"
+    "title_original_trimmed": "Excalibur",
+    "confirmed": true
   },
   "3371": {
     "ipdb": "824",
@@ -2750,7 +2867,8 @@
     "manufacturer": "Zaccaria",
     "img": "http://www.ipdb.org/images/824/image-8.jpg",
     "title_original": "Farfalla (Zaccaria 1983) [HP VIDEO]",
-    "title_original_trimmed": "Farfalla"
+    "title_original_trimmed": "Farfalla",
+    "confirmed": true
   },
   "3372": {
     "ipdb": "828",
@@ -2759,7 +2877,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/828/image-1.jpg",
     "title_original": "Fast Draw (Gottlieb 1975) [HP VIDEO]",
-    "title_original_trimmed": "Fast Draw"
+    "title_original_trimmed": "Fast Draw",
+    "confirmed": true
   },
   "3373": {
     "ipdb": "856",
@@ -2768,7 +2887,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/856/image-28.jpg",
     "title_original": "FirePower (Williams 1980) [HP VIDEO]",
-    "title_original_trimmed": "FirePower"
+    "title_original_trimmed": "FirePower",
+    "confirmed": true
   },
   "3374": {
     "ipdb": "861",
@@ -2777,7 +2897,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/861/image-2.jpg",
     "title_original": "Fish Tales (Williams 1992) [HP VIDEO]",
-    "title_original_trimmed": "Fish Tales"
+    "title_original_trimmed": "Fish Tales",
+    "confirmed": true
   },
   "3375": {
     "ipdb": "887",
@@ -2786,14 +2907,17 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/887/image-2.jpg",
     "title_original": "Flight 2000 (Stern 1980) [HP VIDEO]",
-    "title_original_trimmed": "Flight 2000"
+    "title_original_trimmed": "Flight 2000",
+    "confirmed": true
   },
   "3376": {
-    "name": "FlashGordonScapinoV3 1C FSvpt",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "3705",
+    "title": "Flash Gordon",
+    "year": "1981",
+    "manufacturer": "Bell Games",
+    "img": null,
     "title_original": "FlashGordonScapinoV3_1C_FSvpt [HP VIDEO]",
-    "title_original_trimmed": "FlashGordonScapinoV3 1C FSvpt"
+    "confirmed": true
   },
   "3377": {
     "ipdb": "947",
@@ -2802,7 +2926,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/947/Playfield.jpg",
     "title_original": "Frankenstein (Sega 1995) [HP VIDEO]",
-    "title_original_trimmed": "Frankenstein"
+    "title_original_trimmed": "Frankenstein",
+    "confirmed": true
   },
   "3378": {
     "ipdb": "980",
@@ -2811,7 +2936,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/980/image-9.jpg",
     "title_original": "Galaxy (Stern 1980) [HP VIDEO]",
-    "title_original_trimmed": "Galaxy"
+    "title_original_trimmed": "Galaxy",
+    "confirmed": true
   },
   "3379": {
     "ipdb": "996",
@@ -2820,7 +2946,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/996/Playfield.jpg",
     "title_original": "Genesis (Premier 1986) [HP VIDEO]",
-    "title_original_trimmed": "Genesis"
+    "title_original_trimmed": "Genesis",
+    "confirmed": true
   },
   "3380": {
     "ipdb": "4443",
@@ -2829,7 +2956,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4443/image-3.jpg",
     "title_original": "Godzilla (Sega 1998) [HP VIDEO]",
-    "title_original_trimmed": "Godzilla"
+    "title_original_trimmed": "Godzilla",
+    "confirmed": true
   },
   "3381": {
     "ipdb": "2252",
@@ -2838,7 +2966,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2252/image-1.jpg",
     "title_original": "Space Invaders (Bally 1979) [HP VIDEO]",
-    "title_original_trimmed": "Space Invaders"
+    "title_original_trimmed": "Space Invaders",
+    "confirmed": true
   },
   "3382": {
     "ipdb": "4444",
@@ -2847,7 +2976,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4444/image-10.jpg",
     "title_original": "South Park (Sega 1999) [HP VIDEO]",
-    "title_original_trimmed": "South Park"
+    "title_original_trimmed": "South Park",
+    "confirmed": true
   },
   "3383": {
     "ipdb": "5053",
@@ -2856,7 +2986,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5053/image-D6.jpg",
     "title_original": "Sopranos (Stern 2005) [HP VIDEO]",
-    "title_original_trimmed": "Sopranos"
+    "title_original_trimmed": "Sopranos",
+    "confirmed": true
   },
   "3384": {
     "ipdb": "4674",
@@ -2865,7 +2996,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4674/image-2.jpg",
     "title_original": "Simpsons Pinball Party, The (Stern 2003)Night Mod [HP VIDEO]",
-    "title_original_trimmed": "Simpsons Pinball Party, The"
+    "title_original_trimmed": "Simpsons Pinball Party, The",
+    "confirmed": true
   },
   "3385": {
     "ipdb": "4492",
@@ -2874,7 +3006,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4492/image-3.jpg",
     "title_original": "Sharkey's Shootout (Stern 2000) [HP VIDEO]",
-    "title_original_trimmed": "Sharkey's Shootout"
+    "title_original_trimmed": "Sharkey's Shootout",
+    "confirmed": true
   },
   "3386": {
     "ipdb": "2090",
@@ -2883,7 +3016,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2090/image-9.jpg",
     "title_original": "Secret Service (Data East 1988) [HP VIDEO]",
-    "title_original_trimmed": "Secret Service"
+    "title_original_trimmed": "Secret Service",
+    "confirmed": true
   },
   "3387": {
     "ipdb": "2036",
@@ -2892,7 +3026,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/2036/image-5.jpg",
     "title_original": "Royal Flush Deluxe (Gottlieb 1983) [HP VIDEO]",
-    "title_original_trimmed": "Royal Flush Deluxe"
+    "title_original_trimmed": "Royal Flush Deluxe",
+    "confirmed": true
   },
   "3388": {
     "ipdb": "4674",
@@ -2901,7 +3036,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4674/image-2.jpg",
     "title_original": "Simpsons Pinball Party, The (Stern 2003) [HP VIDEO]",
-    "title_original_trimmed": "Simpsons Pinball Party, The"
+    "title_original_trimmed": "Simpsons Pinball Party, The",
+    "confirmed": true
   },
   "3389": {
     "ipdb": "2035",
@@ -2910,7 +3046,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/2035/Playfield.jpg",
     "title_original": "Royal Flush (Gottlieb 1976)v [HP VIDEO]",
-    "title_original_trimmed": "Royal Flush"
+    "title_original_trimmed": "Royal Flush",
+    "confirmed": true
   },
   "3390": {
     "ipdb": "2010",
@@ -2919,7 +3056,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2010/image-2.jpg",
     "title_original": "Rolling Stones (Bally 1979) [HP VIDEO]",
-    "title_original_trimmed": "Rolling Stones"
+    "title_original_trimmed": "Rolling Stones",
+    "confirmed": true
   },
   "3391": {
     "ipdb": "2006",
@@ -2928,7 +3066,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2006/image-4.jpg",
     "title_original": "Rollergames (Williams 1990)[HP VIDEO]",
-    "title_original_trimmed": "Rollergames"
+    "title_original_trimmed": "Rollergames",
+    "confirmed": true
   },
   "3392": {
     "ipdb": "1978",
@@ -2937,7 +3076,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/1978/image-1.jpg",
     "title_original": "Rock (Premier 1985) [HP VIDEO]",
-    "title_original_trimmed": "Rock"
+    "title_original_trimmed": "Rock",
+    "confirmed": true
   },
   "3394": {
     "ipdb": "1976",
@@ -2946,7 +3086,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1976/image-1.jpg",
     "title_original": "Robocop (Data East 1990) [HP VIDEO]",
-    "title_original_trimmed": "Robocop"
+    "title_original_trimmed": "Robocop",
+    "confirmed": true
   },
   "3395": {
     "ipdb": "1970",
@@ -2955,7 +3096,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1970/Playfield.jpg",
     "title_original": "Road Kings (Williams 1986) [HP VIDEO]",
-    "title_original_trimmed": "Road Kings"
+    "title_original_trimmed": "Road Kings",
+    "confirmed": true
   },
   "3396": {
     "ipdb": "1966",
@@ -2964,7 +3106,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1966/image-4.jpg",
     "title_original": "Riverboat Gambler (Williams 1990) [HP VIDEO]",
-    "title_original_trimmed": "Riverboat Gambler"
+    "title_original_trimmed": "Riverboat Gambler",
+    "confirmed": true
   },
   "3397": {
     "ipdb": "4581",
@@ -2973,7 +3116,8 @@
     "manufacturer": "Taito",
     "img": "http://www.ipdb.org/images/4581/image-3.jpg",
     "title_original": "Rally (Taito 1980) [HP VIDEO]",
-    "title_original_trimmed": "Rally"
+    "title_original_trimmed": "Rally",
+    "confirmed": true
   },
   "3398": {
     "ipdb": "1951",
@@ -2982,7 +3126,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/1951/image-1.jpg",
     "title_original": "Rescue 911 (Premier 1994) [HP VIDEO]",
-    "title_original_trimmed": "Rescue 911"
+    "title_original_trimmed": "Rescue 911",
+    "confirmed": true
   },
   "3399": {
     "ipdb": "1922",
@@ -2991,7 +3136,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/1922/image-1.jpg",
     "title_original": "Raven (Premier 1986) [HP VIDEO]",
-    "title_original_trimmed": "Raven"
+    "title_original_trimmed": "Raven",
+    "confirmed": true
   },
   "3400": {
     "ipdb": "1904",
@@ -3000,7 +3146,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1904/image-1.jpg",
     "title_original": "Radical (Williams 1990) [HP VIDEO]",
-    "title_original_trimmed": "Radical"
+    "title_original_trimmed": "Radical",
+    "confirmed": true
   },
   "3401": {
     "ipdb": "1823",
@@ -3009,7 +3156,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1823/image-6.jpg",
     "title_original": "Playboy (Bally 1978) [HP VIDEO]",
-    "title_original_trimmed": "Playboy"
+    "title_original_trimmed": "Playboy",
+    "confirmed": true
   },
   "3402": {
     "ipdb": "3311",
@@ -3018,7 +3166,8 @@
     "manufacturer": "Zaccaria",
     "img": "http://www.ipdb.org/images/3311/image-11.jpg",
     "title_original": "Pool Champion (Zaccaria 1985) [HP VIDEO]",
-    "title_original_trimmed": "Pool Champion"
+    "title_original_trimmed": "Pool Champion",
+    "confirmed": true
   },
   "3403": {
     "ipdb": "1822",
@@ -3027,7 +3176,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1822/Playfield.jpg",
     "title_original": "Playboy 35th Anniversary (Data East 1989) [HP VIDEO]",
-    "title_original_trimmed": "Playboy 35th Anniversary"
+    "title_original_trimmed": "Playboy 35th Anniversary",
+    "confirmed": true
   },
   "3404": {
     "ipdb": "1793",
@@ -3036,7 +3186,8 @@
     "manufacturer": "Zaccaria",
     "img": "http://www.ipdb.org/images/1793/image-4.jpg",
     "title_original": "Pinball Champ (Zaccaria 1983) [HP VIDEO]",
-    "title_original_trimmed": "Pinball Champ"
+    "title_original_trimmed": "Pinball Champ",
+    "confirmed": true
   },
   "3405": {
     "ipdb": "1778",
@@ -3045,7 +3196,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1778/image-1.jpg",
     "title_original": "Pharaoh (Williams 1981) [HP VIDEO]",
-    "title_original_trimmed": "Pharaoh"
+    "title_original_trimmed": "Pharaoh",
+    "confirmed": true
   },
   "3406": {
     "ipdb": "1763",
@@ -3054,7 +3206,8 @@
     "manufacturer": "Midway",
     "img": "http://www.ipdb.org/images/1763/image-2.jpg",
     "title_original": "Party Animal (Bally 1987) [HP VIDEO]",
-    "title_original_trimmed": "Party Animal"
+    "title_original_trimmed": "Party Animal",
+    "confirmed": true
   },
   "3407": {
     "ipdb": "1745",
@@ -3063,7 +3216,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/1745/image-4.jpg",
     "title_original": "Panthera (Gottlieb 1980) [HP VIDEO]",
-    "title_original_trimmed": "Panthera"
+    "title_original_trimmed": "Panthera",
+    "confirmed": true
   },
   "3408": {
     "ipdb": "2852",
@@ -3072,7 +3226,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2852/image-2.jpg",
     "title_original": "No Fear-Dangerous Sports (Williams 1995) [HP VIDEO]",
-    "title_original_trimmed": "No Fear Dangerous Sports"
+    "title_original_trimmed": "No Fear Dangerous Sports",
+    "confirmed": true
   },
   "3409": {
     "ipdb": "4338",
@@ -3081,7 +3236,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4338/image-15.jpg",
     "title_original": "No Good Gofers (Williams 1997) [HP VIDEO]",
-    "title_original_trimmed": "No Good Gofers"
+    "title_original_trimmed": "No Good Gofers",
+    "confirmed": true
   },
   "3410": {
     "ipdb": "1682",
@@ -3090,7 +3246,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1682/image-3.jpg",
     "title_original": "Nitro Ground Shaker (Bally 1980) [HP VIDEO]",
-    "title_original_trimmed": "Nitro Ground Shaker"
+    "title_original_trimmed": "Nitro Ground Shaker",
+    "confirmed": true
   },
   "3411": {
     "ipdb": "5093",
@@ -3099,7 +3256,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5093/image-1.jpg",
     "title_original": "Nascar (Stern 2005) [HP VIDEO]",
-    "title_original_trimmed": "Nascar"
+    "title_original_trimmed": "Nascar",
+    "confirmed": true
   },
   "3412": {
     "ipdb": "1635",
@@ -3108,7 +3266,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1635/image-12.jpg",
     "title_original": "Mousin Around (Midway 1989) [HP VIDEO]",
-    "title_original_trimmed": "Mousin Around"
+    "title_original_trimmed": "Mousin Around",
+    "confirmed": true
   },
   "3413": {
     "ipdb": "1570",
@@ -3117,7 +3276,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/1570/image-2.jpg",
     "title_original": "Memory Lane (Stern 1978) [HP VIDEO]",
-    "title_original_trimmed": "Memory Lane"
+    "title_original_trimmed": "Memory Lane",
+    "confirmed": true
   },
   "3414": {
     "ipdb": "1557",
@@ -3126,7 +3286,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1557/Playfield.jpg",
     "title_original": "Mata Hari (Bally 1978 SS) [HP VIDEO]",
-    "title_original_trimmed": "Mata Hari"
+    "title_original_trimmed": "Mata Hari",
+    "confirmed": true
   },
   "3415": {
     "ipdb": "1597",
@@ -3135,7 +3296,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1597/image-1.jpg",
     "title_original": "Millionaire (Williams 1987) [HP VIDEO]",
-    "title_original_trimmed": "Millionaire"
+    "title_original_trimmed": "Millionaire",
+    "confirmed": true
   },
   "3416": {
     "ipdb": "1509",
@@ -3144,7 +3306,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/1509/image-2.jpg",
     "title_original": "Magic (Stern 1979) [HP VIDEO]",
-    "title_original_trimmed": "Magic"
+    "title_original_trimmed": "Magic",
+    "confirmed": true
   },
   "3417": {
     "ipdb": "1511",
@@ -3153,7 +3316,8 @@
     "manufacturer": "Zaccaria",
     "img": "http://www.ipdb.org/images/1511/image-6.jpg",
     "title_original": "Magic Castle (Zaccaria 1984) [HP VIDEO]",
-    "title_original_trimmed": "Magic Castle"
+    "title_original_trimmed": "Magic Castle",
+    "confirmed": true
   },
   "3418": {
     "ipdb": "1476",
@@ -3162,7 +3326,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1476/image-3.jpg",
     "title_original": "Lost World (Bally 1978) [HP VIDEO]",
-    "title_original_trimmed": "Lost World"
+    "title_original_trimmed": "Lost World",
+    "confirmed": true
   },
   "3419": {
     "ipdb": "1429",
@@ -3171,7 +3336,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/1429/image-2.jpg",
     "title_original": "Lectronamo (Stern 1978) [HP VIDEO]",
-    "title_original_trimmed": "Lectronamo"
+    "title_original_trimmed": "Lectronamo",
+    "confirmed": true
   },
   "3420": {
     "ipdb": "4098",
@@ -3180,7 +3346,8 @@
     "manufacturer": "Inder",
     "img": "http://www.ipdb.org/images/4098/image-6.jpg",
     "title_original": "Lap by Lap (Industria 1986) [HP VIDEO]",
-    "title_original_trimmed": "Lap by Lap"
+    "title_original_trimmed": "Lap by Lap",
+    "confirmed": true
   },
   "3421": {
     "ipdb": "1402",
@@ -3189,7 +3356,8 @@
     "manufacturer": "Midway",
     "img": "http://www.ipdb.org/images/1402/image-5.jpg",
     "title_original": "Lady Luck (Bally 1986) [HP VIDEO]",
-    "title_original_trimmed": "Lady Luck"
+    "title_original_trimmed": "Lady Luck",
+    "confirmed": true
   },
   "3422": {
     "ipdb": "3169",
@@ -3198,7 +3366,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3169/image-3.jpg",
     "title_original": "Hyperball (Williams 1981) [HP VIDEO]",
-    "title_original_trimmed": "Hyperball"
+    "title_original_trimmed": "Hyperball",
+    "confirmed": true
   },
   "3424": {
     "ipdb": "1257",
@@ -3207,7 +3376,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1257/Playfield.jpg",
     "title_original": "Hurricane (Williams 1991) [HP VIDEO]",
-    "title_original_trimmed": "Hurricane"
+    "title_original_trimmed": "Hurricane",
+    "confirmed": true
   },
   "3425": {
     "ipdb": "4512",
@@ -3216,7 +3386,8 @@
     "manufacturer": "Taito",
     "img": "http://www.ipdb.org/images/4512/image-6.jpg",
     "title_original": "Hawkman (Taito 1983) [HP VIDEO]",
-    "title_original_trimmed": "Hawkman"
+    "title_original_trimmed": "Hawkman",
+    "confirmed": true
   },
   "3426": {
     "ipdb": "1125",
@@ -3225,7 +3396,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1125/Playfield.jpg",
     "title_original": "Harlem Globetrotters (Bally 1979) [HP VIDEO]",
-    "title_original_trimmed": "Harlem Globetrotters"
+    "title_original_trimmed": "Harlem Globetrotters",
+    "confirmed": true
   },
   "3427": {
     "ipdb": "5120",
@@ -3234,7 +3406,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5120/image-2.jpg",
     "title_original": "Grand Prix (Stern 2005) [HP VIDEO]",
-    "title_original_trimmed": "Grand Prix"
+    "title_original_trimmed": "Grand Prix",
+    "confirmed": true
   },
   "3429": {
     "ipdb": "1062",
@@ -3243,7 +3416,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1062/image-32.jpg",
     "title_original": "Gorgar (Williams 1979) [HP VIDEO]",
-    "title_original_trimmed": "Gorgar"
+    "title_original_trimmed": "Gorgar",
+    "confirmed": true
   },
   "3430": {
     "ipdb": "1070",
@@ -3252,7 +3426,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1070/image-7.jpg",
     "title_original": "Grand Lizard (Williams 1986) [HP VIDEO]",
-    "title_original_trimmed": "Grand Lizard"
+    "title_original_trimmed": "Grand Lizard",
+    "confirmed": true
   },
   "3431": {
     "ipdb": "4383",
@@ -3261,7 +3436,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4383/Playfield.jpg",
     "title_original": "Golden Cue (Sega 1998) [HP VIDEO]",
-    "title_original_trimmed": "Golden Cue"
+    "title_original_trimmed": "Golden Cue",
+    "confirmed": true
   },
   "3432": {
     "ipdb": "2396",
@@ -3270,7 +3446,8 @@
     "manufacturer": "Midway",
     "img": "http://www.ipdb.org/images/2396/Playfield.jpg",
     "title_original": "Strange Science (Bally 1986) [HP VIDEO]",
-    "title_original_trimmed": "Strange Science"
+    "title_original_trimmed": "Strange Science",
+    "confirmed": true
   },
   "3433": {
     "ipdb": "1841",
@@ -3279,14 +3456,17 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1841/image-A6.jpg",
     "title_original": "Police Force (Williams 1989) [HP VIDEO]",
-    "title_original_trimmed": "Police Force"
+    "title_original_trimmed": "Police Force",
+    "confirmed": true
   },
   "3434": {
-    "name": "Monster BashVP9V10uwFS",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "4441",
+    "title": "Monster Bash",
+    "year": "1998",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4441/image-2.jpg",
     "title_original": "Monster BashVP9V10uwFS [HP VIDEO]",
-    "title_original_trimmed": "Monster BashVP9V10uwFS"
+    "confirmed": true
   },
   "3436": {
     "ipdb": "4440",
@@ -3295,7 +3475,8 @@
     "manufacturer": "Geiger",
     "img": "http://www.ipdb.org/images/4440/image-4.jpg",
     "title_original": "La Retata (Geiger 1992) [HP VIDEO]",
-    "title_original_trimmed": "La Retata"
+    "title_original_trimmed": "La Retata",
+    "confirmed": true
   },
   "3437": {
     "ipdb": "3974",
@@ -3304,7 +3485,8 @@
     "manufacturer": "Geiger",
     "img": null,
     "title_original": "Fly High (Geiger 1985) [HP VIDEO]",
-    "title_original_trimmed": "Fly High"
+    "title_original_trimmed": "Fly High",
+    "confirmed": true
   },
   "3438": {
     "ipdb": "3619",
@@ -3313,7 +3495,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3619/image-2.jpg",
     "title_original": "Jack-Bot (Williams 1995) [HP VIDEO]",
-    "title_original_trimmed": "Jack Bot"
+    "title_original_trimmed": "Jack Bot",
+    "confirmed": true
   },
   "3440": {
     "ipdb": "3792",
@@ -3322,7 +3505,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/3792/image-7.jpg",
     "title_original": "Goldeneye (Sega 1996) [HP VIDEO]",
-    "title_original_trimmed": "Goldeneye"
+    "title_original_trimmed": "Goldeneye",
+    "confirmed": true
   },
   "3441": {
     "ipdb": "4097",
@@ -3331,14 +3515,15 @@
     "manufacturer": "Inder",
     "img": "http://www.ipdb.org/images/4097/image-3.jpg",
     "title_original": "Canasta 86 (Industria 1986) [HP VIDEO]",
-    "title_original_trimmed": "Canasta 86"
+    "title_original_trimmed": "Canasta 86",
+    "confirmed": true
   },
   "3442": {
     "name": "Avro Arrow Redux",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Avro-Arrow-Redux-VP9-1.0.0 [HP VIDEO]",
-    "title_original_trimmed": "Avro Arrow Redux"
+    "title_original_trimmed": "Avro Arrow Redux",
+    "confirmed": true,
+    "type": "OG"
   },
   "3444": {
     "ipdb": "3972",
@@ -3347,14 +3532,15 @@
     "manufacturer": "Geiger",
     "img": "http://www.ipdb.org/images/3972/image-6.jpg",
     "title_original": "Lady Death (Geiger 1985) [HP VIDEO]",
-    "title_original_trimmed": "Lady Death"
+    "title_original_trimmed": "Lady Death",
+    "confirmed": true
   },
   "3445": {
     "name": "Pole Position JP",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Pole_Position_JP_V1.02 [HP VIDEO",
-    "title_original_trimmed": "Pole Position JP"
+    "title_original_trimmed": "Pole Position JP",
+    "confirmed": true,
+    "type": "OG"
   },
   "3446": {
     "ipdb": "4018",
@@ -3363,7 +3549,8 @@
     "manufacturer": "Geiger",
     "img": "http://www.ipdb.org/images/4018/image-2.jpg",
     "title_original": "Space Rider (Data East 2003) [HP VIDEO]",
-    "title_original_trimmed": "Space Rider"
+    "title_original_trimmed": "Space Rider",
+    "confirmed": true
   },
   "3450": {
     "ipdb": "887",
@@ -3392,7 +3579,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2821/image-2.jpg",
     "title_original": "Xenon (Bally 1980) [HP VIDEO]",
-    "title_original_trimmed": "Xenon"
+    "title_original_trimmed": "Xenon",
+    "confirmed": true
   },
   "3457": {
     "name": "TAF TV 2010FS",
@@ -3403,10 +3591,10 @@
   },
   "3458": {
     "name": "TAF TV 2010FS",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "TAF TV 2010FS [HP VIDEO]",
-    "title_original_trimmed": "TAF TV 2010FS"
+    "title_original_trimmed": "TAF TV 2010FS",
+    "confirmed": true,
+    "type": "OG"
   },
   "3507": {
     "ipdb": "6032",
@@ -3434,7 +3622,8 @@
     "manufacturer": "Geiger",
     "img": "http://www.ipdb.org/images/3970/image-2.jpg",
     "title_original": "Miss World (Geiger 1985) [HP VIDEO]",
-    "title_original_trimmed": "Miss World"
+    "title_original_trimmed": "Miss World",
+    "confirmed": true
   },
   "3524": {
     "ipdb": "4769",
@@ -3498,7 +3687,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2242/image-2.jpg",
     "title_original": "Sorcerer (Williams 1985) [HP VIDEO]",
-    "title_original_trimmed": "Sorcerer"
+    "title_original_trimmed": "Sorcerer",
+    "confirmed": true
   },
   "3564": {
     "ipdb": "2524",
@@ -3507,7 +3697,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2524/image-2.jpg",
     "title_original": "Terminator 2 - Judgement Day (Williams 1991)FSNM [HP VIDEO]",
-    "title_original_trimmed": "Terminator 2   Judgement Day"
+    "title_original_trimmed": "Terminator 2   Judgement Day",
+    "confirmed": true
   },
   "3566": {
     "name": "The Three Stooges",
@@ -3533,7 +3724,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2156/image-2.jpg",
     "title_original": "Silverball Mania (Bally 1980) [HP VIDEO]",
-    "title_original_trimmed": "Silverball Mania"
+    "title_original_trimmed": "Silverball Mania",
+    "confirmed": true
   },
   "3569": {
     "ipdb": "738",
@@ -3542,16 +3734,17 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/738/image-4.jpg",
     "title_original": "Doctor Who (Bally 1992) [HP VIDEO]",
-    "title_original_trimmed": "Doctor Who"
+    "title_original_trimmed": "Doctor Who",
+    "confirmed": true
   },
   "3575": {
     "ipdb": "2435",
     "title": "Super Mario Bros.",
     "year": "1992",
     "manufacturer": "Premier",
-    "img": "http://www.ipdb.org/images/3427/image-2.jpg",
+    "img": "http://www.ipdb.org/images/2435/image-3.jpg",
     "title_original": "Super Mario Bros VP9_1UP_UW_V1.0FS [HP VIDEO]",
-    "title_original_trimmed": "Super Mario Bros"
+    "confirmed": true
   },
   "3576": {
     "ipdb": "738",
@@ -3599,7 +3792,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/195/image-2.jpg",
     "title_original": "Batman (Data East 1991) [HP VIDEO]",
-    "title_original_trimmed": "Batman"
+    "title_original_trimmed": "Batman",
+    "confirmed": true
   },
   "3591": {
     "ipdb": "2397",
@@ -3621,12 +3815,13 @@
     "confirmed": true
   },
   "3597": {
-    "name": "Gilligans Island",
-    "manufacturer": "Bally",
+    "ipdb": "1004",
+    "title": "Gilligan's Island",
     "year": "1991",
-    "error": "********** NO MATCH **********",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1004/image-6.jpg",
     "title_original": "Gilligans Island (Bally 1991) [HP VIDEO]",
-    "title_original_trimmed": "Gilligans Island"
+    "confirmed": true
   },
   "3598": {
     "ipdb": "4023",
@@ -3635,7 +3830,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4023/image-10.jpg",
     "title_original": "NBA Fastbreak (Midaway 1997) [HP VIDEO]",
-    "title_original_trimmed": "NBA Fastbreak"
+    "title_original_trimmed": "NBA Fastbreak",
+    "confirmed": true
   },
   "3608": {
     "ipdb": "2355",
@@ -3647,13 +3843,13 @@
     "confirmed": true
   },
   "3610": {
-    "ipdb": "2354",
+    "ipdb": "2355",
     "title": "Star Trek",
-    "year": "1971",
-    "manufacturer": "Gottlieb",
-    "img": "http://www.ipdb.org/images/2354/Playfield.jpg",
+    "year": "1978",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2355/image-4.jpg",
     "title_original": "Star-Trek_VP9_1.0FS [HP VIDEO]",
-    "title_original_trimmed": "Star Trek"
+    "confirmed": true
   },
   "3620": {
     "ipdb": "3724",
@@ -3721,7 +3917,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1565/Playfield.jpg",
     "title_original": "Medusa (Bally 1981) [HP VIDEO]",
-    "title_original_trimmed": "Medusa"
+    "title_original_trimmed": "Medusa",
+    "confirmed": true
   },
   "3665": {
     "ipdb": "3824",
@@ -3740,7 +3937,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
     "title_original": "Tales of the Arabian Nights (Williams 1996)enhanced [HP VIDEO]",
-    "title_original_trimmed": "Tales of the Arabian Nights"
+    "title_original_trimmed": "Tales of the Arabian Nights",
+    "confirmed": true
   },
   "3669": {
     "ipdb": "1125",
@@ -3768,7 +3966,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1343/image-6.jpg",
     "title_original": "Jurassic Park (Data East 1993) [HP VIDEO]",
-    "title_original_trimmed": "Jurassic Park"
+    "title_original_trimmed": "Jurassic Park",
+    "confirmed": true
   },
   "3676": {
     "ipdb": "2260",
@@ -3777,7 +3976,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2260/image-5.jpg",
     "title_original": "Space Shuttle (Williams 1984) [HP VIDEO]",
-    "title_original_trimmed": "Space Shuttle"
+    "title_original_trimmed": "Space Shuttle",
+    "confirmed": true
   },
   "3687": {
     "ipdb": "2406",
@@ -3806,14 +4006,17 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2406/image-8.jpg",
     "title_original": "Strikes and Spares (Bally 1978) [HP VIDEO]",
-    "title_original_trimmed": "Strikes and Spares"
+    "title_original_trimmed": "Strikes and Spares",
+    "confirmed": true
   },
   "3702": {
-    "name": "Strikes and Spares.v1.0.vp9.NM.FS",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "2406",
+    "title": "Strikes and Spares",
+    "year": "1977",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2406/image-8.jpg",
     "title_original": "Strikes and Spares.v1.0.vp9.NM.FS [HP VIDEO]",
-    "title_original_trimmed": "Strikes and Spares.v1.0.vp9.NM.FS"
+    "confirmed": true
   },
   "3764": {
     "ipdb": "3646",
@@ -3832,7 +4035,8 @@
     "manufacturer": "Playmatic",
     "img": "http://www.ipdb.org/images/3646/image-2.jpg",
     "title_original": "Antar (Playmatic 1979) [HP VIDEO]",
-    "title_original_trimmed": "Antar"
+    "title_original_trimmed": "Antar",
+    "confirmed": true
   },
   "3820": {
     "name": "He's Dead Jim",
@@ -3867,7 +4071,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1267/image-14.jpg",
     "title_original": "Indiana Jones (Stern 2008) [HP VIDEO]",
-    "title_original_trimmed": "Indiana Jones"
+    "title_original_trimmed": "Indiana Jones",
+    "confirmed": true
   },
   "3927": {
     "name": "Forbidden Planet",
@@ -3899,14 +4104,15 @@
     "manufacturer": "Unidesa",
     "img": "http://www.ipdb.org/images/4077/image-3.jpg",
     "title_original": "Mephisto (Universal 1987) [HP VIDEO]",
-    "title_original_trimmed": "Mephisto"
+    "title_original_trimmed": "Mephisto",
+    "confirmed": true
   },
   "4037": {
     "name": "Dragon 2010FS",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Dragon_2010FS_VP9 [HP VIDEO]",
-    "title_original_trimmed": "Dragon 2010FS"
+    "title_original_trimmed": "Dragon 2010FS",
+    "confirmed": true,
+    "type": "OG"
   },
   "4039": {
     "name": "El Bueno el Feo y el Malo",
@@ -3917,10 +4123,10 @@
   },
   "4043": {
     "name": "El Bueno el Feo y el Malo",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "El_Bueno_el_Feo_y_el_Malo_VP9_1.0FS [HP VIDEO]",
-    "title_original_trimmed": "El Bueno el Feo y el Malo"
+    "title_original_trimmed": "El Bueno el Feo y el Malo",
+    "confirmed": true,
+    "type": "OG"
   },
   "4044": {
     "ipdb": "699",
@@ -3968,14 +4174,15 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/2036/image-5.jpg",
     "title_original": "Royal Flush Deluxe (Gottlieb 1983) [HP VIDEO]",
-    "title_original_trimmed": "Royal Flush Deluxe"
+    "title_original_trimmed": "Royal Flush Deluxe",
+    "confirmed": true
   },
   "4052": {
     "name": "Royal Flush Supreme",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Royal-Flush-Supreme-FS-JR [HP VIDEO]",
-    "title_original_trimmed": "Royal Flush Supreme"
+    "title_original_trimmed": "Royal Flush Supreme",
+    "confirmed": true,
+    "type": "OG"
   },
   "4053": {
     "ipdb": "4641",
@@ -3984,7 +4191,8 @@
     "manufacturer": "Maresa",
     "img": "http://www.ipdb.org/images/4641/image-1.jpg",
     "title_original": "Royal-Flush-FS-JR [HP VIDEO]",
-    "title_original_trimmed": "Royal Flush"
+    "title_original_trimmed": "Royal Flush",
+    "confirmed": true
   },
   "4066": {
     "ipdb": "804",
@@ -4003,7 +4211,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/804/image-4.jpg",
     "title_original": "F-14 Tomcat (Williams 1987) [HP VIDEO]",
-    "title_original_trimmed": "F 14 Tomcat"
+    "title_original_trimmed": "F 14 Tomcat",
+    "confirmed": true
   },
   "4072": {
     "ipdb": "1502",
@@ -4032,7 +4241,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1796/Playfield.jpg",
     "title_original": "Pinbot (Williams 1986) [HP VIDEO]",
-    "title_original_trimmed": "Pinbot"
+    "title_original_trimmed": "Pinbot",
+    "confirmed": true
   },
   "4077": {
     "ipdb": "1502",
@@ -4041,7 +4251,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1502/Playfield.jpg",
     "title_original": "Bride Of Pinbot (Williams 1991) [HP VIDEO]",
-    "title_original_trimmed": "Bride Of Pinbot"
+    "title_original_trimmed": "Bride Of Pinbot",
+    "confirmed": true
   },
   "4133": {
     "name": "Nova 2010",
@@ -4051,13 +4262,10 @@
     "type": "OG"
   },
   "4137": {
-    "ipdb": "460",
-    "title": "Casanova",
-    "year": "1966",
-    "manufacturer": "Williams",
-    "img": "http://www.ipdb.org/images/460/image-10.jpg",
     "title_original": "Nova 1.2_FS_B2S [HP VIDEO]",
-    "title_original_trimmed": "Nova 1.2"
+    "title_original_trimmed": "Nova 1.2",
+    "confirmed": true,
+    "type": "OG"
   },
   "4139": {
     "ipdb": "782",
@@ -4076,7 +4284,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/782/Playfield.jpg",
     "title_original": "Elvira and the Party Monsters (Bally 1995) [HP VIDEO]",
-    "title_original_trimmed": "Elvira and the Party Monsters"
+    "title_original_trimmed": "Elvira and the Party Monsters",
+    "confirmed": true
   },
   "4145": {
     "ipdb": "737",
@@ -4143,7 +4352,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/737/image-19.jpg",
     "title_original": "Dr Dude (Midway 1990) [HP VIDEO]",
-    "title_original_trimmed": "Dr Dude"
+    "title_original_trimmed": "Dr Dude",
+    "confirmed": true
   },
   "4157": {
     "ipdb": "737",
@@ -4152,7 +4362,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/737/image-19.jpg",
     "title_original": "Dr Dude (Midway 1990) night [HP VIDEO]",
-    "title_original_trimmed": "Dr Dude"
+    "title_original_trimmed": "Dr Dude",
+    "confirmed": true
   },
   "4158": {
     "ipdb": "1176",
@@ -4161,7 +4372,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1176/image-24.jpg",
     "title_original": "High Speed (Williams 1986) [HP VIDEO]",
-    "title_original_trimmed": "High Speed"
+    "title_original_trimmed": "High Speed",
+    "confirmed": true
   },
   "4160": {
     "ipdb": "1322",
@@ -4170,14 +4382,15 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1322/image-1.jpg",
     "title_original": "Judge Dredd (Midaway 1993) [HP VIDEO]",
-    "title_original_trimmed": "Judge Dredd"
+    "title_original_trimmed": "Judge Dredd",
+    "confirmed": true
   },
   "4255": {
     "name": "Rapid Vienna 2011 FS[HP VIDEO]",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Rapid Vienna 2011 FS[HP VIDEO]",
-    "title_original_trimmed": "Rapid Vienna 2011 FS[HP VIDEO]"
+    "title_original_trimmed": "Rapid Vienna 2011 FS[HP VIDEO]",
+    "confirmed": true,
+    "type": "OG"
   },
   "4257": {
     "ipdb": "2357",
@@ -4196,7 +4409,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2357/image-17.jpg",
     "title_original": "STTNG (Williams 1993) [HP VIDEO]",
-    "title_original_trimmed": "STTNG"
+    "title_original_trimmed": "STTNG",
+    "confirmed": true
   },
   "4268": {
     "name": "Dragon 2011",
@@ -4229,7 +4443,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2853/Playfield.jpg",
     "title_original": "Indianapolis 500 (Midaway 1995) [HP VIDEO]",
-    "title_original_trimmed": "Indianapolis 500"
+    "title_original_trimmed": "Indianapolis 500",
+    "confirmed": true
   },
   "4291": {
     "ipdb": "392",
@@ -4304,14 +4519,15 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/3878/image-2.jpg",
     "title_original": "Independence Day (Sega 1996) [HP VIDEO]",
-    "title_original_trimmed": "Independence Day"
+    "title_original_trimmed": "Independence Day",
+    "confirmed": true
   },
   "4315": {
     "name": "Ultimate Spiderman 2011[HP VIDEO]",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Ultimate Spiderman 2011[HP VIDEO]",
-    "title_original_trimmed": "Ultimate Spiderman 2011[HP VIDEO]"
+    "title_original_trimmed": "Ultimate Spiderman 2011[HP VIDEO]",
+    "confirmed": true,
+    "type": "OG"
   },
   "4316": {
     "ipdb": "1561",
@@ -4320,7 +4536,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1561/Playfield.jpg",
     "title_original": "Maverick (Data East 1994) [HP VIDEO]",
-    "title_original_trimmed": "Maverick"
+    "title_original_trimmed": "Maverick",
+    "confirmed": true
   },
   "4322": {
     "name": "Rolling Stones 2 1.01FS",
@@ -4346,14 +4563,15 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4032/image-7.jpg",
     "title_original": "Medieval Madness (Williams 1997) [HP VIDEO]",
-    "title_original_trimmed": "Medieval Madness"
+    "title_original_trimmed": "Medieval Madness",
+    "confirmed": true
   },
   "4328": {
     "name": "Rolling Stones2 FS[HP VIDEO]",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Rolling_Stones2_FS[HP VIDEO]",
-    "title_original_trimmed": "Rolling Stones2 FS[HP VIDEO]"
+    "title_original_trimmed": "Rolling Stones2 FS[HP VIDEO]",
+    "confirmed": true,
+    "type": "OG"
   },
   "4329": {
     "ipdb": "43",
@@ -5414,7 +5632,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/2848/image-4.jpg",
     "title_original": "Baywatch (Sega 1995) [HP VIDEO]",
-    "title_original_trimmed": "Baywatch"
+    "title_original_trimmed": "Baywatch",
+    "confirmed": true
   },
   "4442": {
     "ipdb": "2848",
@@ -5433,7 +5652,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2652/image-6.jpg",
     "title_original": "Triple Strike (Williams 1975) [HP VIDEO]",
-    "title_original_trimmed": "Triple Strike"
+    "title_original_trimmed": "Triple Strike",
+    "confirmed": true
   },
   "4445": {
     "ipdb": "66",
@@ -5811,7 +6031,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/548/Playfield.jpg",
     "title_original": "Comet (Williams 1985) [HP VIDEO]",
-    "title_original_trimmed": "Comet"
+    "title_original_trimmed": "Comet",
+    "confirmed": true
   },
   "4483": {
     "ipdb": "548",
@@ -6357,7 +6578,8 @@
     "manufacturer": "Juegos Populares",
     "img": null,
     "title_original": "Faeton (Juegos Populares 1986) [HP VIDEO]",
-    "title_original_trimmed": "Faeton"
+    "title_original_trimmed": "Faeton",
+    "confirmed": true
   },
   "4563": {
     "ipdb": "1414",
@@ -6425,7 +6647,8 @@
     "manufacturer": "Atari",
     "img": "http://www.ipdb.org/images/2454/image-5.jpg",
     "title_original": "Superman (Atari 1979) [HP VIDEO]",
-    "title_original_trimmed": "Superman"
+    "title_original_trimmed": "Superman",
+    "confirmed": true
   },
   "4598": {
     "ipdb": "28",
@@ -7682,7 +7905,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/753/image-7.jpg",
     "title_original": "Earthshaker (Willaims 1989) [HP VIDEO]",
-    "title_original_trimmed": "Earthshaker"
+    "title_original_trimmed": "Earthshaker",
+    "confirmed": true
   },
   "4769": {
     "ipdb": "753",
@@ -7819,7 +8043,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/662/image-35.jpg",
     "title_original": "Demolition Man (Williams 1994) [HP VIDEO]",
-    "title_original_trimmed": "Demolition Man"
+    "title_original_trimmed": "Demolition Man",
+    "confirmed": true
   },
   "4901": {
     "ipdb": "662",
@@ -7857,7 +8082,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/1687/Playfield.jpg",
     "title_original": "Nugent (Stern 1978) [HP VIDEO]",
-    "title_original_trimmed": "Nugent"
+    "title_original_trimmed": "Nugent",
+    "confirmed": true
   },
   "4945": {
     "ipdb": "2803",
@@ -7935,12 +8161,13 @@
     "confirmed": true
   },
   "5032": {
-    "name": "The Bally Game Show",
-    "manufacturer": "Bally",
+    "ipdb": "985",
+    "title": "The Bally Game Show",
     "year": "1990",
-    "error": "********** NO MATCH **********",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/985/image-6.jpg",
     "title_original": "The Bally Game Show (Bally 1990) [HP VIDEO]",
-    "title_original_trimmed": "The"
+    "confirmed": true
   },
   "5033": {
     "ipdb": "1972",
@@ -7949,7 +8176,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1972/image-8.jpg",
     "title_original": "Red and Ted's Road Show (Williams 1994) [HP VIDEO]",
-    "title_original_trimmed": "Red and Ted's Road Show"
+    "title_original_trimmed": "Red and Ted's Road Show",
+    "confirmed": true
   },
   "5040": {
     "ipdb": "1972",
@@ -8053,7 +8281,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/1260/image-8.jpg",
     "title_original": "Ice Fever (Gottlieb 1985) [HP VIDEO]",
-    "title_original_trimmed": "Ice Fever"
+    "title_original_trimmed": "Ice Fever",
+    "confirmed": true
   },
   "5212": {
     "ipdb": "4137",
@@ -8072,7 +8301,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4137/image-5.jpg",
     "title_original": "X-Files (Sega 1997) [HP VIDEO]",
-    "title_original_trimmed": "X Files"
+    "title_original_trimmed": "X Files",
+    "confirmed": true
   },
   "5216": {
     "ipdb": "4137",
@@ -8138,7 +8368,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/974/image-4.jpg",
     "title_original": "Future Spa (Bally 1979) [HP VIDEO]",
-    "title_original_trimmed": "Future Spa"
+    "title_original_trimmed": "Future Spa",
+    "confirmed": true
   },
   "5282": {
     "ipdb": "3631",
@@ -8212,9 +8443,9 @@
     "title": "Magic Eight",
     "year": "1980",
     "manufacturer": "Geiger",
-    "img": "http://www.ipdb.org/images/5469/image-13.jpg",
+    "img": null,
     "title_original": "Magic Eight (Geiger 1981) [HP VIDEO]",
-    "title_original_trimmed": "Magic Eight"
+    "confirmed": true
   },
   "5338": {
     "ipdb": "2509",
@@ -8233,7 +8464,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2509/image-1.jpg",
     "title_original": "Teenage Mutant Ninja Turtles (Data East 1991) [HP VIDEO]",
-    "title_original_trimmed": "Teenage Mutant Ninja Turtles"
+    "title_original_trimmed": "Teenage Mutant Ninja Turtles",
+    "confirmed": true
   },
   "5342": {
     "ipdb": "4673",
@@ -8311,7 +8543,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2355/image-4.jpg",
     "title_original": "Star Trek (Bally 1979) [HP VIDEO]",
-    "title_original_trimmed": "Star Trek"
+    "title_original_trimmed": "Star Trek",
+    "confirmed": true
   },
   "5361": {
     "ipdb": "806",
@@ -8389,14 +8622,15 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/874/Playfield.jpg",
     "title_original": "Flash Gordon (Bally 1981) [HP VIDEO]",
-    "title_original_trimmed": "Flash Gordon"
+    "title_original_trimmed": "Flash Gordon",
+    "confirmed": true
   },
   "5374": {
     "name": "AA Tribute",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "AA-Tribute-VP912-FS-1.0.3 [HP VIDEO]",
-    "title_original_trimmed": "AA Tribute"
+    "title_original_trimmed": "AA Tribute",
+    "confirmed": true,
+    "type": "OG"
   },
   "5376": {
     "ipdb": "619",
@@ -8435,14 +8669,15 @@
     "manufacturer": "Geiger",
     "img": "http://www.ipdb.org/images/4016/image-7.jpg",
     "title_original": "Stellar Airship (Geiger 1979) [HP VIDEO]",
-    "title_original_trimmed": "Stellar Airship"
+    "title_original_trimmed": "Stellar Airship",
+    "confirmed": true
   },
   "5383": {
     "name": "Avro Arrow Redux",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Avro-Arrow-Redux [HP VIDEO]",
-    "title_original_trimmed": "Avro Arrow Redux"
+    "title_original_trimmed": "Avro Arrow Redux",
+    "confirmed": true,
+    "type": "OG"
   },
   "5385": {
     "ipdb": "1260",
@@ -8491,7 +8726,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/3967/image-4.jpg",
     "title_original": "Cosmic Princess (Stern 1979) [HP VIDEO]",
-    "title_original_trimmed": "Cosmic Princess"
+    "title_original_trimmed": "Cosmic Princess",
+    "confirmed": true
   },
   "5427": {
     "ipdb": "1993",
@@ -8507,9 +8743,9 @@
     "title": "Rocky",
     "year": "1982",
     "manufacturer": "Gottlieb",
-    "img": "http://www.ipdb.org/images/4084/image-2.jpg",
+    "img": "http://www.ipdb.org/images/1993/image-4.jpg",
     "title_original": "Rocky (Gottlieb 1982) [HP VIDEO]",
-    "title_original_trimmed": "Rocky"
+    "confirmed": true
   },
   "5436": {
     "ipdb": "127",
@@ -8539,10 +8775,10 @@
   },
   "5444": {
     "name": "Ghostbusters 2011",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Ghostbusters 2011 [HP VIDEO]",
-    "title_original_trimmed": "Ghostbusters 2011"
+    "title_original_trimmed": "Ghostbusters 2011",
+    "confirmed": true,
+    "type": "OG"
   },
   "5445": {
     "ipdb": "1281",
@@ -8605,7 +8841,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3072/Playfield.jpg",
     "title_original": "Bram Stoker's Dracula (Williams 1993) [HP VIDEO]",
-    "title_original_trimmed": "Bram Stoker's Dracula"
+    "title_original_trimmed": "Bram Stoker's Dracula",
+    "confirmed": true
   },
   "5539": {
     "ipdb": "2113",
@@ -8643,7 +8880,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3683/Playfield.jpg",
     "title_original": "Johnny Mnemonic (Williams 1995) [HP VIDEO]",
-    "title_original_trimmed": "Johnny Mnemonic"
+    "title_original_trimmed": "Johnny Mnemonic",
+    "confirmed": true
   },
   "5548": {
     "ipdb": "3683",
@@ -8731,7 +8969,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2724/Playfield.jpg",
     "title_original": "Vegas (Premier 1990) [HP VIDEO]",
-    "title_original_trimmed": "Vegas"
+    "title_original_trimmed": "Vegas",
+    "confirmed": true
   },
   "5582": {
     "ipdb": "2443",
@@ -8839,7 +9078,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/871/image-2.jpg",
     "title_original": "Flash (Williams 1979) [HP VIDEO]",
-    "title_original_trimmed": "Flash"
+    "title_original_trimmed": "Flash",
+    "confirmed": true
   },
   "5692": {
     "ipdb": "871",
@@ -8880,7 +9120,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2356/Playfield.jpg",
     "title_original": "Star Trek 25th Anniversary (Data East 1992) [HP VIDEO]",
-    "title_original_trimmed": "Star Trek 25th Anniversary"
+    "title_original_trimmed": "Star Trek 25th Anniversary",
+    "confirmed": true
   },
   "5727": {
     "ipdb": "2356",
@@ -8991,7 +9232,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/678/Playfield.jpg",
     "title_original": "Diamond Lady (Premier 1988) [HP VIDEO]",
-    "title_original_trimmed": "Diamond Lady"
+    "title_original_trimmed": "Diamond Lady",
+    "confirmed": true
   },
   "5791": {
     "name": "Checkpoint 1.2",
@@ -9037,7 +9279,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/948/image-2.jpg",
     "title_original": "Freddy A Nightmare On Elm Street (Premiere 1994) [HP VIDEO]",
-    "title_original_trimmed": "Freddy A Nightmare On Elm Street"
+    "title_original_trimmed": "Freddy A Nightmare On Elm Street",
+    "confirmed": true
   },
   "5840": {
     "ipdb": "948",
@@ -9073,7 +9316,8 @@
     "manufacturer": "Zaccaria",
     "img": "http://www.ipdb.org/images/3458/image-10.jpg",
     "title_original": "Star God (Zaccaria 1980) [HP VIDEO]",
-    "title_original_trimmed": "Star God"
+    "title_original_trimmed": "Star God",
+    "confirmed": true
   },
   "5902": {
     "ipdb": "3915",
@@ -9112,7 +9356,8 @@
     "manufacturer": "Zaccaria",
     "img": "http://www.ipdb.org/images/4686/image-5.jpg",
     "title_original": "Ski Jump (Zaccaria 1977) [HP VIDEO]",
-    "title_original_trimmed": "Ski Jump"
+    "title_original_trimmed": "Ski Jump",
+    "confirmed": true
   },
   "5949": {
     "ipdb": "4182",
@@ -9151,7 +9396,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/2644/image-4.jpg",
     "title_original": "Trident (Stern 1979) [HP VIDEO]",
-    "title_original_trimmed": "Trident"
+    "title_original_trimmed": "Trident",
+    "confirmed": true
   },
   "5967": {
     "ipdb": "3903",
@@ -9218,7 +9464,8 @@
     "manufacturer": "Playmatic",
     "img": "http://www.ipdb.org/images/3607/image-2.jpg",
     "title_original": "Big Town (Playmatic 1978) [HP VIDEO]",
-    "title_original_trimmed": "Big Town"
+    "title_original_trimmed": "Big Town",
+    "confirmed": true
   },
   "5986": {
     "ipdb": "1230",
@@ -9227,7 +9474,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1230/Playfield.jpg",
     "title_original": "Honey (Williams 1972) [HP VIDEO]",
-    "title_original_trimmed": "Honey"
+    "title_original_trimmed": "Honey",
+    "confirmed": true
   },
   "5994": {
     "ipdb": "5007",
@@ -9325,7 +9573,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/1975/image-1.jpg",
     "title_original": "Robo-War (Premier 1988) [HP VIDEO]",
-    "title_original_trimmed": "Robo War"
+    "title_original_trimmed": "Robo War",
+    "confirmed": true
   },
   "6037": {
     "ipdb": "1975",
@@ -9347,12 +9596,13 @@
     "confirmed": true
   },
   "6043": {
-    "name": "Scared Stiff GI8",
-    "manufacturer": "Williams",
+    "ipdb": "3915",
+    "title": "Scared Stiff",
     "year": "1996",
-    "error": "********** NO MATCH **********",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
     "title_original": "Scared Stiff GI8 (Williams 1996) [HP VIDEO]",
-    "title_original_trimmed": "Scared Stiff GI8"
+    "confirmed": true
   },
   "6046": {
     "ipdb": "2250",
@@ -9430,13 +9680,10 @@
     "confirmed": true
   },
   "6072": {
-    "ipdb": "3273",
-    "title": "Solar Wars",
-    "year": "1986",
-    "manufacturer": "Sonic",
-    "img": null,
     "title_original": "Solar Wars (Sonic 1986) [HP VIDEO]",
-    "title_original_trimmed": "Solar Wars"
+    "title_original_trimmed": "Solar Wars",
+    "confirmed": true,
+    "type": "OG"
   },
   "6073": {
     "ipdb": "935",
@@ -9474,7 +9721,8 @@
     "manufacturer": "Playmatic",
     "img": "http://www.ipdb.org/images/491/image-2.jpg",
     "title_original": "Chance (Playmatic 1978) [HP VIDEO]",
-    "title_original_trimmed": "Chance"
+    "title_original_trimmed": "Chance",
+    "confirmed": true
   },
   "6079": {
     "ipdb": "3207",
@@ -9483,7 +9731,8 @@
     "manufacturer": "Playmatic",
     "img": "http://www.ipdb.org/images/3207/image-3.jpg",
     "title_original": "Last Lap (Playmatic 1978) [HP VIDEO]",
-    "title_original_trimmed": "Last Lap"
+    "title_original_trimmed": "Last Lap",
+    "confirmed": true
   },
   "6080": {
     "ipdb": "175",
@@ -9506,11 +9755,13 @@
     "confirmed": true
   },
   "6090": {
-    "name": "Amazing Spiderman The 2011 Xmas",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "2285",
+    "title": "The Amazing Spider-Man",
+    "year": "1980",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2285/image-6.jpg",
     "title_original": "Amazing_Spiderman_The_2011_Xmas [HP VIDEO]",
-    "title_original_trimmed": "Amazing Spiderman The 2011 Xmas"
+    "confirmed": true
   },
   "6092": {
     "ipdb": "2768",
@@ -9529,7 +9780,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2768/image-25.jpg",
     "title_original": "Whitewater (Williams 1993) [HP VIDEO]",
-    "title_original_trimmed": "Whitewater"
+    "title_original_trimmed": "Whitewater",
+    "confirmed": true
   },
   "6094": {
     "ipdb": "2768",
@@ -9557,7 +9809,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2524/image-2.jpg",
     "title_original": "Terminator 2 - Judgement Day (Williams 1991) CHROME EDITION [HP VIDEO]",
-    "title_original_trimmed": "Terminator 2   Judgement Day"
+    "title_original_trimmed": "Terminator 2   Judgement Day",
+    "confirmed": true
   },
   "6127": {
     "ipdb": "3892",
@@ -9599,11 +9852,10 @@
   },
   "6158": {
     "name": "Haunted Mansion",
-    "manufacturer": "maceman",
-    "year": "2011",
-    "error": "********** NO MATCH **********",
     "title_original": "Haunted Mansion (maceman 2011) [HP VIDEO]",
-    "title_original_trimmed": "Haunted Mansion"
+    "title_original_trimmed": "Haunted Mansion",
+    "confirmed": true,
+    "type": "OG"
   },
   "6160": {
     "name": "JP SpiderMan",
@@ -9648,7 +9900,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4502/image-7.jpg",
     "title_original": "High Roller Casino (Stern 2001) [HP VIDEO]",
-    "title_original_trimmed": "High Roller Casino"
+    "title_original_trimmed": "High Roller Casino",
+    "confirmed": true
   },
   "6173": {
     "ipdb": "4502",
@@ -9683,7 +9936,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1755/Playfield.jpg",
     "title_original": "Paragon (Bally 1979) [HP VIDEO]",
-    "title_original_trimmed": "Paragon"
+    "title_original_trimmed": "Paragon",
+    "confirmed": true
   },
   "6193": {
     "ipdb": "2355",
@@ -9710,7 +9964,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2737/image-10.jpg",
     "title_original": "Viking (Bally 1979) [HP VIDEO]",
-    "title_original_trimmed": "Viking"
+    "title_original_trimmed": "Viking",
+    "confirmed": true
   },
   "6210": {
     "ipdb": "2737",
@@ -9778,7 +10033,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2357/image-17.jpg",
     "title_original": "STTNG (Williams 1993)nightmod [HP VIDEO]",
-    "title_original_trimmed": "STTNG"
+    "title_original_trimmed": "STTNG",
+    "confirmed": true
   },
   "6229": {
     "ipdb": "1244",
@@ -9787,7 +10043,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/1244/image-9.jpg",
     "title_original": "Hot Hand (Stern 1979) [HP VIDEO]",
-    "title_original_trimmed": "Hot Hand"
+    "title_original_trimmed": "Hot Hand",
+    "confirmed": true
   },
   "6233": {
     "ipdb": "5132",
@@ -9806,7 +10063,8 @@
     "manufacturer": "LTD",
     "img": "http://www.ipdb.org/images/5132/image-14.jpg",
     "title_original": "Cowboy Eight Ball (Other 1981) [HP VIDEO]",
-    "title_original_trimmed": "Cowboy Eight Ball"
+    "title_original_trimmed": "Cowboy Eight Ball",
+    "confirmed": true
   },
   "6237": {
     "ipdb": "2563",
@@ -9852,11 +10110,10 @@
   },
   "6261": {
     "name": "Pirates-Wolves of the Seas",
-    "manufacturer": "JP",
-    "year": "2012",
-    "error": "********** NO MATCH **********",
     "title_original": "Pirates-Wolves of the Seas (JP 2012) [HP VIDEO]",
-    "title_original_trimmed": "Pirates Wolves of the Seas"
+    "title_original_trimmed": "Pirates Wolves of the Seas",
+    "confirmed": true,
+    "type": "OG"
   },
   "6264": {
     "ipdb": "2366",
@@ -9874,7 +10131,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/2366/image-5.jpg",
     "title_original": "Stars (Stern 1978) [HP VIDEO]",
-    "title_original_trimmed": "Stars"
+    "title_original_trimmed": "Stars",
+    "confirmed": true
   },
   "6269": {
     "name": "JP Pirates LW",
@@ -9985,11 +10243,13 @@
     "confirmed": true
   },
   "6335": {
-    "name": "Creature form the Black Lagoon",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "588",
+    "title": "Creature from the Black Lagoon",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/588/image-22.jpg",
     "title_original": "Creature form the Black Lagoon FS Alpha Mod [HP VIDEO]",
-    "title_original_trimmed": "Creature form the Black Lagoon"
+    "confirmed": true
   },
   "6337": {
     "ipdb": "3945",
@@ -10028,7 +10288,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2765/image-2.jpg",
     "title_original": "Whirlwind (Williams 1990) [HP VIDEO]",
-    "title_original_trimmed": "Whirlwind"
+    "title_original_trimmed": "Whirlwind",
+    "confirmed": true
   },
   "6345": {
     "ipdb": "4576",
@@ -10096,17 +10357,17 @@
   },
   "6360": {
     "name": "Daffy Duck",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Daffy Duck [HP VIDEO]",
-    "title_original_trimmed": "Daffy Duck"
+    "title_original_trimmed": "Daffy Duck",
+    "confirmed": true,
+    "type": "OG"
   },
   "6361": {
     "name": "Beatles 2012",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Beatles 2012 [HP VIDEO]",
-    "title_original_trimmed": "Beatles 2012"
+    "title_original_trimmed": "Beatles 2012",
+    "confirmed": true,
+    "type": "OG"
   },
   "6362": {
     "ipdb": "1306",
@@ -10115,7 +10376,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/5078/image-8.jpg",
     "title_original": "Joker Poker (Gottlieb 1978) [HP VIDEO]",
-    "title_original_trimmed": "Joker Poker"
+    "title_original_trimmed": "Joker Poker",
+    "confirmed": true
   },
   "6363": {
     "ipdb": "4576",
@@ -10124,7 +10386,8 @@
     "manufacturer": "Taito",
     "img": "http://www.ipdb.org/images/4576/image-3.jpg",
     "title_original": "Vortex (Tatio 1983) [HP VIDEO]",
-    "title_original_trimmed": "Vortex"
+    "title_original_trimmed": "Vortex",
+    "confirmed": true
   },
   "6364": {
     "ipdb": "3945",
@@ -10133,7 +10396,8 @@
     "manufacturer": "Capcom",
     "img": "http://www.ipdb.org/images/3945/image-16.jpg",
     "title_original": "Flipper Football (Capcom 1996) [HP VIDEO]",
-    "title_original_trimmed": "Flipper Football"
+    "title_original_trimmed": "Flipper Football",
+    "confirmed": true
   },
   "6365": {
     "ipdb": "2509",
@@ -10146,12 +10410,13 @@
     "confirmed": true
   },
   "6367": {
-    "name": "AbraCaDabra",
-    "manufacturer": "Gottlieb",
+    "ipdb": "2",
+    "title": "Abra Ca Dabra",
     "year": "1975",
-    "error": "********** NO MATCH **********",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2/Playfield2.jpg",
     "title_original": "AbraCaDabra (Gottlieb 1975) [HP VIDEO]",
-    "title_original_trimmed": "AbraCaDabra"
+    "confirmed": true
   },
   "6371": {
     "ipdb": "2091",
@@ -10160,7 +10425,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2091/image-22.jpg",
     "title_original": "SeeSaw (Bally 1970) [HP VIDEO]",
-    "title_original_trimmed": "SeeSaw"
+    "title_original_trimmed": "SeeSaw",
+    "confirmed": true
   },
   "6372": {
     "ipdb": "2292",
@@ -10169,7 +10435,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/2292/image-3.jpg",
     "title_original": "Spirit (Gottlieb 1982) [HP VIDEO]",
-    "title_original_trimmed": "Spirit"
+    "title_original_trimmed": "Spirit",
+    "confirmed": true
   },
   "6395": {
     "ipdb": "4001",
@@ -10188,7 +10455,8 @@
     "manufacturer": "Capcom",
     "img": "http://www.ipdb.org/images/4001/image-6.jpg",
     "title_original": "Big Bang Bar (Capcom 1996) [HP VIDEO]",
-    "title_original_trimmed": "Big Bang Bar"
+    "title_original_trimmed": "Big Bang Bar",
+    "confirmed": true
   },
   "6399": {
     "ipdb": "4445",
@@ -10247,7 +10515,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/681/image-2.jpg",
     "title_original": "Diner (Williams 1990) [HP VIDEO]",
-    "title_original_trimmed": "Diner"
+    "title_original_trimmed": "Diner",
+    "confirmed": true
   },
   "6432": {
     "ipdb": "681",
@@ -10374,7 +10643,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/1800/image-3.jpg",
     "title_original": "Pink Panther (Gottlieb 1981) [HP VIDEO]",
-    "title_original_trimmed": "Pink Panther"
+    "title_original_trimmed": "Pink Panther",
+    "confirmed": true
   },
   "6481": {
     "ipdb": "2204",
@@ -10432,16 +10702,17 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/289/image-7.jpg",
     "title_original": "Big Valley (Bally 1970) [HP VIDEO]",
-    "title_original_trimmed": "Big Valley"
+    "title_original_trimmed": "Big Valley",
+    "confirmed": true
   },
   "6508": {
-    "ipdb": "3498",
-    "title": "Star Ship",
-    "year": "1976",
+    "ipdb": "438",
+    "title": "Capt. Fantastic and The Brown Dirt Cowboy",
+    "year": "1975",
     "manufacturer": "Bally",
-    "img": "http://www.ipdb.org/images/3498/image-13.jpg",
+    "img": "http://www.ipdb.org/images/438/image-1.jpg",
     "title_original": "Captain Fantastic (Bally 1977) [HP VIDEO]",
-    "title_original_trimmed": "Captain Fantastic"
+    "confirmed": true
   },
   "6509": {
     "ipdb": "5007",
@@ -10450,7 +10721,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/5007/image-4.jpg",
     "title_original": "Charlie's Angels (Gottlieb 1978) [HP VIDEO]",
-    "title_original_trimmed": "Charlie's Angels"
+    "title_original_trimmed": "Charlie's Angels",
+    "confirmed": true
   },
   "6510": {
     "ipdb": "536",
@@ -10459,7 +10731,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/4692/image-2.jpg",
     "title_original": "Close Encounters Of The Third Kind (Gottlieb 1978) [HP VIDEO]",
-    "title_original_trimmed": "Close Encounters Of The Third Kind"
+    "title_original_trimmed": "Close Encounters Of The Third Kind",
+    "confirmed": true
   },
   "6511": {
     "ipdb": "852",
@@ -10468,7 +10741,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/852/image-17.jpg",
     "title_original": "Fireball (Bally 1972) [HP VIDEO]",
-    "title_original_trimmed": "Fireball"
+    "title_original_trimmed": "Fireball",
+    "confirmed": true
   },
   "6512": {
     "ipdb": "987",
@@ -10477,7 +10751,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/987/image-1.jpg",
     "title_original": "Gator (Bally 1969) [HP VIDEO]",
-    "title_original_trimmed": "Gator"
+    "title_original_trimmed": "Gator",
+    "confirmed": true
   },
   "6513": {
     "ipdb": "935",
@@ -10486,7 +10761,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/935/image-19.jpg",
     "title_original": "Four Million B.C. (Bally 1971) [HP VIDEO]",
-    "title_original_trimmed": "Four Million B.C."
+    "title_original_trimmed": "Four Million B.C.",
+    "confirmed": true
   },
   "6514": {
     "ipdb": "1201",
@@ -10495,7 +10771,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/1201/Playfield.jpg",
     "title_original": "Hit The Deck (Gottleib 1978) [HP VIDEO]",
-    "title_original_trimmed": "Hit The Deck"
+    "title_original_trimmed": "Hit The Deck",
+    "confirmed": true
   },
   "6515": {
     "ipdb": "4868",
@@ -10504,7 +10781,8 @@
     "manufacturer": "Recreativos Franco",
     "img": "http://www.ipdb.org/images/4868/image-3.jpg",
     "title_original": "Impacto (Recreativos Franco 1975) [HP VIDEO]",
-    "title_original_trimmed": "Impacto"
+    "title_original_trimmed": "Impacto",
+    "confirmed": true
   },
   "6516": {
     "ipdb": "1281",
@@ -10513,7 +10791,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/1281/Playfield.jpg",
     "title_original": "Jacks Open (Gottlieb 1977) [HP VIDEO]",
-    "title_original_trimmed": "Jacks Open"
+    "title_original_trimmed": "Jacks Open",
+    "confirmed": true
   },
   "6517": {
     "ipdb": "1381",
@@ -10522,7 +10801,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/1381/Playfield.jpg",
     "title_original": "Kings and Queens (Gottlieb 1965) [HP VIDEO]",
-    "title_original_trimmed": "Kings and Queens"
+    "title_original_trimmed": "Kings and Queens",
+    "confirmed": true
   },
   "6518": {
     "ipdb": "1392",
@@ -10531,7 +10811,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1392/image-2.jpg",
     "title_original": "KnockOut (Bally 1974) [HP VIDEO]",
-    "title_original_trimmed": "KnockOut"
+    "title_original_trimmed": "KnockOut",
+    "confirmed": true
   },
   "6519": {
     "ipdb": "1550",
@@ -10540,16 +10821,17 @@
     "manufacturer": "Sonic",
     "img": "http://www.ipdb.org/images/1550/image-5.jpg",
     "title_original": "Mars Trek (Sonic 1977) [HP VIDEO]",
-    "title_original_trimmed": "Mars Trek"
+    "title_original_trimmed": "Mars Trek",
+    "confirmed": true
   },
   "6520": {
     "ipdb": "1795",
     "title": "Pinball Pool",
     "year": "1979",
     "manufacturer": "Gottlieb",
-    "img": "http://www.ipdb.org/images/2334/Playfield.jpg",
+    "img": "http://www.ipdb.org/images/1795/image-8.jpg",
     "title_original": "Pinball Pool (Gottlieb 1979) [HP VIDEO]",
-    "title_original_trimmed": "Pinball Pool"
+    "confirmed": true
   },
   "6521": {
     "ipdb": "2204",
@@ -10558,7 +10840,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2204/image-4.jpg",
     "title_original": "SkyRocket (Bally 1970) [HP VIDEO]",
-    "title_original_trimmed": "SkyRocket"
+    "title_original_trimmed": "SkyRocket",
+    "confirmed": true
   },
   "6522": {
     "ipdb": "2397",
@@ -10567,7 +10850,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/2397/Playfield.jpg",
     "title_original": "Strange World (Gottlieb 1978) [HP VIDEO]",
-    "title_original_trimmed": "Strange World"
+    "title_original_trimmed": "Strange World",
+    "confirmed": true
   },
   "6525": {
     "ipdb": "253",
@@ -10576,7 +10860,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/253/image-2.jpg",
     "title_original": "Big Hit (Gottlieb 1977) [HP VIDEO]",
-    "title_original_trimmed": "Big Hit"
+    "title_original_trimmed": "Big Hit",
+    "confirmed": true
   },
   "6527": {
     "ipdb": "3781",
@@ -10719,7 +11004,8 @@
     "manufacturer": "Inder",
     "img": "http://www.ipdb.org/images/4092/image-9.jpg",
     "title_original": "Metal Man (Inder 1992) [HP VIDEO]",
-    "title_original_trimmed": "Metal Man"
+    "title_original_trimmed": "Metal Man",
+    "confirmed": true
   },
   "6555": {
     "ipdb": "4442",
@@ -10728,7 +11014,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4442/image-7.jpg",
     "title_original": "Lost in Space (Sega 1998) [HP VIDEO]",
-    "title_original_trimmed": "Lost in Space"
+    "title_original_trimmed": "Lost in Space",
+    "confirmed": true
   },
   "6556": {
     "ipdb": "1133",
@@ -10737,7 +11024,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/1133/Playfield2.jpg",
     "title_original": "Haunted House (Gottlieb 1982) [HP VIDEO]",
-    "title_original_trimmed": "Haunted House"
+    "title_original_trimmed": "Haunted House",
+    "confirmed": true
   },
   "6557": {
     "ipdb": "782",
@@ -11172,11 +11460,10 @@
   },
   "6865": {
     "name": "Wrath of Olympus",
-    "manufacturer": "JP",
-    "year": "2012",
-    "error": "********** NO MATCH **********",
     "title_original": "Wrath of Olympus (JP 2012) [HP VIDEO]",
-    "title_original_trimmed": "Wrath of Olympus"
+    "title_original_trimmed": "Wrath of Olympus",
+    "confirmed": true,
+    "type": "OG"
   },
   "6866": {
     "ipdb": "1650",
@@ -11185,7 +11472,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1650/image-14.jpg",
     "title_original": "Mystic (Bally 1980) [HP VIDEO]",
-    "title_original_trimmed": "Mystic"
+    "title_original_trimmed": "Mystic",
+    "confirmed": true
   },
   "6871": {
     "ipdb": "2853",
@@ -11214,7 +11502,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/2/Playfield2.jpg",
     "title_original": "Abra Ca Dabra (Gottlieb 1975).zip",
-    "title_original_trimmed": "Abra Ca Dabra"
+    "title_original_trimmed": "Abra Ca Dabra",
+    "confirmed": true
   },
   "6879": {
     "ipdb": "20",
@@ -11223,7 +11512,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/20/Playfield.jpg",
     "title_original": "Addams Family, The (Bally 1992).zip",
-    "title_original_trimmed": "Addams Family, The"
+    "title_original_trimmed": "Addams Family, The",
+    "confirmed": true
   },
   "6880": {
     "ipdb": "3781",
@@ -11232,7 +11522,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
     "title_original": "Attack From Mars (Midway 1995).zip",
-    "title_original_trimmed": "Attack From Mars"
+    "title_original_trimmed": "Attack From Mars",
+    "confirmed": true
   },
   "6881": {
     "ipdb": "127",
@@ -11241,16 +11532,17 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/127/image-5.jpg",
     "title_original": "Bad Cats (Williams 1989).zip",
-    "title_original_trimmed": "Bad Cats"
+    "title_original_trimmed": "Bad Cats",
+    "confirmed": true
   },
   "6882": {
     "ipdb": "175",
     "title": "Banzai Run",
     "year": "1988",
     "manufacturer": "Williams",
-    "img": "http://www.ipdb.org/images/2820/image-1.jpg",
+    "img": "http://www.ipdb.org/images/175/image-4.jpg",
     "title_original": "Banzai Run (Williams 1988).zip",
-    "title_original_trimmed": "Banzai Run"
+    "confirmed": true
   },
   "6885": {
     "ipdb": "3784",
@@ -11315,10 +11607,10 @@
   },
   "6913": {
     "name": "Grateful Dead",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Grateful Dead (2012) [HP VIDEO]",
-    "title_original_trimmed": "Grateful Dead"
+    "title_original_trimmed": "Grateful Dead",
+    "confirmed": true,
+    "type": "OG"
   },
   "6914": {
     "ipdb": "959",
@@ -11327,21 +11619,22 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/959/image-2.jpg",
     "title_original": "Frontier (Bally 1980) [HP VIDEO]",
-    "title_original_trimmed": "Frontier"
+    "title_original_trimmed": "Frontier",
+    "confirmed": true
   },
   "6915": {
     "name": "Black Sabbath 80's",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Black Sabbath 80's (2012) [HP VIDEO]",
-    "title_original_trimmed": "Black Sabbath 80's"
+    "title_original_trimmed": "Black Sabbath 80's",
+    "confirmed": true,
+    "type": "OG"
   },
   "6916": {
     "name": "Black Sabbath 70's",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Black Sabbath 70's (2012) [HP VIDEO]",
-    "title_original_trimmed": "Black Sabbath 70's"
+    "title_original_trimmed": "Black Sabbath 70's",
+    "confirmed": true,
+    "type": "OG"
   },
   "6926": {
     "ipdb": "2505",
@@ -11399,7 +11692,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
     "title_original": "Tales of the Arabian Nights (Williams 1996) [HP VIDEO]",
-    "title_original_trimmed": "Tales of the Arabian Nights"
+    "title_original_trimmed": "Tales of the Arabian Nights",
+    "confirmed": true
   },
   "6951": {
     "name": "Rush2112",
@@ -11410,10 +11704,10 @@
   },
   "6954": {
     "name": "Rush 2112",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Rush 2112 [HP VIDEO]",
-    "title_original_trimmed": "Rush 2112"
+    "title_original_trimmed": "Rush 2112",
+    "confirmed": true,
+    "type": "OG"
   },
   "6958": {
     "ipdb": "570",
@@ -11422,7 +11716,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/570/Playfield.jpg",
     "title_original": "Corvette (Bally 1994) [HP VIDEO]",
-    "title_original_trimmed": "Corvette"
+    "title_original_trimmed": "Corvette",
+    "confirmed": true
   },
   "6964": {
     "ipdb": "4917",
@@ -11458,7 +11753,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4014/Playfield.jpg",
     "title_original": "Junk Yard (Williams 1996) [HP VIDEO]",
-    "title_original_trimmed": "Junk Yard"
+    "title_original_trimmed": "Junk Yard",
+    "confirmed": true
   },
   "6979": {
     "ipdb": "4445",
@@ -11498,10 +11794,10 @@
   },
   "6988": {
     "name": "Flash 3179",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Flash 3179 (cwg29 2012) [HP VIDEO]",
-    "title_original_trimmed": "Flash 3179"
+    "title_original_trimmed": "Flash 3179",
+    "confirmed": true,
+    "type": "OG"
   },
   "6989": {
     "ipdb": "2820",
@@ -11520,7 +11816,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/571/Playfield.jpg",
     "title_original": "Cosmic Gunfight (Williams 1982) [HP VIDEO]",
-    "title_original_trimmed": "Cosmic Gunfight"
+    "title_original_trimmed": "Cosmic Gunfight",
+    "confirmed": true
   },
   "6993": {
     "ipdb": "959",
@@ -11616,13 +11913,10 @@
     "type": "OG"
   },
   "7022": {
-    "ipdb": "5767",
-    "title": "ACDC (Pro)",
-    "year": "2012",
-    "manufacturer": "Stern",
-    "img": null,
     "title_original": "ACDC (JP 2012) [HP VIDEO]",
-    "title_original_trimmed": "ACDC"
+    "title_original_trimmed": "ACDC",
+    "confirmed": true,
+    "type": "OG"
   },
   "7026": {
     "ipdb": "1233",
@@ -11710,7 +12004,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2847/image-12.jpg",
     "title_original": "Stargate (Premier 1995) [HP VIDEO]",
-    "title_original_trimmed": "Stargate"
+    "title_original_trimmed": "Stargate",
+    "confirmed": true
   },
   "7060": {
     "ipdb": "2847",
@@ -11851,7 +12146,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2403/image-2.jpg",
     "title_original": "Street Fighter II (Gottlieb 1993) [HP VIDEO]",
-    "title_original_trimmed": "Street Fighter II"
+    "title_original_trimmed": "Street Fighter II",
+    "confirmed": true
   },
   "7128": {
     "ipdb": "2158",
@@ -11860,7 +12156,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2158/Playfield.jpg",
     "title_original": "The Simpsons (Data East 1990) [HP VIDEO]",
-    "title_original_trimmed": "The Simpsons"
+    "title_original_trimmed": "The Simpsons",
+    "confirmed": true
   },
   "7129": {
     "ipdb": "1011",
@@ -11901,11 +12198,10 @@
   },
   "7133": {
     "name": "311",
-    "manufacturer": "Aaron James",
-    "year": "2012",
-    "error": "********** NO MATCH **********",
     "title_original": "311 (Aaron James 2012) [HP VIDEO]",
-    "title_original_trimmed": "311"
+    "title_original_trimmed": "311",
+    "confirmed": true,
+    "type": "OG"
   },
   "7142": {
     "ipdb": "2455",
@@ -11963,7 +12259,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1000/image-4.jpg",
     "title_original": "Getaway - High Speed 2 (Williams 1992)night [HP VIDEO]",
-    "title_original_trimmed": "Getaway   High Speed 2"
+    "title_original_trimmed": "Getaway   High Speed 2",
+    "confirmed": true
   },
   "7150": {
     "ipdb": "242",
@@ -12170,7 +12467,8 @@
     "manufacturer": "Game Plan",
     "img": "http://www.ipdb.org/images/619/image-3.jpg",
     "title_original": "Cyclopes (Gameplan 1985) [HP VIDEO]",
-    "title_original_trimmed": "Cyclopes"
+    "title_original_trimmed": "Cyclopes",
+    "confirmed": true
   },
   "7176": {
     "ipdb": "2358",
@@ -12357,7 +12655,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4059/image-16.jpg",
     "title_original": "Cirqus Voltaire (Bally 1997)night [HP VIDEO]",
-    "title_original_trimmed": "Cirqus Voltaire"
+    "title_original_trimmed": "Cirqus Voltaire",
+    "confirmed": true
   },
   "7214": {
     "ipdb": "806",
@@ -12436,7 +12735,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1414/image-3.jpg",
     "title_original": "Laser Cue (Williams 1984) [HP VIDEO]",
-    "title_original_trimmed": "Laser Cue"
+    "title_original_trimmed": "Laser Cue",
+    "confirmed": true
   },
   "7226": {
     "ipdb": "1414",
@@ -12619,7 +12919,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4787/image-6.jpg",
     "title_original": "Terminator 3 (Stern 2003) BLUEandRED mod [HP VIDEO]",
-    "title_original_trimmed": "Terminator 3"
+    "title_original_trimmed": "Terminator 3",
+    "confirmed": true
   },
   "7254": {
     "ipdb": "953",
@@ -12658,7 +12959,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/953/image-2.jpg",
     "title_original": "Freefall (Stern 1981) [HP VIDEO]",
-    "title_original_trimmed": "Freefall"
+    "title_original_trimmed": "Freefall",
+    "confirmed": true
   },
   "7261": {
     "ipdb": "3675",
@@ -12788,11 +13090,10 @@
   },
   "7290": {
     "name": "Scarface - Balls and Power",
-    "manufacturer": "JP",
-    "year": "2013",
-    "error": "********** NO MATCH **********",
     "title_original": "Scarface - Balls and Power (JP 2013) [HP VIDEO]",
-    "title_original_trimmed": "Scarface   Balls and Power"
+    "title_original_trimmed": "Scarface   Balls and Power",
+    "confirmed": true,
+    "type": "OG"
   },
   "7292": {
     "name": "Scarface   Balls and Power",
@@ -12846,7 +13147,8 @@
     "manufacturer": "Game Plan",
     "img": "http://www.ipdb.org/images/2113/Playfield.jpg",
     "title_original": "Sharpshooter (Gameplan 1979) [HP VIDEO]",
-    "title_original_trimmed": "Sharpshooter"
+    "title_original_trimmed": "Sharpshooter",
+    "confirmed": true
   },
   "7304": {
     "name": "Daffy Duck",
@@ -13099,19 +13401,17 @@
   },
   "7400": {
     "name": "Skrillex",
-    "manufacturer": "OG",
-    "year": "2012",
-    "error": "********** NO MATCH **********",
     "title_original": "Skrillex (OG 2012) [HP VIDEO]",
-    "title_original_trimmed": "Skrillex"
+    "title_original_trimmed": "Skrillex",
+    "confirmed": true,
+    "type": "OG"
   },
   "7401": {
     "name": "Def Leppard",
-    "manufacturer": "OG",
-    "year": "2012",
-    "error": "********** NO MATCH **********",
     "title_original": "Def Leppard (OG 2012) [HP VIDEO]",
-    "title_original_trimmed": "Def Leppard"
+    "title_original_trimmed": "Def Leppard",
+    "confirmed": true,
+    "type": "OG"
   },
   "7402": {
     "ipdb": "2455",
@@ -13120,7 +13420,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2455/Playfield.jpg",
     "title_original": "Supersonic (Bally 1979) [HP VIDEO]",
-    "title_original_trimmed": "Supersonic"
+    "title_original_trimmed": "Supersonic",
+    "confirmed": true
   },
   "7408": {
     "ipdb": "4097",
@@ -13139,7 +13440,8 @@
     "manufacturer": "Playmatic",
     "img": "http://www.ipdb.org/images/3276/image-4.jpg",
     "title_original": "Trailer (Playmatic 1985) [HP VIDEO]",
-    "title_original_trimmed": "Trailer"
+    "title_original_trimmed": "Trailer",
+    "confirmed": true
   },
   "7414": {
     "ipdb": "1633",
@@ -13178,7 +13480,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4054/image-7.jpg",
     "title_original": "Star Wars Trilogy (Sega 1997) [HP VIDEO]",
-    "title_original_trimmed": "Star Wars Trilogy"
+    "title_original_trimmed": "Star Wars Trilogy",
+    "confirmed": true
   },
   "7422": {
     "ipdb": "2465",
@@ -13731,13 +14034,10 @@
     "confirmed": true
   },
   "7666": {
-    "ipdb": "438",
-    "title": "Capt. Fantastic and The Brown Dirt Cowboy",
-    "year": "1975",
-    "manufacturer": "Bally",
-    "img": "http://www.ipdb.org/images/438/image-1.jpg",
     "title_original": "Party Nation (Aaron James 2013) [HP VIDEO]",
-    "title_original_trimmed": "Party Nation"
+    "title_original_trimmed": "Party Nation",
+    "confirmed": true,
+    "type": "OG"
   },
   "7667": {
     "ipdb": "1976",
@@ -13746,7 +14046,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1976/image-1.jpg",
     "title_original": "Robocop (Data East 1990)night [HP VIDEO]",
-    "title_original_trimmed": "Robocop"
+    "title_original_trimmed": "Robocop",
+    "confirmed": true
   },
   "7669": {
     "name": "Linkin Park",
@@ -13798,16 +14099,17 @@
     "manufacturer": "Alvin G.",
     "img": "http://www.ipdb.org/images/3513/image-2.jpg",
     "title_original": "Al's Garage Band Goes On World Tour (Alivin G. 1992) [HP VIDEO]",
-    "title_original_trimmed": "Al's Garage Band Goes On World Tour"
+    "title_original_trimmed": "Al's Garage Band Goes On World Tour",
+    "confirmed": true
   },
   "7696": {
     "ipdb": "645",
     "title": "Deadly Weapon",
     "year": "1990",
     "manufacturer": "Premier",
-    "img": "http://www.ipdb.org/images/2152/image-2.jpg",
+    "img": "http://www.ipdb.org/images/645/image-4.jpg",
     "title_original": "Deadly Weapon (Gottlieb 1990) [HP VIDEO]",
-    "title_original_trimmed": "Deadly Weapon"
+    "confirmed": true
   },
   "7700": {
     "name": "Black Sabbath 80s",
@@ -13824,11 +14126,13 @@
     "type": "OG"
   },
   "7708": {
-    "name": "Star Trek Updated Table Video",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "2357",
+    "title": "Star Trek: The Next Generation",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2357/image-17.jpg",
     "title_original": "Star Trek Updated Table Video",
-    "title_original_trimmed": "Star Trek Updated Table Video"
+    "confirmed": true
   },
   "7773": {
     "ipdb": "128",
@@ -13837,7 +14141,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/128/Playfield.jpg",
     "title_original": "Bad Girls (Gottlieb 1988) (TAB) HP Video",
-    "title_original_trimmed": "Bad Girls"
+    "title_original_trimmed": "Bad Girls",
+    "confirmed": true
   },
   "7776": {
     "ipdb": "3976",
@@ -13875,7 +14180,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
     "title_original": "Attack From Mars (Bally 1995)night [HP VIDEO]",
-    "title_original_trimmed": "Attack From Mars"
+    "title_original_trimmed": "Attack From Mars",
+    "confirmed": true
   },
   "7800": {
     "ipdb": "48",
@@ -15187,7 +15493,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2528/Playfield.jpg",
     "title_original": "The Shadow (Bally 1994)night [HP VIDEO]",
-    "title_original_trimmed": "The Shadow"
+    "title_original_trimmed": "The Shadow",
+    "confirmed": true
   },
   "7949": {
     "ipdb": "5767",
@@ -16670,7 +16977,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/307/image-3.jpg",
     "title_original": "Black Hole (Gottlieb 1981) [HP PF VIDEO]",
-    "title_original_trimmed": "Black Hole"
+    "title_original_trimmed": "Black Hole",
+    "confirmed": true
   },
   "8130": {
     "ipdb": "3717",
@@ -16688,7 +16996,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4032/image-7.jpg",
     "title_original": "Medieval Madness (Williams 1997)Night [HP VIDEO]",
-    "title_original_trimmed": "Medieval Madness"
+    "title_original_trimmed": "Medieval Madness",
+    "confirmed": true
   },
   "8144": {
     "ipdb": "1977",
@@ -16707,7 +17016,8 @@
     "manufacturer": "Zaccaria",
     "img": "http://www.ipdb.org/images/1977/image-10.jpg",
     "title_original": "Robot (Zaccaria 1985) [HP VIDEO]",
-    "title_original_trimmed": "Robot"
+    "title_original_trimmed": "Robot",
+    "confirmed": true
   },
   "8147": {
     "ipdb": "1977",
@@ -16742,7 +17052,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/1885/Playfield.jpg",
     "title_original": "Q-Bert's Quest (Gottlieb 1983) [HP VIDEO]",
-    "title_original_trimmed": "Q Bert's Quest"
+    "title_original_trimmed": "Q Bert's Quest",
+    "confirmed": true
   },
   "8166": {
     "ipdb": "614",
@@ -16950,7 +17261,8 @@
     "manufacturer": "Capcom",
     "img": "http://www.ipdb.org/images/3784/Playfield.jpg",
     "title_original": "Breakshot (Capcom 1996) [HP VIDEO]",
-    "title_original_trimmed": "Breakshot"
+    "title_original_trimmed": "Breakshot",
+    "confirmed": true
   },
   "8201": {
     "ipdb": "588",
@@ -17048,7 +17360,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4445/image-6.jpg",
     "title_original": "Cactus Canyon (Midway 1998)night [HP VIDEO]",
-    "title_original_trimmed": "Cactus Canyon"
+    "title_original_trimmed": "Cactus Canyon",
+    "confirmed": true
   },
   "8231": {
     "ipdb": "48",
@@ -17134,7 +17447,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1308/image-9.jpg",
     "title_original": "Jokerz! (Williams 1988)night [HP VIDEO]",
-    "title_original_trimmed": "Jokerz!"
+    "title_original_trimmed": "Jokerz!",
+    "confirmed": true
   },
   "8263": {
     "ipdb": "4478",
@@ -17182,7 +17496,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4506/image-4.jpg",
     "title_original": "Playboy (Stern 2002) [HP VIDEO]",
-    "title_original_trimmed": "Playboy"
+    "title_original_trimmed": "Playboy",
+    "confirmed": true
   },
   "8279": {
     "ipdb": "2261",
@@ -18338,7 +18653,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1233/image-1.jpg",
     "title_original": "Hook (Data East 1992) [HP VIDEO]",
-    "title_original_trimmed": "Hook"
+    "title_original_trimmed": "Hook",
+    "confirmed": true
   },
   "8448": {
     "ipdb": "2579",
@@ -18347,7 +18663,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2579/Playfield.jpg",
     "title_original": "Tommy The Pinball Wizard (Data East 1994)night [HP VIDEO]",
-    "title_original_trimmed": "Tommy The Pinball Wizard"
+    "title_original_trimmed": "Tommy The Pinball Wizard",
+    "confirmed": true
   },
   "8450": {
     "ipdb": "1233",
@@ -18656,15 +18973,15 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/250/image-4.jpg",
     "title_original": "Big Guns (Williams 1987) [HP VIDEO]",
-    "title_original_trimmed": "Big Guns"
+    "title_original_trimmed": "Big Guns",
+    "confirmed": true
   },
   "8484": {
     "name": "Red Dwarf",
-    "manufacturer": "Crapola",
-    "year": "2012",
-    "error": "********** NO MATCH **********",
     "title_original": "Red Dwarf (Crapola 2012) [HP VIDEO]",
-    "title_original_trimmed": "Red Dwarf"
+    "title_original_trimmed": "Red Dwarf",
+    "confirmed": true,
+    "type": "OG"
   },
   "8491": {
     "ipdb": "2641",
@@ -18701,7 +19018,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2641/Playfield.jpg",
     "title_original": "Tri Zone (Williams 1979) [HP VIDEO]",
-    "title_original_trimmed": "Tri Zone"
+    "title_original_trimmed": "Tri Zone",
+    "confirmed": true
   },
   "8502": {
     "ipdb": "2641",
@@ -18765,7 +19083,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3782/Playfield.jpg",
     "title_original": "Safe Cracker (Bally 1996) [HP VIDEO]",
-    "title_original_trimmed": "Safe Cracker"
+    "title_original_trimmed": "Safe Cracker",
+    "confirmed": true
   },
   "8548": {
     "ipdb": "3782",
@@ -18816,7 +19135,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1267/image-14.jpg",
     "title_original": "Indiana Jones (Williams 1993)night [HP VIDEO]",
-    "title_original_trimmed": "Indiana Jones"
+    "title_original_trimmed": "Indiana Jones",
+    "confirmed": true
   },
   "8557": {
     "ipdb": "4504",
@@ -18850,7 +19170,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1415/Playfield.jpg",
     "title_original": "Laser War (Data East 1987) [HP VIDEO]",
-    "title_original_trimmed": "Laser War"
+    "title_original_trimmed": "Laser War",
+    "confirmed": true
   },
   "8567": {
     "ipdb": "1415",
@@ -18877,6 +19198,7 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2768/image-25.jpg",
     "title_original": "Whitewater (Williams 1993)night [HP VIDEO]",
-    "title_original_trimmed": "Whitewater"
+    "title_original_trimmed": "Whitewater",
+    "confirmed": true
   }
 }
