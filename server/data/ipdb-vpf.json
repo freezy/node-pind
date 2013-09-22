@@ -17227,7 +17227,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4032/image-7.jpg",
     "title_original": "Medieval Madness [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Medieval Madness"
+    "title_original_trimmed": "Medieval Madness",
+    "confirmed": true
   },
   "8288": {
     "ipdb": "311",
@@ -17236,14 +17237,17 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/311/Playfield.jpg",
     "title_original": "Black Knight 2000 [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Black Knight 2000"
+    "title_original_trimmed": "Black Knight 2000",
+    "confirmed": true
   },
   "8289": {
-    "name": "Terminator 2 Chorme Edition",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "2524",
+    "title": "Terminator 2: Judgment Day",
+    "year": "1991",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2524/image-2.jpg",
     "title_original": "Terminator 2 Chorme Edition [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Terminator 2 Chorme Edition"
+    "confirmed": true
   },
   "8291": {
     "ipdb": "3781",
@@ -17252,14 +17256,17 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
     "title_original": "Attack from Mars - Night Mod [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Attack from Mars"
+    "title_original_trimmed": "Attack from Mars",
+    "confirmed": true
   },
   "8292": {
-    "name": "Scared Stiff GI",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
     "title_original": "Scared Stiff GI MOD [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Scared Stiff GI"
+    "confirmed": true
   },
   "8293": {
     "ipdb": "20",
@@ -17268,16 +17275,17 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/20/Playfield.jpg",
     "title_original": "The Addams Family [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "The Addams Family"
+    "title_original_trimmed": "The Addams Family",
+    "confirmed": true
   },
   "8294": {
-    "ipdb": "4652",
+    "ipdb": "1267",
     "title": "Indiana Jones: The Pinball Adventure",
     "year": "1993",
-    "manufacturer": "Unidesa",
+    "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1267/image-14.jpg",
     "title_original": "Indiana Jones (Williams) [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Indiana Jones"
+    "confirmed": true
   },
   "8295": {
     "ipdb": "313",
@@ -17286,14 +17294,17 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/313/image-2.jpg",
     "title_original": "Black Rose [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Black Rose"
+    "title_original_trimmed": "Black Rose",
+    "confirmed": true
   },
   "8296": {
-    "name": "Pinbot BMPR Physics",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "1796",
+    "title": "PINBOT",
+    "year": "1986",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1796/Playfield.jpg",
     "title_original": "Pinbot BMPR Physics MOD [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Pinbot BMPR Physics"
+    "confirmed": true
   },
   "8297": {
     "ipdb": "2684",
@@ -17302,7 +17313,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2684/image-1.jpg",
     "title_original": "Twilight Zone [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Twilight Zone"
+    "title_original_trimmed": "Twilight Zone",
+    "confirmed": true
   },
   "8298": {
     "ipdb": "782",
@@ -17311,7 +17323,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/782/Playfield.jpg",
     "title_original": "Elvira and the Party Monsters [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Elvira and the Party Monsters"
+    "title_original_trimmed": "Elvira and the Party Monsters",
+    "confirmed": true
   },
   "8301": {
     "ipdb": "2811",
@@ -17320,7 +17333,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2811/image-8.jpg",
     "title_original": "World Cup Soccer [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "World Cup Soccer"
+    "title_original_trimmed": "World Cup Soccer",
+    "confirmed": true
   },
   "8302": {
     "ipdb": "2579",
@@ -17329,7 +17343,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2579/Playfield.jpg",
     "title_original": "Tommy The Pinball Wizard [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Tommy The Pinball Wizard"
+    "title_original_trimmed": "Tommy The Pinball Wizard",
+    "confirmed": true
   },
   "8303": {
     "ipdb": "4441",
@@ -17338,7 +17353,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4441/image-2.jpg",
     "title_original": "Monster Bash [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Monster Bash"
+    "title_original_trimmed": "Monster Bash",
+    "confirmed": true
   },
   "8304": {
     "ipdb": "4023",
@@ -17347,7 +17363,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4023/image-10.jpg",
     "title_original": "NBA Fastbreak [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "NBA Fastbreak"
+    "title_original_trimmed": "NBA Fastbreak",
+    "confirmed": true
   },
   "8305": {
     "ipdb": "2853",
@@ -17356,7 +17373,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2853/Playfield.jpg",
     "title_original": "Indianapolis 500 [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Indianapolis 500"
+    "title_original_trimmed": "Indianapolis 500",
+    "confirmed": true
   },
   "8311": {
     "ipdb": "804",
@@ -17365,7 +17383,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/804/image-4.jpg",
     "title_original": "F-14 Tomcat [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "F 14 Tomcat"
+    "title_original_trimmed": "F 14 Tomcat",
+    "confirmed": true
   },
   "8312": {
     "ipdb": "3878",
@@ -17374,7 +17393,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/3878/image-2.jpg",
     "title_original": "Independence Day [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Independence Day"
+    "title_original_trimmed": "Independence Day",
+    "confirmed": true
   },
   "8314": {
     "ipdb": "947",
@@ -17383,7 +17403,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/947/Playfield.jpg",
     "title_original": "Frankenstein [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Frankenstein"
+    "title_original_trimmed": "Frankenstein",
+    "confirmed": true
   },
   "8319": {
     "ipdb": "4445",
@@ -17392,7 +17413,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4445/image-6.jpg",
     "title_original": "Cactus Canyon [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Cactus Canyon"
+    "title_original_trimmed": "Cactus Canyon",
+    "confirmed": true
   },
   "8321": {
     "ipdb": "681",
@@ -17401,7 +17423,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/681/image-2.jpg",
     "title_original": "Diner [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Diner"
+    "title_original_trimmed": "Diner",
+    "confirmed": true
   },
   "8322": {
     "ipdb": "4182",
@@ -17410,7 +17433,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3780/image-2.jpg",
     "title_original": "Congo [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Congo"
+    "title_original_trimmed": "Congo",
+    "confirmed": true
   },
   "8323": {
     "ipdb": "1433",
@@ -17419,7 +17443,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1433/image-2.jpg",
     "title_original": "Lethal Weapon 3 [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Lethal Weapon 3"
+    "title_original_trimmed": "Lethal Weapon 3",
+    "confirmed": true
   },
   "8324": {
     "ipdb": "4341",
@@ -17428,7 +17453,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4341/image-4.jpg",
     "title_original": "Starship Troopers [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Starship Troopers"
+    "title_original_trimmed": "Starship Troopers",
+    "confirmed": true
   },
   "8325": {
     "ipdb": "1966",
@@ -17437,7 +17463,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1966/image-4.jpg",
     "title_original": "Riverboat Gambler [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Riverboat Gambler"
+    "title_original_trimmed": "Riverboat Gambler",
+    "confirmed": true
   },
   "8326": {
     "ipdb": "4059",
@@ -17446,7 +17473,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4059/image-16.jpg",
     "title_original": "Cirqus Voltaire Night Mod [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Cirqus Voltaire"
+    "title_original_trimmed": "Cirqus Voltaire",
+    "confirmed": true
   },
   "8327": {
     "ipdb": "2845",
@@ -17455,7 +17483,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2845/image-12.jpg",
     "title_original": "Theatre of Magic [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Theatre of Magic"
+    "title_original_trimmed": "Theatre of Magic",
+    "confirmed": true
   },
   "8328": {
     "ipdb": "3824",
@@ -17464,14 +17493,17 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
     "title_original": "TOTAN [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "TOTAN"
+    "title_original_trimmed": "TOTAN",
+    "confirmed": true
   },
   "8329": {
-    "name": "TOTAN Night",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "3824",
+    "title": "Tales of the Arabian Nights",
+    "year": "1996",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
     "title_original": "TOTAN Night [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "TOTAN Night"
+    "confirmed": true
   },
   "8330": {
     "ipdb": "3350",
@@ -17480,7 +17512,8 @@
     "manufacturer": "Exhibit",
     "img": "http://www.ipdb.org/images/3976/Playfield.jpg",
     "title_original": "Twister [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Twister"
+    "title_original_trimmed": "Twister",
+    "confirmed": true
   },
   "8333": {
     "ipdb": "4059",
@@ -17489,7 +17522,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4059/image-16.jpg",
     "title_original": "Cirqus Voltaire [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Cirqus Voltaire"
+    "title_original_trimmed": "Cirqus Voltaire",
+    "confirmed": true
   },
   "8334": {
     "ipdb": "2760",
@@ -17498,7 +17532,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/2760/Playfield.jpg",
     "title_original": "Whirlwind [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Whirlwind"
+    "title_original_trimmed": "Whirlwind",
+    "confirmed": true
   },
   "8335": {
     "ipdb": "1100",
@@ -17507,7 +17542,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1100/image-11.jpg",
     "title_original": "Guns and Roses [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Guns and Roses"
+    "title_original_trimmed": "Guns and Roses",
+    "confirmed": true
   },
   "8336": {
     "ipdb": "1972",
@@ -17516,7 +17552,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1972/image-8.jpg",
     "title_original": "Red and Ted's Roadshow [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Red and Ted's Roadshow"
+    "title_original_trimmed": "Red and Ted's Roadshow",
+    "confirmed": true
   },
   "8339": {
     "ipdb": "1635",
@@ -17525,7 +17562,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1635/image-12.jpg",
     "title_original": "Mousin' around [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Mousin' around"
+    "title_original_trimmed": "Mousin' around",
+    "confirmed": true
   },
   "8340": {
     "ipdb": "4054",
@@ -17534,7 +17572,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4054/image-7.jpg",
     "title_original": "Star Wars Trilogy [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Star Wars Trilogy"
+    "title_original_trimmed": "Star Wars Trilogy",
+    "confirmed": true
   },
   "8342": {
     "ipdb": "662",
@@ -17543,7 +17582,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/662/image-35.jpg",
     "title_original": "Demolition Man [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Demolition Man"
+    "title_original_trimmed": "Demolition Man",
+    "confirmed": true
   },
   "8344": {
     "ipdb": "1635",
@@ -17571,7 +17611,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/684/Playfield.jpg",
     "title_original": "Dirty Harry [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Dirty Harry"
+    "title_original_trimmed": "Dirty Harry",
+    "confirmed": true
   },
   "8348": {
     "ipdb": "1343",
@@ -17580,14 +17621,17 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1343/image-6.jpg",
     "title_original": "Jurassic Park [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Jurassic Park"
+    "title_original_trimmed": "Jurassic Park",
+    "confirmed": true
   },
   "8349": {
-    "name": "The",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "985",
+    "title": "The Bally Game Show",
+    "year": "1990",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/985/image-6.jpg",
     "title_original": "The Bally Game Show [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "The"
+    "confirmed": true
   },
   "8350": {
     "ipdb": "3072",
@@ -17596,7 +17640,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3072/Playfield.jpg",
     "title_original": "Bram Stoker's Dracula [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Bram Stoker's Dracula"
+    "title_original_trimmed": "Bram Stoker's Dracula",
+    "confirmed": true
   },
   "8351": {
     "ipdb": "3792",
@@ -17605,7 +17650,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/3792/image-7.jpg",
     "title_original": "Goldeneye [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Goldeneye"
+    "title_original_trimmed": "Goldeneye",
+    "confirmed": true
   },
   "8355": {
     "ipdb": "861",
@@ -17614,7 +17660,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/861/image-2.jpg",
     "title_original": "Fish Tales [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Fish Tales"
+    "title_original_trimmed": "Fish Tales",
+    "confirmed": true
   },
   "8356": {
     "ipdb": "2848",
@@ -17623,50 +17670,53 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/2848/image-4.jpg",
     "title_original": "Baywatch [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Baywatch"
+    "title_original_trimmed": "Baywatch",
+    "confirmed": true
   },
   "8357": {
-    "ipdb": "4927",
+    "ipdb": "617",
     "title": "Cyclone",
-    "year": "1932",
-    "manufacturer": "Delmar",
-    "img": "http://www.ipdb.org/images/618/image-1.jpg",
+    "year": "1988",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/617/Playfield.jpg",
     "title_original": "Cyclone [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Cyclone"
+    "confirmed": true
   },
   "8368": {
-    "ipdb": "2354",
+    "ipdb": "2356",
     "title": "Star Trek",
-    "year": "1971",
-    "manufacturer": "Gottlieb",
-    "img": "http://www.ipdb.org/images/2354/Playfield.jpg",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2356/Playfield.jpg",
     "title_original": "Star Trek 25th Anniversary [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Star Trek 25th Anniversary"
+    "confirmed": true
   },
   "8369": {
-    "ipdb": "5136",
+    "ipdb": "888",
     "title": "The Flintstones",
     "year": "1994",
-    "manufacturer": "ICE",
-    "img": "http://www.ipdb.org/images/5136/image-2.jpg",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/888/image-8.jpg",
     "title_original": "Flintstones [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Flintstones"
+    "confirmed": true
   },
   "8370": {
     "ipdb": "175",
     "title": "Banzai Run",
     "year": "1988",
     "manufacturer": "Williams",
-    "img": "http://www.ipdb.org/images/2820/image-1.jpg",
+    "img": "http://www.ipdb.org/images/175/image-4.jpg",
     "title_original": "Banzai Run [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Banzai Run"
+    "confirmed": true
   },
   "8371": {
-    "name": "Batman BMPR",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "195",
+    "title": "Batman",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/195/image-2.jpg",
     "title_original": "Batman BMPR [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Batman BMPR"
+    "confirmed": true
   },
   "8372": {
     "ipdb": "2486",
@@ -17675,7 +17725,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2486/image-2.jpg",
     "title_original": "Swords of Fury [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Swords of Fury"
+    "title_original_trimmed": "Swords of Fury",
+    "confirmed": true
   },
   "8373": {
     "ipdb": "2528",
@@ -17684,7 +17735,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2528/Playfield.jpg",
     "title_original": "The Shadow [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "The Shadow"
+    "title_original_trimmed": "The Shadow",
+    "confirmed": true
   },
   "8374": {
     "ipdb": "2358",
@@ -17693,7 +17745,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2358/Playfield.jpg",
     "title_original": "Star Wars (Data East 1992)",
-    "title_original_trimmed": "Star Wars"
+    "title_original_trimmed": "Star Wars",
+    "confirmed": true
   },
   "8375": {
     "ipdb": "2852",
@@ -17702,7 +17755,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2852/image-2.jpg",
     "title_original": "No Fear-Dangerous Sports [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "No Fear Dangerous Sports"
+    "title_original_trimmed": "No Fear Dangerous Sports",
+    "confirmed": true
   },
   "8376": {
     "ipdb": "3683",
@@ -17711,7 +17765,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3683/Playfield.jpg",
     "title_original": "Johnny Mnemonic [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Johnny Mnemonic"
+    "title_original_trimmed": "Johnny Mnemonic",
+    "confirmed": true
   },
   "8378": {
     "ipdb": "3619",
@@ -17720,7 +17775,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3619/image-2.jpg",
     "title_original": "Jack-Bot [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Jack Bot"
+    "title_original_trimmed": "Jack Bot",
+    "confirmed": true
   },
   "8379": {
     "ipdb": "753",
@@ -17729,7 +17785,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/753/image-7.jpg",
     "title_original": "Earthshaker [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Earthshaker"
+    "title_original_trimmed": "Earthshaker",
+    "confirmed": true
   },
   "8380": {
     "ipdb": "1322",
@@ -17738,7 +17795,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1322/image-1.jpg",
     "title_original": "Judge Dredd [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Judge Dredd"
+    "title_original_trimmed": "Judge Dredd",
+    "confirmed": true
   },
   "8381": {
     "ipdb": "2006",
@@ -17747,7 +17805,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2006/image-4.jpg",
     "title_original": "Rollergames [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Rollergames"
+    "title_original_trimmed": "Rollergames",
+    "confirmed": true
   },
   "8382": {
     "ipdb": "4014",
@@ -17756,7 +17815,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4014/Playfield.jpg",
     "title_original": "Junk Yard [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Junk Yard"
+    "title_original_trimmed": "Junk Yard",
+    "confirmed": true
   },
   "8383": {
     "ipdb": "3685",
@@ -17765,7 +17825,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3685/Playfield.jpg",
     "title_original": "Who Dunnit [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Who Dunnit"
+    "title_original_trimmed": "Who Dunnit",
+    "confirmed": true
   },
   "8384": {
     "ipdb": "2357",
@@ -17774,7 +17835,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2357/image-17.jpg",
     "title_original": "STTNG [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "STTNG"
+    "title_original_trimmed": "STTNG",
+    "confirmed": true
   },
   "8385": {
     "ipdb": "4338",
@@ -17783,7 +17845,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4338/image-15.jpg",
     "title_original": "No Good Gofers [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "No Good Gofers"
+    "title_original_trimmed": "No Good Gofers",
+    "confirmed": true
   },
   "8386": {
     "ipdb": "610",
@@ -17792,7 +17855,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/610/Playfield.jpg",
     "title_original": "Cueball Wizard [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Cueball Wizard"
+    "title_original_trimmed": "Cueball Wizard",
+    "confirmed": true
   },
   "8387": {
     "ipdb": "737",
@@ -17801,7 +17865,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/737/image-19.jpg",
     "title_original": "Dr Dude [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Dr Dude"
+    "title_original_trimmed": "Dr Dude",
+    "confirmed": true
   },
   "8388": {
     "ipdb": "4858",
@@ -17810,7 +17875,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5558/image-3.jpg",
     "title_original": "Lord of The Rings [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Lord of The Rings"
+    "title_original_trimmed": "Lord of The Rings",
+    "confirmed": true
   },
   "8389": {
     "ipdb": "4505",
@@ -17819,7 +17885,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4505/image-2.jpg",
     "title_original": "Monopoly [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Monopoly"
+    "title_original_trimmed": "Monopoly",
+    "confirmed": true
   },
   "8391": {
     "ipdb": "1745",
@@ -17838,7 +17905,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2508/image-4.jpg",
     "title_original": "Teed Off [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Teed Off"
+    "title_original_trimmed": "Teed Off",
+    "confirmed": true
   },
   "8393": {
     "ipdb": "1777",
@@ -17847,7 +17915,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1777/Playfield.jpg",
     "title_original": "The Phantom Of The Opera [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "The Phantom Of The Opera"
+    "title_original_trimmed": "The Phantom Of The Opera",
+    "confirmed": true
   },
   "8394": {
     "ipdb": "588",
@@ -17856,7 +17925,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/588/image-22.jpg",
     "title_original": "Creature from the Black Lagoon [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Creature from the Black Lagoon"
+    "title_original_trimmed": "Creature from the Black Lagoon",
+    "confirmed": true
   },
   "8395": {
     "ipdb": "528",
@@ -17865,7 +17935,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/528/image-8.jpg",
     "title_original": "Class of 1812 [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Class of 1812"
+    "title_original_trimmed": "Class of 1812",
+    "confirmed": true
   },
   "8396": {
     "ipdb": "126",
@@ -17874,7 +17945,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/126/image-4.jpg",
     "title_original": "Back To The Future [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Back To The Future"
+    "title_original_trimmed": "Back To The Future",
+    "confirmed": true
   },
   "8397": {
     "ipdb": "4137",
@@ -17883,7 +17955,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4137/image-5.jpg",
     "title_original": "X-Files [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "X Files"
+    "title_original_trimmed": "X Files",
+    "confirmed": true
   },
   "8398": {
     "ipdb": "3781",
@@ -17892,7 +17965,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
     "title_original": "Attack from Mars [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Attack from Mars"
+    "title_original_trimmed": "Attack from Mars",
+    "confirmed": true
   },
   "8399": {
     "ipdb": "127",
@@ -17901,7 +17975,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/127/image-5.jpg",
     "title_original": "Bad Cats [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Bad Cats"
+    "title_original_trimmed": "Bad Cats",
+    "confirmed": true
   },
   "8400": {
     "ipdb": "3795",
@@ -17910,7 +17985,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/3795/image-3.jpg",
     "title_original": "Barb Wire [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Barb Wire"
+    "title_original_trimmed": "Barb Wire",
+    "confirmed": true
   },
   "8401": {
     "ipdb": "3591",
@@ -17919,7 +17995,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/3591/image-4.jpg",
     "title_original": "Big Hurt [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Big Hurt"
+    "title_original_trimmed": "Big Hurt",
+    "confirmed": true
   },
   "8402": {
     "ipdb": "4504",
@@ -17928,7 +18005,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4504/image-11.jpg",
     "title_original": "Austin Powers [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Austin Powers"
+    "title_original_trimmed": "Austin Powers",
+    "confirmed": true
   },
   "8403": {
     "ipdb": "948",
@@ -17937,7 +18015,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/948/image-2.jpg",
     "title_original": "Freddy A Nightmare On Elm Street [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Freddy A Nightmare On Elm Street"
+    "title_original_trimmed": "Freddy A Nightmare On Elm Street",
+    "confirmed": true
   },
   "8404": {
     "ipdb": "967",
@@ -17946,7 +18025,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/966/image-4.jpg",
     "title_original": "Funhouse [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Funhouse"
+    "title_original_trimmed": "Funhouse",
+    "confirmed": true
   },
   "8405": {
     "ipdb": "128",
@@ -17955,7 +18035,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/128/Playfield.jpg",
     "title_original": "Bad Girls [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Bad Girls"
+    "title_original_trimmed": "Bad Girls",
+    "confirmed": true
   },
   "8406": {
     "ipdb": "1502",
@@ -17964,7 +18045,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1502/Playfield.jpg",
     "title_original": "Bride Of Pinbot [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Bride Of Pinbot"
+    "title_original_trimmed": "Bride Of Pinbot",
+    "confirmed": true
   },
   "8407": {
     "ipdb": "2847",
@@ -17973,7 +18055,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2847/image-12.jpg",
     "title_original": "Stargate [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Stargate"
+    "title_original_trimmed": "Stargate",
+    "confirmed": true
   },
   "8408": {
     "ipdb": "1000",
@@ -17982,14 +18065,15 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1000/image-4.jpg",
     "title_original": "Getaway - High Speed 2 [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Getaway   High Speed 2"
+    "title_original_trimmed": "Getaway   High Speed 2",
+    "confirmed": true
   },
   "8409": {
     "name": "Scarface   Balls and Power",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Scarface - Balls and Power [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Scarface   Balls and Power"
+    "title_original_trimmed": "Scarface   Balls and Power",
+    "confirmed": true,
+    "type": "OG"
   },
   "8410": {
     "ipdb": "4359",
@@ -17998,7 +18082,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4359/image-1.jpg",
     "title_original": "Viper Night Drivin [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Viper Night Drivin"
+    "title_original_trimmed": "Viper Night Drivin",
+    "confirmed": true
   },
   "8412": {
     "name": "Battle of Britain Backglass Video",
@@ -18086,7 +18171,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2505/Playfield.jpg",
     "title_original": "Taxi [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Taxi"
+    "title_original_trimmed": "Taxi",
+    "confirmed": true
   },
   "8423": {
     "ipdb": "1763",
@@ -18131,7 +18217,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2493/Playfield.jpg",
     "title_original": "Tales from the Crypt [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Tales from the Crypt"
+    "title_original_trimmed": "Tales from the Crypt",
+    "confirmed": true
   },
   "8428": {
     "ipdb": "2110",
@@ -18269,7 +18356,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1233/image-1.jpg",
     "title_original": "Hook [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Hook"
+    "title_original_trimmed": "Hook",
+    "confirmed": true
   },
   "8451": {
     "ipdb": "4443",
@@ -18278,7 +18366,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4443/image-3.jpg",
     "title_original": "Godzilla [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Godzilla"
+    "title_original_trimmed": "Godzilla",
+    "confirmed": true
   },
   "8452": {
     "ipdb": "5053",
@@ -18287,7 +18376,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5053/image-D6.jpg",
     "title_original": "Sopranos [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Sopranos"
+    "title_original_trimmed": "Sopranos",
+    "confirmed": true
   },
   "8453": {
     "ipdb": "66",
@@ -18303,9 +18393,9 @@
     "title": "Super Mario Bros.",
     "year": "1992",
     "manufacturer": "Premier",
-    "img": "http://www.ipdb.org/images/3427/image-2.jpg",
+    "img": "http://www.ipdb.org/images/2435/image-3.jpg",
     "title_original": "Super Mario Bros [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Super Mario Bros"
+    "confirmed": true
   },
   "8455": {
     "ipdb": "98",
@@ -18693,7 +18783,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3782/Playfield.jpg",
     "title_original": "Safe Cracker [HP VIDEO + AUDIO]",
-    "title_original_trimmed": "Safe Cracker"
+    "title_original_trimmed": "Safe Cracker",
+    "confirmed": true
   },
   "8550": {
     "ipdb": "1267",
