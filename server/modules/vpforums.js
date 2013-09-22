@@ -1058,9 +1058,9 @@ VPForums.prototype.cacheAllDownloads = function(callback) {
 	// 47 Hyperpin Videos → HyperPin Preview Videos - Visual Pinball → Playfield Videos - Visual Pinball → Playfield Videos - Visual Pinball - Audio Enabled
 	// 44 Hyperpin Videos → HyperPin Preview Videos - Visual Pinball → Backglass Videos - Visual Pinball
 	// 34 Hyperpin Videos → HyperPin Preview Videos - Future Pinball
-	// 35 Hyperpin Videos → HyperPin Preview Videos - Future Pinball → Playfield Videos - Future Pinball
+	// 45 Hyperpin Videos → HyperPin Preview Videos - Future Pinball → Playfield Videos - Future Pinball
 	// 46 Hyperpin Videos → HyperPin Preview Videos - Future Pinball → Backglass Videos - Future Pinball
-	var categories = [41, 36, 35, 47, 43, 44, 35, 46];
+	var categories = [41, 36, 35, 47, 43, 44, 45, 46];
 	async.eachSeries(categories, function(cat, next) {
 		that._fetchDownloads(cat, null, {
 /*			forceUpdate : true,

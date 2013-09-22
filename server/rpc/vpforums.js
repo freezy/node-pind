@@ -116,7 +116,7 @@ exports.actions = function(req, res, ss) {
 
 		ipdbmatch: function(params) {
 
-			var category = 44;
+			var category = 46;
 			var p = { where: { category: category }, order: 'title' };
 			var map = vpf.getIpdbMap();
 			var queryStart = +new Date();
@@ -200,7 +200,7 @@ exports.actions = function(req, res, ss) {
 							logger.log('error', err);
 							return done();
 						}
-						if (!table.manufacturer) {
+						if (!table.manufacturer && table.ipdb_mfg) {
 							logger.log('error', 'Unknown manufacturer: http://ipdb.org/search.pl?searchtype=advanced&mfgid=' + table.ipdb_mfg);
 							return done();
 						}
