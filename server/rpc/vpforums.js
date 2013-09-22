@@ -116,7 +116,7 @@ exports.actions = function(req, res, ss) {
 
 		ipdbmatch: function(params) {
 
-			var category = 46;
+			var category = 45;
 			var p = { where: { category: category }, order: 'title' };
 			var map = vpf.getIpdbMap();
 			var queryStart = +new Date();
