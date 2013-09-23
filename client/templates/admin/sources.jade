@@ -7,7 +7,7 @@ block vars
 
 block inner-content
 
-	.inner(ng-controller='DataCtrl', resource="vpforums.tables")
+	.inner(ng-controller='DataCtrl', resource="vpforums.all")
 
 		h2 VPForums.org
 
@@ -20,8 +20,17 @@ block inner-content
 			//- number of rows
 			numrows.numrows.input-mini.pull-right(selection='[10, 20, 30]', value='limit')
 
-			//- search box
-			searchbox(value='search', wait='300')
+			//- type filter pills
+			ul.nav.nav-pills.pull-left.filter(filters, value='filters', exclusive)
+				li.active(data-filter="table")
+					a(href="#", title="Cabinet Downloads")
+						i.icon.file
+				li(data-filter="media")
+					a(href="#", title="Media Packs")
+						i.icon.pictures
+				li(data-filter="video")
+					a(href="#", title="Table Videos")
+						i.icon.video
 
 			//- sort pills
 			ul.nav.nav-pills.pull-left.sort(sort, value='sort')
@@ -31,9 +40,18 @@ block inner-content
 				li.current(data-sort="latest")
 					a(href="#") Latest
 				li(data-sort="downloads")
-					a(href="#") By Downloads
+					a(href="#")
+						| By&nbsp;&nbsp;
+						i.icon.download-alt
 				li(data-sort="views")
-					a(href="#") By Views
+					a(href="#")
+						| By&nbsp;&nbsp;
+						i.icon.eye
+
+			//- search box
+			searchbox.pull-left(value='search', wait='300')
+
+
 		.clearfix
 
 		//- data

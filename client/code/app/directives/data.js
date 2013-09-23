@@ -37,15 +37,37 @@ module.exports = function (module) {
 					if (!scope[attrs.value]) {
 						scope[attrs.value] = [];
 					}
-					if (parent.hasClass('active')) {
-						// remove from array
-						scope[attrs.value].splice(scope.filters.indexOf(filter));
+					if (attrs['exclusive']) {
+						if (!parent.hasClass('active')) {
+							// remove other values, since exclusive
+							parent.siblings().each(function() {
+								var f = $(this).data('filter');
+								if (f) {
+									$(this).removeClass('active');
+									if (scope[attrs.value].indexOf(f) > -1) {
+										scope[attrs.value].splice(scope[attrs.value].indexOf(f), 1);
+									}
+								}
+							});
+							scope[attrs.value].push(filter);
+							parent.toggleClass('active');
+							scope.$broadcast('paramsUpdated');
+						}
+
 					} else {
-						// add to array
-						scope[attrs.value].push(filter);
+						if (parent.hasClass('active')) {
+							// remove from array
+							if (scope[attrs.value].indexOf(filter) > -1) {
+								scope[attrs.value].splice(scope[attrs.value].indexOf(filter), 1);
+							}
+						} else {
+							// add to array
+							scope[attrs.value].push(filter);
+						}
+						parent.toggleClass('active');
+						scope.$broadcast('paramsUpdated');
 					}
-					parent.toggleClass('active');
-					scope.$broadcast('paramsUpdated');
+
 				});
 			}
 		}
@@ -96,7 +118,7 @@ module.exports = function (module) {
 			template:
 				'<div class="input-prepend top-pill">' +
 					'<span class="add-on"><i class="icon search"></i></span>' +
-					'<input type="text" class="search input-medium input-pill" placeholder="keywords">' +
+					'<input type="text" class="search input-small input-pill" placeholder="keywords">' +
 					'</div>',
 			link: function(scope, element, attrs) {
 				scope.$on('paramsReset', function() {

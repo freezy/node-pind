@@ -47,14 +47,26 @@ exports.actions = function(req, res, ss) {
 			});
 		},
 
-		tables : function(params) {
+		all : function(params) {
 
 			// access control
 			if (!req.session.userId) return res(error.unauthorized());
 
-			var category = 41;
+			var hasFilter = function(filter) {
+				return params.filters && Array.isArray(params.filters) && _.contains(params.filters, filter);
+			};
+
 			var search = params.search && params.search.length > 1;
-			var p = { where: { category: category }};
+			var p = {};
+
+			// category
+			if (hasFilter('media')) {
+				p.where = { category:  [ 36, 35 ] };
+			} else if (hasFilter('video')) {
+				p.where = { category: [ 47, 43, 44, 45, 46 ] };
+			} else {
+				p.where = { category: 41 };
+			}
 
 			// pagination
 			if (!search) {
@@ -80,7 +92,7 @@ exports.actions = function(req, res, ss) {
 			var query =
 				'SELECT f.*, t.startedAt, t.failedAt, t.completedAt, t.createdAt AS queuedAt, t.id as transferId FROM vpf_files f ' +
 				'LEFT JOIN transfers t ON t.ref_src = f.id ' +
-				'WHERE category = ' + category + ' ' +
+				'WHERE category ' + (_.isArray(p.where.category) ? 'IN (' + p.where.category.join(', ') + ')' : '= ' + p.where.category) + ' ' +
 				'ORDER BY f.' + p.order;
 			if (!search) {
 				query += ' LIMIT ' + p.limit + ' OFFSET ' + p.offset;
@@ -116,16 +128,24 @@ exports.actions = function(req, res, ss) {
 
 		ipdbmatch: function(params) {
 
-			var category = 45;
-			var p = { where: { category: category }, order: 'title' };
+			var hasFilter = function(filter) {
+				return params.filters && Array.isArray(params.filters) && _.contains(params.filters, filter);
+			};
+
+			var p = { order: 'title' };
 			var map = vpf.getIpdbMap();
 			var queryStart = +new Date();
+			//console.log('*** FILTERS = %j', params.filters);
+			if (hasFilter('media')) {
+				p.where = { category:  [ 36, 35 ] };
+			} else if (hasFilter('video')) {
+				p.where = { category: [ 47, 43, 44, 45, 46 ] };
+			} else {
+				p.where = { category: 41 };
+			}
 			schema.VpfFile.all(p).success(function(rows) {
 				var queryTime = (+new Date() - queryStart);
 
-				var hasFilter = function(filter) {
-					return params.filters && Array.isArray(params.filters) && _.contains(params.filters, filter);
-				};
 
 				if (hasFilter('confirmed')) {
 					rows = _.filter(rows, function(row) {

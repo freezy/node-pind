@@ -21,7 +21,7 @@ block content
 						h2 Latest Releases
 
 						div(ng-controller="LatestReleasesCtrl")
-							div(ng-controller="DataCtrl", resource="vpforums.tables")
+							div(ng-controller="DataCtrl", resource="vpforums.all")
 								ul.thumbnails()
 									li.span6.vpf.item(ng-repeat="row in data", ng-controller="SourceItemCtrl", data-id="{{row.id}}", data-transferid="{{row.transferId}}", tb-768-980='span12')
 										.thumbnail

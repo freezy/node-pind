@@ -17,7 +17,7 @@ block inner-content
 		//- number of rows
 		numrows.numrows.input-mini.pull-right(selection='[10, 20, 30]', value='limit')
 
-		//- filter pills
+		//- status filter pills
 		ul.nav.nav-pills.pull-left.filter(filters, value='filters')
 			li
 				.icon
@@ -26,6 +26,19 @@ block inner-content
 				a(href="#") Confirmed
 			li(data-filter="original")
 				a(href="#") Original
+
+		//- type filter pills
+		ul.nav.nav-pills.pull-left.filter(filters, value='filters', exclusive)
+			li.active(data-filter="table")
+				a(href="#", title="Cabinet Downloads")
+					i.icon.file
+			li(data-filter="media")
+				a(href="#", title="Media Packs")
+					i.icon.pictures
+			li(data-filter="video")
+				a(href="#", title="Table Videos")
+					i.icon.video
+
 		.clearfix
 
 		//- data
@@ -48,7 +61,7 @@ block inner-content
 							span(ng-hide="row.ipdb_data.ipdb")
 								h3 NONE (original game)
 								p &nbsp;
-							
+
 							p
 								button.btn(type="button", ng-hide="row.ipdb_data.confirmed", ng-click="confirm()")
 									i.icon.ok

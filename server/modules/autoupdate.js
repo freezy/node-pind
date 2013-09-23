@@ -51,6 +51,9 @@ var dryRun = false;
  * Get prefix by running
  * 	php -r "$sha='xxxxxxx';date_default_timezone_set('UTC');echo date('YmdHis', trim(`git diff-tree -s --pretty=%at $sha`)).'-'.$sha;"
  *
+ * Or separately:
+ *  git diff-tree -s --pretty=%at XXXXXXX
+ *  php -r  "date_default_timezone_set('UTC');echo date('YmdHis', 1379953058);"
  *
  * @returns {AutoUpdate}
  * @constructor
