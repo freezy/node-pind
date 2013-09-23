@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
 			title: DataTypes.STRING,
 			description: DataTypes.TEXT,
 			fileId: DataTypes.STRING,
-			parent_fileId: DataTypes.INTEGER, // points to vpf_files.fileId for media linked to a "parent" (table).
+			parent_fileId: DataTypes.STRING, // points to vpf_files.fileId for media linked to a "parent" (table).
 			downloads: DataTypes.INTEGER,
 			views: DataTypes.INTEGER,
 			author: DataTypes.STRING,

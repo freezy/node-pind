@@ -24,9 +24,9 @@ var logger = require('winston');
 logger.cli();
 
 
-validateSettings();
+//validateSettings();
 
-//migrateUp('D:/dev/node-pind/migrations/20130915122800-55d57b7-add-edition-field-to-vpf-and-tables');
+//migrateUp('D:/dev/node-pind/migrations/20130923161738-33cca83-add-parent-to-vpf');
 
 //matchSources();
 //ipdbMatch('indiana jones pinball adventure');
