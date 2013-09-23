@@ -21,7 +21,6 @@ util.inherits(VisualPinball, events.EventEmitter);
 
 /**
  * Sets up event listener for realtime updates via Socket.IO.
- * @param app Express application
  */
 VisualPinball.prototype.initAnnounce = function() {
 
@@ -274,7 +273,7 @@ VisualPinball.prototype.getScriptFromTable = function(tablePath, callback) {
 		var stat = fs.fstatSync(fd);
 		//noinspection JSUnresolvedFunction
         var buf = new Buffer(8);
-		logger.debug('[vp] [script] Found ' + tablePath + ' at ' + stat.size + ' bytes.');
+		logger.log('debug', '[vp] [script] Found ' + tablePath + ' at ' + stat.size + ' bytes.');
 		var scriptStart, scriptEnd;
 		for (var i = stat.size; i > 0; i--) {
 			fs.readSync(fd, buf, 0, buf.length, i - buf.length);
@@ -289,7 +288,7 @@ VisualPinball.prototype.getScriptFromTable = function(tablePath, callback) {
 		}
 		//noinspection JSUnresolvedFunction
         buf = new Buffer(scriptEnd - scriptStart);
-		logger.debug('[vp] [script] Found positions ' + scriptStart + ' and ' + scriptEnd + ' in ' + (new Date().getTime() - now) + ' ms.');
+		logger.log('debug', '[vp] [script] Found positions ' + scriptStart + ' and ' + scriptEnd + ' in ' + (new Date().getTime() - now) + ' ms.');
 		fs.readSync(fd, buf, 0, buf.length, scriptStart);
 		fs.closeSync(fd);
 		callback(null, buf.toString());
