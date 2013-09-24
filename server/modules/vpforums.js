@@ -96,21 +96,7 @@ VPForums.prototype._fixTitle = function(n) {
 VPForums.prototype._findMedia = function(table, ref_parent, cat, what, callback) {
 
 	var that = this;
-	var searchName = that._fixTitle(table.name);
-	logger.log('info', '[vpf] Searching %s for "%s"', what, searchName);
-	this._fetchDownloads(cat, searchName, {}, function(err, results) {
-		if (err) {
-			logger.log('error', '[vpf] Error fetching downloads: %s', err);
-			return callback(err);
-		}
-		var match = VPForums.prototype._matchResult(results, searchName, function(str) {
-			return str.replace(/[\[\(].*|rev\d.*/i, '').trim();
-		}, 'intelligent');
-		if (!match) {
-			logger.log('warn', '[vpf] Cannot find any media with name similar to "%s".', searchName);
-			return callback(null, { found: false });
-		}
-
+	var queue = function(match) {
 		// this will add a new transfer.
 		that.emit('queueTransfer', {
 			title: match.title,
@@ -121,7 +107,52 @@ VPForums.prototype._findMedia = function(table, ref_parent, cat, what, callback)
 			ref_parent: ref_parent
 		});
 		callback(null, { found: true });
-	});
+	};
+	var searchByName = function() {
+		var searchName = that._fixTitle(table.name);
+		logger.log('info', '[vpf] Searching %s for "%s"', what, searchName);
+		that._fetchDownloads(cat, searchName, {}, function(err, results) {
+			if (err) {
+				logger.log('error', '[vpf] Error fetching downloads: %s', err);
+				return callback(err);
+			}
+			var match = VPForums.prototype._matchResult(results, searchName, function(str) {
+				return str.replace(/[\[\(].*|rev\d.*/i, '').trim();
+			}, 'intelligent');
+			if (!match) {
+				logger.log('warn', '[vpf] Cannot find any media with name similar to "%s".', searchName);
+				return callback(null, { found: false });
+			}
+			queue(match);
+		});
+	};
+
+	if (table.ipdb_no) {
+		schema.VpfFile.all({ where: {
+			ipdb_id: table.ipdb_no,
+			category: cat
+		}}).success(function(rows) {
+			logger.log('info', '[vpf] Trying match by IPDB...');
+			if (rows.length > 0) {
+				rows.sort(function(a, b) {
+					if (a.edition != b.edition) {
+						return table.edition == a.edition ? -1 : 1;
+					}
+					return a.downloads > b.downloads ? -1 : 1;
+				});
+				logger.log('info', '[vpf] Found %d match(es) for %s (%s) - %d:', rows.length, table.name, table.edition, table.ipdb_no);
+				_.each(rows, function(row, i) {
+					logger.log('info', '[vpf]   %d. %s (%s)', i, row.title, row.edition)
+				});
+				queue(rows[0]);
+			} else {
+				searchByName();
+			}
+		});
+	} else {
+		searchByName();
+	}
+
 };
 
 /**

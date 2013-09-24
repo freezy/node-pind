@@ -23,6 +23,7 @@ var s = require('./server/modules/settings');
 var logger = require('winston');
 logger.cli();
 
+findMedia(27);
 
 //validateSettings();
 
@@ -96,6 +97,24 @@ function matchSources() {
 			//console.log("Post processing done, got\n%s", util.inspect(result, false, 2, true));
 		}
 	});
+}
+
+function findMedia(tableId) {
+
+	schema.Table.find(tableId).success(function(row) {
+		if (row) {
+			vpf.findMediaPack(row, null, function(err, result) {
+				if (err) {
+					console.error("ERROR: " + err);
+				} else {
+					console.log("Found result: " + result.found);
+				}
+			});
+		} else {
+			console.error('No table with ID %s found.', tableId)
+		}
+	});
+
 }
 
 function postProcessTransfer(id) {
