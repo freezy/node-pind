@@ -21069,11 +21069,13 @@
     "confirmed": true
   },
   "8563": {
-    "name": "LaserWar",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "1415",
+    "title": "Laser War",
+    "year": "1987",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1415/Playfield.jpg",
     "title_original": "LaserWar_VP915_1.02_FS",
-    "title_original_trimmed": "LaserWar"
+    "confirmed": true
   },
   "8565": {
     "ipdb": "3824",
@@ -21082,7 +21084,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
     "title_original": "Tales_of_the_Arabian_Nights_[Night Mod]_VP916_FS",
-    "title_original_trimmed": "Tales of the Arabian Nights"
+    "title_original_trimmed": "Tales of the Arabian Nights",
+    "confirmed": true
   },
   "8566": {
     "ipdb": "1415",
@@ -21111,7 +21114,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2768/image-25.jpg",
     "title_original": "White Water (Night Mod)_VP916_FS",
-    "title_original_trimmed": "White Water"
+    "title_original_trimmed": "White Water",
+    "confirmed": true
   },
   "8574": {
     "ipdb": "2768",
@@ -21121,6 +21125,16 @@
     "img": "http://www.ipdb.org/images/2768/image-25.jpg",
     "title_original": "Whitewater (Williams 1993)night [HP VIDEO]",
     "title_original_trimmed": "Whitewater",
+    "confirmed": true
+  },
+  "8591": {
+    "ipdb": "783",
+    "title": "Embryon",
+    "year": "1980",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/783/image-2.jpg",
+    "title_original": "Embryon_VP915_1.01_FS",
+    "title_original_trimmed": "Embryon",
     "confirmed": true
   }
 }
