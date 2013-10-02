@@ -3,6 +3,8 @@ module.exports = function(module) {
 
 	module.controller('IpdbVpfItemCtrl', ['$scope', '$log', 'rpc', function($scope, $log, rpc) {
 
+		$scope.vpfParentResult = {};
+
 		$scope.confirm = function() {
 			if ($scope.newId) {
 				alert('Sure? If so, clear the URL field below and retry.');
@@ -31,7 +33,13 @@ module.exports = function(module) {
 			} else {
 				alert('No URL, ignoring.');
 			}
+		};
 
+		$scope.findVpfParent = function() {
+			$scope.rpc('vpforums.findParent', $scope.row.id, function(result) {
+				$scope.vpfParentResult = result.rows;
+				$scope.$apply();
+			});
 		};
 
 	}]);

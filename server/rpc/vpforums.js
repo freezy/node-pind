@@ -135,11 +135,32 @@ exports.actions = function(req, res, ss) {
 			var p = { order: 'title' };
 			var map = vpf.getIpdbMap();
 			var queryStart = +new Date();
-			//console.log('*** FILTERS = %j', params.filters);
+			console.log('*** FILTERS = %j', params.filters);
 			if (hasFilter('media')) {
-				p.where = { category:  [ 36, 35 ] };
+				p.where = { category:  [] };
+				if (hasFilter('vp')) {
+					p.where.category.push(35);
+				}
+				if (hasFilter('fp')) {
+					p.where.category.push(36);
+				}
+				if (!p.where.category.length) {
+					p.where = { category:  [ 36, 35 ] };
+				}
 			} else if (hasFilter('video')) {
-				p.where = { category: [ 47, 43, 44, 45, 46 ] };
+				p.where = { category:  [] };
+				if (hasFilter('vp')) {
+					p.where.category.push(43);
+					p.where.category.push(44);
+					p.where.category.push(47);
+				}
+				if (hasFilter('fp')) {
+					p.where.category.push(45);
+					p.where.category.push(46);
+				}
+				if (!p.where.category.length) {
+					p.where = { category:   [ 47, 43, 44, 45, 46 ] };
+				}
 			} else {
 				p.where = { category: 41 };
 			}
@@ -254,6 +275,20 @@ exports.actions = function(req, res, ss) {
 					done();
 				}
 
+			});
+		},
+
+		findParent: function(id) {
+
+			schema.VpfFile.find(id).success(function(row) {
+				if (row) {
+					var like = row.title.replace(/[\[\(].*|rev\d.*/i, '').trim().toLowerCase();
+					schema.VpfFile.all({ where: ['LOWER(title) LIKE ? AND category = 41', '%' + like.replace(/\s+/gi, '%') + '%']}).success(function(rows) {
+						res({ rows: rows });
+					});
+				} else {
+					res({ rows: [] });
+				}
 			});
 		}
 	};

@@ -39,6 +39,13 @@ block inner-content
 				a(href="#", title="Table Videos")
 					i.icon.video
 
+		//- platform filter pills
+		ul.nav.nav-pills.pull-left.filter(filters, value='filters')
+			li(data-filter="vp")
+				a(href="#", title="Visual Pinball") VP
+			li(data-filter="fp")
+				a(href="#", title="Future Pinball") FP
+
 		.clearfix
 
 		//- data
@@ -72,6 +79,14 @@ block inner-content
 									span &nbsp;&nbsp;Original Game
 							form(ng-submit="change()")
 								input.input-inline(type="text", ng-model="newId", placeholder="IPDB# or URL")
+								span &nbsp;
+								button.btn(style="margin-top: -10px")
+									i.icon.ok
+							form(ng-submit="vpfParent()", ng-show="row.ipdb_data.confirmed && !row.ipdb_data.ipdb && row.category != 41")
+								button.btn(ng-click="findVpfParent()", style="margin-top: -10px")
+									i.icon.refresh
+								span &nbsp;
+								select(ng-model="vpfParent", ng-options="v.title for v in vpfParentResult")
 								span &nbsp;
 								button.btn(style="margin-top: -10px")
 									i.icon.ok
