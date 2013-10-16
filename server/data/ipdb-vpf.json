@@ -21156,5 +21156,34 @@
     "title_original": "STTNG VP916 HD GI MOD",
     "title_original_trimmed": "STTNG",
     "confirmed": true
+  },
+  "8625": {
+    "ipdb": "4917",
+    "title": "Ripley's Believe It or Not",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4917/image-5.jpg",
+    "title_original": "Ripleys_Believe_It_or_Not_(NIGHT MOD)_VP916_FS",
+    "title_original_trimmed": "Ripleys Believe It or Not",
+    "confirmed": true
+  },
+  "8633": {
+    "ipdb": "4983",
+    "title": "Elvis",
+    "year": "2004",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4983/image-1.jpg",
+    "title_original": "Elvis Night Mod (VP916_FS)",
+    "confirmed": true
+  },
+  "8638": {
+    "ipdb": "20",
+    "title": "The Addams Family",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/20/Playfield.jpg",
+    "title_original": "The Addams Family Gold Mod (VP916)",
+    "title_original_trimmed": "The Addams Family Gold",
+    "confirmed": true
   }
 }
