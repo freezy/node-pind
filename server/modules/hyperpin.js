@@ -353,6 +353,41 @@ HyperPin.prototype.writeTables = function(callback) {
 };
 
 /**
+ * Updates file status and updates data if file available.
+ * @param table Table to update
+ * @param callback Function to execute after completion, invoked with two arguments:
+ * 	<ol><li>{String} Error message on error</li>
+ * 		<li>{Object} Updated table object</li></ol>
+ */
+HyperPin.prototype.updateTable = function(table, callback) {
+	var tableFile, tablePath;
+	if (table.platform == 'VP') {
+		tablePath = settings.visualpinball.path + '/Tables/' + table.filename + '.vpt';
+		tableFile = fs.existsSync(tablePath);
+	} else if (table.platform == 'FP') {
+		tablePath = settings.futurepinball.path + '/Tables/' + table.filename + '.fpt';
+		tableFile = fs.existsSync(tablePath);
+	}
+
+	table.updateAttributes({ table_file: tableFile }, [ 'table_file' ]).success(function(row) {
+		if (tableFile) {
+			vp.getTableData(tablePath, function(err, attrs) {
+				if (err) {
+					return callback(null, row);
+				}
+				row.updateAttributes(attrs, [ 'rom', 'rom_file', 'dmd_rotation', 'controller' ]).success(function() {
+					callback(null, row);
+				});
+			});
+		} else {
+			callback(null, row);
+		}
+
+	});
+};
+
+
+/**
  * Loops through all tables that are any media missing, searches for it on vpforums.org,
  * downloads it and extracts to the correct location.
  *
@@ -516,7 +551,9 @@ HyperPin.prototype.setEnabled = function(key, value, callback) {
 			return callback('Cannot find row with key "' + key + '".');
 		}
 		logger.log('info', '[hyperpin] %s table with key "%s" in database.', value ? 'Enabling' : 'Disabling', key);
-		row.updateAttributes({ hpenabled: value ? true : false}).success(function(row) {
+		row.updateAttributes({
+			hpenabled: value ? true : false
+		}, [ 'hpenabled' ]).success(function(row) {
 			that.emit('dataUpdated', { resource: 'table', row: row });
 			that.writeTables(callback);
 		});

@@ -94,7 +94,10 @@ NvRam.prototype.readTables = function(callback) {
 						playtimeHistogram: JSON.stringify(audit.playtimeHistogram)
 					};
 					if (row) {
-						row.updateAttributes(attrs).success(function(row) {
+						row.updateAttributes(attrs, [
+							'name', 'extraBalls', 'gamesStarted', 'gamesPlayed', 'playTime', 'runningTime',
+							'ballsPlayed', 'scoreHistogram', 'playtimeHistogram'
+						]).success(function(row) {
 							logger.log('info', '[nvram] Successfully updated rom "%s".', row.name);
 							next();
 						});

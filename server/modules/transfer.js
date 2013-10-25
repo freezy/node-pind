@@ -354,7 +354,9 @@ Transfer.prototype._download = function(transfer, moduleName, moduleRef, callbac
 
 	// update "started" clock..
 	logger.log('info', '[transfer] [%s] Starting download of %s', moduleName, transfer.url);
-	transfer.updateAttributes({ startedAt: new Date()}).success(function(row) {
+	transfer.updateAttributes({
+		startedAt: new Date()
+	}, [ 'startedAt' ]).success(function(row) {
 		that.emit('statusUpdated');
 
 		// update file size as soon as we receive the content length.
@@ -362,7 +364,7 @@ Transfer.prototype._download = function(transfer, moduleName, moduleRef, callbac
 			if (data.reference.id) {
 				schema.Transfer.find(data.reference.id).success(function(row) {
 					if (row) {
-						row.updateAttributes({ size: data.contentLength });
+						row.updateAttributes({ size: data.contentLength }, [ 'size' ]);
 						logger.log('info', '[transfer] [%s] Updating size of transfer %s to %s.', moduleName, data.reference.id, data.contentLength);
 						that.emit('transferSizeKnown', {
 							id: data.reference.id,
@@ -381,7 +383,7 @@ Transfer.prototype._download = function(transfer, moduleName, moduleRef, callbac
 			if (data.reference.id) {
 				schema.Transfer.find(data.reference.id).success(function(row) {
 					if (row) {
-						row.updateAttributes({ filename: data.filename });
+						row.updateAttributes({ filename: data.filename }, [ 'filename' ]);
 						logger.log('info', '[transfer] [%s] Updating database with new filename "%s" for id %d.', moduleName, data.filename, row.id);
 					} else {
 						logger.log('error', '[transfer] [%s] Could not find transfer with id %s for updating filename to "%s".', moduleName, data.reference.id, data.filename);
@@ -416,7 +418,7 @@ Transfer.prototype._download = function(transfer, moduleName, moduleRef, callbac
 				return row.updateAttributes({
 					failedAt: new Date(),
 					result: JSON.stringify({ error: err })
-				}).done(function() {
+				}, [ 'failedAt', 'result' ]).done(function() {
 					callback(null, { failed: true });
 				});
 			}
@@ -430,7 +432,7 @@ Transfer.prototype._download = function(transfer, moduleName, moduleRef, callbac
 				result: JSON.stringify({ downloaded: filepath }),
 				size: size
 
-			}).success(function(row) {
+			}, [ 'completedAt', 'result', 'size' ]).success(function(row) {
 				that.emit('transferCompleted', { file: filepath, transfer: row });
 				that.postDownload(filepath, row, callback);
 			});
@@ -465,7 +467,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 			// update extract result and we're clear.
 			transfer.updateAttributes({
 				result: JSON.stringify(result)
-			}).success(function(row) {
+			}, [ 'result' ]).success(function(row) {
 				that.postProcess(row, callback);
 			});
 		}
@@ -479,7 +481,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 					return transfer.updateAttributes({
 						failedAt: new Date(),
 						result: err
-					}).success(function() {
+					}, [ 'failedAt', 'result']).success(function() {
 						callback(err);
 					});
 				}
@@ -487,7 +489,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 				// update extract result and we're clear.
 				transfer.updateAttributes({
 					result: JSON.stringify(extractResult)
-				}).success(function(row) {
+				}, [ 'result' ]).success(function(row) {
 					that.emit('extractCompleted', { result: extractResult, transfer: row });
 					that.postProcess(row, callback);
 				});
@@ -559,7 +561,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						hpenabled: true,
 						filename: filename,
 						enabled: true
-					}).success(function() {
+					}, [ 'hpenabled', 'filename', 'enabled' ]).success(function() {
 						hp.writeTables(done);
 					});
 					break;
@@ -632,23 +634,9 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						}
 
 						// analyze table data
-						if (filepath) {
-							vp.getTableData(filepath, function(err, attrs) {
-								if (err) {
-									logger.log('warn', '[transfer] Error reading vpt data: %s', err);
-									return callback(err);
-								}
-								table.updateAttributes(attrs).success(function(table) {
-
-									// continue with optional post actions.
-									tableActions(table, filename, callback);
-								});
-							});
-
-						} else {
-							// continue with optional post actions.
+						hp.updateTable(table, function(err, table) {
 							tableActions(table, filename, callback);
-						}
+						});
 					});
 				};
 
@@ -731,7 +719,7 @@ Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
 				next = rows[1].id == nextId ? rows[1] : rows[0];
 				row.updateAttributes({
 					sort: Math.round((prev.sort + next.sort) / 2)
-				});
+				}, [ 'sort' ]);
 			}
 			// item has been dropped on top of the list (could be page 2+ though)
 			if (!prevId && nextId) {
@@ -741,7 +729,7 @@ Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
 					var prevSort = prev ? prev.sort : next.sort - 1024;
 					row.updateAttributes({
 						sort: Math.round((prevSort + next.sort) / 2)
-					});
+					}, [ 'sort' ]);
 				});
 			}
 
@@ -753,7 +741,7 @@ Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
 					var nextSort = next ? next.sort : prev.sort + 1024;
 					row.updateAttributes({
 						sort: Math.round((prev.sort + nextSort) / 2)
-					});
+					}, [ 'sort' ]);
 				});
 			}
 			that.emit('transferOrderChanged', ids);
@@ -807,7 +795,7 @@ Transfer.prototype.descriptionUpdated = function(data) {
 	if (data.transfer.type == 'mediapack' && data.transfer.ref_parent) {
 		var m;
 		if (m = data.vpf_file.description.match(/<description>([^<]+)<\/description>/i)) {
-			logger.log('info', '[transfer] Got media pack description, updating hpid of "%s"', data.transfer.title);
+			logger.log('info', '[transfer] Got media pack description, updating hpid of "%s" to "%s".', data.transfer.title, m[1]);
 			schema.Transfer.find(data.transfer.ref_parent).success(function(parent) {
 				if (!parent) {
 					return logger.log('warn', '[transfer] Cannot find parent transfer ID %d.', data.transfer.ref_parent);
@@ -821,7 +809,9 @@ Transfer.prototype.descriptionUpdated = function(data) {
 							logger.log('warn', '[transfer] Table with identical hpid "%s" found (ID %d).', table.hpid, dupeTable.id);
 						}
 						logger.log('info', '[transfer] Updating hpid of "%s" to "%s" (%d).', table.hpid, m[1], table.id, {});
-						table.updateAttributes({ hpid: m[1] });
+						table.updateAttributes({ hpid: m[1] }, [ 'hpid' ]).done(function() {
+							hp.writeTables();
+						});
 					});
 				});
 			});

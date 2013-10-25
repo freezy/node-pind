@@ -27,7 +27,7 @@ logger.cli();
 
 //testEditionParsing();
 
-findMedia(20);
+//findMedia(20);
 
 //validateSettings();
 
@@ -46,7 +46,7 @@ findMedia(20);
 
 //nv.diff();
 
-//postProcessTransfer(8);
+postProcessTransfer(1);
 
 //	cacheAllTableDownloads();
 //	nextDownload();

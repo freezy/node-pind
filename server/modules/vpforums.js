@@ -86,6 +86,9 @@ VPForums.prototype._fixTitle = function(n) {
 /**
  * Finds and downloads either a media pack or a table video.
  *
+ * Media must match the edition (i.e. nightmod/standard), otherwise no result
+ * is returned.
+ *
  * @param cat VPF category
  * @param table Table of the media pack
  * @param ref_parent ID of transfer, in case of a post action
@@ -111,25 +114,33 @@ VPForums.prototype._findMedia = function(table, ref_parent, cat, what, filter, c
 	};
 	var searchByName = function() {
 		var searchName = that._fixTitle(table.name);
-		logger.log('info', '[vpf] Searching %s for "%s"', what, searchName);
 		that._fetchDownloads(cat, searchName, {}, function(err, results) {
 			if (err) {
 				logger.log('error', '[vpf] Error fetching downloads: %s', err);
 				return callback(err);
 			}
+			// results must match edition of table
+			results = _.filter(results, function(result) {
+				//if (result.edition != table.edition) {
+				//	logger.log('info', '[vpf] Removing "%s", not matching edition (is %s, should be %s).', result.title, result.edition, table.edition);
+				//}
+				return result.edition == table.edition;
+			});
 			var match = VPForums.prototype._matchResult(results, searchName, function(str) {
 				return str.replace(/[\[\(].*|rev\d.*/i, '').trim();
 			}, filter, 'intelligent');
 			if (!match) {
-				logger.log('warn', '[vpf] Cannot find any media with name similar to "%s".', searchName);
+				logger.log('warn', '[vpf] Cannot find any %s edition media with name similar to "%s".', table.edition, searchName);
 				return callback(null, { found: false });
 			}
 			queue(match);
 		});
 	};
 
+	logger.log('info', '[vpf] Searching %s for "%s"', what, table.name);
 	if (table.ipdb_no) {
 		schema.VpfFile.all({ where: {
+			edition: table.edition,
 			ipdb_id: table.ipdb_no,
 			category: cat
 		}}).success(function(rows) {
@@ -147,6 +158,7 @@ VPForums.prototype._findMedia = function(table, ref_parent, cat, what, filter, c
 				});
 				queue(rows[0]);
 			} else {
+				logger.log('info', '[vpf] No match found by IPDB number, searching by name.');
 				searchByName();
 			}
 		});
@@ -437,13 +449,13 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 							}
 
 							if (body.match(/You have exceeded the maximum number of downloads allotted to you for the day/i)) {
-								logger.log('info', '[vpf] Download data is error message, quitting.', { size: size, dest: dest });
+								logger.log('warn', '[vpf] Download limit per day reached, aborting.');
 								err = 'Number of daily downloads exceeded at VPF.';
 								that.emit('downloadFailed', { message: err });
 								return callback(err);
 							}
 							if (body.match(/You may not download any more files until your other downloads are complete/i)) {
-								logger.log('info', '[vpf] Too many simulataneous downloads, quitting.', { size: size, dest: dest });
+								logger.log('warn', '[vpf] Too many simulataneous downloads, quitting.');
 								err = 'Number of concurrent downloads exceeded at VPF.';
 								that.emit('downloadFailed', { message: err });
 								return callback(err);
@@ -517,7 +529,9 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 					logger.log('info', '[vpf] Updating description for download %s', transfer.ref_src);
 					schema.VpfFile.find(transfer.ref_src).success(function(row) {
 						if (row) {
-							row.updateAttributes({ description: ent.decode(description).trim() }).success(function(row) {
+							row.updateAttributes({
+								description: ent.decode(description).trim()
+							}, [ 'description' ]).success(function(row) {
 								that.emit('descriptionUpdated', { transfer: transfer, vpf_file: row });
 								initDownload(body);
 							});
@@ -558,7 +572,7 @@ VPForums.prototype._matchResults = function(results, title, trimFct, filter, max
 	var matches = [];
 	var distance = maxDistance ? maxDistance : 10;
 	var nameToMatch = trimFct(title).toLowerCase();
-	logger.log('info', '[vpf] Matching against "%s"..', nameToMatch);
+	logger.log('info', '[vpf] Matching %d items against "%s"..', results.length, nameToMatch);
 	for (var i = 0; i < results.length; i++) {
 		var result = results[i];
 		if (filter && result.title.match(filter)) {
@@ -567,7 +581,7 @@ VPForums.prototype._matchResults = function(results, title, trimFct, filter, max
 		}
 		var name = trimFct(result.title);
 		var d = natural.LevenshteinDistance(nameToMatch, name.toLowerCase());
-		logger.log('info', '[vpf]   %s %s - %s', d, nameToMatch, name);
+		//logger.log('info', '[vpf]   %s %s - %s', d, nameToMatch, name);
 		if (d < distance) {
 			matches = [ result ];
 			distance = d;
@@ -622,7 +636,7 @@ VPForums.prototype._matchResult = function(results, title, trimFct, filter, stra
 	var i = 0;
 	logger.log('info', '[vpf] Matches sorted by accuracy:');
 	_.each(matches, function(match) {
-		logger.log('info', '[vpf]   %d. %s (%s - %d views, %d downloads)', ++i, match.title, match.lastUpdatedSince. match.views, match.downloads);
+		logger.log('info', '[vpf]   %d. %s (%s - %d views, %d downloads)', ++i, match.title, match.lastUpdatedSince, match.views, match.downloads);
 	});
 
 	return matches[0];

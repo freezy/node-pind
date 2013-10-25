@@ -224,7 +224,7 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 				info: hiscore.info,
 				points: points(hiscore),
 				player: hiscore.player
-			}).success(function(row) {
+			}, [ 'score', 'info', 'points', 'player' ]).success(function(row) {
 					//noinspection JSUnresolvedFunction
 					row.setUser(hiscore.user).success(function() {
 						next();

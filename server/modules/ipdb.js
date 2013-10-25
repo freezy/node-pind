@@ -470,7 +470,9 @@ Ipdb.prototype.syncTop300 = function(callback) {
 					async.eachSeries(rows, function(row, cb) {
 						that.emit('top300Matched', { name: row.name, platform: row.platform, rank: table.ipdb_rank });
 						logger.log('debug', '[ipdb] Matched %s (%s)', row.name, row.platform);
-						row.updateAttributes({ ipdb_rank: table.ipdb_rank }).success(function(table) {
+						row.updateAttributes({
+							ipdb_rank: table.ipdb_rank
+						}, [ 'ipdb_rank' ]).success(function(table) {
 							updatedTables.push(table);
 							cb();
 						}).error(cb);

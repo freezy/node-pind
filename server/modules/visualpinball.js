@@ -343,7 +343,7 @@ VisualPinball.prototype.updateTableData = function(callback) {
 				if (err) {
 					return next();
 				}
-				row.updateAttributes(attrs).done(next);
+				row.updateAttributes(attrs, [ 'rom', 'rom_file', 'dmd_rotation', 'controller']).done(next);
 			});
 
 		}, callback);
