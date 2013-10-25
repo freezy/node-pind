@@ -200,9 +200,9 @@ module.exports = {
 		user: '', pass: '',
 
 		/**
-		 * Number of concurrent downloads allowed.
+		 * Number of concurrent downloads allowed. Increment at your own risk!
 		 */
-		numConcurrentDownloads: 3
+		numConcurrentDownloads: 1
 	},
 
 	/**

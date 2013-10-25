@@ -314,14 +314,9 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 					var req = request(options);
 					req.on('response', function(response) {
 
-						// check status code
-						if (response.statusCode !== 200) {
-							logger.log('error', '[vpf] Status code is %d instead of 200 when downloading confirmation page.', response.statusCode);
-							return txtFct('Status code is not 200 but ' + response.statusCode);
-						}
 
 						// stream to file
-						if (response.headers['content-disposition']) {
+						if (response.statusCode == 200 && response.headers['content-disposition']) {
 							var m = response.headers['content-disposition'].match(/filename="([^"]+)"/i);
 							var filename;
 							if (m) {
@@ -410,6 +405,13 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 				 */
 				reqTxtOrBin({ url: confirmUrl, jar: true }, function(err, response, body) {
 
+					// check status code
+					if (response.statusCode !== 200) {
+						logger.log('error', '[vpf] Status code is %d instead of 200 when downloading confirmation page.', response.statusCode);
+						error.dumpDebugData('vpf', 'http-code-' + response.statusCode, body, 'html');
+						return callback('Wrong HTTP status code, got ' + response.statusCode + ' instead of 200.');
+					}
+
 					//error.dumpDebugData('vpf', '02-confirmation', body, 'html');
 
 					if (aborting) {
@@ -427,7 +429,6 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 					}
 					if (link) {
 						var downloadUrl = link[1].replace(/&amp;/g, '&');
-						var failed = false;
 
 						reqTxtOrBin({ url: downloadUrl, jar: true }, function(err, response, body) {
 
@@ -447,11 +448,11 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 								that.emit('downloadFailed', { message: err });
 								return callback(err);
 							}
-							if (failed) {
-								logger.log('info', '[vpf] Download failed, see %s what went wrong.', dest);
-								err = 'Download failed.';
+							if (response.statusCode !== 200) {
+								logger.log('error', '[vpf] Status code is %d instead of 200 when downloading data.', response.statusCode);
+								error.dumpDebugData('vpf', 'http-code-' + response.statusCode, body, 'html');
 								that.emit('downloadFailed', { message: err });
-								return callback(err);
+								return callback('Wrong HTTP status code, got ' + response.statusCode + ' instead of 200.');
 							}
 
 						}, downloadFile);

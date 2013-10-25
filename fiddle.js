@@ -25,16 +25,16 @@ var logger = require('winston');
 logger.cli();
 
 
-testEditionParsing();
+//testEditionParsing();
 
-//findMedia(21);
+findMedia(20);
 
 //validateSettings();
 
 //migrateUp('D:/dev/node-pind/migrations/20130923161738-33cca83-add-parent-to-vpf');
 
 //matchSources();
-//ipdbMatch('indiana jones pinball adventure');
+//ipdbMatch('Mars Attacks');
 
 //git();
 //postExtract();
