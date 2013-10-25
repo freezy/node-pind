@@ -90,10 +90,11 @@ VPForums.prototype._fixTitle = function(n) {
  * @param table Table of the media pack
  * @param ref_parent ID of transfer, in case of a post action
  * @param what Enum for transfer table
+ * @param filter A regex that discards entries when matched.
  * @param callback Function to execute after completion, invoked with one argument:
  * 	<ol><li>{String} Error message on error</li></ol>
  */
-VPForums.prototype._findMedia = function(table, ref_parent, cat, what, callback) {
+VPForums.prototype._findMedia = function(table, ref_parent, cat, what, filter, callback) {
 
 	var that = this;
 	var queue = function(match) {
@@ -118,7 +119,7 @@ VPForums.prototype._findMedia = function(table, ref_parent, cat, what, callback)
 			}
 			var match = VPForums.prototype._matchResult(results, searchName, function(str) {
 				return str.replace(/[\[\(].*|rev\d.*/i, '').trim();
-			}, 'intelligent');
+			}, filter, 'intelligent');
 			if (!match) {
 				logger.log('warn', '[vpf] Cannot find any media with name similar to "%s".', searchName);
 				return callback(null, { found: false });
@@ -165,9 +166,9 @@ VPForums.prototype._findMedia = function(table, ref_parent, cat, what, callback)
  */
 VPForums.prototype.findMediaPack = function(table, ref_parent, callback) {
 	if (table.platform == 'VP') {
-		this._findMedia(table, ref_parent, 35, 'mediapack', callback);
+		this._findMedia(table, ref_parent, 35, 'mediapack', null, callback);
 	} else {
-		this._findMedia(table, ref_parent, 36, 'mediapack', callback);
+		this._findMedia(table, ref_parent, 36, 'mediapack', null, callback);
 	}
 };
 
@@ -180,10 +181,11 @@ VPForums.prototype.findMediaPack = function(table, ref_parent, callback) {
  * 		<li>{String} Absolute file path of the downloaded archive.</li></ol>
  */
 VPForums.prototype.findTableVideo = function(table, ref_parent, callback) {
+	var filter = /dmd\s*video/i;
 	if (table.platform == 'VP') {
-		this._findMedia(table, ref_parent, 43, 'video', callback);
+		this._findMedia(table, ref_parent, 43, 'video', filter, callback);
 	} else {
-		this._findMedia(table, ref_parent, 34, 'video', callback);
+		this._findMedia(table, ref_parent, 34, 'video', filter, callback);
 	}
 };
 
@@ -547,9 +549,10 @@ VPForums.prototype.abortDownloads = function() {
  * @param title Title to match against
  * @param trimFct Trims off title of results for better matches
  * @param maxDistance Maximal Lebenshtein Distance to original name.
+ * @param filter Regex if matched skips entry
  * @returns {Array}
  */
-VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance) {
+VPForums.prototype._matchResults = function(results, title, trimFct, filter, maxDistance) {
 
 	var matches = [];
 	var distance = maxDistance ? maxDistance : 10;
@@ -557,6 +560,10 @@ VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance
 	logger.log('info', '[vpf] Matching against "%s"..', nameToMatch);
 	for (var i = 0; i < results.length; i++) {
 		var result = results[i];
+		if (filter && result.title.match(filter)) {
+			logger.log('info', ' [vpf] Filtered out entry "%s".', result.title);
+			continue;
+		}
 		var name = trimFct(result.title);
 		var d = natural.LevenshteinDistance(nameToMatch, name.toLowerCase());
 		logger.log('info', '[vpf]   %s %s - %s', d, nameToMatch, name);
@@ -576,10 +583,11 @@ VPForums.prototype._matchResults = function(results, title, trimFct, maxDistance
  * @param title Title to match against
  * @param trimFct Trims off title of results for better matches
  * @param strategy How to determine best match on tie. Valid values: "latest", "mostDownloaded", "mostViewed". Default "intelligent".
+ * @param filter Regex if matched skips entry.
  */
-VPForums.prototype._matchResult = function(results, title, trimFct, strategy) {
+VPForums.prototype._matchResult = function(results, title, trimFct, filter, strategy) {
 	//noinspection JSCheckFunctionSignatures
-    var matches = this._matchResults(results, title, trimFct);
+    var matches = this._matchResults(results, title, trimFct, filter);
 	matches.sort(function(a, b) {
 		var x;
 		//noinspection FallthroughInSwitchStatementJS
