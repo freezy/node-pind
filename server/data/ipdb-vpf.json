@@ -21185,5 +21185,55 @@
     "title_original": "The Addams Family Gold Mod (VP916)",
     "title_original_trimmed": "The Addams Family Gold",
     "confirmed": true
+  },
+  "8642": {
+    "ipdb": "3683",
+    "title": "Johnny Mnemonic",
+    "year": "1995",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3683/Playfield.jpg",
+    "title_original": "Johnny Mnemonic VP916 Night MOD",
+    "title_original_trimmed": "Johnny Mnemonic",
+    "confirmed": true
+  },
+  "8643": {
+    "ipdb": "4858",
+    "title": "The Lord of the Rings",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5558/image-3.jpg",
+    "title_original": "Lord of the Rings VP916 Night MOD",
+    "title_original_trimmed": "Lord of the Rings",
+    "confirmed": true
+  },
+  "8644": {
+    "ipdb": "1972",
+    "title": "Red  Ted's Road Show",
+    "year": "1994",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1972/image-8.jpg",
+    "title_original": "Red and Ted's Road Show VP916 Night MOD",
+    "title_original_trimmed": "Red and Ted's Road Show",
+    "confirmed": true
+  },
+  "8645": {
+    "ipdb": "1133",
+    "title": "Haunted House",
+    "year": "1982",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1133/Playfield2.jpg",
+    "title_original": "Haunted House VP916 Night MOD",
+    "title_original_trimmed": "Haunted House",
+    "confirmed": true
+  },
+  "8663": {
+    "ipdb": "3533",
+    "title": "Yukon Special",
+    "year": "1971",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3533/image-2.jpg",
+    "title_original": "Yukon Special (Williams 1971) FS B2S",
+    "title_original_trimmed": "Yukon Special",
+    "confirmed": true
   }
 }
