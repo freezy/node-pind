@@ -75,7 +75,7 @@ module.exports = function(sequelize, DataTypes) {
 
 			getEdition: function(name) {
 				var edition = 'standard';
-				if ((name + ' ').match(/[^a-z\d]night[^a-z\d]*mod|[^a-z\d]dark[^a-z\d]*mod|[^a-z\d]+nm[^a-z\d]/i)) {
+				if ((name + '$^').match(/([^a-z\d]|[^a-z]+(fs|gi)[^a-z]+)(night|dark)[\s\.\-_$\[\(]+([^a-z]|fs|hp|unl|^)|(night|dark)[^a-z]*mod|[^a-z\d]+nm[^a-z\d]/i)) {
 					edition = 'nightmod';
 				}
 				return edition;

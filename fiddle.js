@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('underscore');
 var fs = require('fs');
 var util = require('util');
 var async = require('async');
@@ -23,7 +24,10 @@ var s = require('./server/modules/settings');
 var logger = require('winston');
 logger.cli();
 
-findMedia(27);
+
+testEditionParsing();
+
+//findMedia(21);
 
 //validateSettings();
 
@@ -103,7 +107,7 @@ function findMedia(tableId) {
 
 	schema.Table.find(tableId).success(function(row) {
 		if (row) {
-			vpf.findMediaPack(row, null, function(err, result) {
+			vpf.findTableVideo(row, null, function(err, result) {
 				if (err) {
 					console.error("ERROR: " + err);
 				} else {
@@ -364,6 +368,59 @@ function nextDownload() {
 			console.log("ERROR: " + err);
 		} else {
 			console.log("Done, got: %s", util.inspect(result));
+		}
+	});
+}
+
+function testEditionParsing() {
+
+	var nightmods = [
+		'Attack_From_Mars_NIGHT MOD_VP916_3-WAY-GI.', 'Cactus Canyon (High Noon Night Mod)_VP916_FS', 'Cirqus Voltaire [ Night Mod ]_VP916_v2.2_FS_B2S',
+		'DR DUDE HR NIGHT MOD', 'DR DUDE Low Res Night Mod', 'Flintstones NIGHT FS JW MOD', 'Grand Lizard FS GI Nightmod',
+		'Indiana Jones VP916 FS NIGHT MOD', 'Jokerz! (Night Mod)_VP916_FS_v1.3', 'Medieval-Madness_Night Mod_VP916_V1.2_FS',
+		'Star Trek The Next Generation (TNG) FS Night Mod v1.2.1', 'Strikes and Spares Night Mod FS', 'Tales_of_the_Arabian_Nights_[Night Mod]_VP916_FS',
+		'Terminator 2 Judgment Day FS Night Mod', 'The FlintStones Night Mod FS', 'The Shadow VP916 FS Night MOD',
+		'TOMMY FS BMPR Night MOD VP916', 'TOTAN Night FS', 'Twilight Zone Night Mod FS', 'White Water (Night Mod)_VP916_FS',
+		'Attack from Mars - Night Mod [HP VIDEO + AUDIO]', 'Cirqus Voltaire Night Mod [HP VIDEO + AUDIO]', 'TOTAN Night [HP VIDEO + AUDIO]',
+		'Attack From Mars (Bally 1995)night [HP VIDEO]', 'Cactus Canyon (Midway 1998)night [HP VIDEO]', 'Cirqus Voltaire (Bally 1997)night [HP VIDEO]',
+		'Dr Dude (Midway 1990) night [HP VIDEO]', 'Flintstones, The (Williams 1994) NightModFinal [HP VIDEO]',
+		'Simpsons Pinball Party, The (Stern 2003)Night Mod [HP VIDEO]', 'STTNG (Williams 1993)nightmod [HP VIDEO]',
+		'Tales of the Arabian Nights (Williams 1996)night [HP VIDEO]',
+		'AFM_1_1_night_2.4_Light_Mod_1.0 [HP VIDEO]', 'Attack from Mars (Bally 1995)night [HP VIDEO]', 'Cyclone Night HP VIDEO]',
+		'Medieval Madness (Williams 1997)Night [HP VIDEO]', 'Ripley\'s Believe It or Not night (Stern 2004) [HP VIDEO]',
+		'Taxi (Night Mod) VP916-FS','Ripleys_Believe_It_or_Not_(NIGHT MOD)_VP916_FS',
+		'Lord of the Rings VP916 Night MOD', 'Red and Ted\'s Road Show VP916 Night MOD', 'Elvis Night Mod (VP916_FS)',
+		'Taxi (Williams 1988)night [HP VIDEO]', 'Getaway HighspeedII FS GI Dark UNL', 'Mousin Around! FS Dark',
+		'Robocop FS GI Darkmod', 'Robocop FS GI darkmod ledwiz', 'Scared Stiff Dark FS', 'Scared Stiff FS Dark MOD by Kruge99',
+		'Scared Stiff Dark FS_ver_102 [HP VIDEO]'
+
+	];
+
+	var standards = [
+		'Arabian Knights', 'Freddy: a Nightmare on Elm Street', 'Monday Night Football', 'Night Club',
+		'Black Knight 2000 FS', 'Black Knight V2.1 FS', 'Freddy: A Nightmare On Elm Street vp9.1x FS', 'Night Rider FS',
+		'Tales of the Arabian Nights V2.1FS', 'Tales of the Arabian Nights VP912 FS Classic', 'Viper Night Drivin FS (MOD)',
+		'Viper Night Drivn\' FS 0.95 HD', 'Black Knight (Williams 1980) [HP MEDIA PACK]', 'The Dark Knight [HP MEDIA PACK]',
+		'Black Knight (Williams 1980) [HP BG VIDEO]', 'Tales of the Arabian Nights (Williams 1996)enhanced [HP VIDEO]',
+		'The Dark Knight [HP VIDEO]', 'Dark Rider FS', 'DarkQuest (PolyGame 2008) [HP MEDIA PACK]',
+		'The Dark Knight [HP MEDIA PACK]', 'Dark Rider (Geiger 1984) [HP MEDIA PACK]'
+	];
+
+	_.each(nightmods, function(item) {
+		var edition = schema.Table.getEdition(item);
+		if (edition == 'nightmod') {
+			logger.log('info', '[%s] %s', edition, item);
+		} else {
+			logger.log('error', '[%s] %s', edition, item);
+		}
+	});
+
+	_.each(standards, function(item) {
+		var edition = schema.Table.getEdition(item);
+		if (edition == 'standard') {
+			logger.log('info', '[%s] %s', edition, item);
+		} else {
+			logger.log('error', '[%s] %s', edition, item);
 		}
 	});
 }
