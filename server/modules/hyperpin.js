@@ -292,12 +292,18 @@ HyperPin.prototype.writeTables = function(callback) {
 			writer.writeElement('description', row.hpid);
 			if (row.manufacturer) {
 				writer.writeElement('manufacturer', row.manufacturer);
+			} else {
+				writer.writeElement('manufacturer', '');
 			}
 			if (row.year) {
 				writer.writeElement('year', String(row.year));
+			} else {
+				writer.writeElement('year', '');
 			}
 			if (row.type) {
 				writer.writeElement('type', row.type);
+			} else {
+				writer.writeElement('type', '');
 			}
 			writer.writeElement('enabled', row.enabled ? 'yes' : 'no');
 			writer.endElement();
