@@ -21137,6 +21137,24 @@
     "title_original_trimmed": "Embryon",
     "confirmed": true
   },
+  "8596": {
+    "ipdb": "1639",
+    "title": "Mr.  Mrs. Pac-Man Pinball",
+    "year": "1982",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1639/image-7.jpg",
+    "title_original": "Mr. and Mrs. Pac-Man Pinball (Bally 1982) [HP VIDEO]",
+    "title_original_trimmed": "Mr. and Mrs. Pac Man Pinball"
+  },
+  "8609": {
+    "ipdb": "1011",
+    "title": "Gladiators",
+    "year": "1993",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/1011/Playfield.jpg",
+    "title_original": "Gladiators (Gottlieb 1993) [HP VIDEO]",
+    "title_original_trimmed": "Gladiators"
+  },
   "8610": {
     "ipdb": "2505",
     "title": "Taxi",
@@ -21157,6 +21175,32 @@
     "title_original_trimmed": "STTNG",
     "confirmed": true
   },
+  "8612": {
+    "ipdb": "2505",
+    "title": "Taxi",
+    "year": "1988",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2505/Playfield.jpg",
+    "title_original": "Taxi (Williams 1988)night [HP VIDEO]",
+    "title_original_trimmed": "Taxi"
+  },
+  "8617": {
+    "ipdb": "3781",
+    "title": "Attack from Mars",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
+    "title_original": "Attack from Mars [DMD VIDEO]",
+    "title_original_trimmed": "Attack from Mars"
+  },
+  "8619": {
+    "name": "DarkQuest",
+    "manufacturer": "PolyGame",
+    "year": "2008",
+    "error": "********** NO MATCH **********",
+    "title_original": "DarkQuest (PolyGame 2008) [HP VIDEO]",
+    "title_original_trimmed": "DarkQuest"
+  },
   "8625": {
     "ipdb": "4917",
     "title": "Ripley's Believe It or Not",
@@ -21167,6 +21211,15 @@
     "title_original_trimmed": "Ripleys Believe It or Not",
     "confirmed": true
   },
+  "8626": {
+    "ipdb": "4917",
+    "title": "Ripley's Believe It or Not",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4917/image-5.jpg",
+    "title_original": "Ripley's Believe It or Not (Stern 2004)night [HP VIDEO]",
+    "title_original_trimmed": "Ripley's Believe It or Not"
+  },
   "8633": {
     "ipdb": "4983",
     "title": "Elvis",
@@ -21175,6 +21228,15 @@
     "img": "http://www.ipdb.org/images/4983/image-1.jpg",
     "title_original": "Elvis Night Mod (VP916_FS)",
     "confirmed": true
+  },
+  "8637": {
+    "ipdb": "4983",
+    "title": "Elvis",
+    "year": "2004",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/3910/image-21.jpg",
+    "title_original": "Elvis (Stern 2004)night [HP VIDEO]",
+    "title_original_trimmed": "Elvis"
   },
   "8638": {
     "ipdb": "20",
@@ -21226,6 +21288,51 @@
     "title_original_trimmed": "Haunted House",
     "confirmed": true
   },
+  "8650": {
+    "ipdb": "1133",
+    "title": "Haunted House",
+    "year": "1982",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1133/Playfield2.jpg",
+    "title_original": "Haunted House (Gottlieb 1982)night [HP VIDEO]",
+    "title_original_trimmed": "Haunted House"
+  },
+  "8651": {
+    "ipdb": "3683",
+    "title": "Johnny Mnemonic",
+    "year": "1995",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3683/Playfield.jpg",
+    "title_original": "Johnny Mnemonic (Williams 1995)night [HP VIDEO]",
+    "title_original_trimmed": "Johnny Mnemonic"
+  },
+  "8652": {
+    "ipdb": "4858",
+    "title": "The Lord of the Rings",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5558/image-3.jpg",
+    "title_original": "Lord Of The Rings (Stern 2003)night [HP VIDEO]",
+    "title_original_trimmed": "Lord Of The Rings"
+  },
+  "8653": {
+    "ipdb": "1972",
+    "title": "Red  Ted's Road Show",
+    "year": "1994",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1972/image-8.jpg",
+    "title_original": "Red and Ted's Road Show (Williams 1994)night [HP VIDEO]",
+    "title_original_trimmed": "Red and Ted's Road Show"
+  },
+  "8659": {
+    "ipdb": "1993",
+    "title": "Rocky",
+    "year": "1982",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1993/image-4.jpg",
+    "title_original": "Rocky Complete HP Media Pack",
+    "confirmed": true
+  },
   "8663": {
     "ipdb": "3533",
     "title": "Yukon Special",
@@ -21234,6 +21341,15 @@
     "img": "http://www.ipdb.org/images/3533/image-2.jpg",
     "title_original": "Yukon Special (Williams 1971) FS B2S",
     "title_original_trimmed": "Yukon Special",
+    "confirmed": true
+  },
+  "8664": {
+    "ipdb": "3533",
+    "title": "Yukon Special",
+    "year": "1971",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3533/image-2.jpg",
+    "title_original": "Yukon Special Mediapack",
     "confirmed": true
   }
 }
