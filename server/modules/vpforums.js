@@ -741,13 +741,16 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			}
 
 			// check for zombies (i.e. entries that are in the db but have been removed at vpf)
+			if (cacheStarted - firstUpdated.getTime() > 5184000000) { // max age 2 months
+				firstUpdated = new Date(cacheStarted - 5184000000);
+			}
 			var query;
 			if (letter) {
 				query = 'id NOT IN (' + ids.join(',') + ') AND category = ' + cat + ' AND letter = "' + letter + '" AND lastUpdatedAt > ?';
 			} else {
 				query = 'id NOT IN (' + ids.join(',') + ') AND category = ' + cat + ' AND lastUpdatedAt > ?';
 			}
-			schema.VpfFile.all({ where: [query, firstUpdated ] }).success(function(rows) {
+			schema.VpfFile.all({ where: [ query, firstUpdated ] }).success(function(rows) {
 				async.eachSeries(rows, function(row, next) {
 					var r = row.map();
 					logger.log('info', '[vpf] Looks like "%s" was removed at VPF, checking at %s', row.title, r.url);
@@ -1152,7 +1155,7 @@ VPForums.prototype.cacheAllTableDownloads = function(callback) {
  *
  * @param callback
  */
-VPForums.prototype.cacheLatestTableDownloads = function(callback) {
+VPForums.prototype.cacheLatestDownloads = function(callback) {
 
 	if (isCreatingIndex || isDownloadingIndex) {
 		return callback('Fetching process already running. Wait until complete.');
@@ -1160,13 +1163,16 @@ VPForums.prototype.cacheLatestTableDownloads = function(callback) {
 	var that = this;
 	isDownloadingIndex = true;
 	that.emit('refreshIndexStarted');
+	var categories = [41, 36, 35, 47, 43, 44, 45, 46];
+	async.eachSeries(categories, function(cat, next) {
+		that._fetchDownloads(cat, null, {
+			forceUpdate : true,
+			firstPageOnly: true,
+			sortKey: 'file_updated',
+			sortOrder: 'desc',
+			progress: { ignore: true }
+		}, next);
 
-	this._fetchDownloads(41, null, {
-		forceUpdate : true,
-		firstPageOnly: true,
-		sortKey: 'file_updated',
-		sortOrder: 'desc',
-		progress: { ignore: true }
 	}, function(err, results) {
 		isDownloadingIndex = false;
 		if (err) {
