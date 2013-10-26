@@ -48,36 +48,36 @@ exports.actions = function(req, res, ss) {
 			if (params.filters && Array.isArray(params.filters)) {
 				for (var i = 0; i < params.filters.length; i++) {
 					if (i == 0) {
-						p.where = '';
+						var filterWhere = '';
 					}
 					var filter = params.filters[i];
 					switch (filter) {
 						case 'table':
-							p.where += '(NOT `table_file`) OR ';
+							filterWhere += '(NOT `table_file`) OR ';
 							break;
 						case 'rom':
-							p.where += '(NOT `rom_file` AND rom IS NOT NULL) OR ';
+							filterWhere += '(NOT `rom_file` AND rom IS NOT NULL) OR ';
 							break;
 						case 'ipdb':
-							p.where += '(`ipdb_no` IS NULL AND `type` <> "OG") OR ';
+							filterWhere += '(`ipdb_no` IS NULL AND `type` <> "OG") OR ';
 							break;
 						case 'media':
 							if (settings.pind.ignoreTableVids) {
-								p.where += '(NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel`) OR ';
+								filterWhere += '(NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel`) OR ';
 							} else {
-								p.where += '(NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel` OR NOT `media_video`) OR ';
+								filterWhere += '(NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel` OR NOT `media_video`) OR ';
 							}
 							break;
 						case 'hiscoreAny':
-							p.where = '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores`)) OR ';
+							filterWhere = '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores`)) OR ';
 							break;
 
 						case 'hiscoreUsers':
-							p.where = '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores` WHERE `userId` IS NOT NULL)) OR ';
+							filterWhere = '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores` WHERE `userId` IS NOT NULL)) OR ';
 							break;
 
 						case 'hiscoreUser':
-							p.where = '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores` WHERE `userId` = ' + req.session.user.id + ')) OR ';
+							filterWhere = '(`id` IN (SELECT DISTINCT `tableId` FROM `hiscores` WHERE `userId` = ' + req.session.user.id + ')) OR ';
 							break;
 					}
 				}
@@ -92,13 +92,12 @@ exports.actions = function(req, res, ss) {
 				 */
 
 				// trim trailing operator
-				if (p.where && p.where.length > 0) {
-					p.where = p.where.substr(0, p.where.lastIndexOf(')') + 1);
+				if (filterWhere && filterWhere.length > 0) {
+					filterWhere = filterWhere.substr(0, p.where.lastIndexOf(')') + 1);
 					//console.log('Condition: WHERE %s', p.where);
-				} else {
-					delete p.where;
 				}
 			}
+			p.where = '`hpenabled`' + (filterWhere ? '  AND (' + filterWhere + ')' : '');
 
 			// sorting
 			switch (params.sort) {
