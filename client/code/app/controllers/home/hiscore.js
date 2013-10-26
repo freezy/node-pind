@@ -4,7 +4,7 @@ module.exports = function(module) {
 	module.controller('HiscoreCtrl', ['$scope', function($scope) {
 
 		$scope.hiscores = {};
-		$scope.filters = [ 'hiscoreAny' ];
+		$scope.filters = [ 'hiscoreAny', 'enabledOnly' ];
 		$scope.fields = [ 'key', 'name', 'year', 'url_banner_small'];
 
 		$scope.postDataFn = function(scope, result, callback) {

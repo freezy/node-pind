@@ -97,8 +97,7 @@ exports.actions = function(req, res, ss) {
 
 				// trim trailing operator
 				if (filterWhere && filterWhere.length > 0) {
-					filterWhere = filterWhere.substr(0, p.where.lastIndexOf(')') + 1);
-					//console.log('Condition: WHERE %s', p.where);
+					filterWhere = filterWhere.substr(0, filterWhere.lastIndexOf(')') + 1);
 				}
 			}
 
@@ -107,7 +106,7 @@ exports.actions = function(req, res, ss) {
 			} else {
 				p.where = filterWhere ? filterWhere : undefined;
 			}
-
+			//console.log('Condition: WHERE %s', p.where);
 
 			// sorting
 			switch (params.sort) {
