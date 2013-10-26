@@ -36,6 +36,10 @@ exports.actions = function(req, res, ss) {
 			// access control
 			if (!req.session.userId) return res(error.unauthorized());
 
+			var hasFilter = function(filter) {
+				return params.filters && Array.isArray(params.filters) && _.contains(params.filters, filter);
+			};
+
 			var search = params.search && params.search.length > 1;
 			var p = {};
 
@@ -97,7 +101,13 @@ exports.actions = function(req, res, ss) {
 					//console.log('Condition: WHERE %s', p.where);
 				}
 			}
-			p.where = '`hpenabled`' + (filterWhere ? '  AND (' + filterWhere + ')' : '');
+
+			if (hasFilter('enabledOnly')) {
+				p.where = '`hpenabled`' + (filterWhere ? '  AND (' + filterWhere + ')' : '');
+			} else {
+				p.where = filterWhere ? filterWhere : undefined;
+			}
+
 
 			// sorting
 			switch (params.sort) {
