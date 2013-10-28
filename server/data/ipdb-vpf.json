@@ -21144,7 +21144,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1639/image-7.jpg",
     "title_original": "Mr. and Mrs. Pac-Man Pinball (Bally 1982) [HP VIDEO]",
-    "title_original_trimmed": "Mr. and Mrs. Pac Man Pinball"
+    "title_original_trimmed": "Mr. and Mrs. Pac Man Pinball",
+    "confirmed": true
   },
   "8609": {
     "ipdb": "1011",
@@ -21153,7 +21154,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/1011/Playfield.jpg",
     "title_original": "Gladiators (Gottlieb 1993) [HP VIDEO]",
-    "title_original_trimmed": "Gladiators"
+    "title_original_trimmed": "Gladiators",
+    "confirmed": true
   },
   "8610": {
     "ipdb": "2505",
@@ -21182,16 +21184,14 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2505/Playfield.jpg",
     "title_original": "Taxi (Williams 1988)night [HP VIDEO]",
-    "title_original_trimmed": "Taxi"
+    "title_original_trimmed": "Taxi",
+    "confirmed": true
   },
   "8617": {
-    "ipdb": "3781",
-    "title": "Attack from Mars",
-    "year": "1995",
-    "manufacturer": "Bally",
-    "img": "http://www.ipdb.org/images/3781/Playfield.jpg",
     "title_original": "Attack from Mars [DMD VIDEO]",
-    "title_original_trimmed": "Attack from Mars"
+    "title_original_trimmed": "Attack from Mars",
+    "confirmed": true,
+    "type": "OG"
   },
   "8619": {
     "name": "DarkQuest",
@@ -21217,7 +21217,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4917/image-5.jpg",
     "title_original": "Ripley's Believe It or Not (Stern 2004)night [HP VIDEO]",
-    "title_original_trimmed": "Ripley's Believe It or Not"
+    "title_original_trimmed": "Ripley's Believe It or Not",
+    "confirmed": true
   },
   "8633": {
     "ipdb": "4983",
@@ -21235,7 +21236,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/3910/image-21.jpg",
     "title_original": "Elvis (Stern 2004)night [HP VIDEO]",
-    "title_original_trimmed": "Elvis"
+    "title_original_trimmed": "Elvis",
+    "confirmed": true
   },
   "8638": {
     "ipdb": "20",
@@ -21304,7 +21306,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3683/Playfield.jpg",
     "title_original": "Johnny Mnemonic (Williams 1995)night [HP VIDEO]",
-    "title_original_trimmed": "Johnny Mnemonic"
+    "title_original_trimmed": "Johnny Mnemonic",
+    "confirmed": true
   },
   "8652": {
     "ipdb": "4858",
@@ -21313,7 +21316,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5558/image-3.jpg",
     "title_original": "Lord Of The Rings (Stern 2003)night [HP VIDEO]",
-    "title_original_trimmed": "Lord Of The Rings"
+    "title_original_trimmed": "Lord Of The Rings",
+    "confirmed": true
   },
   "8653": {
     "ipdb": "1972",
@@ -21322,7 +21326,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1972/image-8.jpg",
     "title_original": "Red and Ted's Road Show (Williams 1994)night [HP VIDEO]",
-    "title_original_trimmed": "Red and Ted's Road Show"
+    "title_original_trimmed": "Red and Ted's Road Show",
+    "confirmed": true
   },
   "8659": {
     "ipdb": "1993",
