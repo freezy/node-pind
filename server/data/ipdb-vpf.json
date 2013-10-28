@@ -21195,11 +21195,10 @@
   },
   "8619": {
     "name": "DarkQuest",
-    "manufacturer": "PolyGame",
-    "year": "2008",
-    "error": "********** NO MATCH **********",
     "title_original": "DarkQuest (PolyGame 2008) [HP VIDEO]",
-    "title_original_trimmed": "DarkQuest"
+    "title_original_trimmed": "DarkQuest",
+    "confirmed": true,
+    "type": "OG"
   },
   "8625": {
     "ipdb": "4917",
@@ -21295,7 +21294,8 @@
     "manufacturer": "Gottlieb",
     "img": "http://www.ipdb.org/images/1133/Playfield2.jpg",
     "title_original": "Haunted House (Gottlieb 1982)night [HP VIDEO]",
-    "title_original_trimmed": "Haunted House"
+    "title_original_trimmed": "Haunted House",
+    "confirmed": true
   },
   "8651": {
     "ipdb": "3683",
@@ -21350,6 +21350,24 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3533/image-2.jpg",
     "title_original": "Yukon Special Mediapack",
+    "confirmed": true
+  },
+  "8667": {
+    "ipdb": "1405",
+    "title": "Lady Luck",
+    "year": "1976",
+    "manufacturer": "Petaco",
+    "img": "http://www.ipdb.org/images/1405/image-3.jpg",
+    "title_original": "Lady Luck - VP915+ - FS",
+    "confirmed": true
+  },
+  "8671": {
+    "ipdb": "1405",
+    "title": "Lady Luck",
+    "year": "1976",
+    "manufacturer": "Petaco",
+    "img": "http://www.ipdb.org/images/1405/image-3.jpg",
+    "title_original": "Lady Luck (Recel 1976) [MEDIA PACK]",
     "confirmed": true
   }
 }

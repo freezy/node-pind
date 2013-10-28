@@ -29,7 +29,7 @@ if (fs.existsSync(mapFile)) {
 
 	map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
 
-	schema.VpfFile.all().success(function(rows) {
+	schema.VpfFile.all({ where: { category: [ 41, 35, 36, 33, 26, 43, 47, 44, 34, 45, 46] }}).success(function(rows) {
 
 		async.eachSeries(rows, function(row, next) {
 			if (map[row.fileId]) {

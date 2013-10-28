@@ -830,6 +830,7 @@ var manufacturerNames = {
 	465: 'IDSA',
 	467: 'LTD',
 	477: 'Pinball Shop',
+	482: 'Esteban',
 	483: 'ICE',
 	495: 'Elbos',
 	530: 'Advertising Poster Company',
