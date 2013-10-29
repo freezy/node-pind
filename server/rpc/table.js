@@ -102,7 +102,7 @@ exports.actions = function(req, res, ss) {
 			}
 
 			if (hasFilter('enabledOnly')) {
-				p.where = '`hpenabled`' + (filterWhere ? '  AND (' + filterWhere + ')' : '');
+				p.where = '`hpenabled`' + (filterWhere ? ' AND ' + filterWhere : '');
 			} else {
 				p.where = filterWhere ? filterWhere : undefined;
 			}
