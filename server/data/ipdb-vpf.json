@@ -21374,5 +21374,25 @@
     "img": "http://www.ipdb.org/images/1405/image-3.jpg",
     "title_original": "Lady Luck (Recel 1976) [MEDIA PACK]",
     "confirmed": true
+  },
+  "8675": {
+    "ipdb": "967",
+    "title": "Fun House",
+    "year": "1956",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/966/image-4.jpg",
+    "title_original": "Funhouse_(Night_Mod)_VP916_v1.0",
+    "title_original_trimmed": "Funhouse",
+    "confirmed": true
+  },
+  "8676": {
+    "ipdb": "966",
+    "title": "Funhouse",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/966/image-4.jpg",
+    "title_original": "Funhouse (Williams 1990)night [HP VIDEO]",
+    "title_original_trimmed": "Funhouse",
+    "confirmed": true
   }
 }
