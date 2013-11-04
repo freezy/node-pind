@@ -21413,5 +21413,12 @@
     "title_original_trimmed": "Scarface DOF Edition",
     "confirmed": true,
     "type": "OG"
+  },
+  "8691": {
+    "name": "Wooly DOF edition",
+    "manufacturer": "",
+    "error": "********** NO MATCH **********",
+    "title_original": "Wooly DOF edition",
+    "title_original_trimmed": "Wooly DOF edition"
   }
 }
