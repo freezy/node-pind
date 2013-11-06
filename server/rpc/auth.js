@@ -146,7 +146,7 @@ exports.actions = function(req, res, ss) {
 
 		logout: function() {
 			req.session.setUserId(null);
-			if (req.session.user.admin) {
+			if (req.session.user && req.session.user.admin) {
 				req.session.channel.unsubscribe('admin');
 			}
 			req.session.user = null;
