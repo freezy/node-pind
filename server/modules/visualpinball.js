@@ -255,44 +255,91 @@ VisualPinball.prototype.getTableSetting = function(storageName, streamName, call
 /**
  * Extracts the table script from a given .vpt file.
  *
- * Table scripts are at the end of the .vpt file. The header of the chunk equals
- * 04 00 00 00 43 4F 44	45 (0x04 0 0 0 "CODE") and ends with 04 00 00 00.
- *
  * @param tablePath Path to the .vpt file. File must exist.
  * @param callback Function to execute after completion, invoked with two arguments:
  * 	<ol><li>{String} Error message on error</li>
  * 		<li>{String} Table script</li></ol>
  */
-VisualPinball.prototype.getScriptFromTable = function(tablePath, callback) {
+VisualPinball.prototype.readScriptFromTable = function(tablePath, callback) {
 	if (!fs.existsSync(tablePath)) {
 		return callback('File "' + tablePath + '" does not exist.');
 	}
 	var now = new Date().getTime();
-	//noinspection JSCheckFunctionSignatures
     fs.open(tablePath, 'r', function(err, fd) {
-		var stat = fs.fstatSync(fd);
-		//noinspection JSUnresolvedFunction
-        var buf = new Buffer(8);
-		logger.log('debug', '[vp] [script] Found ' + tablePath + ' at ' + stat.size + ' bytes.');
-		var scriptStart, scriptEnd;
-		for (var i = stat.size; i > 0; i--) {
-			fs.readSync(fd, buf, 0, buf.length, i - buf.length);
-			if (buf[4] == 0x04 && buf[5] == 0x00 && buf[6] == 0x00 && buf[7] == 0x00) {
-				scriptEnd = i - 4;
-			}
-			if (buf[0] == 0x04 && buf[1] == 0x00 && buf[2] == 0x00 && buf[3] == 0x00 &&
-				buf[4] == 0x43 && buf[5] == 0x4f && buf[6] == 0x44 && buf[7] == 0x45) {
-				scriptStart = i + 4;
-				break;
-			}
-		}
-		//noinspection JSUnresolvedFunction
-        buf = new Buffer(scriptEnd - scriptStart);
-		logger.log('debug', '[vp] [script] Found positions ' + scriptStart + ' and ' + scriptEnd + ' in ' + (new Date().getTime() - now) + ' ms.');
-		fs.readSync(fd, buf, 0, buf.length, scriptStart);
+
+		var script = getScriptPosition(fd);
+		var buf = new Buffer(script.end - script.start);
+
+		logger.log('info', '[vp] [script] Found positions %d and %d (%d bytes) in %d ms.', script.start, script.end, script.end - script.start, new Date().getTime() - now);
+		fs.readSync(fd, buf, 0, buf.length, script.start);
 		fs.closeSync(fd);
 		callback(null, buf.toString());
 	});
+};
+
+/**
+ * File structure see PinTable::SaveData() at pintable.cpp
+ * @param tablePath
+ * @param scriptData
+ * @param callback
+ * @returns {*}
+ */
+VisualPinball.prototype.writeScriptToTable = function(tablePath, scriptData, callback) {
+	if (!fs.existsSync(tablePath)) {
+		return callback('File "' + tablePath + '" does not exist.');
+	}
+	fs.open(tablePath, 'r+', function(err, fd) {
+
+		var script = getScriptPosition(fd);
+		var tailBuf = new Buffer(script.fileSize - script.end);
+		var scriptBuf = new Buffer(scriptData);
+		var lenBuf = new Buffer(4);
+		var lenRevBuf = new Buffer(4);
+		lenBuf.writeInt32BE(scriptData.length, 0);
+		lenRevBuf[0] = lenBuf[3]; lenRevBuf[1] = lenBuf[2]; lenRevBuf[2] = lenBuf[1]; lenRevBuf[3] = lenBuf[0];
+
+		logger.log('debug', '[vp] [script] Writing script at position %s.', script.start);
+		fs.readSync(fd, tailBuf, 0, tailBuf.length, script.end);
+		// truncate file
+		fs.truncateSync(fd, script.start + scriptData.length + tailBuf.length);
+		// write script
+		fs.writeSync(fd, lenRevBuf, 0, 4, script.start - 4);
+		fs.writeSync(fd, scriptBuf, 0, scriptBuf.length, script.start);
+		// write tail
+		fs.writeSync(fd, tailBuf, 0, tailBuf.length, script.start + scriptBuf.length);
+		// save
+		fs.closeSync(fd);
+		callback();
+	});
+};
+
+
+/**
+ * Returns the position of the script.
+ *
+ * Table scripts are at the end of the .vpt file. The header of the chunk equals
+ * 04 00 00 00 43 4F 44	45 (0x04 0 0 0 "CODE") and ends with 04 00 00 00.
+ *
+ * @param fd
+ * @returns {{start: *, end: *}}
+ */
+var getScriptPosition = function(fd) {
+
+	var stat = fs.fstatSync(fd);
+	var buf = new Buffer(8);
+	var scriptStart, scriptEnd;
+	for (var i = stat.size; i > 0; i--) {
+		fs.readSync(fd, buf, 0, buf.length, i - buf.length);
+		if (buf[4] == 0x04 && buf[5] == 0x00 && buf[6] == 0x00 && buf[7] == 0x00) { // 0400
+			scriptEnd = i - 4;
+		}
+		if (buf[0] == 0x04 && buf[1] == 0x00 && buf[2] == 0x00 && buf[3] == 0x00 &&  // 0400
+			buf[4] == 0x43 && buf[5] == 0x4f && buf[6] == 0x44 && buf[7] == 0x45) {  // CODE
+			scriptStart = i + 4;
+			break;
+		}
+	}
+	return { start: scriptStart, end: scriptEnd, fileSize: stat.size };
 };
 
 /**
@@ -354,7 +401,7 @@ VisualPinball.prototype.getTableData = function(path, callback) {
 	var that = this;
 
 	// read script from table
-	that.getScriptFromTable(path, function(err, script) {
+	that.readScriptFromTable(path, function(err, script) {
 		if (err) {
 			logger.log('warn', '[vp] Error getting script: ' + err);
 			return callback(err);
