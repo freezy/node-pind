@@ -21416,9 +21416,37 @@
   },
   "8691": {
     "name": "Wooly DOF edition",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
     "title_original": "Wooly DOF edition",
-    "title_original_trimmed": "Wooly DOF edition"
+    "title_original_trimmed": "Wooly DOF edition",
+    "confirmed": true,
+    "type": "OG"
+  },
+  "8692": {
+    "ipdb": "4358",
+    "title": "The Champion Pub",
+    "year": "1998",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4358/Playfield.jpg",
+    "title_original": "Champion Pub VP9 FS",
+    "title_original_trimmed": "Champion Pub",
+    "confirmed": true
+  },
+  "8694": {
+    "ipdb": "3676",
+    "title": "Car Hop",
+    "year": "1991",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/3676/image-2.jpg",
+    "title_original": "Car Hop (Premier 1991) [HP VIDEO]",
+    "confirmed": true
+  },
+  "8695": {
+    "ipdb": "4358",
+    "title": "The Champion Pub",
+    "year": "1998",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4358/Playfield.jpg",
+    "title_original": "Championship Pub (Bally 1998) [HP VIDEO]",
+    "confirmed": true
   }
 }
