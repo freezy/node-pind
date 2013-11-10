@@ -290,23 +290,39 @@ VisualPinball.prototype.writeScriptToTable = function(tablePath, scriptData, cal
 	}
 	fs.open(tablePath, 'r+', function(err, fd) {
 
-		var script = getScriptPosition(fd);
-		var tailBuf = new Buffer(script.fileSize - script.end);
+		var scriptPos = getScriptPosition(fd);
+		var tailBuf = new Buffer(scriptPos.fileSize - scriptPos.end);
 		var scriptBuf = new Buffer(scriptData);
 		var lenBuf = new Buffer(4);
 		var lenRevBuf = new Buffer(4);
 		lenBuf.writeInt32BE(scriptData.length, 0);
 		lenRevBuf[0] = lenBuf[3]; lenRevBuf[1] = lenBuf[2]; lenRevBuf[2] = lenBuf[1]; lenRevBuf[3] = lenBuf[0];
 
-		logger.log('debug', '[vp] [script] Writing script at position %s.', script.start);
-		fs.readSync(fd, tailBuf, 0, tailBuf.length, script.end);
+		var eof = scriptPos.endb + scriptData.length - (scriptPos.end - scriptPos.start);
+		var newSize = eof - (eof % 4096) + 4096;
+		logger.log('info', '[vp] [script] OLD ENDB is at position %d', scriptPos.endb);
+		logger.log('info', '[vp] [script] NEW ENDB is at position %d', eof);
+
+		logger.log('info', '[vp] [script] Writing script back to "%s"', tablePath);
+		fs.readSync(fd, tailBuf, 0, tailBuf.length, scriptPos.end);
+		//console.log('TAIL1 = \n' + tailBuf.toString());
 		// truncate file
-		fs.truncateSync(fd, script.start + scriptData.length + tailBuf.length);
+		fs.truncate(fd, scriptPos.start + scriptData.length + tailBuf.length);
 		// write script
-		fs.writeSync(fd, lenRevBuf, 0, 4, script.start - 4);
-		fs.writeSync(fd, scriptBuf, 0, scriptBuf.length, script.start);
+		fs.writeSync(fd, lenRevBuf, 0, 4, scriptPos.start - 4);
+		fs.writeSync(fd, scriptBuf, 0, scriptBuf.length, scriptPos.start);
 		// write tail
-		fs.writeSync(fd, tailBuf, 0, tailBuf.length, script.start + scriptBuf.length);
+		fs.writeSync(fd, tailBuf, 0, tailBuf.length, scriptPos.start + scriptBuf.length);
+
+		// fill up with 00s
+		fs.truncate(fd, eof);
+		var i;
+		var nullBuf = new Buffer(newSize - eof);
+		for (i = 0; i < nullBuf.length; i++) {
+			nullBuf[i] = 0x00;
+		}
+		fs.writeSync(fd, nullBuf, 0, nullBuf.length, eof);
+
 		// save
 		fs.closeSync(fd);
 		callback();
@@ -321,13 +337,13 @@ VisualPinball.prototype.writeScriptToTable = function(tablePath, scriptData, cal
  * 04 00 00 00 43 4F 44	45 (0x04 0 0 0 "CODE") and ends with 04 00 00 00.
  *
  * @param fd
- * @returns {{start: *, end: *}}
+ * @returns {{start: int, end: int, fileSize: int, endb: int}}
  */
 var getScriptPosition = function(fd) {
 
 	var stat = fs.fstatSync(fd);
 	var buf = new Buffer(8);
-	var scriptStart, scriptEnd;
+	var scriptStart, scriptEnd, endb;
 	for (var i = stat.size; i > 0; i--) {
 		fs.readSync(fd, buf, 0, buf.length, i - buf.length);
 		if (buf[4] == 0x04 && buf[5] == 0x00 && buf[6] == 0x00 && buf[7] == 0x00) { // 0400
@@ -338,8 +354,12 @@ var getScriptPosition = function(fd) {
 			scriptStart = i + 4;
 			break;
 		}
+		if (buf[0] == 0x04 && buf[1] == 0x00 && buf[2] == 0x00 && buf[3] == 0x00 &&  // 0400
+			buf[4] == 0x45 && buf[5] == 0x4e && buf[6] == 0x44 && buf[7] == 0x42) {  // ENDB
+			endb = i;
+		}
 	}
-	return { start: scriptStart, end: scriptEnd, fileSize: stat.size };
+	return { start: scriptStart, end: scriptEnd, endb: endb, fileSize: stat.size };
 };
 
 /**
