@@ -25,6 +25,9 @@ var logger = require('winston');
 logger.cli();
 
 
+writeTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - PIND.vpt');
+//readTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - Copy2.vpt');
+
 //testEditionParsing();
 
 //findMedia(20);
@@ -46,7 +49,7 @@ logger.cli();
 
 //nv.diff();
 
-postProcessTransfer(1);
+//postProcessTransfer(1);
 
 //	cacheAllTableDownloads();
 //	nextDownload();
@@ -88,6 +91,33 @@ function migrateUp(filename) {
 			console.log('Migration executed successfully.');
 	}).error(function(err) {
 		console.error('Migration went wrong: ', err);
+	});
+}
+
+function writeTableScript(filename) {
+	vp.readScriptFromTable(filename, function(err, data) {
+		if (err) {
+			console.error("ERROR: " + err);
+		} else {
+			vp.writeScriptToTable(filename, "'PIND\r\n" + data, function(err) {
+				if (err) {
+					console.error("ERROR: " + err);
+				} else {
+					console.log("Successfully wrote script!");
+				}
+			});
+		}
+	});
+}
+// 64710 -> 64702
+function readTableScript(filename) {
+
+	vp.readScriptFromTable(filename, function(err, data) {
+		if (err) {
+			console.error("ERROR: " + err);
+		} else {
+			console.log("Read successfully.");
+		}
 	});
 }
 
