@@ -21448,5 +21448,14 @@
     "img": "http://www.ipdb.org/images/4358/Playfield.jpg",
     "title_original": "Championship Pub (Bally 1998) [HP VIDEO]",
     "confirmed": true
+  },
+  "8726": {
+    "ipdb": "3676",
+    "title": "Car Hop",
+    "year": "1991",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/3676/image-2.jpg",
+    "title_original": "Car Hop (Gottlieb Premier)(1991)(Bodydump)(1.0)(FS) 1.0",
+    "confirmed": true
   }
 }
