@@ -11,6 +11,7 @@ var schema = require('../database/schema');
 var settings = require('../../config/settings-mine');
 
 var an = require('./announce');
+var md2 = require('./md2');
 
 function VisualPinball() {
 	events.EventEmitter.call(this);
@@ -265,6 +266,33 @@ VisualPinball.prototype.readScriptFromTable = function(tablePath, callback) {
 		return callback('File "' + tablePath + '" does not exist.');
 	}
 	var now = new Date().getTime();
+
+	var doc = new ocd(tablePath);
+	doc.on('err', function(err) {
+		callback(err);
+	});
+	doc.on('ready', function() {
+		var storage = doc.storage('GameStg');
+		if (storage) {
+			try {
+				var stream = storage.stream('GameData');
+				stream.on('data', function(buf) {
+					logger.log('info', '[vp] [script] Found GameData in %d ms.', new Date().getTime() - now);
+
+					var data = buf.toString();
+					//logger.log('info', data);
+				});
+			} catch(err) {
+				callback('Cannot find stream "GameData" in storage "GameStg".');
+			}
+		} else {
+			callback('Cannot find storage "GameStg".');
+		}
+	});
+	doc.read();
+
+	/*
+
     fs.open(tablePath, 'r', function(err, fd) {
 
 		var script = getScriptPosition(fd);
@@ -274,7 +302,7 @@ VisualPinball.prototype.readScriptFromTable = function(tablePath, callback) {
 		fs.readSync(fd, buf, 0, buf.length, script.start);
 		fs.closeSync(fd);
 		callback(null, buf.toString());
-	});
+	});*/
 };
 
 /**
@@ -318,6 +346,7 @@ VisualPinball.prototype.writeScriptToTable = function(tablePath, scriptData, cal
 		fs.truncate(fd, eof);
 		var i;
 		var nullBuf = new Buffer(newSize - eof);
+		//FIXME: nullBuf.fill(0x0);
 		for (i = 0; i < nullBuf.length; i++) {
 			nullBuf[i] = 0x00;
 		}
@@ -360,6 +389,73 @@ var getScriptPosition = function(fd) {
 		}
 	}
 	return { start: scriptStart, end: scriptEnd, endb: endb, fileSize: stat.size };
+};
+
+VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
+	if (!fs.existsSync(tablePath)) {
+		return callback('File "' + tablePath + '" does not exist.');
+	}
+
+	var now = new Date().getTime();
+	var doc = new ocd(tablePath);
+
+	doc.on('err', function(err) {
+		callback(err);
+	});
+	doc.on('ready', function() {
+
+		var hashBuf = [];
+		var hashKeyBuf = [];
+
+		var dumpHash = function() {
+			var buf = Buffer.concat(hashBuf);
+			var hash = new Buffer(md2(buf.toString()));
+			logger.log('info', '[vpf] HASH (%d): %s, computed in %dms', buf.length, hash.toString('hex'), new Date().getTime() - now);
+		};
+		var addStream = function(key, st, next) {
+			var bufs = [];
+			var pstmItem = st.stream(key);
+			pstmItem.on('data', function(buf) {
+				bufs.push(buf);
+			});
+			pstmItem.on('end', function() {
+				var buf = Buffer.concat(bufs);
+				logger.log('info', '[vpf] [checksum] Adding %s (%d)', key, buf.length);
+				hashBuf.push(buf);
+				next();
+			});
+		};
+
+		hashBuf.push(new Buffer('Visual Pinball'));
+		hashKeyBuf.push(new Buffer('Visual Pinball'));
+		logger.log('info', '[vpf] [checksum] Starting');
+
+		var pstgData = doc.storage('GameStg');
+		var pstgInfo = doc.storage('TableInfo');
+
+		if (pstgData && pstgInfo) {
+			async.series([
+				function(next) { addStream('Version', pstgData, next) },
+				function(next) { addStream('TableName', pstgInfo, next) },
+				function(next) { addStream('AuthorName', pstgInfo, next) },
+				function(next) { addStream('TableVersion', pstgInfo, next) },
+				function(next) { addStream('ReleaseDate', pstgInfo, next) },
+				function(next) { addStream('AuthorEmail', pstgInfo, next) },
+				function(next) { addStream('AuthorWebSite', pstgInfo, next) },
+				function(next) { addStream('TableBlurb', pstgInfo, next) },
+				function(next) { addStream('TableDescription', pstgInfo, next) },
+				function(next) { addStream('TableRules', pstgInfo, next) }
+			], function() {
+				dumpHash();
+				return callback();
+			});
+		} else {
+			callback('Cannot find storage "GameStg" and "TableInfo".');
+		}
+
+	});
+	doc.read();
+
 };
 
 /**

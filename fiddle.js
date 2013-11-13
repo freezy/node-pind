@@ -25,7 +25,8 @@ var logger = require('winston');
 logger.cli();
 
 
-writeTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - PIND.vpt');
+vptChecksum('E:/Pinball/Visual Pinball-103/Tables/Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
+//writeTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - PIND.vpt');
 //readTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - Copy2.vpt');
 
 //testEditionParsing();
@@ -113,6 +114,17 @@ function writeTableScript(filename) {
 function readTableScript(filename) {
 
 	vp.readScriptFromTable(filename, function(err, data) {
+		if (err) {
+			console.error("ERROR: " + err);
+		} else {
+			console.log("Read successfully.");
+		}
+	});
+}
+
+function vptChecksum(filename) {
+
+	vp.writeChecksum(filename, function(err) {
 		if (err) {
 			console.error("ERROR: " + err);
 		} else {
