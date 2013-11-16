@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('underscore');
 var fs = require('fs');
 var ocd = require('ole-doc').OleCompoundDoc;
 var util = require('util');
@@ -425,6 +426,32 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				next();
 			});
 		};
+		var loadBiff = function(key, st, callback) {
+			var bufs = [];
+			var strm = st.stream(key);
+			strm.on('data', function(buf) {
+				bufs.push(buf);
+			});
+			strm.on('end', function() {
+				var buf = Buffer.concat(bufs);
+				var tag, data, blockSize, block;
+				var blocks = [];
+				var i = 0;
+				do {
+					blockSize = buf.slice(i, i + 4).readInt32LE(0);  // size of the block excluding the 4 size bytes
+					block = buf.slice(i + 4, i + 4 + blockSize);     // contains tag and data
+					tag = block.slice(0, 4).toString();
+					if (tag != 'ENDB') {
+						data = block.slice(4);
+						blocks.push({ tag: tag, data: data });
+						i += blockSize + 4;
+						hashBuf.push(block);
+					}
+				} while (tag != 'ENDB');
+				callback(null, blocks);
+			});
+			//strm.on('error', callback);
+		};
 
 		hashBuf.push(new Buffer('Visual Pinball'));
 		hashKeyBuf.push(new Buffer('Visual Pinball'));
@@ -444,10 +471,22 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				function(next) { addStream('AuthorWebSite', pstgInfo, next) },
 				function(next) { addStream('TableBlurb', pstgInfo, next) },
 				function(next) { addStream('TableDescription', pstgInfo, next) },
-				function(next) { addStream('TableRules', pstgInfo, next) }
-			], function() {
+				function(next) { addStream('TableRules', pstgInfo, next) },
+				function(next) { loadBiff('CustomInfoTags', pstgData, function(err, blocks) {
+					if (err) return next(err);
+					var infoTags = [];
+					_.each(blocks, function(block) {
+						infoTags.push(block.data.slice(4).toString('utf8'));
+					});
+					async.eachSeries(infoTags, function(infoTag, next) {
+						addStream(infoTag, pstgInfo, next)
+					}, next);
+				})}
+			], function(err) {
+				if (err) {
+					return callback(err);
+				}
 				dumpHash();
-				return callback();
 			});
 		} else {
 			callback('Cannot find storage "GameStg" and "TableInfo".');
@@ -455,7 +494,6 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 
 	});
 	doc.read();
-
 };
 
 /**
