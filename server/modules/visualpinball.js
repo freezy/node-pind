@@ -421,7 +421,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 			});
 			pstmItem.on('end', function() {
 				var buf = Buffer.concat(bufs);
-				logger.log('info', '[vpf] [checksum] Adding %s (%d)', key, buf.length);
+				logger.log('info', '[vpf] [checksum] Adding entire stream %s (%d)', key, buf.length);
 				hashBuf.push(buf);
 				next();
 			});
@@ -437,6 +437,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				var tag, data, blockSize, block;
 				var blocks = [];
 				var i = 0;
+				logger.log('info', '[vpf] [checksum] Adding BIFF stream %s (%d)', key, buf.length);
 				do {
 					blockSize = buf.slice(i, i + 4).readInt32LE(0);  // size of the block excluding the 4 size bytes
 					block = buf.slice(i + 4, i + 4 + blockSize);     // contains tag and data
@@ -445,8 +446,8 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 						data = block.slice(4);
 						blocks.push({ tag: tag, data: data });
 						i += blockSize + 4;
-						hashBuf.push(block);
 					}
+					hashBuf.push(block);
 				} while (tag != 'ENDB');
 				callback(null, blocks);
 			});
@@ -463,7 +464,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 		if (pstgData && pstgInfo) {
 			async.series([
 				function(next) { addStream('Version', pstgData, next) },
-				function(next) { addStream('TableName', pstgInfo, next) },
+				function(next) { addStream('TableName', pstgInfo, next) },    // ReadInfoValue(pstg, L"TableName", &m_szTableName, hcrypthash);
 				function(next) { addStream('AuthorName', pstgInfo, next) },
 				function(next) { addStream('TableVersion', pstgInfo, next) },
 				function(next) { addStream('ReleaseDate', pstgInfo, next) },
