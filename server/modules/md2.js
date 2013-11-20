@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('underscore');
+
 /**
  * Credits for the JS implementation go to kerry:
  *
@@ -24,12 +26,12 @@ module.exports = new function() {
 	};
 
 	this.buf = function(_buf) {
-		return new Buffer(getMD(_buf.toString()));
+		return new Buffer(getMD(buf2arr(_buf)));
 	};
 
 	var getMD = function(_data) {
 		var datz = [];
-		if (isAry(_data)) {
+		if (_.isArray(_data)) {
 			datz = _data;
 		} else if (isStr(_data)) {
 			datz = unpack(_data);
@@ -41,9 +43,6 @@ module.exports = new function() {
 		return round(datz);
 	};
 
-	var isAry = function(_ary) {
-		return _ary && _ary.constructor === [].constructor;
-	};
 	var isStr = function(_str) {
 		return typeof(_str) == typeof("string");
 	};
@@ -124,6 +123,14 @@ module.exports = new function() {
 			dat += String.fromCharCode(_ary[i]);
 		}
 		return dat;
+	};
+
+	var buf2arr = function(buf) {
+		var arr = [];
+		for (var i = 0; i < buf.length; ++i) {
+			arr[i] = buf.readInt8(i);
+		}
+		return arr;
 	};
 
 

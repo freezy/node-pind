@@ -478,19 +478,19 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 					hashBuf.push(block);
 					var blk = block.length > 16 ? block.slice(0, 16) : block;
 					console.log('*** Added block %s %s (%d / %d bytes): %s | %s', tag, makeHash().toString('hex'), blockSize, hashSize, blk.toString('hex'), blk);
-					var n;
+/*					var n;
 					var l = hashBuf.length;
 					for (n = l - 4; n < l; n++) {
 						var b = hashBuf[n];
 						console.log('   %s', (b.length > 8 ? b.slice(b.length - 8) : b).toString('hex'));
-					}
+					}*/
 				} while (tag != 'ENDB');
 				callback(null, blocks);
 			});
 			//strm.on('error', callback);
 		};
 
-		hashBuf.push(new Buffer('Visual PinballVisual Pinball'));
+		hashBuf.push(new Buffer('Visual Pinball'));
 		hashKeyBuf.push(new Buffer('Visual Pinball'));
 		logger.log('info', '[vpf] [checksum] Starting');
 
