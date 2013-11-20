@@ -412,6 +412,19 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 		var makeHash = function() {
 			var buf = Buffer.concat(hashBuf);
 			hashSize = buf.length;
+			if (false) {
+				var i, s = '', t = '';
+				for (i = 0; i < buf.length; i++) {
+					if (i % 16 == 0) {
+						s += ' ' + t + '\n';
+						t = '';
+					}
+					s += buf.slice(i, i+1).toString('hex').toUpperCase() + ' ';
+					t += buf.slice(i, i+1).readInt8(0) ? buf.slice(i, i+1).toString('utf8').trim() : ' ';
+				}
+				fs.writeFileSync('data.pind.txt', s);
+				console.log(s);
+			}
 			return md2.buf(buf);
 			//return new Buffer(md2(buf.toString()));
 		};
@@ -477,7 +490,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 			//strm.on('error', callback);
 		};
 
-		hashBuf.push(new Buffer('Visual Pinball'));
+		hashBuf.push(new Buffer('Visual PinballVisual Pinball'));
 		hashKeyBuf.push(new Buffer('Visual Pinball'));
 		logger.log('info', '[vpf] [checksum] Starting');
 
