@@ -457,15 +457,14 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 					blockSize = buf.slice(i, i + 4).readInt32LE(0);  // size of the block excluding the 4 size bytes
 					block = buf.slice(i + 4, i + 4 + blockSize);     // contains tag and data
 					tag = block.slice(0, 4).toString();
+					//noinspection FallthroughInSwitchStatementJS
 					switch (tag) {
 						case 'ENDB': // do nothing
 							break;
 						case 'CODE':
-							block = new Buffer(0); tag = 'ENDB';
-							break;
 							i += 8;
 							blockSize = buf.slice(i, i + 4).readInt32LE(0);
-							block = buf.slice(i, i + 4 + blockSize);
+							block = buf.slice(i + 4, i + 4 + blockSize);
 							block = Buffer.concat([new Buffer(tag), block]);
 						default:
 							data = block.slice(4);
