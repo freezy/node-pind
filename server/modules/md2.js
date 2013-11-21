@@ -128,7 +128,7 @@ module.exports = new function() {
 	var buf2arr = function(buf) {
 		var arr = [];
 		for (var i = 0; i < buf.length; ++i) {
-			arr[i] = buf.readInt8(i);
+			arr[i] = buf.readUInt8(i);
 		}
 		return arr;
 	};
