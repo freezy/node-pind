@@ -397,6 +397,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 		return callback('File "' + tablePath + '" does not exist.');
 	}
 
+	var dumpHashdata = false;
 	var now = new Date().getTime();
 	var doc = new ocd(tablePath);
 
@@ -412,7 +413,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 		var makeHash = function() {
 			var buf = Buffer.concat(hashBuf);
 			hashSize = buf.length;
-			if (false) {
+			if (dumpHashdata) {
 				var i, s = '', t = '';
 				for (i = 0; i < buf.length; i++) {
 					if (i % 16 == 0) {
@@ -426,7 +427,6 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				console.log(s);
 			}
 			return md2.buf(buf);
-			//return new Buffer(md2(buf.toString()));
 		};
 		var addStream = function(key, st, next) {
 			var bufs = [];
@@ -477,12 +477,6 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 					hashBuf.push(block);
 					var blk = block.length > 16 ? block.slice(0, 16) : block;
 					console.log('*** Added block %s %s (%d / %d bytes): %s | %s', tag, makeHash().toString('hex'), blockSize, hashSize, blk.toString('hex'), blk);
-/*					var n;
-					var l = hashBuf.length;
-					for (n = l - 4; n < l; n++) {
-						var b = hashBuf[n];
-						console.log('   %s', (b.length > 8 ? b.slice(b.length - 8) : b).toString('hex'));
-					}*/
 				} while (tag != 'ENDB');
 				callback(null, blocks);
 			});
