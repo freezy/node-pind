@@ -452,7 +452,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				var tag, data, blockSize, block;
 				var blocks = [];
 				var i = 0;
-				logger.log('info', '[vpf] [checksum] Adding BIFF stream %s (%d)', key, buf.length);
+				logger.log('info', '[vpf] [checksum] Adding BIFF stream %s (%d bytes)', key, buf.length);
 				do {
 					blockSize = buf.slice(i, i + 4).readInt32LE(0);  // size of the block excluding the 4 size bytes
 					block = buf.slice(i + 4, i + 4 + blockSize);     // contains tag and data
@@ -462,6 +462,13 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 						case 'ENDB': // do nothing
 							break;
 						case 'CODE':
+							// in here, the data starts with 4 size bytes again. this is a special case,
+							// what's hashed now is only the tag and the data *after* the 4 size bytes.
+							// concretely, we have:
+							//    4 bytes size of block (blockSize above)
+							//    4 bytes tag name (tag)
+							//    4 bytes size of code (blockSize below)
+							//    n bytes of code (block below)
 							i += 8;
 							blockSize = buf.slice(i, i + 4).readInt32LE(0);
 							block = buf.slice(i + 4, i + 4 + blockSize);
