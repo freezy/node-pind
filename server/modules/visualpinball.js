@@ -410,6 +410,12 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 		var hashSize = 0;
 		var hashKeyBuf = [];
 
+		var numSubobj = 0;
+		var numSounds = 0;
+		var numTextures = 0;
+		var numFonts = 0;
+		var numCollection = 0;
+
 		var makeHash = function() {
 			var buf = Buffer.concat(hashBuf);
 			hashSize = buf.length;
@@ -441,7 +447,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				next();
 			});
 		};
-		var loadBiff = function(key, st, callback) {
+		var loadBiff = function(key, st, offset, callback) {
 			var bufs = [];
 			var strm = st.stream(key);
 			strm.on('data', function(buf) {
@@ -451,7 +457,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				var buf = Buffer.concat(bufs);
 				var tag, data, blockSize, block;
 				var blocks = [];
-				var i = 0;
+				var i = offset;
 				logger.log('info', '[vpf] [checksum] Adding BIFF stream %s (%d bytes)', key, buf.length);
 				do {
 					blockSize = buf.slice(i, i + 4).readInt32LE(0);  // size of the block excluding the 4 size bytes
@@ -479,6 +485,23 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 							i += blockSize + 4;
 							break;
 					}
+					switch (tag) {
+						case 'SEDT':
+							numSubobj = data.readInt32LE(0);
+							break;
+						case 'SSND':
+							numSounds = data.readInt32LE(0);
+							break;
+						case 'SIMG':
+							numTextures = data.readInt32LE(0);
+							break;
+						case 'SFNT':
+							numFonts = data.readInt32LE(0);
+							break;
+						case 'SCOL':
+							numCollection = data.readInt32LE(0);
+							break;
+					}
 					//console.log('*** Adding block [%d] %s', blockSize, block);
 					//console.log('*** Adding block [%d] %s', blockSize, block.length > 100 ? block.slice(0, 100) : block);
 					hashBuf.push(block);
@@ -488,6 +511,11 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				callback(null, blocks);
 			});
 			//strm.on('error', callback);
+		};
+		var addStreams = function(name, count, offset, callback) {
+			async.timesSeries(count, function(n, next) {
+				loadBiff(name + n, pstgData, offset, next);
+			}, callback);
 		};
 
 		hashBuf.push(new Buffer('Visual Pinball'));
@@ -509,7 +537,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				function(next) { addStream('TableBlurb', pstgInfo, next) },
 				function(next) { addStream('TableDescription', pstgInfo, next) },
 				function(next) { addStream('TableRules', pstgInfo, next) },
-				function(next) { loadBiff('CustomInfoTags', pstgData, function(err, blocks) {
+				function(next) { loadBiff('CustomInfoTags', pstgData, 0, function(err, blocks) {
 					if (err) return next(err);
 					var infoTags = [];
 					_.each(blocks, function(block) {
@@ -519,7 +547,8 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 						addStream(infoTag, pstgInfo, next)
 					}, next);
 				})},
-				function(next) { loadBiff('GameData', pstgData, next) }
+				function(next) { loadBiff('GameData', pstgData, 0, next) },
+				function(next) { addStreams('GameItem', numSubobj, 4, next) }
 			], function(err) {
 				if (err) {
 					return callback(err);
