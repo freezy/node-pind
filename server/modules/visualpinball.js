@@ -465,8 +465,9 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 					tag = block.slice(0, 4).toString();
 					//noinspection FallthroughInSwitchStatementJS
 					switch (tag) {
-						case 'ENDB': // do nothing
-							break;
+//						case 'ENDB': // do nothing
+//							i += 4;
+//							break;
 						case 'CODE':
 							// in here, the data starts with 4 size bytes again. this is a special case,
 							// what's hashed now is only the tag and the data *after* the 4 size bytes.
@@ -480,8 +481,10 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 							block = buf.slice(i + 4, i + 4 + blockSize);
 							block = Buffer.concat([new Buffer(tag), block]);
 						default:
-							data = block.slice(4);
-							blocks.push({ tag: tag, data: data });
+							if (blockSize > 4) {
+								data = block.slice(4);
+								blocks.push({ tag: tag, data: data });
+							}
 							i += blockSize + 4;
 							break;
 					}
@@ -507,7 +510,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 					hashBuf.push(block);
 					var blk = block.length > 16 ? block.slice(0, 16) : block;
 					console.log('*** Added block %s %s (%d / %d bytes): %s | %s', tag, makeHash().toString('hex'), blockSize, hashSize, blk.toString('hex'), blk);
-				} while (tag != 'ENDB');
+				} while (i < buf.length - 4);
 				callback(null, blocks);
 			});
 			//strm.on('error', callback);
