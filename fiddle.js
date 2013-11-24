@@ -2,10 +2,12 @@
 
 var _ = require('underscore');
 var fs = require('fs');
+var path = require('path');
 var util = require('util');
 var async = require('async');
 
 var schema = require('./server/database/schema');
+var settings = require('./config/settings-mine');
 
 var au = require('./server/modules/autoupdate');
 var nv = require('./server/modules/nvram');
@@ -25,7 +27,9 @@ var logger = require('winston');
 logger.cli();
 
 
-vptChecksum('E:/Pinball/Visual Pinball-103/Tables/Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
+vptChecksumCheck('Big Guns (Williams 1987) 1.00.vpt');
+
+//vptChecksum('E:/Pinball/Visual Pinball-103/Tables/Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
 //writeTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - PIND.vpt');
 //readTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - Copy2.vpt');
 
@@ -130,6 +134,54 @@ function vptChecksum(filename) {
 		} else {
 			console.log("Read successfully.");
 		}
+	});
+}
+
+function vptChecksumCheck(filename) {
+	var ocd = require('ole-doc').OleCompoundDoc;
+	var files;
+	if (filename) {
+		if (!fs.existsSync(settings.visualpinball.path + '/tables/' + filename)) {
+			throw new Error(settings.visualpinball.path + '/tables/' + filename + ' does not exist.');
+		}
+		files = [ filename ];
+	} else {
+		files = fs.readdirSync(settings.visualpinball.path + '/tables');
+	}
+	async.eachSeries(files, function(file, next) {
+		var ext = path.extname(file).toLowerCase();
+		if (ext == '.vpt') {
+			//console.log(file);
+			var filepath = settings.visualpinball.path + '/tables/' + file;
+			var doc = new ocd(filepath);
+			doc.on('ready', function() {
+				console.log('loaded');
+				var strm = doc.storage('GameStg').stream('MAC');
+				var bufs = [];
+				strm.on('data', function(buf) {
+					bufs.push(buf);
+				});
+				strm.on('end', function() {
+					var buf = Buffer.concat(bufs);
+					console.log('%s - %s', buf.toString('hex'), file);
+					next();
+				});
+				strm.on('err', next);
+			});
+			doc.on('err', function(err) {
+				console.error('Error reading "%s": %s', file, err);
+				next();
+			});
+			console.log('loading');
+			doc.read();
+		} else {
+			next();
+		}
+	}, function(err) {
+		if (err) {
+			return console.error("ERROR: " + err);
+		}
+		console.log('done!');
 	});
 }
 
