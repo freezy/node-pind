@@ -458,28 +458,54 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				var tag, data, blockSize, block;
 				var blocks = [];
 				var i = offset;
-				logger.log('info', '[vpf] [checksum] Adding BIFF stream %s (%d bytes)', key, buf.length);
+				process.stdout.write('### [vpf] [checksum] Adding BIFF stream ' + key + ' (' + buf.length + ' bytes) ');
+				//logger.log('info', '[vpf] [checksum] Adding BIFF stream %s (%d bytes)', key, buf.length);
 				do {
+					/* usually, we have:
+					 *    4 bytes size of block (blockSize)
+					 *    blockSize bytes of data, where data is
+					 *        4 bytes tag name
+					 *        (blockSize - 4) bytes data
+					 *
+					 *    in case of a string, data is again prefixed with 4 bytes of string size,
+					 *    but we don't care because those are hashed too.
+					 *
+					 *    what's NOT hashed is the original block size or the stream block size,
+					 *    see below
+					 */
 					blockSize = buf.slice(i, i + 4).readInt32LE(0);  // size of the block excluding the 4 size bytes
 					block = buf.slice(i + 4, i + 4 + blockSize);     // contains tag and data
 					tag = block.slice(0, 4).toString();
+
 					//noinspection FallthroughInSwitchStatementJS
 					switch (tag) {
-//						case 'ENDB': // do nothing
-//							i += 4;
-//							break;
+
+						// ignored
+						case 'FONT':
+							/* not hashed, but need to find out how many bytes to skip. best guess: tag
+							 * is followed by 8 bytes of whatever, then 2 bytes size BE, followed by
+							 * data.
+							 */
+							blockSize = buf.readInt16BE(i + 17);
+							i += 19 + blockSize;
+							break;
+
+						// streams
 						case 'CODE':
-							// in here, the data starts with 4 size bytes again. this is a special case,
-							// what's hashed now is only the tag and the data *after* the 4 size bytes.
-							// concretely, we have:
-							//    4 bytes size of block (blockSize above)
-							//    4 bytes tag name (tag)
-							//    4 bytes size of code (blockSize below)
-							//    n bytes of code (block below)
+
+							/* in here, the data starts with 4 size bytes again. this is a special case,
+							 * what's hashed now is only the tag and the data *after* the 4 size bytes.
+							 * concretely, we have:
+							 *    4 bytes size of block (blockSize above)
+							 *    4 bytes tag name (tag)
+							 *    4 bytes size of code (blockSize below)
+							 *    n bytes of code (block below)
+							 */
 							i += 8;
 							blockSize = buf.slice(i, i + 4).readInt32LE(0);
 							block = buf.slice(i + 4, i + 4 + blockSize);
 							block = Buffer.concat([new Buffer(tag), block]);
+
 						default:
 							if (blockSize > 4) {
 								data = block.slice(4);
@@ -509,8 +535,10 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 					//console.log('*** Adding block [%d] %s', blockSize, block.length > 100 ? block.slice(0, 100) : block);
 					hashBuf.push(block);
 					var blk = block.length > 16 ? block.slice(0, 16) : block;
-					console.log('*** Added block %s %s (%d / %d bytes): %s | %s', tag, makeHash().toString('hex'), blockSize, hashSize, blk.toString('hex'), blk);
+					//console.log('*** Added block %s %s (%d / %d bytes): %s | %s', tag, makeHash().toString('hex'), blockSize, hashSize, blk.toString('hex'), blk);
+					process.stdout.write(tag + " ");
 				} while (i < buf.length - 4);
+				console.log(' [done]');
 				callback(null, blocks);
 			});
 			//strm.on('error', callback);
