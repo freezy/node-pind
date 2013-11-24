@@ -392,7 +392,17 @@ var getScriptPosition = function(fd) {
 	return { start: scriptStart, end: scriptEnd, endb: endb, fileSize: stat.size };
 };
 
-VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
+/**
+ * Gathers hash data of a table file and computes the MD2 hash on it. Hash is not written
+ * back to table.
+ *
+ * @param tablePath Path to .vpt file
+ * @param callback
+ * @returns {*} callback Function to execute after completion, invoked with two arguments:
+ * 		<li>{String} Error message on error</li>
+ * 		<li>{Buffer} 16 bit MD2 hash</li>
+ */
+VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 	if (!fs.existsSync(tablePath)) {
 		return callback('File "' + tablePath + '" does not exist.');
 	}
@@ -410,11 +420,11 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 		var hashSize = 0;
 		var hashKeyBuf = [];
 
-		var numSubobj = 0;
-		var numSounds = 0;
-		var numTextures = 0;
-		var numFonts = 0;
-		var numCollection = 0;
+		var numSubobj = -1;
+		var numSounds = -1;
+		var numTextures = -1;
+		var numFonts = -1;
+		var numCollection = -1;
 
 		var makeHash = function() {
 			var buf = Buffer.concat(hashBuf);
@@ -442,7 +452,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 			});
 			pstmItem.on('end', function() {
 				var buf = Buffer.concat(bufs);
-				logger.log('info', '[vpf] [checksum] Adding entire stream %s (%d)', key, buf.length);
+				//logger.log('info', '[vpf] [checksum] Adding entire stream %s (%d)', key, buf.length);
 				hashBuf.push(buf);
 				next();
 			});
@@ -458,7 +468,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 				var tag, data, blockSize, block;
 				var blocks = [];
 				var i = offset;
-				process.stdout.write('### [vpf] [checksum] Adding BIFF stream ' + key + ' (' + buf.length + ' bytes) ');
+				//process.stdout.write('### [vpf] [checksum] Adding BIFF stream ' + key + ' (' + buf.length + ' bytes) ');
 				//logger.log('info', '[vpf] [checksum] Adding BIFF stream %s (%d bytes)', key, buf.length);
 				do {
 					/* usually, we have:
@@ -516,19 +526,29 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 					}
 					switch (tag) {
 						case 'SEDT':
-							numSubobj = data.readInt32LE(0);
+							if (numSubobj < 0) {
+								numSubobj = data.readInt32LE(0);
+							}
 							break;
 						case 'SSND':
-							numSounds = data.readInt32LE(0);
+							if (numSounds < 0) {
+								numSounds = data.readInt32LE(0);
+							}
 							break;
 						case 'SIMG':
-							numTextures = data.readInt32LE(0);
+							if (numTextures < 0) {
+								numTextures = data.readInt32LE(0);
+							}
 							break;
 						case 'SFNT':
-							numFonts = data.readInt32LE(0);
+							if (numFonts < 0) {
+								numFonts = data.readInt32LE(0);
+							}
 							break;
 						case 'SCOL':
-							numCollection = data.readInt32LE(0);
+							if (numCollection < 0) {
+								numCollection = data.readInt32LE(0);
+							}
 							break;
 					}
 					//console.log('*** Adding block [%d] %s', blockSize, block);
@@ -536,9 +556,9 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 					hashBuf.push(block);
 					var blk = block.length > 16 ? block.slice(0, 16) : block;
 					//console.log('*** Added block %s %s (%d / %d bytes): %s | %s', tag, makeHash().toString('hex'), blockSize, hashSize, blk.toString('hex'), blk);
-					process.stdout.write(tag + " ");
+					//process.stdout.write(tag + " ");
 				} while (i < buf.length - 4);
-				console.log(' [done]');
+				//console.log(' [done]');
 				callback(null, blocks);
 			});
 			//strm.on('error', callback);
@@ -551,7 +571,7 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 
 		hashBuf.push(new Buffer('Visual Pinball'));
 		hashKeyBuf.push(new Buffer('Visual Pinball'));
-		logger.log('info', '[vpf] [checksum] Starting');
+		logger.log('info', '[vpf] [checksum] Starting to compute hash for "%s".', tablePath);
 
 		var pstgData = doc.storage('GameStg');
 		var pstgInfo = doc.storage('TableInfo');
@@ -579,18 +599,21 @@ VisualPinball.prototype.writeChecksum = function(tablePath, callback) {
 					}, next);
 				})},
 				function(next) { loadBiff('GameData', pstgData, 0, next) },
-				function(next) { addStreams('GameItem', numSubobj, 4, next) }
+				function(next) { addStreams('GameItem', numSubobj, 4, next) },
+				function(next) { addStreams('Collection', numCollection, 0, next) }
 			], function(err) {
 				if (err) {
 					return callback(err);
 				}
+				logger.log('info', '[vpf] [checksum] Hash data gathered in %dms, now hashing.', new Date().getTime() - now);
+				now = new Date().getTime();
 				var hash = makeHash();
-				logger.log('info', '[vpf] HASH: %s, computed in %dms', hash.toString('hex'), new Date().getTime() - now);
+				logger.log('info', '[vpf] [checksum] Done, MD2 = %s, computed in %dms.', hash.toString('hex'), new Date().getTime() - now);
+				callback(null, hash);
 			});
 		} else {
 			callback('Cannot find storage "GameStg" and "TableInfo".');
 		}
-
 	});
 	doc.read();
 };
