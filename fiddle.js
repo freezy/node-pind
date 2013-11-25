@@ -27,27 +27,30 @@ var logger = require('winston');
 logger.cli();
 
 
-vptChecksumCheck();
-//ptChecksumCheck('Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
+vptWriteCheck();
+//vptChecksumCheck();
+//vptChecksumCheck('Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
 //vptChecksumCheck('BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.0FSHPTEAM.vpt');
 
+//getSecIds('Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
+
 /*
-vptChecksumCheck([
-	'Big Guns FS.vpt',
-	'BroncoBuster_rev3.0_FS_B2S.vpt'
-]);
-*/
+ vptChecksumCheck([
+ 'Big Guns FS.vpt',
+ 'BroncoBuster_rev3.0_FS_B2S.vpt'
+ ]);
+ */
 /*
-vptChecksumCheck([
-	'BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.0FSHPTEAM.vpt',
-	'BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.2FSNM.Final.vpt',
-	'Centaur - VP9 - FS - 20Nov2009 - LH .vpt',
-	'Fish Tales VP9 FS 1.02.vpt',
-	'Getaway-HS2_UR_NF_v1.04vp9_FS.vpt',
-	'FS No Good Gofers V1.1.vpt',
-	'Indiana Jones -FS-Lord Hiryu-VP9-v1-2 HR 25-12-2010.vpt'
-]);
-*/
+ vptChecksumCheck([
+ 'BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.0FSHPTEAM.vpt',
+ 'BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.2FSNM.Final.vpt',
+ 'Centaur - VP9 - FS - 20Nov2009 - LH .vpt',
+ 'Fish Tales VP9 FS 1.02.vpt',
+ 'Getaway-HS2_UR_NF_v1.04vp9_FS.vpt',
+ 'FS No Good Gofers V1.1.vpt',
+ 'Indiana Jones -FS-Lord Hiryu-VP9-v1-2 HR 25-12-2010.vpt'
+ ]);
+ */
 //vptChecksum('E:/Pinball/Visual Pinball-103/Tables/Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
 //writeTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - PIND.vpt');
 //readTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - Copy2.vpt');
@@ -113,9 +116,9 @@ function migrateUp(filename) {
 		}
 	}).success(function() {
 			console.log('Migration executed successfully.');
-	}).error(function(err) {
-		console.error('Migration went wrong: ', err);
-	});
+		}).error(function(err) {
+			console.error('Migration went wrong: ', err);
+		});
 }
 
 function writeTableScript(filename) {
@@ -156,6 +159,43 @@ function vptChecksum(filename) {
 	});
 }
 
+function vptWriteCheck(filename) {
+	var files;
+	if (filename) {
+		if (_.isArray(filename)) {
+			files = filename;
+		} else {
+			if (!fs.existsSync(settings.visualpinball.path + '/tables/' + filename)) {
+				throw new Error(settings.visualpinball.path + '/tables/' + filename + ' does not exist.');
+			}
+			files = [ filename ];
+		}
+	} else {
+		files = fs.readdirSync(settings.visualpinball.path + '/tables');
+	}
+	async.eachSeries(files, function(file, next) {
+		var ext = path.extname(file).toLowerCase();
+		if (ext == '.vpt') {
+			var filepath = settings.visualpinball.path + '/tables/' + file;
+			vp.canWrite(filepath, function(err, canWrite) {
+				if (err) {
+					return next(err);
+				}
+				console.log('[%s] %s', canWrite ? 'ok' : 'ko', file);
+				next();
+			});
+		} else {
+			next();
+		}
+	}, function(err) {
+		if (err){
+			console.error(err);
+		} else {
+			console.log('done.');
+		}
+	});
+}
+
 function vptChecksumCheck(filename) {
 	var ocd = require('ole-doc').OleCompoundDoc;
 	var files;
@@ -189,9 +229,16 @@ function vptChecksumCheck(filename) {
 							console.error('Error computing hash: %s', err);
 						} else {
 							var ok = mac.toString('hex') == hash.toString('hex');
-							console.log('[%s] %s - %s', ok ? 'ok' : 'ko', mac.toString('hex'), hash.toString('hex'), file);
+							var now = +new Date();
+							vp.verifyChecksumAddress(doc, hash, function(err, success) {
+								if (err) {
+									console.error('Error verifying checksum address: %s', err);
+								} else {
+									console.log('[%s] %s - %s (%sms)', ok && success ? 'ok' : 'ko', mac.toString('hex'), hash.toString('hex'), +new Date() - now);
+								}
+								next();
+							});
 						}
-						next();
 					});
 				});
 				strm.on('err', next);
@@ -510,7 +557,7 @@ function testEditionParsing() {
 		'Tales of the Arabian Nights (Williams 1996)night [HP VIDEO]',
 		'AFM_1_1_night_2.4_Light_Mod_1.0 [HP VIDEO]', 'Attack from Mars (Bally 1995)night [HP VIDEO]', 'Cyclone Night HP VIDEO]',
 		'Medieval Madness (Williams 1997)Night [HP VIDEO]', 'Ripley\'s Believe It or Not night (Stern 2004) [HP VIDEO]',
-		'Taxi (Night Mod) VP916-FS','Ripleys_Believe_It_or_Not_(NIGHT MOD)_VP916_FS',
+		'Taxi (Night Mod) VP916-FS', 'Ripleys_Believe_It_or_Not_(NIGHT MOD)_VP916_FS',
 		'Lord of the Rings VP916 Night MOD', 'Red and Ted\'s Road Show VP916 Night MOD', 'Elvis Night Mod (VP916_FS)',
 		'Taxi (Williams 1988)night [HP VIDEO]', 'Getaway HighspeedII FS GI Dark UNL', 'Mousin Around! FS Dark',
 		'Robocop FS GI Darkmod', 'Robocop FS GI darkmod ledwiz', 'Scared Stiff Dark FS', 'Scared Stiff FS Dark MOD by Kruge99',

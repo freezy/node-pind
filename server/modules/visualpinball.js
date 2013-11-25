@@ -622,6 +622,89 @@ VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 	doc.read();
 };
 
+VisualPinball.prototype.verifyChecksumAddress = function(file, hash, callback) {
+	var verify = function(doc, hash, callback) {
+		var storage = doc.storage('GameStg');
+		if (!storage) {
+			return callback('Cannot find storage "GameStg".');
+		}
+		var streamEntry = storage._dirEntry.streams['MAC'];
+		if (!streamEntry) {
+			return callback('Cannot find stream "MAC".');
+		}
+		var bytes = streamEntry.size;
+		var allocationTable = doc._SAT;
+		if (bytes <= doc._header.shortStreamMax) {
+			allocationTable = doc._SSAT;
+		}
+		var secIds = allocationTable.getSecIdChain(streamEntry.secId);
+		var fileOffset = doc._getFileOffsetForShortSec(secIds[0]);
+
+		var mac = new Buffer(16);
+		fs.readSync(doc._fd, mac, 0, 16, fileOffset);
+
+		callback(null, mac.toString('hex') == hash.toString('hex'));
+	};
+	if (_.isString(file)) {
+		if (!fs.existsSync(file)) {
+			return callback('Cannot find file "' + file + '".');
+		}
+		var doc = new ocd(file);
+		doc.on('ready', function() {
+			verify(doc, hash, callback);
+		});
+		doc.read();
+	} else {
+		verify(file, hash, callback);
+	}
+};
+
+VisualPinball.prototype.canWrite = function(filepath, callback) {
+
+	if (!fs.existsSync(filepath)) {
+		return callback('Cannot find file "' + filepath + '".');
+	}
+	var doc = new ocd(filepath);
+	var that = this;
+	doc.on('ready', function() {
+		var stg = doc.storage('GameStg');
+		if (stg == null) {
+			return callback('Cannot find storage "GameStg" in document.');
+		}
+		var strm = stg.stream('MAC');
+
+		if (strm == null) {
+			return callback('Cannot find stream "MAC" in storage.');
+		}
+		var bufs = [];
+		strm.on('data', function(buf) {
+			bufs.push(buf);
+		});
+		strm.on('end', function() {
+			var mac = Buffer.concat(bufs);
+			that.verifyChecksumAddress(doc, mac, function(err, addressVerified) {
+				if (err) {
+					return callback(err);
+				}
+				if (!addressVerified) {
+					return callback(null, false);
+				}
+				that.computeChecksum(filepath, function(err, hash) {
+					if (err) {
+						return callback(err);
+					}
+					callback(null, hash.toString('hex') == mac.toString('hex'));
+				})
+			});
+		});
+	});
+	doc.on('err', function(err) {
+		logger.log('error', '[vpf] Cannot read file "%s": %s', filepath, err, null);
+		callback(err);
+	});
+	doc.read();
+};
+
 /**
  * Processes all tables.
  *
