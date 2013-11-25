@@ -49,7 +49,7 @@
 		"natural": "0.1.x",
 		"npm": "1.3.x",
 		"octonode": "0.3.x",
-		"ole-doc": "0.1.x",
+		"ole-doc": "https://github.com/freezy/node-ole-doc.git#master",
 		"readdirp": "0.3.x",
 		"relative-date": "1.1.x",
 		"semver": "2.0.x",
