@@ -27,7 +27,7 @@ var logger = require('winston');
 logger.cli();
 
 
-//vptChecksumCheck();
+vptChecksumCheck();
 //ptChecksumCheck('Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
 //vptChecksumCheck('BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.0FSHPTEAM.vpt');
 
@@ -37,6 +37,7 @@ vptChecksumCheck([
 	'BroncoBuster_rev3.0_FS_B2S.vpt'
 ]);
 */
+/*
 vptChecksumCheck([
 	'BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.0FSHPTEAM.vpt',
 	'BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.2FSNM.Final.vpt',
@@ -46,7 +47,7 @@ vptChecksumCheck([
 	'FS No Good Gofers V1.1.vpt',
 	'Indiana Jones -FS-Lord Hiryu-VP9-v1-2 HR 25-12-2010.vpt'
 ]);
-
+*/
 //vptChecksum('E:/Pinball/Visual Pinball-103/Tables/Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
 //writeTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - PIND.vpt');
 //readTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - Copy2.vpt');
@@ -176,7 +177,6 @@ function vptChecksumCheck(filename) {
 			var filepath = settings.visualpinball.path + '/tables/' + file;
 			var doc = new ocd(filepath);
 			doc.on('ready', function() {
-				console.log('*** document loaded.');
 				var strm = doc.storage('GameStg').stream('MAC');
 				var bufs = [];
 				strm.on('data', function(buf) {
@@ -201,7 +201,6 @@ function vptChecksumCheck(filename) {
 				console.log(util.inspect(err, false, 100, true));
 				next();
 			});
-			console.log('*** loading "%s"...', filepath);
 			doc.read();
 		} else {
 			next();
