@@ -20,14 +20,14 @@ For original tables however, IPDB will come up empty, so another identifier is n
 have file IDs as well. So for original tables, Pind will use VPF's file ID.
 
 Now, since we have a vibrant modding community, tables tend to be available in multiple variations, such as an
-additional night mod version. For this, Pind will track an additional "mod" field that distinguishes between
+additional night mod version. For this, Pind will track an additional "edition" field that distinguishes between
 the classic and any potentially modded versions.
 
 
 How to match?
 -------------
 
-As explained above, our identifier has three components: IPDB number, VPF file ID and mod type. The challenge now
+As explained above, our identifier has three components: IPDB number, VPF file ID and edition type. The challenge now
 is to accurately determine:
 
 1. IPDB number for all VPF downloads
