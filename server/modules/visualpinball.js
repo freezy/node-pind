@@ -447,6 +447,9 @@ VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 		var addStream = function(key, st, next) {
 			var bufs = [];
 			var pstmItem = st.stream(key);
+			if (pstmItem == null) {
+				return next();
+			}
 			pstmItem.on('data', function(buf) {
 				bufs.push(buf);
 			});
@@ -454,6 +457,7 @@ VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 				var buf = Buffer.concat(bufs);
 				//logger.log('info', '[vpf] [checksum] Adding entire stream %s (%d)', key, buf.length);
 				hashBuf.push(buf);
+//				console.log('*** Added stream %s %s (%d bytes)', key, makeHash().toString('hex'), buf.length);
 				next();
 			});
 		};
@@ -554,14 +558,13 @@ VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 					//console.log('*** Adding block [%d] %s', blockSize, block);
 					//console.log('*** Adding block [%d] %s', blockSize, block.length > 100 ? block.slice(0, 100) : block);
 					hashBuf.push(block);
-					var blk = block.length > 16 ? block.slice(0, 16) : block;
-					//console.log('*** Added block %s %s (%d / %d bytes): %s | %s', tag, makeHash().toString('hex'), blockSize, hashSize, blk.toString('hex'), blk);
+//					var blk = block.length > 16 ? block.slice(0, 16) : block;
+//					console.log('*** Added block %s %s (%d / %d bytes): %s | %s', tag, makeHash().toString('hex'), blockSize, hashSize, blk.toString('hex'), blk);
 					//process.stdout.write(tag + " ");
 				} while (i < buf.length - 4);
 				//console.log(' [done]');
 				callback(null, blocks);
 			});
-			//strm.on('error', callback);
 		};
 		var addStreams = function(name, count, offset, callback) {
 			async.timesSeries(count, function(n, next) {
@@ -588,6 +591,7 @@ VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 				function(next) { addStream('TableBlurb', pstgInfo, next) },
 				function(next) { addStream('TableDescription', pstgInfo, next) },
 				function(next) { addStream('TableRules', pstgInfo, next) },
+				function(next) { addStream('Screenshot', pstgInfo, next) },
 				function(next) { loadBiff('CustomInfoTags', pstgData, 0, function(err, blocks) {
 					if (err) return next(err);
 					var infoTags = [];

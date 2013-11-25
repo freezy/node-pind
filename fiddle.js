@@ -27,7 +27,25 @@ var logger = require('winston');
 logger.cli();
 
 
-vptChecksumCheck('Big Guns (Williams 1987) 1.00.vpt');
+//vptChecksumCheck();
+//ptChecksumCheck('Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
+//vptChecksumCheck('BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.0FSHPTEAM.vpt');
+
+/*
+vptChecksumCheck([
+	'Big Guns FS.vpt',
+	'BroncoBuster_rev3.0_FS_B2S.vpt'
+]);
+*/
+vptChecksumCheck([
+	'BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.0FSHPTEAM.vpt',
+	'BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.2FSNM.Final.vpt',
+	'Centaur - VP9 - FS - 20Nov2009 - LH .vpt',
+	'Fish Tales VP9 FS 1.02.vpt',
+	'Getaway-HS2_UR_NF_v1.04vp9_FS.vpt',
+	'FS No Good Gofers V1.1.vpt',
+	'Indiana Jones -FS-Lord Hiryu-VP9-v1-2 HR 25-12-2010.vpt'
+]);
 
 //vptChecksum('E:/Pinball/Visual Pinball-103/Tables/Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
 //writeTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - PIND.vpt');
@@ -141,38 +159,49 @@ function vptChecksumCheck(filename) {
 	var ocd = require('ole-doc').OleCompoundDoc;
 	var files;
 	if (filename) {
-		if (!fs.existsSync(settings.visualpinball.path + '/tables/' + filename)) {
-			throw new Error(settings.visualpinball.path + '/tables/' + filename + ' does not exist.');
+		if (_.isArray(filename)) {
+			files = filename;
+		} else {
+			if (!fs.existsSync(settings.visualpinball.path + '/tables/' + filename)) {
+				throw new Error(settings.visualpinball.path + '/tables/' + filename + ' does not exist.');
+			}
+			files = [ filename ];
 		}
-		files = [ filename ];
 	} else {
 		files = fs.readdirSync(settings.visualpinball.path + '/tables');
 	}
 	async.eachSeries(files, function(file, next) {
 		var ext = path.extname(file).toLowerCase();
 		if (ext == '.vpt') {
-			//console.log(file);
 			var filepath = settings.visualpinball.path + '/tables/' + file;
 			var doc = new ocd(filepath);
 			doc.on('ready', function() {
-				console.log('loaded');
+				console.log('*** document loaded.');
 				var strm = doc.storage('GameStg').stream('MAC');
 				var bufs = [];
 				strm.on('data', function(buf) {
 					bufs.push(buf);
 				});
 				strm.on('end', function() {
-					var buf = Buffer.concat(bufs);
-					console.log('%s - %s', buf.toString('hex'), file);
-					next();
+					var mac = Buffer.concat(bufs);
+					vp.computeChecksum(filepath, function(err, hash) {
+						if (err) {
+							console.error('Error computing hash: %s', err);
+						} else {
+							var ok = mac.toString('hex') == hash.toString('hex');
+							console.log('[%s] %s - %s', ok ? 'ok' : 'ko', mac.toString('hex'), hash.toString('hex'), file);
+						}
+						next();
+					});
 				});
 				strm.on('err', next);
 			});
 			doc.on('err', function(err) {
-				console.error('Error reading "%s": %s', file, err);
+				console.error('Error parsing "%s": %s', file, err);
+				console.log(util.inspect(err, false, 100, true));
 				next();
 			});
-			console.log('loading');
+			console.log('*** loading "%s"...', filepath);
 			doc.read();
 		} else {
 			next();
