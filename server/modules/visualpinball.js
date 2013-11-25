@@ -622,6 +622,14 @@ VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 	doc.read();
 };
 
+/**
+ * Verifies that we can correctly determine where to write the hash value.
+ *
+ * @param file {String|OleCompoundDoc} Either relative file name or ready document object.
+ * @param hash {Buffer} Hash to check against
+ * @param callback
+ * @returns {*}
+ */
 VisualPinball.prototype.verifyChecksumAddress = function(file, hash, callback) {
 	var verify = function(doc, hash, callback) {
 		var storage = doc.storage('GameStg');
@@ -659,6 +667,18 @@ VisualPinball.prototype.verifyChecksumAddress = function(file, hash, callback) {
 	}
 };
 
+/**
+ * Checks if a .vpt file is writeable. This should be executed *before*
+ * writing to the table and will check:
+ *    1. That the address of the hash can be correctly read
+ *    2. That the hash is correctly computed for the current data
+ *
+ * After that, script data may be written and the hash may be updated.
+ *
+ * @param filepath {String} Absolute path to the .vpt file
+ * @param callback
+ * @returns {*}
+ */
 VisualPinball.prototype.canWrite = function(filepath, callback) {
 
 	if (!fs.existsSync(filepath)) {
