@@ -623,48 +623,48 @@ VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 };
 
 /**
+ * Returns the byte offset if the .vpt file where the MD2 hash is saved
+ *
+ * @param doc {OleCompoundDoc} Ready document object.
+ * @param callback
+ * @returns {*}
+ * @private
+ */
+VisualPinball.prototype._getChecksumAddress = function(doc, callback) {
+	var storage = doc.storage('GameStg');
+	if (!storage) {
+		return callback('Cannot find storage "GameStg".');
+	}
+	var streamEntry = storage._dirEntry.streams['MAC'];
+	if (!streamEntry) {
+		return callback('Cannot find stream "MAC".');
+	}
+	var bytes = streamEntry.size;
+	var allocationTable = doc._SAT;
+	if (bytes <= doc._header.shortStreamMax) {
+		allocationTable = doc._SSAT;
+	}
+	var secIds = allocationTable.getSecIdChain(streamEntry.secId);
+	callback(null, doc._getFileOffsetForShortSec(secIds[0]));
+};
+
+/**
  * Verifies that we can correctly determine where to write the hash value.
  *
- * @param file {String|OleCompoundDoc} Either relative file name or ready document object.
+ * @param doc {OleCompoundDoc} Ready document object.
  * @param hash {Buffer} Hash to check against
  * @param callback
  * @returns {*}
  */
-VisualPinball.prototype.verifyChecksumAddress = function(file, hash, callback) {
-	var verify = function(doc, hash, callback) {
-		var storage = doc.storage('GameStg');
-		if (!storage) {
-			return callback('Cannot find storage "GameStg".');
+VisualPinball.prototype._verifyChecksumAddress = function(doc, hash, callback) {
+	this._getChecksumAddress(doc, function(err, fileOffset) {
+		if (err) {
+			return callback(err);
 		}
-		var streamEntry = storage._dirEntry.streams['MAC'];
-		if (!streamEntry) {
-			return callback('Cannot find stream "MAC".');
-		}
-		var bytes = streamEntry.size;
-		var allocationTable = doc._SAT;
-		if (bytes <= doc._header.shortStreamMax) {
-			allocationTable = doc._SSAT;
-		}
-		var secIds = allocationTable.getSecIdChain(streamEntry.secId);
-		var fileOffset = doc._getFileOffsetForShortSec(secIds[0]);
-
 		var mac = new Buffer(16);
 		fs.readSync(doc._fd, mac, 0, 16, fileOffset);
-
 		callback(null, mac.toString('hex') == hash.toString('hex'));
-	};
-	if (_.isString(file)) {
-		if (!fs.existsSync(file)) {
-			return callback('Cannot find file "' + file + '".');
-		}
-		var doc = new ocd(file);
-		doc.on('ready', function() {
-			verify(doc, hash, callback);
-		});
-		doc.read();
-	} else {
-		verify(file, hash, callback);
-	}
+	});
 };
 
 /**
@@ -702,7 +702,7 @@ VisualPinball.prototype.canWrite = function(filepath, callback) {
 		});
 		strm.on('end', function() {
 			var mac = Buffer.concat(bufs);
-			that.verifyChecksumAddress(doc, mac, function(err, addressVerified) {
+			that._verifyChecksumAddress(doc, mac, function(err, addressVerified) {
 				if (err) {
 					return callback(err);
 				}
@@ -713,7 +713,7 @@ VisualPinball.prototype.canWrite = function(filepath, callback) {
 					if (err) {
 						return callback(err);
 					}
-					callback(null, hash.toString('hex') == mac.toString('hex'));
+					callback(null, hash.toString('hex') == mac.toString('hex'), doc);
 				})
 			});
 		});
