@@ -21478,5 +21478,15 @@
     "title_original_trimmed": "MissAdventure",
     "confirmed": true,
     "type": "OG"
+  },
+  "8747": {
+    "ipdb": "1639",
+    "title": "Mr.  Mrs. Pac-Man Pinball",
+    "year": "1982",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1639/image-7.jpg",
+    "title_original": "Mr & Mrs Pacman FS",
+    "title_original_trimmed": "Mr & Mrs Pacman",
+    "confirmed": true
   }
 }
