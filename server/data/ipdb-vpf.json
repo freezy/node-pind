@@ -21478,5 +21478,92 @@
     "title_original_trimmed": "MissAdventure",
     "confirmed": true,
     "type": "OG"
+  },
+  "8747": {
+    "ipdb": "1639",
+    "title": "Mr.  Mrs. Pac-Man Pinball",
+    "year": "1982",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1639/image-7.jpg",
+    "title_original": "Mr & Mrs Pacman FS",
+    "title_original_trimmed": "Mr & Mrs Pacman",
+    "confirmed": true
+  },
+  "8756": {
+    "ipdb": "4059",
+    "title": "Cirqus Voltaire",
+    "year": "1997",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4059/image-16.jpg",
+    "title_original": "Cirqus Voltaire Platinum (Bally 1997) [HP VIDEOS]",
+    "confirmed": true
+  },
+  "8757": {
+    "ipdb": "804",
+    "title": "F-14 Tomcat",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/804/image-4.jpg",
+    "title_original": "F-14_VP916FS_CMH_v1",
+    "confirmed": true
+  },
+  "8761": {
+    "title_original": "RUSH (Pinuck 2012) [HP BG VIDEO]",
+    "title_original_trimmed": "RUSH",
+    "confirmed": true,
+    "type": "OG"
+  },
+  "8762": {
+    "name": "Scorpions",
+    "title_original": "Scorpions (Original 2012) [HP BG VIDEO]",
+    "title_original_trimmed": "Scorpions",
+    "confirmed": true,
+    "type": "OG"
+  },
+  "8763": {
+    "ipdb": "1340",
+    "title": "Jungle Queen",
+    "year": "1977",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1340/image-1.jpg",
+    "title_original": "Jungle Queen Mediapack",
+    "confirmed": true
+  },
+  "8764": {
+    "ipdb": "1340",
+    "title": "Jungle Queen",
+    "year": "1977",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1340/image-1.jpg",
+    "title_original": "Jungle Queen B2S (Gottlieb 1977)",
+    "confirmed": true
+  },
+  "8780": {
+    "ipdb": "3783",
+    "title": "Airborne",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/3783/image-1.jpg",
+    "title_original": "Airborne (Capcom)(1996)(Bodydump Jimmyfingers)(1.0)(FS)",
+    "title_original_trimmed": "Airborne",
+    "confirmed": true
+  },
+  "8782": {
+    "ipdb": "23",
+    "title": "Adventures of Rocky and Bullwinkle and Friends",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/23/Playfield.jpg",
+    "title_original": "Rocky & Bullwinkle & Friends",
+    "confirmed": true
+  },
+  "8785": {
+    "ipdb": "23",
+    "title": "Adventures of Rocky and Bullwinkle and Friends",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/23/Playfield.jpg",
+    "title_original": "Rocky and Bullwinkle and Friends (Data East 1993) [HP VIDEO]",
+    "confirmed": true
   }
 }
