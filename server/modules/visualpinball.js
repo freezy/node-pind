@@ -276,12 +276,15 @@ VisualPinball.prototype.readScriptFromTable = function(tablePath, callback) {
 		var storage = doc.storage('GameStg');
 		if (storage) {
 			try {
-				var stream = storage.stream('GameData');
-				stream.on('data', function(buf) {
-					logger.log('info', '[vp] [script] Found GameData in %d ms.', new Date().getTime() - now);
-
-					var data = buf.toString();
-					//logger.log('info', data);
+				var strm = storage.stream('GameData');
+				var bufs = [];
+				strm.on('data', function(buf) {
+					bufs.push(buf);
+				});
+				strm.on('end', function() {
+					var buf = Buffer.concat(bufs);
+					logger.log('info', '[vp] [script] Found GameData for "%s" in %d ms.', tablePath, new Date().getTime() - now);
+					callback(null, buf.toString());
 				});
 			} catch(err) {
 				callback('Cannot find stream "GameData" in storage "GameStg".');
