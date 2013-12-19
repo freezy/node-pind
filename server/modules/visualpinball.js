@@ -625,22 +625,24 @@ VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 	doc.read();
 };
 
-/**
- * Returns the byte offset if the .vpt file where the MD2 hash is saved
- *
- * @param doc {OleCompoundDoc} Ready document object.
- * @param callback
- * @returns {*}
- * @private
- */
-VisualPinball.prototype._getChecksumAddress = function(doc, callback) {
-	var storage = doc.storage('GameStg');
+VisualPinball.prototype._getOleDocAddress = function(doc, storageName, streamName, callback) {
+	/**
+	 * Returns the byte offset if the .vpt file where the MD2 hash is saved
+	 *
+	 * @param doc {OleCompoundDoc} Ready document object.
+	 * @param storageName {String} Name of the compound storage node
+	 * @param streamName {String} Name of the stream
+	 * @param callback
+	 * @returns {*}
+	 * @private
+	 */
+	var storage = doc.storage(storageName);
 	if (!storage) {
-		return callback('Cannot find storage "GameStg".');
+		return callback('Cannot find storage "' + storageName + '".');
 	}
-	var streamEntry = storage._dirEntry.streams['MAC'];
+	var streamEntry = storage._dirEntry.streams[streamName];
 	if (!streamEntry) {
-		return callback('Cannot find stream "MAC".');
+		return callback('Cannot find stream "' + streamName + '".');
 	}
 	var bytes = streamEntry.size;
 	var allocationTable = doc._SAT;
@@ -660,7 +662,7 @@ VisualPinball.prototype._getChecksumAddress = function(doc, callback) {
  * @returns {*}
  */
 VisualPinball.prototype._verifyChecksumAddress = function(doc, hash, callback) {
-	this._getChecksumAddress(doc, function(err, fileOffset) {
+	this._getOleDocAddress(doc, 'GameStg', 'MAC', function(err, fileOffset) {
 		if (err) {
 			return callback(err);
 		}
