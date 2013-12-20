@@ -646,11 +646,13 @@ VisualPinball.prototype._getOleDocAddress = function(doc, storageName, streamNam
 	}
 	var bytes = streamEntry.size;
 	var allocationTable = doc._SAT;
+	var shortStream = false;
 	if (bytes <= doc._header.shortStreamMax) {
 		allocationTable = doc._SSAT;
+		shortStream = true;
 	}
 	var secIds = allocationTable.getSecIdChain(streamEntry.secId);
-	callback(null, doc._getFileOffsetForShortSec(secIds[0]));
+	callback(null, shortStream ? doc._getFileOffsetForShortSec(secIds[0]) : doc._getFileOffsetForSec(secIds[0]));
 };
 
 /**
