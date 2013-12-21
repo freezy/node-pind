@@ -26,8 +26,9 @@ var s = require('./server/modules/settings');
 var logger = require('winston');
 logger.cli();
 
+require('buffertools').extend();  // extend Buffer.prototype
 
-vptWriteCheck();
+//vptWriteCheck();
 //vptChecksumCheck();
 //vptChecksumCheck('Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
 //vptChecksumCheck('BALLY - TWILIGHT ZONE - MEGAPIN - VP9 - V1.0FSHPTEAM.vpt');
@@ -52,7 +53,7 @@ vptWriteCheck();
  ]);
  */
 //vptChecksum('E:/Pinball/Visual Pinball-103/Tables/Attack_From_Mars_NIGHT MOD_VP916_v3.1_FS_3-WAY-GI.vpt');
-//writeTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - PIND.vpt');
+writeTableScript('E:/Pinball/Visual Pinball-103/Tables/GNR_VP920_FS_MOD_4.0.vpt');
 //readTableScript('E:/Pinball/Visual Pinball-103/Tables/LOTR_VP916_NIGHT_MOD_1.0 - Copy2.vpt');
 
 //testEditionParsing();
@@ -126,7 +127,7 @@ function writeTableScript(filename) {
 		if (err) {
 			console.error("ERROR: " + err);
 		} else {
-			vp.writeScriptToTable(filename, "'PIND\r\n" + data, function(err) {
+			vp.writeScriptToTable(filename, "'PIND\r\n" + data.code, function(err) {
 				if (err) {
 					console.error("ERROR: " + err);
 				} else {
@@ -224,7 +225,7 @@ function vptChecksumCheck(filename) {
 				});
 				strm.on('end', function() {
 					var mac = Buffer.concat(bufs);
-					vp.computeChecksum(filepath, function(err, hash) {
+					vp.computeChecksum(filepath, null, function(err, hash) {
 						if (err) {
 							console.error('Error computing hash: %s', err);
 						} else {

@@ -3,6 +3,7 @@ var clc = require('cli-color');
 var http = require('http');
 var logger = require('winston');
 
+require('buffertools').extend();  // extend Buffer.prototype
 
 if (require('./server/modules/settings').validate()) {
 

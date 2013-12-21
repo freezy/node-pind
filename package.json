@@ -30,6 +30,8 @@
 		"sqlite3": "2.1.x",
 
 		"async": "0.2.x",
+		"buffertools": "2.0.0",
+		"fs-extra": "0.8.1",
 		"request": "2.25.x",
 		"underscore": "1.5.x",
 		"winston": "0.7.x",

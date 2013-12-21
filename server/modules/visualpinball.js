@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('underscore');
-var fs = require('fs');
+var fs = require('fs-extra');
 var ocd = require('ole-doc').OleCompoundDoc;
 var util = require('util');
 var async = require('async');
@@ -284,7 +284,16 @@ VisualPinball.prototype.readScriptFromTable = function(tablePath, callback) {
 				strm.on('end', function() {
 					var buf = Buffer.concat(bufs);
 					logger.log('info', '[vp] [script] Found GameData for "%s" in %d ms.', tablePath, new Date().getTime() - now);
-					callback(null, buf.toString());
+					var codeStart = buf.indexOf(new Buffer('04000000434F4445', 'hex')); // 0x04000000 "CODE"
+					var codeEnd = buf.indexOf(new Buffer('04000000454E4442', 'hex'));   // 0x04000000 "ENDB"
+					if (codeStart < 0 || codeEnd < 0) {
+						return callback('Cannot find CODE part in biff structure.');
+					}
+					callback(null, {
+						code: buf.slice(codeStart + 12, codeEnd).toString(),
+						head: buf.slice(0, codeStart + 12),
+						tail: buf.slice(codeEnd)
+					});
 				});
 			} catch(err) {
 				callback('Cannot find stream "GameData" in storage "GameStg".');
@@ -294,32 +303,91 @@ VisualPinball.prototype.readScriptFromTable = function(tablePath, callback) {
 		}
 	});
 	doc.read();
-
-	/*
-
-    fs.open(tablePath, 'r', function(err, fd) {
-
-		var script = getScriptPosition(fd);
-		var buf = new Buffer(script.end - script.start);
-
-		logger.log('info', '[vp] [script] Found positions %d and %d (%d bytes) in %d ms.', script.start, script.end, script.end - script.start, new Date().getTime() - now);
-		fs.readSync(fd, buf, 0, buf.length, script.start);
-		fs.closeSync(fd);
-		callback(null, buf.toString());
-	});*/
 };
 
 /**
  * File structure see PinTable::SaveData() at pintable.cpp
  * @param tablePath
- * @param scriptData
+ * @param newCode
  * @param callback
  * @returns {*}
  */
-VisualPinball.prototype.writeScriptToTable = function(tablePath, scriptData, callback) {
+VisualPinball.prototype.writeScriptToTable = function(tablePath, newCode, callback) {
 	if (!fs.existsSync(tablePath)) {
 		return callback('File "' + tablePath + '" does not exist.');
 	}
+	var that = this;
+
+	fs.copy(tablePath, 'debug.vpt', function(err){
+		if (err) {
+			return callback(err);
+		}
+		tablePath = 'debug.vpt';
+		var doc = new ocd(tablePath);
+		doc.on('ready', function() {
+			console.log('Document ready, reading address.');
+
+			// retrieve pointers from document
+			that._getOleDocAddress(doc, 'GameStg', 'GameData', function(err, gameData) {
+				console.log('Found data at position %s', util.inspect(gameData, false, 2, true));
+
+				// retrieve more pointers
+				that.readScriptFromTable(tablePath, function(err, script) {
+					if (err) {
+						return callback(err);
+					}
+
+					// compute new hash
+					that.computeChecksum(tablePath, newCode, function(err, hash) {
+						if (err) {
+							return callback(err);
+						}
+
+						that._getOleDocAddress(doc, 'GameStg', 'MAC', function(err, mac) {
+							if (err) {
+								return callback(err);
+							}
+
+							// now we have everything we need, so write data to file.
+							fs.open(tablePath, 'r+', function(err, fd) {
+
+								// 1. write new size to directory entry
+								var streamSizeBuf = new Buffer(4);
+								streamSizeBuf.writeInt32LE(script.head.length + newCode.length + script.tail.length, 0);
+								fs.writeSync(fd, streamSizeBuf, 0, 4, gameData.dirEntryPos + 120);
+
+								// 2. write new size to stream
+								var codeSizeBuf = new Buffer(4);
+								codeSizeBuf.writeInt32LE(newCode.length, 0);
+								fs.writeSync(fd, codeSizeBuf, 0, 4, gameData.pos + script.head.length - 4);
+
+								// 3. write new data to stream
+								fs.writeSync(fd, new Buffer(newCode), 0, newCode.length, gameData.pos + script.head.length);
+
+								// 4. write tail
+								fs.writeSync(fd, script.tail, 0, script.tail.length, gameData.pos + script.head.length + newCode.length);
+
+								// 5. fill up block
+
+								// 6. write new hash
+								fs.writeSync(fd, hash, 0, hash.length, mac.pos);
+
+
+								fs.closeSync(fd);
+							});
+
+						});
+					});
+				});
+			});
+		});
+		doc.on('err', function(err) {
+			callback(err);
+		});
+		doc.read();
+	});
+/*
+
 	fs.open(tablePath, 'r+', function(err, fd) {
 
 		var scriptPos = getScriptPosition(fd);
@@ -360,39 +428,7 @@ VisualPinball.prototype.writeScriptToTable = function(tablePath, scriptData, cal
 		fs.closeSync(fd);
 		callback();
 	});
-};
-
-
-/**
- * Returns the position of the script.
- *
- * Table scripts are at the end of the .vpt file. The header of the chunk equals
- * 04 00 00 00 43 4F 44	45 (0x04 0 0 0 "CODE") and ends with 04 00 00 00.
- *
- * @param fd
- * @returns {{start: int, end: int, fileSize: int, endb: int}}
- */
-var getScriptPosition = function(fd) {
-
-	var stat = fs.fstatSync(fd);
-	var buf = new Buffer(8);
-	var scriptStart, scriptEnd, endb;
-	for (var i = stat.size; i > 0; i--) {
-		fs.readSync(fd, buf, 0, buf.length, i - buf.length);
-		if (buf[4] == 0x04 && buf[5] == 0x00 && buf[6] == 0x00 && buf[7] == 0x00) { // 0400
-			scriptEnd = i - 4;
-		}
-		if (buf[0] == 0x04 && buf[1] == 0x00 && buf[2] == 0x00 && buf[3] == 0x00 &&  // 0400
-			buf[4] == 0x43 && buf[5] == 0x4f && buf[6] == 0x44 && buf[7] == 0x45) {  // CODE
-			scriptStart = i + 4;
-			break;
-		}
-		if (buf[0] == 0x04 && buf[1] == 0x00 && buf[2] == 0x00 && buf[3] == 0x00 &&  // 0400
-			buf[4] == 0x45 && buf[5] == 0x4e && buf[6] == 0x44 && buf[7] == 0x42) {  // ENDB
-			endb = i;
-		}
-	}
-	return { start: scriptStart, end: scriptEnd, endb: endb, fileSize: stat.size };
+*/
 };
 
 /**
@@ -400,12 +436,13 @@ var getScriptPosition = function(fd) {
  * back to table.
  *
  * @param tablePath Path to .vpt file
+ * @param newCode New table script to hash over (optional)
  * @param callback
  * @returns {*} callback Function to execute after completion, invoked with two arguments:
- * 		<li>{String} Error message on error</li>
- * 		<li>{Buffer} 16 bit MD2 hash</li>
+ *        <li>{String} Error message on error</li>
+ *        <li>{Buffer} 16 bit MD2 hash</li>
  */
-VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
+VisualPinball.prototype.computeChecksum = function(tablePath, newCode, callback) {
 	if (!fs.existsSync(tablePath)) {
 		return callback('File "' + tablePath + '" does not exist.');
 	}
@@ -520,8 +557,14 @@ VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 							 */
 							i += 8;
 							blockSize = buf.slice(i, i + 4).readInt32LE(0);
-							block = buf.slice(i + 4, i + 4 + blockSize);
-							block = Buffer.concat([new Buffer(tag), block]);
+
+							// use new script data if available
+							if (newCode) {
+								block = new Buffer(tag + newCode);
+							} else {
+								block = buf.slice(i + 4, i + 4 + blockSize);
+								block = Buffer.concat([new Buffer(tag), block]);
+							}
 
 						default:
 							if (blockSize > 4) {
@@ -625,17 +668,17 @@ VisualPinball.prototype.computeChecksum = function(tablePath, callback) {
 	doc.read();
 };
 
+/**
+ * Returns the physical position, size and directory entry address of a stream.
+ *
+ * @param doc {OleCompoundDoc} Ready document object.
+ * @param storageName {String} Name of the compound storage node
+ * @param streamName {String} Name of the stream
+ * @param callback
+ * @returns {*}
+ * @private
+ */
 VisualPinball.prototype._getOleDocAddress = function(doc, storageName, streamName, callback) {
-	/**
-	 * Returns the byte offset if the .vpt file where the MD2 hash is saved
-	 *
-	 * @param doc {OleCompoundDoc} Ready document object.
-	 * @param storageName {String} Name of the compound storage node
-	 * @param streamName {String} Name of the stream
-	 * @param callback
-	 * @returns {*}
-	 * @private
-	 */
 	var storage = doc.storage(storageName);
 	if (!storage) {
 		return callback('Cannot find storage "' + storageName + '".');
@@ -653,7 +696,11 @@ VisualPinball.prototype._getOleDocAddress = function(doc, storageName, streamNam
 	}
 	var secIds = allocationTable.getSecIdChain(streamEntry.secId);
 	var pos = shortStream ? doc._getFileOffsetForShortSec(secIds[0]) : doc._getFileOffsetForSec(secIds[0]);
-	callback(null, { pos: pos, size: bytes });
+	callback(null, {
+		pos: pos,
+		size: bytes,
+		dirEntryPos: streamEntry.dirEntryPos
+	});
 };
 
 /**
@@ -717,7 +764,7 @@ VisualPinball.prototype.canWrite = function(filepath, callback) {
 				if (!addressVerified) {
 					return callback(null, false);
 				}
-				that.computeChecksum(filepath, function(err, hash) {
+				that.computeChecksum(filepath, null, function(err, hash) {
 					if (err) {
 						return callback(err);
 					}
@@ -792,11 +839,12 @@ VisualPinball.prototype.getTableData = function(path, callback) {
 	var that = this;
 
 	// read script from table
-	that.readScriptFromTable(path, function(err, script) {
+	that.readScriptFromTable(path, function(err, scriptData) {
 		if (err) {
 			logger.log('warn', '[vp] Error getting script: ' + err);
 			return callback(err);
 		}
+		var script = scriptData.code;
 
 		// parse rom name
 		that.getRomName(script, function(err, rom) {
@@ -830,7 +878,6 @@ VisualPinball.prototype.getTableData = function(path, callback) {
 			});
 		});
 	});
-
 };
 
 module.exports = new VisualPinball();
