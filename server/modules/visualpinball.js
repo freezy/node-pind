@@ -652,7 +652,8 @@ VisualPinball.prototype._getOleDocAddress = function(doc, storageName, streamNam
 		shortStream = true;
 	}
 	var secIds = allocationTable.getSecIdChain(streamEntry.secId);
-	callback(null, shortStream ? doc._getFileOffsetForShortSec(secIds[0]) : doc._getFileOffsetForSec(secIds[0]));
+	var pos = shortStream ? doc._getFileOffsetForShortSec(secIds[0]) : doc._getFileOffsetForSec(secIds[0]);
+	callback(null, { pos: pos, size: bytes });
 };
 
 /**
@@ -664,12 +665,12 @@ VisualPinball.prototype._getOleDocAddress = function(doc, storageName, streamNam
  * @returns {*}
  */
 VisualPinball.prototype._verifyChecksumAddress = function(doc, hash, callback) {
-	this._getOleDocAddress(doc, 'GameStg', 'MAC', function(err, fileOffset) {
+	this._getOleDocAddress(doc, 'GameStg', 'MAC', function(err, addr) {
 		if (err) {
 			return callback(err);
 		}
 		var mac = new Buffer(16);
-		fs.readSync(doc._fd, mac, 0, 16, fileOffset);
+		fs.readSync(doc._fd, mac, 0, 16, addr.pos);
 		callback(null, mac.toString('hex') == hash.toString('hex'));
 	});
 };
