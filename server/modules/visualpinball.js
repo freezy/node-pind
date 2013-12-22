@@ -239,7 +239,12 @@ VisualPinball.prototype.getTableSetting = function(storageName, streamName, call
 		if (storage) {
 			try {
 				var stream = storage.stream(streamName);
+				var bufs = [];
 				stream.on('data', function(buf) {
+					bufs.push(buf);
+				});
+				stream.on('end', function() {
+					var buf = Buffer.concat(bufs);
 					var data = buf.toString();
 					logger.debug('[vp] [ole] Got buffer at ' + buf.length + ' bytes length: ' + data);
 					callback(null, parseInt(data.replace(/\0+/g, '')));
