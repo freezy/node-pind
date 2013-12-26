@@ -21565,5 +21565,112 @@
     "img": "http://www.ipdb.org/images/23/Playfield.jpg",
     "title_original": "Rocky and Bullwinkle and Friends (Data East 1993) [HP VIDEO]",
     "confirmed": true
+  },
+  "8791": {
+    "ipdb": "651",
+    "title": "Defender",
+    "year": "1982",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/651/image-4.jpg",
+    "title_original": "Defender (Williams 1982)",
+    "confirmed": true
+  },
+  "8799": {
+    "ipdb": "651",
+    "title": "Defender",
+    "year": "1982",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/651/image-4.jpg",
+    "title_original": "Defender (Williams 1982) [HP VIDEO]",
+    "confirmed": true
+  },
+  "8800": {
+    "ipdb": "3592",
+    "title": "Apollo 13",
+    "year": "1995",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/3592/image-8.jpg",
+    "title_original": "APOLLO 13 - VP9.2 - FS",
+    "title_original_trimmed": "APOLLO 13",
+    "confirmed": true
+  },
+  "8804": {
+    "ipdb": "3592",
+    "title": "Apollo 13",
+    "year": "1995",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/3592/image-8.jpg",
+    "title_original": "Apollo 13 (Sega 1995) [HP VIDEO]",
+    "title_original_trimmed": "Apollo 13",
+    "confirmed": true
+  },
+  "8807": {
+    "ipdb": "1704",
+    "title": "Old Chicago",
+    "year": "1975",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1704/image-13.jpg",
+    "title_original": "Old Chicago (Bally) FS",
+    "title_original_trimmed": "Old Chicago",
+    "confirmed": true
+  },
+  "8809": {
+    "ipdb": "5494",
+    "title": "Volley",
+    "year": "1976",
+    "manufacturer": "Taito",
+    "img": "http://www.ipdb.org/images/2743/Playfield.jpg",
+    "title_original": "Volley",
+    "title_original_trimmed": "Volley",
+    "confirmed": true
+  },
+  "8810": {
+    "ipdb": "1332",
+    "title": "Jungle",
+    "year": "1972",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1332/image-1.jpg",
+    "title_original": "Jungle-FS",
+    "confirmed": true
+  },
+  "8812": {
+    "ipdb": "1519",
+    "title": "Magnotron",
+    "year": "1974",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1519/Playfield.jpg",
+    "title_original": "Magnotron",
+    "title_original_trimmed": "Magnotron",
+    "confirmed": true
+  },
+  "8815": {
+    "ipdb": "2500",
+    "title": "Target Alpha",
+    "year": "1976",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2500/Playfield.jpg",
+    "title_original": "Target Alpha - FS",
+    "title_original_trimmed": "Target Alpha",
+    "confirmed": true
+  },
+  "8828": {
+    "ipdb": "1382",
+    "title": "Kings of Steel",
+    "year": "1984",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/1382/image-2.jpg",
+    "title_original": "Kings of Steel (Bally)(1984)(chinzman93)(1.00)(FS)(9.16)",
+    "title_original_trimmed": "Kings of Steel",
+    "confirmed": true
+  },
+  "8833": {
+    "ipdb": "1382",
+    "title": "Kings of Steel",
+    "year": "1984",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/1382/image-2.jpg",
+    "title_original": "Kings Of Steel (Bally 1984) [HP VIDEO]",
+    "title_original_trimmed": "Kings Of Steel",
+    "confirmed": true
   }
 }
