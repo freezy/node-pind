@@ -97,4 +97,5 @@ If `npm install` crashes with an error, there are a few points that have been re
 
 * Launch the command prompt as administrator
 * Enter `SET VisualStudioVersion=11.0` in the console before doing anything
+* Make sure all the paths you add to the `PATH` variable end with a trailing backslash (e.g.: `C:\Program Files\nodejs\;C:\Users\PINBALL\AppData\Roaming\npm\;C:\Python27\`)
 * If really nothing works, try with [Node 0.8](http://nodejs.org/dist/v0.8.25/) instead of 0.10.
