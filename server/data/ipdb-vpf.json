@@ -21663,6 +21663,16 @@
     "title_original_trimmed": "Kings of Steel",
     "confirmed": true
   },
+  "8829": {
+    "ipdb": "651",
+    "title": "Defender",
+    "year": "1982",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3169/image-3.jpg",
+    "title_original": "Defender (Williams 1982) [HP Media Pack]",
+    "title_original_trimmed": "Defender",
+    "confirmed": true
+  },
   "8833": {
     "ipdb": "1382",
     "title": "Kings of Steel",
@@ -21671,6 +21681,76 @@
     "img": "http://www.ipdb.org/images/1382/image-2.jpg",
     "title_original": "Kings Of Steel (Bally 1984) [HP VIDEO]",
     "title_original_trimmed": "Kings Of Steel",
+    "confirmed": true
+  },
+  "8842": {
+    "ipdb": "1100",
+    "title": "Guns N' Roses",
+    "year": "1994",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1100/image-11.jpg",
+    "title_original": "Guns and Roses (Data East 1994)night [HP VIDEO]",
+    "title_original_trimmed": "Guns and Roses",
+    "confirmed": true
+  },
+  "8849": {
+    "ipdb": "804",
+    "title": "F-14 Tomcat",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/804/image-4.jpg",
+    "title_original": "F-14 Tomcat VP9.2FS MOD",
+    "title_original_trimmed": "F 14 Tomcat",
+    "confirmed": true
+  },
+  "8869": {
+    "ipdb": "4505",
+    "title": "Monopoly",
+    "year": "2001",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4505/image-2.jpg",
+    "title_original": "Monopoly FS",
+    "title_original_trimmed": "Monopoly",
+    "confirmed": true
+  },
+  "8881": {
+    "ipdb": "804",
+    "title": "F-14 Tomcat",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/804/image-4.jpg",
+    "title_original": "F-14 Tomcat_VP916FS_CMH_v2DayMod",
+    "title_original_trimmed": "F 14 Tomcat",
+    "confirmed": true
+  },
+  "8883": {
+    "ipdb": "994",
+    "title": "Geisha",
+    "year": "1973",
+    "manufacturer": "Playmatic",
+    "img": "http://www.ipdb.org/images/5142/image-6.jpg",
+    "title_original": "geisha_FS_Media_pack",
+    "title_original_trimmed": "geisha",
+    "confirmed": true
+  },
+  "8884": {
+    "ipdb": "994",
+    "title": "Geisha",
+    "year": "1973",
+    "manufacturer": "Playmatic",
+    "img": "http://www.ipdb.org/images/5142/image-6.jpg",
+    "title_original": "geisha_FS",
+    "title_original_trimmed": "geisha",
+    "confirmed": true
+  },
+  "8897": {
+    "ipdb": "804",
+    "title": "F-14 Tomcat",
+    "year": "1987",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/804/image-4.jpg",
+    "title_original": "F-14 Tomcat (Williams 1987)night [HP VIDEO]",
+    "title_original_trimmed": "F 14 Tomcat",
     "confirmed": true
   }
 }
