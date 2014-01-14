@@ -21752,5 +21752,75 @@
     "title_original": "F-14 Tomcat (Williams 1987)night [HP VIDEO]",
     "title_original_trimmed": "F 14 Tomcat",
     "confirmed": true
+  },
+  "8929": {
+    "ipdb": "2811",
+    "title": "World Cup Soccer",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2811/image-8.jpg",
+    "title_original": "World Cup Soccer (Bally)(1994)(Bmiki75 Koadic Bodydump Bent98)(1.1)(FS Mod)",
+    "title_original_trimmed": "World Cup Soccer",
+    "confirmed": true
+  },
+  "8933": {
+    "ipdb": "325",
+    "title": "Blue Chip",
+    "year": "1976",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/325/image-1.jpg",
+    "title_original": "Blue Chip (Williams 1976)",
+    "title_original_trimmed": "Blue Chip",
+    "confirmed": true
+  },
+  "8935": {
+    "ipdb": "325",
+    "title": "Blue Chip",
+    "year": "1976",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/325/image-1.jpg",
+    "title_original": "Blue Chip (Williams)(1976)(Bodydump)(1.0)(FS)",
+    "title_original_trimmed": "Blue Chip",
+    "confirmed": true
+  },
+  "8936": {
+    "ipdb": "177",
+    "title": "Barracora",
+    "year": "1981",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/177/image-3.jpg",
+    "title_original": "Barracora (Williams 1981) VP9.2.x FS gtxjoe",
+    "title_original_trimmed": "Barracora",
+    "confirmed": true
+  },
+  "8943": {
+    "ipdb": "823",
+    "title": "Far Out",
+    "year": "1974",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/823/image-A.jpg",
+    "title_original": "Far Out - FS",
+    "title_original_trimmed": "Far Out",
+    "confirmed": true
+  },
+  "8944": {
+    "ipdb": "1247",
+    "title": "Hot Shot",
+    "year": "1973",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1247/Playfield.jpg",
+    "title_original": "Hot Shot - FS",
+    "title_original_trimmed": "Hot Shot",
+    "confirmed": true
+  },
+  "8963": {
+    "ipdb": "1247",
+    "title": "Hot Shot",
+    "year": "1973",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1247/Playfield.jpg",
+    "title_original": "Hot Shot (Gottlieb 1973)",
+    "title_original_trimmed": "Hot Shot",
+    "confirmed": true
   }
 }
