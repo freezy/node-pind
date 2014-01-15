@@ -21822,5 +21822,64 @@
     "title_original": "Hot Shot (Gottlieb 1973)",
     "title_original_trimmed": "Hot Shot",
     "confirmed": true
+  },
+  "8979": {
+    "ipdb": "23",
+    "title": "Adventures of Rocky and Bullwinkle and Friends",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/23/Playfield.jpg",
+    "title_original": "Adventures of Rocky and Bullwinkle (Data East 1993) 3-Screen Version [HP Video]",
+    "title_original_trimmed": "Adventures of Rocky and Bullwinkle",
+    "confirmed": true
+  },
+  "8980": {
+    "ipdb": "23",
+    "title": "Adventures of Rocky and Bullwinkle and Friends",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/23/Playfield.jpg",
+    "title_original": "Adventures of Rocky and Bullwinkle (Data East 1993) 2-Screen Version [HP Video]",
+    "title_original_trimmed": "Adventures of Rocky and Bullwinkle",
+    "confirmed": true
+  },
+  "8981": {
+    "ipdb": "23",
+    "title": "Adventures of Rocky and Bullwinkle and Friends",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/23/Playfield.jpg",
+    "title_original": "Adventures of Rocky and Bullwinkle (Data East 1993) DMD [HP Video]",
+    "title_original_trimmed": "Adventures of Rocky and Bullwinkle",
+    "confirmed": true
+  },
+  "8982": {
+    "ipdb": "23",
+    "title": "Adventures of Rocky and Bullwinkle and Friends",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/23/Playfield.jpg",
+    "title_original": "Adventures of Rocky and Bullwinkle (Data East 1993) with Music [HP Video]",
+    "title_original_trimmed": "Adventures of Rocky and Bullwinkle",
+    "confirmed": true
+  },
+  "8983": {
+    "ipdb": "23",
+    "title": "Adventures of Rocky and Bullwinkle and Friends",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/23/Playfield.jpg",
+    "title_original": "Adventures of Rocky and Bullwinkle (Data East 1993) [HP Video]",
+    "title_original_trimmed": "Adventures of Rocky and Bullwinkle",
+    "confirmed": true
+  },
+  "8993": {
+    "ipdb": "2765",
+    "title": "Whirlwind",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2765/image-2.jpg",
+    "title_original": "Whirlwind - VP9.2 - FS",
+    "confirmed": true
   }
 }
