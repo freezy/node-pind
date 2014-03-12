@@ -22018,7 +22018,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4032/image-7.jpg",
     "title_original": "Medieval Madness [DMD VIDEO]",
-    "title_original_trimmed": "Medieval Madness"
+    "title_original_trimmed": "Medieval Madness",
+    "confirmed": true
   },
   "9084": {
     "ipdb": "4445",
@@ -22027,7 +22028,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4445/image-6.jpg",
     "title_original": "Cactus Canyon [DMD VIDEO]",
-    "title_original_trimmed": "Cactus Canyon"
+    "title_original_trimmed": "Cactus Canyon",
+    "confirmed": true
   },
   "9085": {
     "ipdb": "4504",
@@ -22036,7 +22038,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4504/image-11.jpg",
     "title_original": "Austin Powers [DMD VIDEO]",
-    "title_original_trimmed": "Austin Powers"
+    "title_original_trimmed": "Austin Powers",
+    "confirmed": true
   },
   "9087": {
     "ipdb": "4182",
@@ -22045,7 +22048,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3780/image-2.jpg",
     "title_original": "Congo [DMD VIDEO]",
-    "title_original_trimmed": "Congo"
+    "title_original_trimmed": "Congo",
+    "confirmed": true
   },
   "9088": {
     "ipdb": "570",
@@ -22054,7 +22058,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/570/Playfield.jpg",
     "title_original": "Corvette [DMD VIDEO]",
-    "title_original_trimmed": "Corvette"
+    "title_original_trimmed": "Corvette",
+    "confirmed": true
   },
   "9089": {
     "ipdb": "588",
@@ -22063,7 +22068,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/588/image-22.jpg",
     "title_original": "Creature from the Black Lagoon [DMD VIDEO]",
-    "title_original_trimmed": "Creature from the Black Lagoon"
+    "title_original_trimmed": "Creature from the Black Lagoon",
+    "confirmed": true
   },
   "9091": {
     "ipdb": "4652",
@@ -22072,7 +22078,8 @@
     "manufacturer": "Unidesa",
     "img": "http://www.ipdb.org/images/1267/image-14.jpg",
     "title_original": "Indiana Jones [DMD VIDEO]",
-    "title_original_trimmed": "Indiana Jones"
+    "title_original_trimmed": "Indiana Jones",
+    "confirmed": true
   },
   "9092": {
     "ipdb": "3915",
@@ -22081,7 +22088,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
     "title_original": "Scared Stiff [DMD VIDEO]",
-    "title_original_trimmed": "Scared Stiff"
+    "title_original_trimmed": "Scared Stiff",
+    "confirmed": true
   },
   "9093": {
     "ipdb": "2528",
@@ -22090,7 +22098,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2528/Playfield.jpg",
     "title_original": "The Shadow [DMD VIDEO]",
-    "title_original_trimmed": "The Shadow"
+    "title_original_trimmed": "The Shadow",
+    "confirmed": true
   },
   "9094": {
     "ipdb": "2684",
@@ -22099,7 +22108,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2684/image-1.jpg",
     "title_original": "Twilight Zone [DMD VIDEO]",
-    "title_original_trimmed": "Twilight Zone"
+    "title_original_trimmed": "Twilight Zone",
+    "confirmed": true
   },
   "9095": {
     "ipdb": "2811",
@@ -22108,7 +22118,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/2811/image-8.jpg",
     "title_original": "World Cup Soccer [DMD VIDEO]",
-    "title_original_trimmed": "World Cup Soccer"
+    "title_original_trimmed": "World Cup Soccer",
+    "confirmed": true
   },
   "9096": {
     "ipdb": "3592",
@@ -22117,7 +22128,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/3592/image-8.jpg",
     "title_original": "Apollo 13 [DMD VIDEO]",
-    "title_original_trimmed": "Apollo 13"
+    "title_original_trimmed": "Apollo 13",
+    "confirmed": true
   },
   "9097": {
     "ipdb": "662",
@@ -22126,7 +22138,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/662/image-35.jpg",
     "title_original": "Demolition Man [DMD VIDEO]",
-    "title_original_trimmed": "Demolition Man"
+    "title_original_trimmed": "Demolition Man",
+    "confirmed": true
   },
   "9098": {
     "ipdb": "1000",
@@ -22135,7 +22148,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1000/image-4.jpg",
     "title_original": "Getaway - High Speed 2 [DMD VIDEO]",
-    "title_original_trimmed": "Getaway   High Speed 2"
+    "title_original_trimmed": "Getaway   High Speed 2",
+    "confirmed": true
   },
   "9099": {
     "ipdb": "3784",
@@ -22144,7 +22158,8 @@
     "manufacturer": "Capcom",
     "img": "http://www.ipdb.org/images/3784/Playfield.jpg",
     "title_original": "Breakshot [DMD VIDEO]",
-    "title_original_trimmed": "Breakshot"
+    "title_original_trimmed": "Breakshot",
+    "confirmed": true
   },
   "9100": {
     "ipdb": "4983",
@@ -22153,7 +22168,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/3910/image-21.jpg",
     "title_original": "Elvis [DMD VIDEO]",
-    "title_original_trimmed": "Elvis"
+    "title_original_trimmed": "Elvis",
+    "confirmed": true
   },
   "9101": {
     "ipdb": "1433",
@@ -22162,7 +22178,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1433/image-2.jpg",
     "title_original": "Lethal weapon [DMD VIDEO]",
-    "title_original_trimmed": "Lethal weapon"
+    "title_original_trimmed": "Lethal weapon",
+    "confirmed": true
   },
   "9102": {
     "ipdb": "861",
@@ -22171,7 +22188,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/861/image-2.jpg",
     "title_original": "Fish Tales [DMD VIDEO]",
-    "title_original_trimmed": "Fish Tales"
+    "title_original_trimmed": "Fish Tales",
+    "confirmed": true
   },
   "9103": {
     "ipdb": "1322",
@@ -22180,7 +22198,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1322/image-1.jpg",
     "title_original": "Judge Dredd [DMD VIDEO]",
-    "title_original_trimmed": "Judge Dredd"
+    "title_original_trimmed": "Judge Dredd",
+    "confirmed": true
   },
   "9104": {
     "ipdb": "4059",
@@ -22189,7 +22208,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/4059/image-16.jpg",
     "title_original": "Cirqus Voltaire [DMD VIDEO]",
-    "title_original_trimmed": "Cirqus Voltaire"
+    "title_original_trimmed": "Cirqus Voltaire",
+    "confirmed": true
   },
   "9106": {
     "ipdb": "4001",
@@ -22198,7 +22218,8 @@
     "manufacturer": "Capcom",
     "img": "http://www.ipdb.org/images/4001/image-6.jpg",
     "title_original": "Big Bang Bar [DMD VIDEO]",
-    "title_original_trimmed": "Big Bang Bar"
+    "title_original_trimmed": "Big Bang Bar",
+    "confirmed": true
   },
   "9107": {
     "ipdb": "313",
@@ -22207,7 +22228,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/313/image-2.jpg",
     "title_original": "Black Rose [DMD VIDEO]",
-    "title_original_trimmed": "Black Rose"
+    "title_original_trimmed": "Black Rose",
+    "confirmed": true
   },
   "9109": {
     "ipdb": "948",
@@ -22216,7 +22238,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/948/image-2.jpg",
     "title_original": "Freddy A Nightmare On Elm Street [DMD VIDEO]",
-    "title_original_trimmed": "Freddy A Nightmare On Elm Street"
+    "title_original_trimmed": "Freddy A Nightmare On Elm Street",
+    "confirmed": true
   },
   "9110": {
     "ipdb": "4443",
@@ -22225,7 +22248,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4443/image-3.jpg",
     "title_original": "Godzilla [DMD VIDEO]",
-    "title_original_trimmed": "Godzilla"
+    "title_original_trimmed": "Godzilla",
+    "confirmed": true
   },
   "9111": {
     "ipdb": "3792",
@@ -22234,7 +22258,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/3792/image-7.jpg",
     "title_original": "Goldeneye [DMD VIDEO]",
-    "title_original_trimmed": "Goldeneye"
+    "title_original_trimmed": "Goldeneye",
+    "confirmed": true
   },
   "9112": {
     "ipdb": "1257",
@@ -22243,7 +22268,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1257/Playfield.jpg",
     "title_original": "Hurricane [DMD VIDEO]",
-    "title_original_trimmed": "Hurricane"
+    "title_original_trimmed": "Hurricane",
+    "confirmed": true
   },
   "9113": {
     "ipdb": "1100",
@@ -22252,7 +22278,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1100/image-11.jpg",
     "title_original": "Guns and Roses [DMD VIDEO]",
-    "title_original_trimmed": "Guns and Roses"
+    "title_original_trimmed": "Guns and Roses",
+    "confirmed": true
   },
   "9114": {
     "ipdb": "3683",
@@ -22261,7 +22288,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3683/Playfield.jpg",
     "title_original": "Johnny Mnemonic [DMD VIDEO]",
-    "title_original_trimmed": "Johnny Mnemonic"
+    "title_original_trimmed": "Johnny Mnemonic",
+    "confirmed": true
   },
   "9115": {
     "ipdb": "5136",
@@ -22270,7 +22298,8 @@
     "manufacturer": "ICE",
     "img": "http://www.ipdb.org/images/5136/image-2.jpg",
     "title_original": "The Flintstones [DMD VIDEO]",
-    "title_original_trimmed": "The Flintstones"
+    "title_original_trimmed": "The Flintstones",
+    "confirmed": true
   },
   "9116": {
     "ipdb": "1343",
@@ -22279,7 +22308,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/1343/image-6.jpg",
     "title_original": "Jurassic Park [DMD VIDEO]",
-    "title_original_trimmed": "Jurassic Park"
+    "title_original_trimmed": "Jurassic Park",
+    "confirmed": true
   },
   "9117": {
     "ipdb": "4858",
@@ -22288,7 +22318,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5558/image-3.jpg",
     "title_original": "Lord Of The Rings [DMD VIDEO]",
-    "title_original_trimmed": "Lord Of The Rings"
+    "title_original_trimmed": "Lord Of The Rings",
+    "confirmed": true
   },
   "9118": {
     "ipdb": "4505",
@@ -22297,7 +22328,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4505/image-2.jpg",
     "title_original": "Monopoly [DMD VIDEO]",
-    "title_original_trimmed": "Monopoly"
+    "title_original_trimmed": "Monopoly",
+    "confirmed": true
   },
   "9119": {
     "ipdb": "4441",
@@ -22306,7 +22338,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4441/image-2.jpg",
     "title_original": "Monster Bash [DMD VIDEO]",
-    "title_original_trimmed": "Monster Bash"
+    "title_original_trimmed": "Monster Bash",
+    "confirmed": true
   },
   "9120": {
     "ipdb": "2852",
@@ -22315,7 +22348,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2852/image-2.jpg",
     "title_original": "No Fear-Dangerous Sports [DMD VIDEO]",
-    "title_original_trimmed": "No Fear Dangerous Sports"
+    "title_original_trimmed": "No Fear Dangerous Sports",
+    "confirmed": true
   },
   "9122": {
     "ipdb": "4338",
@@ -22324,7 +22358,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/4338/image-15.jpg",
     "title_original": "No Good Gofers [DMD VIDEO]",
-    "title_original_trimmed": "No Good Gofers"
+    "title_original_trimmed": "No Good Gofers",
+    "confirmed": true
   },
   "9123": {
     "ipdb": "1764",
@@ -22333,16 +22368,17 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/1764/image-25.jpg",
     "title_original": "Party Zone [DMD VIDEO]",
-    "title_original_trimmed": "Party Zone"
+    "title_original_trimmed": "Party Zone",
+    "confirmed": true
   },
   "9124": {
-    "ipdb": "1817",
-    "title": "Play-Boy",
-    "year": "1932",
-    "manufacturer": "Gottlieb",
-    "img": "http://www.ipdb.org/images/1817/image-2.jpg",
+    "ipdb": "4506",
+    "title": "Playboy",
+    "year": "2002",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4506/image-4.jpg",
     "title_original": "Playboy [DMD VIDEO]",
-    "title_original_trimmed": "Playboy"
+    "confirmed": true
   },
   "9126": {
     "ipdb": "1796",
@@ -22371,7 +22407,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/1972/image-8.jpg",
     "title_original": "Red and Ted's Road Show [DMD VIDEO]",
-    "title_original_trimmed": "Red and Ted's Road Show"
+    "title_original_trimmed": "Red and Ted's Road Show",
+    "confirmed": true
   },
   "9129": {
     "ipdb": "4917",
@@ -22380,7 +22417,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4917/image-5.jpg",
     "title_original": "Ripley's Believe It or Not [DMD VIDEO]",
-    "title_original_trimmed": "Ripley's Believe It or Not"
+    "title_original_trimmed": "Ripley's Believe It or Not",
+    "confirmed": true
   },
   "9130": {
     "ipdb": "4536",
@@ -22389,7 +22427,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4536/image-2.jpg",
     "title_original": "Rollercoaster Tycoon [DMD VIDEO]",
-    "title_original_trimmed": "Rollercoaster Tycoon"
+    "title_original_trimmed": "Rollercoaster Tycoon",
+    "confirmed": true
   },
   "9131": {
     "ipdb": "4674",
@@ -22398,7 +22437,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/4674/image-2.jpg",
     "title_original": "Simpsons pinball party [DMD VIDEO]",
-    "title_original_trimmed": "Simpsons pinball party"
+    "title_original_trimmed": "Simpsons pinball party",
+    "confirmed": true
   },
   "9132": {
     "ipdb": "5053",
@@ -22407,7 +22447,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5053/image-D6.jpg",
     "title_original": "Sopranos [DMD VIDEO]",
-    "title_original_trimmed": "Sopranos"
+    "title_original_trimmed": "Sopranos",
+    "confirmed": true
   },
   "9133": {
     "ipdb": "2357",
@@ -22416,7 +22457,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2357/image-17.jpg",
     "title_original": "Star Trek - The next generation [DMD VIDEO]",
-    "title_original_trimmed": "Star Trek   The next generation"
+    "title_original_trimmed": "Star Trek   The next generation",
+    "confirmed": true
   },
   "9134": {
     "ipdb": "4513",
@@ -22425,7 +22467,8 @@
     "manufacturer": "Sonic",
     "img": "http://www.ipdb.org/images/2358/Playfield.jpg",
     "title_original": "Star Wars [DMD VIDEO]",
-    "title_original_trimmed": "Star Wars"
+    "title_original_trimmed": "Star Wars",
+    "confirmed": true
   },
   "9135": {
     "ipdb": "4054",
@@ -22434,7 +22477,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4054/image-7.jpg",
     "title_original": "Star Wars Trilogy [DMD VIDEO]",
-    "title_original_trimmed": "Star Wars Trilogy"
+    "title_original_trimmed": "Star Wars Trilogy",
+    "confirmed": true
   },
   "9136": {
     "ipdb": "2847",
@@ -22443,7 +22487,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2847/image-12.jpg",
     "title_original": "Stargate [DMD VIDEO]",
-    "title_original_trimmed": "Stargate"
+    "title_original_trimmed": "Stargate",
+    "confirmed": true
   },
   "9137": {
     "ipdb": "2493",
@@ -22452,7 +22497,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2493/Playfield.jpg",
     "title_original": "Tales from the Crypt",
-    "title_original_trimmed": "Tales from the Crypt"
+    "title_original_trimmed": "Tales from the Crypt",
+    "confirmed": true
   },
   "9138": {
     "ipdb": "2524",
@@ -22461,7 +22507,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2524/image-2.jpg",
     "title_original": "Terminator 2 - Judgement Day [DMD VIDEO]",
-    "title_original_trimmed": "Terminator 2   Judgement Day"
+    "title_original_trimmed": "Terminator 2   Judgement Day",
+    "confirmed": true
   },
   "9139": {
     "ipdb": "3824",
@@ -22470,7 +22517,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
     "title_original": "Tales of the Arabian nights [DMD VIDEO]",
-    "title_original_trimmed": "Tales of the Arabian nights"
+    "title_original_trimmed": "Tales of the Arabian nights",
+    "confirmed": true
   },
   "9140": {
     "ipdb": "2768",
@@ -22479,7 +22527,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2768/image-25.jpg",
     "title_original": "Whitewater [DMD VIDEO]",
-    "title_original_trimmed": "Whitewater"
+    "title_original_trimmed": "Whitewater",
+    "confirmed": true
   },
   "9141": {
     "ipdb": "4137",
@@ -22488,7 +22537,8 @@
     "manufacturer": "Sega",
     "img": "http://www.ipdb.org/images/4137/image-5.jpg",
     "title_original": "X-Files [DMD VIDEO]",
-    "title_original_trimmed": "X Files"
+    "title_original_trimmed": "X Files",
+    "confirmed": true
   },
   "9142": {
     "ipdb": "4441",
@@ -22529,11 +22579,13 @@
     "confirmed": true
   },
   "9153": {
-    "name": "Gilligans Island",
-    "manufacturer": "",
-    "error": "********** NO MATCH **********",
+    "ipdb": "1004",
+    "title": "Gilligan's Island",
+    "year": "1991",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1004/image-6.jpg",
     "title_original": "Gilligans Island [DMD VIDEO]",
-    "title_original_trimmed": "Gilligans Island"
+    "confirmed": true
   },
   "9154": {
     "ipdb": "3784",
@@ -22542,7 +22594,8 @@
     "manufacturer": "Capcom",
     "img": "http://www.ipdb.org/images/3784/Playfield.jpg",
     "title_original": "Breakshot [DMD VIDEO]",
-    "title_original_trimmed": "Breakshot"
+    "title_original_trimmed": "Breakshot",
+    "confirmed": true
   },
   "9155": {
     "ipdb": "2852",
@@ -22551,7 +22604,8 @@
     "manufacturer": "Williams",
     "img": "http://www.ipdb.org/images/2852/image-2.jpg",
     "title_original": "No Fear-Dangerous Sports [DMD VIDEO]",
-    "title_original_trimmed": "No Fear Dangerous Sports"
+    "title_original_trimmed": "No Fear Dangerous Sports",
+    "confirmed": true
   },
   "9156": {
     "ipdb": "2493",
@@ -22560,7 +22614,8 @@
     "manufacturer": "Data East",
     "img": "http://www.ipdb.org/images/2493/Playfield.jpg",
     "title_original": "Tales from the Crypt [DMD VIDEO]",
-    "title_original_trimmed": "Tales from the Crypt"
+    "title_original_trimmed": "Tales from the Crypt",
+    "confirmed": true
   },
   "9157": {
     "ipdb": "2508",
@@ -22569,7 +22624,8 @@
     "manufacturer": "Premier",
     "img": "http://www.ipdb.org/images/2508/image-4.jpg",
     "title_original": "Teed Off [DMD VIDEO]",
-    "title_original_trimmed": "Teed Off"
+    "title_original_trimmed": "Teed Off",
+    "confirmed": true
   },
   "9158": {
     "ipdb": "3685",
@@ -22578,7 +22634,8 @@
     "manufacturer": "Bally",
     "img": "http://www.ipdb.org/images/3685/Playfield.jpg",
     "title_original": "Who Dunnit [DMD VIDEO]",
-    "title_original_trimmed": "Who Dunnit"
+    "title_original_trimmed": "Who Dunnit",
+    "confirmed": true
   },
   "9159": {
     "ipdb": "3350",
@@ -22587,7 +22644,8 @@
     "manufacturer": "Exhibit",
     "img": "http://www.ipdb.org/images/3976/Playfield.jpg",
     "title_original": "Twister [DMD VIDEO]",
-    "title_original_trimmed": "Twister"
+    "title_original_trimmed": "Twister",
+    "confirmed": true
   },
   "9170": {
     "ipdb": "128",
@@ -22646,7 +22704,8 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5618/image-4.jpg",
     "title_original": "Avatar [DMD VIDEO]",
-    "title_original_trimmed": "Avatar"
+    "title_original_trimmed": "Avatar",
+    "confirmed": true
   },
   "9178": {
     "ipdb": "5550",
@@ -22655,7 +22714,7 @@
     "manufacturer": "Stern",
     "img": null,
     "title_original": "Ironman [DMD VIDEO]",
-    "title_original_trimmed": "Ironman"
+    "confirmed": true
   },
   "9179": {
     "ipdb": "5163",
@@ -22664,16 +22723,17 @@
     "manufacturer": "Stern",
     "img": "http://www.ipdb.org/images/5163/image-40.jpg",
     "title_original": "Pirates Of the Caribbean [DMD VIDEO]",
-    "title_original_trimmed": "Pirates Of the Caribbean"
+    "title_original_trimmed": "Pirates Of the Caribbean",
+    "confirmed": true
   },
   "9180": {
-    "ipdb": "5682",
-    "title": "Disney TRON Legacy",
+    "ipdb": "5707",
+    "title": "Disney TRON Legacy (Limited Edition)",
     "year": "2011",
     "manufacturer": "Stern",
     "img": null,
     "title_original": "Tron Legacy [DMD VIDEO]",
-    "title_original_trimmed": "Tron Legacy"
+    "confirmed": true
   },
   "9182": {
     "ipdb": "311",
