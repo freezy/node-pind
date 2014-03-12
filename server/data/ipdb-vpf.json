@@ -21881,5 +21881,1125 @@
     "img": "http://www.ipdb.org/images/2765/image-2.jpg",
     "title_original": "Whirlwind - VP9.2 - FS",
     "confirmed": true
+  },
+  "8998": {
+    "ipdb": "1375",
+    "title": "King Pin",
+    "year": "1962",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1375/Playfield.jpg",
+    "title_original": "King Pin - FS",
+    "title_original_trimmed": "King Pin",
+    "confirmed": true
+  },
+  "9003": {
+    "ipdb": "782",
+    "title": "Elvira and the Party Monsters",
+    "year": "1989",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/782/Playfield.jpg",
+    "title_original": "Elvira and the Party Monsters",
+    "title_original_trimmed": "Elvira and the Party Monsters",
+    "confirmed": true
+  },
+  "9026": {
+    "ipdb": "2116",
+    "title": "Sheriff",
+    "year": "1971",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2116/image-2.jpg",
+    "title_original": "Sheriff - FS",
+    "title_original_trimmed": "Sheriff",
+    "confirmed": true
+  },
+  "9029": {
+    "name": "Yellow Submarine 2012",
+    "title_original": "Yellow Submarine 2012 [HP Video]",
+    "title_original_trimmed": "Yellow Submarine 2012",
+    "confirmed": true,
+    "type": "OG"
+  },
+  "9030": {
+    "name": "Yellow Submarine 2012",
+    "title_original": "Yellow Submarine 2012 [HP Video]",
+    "title_original_trimmed": "Yellow Submarine 2012",
+    "confirmed": true,
+    "type": "OG"
+  },
+  "9033": {
+    "ipdb": "4445",
+    "title": "Cactus Canyon",
+    "year": "1998",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4445/image-6.jpg",
+    "title_original": "Cactus Canyon - HN Night [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9034": {
+    "ipdb": "782",
+    "title": "Elvira and the Party Monsters",
+    "year": "1989",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/782/Playfield.jpg",
+    "title_original": "Elvira and the Party Monsters DAY [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9035": {
+    "ipdb": "782",
+    "title": "Elvira and the Party Monsters",
+    "year": "1989",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/782/Playfield.jpg",
+    "title_original": "Elvira and the Party Monsters EVE [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9036": {
+    "ipdb": "4445",
+    "title": "Cactus Canyon",
+    "year": "1998",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4445/image-6.jpg",
+    "title_original": "Cactus Canyon HN 1.2 [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9037": {
+    "ipdb": "2765",
+    "title": "Whirlwind",
+    "year": "1990",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2765/image-2.jpg",
+    "title_original": "Whirlwind [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9038": {
+    "ipdb": "2811",
+    "title": "World Cup Soccer",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2811/image-8.jpg",
+    "title_original": "World Cup Soccer [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "World Cup Soccer",
+    "confirmed": true
+  },
+  "9039": {
+    "ipdb": "2811",
+    "title": "World Cup Soccer",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2811/image-8.jpg",
+    "title_original": "World Cup Soccer (Bally 1994) [HP Video] 2-Screen Animated",
+    "title_original_trimmed": "World Cup Soccer",
+    "confirmed": true
+  },
+  "9040": {
+    "ipdb": "2811",
+    "title": "World Cup Soccer",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2811/image-8.jpg",
+    "title_original": "World Cup Soccer (Bally 1994) [HP Video] Alternate",
+    "title_original_trimmed": "World Cup Soccer",
+    "confirmed": true
+  },
+  "9041": {
+    "ipdb": "2811",
+    "title": "World Cup Soccer",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2811/image-8.jpg",
+    "title_original": "World Cup Soccer (Bally 1994) [HP Video] 3-Screen Animated",
+    "title_original_trimmed": "World Cup Soccer",
+    "confirmed": true
+  },
+  "9083": {
+    "ipdb": "4032",
+    "title": "Medieval Madness",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4032/image-7.jpg",
+    "title_original": "Medieval Madness [DMD VIDEO]",
+    "title_original_trimmed": "Medieval Madness"
+  },
+  "9084": {
+    "ipdb": "4445",
+    "title": "Cactus Canyon",
+    "year": "1998",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4445/image-6.jpg",
+    "title_original": "Cactus Canyon [DMD VIDEO]",
+    "title_original_trimmed": "Cactus Canyon"
+  },
+  "9085": {
+    "ipdb": "4504",
+    "title": "Austin Powers",
+    "year": "2001",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4504/image-11.jpg",
+    "title_original": "Austin Powers [DMD VIDEO]",
+    "title_original_trimmed": "Austin Powers"
+  },
+  "9087": {
+    "ipdb": "4182",
+    "title": "Congo",
+    "year": "1936",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3780/image-2.jpg",
+    "title_original": "Congo [DMD VIDEO]",
+    "title_original_trimmed": "Congo"
+  },
+  "9088": {
+    "ipdb": "570",
+    "title": "Corvette",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/570/Playfield.jpg",
+    "title_original": "Corvette [DMD VIDEO]",
+    "title_original_trimmed": "Corvette"
+  },
+  "9089": {
+    "ipdb": "588",
+    "title": "Creature from the Black Lagoon",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/588/image-22.jpg",
+    "title_original": "Creature from the Black Lagoon [DMD VIDEO]",
+    "title_original_trimmed": "Creature from the Black Lagoon"
+  },
+  "9091": {
+    "ipdb": "4652",
+    "title": "Indiana Jones: The Pinball Adventure",
+    "year": "1993",
+    "manufacturer": "Unidesa",
+    "img": "http://www.ipdb.org/images/1267/image-14.jpg",
+    "title_original": "Indiana Jones [DMD VIDEO]",
+    "title_original_trimmed": "Indiana Jones"
+  },
+  "9092": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared Stiff [DMD VIDEO]",
+    "title_original_trimmed": "Scared Stiff"
+  },
+  "9093": {
+    "ipdb": "2528",
+    "title": "The Shadow",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2528/Playfield.jpg",
+    "title_original": "The Shadow [DMD VIDEO]",
+    "title_original_trimmed": "The Shadow"
+  },
+  "9094": {
+    "ipdb": "2684",
+    "title": "Twilight Zone",
+    "year": "1993",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2684/image-1.jpg",
+    "title_original": "Twilight Zone [DMD VIDEO]",
+    "title_original_trimmed": "Twilight Zone"
+  },
+  "9095": {
+    "ipdb": "2811",
+    "title": "World Cup Soccer",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2811/image-8.jpg",
+    "title_original": "World Cup Soccer [DMD VIDEO]",
+    "title_original_trimmed": "World Cup Soccer"
+  },
+  "9096": {
+    "ipdb": "3592",
+    "title": "Apollo 13",
+    "year": "1995",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/3592/image-8.jpg",
+    "title_original": "Apollo 13 [DMD VIDEO]",
+    "title_original_trimmed": "Apollo 13"
+  },
+  "9097": {
+    "ipdb": "662",
+    "title": "Demolition Man",
+    "year": "1994",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/662/image-35.jpg",
+    "title_original": "Demolition Man [DMD VIDEO]",
+    "title_original_trimmed": "Demolition Man"
+  },
+  "9098": {
+    "ipdb": "1000",
+    "title": "The Getaway: High Speed II",
+    "year": "1992",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1000/image-4.jpg",
+    "title_original": "Getaway - High Speed 2 [DMD VIDEO]",
+    "title_original_trimmed": "Getaway   High Speed 2"
+  },
+  "9099": {
+    "ipdb": "3784",
+    "title": "Breakshot",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/3784/Playfield.jpg",
+    "title_original": "Breakshot [DMD VIDEO]",
+    "title_original_trimmed": "Breakshot"
+  },
+  "9100": {
+    "ipdb": "4983",
+    "title": "Elvis",
+    "year": "2004",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/3910/image-21.jpg",
+    "title_original": "Elvis [DMD VIDEO]",
+    "title_original_trimmed": "Elvis"
+  },
+  "9101": {
+    "ipdb": "1433",
+    "title": "Lethal Weapon 3",
+    "year": "1992",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1433/image-2.jpg",
+    "title_original": "Lethal weapon [DMD VIDEO]",
+    "title_original_trimmed": "Lethal weapon"
+  },
+  "9102": {
+    "ipdb": "861",
+    "title": "Fish Tales",
+    "year": "1992",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/861/image-2.jpg",
+    "title_original": "Fish Tales [DMD VIDEO]",
+    "title_original_trimmed": "Fish Tales"
+  },
+  "9103": {
+    "ipdb": "1322",
+    "title": "Judge Dredd",
+    "year": "1993",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1322/image-1.jpg",
+    "title_original": "Judge Dredd [DMD VIDEO]",
+    "title_original_trimmed": "Judge Dredd"
+  },
+  "9104": {
+    "ipdb": "4059",
+    "title": "Cirqus Voltaire",
+    "year": "1997",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4059/image-16.jpg",
+    "title_original": "Cirqus Voltaire [DMD VIDEO]",
+    "title_original_trimmed": "Cirqus Voltaire"
+  },
+  "9106": {
+    "ipdb": "4001",
+    "title": "Big Bang Bar",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/4001/image-6.jpg",
+    "title_original": "Big Bang Bar [DMD VIDEO]",
+    "title_original_trimmed": "Big Bang Bar"
+  },
+  "9107": {
+    "ipdb": "313",
+    "title": "Black Rose",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/313/image-2.jpg",
+    "title_original": "Black Rose [DMD VIDEO]",
+    "title_original_trimmed": "Black Rose"
+  },
+  "9109": {
+    "ipdb": "948",
+    "title": "Freddy: a Nightmare on Elm Street",
+    "year": "1994",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/948/image-2.jpg",
+    "title_original": "Freddy A Nightmare On Elm Street [DMD VIDEO]",
+    "title_original_trimmed": "Freddy A Nightmare On Elm Street"
+  },
+  "9110": {
+    "ipdb": "4443",
+    "title": "Godzilla",
+    "year": "1998",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4443/image-3.jpg",
+    "title_original": "Godzilla [DMD VIDEO]",
+    "title_original_trimmed": "Godzilla"
+  },
+  "9111": {
+    "ipdb": "3792",
+    "title": "Goldeneye",
+    "year": "1996",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/3792/image-7.jpg",
+    "title_original": "Goldeneye [DMD VIDEO]",
+    "title_original_trimmed": "Goldeneye"
+  },
+  "9112": {
+    "ipdb": "1257",
+    "title": "Hurricane",
+    "year": "1991",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1257/Playfield.jpg",
+    "title_original": "Hurricane [DMD VIDEO]",
+    "title_original_trimmed": "Hurricane"
+  },
+  "9113": {
+    "ipdb": "1100",
+    "title": "Guns N' Roses",
+    "year": "1994",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1100/image-11.jpg",
+    "title_original": "Guns and Roses [DMD VIDEO]",
+    "title_original_trimmed": "Guns and Roses"
+  },
+  "9114": {
+    "ipdb": "3683",
+    "title": "Johnny Mnemonic",
+    "year": "1995",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3683/Playfield.jpg",
+    "title_original": "Johnny Mnemonic [DMD VIDEO]",
+    "title_original_trimmed": "Johnny Mnemonic"
+  },
+  "9115": {
+    "ipdb": "5136",
+    "title": "The Flintstones",
+    "year": "1994",
+    "manufacturer": "ICE",
+    "img": "http://www.ipdb.org/images/5136/image-2.jpg",
+    "title_original": "The Flintstones [DMD VIDEO]",
+    "title_original_trimmed": "The Flintstones"
+  },
+  "9116": {
+    "ipdb": "1343",
+    "title": "Jurassic Park",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1343/image-6.jpg",
+    "title_original": "Jurassic Park [DMD VIDEO]",
+    "title_original_trimmed": "Jurassic Park"
+  },
+  "9117": {
+    "ipdb": "4858",
+    "title": "The Lord of the Rings",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5558/image-3.jpg",
+    "title_original": "Lord Of The Rings [DMD VIDEO]",
+    "title_original_trimmed": "Lord Of The Rings"
+  },
+  "9118": {
+    "ipdb": "4505",
+    "title": "Monopoly",
+    "year": "2001",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4505/image-2.jpg",
+    "title_original": "Monopoly [DMD VIDEO]",
+    "title_original_trimmed": "Monopoly"
+  },
+  "9119": {
+    "ipdb": "4441",
+    "title": "Monster Bash",
+    "year": "1998",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4441/image-2.jpg",
+    "title_original": "Monster Bash [DMD VIDEO]",
+    "title_original_trimmed": "Monster Bash"
+  },
+  "9120": {
+    "ipdb": "2852",
+    "title": "No Fear: Dangerous Sports",
+    "year": "1995",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2852/image-2.jpg",
+    "title_original": "No Fear-Dangerous Sports [DMD VIDEO]",
+    "title_original_trimmed": "No Fear Dangerous Sports"
+  },
+  "9122": {
+    "ipdb": "4338",
+    "title": "No Good Gofers",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4338/image-15.jpg",
+    "title_original": "No Good Gofers [DMD VIDEO]",
+    "title_original_trimmed": "No Good Gofers"
+  },
+  "9123": {
+    "ipdb": "1764",
+    "title": "The Party Zone",
+    "year": "1991",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1764/image-25.jpg",
+    "title_original": "Party Zone [DMD VIDEO]",
+    "title_original_trimmed": "Party Zone"
+  },
+  "9124": {
+    "ipdb": "1817",
+    "title": "Play-Boy",
+    "year": "1932",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1817/image-2.jpg",
+    "title_original": "Playboy [DMD VIDEO]",
+    "title_original_trimmed": "Playboy"
+  },
+  "9126": {
+    "ipdb": "1796",
+    "title": "PINBOT",
+    "year": "1986",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1796/Playfield.jpg",
+    "title_original": "PinBot (Williams 1986) [BG-Video]",
+    "title_original_trimmed": "PinBot",
+    "confirmed": true
+  },
+  "9127": {
+    "ipdb": "2242",
+    "title": "Sorcerer",
+    "year": "1985",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2242/image-2.jpg",
+    "title_original": "Sorcerer (Williams 1985) [BG-Video]",
+    "title_original_trimmed": "Sorcerer",
+    "confirmed": true
+  },
+  "9128": {
+    "ipdb": "1972",
+    "title": "Red  Ted's Road Show",
+    "year": "1994",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1972/image-8.jpg",
+    "title_original": "Red and Ted's Road Show [DMD VIDEO]",
+    "title_original_trimmed": "Red and Ted's Road Show"
+  },
+  "9129": {
+    "ipdb": "4917",
+    "title": "Ripley's Believe It or Not",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4917/image-5.jpg",
+    "title_original": "Ripley's Believe It or Not [DMD VIDEO]",
+    "title_original_trimmed": "Ripley's Believe It or Not"
+  },
+  "9130": {
+    "ipdb": "4536",
+    "title": "RollerCoaster Tycoon",
+    "year": "2002",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4536/image-2.jpg",
+    "title_original": "Rollercoaster Tycoon [DMD VIDEO]",
+    "title_original_trimmed": "Rollercoaster Tycoon"
+  },
+  "9131": {
+    "ipdb": "4674",
+    "title": "The Simpsons Pinball Party",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4674/image-2.jpg",
+    "title_original": "Simpsons pinball party [DMD VIDEO]",
+    "title_original_trimmed": "Simpsons pinball party"
+  },
+  "9132": {
+    "ipdb": "5053",
+    "title": "The Sopranos",
+    "year": "2005",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5053/image-D6.jpg",
+    "title_original": "Sopranos [DMD VIDEO]",
+    "title_original_trimmed": "Sopranos"
+  },
+  "9133": {
+    "ipdb": "2357",
+    "title": "Star Trek: The Next Generation",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2357/image-17.jpg",
+    "title_original": "Star Trek - The next generation [DMD VIDEO]",
+    "title_original_trimmed": "Star Trek   The next generation"
+  },
+  "9134": {
+    "ipdb": "4513",
+    "title": "Star Wars",
+    "year": "1987",
+    "manufacturer": "Sonic",
+    "img": "http://www.ipdb.org/images/2358/Playfield.jpg",
+    "title_original": "Star Wars [DMD VIDEO]",
+    "title_original_trimmed": "Star Wars"
+  },
+  "9135": {
+    "ipdb": "4054",
+    "title": "Star Wars Trilogy",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4054/image-7.jpg",
+    "title_original": "Star Wars Trilogy [DMD VIDEO]",
+    "title_original_trimmed": "Star Wars Trilogy"
+  },
+  "9136": {
+    "ipdb": "2847",
+    "title": "Stargate",
+    "year": "1995",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2847/image-12.jpg",
+    "title_original": "Stargate [DMD VIDEO]",
+    "title_original_trimmed": "Stargate"
+  },
+  "9137": {
+    "ipdb": "2493",
+    "title": "Tales from the Crypt",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2493/Playfield.jpg",
+    "title_original": "Tales from the Crypt",
+    "title_original_trimmed": "Tales from the Crypt"
+  },
+  "9138": {
+    "ipdb": "2524",
+    "title": "Terminator 2: Judgment Day",
+    "year": "1991",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2524/image-2.jpg",
+    "title_original": "Terminator 2 - Judgement Day [DMD VIDEO]",
+    "title_original_trimmed": "Terminator 2   Judgement Day"
+  },
+  "9139": {
+    "ipdb": "3824",
+    "title": "Tales of the Arabian Nights",
+    "year": "1996",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
+    "title_original": "Tales of the Arabian nights [DMD VIDEO]",
+    "title_original_trimmed": "Tales of the Arabian nights"
+  },
+  "9140": {
+    "ipdb": "2768",
+    "title": "White Water",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2768/image-25.jpg",
+    "title_original": "Whitewater [DMD VIDEO]",
+    "title_original_trimmed": "Whitewater"
+  },
+  "9141": {
+    "ipdb": "4137",
+    "title": "The X Files",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4137/image-5.jpg",
+    "title_original": "X-Files [DMD VIDEO]",
+    "title_original_trimmed": "X Files"
+  },
+  "9142": {
+    "ipdb": "4441",
+    "title": "Monster Bash",
+    "year": "1998",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4441/image-2.jpg",
+    "title_original": "Monster Bash [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Monster Bash",
+    "confirmed": true
+  },
+  "9143": {
+    "ipdb": "1796",
+    "title": "PINBOT",
+    "year": "1986",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1796/Playfield.jpg",
+    "title_original": "Pinbot [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Pinbot",
+    "confirmed": true
+  },
+  "9144": {
+    "ipdb": "4787",
+    "title": "Terminator 3: Rise of the Machines",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4787/image-6.jpg",
+    "title_original": "T3 Blue and Red Mod [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9145": {
+    "ipdb": "2524",
+    "title": "Terminator 2: Judgment Day",
+    "year": "1991",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2524/image-2.jpg",
+    "title_original": "Terminator 2 - Chrome [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9153": {
+    "name": "Gilligans Island",
+    "manufacturer": "",
+    "error": "********** NO MATCH **********",
+    "title_original": "Gilligans Island [DMD VIDEO]",
+    "title_original_trimmed": "Gilligans Island"
+  },
+  "9154": {
+    "ipdb": "3784",
+    "title": "Breakshot",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/3784/Playfield.jpg",
+    "title_original": "Breakshot [DMD VIDEO]",
+    "title_original_trimmed": "Breakshot"
+  },
+  "9155": {
+    "ipdb": "2852",
+    "title": "No Fear: Dangerous Sports",
+    "year": "1995",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2852/image-2.jpg",
+    "title_original": "No Fear-Dangerous Sports [DMD VIDEO]",
+    "title_original_trimmed": "No Fear Dangerous Sports"
+  },
+  "9156": {
+    "ipdb": "2493",
+    "title": "Tales from the Crypt",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2493/Playfield.jpg",
+    "title_original": "Tales from the Crypt [DMD VIDEO]",
+    "title_original_trimmed": "Tales from the Crypt"
+  },
+  "9157": {
+    "ipdb": "2508",
+    "title": "Tee'd Off",
+    "year": "1993",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/2508/image-4.jpg",
+    "title_original": "Teed Off [DMD VIDEO]",
+    "title_original_trimmed": "Teed Off"
+  },
+  "9158": {
+    "ipdb": "3685",
+    "title": "WHO dunnit",
+    "year": "1995",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3685/Playfield.jpg",
+    "title_original": "Who Dunnit [DMD VIDEO]",
+    "title_original_trimmed": "Who Dunnit"
+  },
+  "9159": {
+    "ipdb": "3350",
+    "title": "Twister",
+    "year": "1936",
+    "manufacturer": "Exhibit",
+    "img": "http://www.ipdb.org/images/3976/Playfield.jpg",
+    "title_original": "Twister [DMD VIDEO]",
+    "title_original_trimmed": "Twister"
+  },
+  "9170": {
+    "ipdb": "128",
+    "title": "Bad Girls",
+    "year": "1988",
+    "manufacturer": "Premier",
+    "img": "http://www.ipdb.org/images/128/Playfield.jpg",
+    "title_original": "Bad Girls (Premier)(1988)(Bodydump Koadic)(1.0)(FS)",
+    "title_original_trimmed": "Bad Girls",
+    "confirmed": true
+  },
+  "9171": {
+    "ipdb": "311",
+    "title": "Black Knight 2000",
+    "year": "1989",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/311/Playfield.jpg",
+    "title_original": "BK2K VP92x FS",
+    "title_original_trimmed": "BK2K",
+    "confirmed": true
+  },
+  "9172": {
+    "ipdb": "4441",
+    "title": "Monster Bash",
+    "year": "1998",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4441/image-2.jpg",
+    "title_original": "Monster Bash FS PcKiller dition",
+    "title_original_trimmed": "Monster Bash",
+    "confirmed": true
+  },
+  "9175": {
+    "ipdb": "4441",
+    "title": "Monster Bash",
+    "year": "1998",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4441/image-2.jpg",
+    "title_original": "Monster Bash (Williams 1998) [HP VIDEO]",
+    "title_original_trimmed": "Monster Bash",
+    "confirmed": true
+  },
+  "9176": {
+    "ipdb": "311",
+    "title": "Black Knight 2000",
+    "year": "1989",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/311/Playfield.jpg",
+    "title_original": "Black Knight 2000 (Williams 1989) [HP VIDEO]",
+    "title_original_trimmed": "Black Knight 2000",
+    "confirmed": true
+  },
+  "9177": {
+    "ipdb": "5618",
+    "title": "James Camerons Avatar",
+    "year": "2010",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5618/image-4.jpg",
+    "title_original": "Avatar [DMD VIDEO]",
+    "title_original_trimmed": "Avatar"
+  },
+  "9178": {
+    "ipdb": "5550",
+    "title": "Iron Man",
+    "year": "2010",
+    "manufacturer": "Stern",
+    "img": null,
+    "title_original": "Ironman [DMD VIDEO]",
+    "title_original_trimmed": "Ironman"
+  },
+  "9179": {
+    "ipdb": "5163",
+    "title": "Pirates of the Caribbean",
+    "year": "2006",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5163/image-40.jpg",
+    "title_original": "Pirates Of the Caribbean [DMD VIDEO]",
+    "title_original_trimmed": "Pirates Of the Caribbean"
+  },
+  "9180": {
+    "ipdb": "5682",
+    "title": "Disney TRON Legacy",
+    "year": "2011",
+    "manufacturer": "Stern",
+    "img": null,
+    "title_original": "Tron Legacy [DMD VIDEO]",
+    "title_original_trimmed": "Tron Legacy"
+  },
+  "9182": {
+    "ipdb": "311",
+    "title": "Black Knight 2000",
+    "year": "1989",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/311/Playfield.jpg",
+    "title_original": "Black Knight 2000 [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Black Knight 2000",
+    "confirmed": true
+  },
+  "9241": {
+    "ipdb": "23",
+    "title": "Adventures of Rocky and Bullwinkle and Friends",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/23/Playfield.jpg",
+    "title_original": "Adventures of Rocky and Bullwinkle and Friends [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Adventures of Rocky and Bullwinkle and Friends",
+    "confirmed": true
+  },
+  "9253": {
+    "ipdb": "4137",
+    "title": "The X Files",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4137/image-5.jpg",
+    "title_original": "The X-Files (SEGA 1997) [HP Media Pack]",
+    "title_original_trimmed": "The X Files",
+    "confirmed": true
+  },
+  "9254": {
+    "ipdb": "4137",
+    "title": "The X Files",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4137/image-5.jpg",
+    "title_original": "X-Files (SEGA 1997) [HP Video with Audio]",
+    "title_original_trimmed": "X Files",
+    "confirmed": true
+  },
+  "9318": {
+    "ipdb": "3340",
+    "title": "Rugby",
+    "year": "1936",
+    "manufacturer": "Chicago Coin",
+    "img": null,
+    "title_original": "Rugby FS",
+    "title_original_trimmed": "Rugby",
+    "confirmed": true
+  },
+  "9320": {
+    "ipdb": "105",
+    "title": "Atlantis",
+    "year": "1975",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/106/image-3.jpg",
+    "title_original": "Atlantis [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Atlantis",
+    "confirmed": true
+  },
+  "9321": {
+    "ipdb": "3592",
+    "title": "Apollo 13",
+    "year": "1995",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/3592/image-8.jpg",
+    "title_original": "Apollo 13 [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Apollo 13",
+    "confirmed": true
+  },
+  "9323": {
+    "ipdb": "4032",
+    "title": "Medieval Madness",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4032/image-7.jpg",
+    "title_original": "Medieval Madness Night [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9324": {
+    "ipdb": "2684",
+    "title": "Twilight Zone",
+    "year": "1993",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2684/image-1.jpg",
+    "title_original": "Twilight Zone Night [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9331": {
+    "ipdb": "4358",
+    "title": "The Champion Pub",
+    "year": "1998",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4358/Playfield.jpg",
+    "title_original": "Champion Pub [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Champion Pub",
+    "confirmed": true
+  },
+  "9366": {
+    "ipdb": "3072",
+    "title": "Bram Stoker's Dracula",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3072/Playfield.jpg",
+    "title_original": "Bram Stoker's Dracula (Williams 1993) [HP Video]",
+    "title_original_trimmed": "Bram Stoker's Dracula",
+    "confirmed": true
+  },
+  "9368": {
+    "ipdb": "3072",
+    "title": "Bram Stoker's Dracula",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3072/Playfield.jpg",
+    "title_original": "Bram Stoker's Dracula (Williams 1993) [HP Video with Audio]",
+    "title_original_trimmed": "Bram Stoker's Dracula",
+    "confirmed": true
+  },
+  "9377": {
+    "ipdb": "1000",
+    "title": "The Getaway: High Speed II",
+    "year": "1992",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1000/image-4.jpg",
+    "title_original": "The Getaway VP92",
+    "title_original_trimmed": "The Getaway",
+    "confirmed": true
+  },
+  "9381": {
+    "ipdb": "4504",
+    "title": "Austin Powers",
+    "year": "2001",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4504/image-11.jpg",
+    "title_original": "Austin Powers (Stern 2001) HR_ FS_VP9.2.1",
+    "title_original_trimmed": "Austin Powers",
+    "confirmed": true
+  },
+  "9383": {
+    "ipdb": "4652",
+    "title": "Indiana Jones: The Pinball Adventure",
+    "year": "1993",
+    "manufacturer": "Unidesa",
+    "img": "http://www.ipdb.org/images/1267/image-14.jpg",
+    "title_original": "Indiana Jones Night [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Indiana Jones Night",
+    "confirmed": true
+  },
+  "9386": {
+    "ipdb": "313",
+    "title": "Black Rose",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/313/image-2.jpg",
+    "title_original": "Black Rose [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Black Rose",
+    "confirmed": true
+  },
+  "9391": {
+    "ipdb": "498",
+    "title": "Checkpoint",
+    "year": "1991",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/498/image-2.jpg",
+    "title_original": "Checkpoint [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Checkpoint",
+    "confirmed": true
+  },
+  "9392": {
+    "ipdb": "2579",
+    "title": "The Who's Tommy Pinball Wizard",
+    "year": "1994",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/2579/Playfield.jpg",
+    "title_original": "Tommy Night [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9393": {
+    "ipdb": "4032",
+    "title": "Medieval Madness",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4032/image-7.jpg",
+    "title_original": "Medieval-Madness-FOM (Flasher Object MOD) - JP Salas - Aaron James - Teppotee - Dozer316_1.3_DAY_NIGHT",
+    "confirmed": true
+  },
+  "9394": {
+    "ipdb": "5301",
+    "title": "Shrek",
+    "year": "2008",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/5301/image-2.jpg",
+    "title_original": "Shrek (Stern 2008).zip [HP MEDIA PACK]",
+    "title_original_trimmed": "Shrek",
+    "confirmed": true
+  },
+  "9395": {
+    "ipdb": "4032",
+    "title": "Medieval Madness",
+    "year": "1997",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/4032/image-7.jpg",
+    "title_original": "Medieval Madness Night FOM [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9396": {
+    "name": "JP SpiderMan   2011   JPSalas",
+    "title_original": "JP_SpiderMan - 2011 - JPSalas - v1.1.1 DOF FS B2S - VP9.1x",
+    "title_original_trimmed": "JP SpiderMan   2011   JPSalas",
+    "confirmed": true,
+    "type": "OG"
+  },
+  "9397": {
+    "ipdb": "20",
+    "title": "The Addams Family",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/20/Playfield.jpg",
+    "title_original": "The Addams Family Gold [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9398": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared Stiff [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9399": {
+    "ipdb": "4858",
+    "title": "The Lord of the Rings",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4858/image-2.jpg",
+    "title_original": "Lord Of The Rings - Night [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9403": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared_Stiff_921_DX9T8_FOM - JPSalas - Dozer316 - SUNKEN_FLUSH - NIGHT/DAY.zip",
+    "confirmed": true
+  },
+  "9404": {
+    "ipdb": "3915",
+    "title": "Scared Stiff",
+    "year": "1996",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/3915/Playfield.jpg",
+    "title_original": "Scared Stiff Night [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9409": {
+    "ipdb": "5767",
+    "title": "ACDC (Pro)",
+    "year": "2012",
+    "manufacturer": "Stern",
+    "img": null,
+    "title_original": "ACDC (Stern 2012) [HP VIDEO]",
+    "title_original_trimmed": "ACDC",
+    "confirmed": true
+  },
+  "9410": {
+    "ipdb": "2396",
+    "title": "Strange Science",
+    "year": "1986",
+    "manufacturer": "Midway",
+    "img": "http://www.ipdb.org/images/2396/Playfield.jpg",
+    "title_original": "Strange Science (Bally 1986) [HP VIDEO]",
+    "title_original_trimmed": "Strange Science",
+    "confirmed": true
+  },
+  "9411": {
+    "ipdb": "1415",
+    "title": "Laser War",
+    "year": "1987",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1415/Playfield.jpg",
+    "title_original": "Laser War (Data East 1987) [HP VIDEO]",
+    "title_original_trimmed": "Laser War",
+    "confirmed": true
+  },
+  "9412": {
+    "ipdb": "3072",
+    "title": "Bram Stoker's Dracula",
+    "year": "1993",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3072/Playfield.jpg",
+    "title_original": "Bram Stoker's Dracula (Williams 1993) [HP VIDEO]",
+    "title_original_trimmed": "Bram Stoker's Dracula",
+    "confirmed": true
+  },
+  "9413": {
+    "ipdb": "4137",
+    "title": "The X Files",
+    "year": "1997",
+    "manufacturer": "Sega",
+    "img": "http://www.ipdb.org/images/4137/image-5.jpg",
+    "title_original": "X-Files (Sega 1997) [HP VIDEO]",
+    "title_original_trimmed": "X Files",
+    "confirmed": true
+  },
+  "9414": {
+    "ipdb": "1885",
+    "title": "QBert's Quest",
+    "year": "1983",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/1885/Playfield.jpg",
+    "title_original": "Q-Bert's Quest (Gottlieb 1983) [HP VIDEO]",
+    "title_original_trimmed": "Q Bert's Quest",
+    "confirmed": true
+  },
+  "9415": {
+    "ipdb": "3824",
+    "title": "Tales of the Arabian Nights",
+    "year": "1996",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/3824/Playfield.jpg",
+    "title_original": "TOTAN_VP91x_3.4FS_Classic_FOM_SUNKEN_FLUSH - JPSALAS-GRIZZ-DOZER316.zip",
+    "title_original_trimmed": "TOTAN",
+    "confirmed": true
   }
 }
