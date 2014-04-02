@@ -23061,5 +23061,394 @@
     "title_original": "TOTAN_VP91x_3.4FS_Classic_FOM_SUNKEN_FLUSH - JPSALAS-GRIZZ-DOZER316.zip",
     "title_original_trimmed": "TOTAN",
     "confirmed": true
+  },
+  "9427": {
+    "ipdb": "2292",
+    "title": "Spirit",
+    "year": "1982",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2292/image-3.jpg",
+    "title_original": "SPirit (Gottlieb 1982) [HP MEDIA PACK]",
+    "title_original_trimmed": "SPirit",
+    "confirmed": true
+  },
+  "9429": {
+    "ipdb": "857",
+    "title": "Firepower II",
+    "year": "1983",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/857/image-2.jpg",
+    "title_original": "Firepower II - VP9.x - v 1.0 - MRCMRC",
+    "title_original_trimmed": "Firepower II",
+    "confirmed": true
+  },
+  "9434": {
+    "ipdb": "857",
+    "title": "Firepower II",
+    "year": "1983",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/857/image-2.jpg",
+    "title_original": "Firepower II (Williams 1983) [MEDIA PACK]",
+    "title_original_trimmed": "Firepower II",
+    "confirmed": true
+  },
+  "9440": {
+    "ipdb": "588",
+    "title": "Creature from the Black Lagoon",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/588/image-22.jpg",
+    "title_original": "CFTBL VP9.2",
+    "title_original_trimmed": "CFTBL",
+    "confirmed": true
+  },
+  "9441": {
+    "ipdb": "23",
+    "title": "Adventures of Rocky and Bullwinkle and Friends",
+    "year": "1993",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/23/Playfield.jpg",
+    "title_original": "Adventures of Rocky and Bullwinkle and Friends (Data East 1993) [HP MEDIA PACK]",
+    "title_original_trimmed": "Adventures of Rocky and Bullwinkle and Friends",
+    "confirmed": true
+  },
+  "9442": {
+    "ipdb": "4504",
+    "title": "Austin Powers",
+    "year": "2001",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4504/image-11.jpg",
+    "title_original": "Austin Powers (Stern 2001) [HP MEDIA PACK]",
+    "title_original_trimmed": "Austin Powers",
+    "confirmed": true
+  },
+  "9448": {
+    "ipdb": "857",
+    "title": "Firepower II",
+    "year": "1983",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/857/image-2.jpg",
+    "title_original": "FirePower II (Williams 1983) [HP VIDEO]",
+    "title_original_trimmed": "FirePower II",
+    "confirmed": true
+  },
+  "9449": {
+    "ipdb": "7",
+    "title": "Ace High",
+    "year": "1957",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/7/Playfield.jpg",
+    "title_original": "Ace High (Gottlieb 1957) [HP MEDIA PACK]",
+    "title_original_trimmed": "Ace High",
+    "confirmed": true
+  },
+  "9451": {
+    "ipdb": "2285",
+    "title": "The Amazing Spider-Man",
+    "year": "1980",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/2285/image-6.jpg",
+    "title_original": "Amazing Spiderman (Gottlieb 1980) [HP MEDIA PACK]",
+    "title_original_trimmed": "Amazing Spiderman",
+    "confirmed": true
+  },
+  "9452": {
+    "ipdb": "393",
+    "title": "Buckaroo",
+    "year": "1965",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/393/Playfield2.jpg",
+    "title_original": "Buckaroo (Gottlieb 1965) [HP MEDIA PACK]",
+    "title_original_trimmed": "Buckaroo",
+    "confirmed": true
+  },
+  "9453": {
+    "ipdb": "438",
+    "title": "Capt. Fantastic and The Brown Dirt Cowboy",
+    "year": "1975",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/438/image-1.jpg",
+    "title_original": "Captain Fantastic (Bally 1977) [HP MEDIA PACK]",
+    "confirmed": true
+  },
+  "9454": {
+    "ipdb": "481",
+    "title": "Central Park",
+    "year": "1966",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/481/image-3.jpg",
+    "title_original": "Central Park (Gottlieb 1966) [HP MEDIA PACK]",
+    "title_original_trimmed": "Central Park",
+    "confirmed": true
+  },
+  "9455": {
+    "ipdb": "4358",
+    "title": "The Champion Pub",
+    "year": "1998",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4358/Playfield.jpg",
+    "title_original": "Champion Pub (Bally 1998) [HP MEDIA PACK]",
+    "title_original_trimmed": "Champion Pub",
+    "confirmed": true
+  },
+  "9456": {
+    "ipdb": "601",
+    "title": "Cross Town",
+    "year": "1966",
+    "manufacturer": "Gottlieb",
+    "img": "http://www.ipdb.org/images/601/Playfield2.jpg",
+    "title_original": "Cross Town (Gottlieb 1966) [HP MEDIA PACK]",
+    "title_original_trimmed": "Cross Town",
+    "confirmed": true
+  },
+  "9461": {
+    "ipdb": "4446",
+    "title": "Revenge From Mars",
+    "year": "1999",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/4446/image-2.jpg",
+    "title_original": "Attack and Revenge from Mars - [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Attack and Revenge from Mars",
+    "confirmed": true
+  },
+  "9462": {
+    "name": "Wrath of Olympus",
+    "title_original": "Wrath of Olympus [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Wrath of Olympus",
+    "confirmed": true,
+    "type": "OG"
+  },
+  "9463": {
+    "ipdb": "3783",
+    "title": "Airborne",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/3783/image-1.jpg",
+    "title_original": "Airborne [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9464": {
+    "ipdb": "4506",
+    "title": "Playboy",
+    "year": "2002",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4506/image-4.jpg",
+    "title_original": "Playboy [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9465": {
+    "ipdb": "2821",
+    "title": "Xenon",
+    "year": "1979",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2821/image-2.jpg",
+    "title_original": "Xenon [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Xenon",
+    "confirmed": true
+  },
+  "9466": {
+    "ipdb": "3513",
+    "title": "Al's Garage Band Goes On a World Tour",
+    "year": "1992",
+    "manufacturer": "Alvin G.",
+    "img": "http://www.ipdb.org/images/3513/image-2.jpg",
+    "title_original": "Al's World Tour [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Al's World Tour",
+    "confirmed": true
+  },
+  "9467": {
+    "ipdb": "310",
+    "title": "Black Knight",
+    "year": "1980",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/310/Playfield.jpg",
+    "title_original": "Black Knight [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Black Knight",
+    "confirmed": true
+  },
+  "9468": {
+    "ipdb": "4536",
+    "title": "RollerCoaster Tycoon",
+    "year": "2002",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4536/image-2.jpg",
+    "title_original": "Rollercoaster Tycoon [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Rollercoaster Tycoon",
+    "confirmed": true
+  },
+  "9469": {
+    "ipdb": "1976",
+    "title": "Robocop",
+    "year": "1989",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1976/image-1.jpg",
+    "title_original": "Robocop GI Dark [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9470": {
+    "ipdb": "570",
+    "title": "Corvette",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/570/Playfield.jpg",
+    "title_original": "Corvette [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Corvette",
+    "confirmed": true
+  },
+  "9471": {
+    "ipdb": "548",
+    "title": "Comet",
+    "year": "1985",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/548/Playfield.jpg",
+    "title_original": "Comet [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Comet",
+    "confirmed": true
+  },
+  "9472": {
+    "ipdb": "1972",
+    "title": "Red  Ted's Road Show",
+    "year": "1994",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1972/image-8.jpg",
+    "title_original": "Red and Ted's Night MOD [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9473": {
+    "ipdb": "4001",
+    "title": "Big Bang Bar",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/4001/image-6.jpg",
+    "title_original": "Big Bang Bar [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Big Bang Bar",
+    "confirmed": true
+  },
+  "9474": {
+    "ipdb": "1004",
+    "title": "Gilligan's Island",
+    "year": "1991",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1004/image-6.jpg",
+    "title_original": "Gilligan's Island [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Gilligan's Island",
+    "confirmed": true
+  },
+  "9475": {
+    "ipdb": "4478",
+    "title": "Centaur",
+    "year": "1979",
+    "manufacturer": "Inder",
+    "img": "http://www.ipdb.org/images/476/Playfield.jpg",
+    "title_original": "Centaur [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Centaur",
+    "confirmed": true
+  },
+  "9476": {
+    "ipdb": "738",
+    "title": "Doctor Who",
+    "year": "1992",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/738/image-4.jpg",
+    "title_original": "Doctor Who [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Doctor Who",
+    "confirmed": true
+  },
+  "9477": {
+    "ipdb": "4917",
+    "title": "Ripley's Believe It or Not",
+    "year": "2003",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4917/image-5.jpg",
+    "title_original": "Ripleys Believe it or Not - Night [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Ripleys Believe it or Not   Night",
+    "confirmed": true
+  },
+  "9478": {
+    "ipdb": "3945",
+    "title": "Flipper Football",
+    "year": "1996",
+    "manufacturer": "Capcom",
+    "img": "http://www.ipdb.org/images/3945/image-16.jpg",
+    "title_original": "Flipper Football [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Flipper Football",
+    "confirmed": true
+  },
+  "9479": {
+    "ipdb": "4502",
+    "title": "High Roller Casino",
+    "year": "2001",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4502/image-7.jpg",
+    "title_original": "High Roller Casino [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "High Roller Casino",
+    "confirmed": true
+  },
+  "9480": {
+    "ipdb": "1176",
+    "title": "High Speed",
+    "year": "1986",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/1176/image-24.jpg",
+    "title_original": "High Speed [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "High Speed",
+    "confirmed": true
+  },
+  "9481": {
+    "ipdb": "1764",
+    "title": "The Party Zone",
+    "year": "1991",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1764/image-25.jpg",
+    "title_original": "Party Zone [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Party Zone",
+    "confirmed": true
+  },
+  "9482": {
+    "ipdb": "1415",
+    "title": "Laser War",
+    "year": "1987",
+    "manufacturer": "Data East",
+    "img": "http://www.ipdb.org/images/1415/Playfield.jpg",
+    "title_original": "Laser War [HP VIDEO + AUDIO]",
+    "title_original_trimmed": "Laser War",
+    "confirmed": true
+  },
+  "9483": {
+    "ipdb": "4983",
+    "title": "Elvis",
+    "year": "2004",
+    "manufacturer": "Stern",
+    "img": "http://www.ipdb.org/images/4983/image-1.jpg",
+    "title_original": "Elvis NightMOD [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9485": {
+    "ipdb": "1322",
+    "title": "Judge Dredd",
+    "year": "1993",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/1322/image-1.jpg",
+    "title_original": "Judge Dredd FS MOD DX9 BETA",
+    "title_original_trimmed": "Judge Dredd",
+    "confirmed": true
+  },
+  "9507": {
+    "ipdb": "2505",
+    "title": "Taxi",
+    "year": "1988",
+    "manufacturer": "Williams",
+    "img": "http://www.ipdb.org/images/2505/Playfield.jpg",
+    "title_original": "Taxi Night [HP VIDEO + AUDIO]",
+    "confirmed": true
+  },
+  "9509": {
+    "ipdb": "2528",
+    "title": "The Shadow",
+    "year": "1994",
+    "manufacturer": "Bally",
+    "img": "http://www.ipdb.org/images/2528/Playfield.jpg",
+    "title_original": "The Shadow Night [HP VIDEO + AUDIO]",
+    "confirmed": true
   }
 }
