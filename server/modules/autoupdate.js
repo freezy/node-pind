@@ -825,9 +825,9 @@ AutoUpdate.prototype._postExtract = function(err, oldConfig, newCommit, callback
 						before: function(migration) {
 							logger.log('info', '[autoupdate] Starting migration for "%s"', migration.filename);
 						}
-					}).success(function() {
+					}).then(function() {
 						logger.log('info', '[autoupdate] Migration executed successfully.');
-					}).error(function(err) {
+					}).catch(function(err) {
 						logger.log('error', '[autoupdate] Migration went wrong, see logfile: ', err, {});
 						result.errors.push({
 							when: 'migrations',

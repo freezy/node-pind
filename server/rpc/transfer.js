@@ -92,7 +92,7 @@ exports.actions = function(req, res, ss) {
 			if (!req.session.userId) return res(error.unauthorized());
 			if (!req.session.user.admin) return res(error.forbidden());
 
-			schema.VpfFile.find(params.id).success(function(row) {
+			schema.VpfFile.find(params.id).then(function(row) {
 				if (row) {
 					row = row.map();
 					transfer.queue({
@@ -155,7 +155,7 @@ exports.actions = function(req, res, ss) {
 				query += ' OFFSET ' + (params.offset ? parseInt(params.offset) : 0);
 			}
 
-			schema.sequelize.query(query, null, { raw: true, type: 'SELECT' }).success(function(rows) {
+			schema.sequelize.query(query, null, { raw: true, type: 'SELECT' }).then(function(rows) {
 				//schema.Transfer.all(p).success(function(rows) {
 
 				if (search) {
@@ -171,14 +171,14 @@ exports.actions = function(req, res, ss) {
 					returnedRows.push(schema.Transfer.map(row, currentProgress[row.id]));
 				});
 
-				schema.Transfer.count().success(function(num) {
+				schema.Transfer.count().then(function(num) {
 
 					logger.log('info', '[db] [transfer] Returning ' + returnedRows.length + ' rows from a total of ' + num + '.');
 					res({ rows: returnedRows, count: num });
 
-				}).error(function(err) {
-						throw new Error(err);
-					});
+				}).catch(function(err) {
+					throw new Error(err);
+				});
 			});
 		}
 	};

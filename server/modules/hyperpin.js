@@ -184,14 +184,14 @@ HyperPin.prototype.readTables = function(callback) {
 						table.media_video = fs.existsSync(settings.hyperpin.path + '/Media/' + platforms[platform] + '/Table Videos/' + table.hpid + '.f4v');
 
 						if (g.$.vpf) {
-							schema.VpfFile.find({ where: { fileId: g.$.vpf }}).success(function(row) {
+							schema.VpfFile.find({ where: { fileId: g.$.vpf }}).then(function(row) {
 								if (row) {
 									table.ref_src = row.id;
 									table.edition = row.edition; // overwrite, since more accurate.
 								}
 								tables.push(table);
 								next();
-							})
+							});
 						} else {
 							tables.push(table);
 							next();
@@ -242,14 +242,14 @@ HyperPin.prototype.readTables = function(callback) {
 	};
 
 	// disable all tables first
-	schema.sequelize.query('UPDATE tables SET hpenabled = 0').success(function() {
+	schema.sequelize.query('UPDATE tables SET hpenabled = 0').then(function() {
 
 		// launch FP and VP parsing in parallel
 		async.eachSeries([ 'FP', 'VP' ], process, function(err) {
 			if (err) {
 				return callback(err);
 			}
-			schema.Table.findAll().success(function(rows) {
+			schema.Table.findAll().then(function(rows) {
 				callback(null, rows);
 			});
 		});
@@ -260,7 +260,7 @@ HyperPin.prototype.writeTables = function(callback) {
 
 	var platform = 'VP';
 	var query = 'SELECT t.*, v.fileId FROM tables t LEFT JOIN vpf_files v ON t.ref_src = v.id WHERE platform = "VP" ORDER by t.name ASC';
-	schema.sequelize.query(query).success(function(rows) {
+	schema.sequelize.query(query).then(function(rows) {
 
 		var i, row, game;
 		var writer = new xmlw(true);
@@ -369,20 +369,19 @@ HyperPin.prototype.updateTable = function(table, callback) {
 		tableFile = fs.existsSync(tablePath);
 	}
 
-	table.updateAttributes({ table_file: tableFile }, [ 'table_file' ]).success(function(row) {
+	table.updateAttributes({ table_file: tableFile }, [ 'table_file' ]).then(function(row) {
 		if (tableFile) {
 			vp.getTableData(tablePath, function(err, attrs) {
 				if (err) {
 					return callback(null, row);
 				}
-				row.updateAttributes(attrs, [ 'rom', 'rom_file', 'dmd_rotation', 'controller' ]).success(function() {
+				row.updateAttributes(attrs, [ 'rom', 'rom_file', 'dmd_rotation', 'controller' ]).then(function() {
 					callback(null, row);
 				});
 			});
 		} else {
 			callback(null, row);
 		}
-
 	});
 };
 
@@ -423,7 +422,7 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 		});
 	};
 
-	schema.Table.all({ where: 'NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel`' }).success(function(rows) {
+	schema.Table.all({ where: 'NOT `media_table` OR NOT `media_backglass` OR NOT `media_wheel`' }).then(function(rows) {
 		async.eachSeries(rows, function(row, next) {
 			process(row, 'media pack', vpf.findMediaPack, next);
 		}, function(err) {
@@ -440,7 +439,7 @@ HyperPin.prototype.findMissingMedia = function(callback) {
 			// now, do the same for table video.
 			if (!settings.pind.ignoreTableVids) {
 				// do the same for the tables
-				schema.Table.all({ where: 'NOT `media_video`' }).success(function(rows) {
+				schema.Table.all({ where: 'NOT `media_video`' }).then(function(rows) {
 					async.eachSeries(rows, function(row, next) {
 						process(row, 'table video', vpf.findTableVideo, next);
 					}, function(err) {
@@ -479,7 +478,7 @@ HyperPin.prototype.matchSources = function(callback) {
 		if (err) {
 			return callback(err);
 		}
-		schema.Table.all({ where: { platform: 'VP' }}).success(function(tables) {
+		schema.Table.all({ where: { platform: 'VP' }}).then(function(tables) {
 			var i, j, table, source, d, minD, match, s, t;
 			for (i = 0; i < tables.length; i++) {
 				table = tables[i];
@@ -520,10 +519,10 @@ HyperPin.prototype.insertCoin = function(user, slot, callback) {
 				return callback(err);
 			}
 			logger.log('info', '[hyperpin] Coin inserted, updating user credits.');
-			schema.User.find(user.id).success(function(row) {
+			schema.User.find(user.id).then(function(row) {
 				user.credits--;
 				row.credits--;
-				row.save(['credits']).success(function(u) {
+				row.save(['credits']).then(function(u) {
 					logger.log('info', '[hyperpin] User credits updated to %d, calling callback.', u.credits);
 					that.emit('statusUpdated', { _user: user.user });
 					callback(null, {
@@ -546,14 +545,14 @@ HyperPin.prototype.insertCoin = function(user, slot, callback) {
  */
 HyperPin.prototype.setEnabled = function(key, value, callback) {
 	var that = this;
-	schema.Table.find({ where: { key: key }}).success(function(row) {
+	schema.Table.find({ where: { key: key }}).then(function(row) {
 		if (!row) {
 			return callback('Cannot find row with key "' + key + '".');
 		}
 		logger.log('info', '[hyperpin] %s table with key "%s" in database.', value ? 'Enabling' : 'Disabling', key);
 		row.updateAttributes({
 			hpenabled: value ? true : false
-		}, [ 'hpenabled' ]).success(function(row) {
+		}, [ 'hpenabled' ]).then(function(row) {
 			that.emit('dataUpdated', { resource: 'table', row: row });
 			that.writeTables(callback);
 		});

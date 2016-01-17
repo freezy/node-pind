@@ -98,7 +98,7 @@ exports.actions = function(req, res, ss) {
 				query += ' LIMIT ' + p.limit + ' OFFSET ' + p.offset;
 			}
 			var queryStart = +new Date();
-			schema.sequelize.query(query).success(function(rows) {
+			schema.sequelize.query(query).then(function(rows) {
 
 				var queryTime = (+new Date() - queryStart);
 				if (search) {
@@ -116,7 +116,7 @@ exports.actions = function(req, res, ss) {
 				delete p.offset;
 				delete p.order;
 				var countStart = +new Date();
-				schema.VpfFile.count(p).success(function(num) {
+				schema.VpfFile.count(p).then(function(num) {
 					var countTime = (+new Date() - countStart);
 
 					logger.log('info', '[rpc] [vpf] Returning ' + rows.length + ' rows from a total of ' + num + ' (%d/%dms).', queryTime, countTime);
@@ -164,7 +164,7 @@ exports.actions = function(req, res, ss) {
 			} else {
 				p.where = { category: 41 };
 			}
-			schema.VpfFile.all(p).success(function(rows) {
+			schema.VpfFile.all(p).then(function(rows) {
 				var queryTime = (+new Date() - queryStart);
 
 
@@ -218,7 +218,7 @@ exports.actions = function(req, res, ss) {
 				res();
 			};
 
-			schema.VpfFile.find(id).success(function(row) {
+			schema.VpfFile.find(id).then(function(row) {
 				if (!row) {
 					logger.log('warn', '[rpc] [vpf] Cannot find VPF row ID %s.', id);
 					return res()
@@ -280,10 +280,10 @@ exports.actions = function(req, res, ss) {
 
 		findParent: function(id) {
 
-			schema.VpfFile.find(id).success(function(row) {
+			schema.VpfFile.find(id).then(function(row) {
 				if (row) {
 					var like = row.title.replace(/[\[\(].*|rev\d.*/i, '').trim().toLowerCase();
-					schema.VpfFile.all({ where: ['LOWER(title) LIKE ? AND category = 41', '%' + like.replace(/\s+/gi, '%') + '%']}).success(function(rows) {
+					schema.VpfFile.all({ where: ['LOWER(title) LIKE ? AND category = 41', '%' + like.replace(/\s+/gi, '%') + '%']}).then(function(rows) {
 						res({ rows: rows });
 					});
 				} else {

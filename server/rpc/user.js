@@ -41,12 +41,12 @@ exports.actions = function(req, res, ss) {
 				}
 			}
 
-			schema.User.all(p).success(function(rows) {
+			schema.User.all(p).then(function(rows) {
 
 				delete p.limit;
 				delete p.skip;
 				delete p.order;
-				schema.User.count(p).success(function(num) {
+				schema.User.count(p).then(function(num) {
 					logger.log('info', '[db] [user] Returning ' + rows.length + ' rows from a total of ' + num + '.');
 					res({ rows : rows, count: num });
 				});
@@ -63,7 +63,7 @@ exports.actions = function(req, res, ss) {
 				'INNER JOIN hiscores h ON h.userId = u.id ' +
 				'GROUP BY u.user, u.id ' +
 				'ORDER BY points DESC'
-			).success(function(rows) {
+			).then(function(rows) {
 				res(rows);
 			});
 
@@ -84,11 +84,11 @@ exports.actions = function(req, res, ss) {
 					return res(error.api('Illegal field "' + field + '".'));
 				}
 			}
-			schema.User.find({ where: { id: params.id } }).success(function(user) {
+			schema.User.find({ where: { id: params.id } }).then(function(user) {
 				if (!user) {
 					return res(error.api('No user found with ID "' + params.id + '".'));
 				}
-				user.updateAttributes(params).success(function(user) {
+				user.updateAttributes(params).then(function(user) {
 					ss.publish.user(user.user, 'statusUpdated');
 					res(user);
 				});

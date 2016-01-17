@@ -76,7 +76,7 @@ module.exports = function(sequelize, DataTypes) {
 
 			authenticate: function(username, password, callback) {
 				logger.log('info', '[db] [user] Checking unicity for user %j', username);
-				User.find({ where: { user: username } }).success(function(row) {
+				User.find({ where: { user: username } }).then(function(row) {
 					if (!row) {
 						logger.log('info', '[db] [user] User "' + username  + '" not found.');
 						callback();
@@ -87,14 +87,14 @@ module.exports = function(sequelize, DataTypes) {
 							callback();
 						}
 					}
-				}).error(function(err) {
+				}).catch(function(err) {
 					return callback(err);
 				});
 			},
 
 			autologin: function(user, authtoken, callback) {
 				logger.log('info', '[db] [user] Autologin: Checking user "' + user + '".');
-				User.find({ where: { user: user } }).success(function(user) {
+				User.find({ where: { user: user } }).then(function(user) {
 					if (user && user.authtoken == authtoken) {
 						logger.log('info', '[db] [user] Autologin: User "' + user.user + '" had a valid auth token.');
 						callback(null, user);
@@ -102,7 +102,7 @@ module.exports = function(sequelize, DataTypes) {
 						logger.log('info', '[db] [user] Autologin: User "' + user + '" had an invalid auth token.');
 						callback('Invalid token.')
 					}
-				}).error(function(err) {
+				}).catch(function(err) {
 					return callback(err);
 				});
 			},

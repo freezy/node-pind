@@ -113,7 +113,7 @@ module.exports = function(sequelize, DataTypes) {
 					}
 				}
 
-				Table.find(clause).success(function(row) {
+				Table.find(clause).then(function(row) {
 					if (row) {
 
 						// don't update name and year if it was already matched by ipdb.org
@@ -135,7 +135,7 @@ module.exports = function(sequelize, DataTypes) {
 							delete table.hpid;
 						}
 
-						row.updateAttributes(table).success(function(r) {
+						row.updateAttributes(table).then(function(r) {
 							callback(null, r);
 						});
 
@@ -145,7 +145,7 @@ module.exports = function(sequelize, DataTypes) {
 								return callback(err);
 							}
 							table.key = key;
-							Table.create(table).success(function(r) {
+							Table.create(table).then(function(r) {
 								callback(null, r);
 							});
 						});
@@ -164,7 +164,7 @@ module.exports = function(sequelize, DataTypes) {
 					key += range.charAt(Math.floor(Math.random() * range.length));
 				}
 				var that = this;
-				Table.count({ where: { key: key }}).success(function(num) {
+				Table.count({ where: { key: key }}).then(function(num) {
 					if (num == 0) {
 						callback(null, key);
 					} else {

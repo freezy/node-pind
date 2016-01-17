@@ -40,20 +40,22 @@ if (require('./server/modules/settings').validate()) {
 	}
 
 	// override logger
-	ss.api.log = function() {
-		var args = Array.prototype.slice.call(arguments);
-		logger.log('info', clc.bgBlue(args.join(' ')));
-	};
+	//ss.api.log = function() {
+	//	var args = Array.prototype.slice.call(arguments);
+	//	logger.log('info', clc.bgBlue(args.join(' ')));
+	//};
 
 	// init modules
 	require('./server/initializers/pind.js')();
 
-	// Start web server
-	var server = http.Server(ss.http.middleware);
-	server.listen(parseInt(settings.pind.port));
+	ss.start();
 
-	// Start SocketStream
-	ss.start(server);
+	//// Start web server
+	//var server = http.Server(ss.http.middleware);
+	//server.listen(parseInt(settings.pind.port));
+	//
+	//// Start SocketStream
+	//ss.start(server);
 
 } else {
 	logger.log('error', '[pind] Error in settings file, closing down.');

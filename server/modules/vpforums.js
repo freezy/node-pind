@@ -143,7 +143,7 @@ VPForums.prototype._findMedia = function(table, ref_parent, cat, what, filter, c
 			edition: table.edition,
 			ipdb_id: table.ipdb_no,
 			category: cat
-		}}).success(function(rows) {
+		}}).then(function(rows) {
 			logger.log('info', '[vpf] Trying match by IPDB...');
 			if (rows.length > 0) {
 				rows.sort(function(a, b) {
@@ -527,11 +527,11 @@ VPForums.prototype.download = function(transfer, watcher, callback) {
 				var description = $('div.ipsType_textblock.description_content').html();
 				if (description && transfer.ref_src) {
 					logger.log('info', '[vpf] Updating description for download %s', transfer.ref_src);
-					schema.VpfFile.find(transfer.ref_src).success(function(row) {
+					schema.VpfFile.find(transfer.ref_src).then(function(row) {
 						if (row) {
 							row.updateAttributes({
 								description: ent.decode(description).trim()
-							}, [ 'description' ]).success(function(row) {
+							}, [ 'description' ]).then(function(row) {
 								that.emit('descriptionUpdated', { transfer: transfer, vpf_file: row });
 								initDownload(body);
 							});
@@ -773,14 +773,14 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			} else {
 				query = 'id NOT IN (' + ids.join(',') + ') AND category = ' + cat + ' AND lastUpdatedAt > ?';
 			}
-			schema.VpfFile.all({ where: [ query, firstUpdated ] }).success(function(rows) {
+			schema.VpfFile.all({ where: [ query, firstUpdated ] }).then(function(rows) {
 				async.eachSeries(rows, function(row, next) {
 					var r = row.map();
 					logger.log('info', '[vpf] Looks like "%s" was removed at VPF, checking at %s', row.title, r.url);
 					request(r.url, function(err, response, body) {
 						if (body.match(/we could not find the file specified/i)) {
 							logger.log('info', '[vpf] Deleted "%s" from database, confirmed non-existant at VPF.', row.title);
-							row.destroy().success(next);
+							row.destroy().then(next);
 						} else {
 							logger.log('info', '[vpf] Unconfirmed, check manually and update regex.', row.title);
 							next();
@@ -929,7 +929,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 			logger.log('info', '[vpf] Title starts with "The", let\'s fetch also letter "%s" for second word.', words[1][0]);
 
 			// check cache first.
-			schema.VpfFile.all({ where: { category: cat, letter: words[1][0] }}).success(function(rows) {
+			schema.VpfFile.all({ where: { category: cat, letter: words[1][0] }}).then(function(rows) {
 				if (rows.length == 0) {
 					// if empty, launch fetch.
 					fetch({ cat: cat, letter: words[1][0], page: 1 }, [], function(err, resultNextLetter) {
@@ -969,7 +969,7 @@ VPForums.prototype._fetchDownloads = function(cat, title, options, callback) {
 		params.letter = getLetter(title);
 	}
 	// check cache first.
-	schema.VpfFile.all(params).success(function(rows) {
+	schema.VpfFile.all(params).then(function(rows) {
 
 		if (rows.length == 0) {
 			// if empty, launch fetch.

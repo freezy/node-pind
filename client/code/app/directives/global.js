@@ -107,7 +107,7 @@ module.exports = function (module) {
 				'<div class="thumb-wrapper"><a href="#">' +
 					'<div class="thumb"></div>' +
 					'<div class="thumb-placeholder"></div>' +
-					'</a></div>',
+				'</a></div>',
 			link: function(scope, element, attrs) {
 
 				attrs.$observe('fileid', function(value) {

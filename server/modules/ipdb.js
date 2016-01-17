@@ -64,7 +64,7 @@ Ipdb.prototype.syncIPDB = function(callback) {
 	that.emit('processingStarted');
 	isSyncing = true;
 
-	schema.Table.findAll( { where: [ 'type != ?', 'OG' ]}).success(function(rows) {
+	schema.Table.findAll( { where: [ 'type != ?', 'OG' ]}).then(function(rows) {
 
 		// fetch data from ipdb.org
 		that.enrichAll(rows, function(err, rows) {
@@ -73,7 +73,7 @@ Ipdb.prototype.syncIPDB = function(callback) {
 			callback(err, rows);
 		});
 
-	}).error(callback);
+	}).catch(callback);
 };
 
 /**
@@ -111,9 +111,9 @@ Ipdb.prototype.enrichAll = function(tables, callback) {
 		// update db
 		async.eachSeries(tables, function(table, cb) {
 
-			table.save().success(function(r) {
+			table.save().then(function(r) {
 				cb(null, r);
-			}).error(cb);
+			}).catch(cb);
 
 		}, function(err) {
 			that.emit('updateCompleted', { num: tables.length });
@@ -328,7 +328,7 @@ Ipdb.prototype.enrich = function(table, callback) {
 
 	var url, m;
 	if (table.ipdb_no && (!forceSearch || !table.name)) {
-		url = 'http://www.ipdb.org/machine.cgi?id=' + table.ipdb_no;
+			url = 'http://www.ipdb.org/machine.cgi?id=' + table.ipdb_no;
 		logger.log('info', '[ipdb] Refreshing data for ipdb# %s.', table.ipdb_no);
 	} else {
 
@@ -462,7 +462,7 @@ Ipdb.prototype.syncTop300 = function(callback) {
 		var updateTables = function(table, next) {
 
 			// try to find a match in db
-			schema.Table.findAll({ where: { name: table.name, year: table.year, type: table.type }}).success(function(rows) {
+			schema.Table.findAll({ where: { name: table.name, year: table.year, type: table.type }}).then(function(rows) {
 
 				if (rows.length > 0) {
 
@@ -472,15 +472,15 @@ Ipdb.prototype.syncTop300 = function(callback) {
 						logger.log('debug', '[ipdb] Matched %s (%s)', row.name, row.platform);
 						row.updateAttributes({
 							ipdb_rank: table.ipdb_rank
-						}, [ 'ipdb_rank' ]).success(function(table) {
+						}, [ 'ipdb_rank' ]).then(function(table) {
 							updatedTables.push(table);
 							cb();
-						}).error(cb);
+						}).catch(cb);
 					}, next);
 				} else {
 					next();
 				}
-			}).error(function(err){
+			}).catch(function(err){
 				logger.log('error', '[ipdb] ' + err);
 				next(err);
 			});

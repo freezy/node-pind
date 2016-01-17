@@ -22,7 +22,7 @@ exports.actions = function(req, res, ss) {
 			// access control
 			if (!req.session.userId) return res(error.unauthorized());
 
-			schema.Table.find({ where : { key : params.id }}).success(function(row) {
+			schema.Table.find({ where : { key : params.id }}).then(function(row) {
 				if (row) {
 					details(fields(row, params), res);
 				} else {
@@ -117,7 +117,7 @@ exports.actions = function(req, res, ss) {
 					p.order = 'name ASC';
 					break;
 			}
-			schema.Table.all(p).success(function(rows) {
+			schema.Table.all(p).then(function(rows) {
 
 				if (search) {
 					// needs to have fuzzyExtract in the model!
@@ -127,7 +127,7 @@ exports.actions = function(req, res, ss) {
 				delete p.limit;
 				delete p.offset;
 				delete p.order;
-				schema.Table.count(p).success(function(num) {
+				schema.Table.count(p).then(function(num) {
 
 					var rs = [];
 					for (var i = 0; i < rows.length; i++) {
@@ -224,7 +224,7 @@ function details(r, callback) {
 	}
 
 	if (r.rom) {
-		schema.Rom.find({ where : { name : r.rom }}).success(function(rom) {
+		schema.Rom.find({ where : { name : r.rom }}).then(function(rom) {
 			if (rom) {
 				r.audits = rom;
 				if (rom.scoreHistogram) {

@@ -10,7 +10,7 @@ var settings = require('../../config/settings-mine');
 var disableCache = false;
 
 exports.banner = function(context, key, size) {
-	schema.Table.find({ where: { key : key }}).success(function(row) {
+	schema.Table.find({ where: { key : key }}).then(function(row) {
 		asset(context, getPath('Table Images', row), function(gm, callback) {
 			gm.rotate('black', -45);
 			gm.crop(800, 150, 400, 1250);
@@ -19,14 +19,14 @@ exports.banner = function(context, key, size) {
 			}
 			callback(gm);
 		}, 'default_banner.svg');
-	}).error(function(err) {
+	}).catch(function(err) {
 		logger.log('error', '[asset] Error retrieving table for banner ' + key + ': ' + err);
 		context.res.writeHead(500);
 	});
 };
 
 exports.portrait = function(context, key, size) {
-	schema.Table.find({ where: { key : key }}).success(function(row) {
+	schema.Table.find({ where: { key : key }}).then(function(row) {
 		asset(context, getPath('Table Images', row), function(gm, callback) {
 			gm.rotate('black', -90);
 			if (size != null) {
@@ -34,24 +34,24 @@ exports.portrait = function(context, key, size) {
 			}
 			callback(gm);
 		});
-	}).error(function(err) {
+	}).catch(function(err) {
 		logger.log('error', '[asset] Error retrieving table for table image ' + key + ': ' + err);
 		context.res.writeHead(500);
 	});
 };
 
 exports.logo = function(context, key) {
-	schema.Table.find({ where: { key : key }}).success(function(row) {
+	schema.Table.find({ where: { key : key }}).then(function(row) {
 		file(context, getPath('Wheel Images', row));
 
-	}).error(function(err) {
+	}).catch(function(err) {
 		logger.log('error', '[asset] Error retrieving table for logo ' + key + ': ' + err);
 		context.res.writeHead(500);
 	});
 };
 
 exports.square = function(context, key, size) {
-	schema.Table.find({ where: { key : key }}).success(function(row) {
+	schema.Table.find({ where: { key : key }}).then(function(row) {
 		asset(context, getPath('Table Images', row), function(gm, callback) {
 			gm.rotate('black', -120);
 			gm.crop(590, 590, 800, 1100);
@@ -60,7 +60,7 @@ exports.square = function(context, key, size) {
 			}
 			callback(gm);
 		});
-	}).error(function(err) {
+	}).catch(function(err) {
 		logger.log('error', '[asset] Error retrieving table for square ' + key + ': ' + err);
 		context.res.writeHead(500);
 	});
@@ -69,7 +69,7 @@ exports.square = function(context, key, size) {
 
 exports.widescreen = function(context, key, size) {
 
-	schema.Table.find({ where: { key : key }}).success(function(row) {
+	schema.Table.find({ where: { key : key }}).then(function(row) {
 		asset(context, getPath('Backglass Images', row), function(gm, callback) {
 
 			gm.size(function(err, dim) {
@@ -83,7 +83,7 @@ exports.widescreen = function(context, key, size) {
 				callback(gm);
 			})
 		});
-	}).error(function(err) {
+	}).catch(function(err) {
 		logger.log('error', '[asset] Error retrieving table for square ' + key + ': ' + err);
 		context.res.writeHead(500);
 	});
@@ -104,28 +104,28 @@ exports.widescreen = function(context, key, size) {
 };
 
 exports.backglass = function(context, key, size) {
-	schema.Table.find({ where: { key : key }}).success(function(row) {
+	schema.Table.find({ where: { key : key }}).then(function(row) {
 		asset(context, getPath('Backglass Images', row), function(gm, callback) {
 			if (size != null) {
 				gm.resize(size, size);
 			}
 			callback(gm);
 		}, 'default_backglass_43.svg');
-	}).error(function(err) {
+	}).catch(function(err) {
 		logger.log('error', '[asset] Error retrieving table for backglass ' + key + ': ' + err);
 		context.res.writeHead(500);
 	});
 };
 
 exports.flyer = function(context, key, size, which) {
-	schema.Table.find({ where: { key : key }}).success(function(row) {
+	schema.Table.find({ where: { key : key }}).then(function(row) {
 		asset(context, getHyperPinPath('Flyer Images/' + which, row), function(gm, callback) {
 			if (size != null) {
 				gm.resize(size, size);
 			}
 			callback(gm);
 		});
-	}).error(function(err) {
+	}).catch(function(err) {
 		logger.log('error', '[asset] Error retrieving table for flyer ' + key + ': ' + err);
 		context.res.writeHead(500);
 	});

@@ -29,8 +29,8 @@ exports.actions = function(req, res, ss) {
 			if (!req.session.userId) return res(error.unauthorized());
 
 			transfer.getStatus(function(err, transferStatus) {
-				schema.Table.count().success(function(count) {
-					schema.User.find({ where: { user: req.session.userId }}).success(function(user) {
+				schema.Table.count().then(function(count) {
+					schema.User.find({ where: { user: req.session.userId }}).then(function(user) {
 						req.session.user = user;
 						var status = {
 							user: user,
@@ -140,7 +140,7 @@ exports.actions = function(req, res, ss) {
 			}
 			query += 'ORDER BY t.name, h.type, h.rank';
 
-			schema.sequelize.query(query).success(function(rows) {
+			schema.sequelize.query(query).then(function(rows) {
 				var result = [];
 				async.each(rows, function(row, next){
 					result.push({
@@ -159,7 +159,7 @@ exports.actions = function(req, res, ss) {
 					res({ rows: result, count: rows.length });
 				});
 
-			}).error(function(err) {
+			}).catch(function(err) {
 				throw new Error(err);
 			});
 		},
@@ -210,8 +210,8 @@ exports.actions = function(req, res, ss) {
 				limit : params.limit ? parseInt(params.limit) : 0,
 				order : 'completedAt DESC'
 			};
-			schema.Upgrade.all(p).success(function(rows) {
-				schema.Upgrade.count().success(function(num) {
+			schema.Upgrade.all(p).then(function(rows) {
+				schema.Upgrade.count().then(function(num) {
 					var rs = [];
 					_.each(rows, function(row) {
 						rs.push(row.map());

@@ -81,7 +81,7 @@ Transfer.prototype.initAnnounce = function() {
 Transfer.prototype.initTransfers = function() {
 	var that = this;
 	// reset started downloads
-	schema.sequelize.query('UPDATE transfers SET startedAt = NULL WHERE startedAt IS NOT NULL AND failedAt IS NULL AND completedAt IS NULL;').success(function() {
+	schema.sequelize.query('UPDATE transfers SET startedAt = NULL WHERE startedAt IS NOT NULL AND failedAt IS NULL AND completedAt IS NULL;').then(function() {
 		if (settings.pind.startDownloadsAutomatically) {
 			that.start(function() {});
 		}
@@ -108,7 +108,7 @@ Transfer.prototype.getStatus = function(callback) {
 	if (aborting) {
 		return callback(null, 'stopped');
 	}
-	schema.Transfer.count({ where: 'startedAt IS NULL'}).success(function(num) {
+	schema.Transfer.count({ where: 'startedAt IS NULL'}).then(function(num) {
 		if (num == 0) {
 			callback(null, 'idling');
 		} else {
@@ -163,7 +163,7 @@ Transfer.prototype.getCurrentProgress = function() {
 Transfer.prototype.resetFailed = function(callback) {
 	var that = this;
 	// reset failed downloads
-	schema.sequelize.query('UPDATE transfers SET startedAt = NULL, failedAt = NULL WHERE failedAt IS NOT NULL').success(function() {
+	schema.sequelize.query('UPDATE transfers SET startedAt = NULL, failedAt = NULL WHERE failedAt IS NOT NULL').then(function() {
 		if (settings.pind.startDownloadsAutomatically) {
 			that.start(function() {});
 		}
@@ -171,7 +171,7 @@ Transfer.prototype.resetFailed = function(callback) {
 		that.emit('statusUpdated');
 		that.emit('transferClearedFailed');
 		callback();
-	}).error(callback);
+	}).catch(callback);
 };
 
 /**
@@ -182,9 +182,9 @@ Transfer.prototype.resetFailed = function(callback) {
 Transfer.prototype.delete = function(id, callback) {
 	var that = this;
 	// delete from db
-	schema.Transfer.find(id).success(function(row) {
+	schema.Transfer.find(id).then(function(row) {
 		if (row) {
-			row.destroy().success(function() {
+			row.destroy().then(function() {
 				that.emit('statusUpdated');
 				that.emit('transferDeleted', { id: id });
 				callback();
@@ -214,12 +214,12 @@ Transfer.prototype.queue = function(transfer, callback) {
 		transfer.postAction = JSON.stringify(transfer.postAction);
 	}
 	transfer.sort = +new Date();
-	schema.Transfer.find({ where: [ 'url = ? AND startedAt IS NULL', transfer.url ]}).success(function(row) {
+	schema.Transfer.find({ where: [ 'url = ? AND startedAt IS NULL', transfer.url ]}).then(function(row) {
 		if (row) {
 			logger.log('info', '[transfer] Transfer with URL "%s" already added, skipping.', transfer.url);
 			return callback(null, 'Skipped "' + transfer.title + '" since it is already in the queue.');
 		}
-		schema.Transfer.create(transfer).success(function(row) {
+		schema.Transfer.create(transfer).then(function(row) {
 
 			that.emit('transferAdded', { transfer: row });
 
@@ -289,7 +289,7 @@ Transfer.prototype.start = function(callback) {
 Transfer.prototype.next = function(callback) {
 
 	var that = this;
-	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'sort ASC' }).success(function(transfers) {
+	schema.Transfer.all({ where: 'startedAt IS NULL', order: 'sort ASC' }).then(function(transfers) {
 		if (transfers.length > 0) {
 
 			if (aborting) {
@@ -356,13 +356,13 @@ Transfer.prototype._download = function(transfer, moduleName, moduleRef, callbac
 	logger.log('info', '[transfer] [%s] Starting download of %s', moduleName, transfer.url);
 	transfer.updateAttributes({
 		startedAt: new Date()
-	}, [ 'startedAt' ]).success(function(row) {
+	}, [ 'startedAt' ]).then(function(row) {
 		that.emit('statusUpdated');
 
 		// update file size as soon as we receive the content length.
 		moduleRef.once('contentLengthReceived', function(data) {
 			if (data.reference.id) {
-				schema.Transfer.find(data.reference.id).success(function(row) {
+				schema.Transfer.find(data.reference.id).then(function(row) {
 					if (row) {
 						row.updateAttributes({ size: data.contentLength }, [ 'size' ]);
 						logger.log('info', '[transfer] [%s] Updating size of transfer %s to %s.', moduleName, data.reference.id, data.contentLength);
@@ -381,7 +381,7 @@ Transfer.prototype._download = function(transfer, moduleName, moduleRef, callbac
 
 		moduleRef.once('filenameReceived', function(data) {
 			if (data.reference.id) {
-				schema.Transfer.find(data.reference.id).success(function(row) {
+				schema.Transfer.find(data.reference.id).then(function(row) {
 					if (row) {
 						row.updateAttributes({ filename: data.filename }, [ 'filename' ]);
 						logger.log('info', '[transfer] [%s] Updating database with new filename "%s" for id %d.', moduleName, data.filename, row.id);
@@ -407,7 +407,7 @@ Transfer.prototype._download = function(transfer, moduleName, moduleRef, callbac
 
 			// if aborting, reset status and return.
 			if (aborting) {
-				return schema.sequelize.query('UPDATE transfers SET startedAt = null WHERE id = ' + row.id).success(function() {
+				return schema.sequelize.query('UPDATE transfers SET startedAt = null WHERE id = ' + row.id).then(function() {
 					that.emit('transferAborted', { id: row.id });
 				});
 			}
@@ -432,7 +432,7 @@ Transfer.prototype._download = function(transfer, moduleName, moduleRef, callbac
 				result: JSON.stringify({ downloaded: filepath }),
 				size: size
 
-			}, [ 'completedAt', 'result', 'size' ]).success(function(row) {
+			}, [ 'completedAt', 'result', 'size' ]).then(function(row) {
 				that.emit('transferCompleted', { file: filepath, transfer: row });
 				that.postDownload(filepath, row, callback);
 			});
@@ -467,7 +467,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 			// update extract result and we're clear.
 			transfer.updateAttributes({
 				result: JSON.stringify(result)
-			}, [ 'result' ]).success(function(row) {
+			}, [ 'result' ]).then(function(row) {
 				that.postProcess(row, callback);
 			});
 		}
@@ -481,7 +481,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 					return transfer.updateAttributes({
 						failedAt: new Date(),
 						result: err
-					}, [ 'failedAt', 'result']).success(function() {
+					}, [ 'failedAt', 'result']).then(function() {
 						callback(err);
 					});
 				}
@@ -489,7 +489,7 @@ Transfer.prototype.postDownload = function(filepath, transfer, callback) {
 				// update extract result and we're clear.
 				transfer.updateAttributes({
 					result: JSON.stringify(extractResult)
-				}, [ 'result' ]).success(function(row) {
+				}, [ 'result' ]).then(function(row) {
 					that.emit('extractCompleted', { result: extractResult, transfer: row });
 					that.postProcess(row, callback);
 				});
@@ -561,7 +561,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 						hpenabled: true,
 						filename: filename,
 						enabled: true
-					}, [ 'hpenabled', 'filename', 'enabled' ]).success(function() {
+					}, [ 'hpenabled', 'filename', 'enabled' ]).then(function() {
 						hp.writeTables(done);
 					});
 					break;
@@ -580,7 +580,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 
 		// find reference
 		if (transfer.engine == 'vpf') {
-			schema.VpfFile.find(transfer.ref_src).success(function(vpffile) {
+			schema.VpfFile.find(transfer.ref_src).then(function(vpffile) {
 				if (!vpffile) {
 					logger.log('warn', '[transfer] Skipping post process for %s because cannot find referenced row %d in VpfFile table.', transfer.title, transfer.ref_src);
 					return callback(null, transfer);
@@ -698,7 +698,7 @@ Transfer.prototype.postProcess = function(transfer, callback) {
 Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
 
 	var that = this;
-	schema.Transfer.find(id).success(function(row) {
+	schema.Transfer.find(id).then(function(row) {
 
 		if (!row) {
 			return callback('No transfer found with ID "' + id + '".');
@@ -707,7 +707,7 @@ Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
 			return num == 0;
 		});
 
-		schema.Transfer.all({ where: { id: ids }}).success(function(rows) {
+		schema.Transfer.all({ where: { id: ids }}).then(function(rows) {
 			var prev, next;
 
 			// item has been dropped between 2 rows: easy
@@ -725,7 +725,7 @@ Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
 			if (!prevId && nextId) {
 				next = rows[0];
 				// find prev item
-				schema.Transfer.find({ where: [ 'sort < ?', next.sort], limit: 1 }).success(function(prev) {
+				schema.Transfer.find({ where: [ 'sort < ?', next.sort], limit: 1 }).then(function(prev) {
 					var prevSort = prev ? prev.sort : next.sort - 1024;
 					row.updateAttributes({
 						sort: Math.round((prevSort + next.sort) / 2)
@@ -737,7 +737,7 @@ Transfer.prototype.reorder = function(id, prevId, nextId, callback) {
 			if (prevId && !nextId) {
 				prev = rows[0];
 				// find prev item
-				schema.Transfer.find({ where: [ 'sort > ?', prev.sort], limit: 1 }).success(function(next) {
+				schema.Transfer.find({ where: [ 'sort > ?', prev.sort], limit: 1 }).then(function(next) {
 					var nextSort = next ? next.sort : prev.sort + 1024;
 					row.updateAttributes({
 						sort: Math.round((prev.sort + nextSort) / 2)
@@ -796,15 +796,15 @@ Transfer.prototype.descriptionUpdated = function(data) {
 		var m;
 		if (m = data.vpf_file.description.match(/<description>([^<]+)<\/description>/i)) {
 			logger.log('info', '[transfer] Got media pack description, updating hpid of "%s" to "%s".', data.transfer.title, m[1]);
-			schema.Transfer.find(data.transfer.ref_parent).success(function(parent) {
+			schema.Transfer.find(data.transfer.ref_parent).then(function(parent) {
 				if (!parent) {
 					return logger.log('warn', '[transfer] Cannot find parent transfer ID %d.', data.transfer.ref_parent);
 				}
-				schema.Table.find({ where: { ref_src : parent.ref_src }}).success(function(table) {
+				schema.Table.find({ where: { ref_src : parent.ref_src }}).then(function(table) {
 					if (!table) {
 						return logger.log('warn', '[transfer] Cannot find table that has reference to %d.', parent.ref_src);
 					}
-					schema.Table.find({ where: { hpid: m[1] }}).success(function(dupeTable) {
+					schema.Table.find({ where: { hpid: m[1] }}).then(function(dupeTable) {
 						if (dupeTable) {
 							logger.log('warn', '[transfer] Table with identical hpid "%s" found (ID %d).', table.hpid, dupeTable.id);
 						}

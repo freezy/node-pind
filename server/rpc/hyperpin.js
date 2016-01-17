@@ -105,7 +105,7 @@ exports.actions = function(req, res, ss) {
 
 			var query = queryWhat + queryWhere + queryOrder;
 			var queryStart = +new Date();
-			schema.sequelize.query(query, null, { plain: false, raw: true }, args).success(function(rows) {
+			schema.sequelize.query(query, null, { plain: false, raw: true }, args).then(function(rows) {
 				var queryTime = (+new Date() - queryStart);
 
 				rows = _.filter(rows, function(row) {
@@ -190,7 +190,7 @@ exports.actions = function(req, res, ss) {
 				res();
 			};
 
-			schema.Table.find(id).success(function(row) {
+			schema.Table.find(id).then(function(row) {
 				if (!row) {
 					logger.log('warn', '[rpc] [hyperpin] Cannot find table row ID %s.', id);
 					return res();
@@ -246,7 +246,7 @@ exports.actions = function(req, res, ss) {
 		},
 
 		ipdbmatchRetry: function(id) {
-			schema.Table.find(id).success(function(row) {
+			schema.Table.find(id).then(function(row) {
 				var m = row.hpid.match(/([^\(]+)\s+\(([^\)]+)\s+(\d{4})\s*\)/);
 				if (m) {
 					logger.log('info', '[rpc] [hyperpin] Re-matching "%s" at IPDB.org', row.hpid);
@@ -254,7 +254,7 @@ exports.actions = function(req, res, ss) {
 					row.manufacturer = m[2];
 					row.year = m[3];
 					ipdb.enrich(row, function(err, table) {
-						table.save().success(function() {
+						table.save().then(function() {
 							res();
 						});
 					});

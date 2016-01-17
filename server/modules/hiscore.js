@@ -99,7 +99,7 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 //	var now = new Date();
 
 	// fetch all VP table and store them into a dictionary
-	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL', order: 'name DESC' }).success(function(rows) {
+	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL', order: 'name DESC' }).then(function(rows) {
 		var roms = [];
 		var tables = {};
 		var files = that._getNvRams(true);
@@ -116,7 +116,7 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 		logger.log('info', '[hiscore] Found %d VP tables with ROM and a nvram.', roms.length);
 
 		// cache users to avoid re-quering
-		schema.User.all().success(function(rows) {
+		schema.User.all().then(function(rows) {
 			var users = {};
 			for (var i = 0; i < rows.length; i++) {
 				users[tr(rows[i].user)] = rows[i];
@@ -136,9 +136,9 @@ Hiscore.prototype.fetchHighscores = function(callback) {
 				callback(err);
 			});
 
-		}).error(callback);
+		}).catch(callback);
 
-	}).error(callback);
+	}).catch(callback);
 };
 
 Hiscore.prototype._getNvRams = function(force) {
@@ -175,7 +175,7 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 			break;
 	}
 	// check if there's already an entry for type and table
-	schema.Hiscore.find(where).success(function(row) {
+	schema.Hiscore.find(where).then(function(row) {
 
 		var points = function(hiscore) {
 			switch (hiscore.type) {
@@ -199,22 +199,22 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 				info: hiscore.info,
 				points: points(hiscore),
 				player: hiscore.player
-			}).success(function(row) {
-					//noinspection JSUnresolvedFunction
-					row.setTable(hiscore.table).success(function(row) {
-						if (hiscore.user) {
-							//noinspection JSUnresolvedFunction
-							row.setUser(hiscore.user).success(function() {
-								next();
-							}).error(next);
-						} else {
+			}).then(function(row) {
+				//noinspection JSUnresolvedFunction
+				row.setTable(hiscore.table).then(function(row) {
+					if (hiscore.user) {
+						//noinspection JSUnresolvedFunction
+						row.setUser(hiscore.user).then(function() {
 							next();
-						}
-					}).error(next);
-				}).error(function(err) {
-					logger.log('error', '[hiscore] ERROR: ' + err);
-					next(err);
-				});
+						}).catch(next);
+					} else {
+						next();
+					}
+				}).catch(next);
+			}).catch(function(err) {
+				logger.log('error', '[hiscore] ERROR: ' + err);
+				next(err);
+			});
 
 		// if so, update entry
 		} else {
@@ -224,14 +224,14 @@ Hiscore.prototype._updateHighscore = function(hiscore, next) {
 				info: hiscore.info,
 				points: points(hiscore),
 				player: hiscore.player
-			}, [ 'score', 'info', 'points', 'player' ]).success(function(row) {
+			}, [ 'score', 'info', 'points', 'player' ]).then(function(row) {
 					//noinspection JSUnresolvedFunction
-					row.setUser(hiscore.user).success(function() {
+					row.setUser(hiscore.user).then(function() {
 						next();
-					}).error(next);
-				}).error(next);
+					}).catch(next);
+				}).catch(next);
 		}
-	}).error(next);
+	}).catch(next);
 };
 
 
@@ -348,9 +348,9 @@ Hiscore.prototype.watchHighscores = function(event, filename) {
 
 	logger.log('info', '[hiscore] File change detected for ROM "' + romname + '".');
 	Hiscore.prototype.emit('nvramChangeDetected', { rom: romname });
-	schema.Table.find({ where: ['platform = "VP" AND lower(rom) = ?', romname.toLowerCase()] }).success(function(table) {
+	schema.Table.find({ where: ['platform = "VP" AND lower(rom) = ?', romname.toLowerCase()] }).then(function(table) {
 		if (table) {
-			schema.User.all().success(function(rows) {
+			schema.User.all().then(function(rows) {
 				var users = {};
 				for (var i = 0; i < rows.length; i++) {
 					users[tr(rows[i].user)] = rows[i];
@@ -376,12 +376,12 @@ Hiscore.prototype.watchHighscores = function(event, filename) {
  * @param callback Callback
  */
 Hiscore.prototype.linkNewUser = function(user, callback) {
-	schema.Hiscore.all({ where: [ 'lower(player) = ?', user.user.toLowerCase() ]}).success(function(rows) {
+	schema.Hiscore.all({ where: [ 'lower(player) = ?', user.user.toLowerCase() ]}).then(function(rows) {
 		async.eachSeries(rows, function(row, next) {
 			//noinspection JSUnresolvedFunction
-			row.setUser(user).success(function() {
+			row.setUser(user).then(function() {
 				next();
-			}).error(next);
+			}).catch(next);
 		}, callback);
 	});
 };

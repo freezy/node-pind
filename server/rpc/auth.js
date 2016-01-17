@@ -86,7 +86,7 @@ exports.actions = function(req, res, ss) {
 				var now = new Date().getTime();
 
 				// count entries to determine if admin or not
-				schema.User.count().success(function(num) {
+				schema.User.count().then(function(num) {
 
 					var user = schema.User.build({
 						user: username,
@@ -95,7 +95,7 @@ exports.actions = function(req, res, ss) {
 					});
 
 					// validate before save(), otherwise hash will be validated instead of password.
-					user.validate().success(function(errors) {
+					user.validate().then(function(errors) {
 
 						if (errors && _.keys(errors).length > 0) {
 							logger.log('warn', '[rpc] [auth] There were validation errors: %j', errors, {});
@@ -103,11 +103,11 @@ exports.actions = function(req, res, ss) {
 						}
 
 						// also check if username if unique.
-						schema.User.find({ where: { user: username }}).success(function(dupeUser) {
+						schema.User.find({ where: { user: username }}).then(function(dupeUser) {
 							if (!dupeUser) {
 
 								logger.log('info', '[rpc] [auth] Creating user "%s"', user.user);
-								user.beforeCreate().save().success(function(user) {
+								user.beforeCreate().save().then(function(user) {
 									logger.log('info', '[rpc] [auth] All good, user created.');
 									alert = { title: 'Welcome!', message: 'Registration successful. You can login now.' };
 									res({ alert: alert, success: true });
@@ -118,7 +118,7 @@ exports.actions = function(req, res, ss) {
 										logger.log('info', '[rpc] [auth] User successfully linked to high scores.');
 									});
 
-								}).error(function(err) {
+								}).catch(function(err) {
 									alert = { title: 'Ooops. Looks like a user creation problem.', message: err };
 									logger.log('error', '[rpc] [auth] Error creating user: %s', err);
 									logger.log('error', '[rpc] [auth] Validations: %js', user.errors, {});

@@ -55,7 +55,7 @@ NvRam.prototype.readTables = function(callback) {
 	that.emit('processingStarted');
 
 	// fetch all VP table and store them into a dictionary
-	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL', order: 'name DESC' }).success(function(rows) {
+	schema.Table.all({ where: '`platform` = "VP" AND `rom` IS NOT NULL', order: 'name DESC' }).then(function(rows) {
 		var roms = [];
 		var tables = {};
 
@@ -81,7 +81,7 @@ NvRam.prototype.readTables = function(callback) {
 					return next();
 				}
 //				logger.log('info', '[nvram] [%s] Got audit:', rom, audit);
-				schema.Rom.find({ where: { name: rom }}).success(function(row) {
+				schema.Rom.find({ where: { name: rom }}).then(function(row) {
 					var attrs = {
 						name: rom,
 						extraBalls: audit.extraBalls,
@@ -97,12 +97,12 @@ NvRam.prototype.readTables = function(callback) {
 						row.updateAttributes(attrs, [
 							'name', 'extraBalls', 'gamesStarted', 'gamesPlayed', 'playTime', 'runningTime',
 							'ballsPlayed', 'scoreHistogram', 'playtimeHistogram'
-						]).success(function(row) {
+						]).then(function(row) {
 							logger.log('info', '[nvram] Successfully updated rom "%s".', row.name);
 							next();
 						});
 					} else {
-						schema.Rom.create(attrs).success(function(row) {
+						schema.Rom.create(attrs).then(function(row) {
 							logger.log('info', '[nvram] Successfully created rom "%s".', row.name);
 							next();
 						});

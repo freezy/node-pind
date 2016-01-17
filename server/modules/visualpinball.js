@@ -818,7 +818,7 @@ VisualPinball.prototype.updateTableData = function(callback) {
 	var that = this;
 
 	// fetch all VP tables
-	schema.Table.findAll({ where: { platform: 'VP' }}).success(function(rows) {
+	schema.Table.findAll({ where: { platform: 'VP' }}).then(function(rows) {
 		async.eachSeries(rows, function(row, next) {
 
 			// skip if file doesn't exist.
@@ -837,7 +837,7 @@ VisualPinball.prototype.updateTableData = function(callback) {
 			});
 
 		}, callback);
-	}).error(callback);
+	}).catch(callback);
 };
 
 VisualPinball.prototype.getTableData = function(path, callback) {

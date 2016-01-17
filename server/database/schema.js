@@ -110,9 +110,9 @@ Hiscore.belongsTo(User);
 Hiscore.belongsTo(Table);
 
 
-sequelize.sync().on('success', function() {
+sequelize.sync().then(function() {
 	logger.log('info', '[db] Connected to %s.', settings.pind.database.engine == 'mysql' ? "MySQL" : "SQLite");
-}).error(function(err){
+}).catch(function(err){
 	logger.log('error', '[db] Error connecting to SQLite: ' + err);
 });
 

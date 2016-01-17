@@ -80,7 +80,7 @@ VPinMAME.prototype.fetchMissingRom = function(table, ref_parent, callback) {
 			logger.log('info', '[vpm] Updating table row with new ROM status...');
 			row.updateAttributes({
 				rom_file: fs.existsSync(settings.vpinmame.path + '/roms/' + row.rom + '.zip')
-			}).success(function() {
+			}).then(function() {
 				next(null, downloadedRoms);
 			});
 
@@ -181,7 +181,7 @@ VPinMAME.prototype.fetchMissingRoms = function(callback) {
 	var downloadedRoms = [];
 
 	logger.log('info', '[vpm] Fetching tables with no ROM file...');
-	schema.Table.findAll({ where: 'NOT `rom_file` AND rom IS NOT NULL' }).success(function(rows) {
+	schema.Table.findAll({ where: 'NOT `rom_file` AND rom IS NOT NULL' }).then(function(rows) {
 		if (rows.length == 0) {
 			that.emit('processingCompleted', { num: 0 });
 			that.emit('processingNoRomsFound');
