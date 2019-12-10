@@ -1,6 +1,9 @@
+### Unmaintained. Have a look at [VPDB](https://github.com/vpdb), which provides many of Pind's features.
+
+---
+
 ![pind](client/static/images/logo.png)
 
-===================
 Node Pinball Daemon
 ===================
 
